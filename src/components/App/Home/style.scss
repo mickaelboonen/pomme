@@ -7,14 +7,16 @@
   &__title {
     font-size: 3em;
 
-    & span  {
+    & .hidden-title  {
       width: 0;
+      display: inline-block;
       overflow: hidden;
     }
 
     &:hover {
       transition: 1s;
-      & span {
+
+      & .hidden-title {
         width: fit-content;
       }
     }
@@ -48,6 +50,7 @@
 @media (min-width: vars.$sm) {
   .home {
     height: 100%;
+    padding: 3rem;
     width: 70%;
   
     &__new {
