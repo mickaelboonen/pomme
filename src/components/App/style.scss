@@ -1,0 +1,13 @@
+.app {
+  //margin: 1em auto;
+  text-align: center;
+  width: 100%;
+}
+
+
+
+@media (min-width: 600px) {
+  .app {
+    display: flex;
+  }
+}

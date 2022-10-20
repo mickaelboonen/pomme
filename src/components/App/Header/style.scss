@@ -1,0 +1,176 @@
+@use 'src/styles/vars';
+
+.header-container {
+  border-bottom: 1px solid black;
+  background-color: #e84e248e;
+}
+
+.header {
+
+  min-height: 10vh;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  &__identity {
+
+    display: flex;
+    height: 100%;
+    align-items: center;
+
+    &-logo {
+      max-height: 10vh;
+      padding: 0.5rem;
+    }
+
+    &-title {
+      display: none;
+    }
+    
+  }
+
+  &__menu {
+    display: flex;
+    align-items: center;
+    height: inherit;
+    padding: 1.5rem;
+    
+
+    &-logo {
+      max-height: 100%;
+      margin: 1rem;
+
+    }
+    
+  }
+}
+
+.menu {
+  height: 0;
+  transition: 1s;
+  overflow: hidden;
+
+  &-section {
+    margin-bottom: 1rem;
+  }
+
+  & h3 {
+    border-bottom: 1px solid #1a1a1a;
+    font-weight: bold;
+    font-size: 1.3em;
+    padding: 0.5rem;
+  }
+
+  & ul {
+
+     & li {
+      margin: 1rem;
+
+      & a {
+        position: relative;
+      }
+     }
+  }
+
+
+  &--open {
+    height:90vh;
+  }
+}
+
+#mes-oms {
+  position: absolute;
+  top: -15px;
+  background-color: #E84E24;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  padding-top: 0.25rem;
+  border-radius: 5px;
+  color: white;
+  font-size: 0.8em;
+
+
+  &::after {
+    position: absolute;
+    content: '';
+    top: 15px;
+    left: 5px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 10px 0 0;
+    border-color: #E84E24 transparent transparent transparent;
+  }
+}
+
+@media (min-width: vars.$sm) {
+  .header-container {
+    background-color: #e84e248e;
+    border-bottom: 0;
+    border-right: 1px solid black;
+    height: 100vh;
+    width: 30%;
+    max-width: 300px;
+    display: block;
+  }
+
+  .header__menu {
+    display: none;
+  }
+
+  .header {
+
+    &__identity {
+      width: 100%;
+      display: block;
+      text-align: center;
+      margin-bottom: 1.5rem;
+
+      &-title {
+        font-weight: bold;
+        font-size: 2em;
+        display: block;
+      }
+    }
+  }
+
+  .menu {
+    height: fit-content;
+    
+  }
+}
+.menu-bar {
+  width: 40px;
+  border: 2px solid black;
+  background-color: black;
+  margin-top: 0.5rem;
+  transition: 0.6s;
+  position: relative;
+
+  &--ext {
+    border-color: transparent;
+    background-color: transparent;
+  }
+
+  &--int {
+    transform: rotate(45deg);
+  }
+
+  &--int-bis {
+    transform: rotate(-90deg);
+  }
+
+  &:first-child {
+    margin: 0;
+  }
+}
+
+#secondbis-bar {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: 40px;
+  margin: 0;
+}
+

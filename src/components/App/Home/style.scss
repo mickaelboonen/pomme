@@ -1,0 +1,83 @@
+@use 'src/styles/vars';
+
+.home {
+  height: 90vh;
+  padding: 1.5rem;
+
+  &__title {
+    font-size: 3em;
+
+    & span  {
+      width: 0;
+      overflow: hidden;
+    }
+
+    &:hover {
+      transition: 1s;
+      & span {
+        width: fit-content;
+      }
+    }
+  }
+
+  &__new {
+    margin-bottom: 2rem;
+    
+    &-title {
+      border-bottom: 1px solid #1a1a1a;
+      color: vars.$unimes;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      font-weight: bold;
+      font-size: 1.5em;
+      text-transform: uppercase;
+    }
+
+    &-buttons {
+      display: flex;
+      justify-content: space-around;
+
+      &-item {
+        color: vars.$unimes;
+      }
+    }
+  }
+}
+
+
+@media (min-width: vars.$sm) {
+  .home {
+    height: 100%;
+    width: 70%;
+  
+    &__new {
+      margin-bottom: 2rem;
+      
+  
+      &-title {
+        border-bottom: 1px solid #1a1a1a;
+        color: vars.$unimes;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        font-weight: bold;
+        font-size: 1.5em;
+        text-transform: uppercase;
+      }
+  
+      &-buttons {
+        display: flex;
+        justify-content: space-around;
+  
+        &-item {
+          color: vars.$unimes;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1000px) {
+  .home {
+    width: calc( 100vw - 300px);
+  }
+}
