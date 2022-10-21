@@ -4,11 +4,13 @@ import PropTypes from 'prop-types';
 import './style.scss';
 
 const FileMenu = ({ status }) => {
+  // TODO : faire toutes les verifs de statut une fois les statuts décidés
+
   let validated = false;
   if (status === 10) {
-    validated = !validated;
+    validated = true;
   }
-  console.log(status, validated);
+
   return (
     <div className="file-menu">
     {!validated && (

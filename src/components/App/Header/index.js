@@ -9,12 +9,12 @@ const Header = () => {
   const handleBarsClick = () => {
 
     const firstBar = document.querySelector('#first-bar');
-    firstBar.classList.toggle('menu-bar--ext')
     const secondBar = document.querySelector('#second-bar');
-    secondBar.classList.toggle('menu-bar--int')
     const secondBarChild = document.querySelector('#secondbis-bar');
-    secondBarChild.classList.toggle('menu-bar--int-bis')
     const thirdBar = document.querySelector('#third-bar');
+    firstBar.classList.toggle('menu-bar--ext')
+    secondBar.classList.toggle('menu-bar--int')
+    secondBarChild.classList.toggle('menu-bar--int-bis')
     thirdBar.classList.toggle('menu-bar--ext')
     
     const menu = document.querySelector('.menu');

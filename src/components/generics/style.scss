@@ -27,8 +27,9 @@
     &-li {
       border-bottom: 1px solid #6e6d6d;
       font-style: italic;
-      font-size: 0.8em;
+      font-size: 0.7em;
       text-transform: uppercase;
+      font-weight: bold;
       min-height: 30%;
       display: flex;
       align-items: center;
@@ -50,10 +51,10 @@
 
 .file-display {
   width: 100%;
-  font-size: 0.8em;
 
   &__name {
     width: 100%;
     word-break: break-all;
+    font-size: 0.8em;
   }
 }

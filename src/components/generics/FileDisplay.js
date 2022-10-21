@@ -8,7 +8,7 @@ const FileDisplay = ({ name }) => (
   <div className="file-display">
     <img className="file-display__image" src={File} alt="" />
     <p className="file-display__name">{name}</p>
-</div>
+  </div>
 );
 
 FileDisplay.propTypes = {

@@ -57,14 +57,32 @@ const MyOMs = () => {
   ];
 
   /**
-   * Modifies the DOM to open the side menu for each file
+   * Modifies the DOM to open the side menu for each file and closes the previous menu
    * @param {*} event 
    */
   const toggleMenu = (event) => {
     const { currentTarget } = event;
-    const menu = currentTarget.querySelector('.file-menu');
-    currentTarget.classList.toggle('myOms__files-container-item--open');
-    menu.classList.toggle('file-menu--open');
+    const classes = currentTarget.classList;
+    const searchedClass = Array.from(classes).find((classname) => classname === "myOms__files-container-item--open" ); 
+    const currentMenu = currentTarget.querySelector('.file-menu');
+
+    // Gets the last opened menu and closes it 
+    const openedMenu = document.querySelector('.file-menu--open');
+    if (openedMenu) {
+      openedMenu.classList.remove('file-menu--open');
+      openedMenu.parentNode.classList.remove('myOms__files-container-item--open');
+    }
+    
+    // Toggles the class on the current elements
+    if (searchedClass === undefined) {
+      currentTarget.classList.add('myOms__files-container-item--open');
+      currentMenu.classList.add('file-menu--open');
+    } 
+    else {
+      currentTarget.classList.remove('myOms__files-container-item--open');
+      currentMenu.classList.remove('file-menu--open');
+
+    }
   };
 
   /**
