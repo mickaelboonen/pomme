@@ -66,18 +66,10 @@ const Header = () => {
         <div>
           <h3>MON COMPTE</h3>
           <ul>
-            <li>
-              <Link to="/utilisateur/mboone01/mes-ordres-de-mission">Mes Ordres de Mission <span id="mes-oms">1</span></Link>  
-            </li>
-            <li>
-              <a>Mes États de frais</a>
-            </li>
-            <li>
-              <a>Mes Justificatifs</a>
-            </li>
-            <li>
-              <a>Se déconnecter</a>
-            </li>
+            <li><Link to="/utilisateur/mboone01/mes-ordres-de-mission">Mes Ordres de Mission <span id="mes-oms">1</span></Link></li>
+            <li><Link to="/utilisateur/mboone01/mes-états-de-frais">Mes États de Frais <span id="mes-efs"></span></Link></li>
+            <li><a>Mes Justificatifs</a></li>
+            <li><a>Se déconnecter</a></li>
           </ul>
         </div>
       </div>
