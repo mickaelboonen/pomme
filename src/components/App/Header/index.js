@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import Apple from '../../../assets/images/apple.png';
+import { Link } from 'react-router-dom';
 
 import './style.scss';
 
@@ -26,7 +27,7 @@ const Header = () => {
       <div className="header">
         <div className="header__identity">
           <img className="header__identity-logo" src={Apple} alt="react logo" />
-          <h1 className="header__identity-title">POMME</h1>
+          <Link to="/"><h1 className="header__identity-title">POMME</h1></Link>   
           <p>mboone01</p>
         </div>
         <div className="header__menu" onClick={handleBarsClick}>
@@ -66,7 +67,7 @@ const Header = () => {
           <h3>MON COMPTE</h3>
           <ul>
             <li>
-              <a>Mes Ordres de Mission <span id="mes-oms">1</span> </a> 
+              <Link to="/utilisateur/mboone01/mes-ordres-de-mission">Mes Ordres de Mission <span id="mes-oms">1</span></Link>  
             </li>
             <li>
               <a>Mes États de frais</a>
