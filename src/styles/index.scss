@@ -6,6 +6,10 @@ body {
   // background-color: #f0f;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 /* 
   // or you can import your own font
   @font-face {

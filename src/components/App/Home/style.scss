@@ -55,17 +55,6 @@
   
     &__new {
       margin-bottom: 2rem;
-      
-  
-      &-title {
-        border-bottom: 1px solid #1a1a1a;
-        color: vars.$unimes;
-        margin-bottom: 1.5rem;
-        padding-bottom: 0.5rem;
-        font-weight: bold;
-        font-size: 1.5em;
-        text-transform: uppercase;
-      }
   
       &-buttons {
         display: flex;

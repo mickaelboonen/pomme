@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Plus from '../../../assets/images/add.svg';
+import TitleH3 from '../../generics/TitleH3';
 
 import './style.scss';
 
@@ -16,7 +17,7 @@ const Home = () => {
         <span>E</span><span className="hidden-title">ndormi</span>
       </h1> */}
     <section className="home__new">
-      <h2 className="home__new-title">Nouveau document</h2>
+      <TitleH3 title="Nouveau document" />
       <div className="home__new-buttons">
         <div className="home__new-buttons-item">
           <img src={Plus} alt="" />
@@ -29,7 +30,7 @@ const Home = () => {
       </div>
     </section>
     <section className="home__new">
-      <h2 className="home__new-title">A signer</h2>
+      <TitleH3 title="A signer" />
       <div className="home__new-buttons">
         Test
       </div>

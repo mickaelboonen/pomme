@@ -1,7 +1,24 @@
+@use "sass:color";
+
 // Colors
 
 $unimes : #E84E24;
+$fadedUnimes : fade-out($unimes, 0.3);
+$orange : #da8123;
 
 // Breakpoints 
 
 $sm : 600px;
+
+// Buttons
+@mixin button {
+  width: 100%;
+  background-color: $unimes;
+  background-color: $orange;
+  border: 0;
+  padding: 0.7rem;
+  border-radius: 5px;
+  color: white;
+  text-transform: uppercase;
+  font-weight: bold;
+}
