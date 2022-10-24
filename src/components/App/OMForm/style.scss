@@ -90,6 +90,24 @@
           margin-top: 0.1rem
         }
       }
+
+      &-radio {
+        display: flex;
+
+        & input {
+          margin-right: 1rem;
+        }
+
+        & label {
+          font-size: 0.9em;
+          text-align: left;
+        }
+      }
+
+      &--hidden {
+        display: none;
+      }
+
     }
   }
 }

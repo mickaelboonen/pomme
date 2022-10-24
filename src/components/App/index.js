@@ -19,6 +19,7 @@ function App() {
         <Route path="/documents/:slug/nouveau" element={<OMForm />} />
         <Route element={<div>Perdu</div>} />
       </Routes>
+      <script type="text/javascript" src="bootstrap-datetimepicker.de.js" charSet="UTF-8"></script>
     </div>
   );
 }
