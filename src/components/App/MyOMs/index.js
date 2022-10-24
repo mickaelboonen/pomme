@@ -108,7 +108,7 @@ const MyOMs = () => {
         <button type='button'>NOUVEAU</button>
       </div>
       <section className="myOms__files">
-        <TitleH3 title="En cours" />
+      <TitleH3>En cours</TitleH3>
         <div className="myOms__files-container">
           {currentOMs.map((om) => (
             <div key={om.id} className="myOms__files-container-item" onClick={toggleMenu}>
@@ -119,7 +119,7 @@ const MyOMs = () => {
         </div>
       </section>
       <section className="myOms__files">
-        <TitleH3 title="Validés" />
+      <TitleH3>Validés</TitleH3>
         <div className="myOms__files-container">
           {pastOMs.map((om) => (
             <div key={om.id} className="myOms__files-container-item" onClick={toggleMenu}>

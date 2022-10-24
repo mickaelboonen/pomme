@@ -97,7 +97,7 @@ const MyEFs = () => {
         <button type='button'>NOUVEAU</button>
       </div>
       <section className="myOms__files">
-        <TitleH3 title="Mes États de frais en cours" />
+      <TitleH3>Mes états de frais en cours</TitleH3>
         <div className="myOms__files-container">
           {currentEFs.map((om) => (
             <div key={om.id} className="myOms__files-container-item" onClick={toggleMenu}>
@@ -108,7 +108,7 @@ const MyEFs = () => {
         </div>
       </section>
       <section className="myOms__files">
-        <TitleH3 title="Mes états liquidatifs à signer" />
+      <TitleH3>Mes états liquidatifs à signer</TitleH3>
         <div className="myOms__files-container">
           {currentELs.map((om) => (
             <div key={om.id} className="myOms__files-container-item" onClick={toggleMenu}>
@@ -119,7 +119,7 @@ const MyEFs = () => {
         </div>
       </section>
       <section className="myOms__files">
-        <TitleH3 title="Mes États liquidatifs validés" />
+      <TitleH3>Me états liquidatifs validés</TitleH3>
         <div className="myOms__files-container">
           {pastELs.map((om) => (
             <div key={om.id} className="myOms__files-container-item" onClick={toggleMenu}>

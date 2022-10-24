@@ -4,6 +4,7 @@ import Plus from '../../../assets/images/add.svg';
 import TitleH3 from '../../generics/TitleH3';
 
 import './style.scss';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   return (
@@ -17,12 +18,14 @@ const Home = () => {
         <span>E</span><span className="hidden-title">ndormi</span>
       </h1> */}
     <section className="home__new">
-      <TitleH3 title="Nouveau document" />
+      <TitleH3>Nouveau document</TitleH3>
       <div className="home__new-buttons">
-        <div className="home__new-buttons-item">
-          <img src={Plus} alt="" />
-          <p>Ordre de Mission</p>
-        </div>
+        <Link to="/documents/ordre-de-mission/nouveau?etape=1">
+          <div className="home__new-buttons-item">
+            <img src={Plus} alt="" />
+            <p>Ordre de Mission</p>
+          </div>
+        </Link>
         <div className="home__new-buttons-item">
           <img src={Plus} alt="" />
           <p>Ordre de Mission</p>
@@ -30,7 +33,7 @@ const Home = () => {
       </div>
     </section>
     <section className="home__new">
-      <TitleH3 title="A signer" />
+      <TitleH3>A signer</TitleH3>
       <div className="home__new-buttons">
         Test
       </div>

@@ -9,6 +9,24 @@
   font-size: 1.5em;
   text-transform: uppercase;
 }
+
+.form-section-title {
+  color: vars.$orange;
+  text-transform: uppercase;
+  border-bottom: 2px solid vars.$orange;
+  text-align: left;
+  padding-bottom: 0.5rem;
+  font-weight: bold;
+  font-size: 1.3em;
+  margin-bottom: 1.5rem;
+}
+
+.page-title {
+  font-size: 2em;
+  text-transform: uppercase;
+  margin: 1rem;
+  line-height: 120%;
+}
 .file-menu {
     display: none;
     width: 60%;

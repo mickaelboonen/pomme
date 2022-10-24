@@ -22,3 +22,10 @@ $sm : 600px;
   text-transform: uppercase;
   font-weight: bold;
 }
+
+// display : 
+@mixin centeredFlex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
