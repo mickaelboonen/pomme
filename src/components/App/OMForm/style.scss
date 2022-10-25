@@ -25,23 +25,14 @@
 
   &__container {
     @include vars.centeredFlex;
+    flex-direction: column;
   }
 }
 
- #motif-justif {
-  padding-left: 3rem;
-  position: fixed;
-  top: -1rem;
-  z-index: -1;
-  font-size: 0;
-  display: none;
- }
-
 .form {
-  border: 1px solid#1a1a1a;
-  width: 75%;
+  width: 90%;
   height: fit-content;
-  padding: 2rem;
+  padding: 1rem 1rem 0;
 
   &__section {
 
@@ -49,6 +40,36 @@
       display: flex;
       flex-flow: column nowrap;
       margin-bottom: 1rem;
+
+      &-container {
+        display: flex;
+      }
+
+      &-pre-input{
+        width: 3rem;
+        border: 0.5px solid rgb(153, 150, 150);
+        background-color: vars.$fadedUnimes;
+        border-right: 0;
+        height: 2.5rem;
+        border-radius: 5px 0 0 5px;
+        margin-top: 0.1rem;
+        @include vars.centeredFlex;
+      }
+
+      &-input-text {
+        width: calc(100% - 3.1rem);
+        position: relative;
+        padding: 0.5rem;
+        min-height: 2.5rem;
+        margin-top: 0.1rem;
+        border-radius: 0 5px 5px 0;
+        border: 0.5px solid rgb(153, 150, 150);
+        border-width: 0.5px;
+
+
+
+
+      }
 
       &-input {
         width: 100%;
@@ -89,6 +110,10 @@
           font-style: italic;
           margin-top: 0.1rem
         }
+
+        & span {
+          font-variant-position: super;
+        }
       }
 
       &-radio {
@@ -108,8 +133,70 @@
         display: none;
       }
 
+      &-refusal {
+        width: 80%;
+        margin: auto;
+        background-color: rgb(250, 148, 148);
+        color: rgb(117, 13, 13);
+        border: 1px solid rgb(117, 13, 13);
+        padding: 1rem;
+        border-radius: 10px;
+      }
+
+      &-checkbox {
+        display: flex;
+        align-items: center;
+        margin: 0.5rem 0 0 1rem;
+
+        &:nth-of-type(2) {
+          margin-top: 0;
+        }
+      }
+
+      &-buttons {
+        display: flex;
+        justify-content: center;
+        margin: 1rem;
+
+         & button {
+          max-width: 45%;
+          margin-right: 0.5rem;
+          background-color: vars.$orange;
+          border: 0;
+          padding: 0.5rem;
+          border-radius: 5px;
+          text-transform: uppercase;
+          color: #fff;
+          font-weight: bold;
+          font-size: 0.7em;
+
+          &:nth-of-type(2) {
+            margin: 0;
+          }
+         }
+      }
+
+      &-link {
+        all: unset;
+        cursor: pointer;
+        color: vars.$orange;
+        text-decoration: underline;
+        font-size: 0.8em;
+
+      }
+
     }
   }
+}
+
+
+#motif-justif {
+ padding-left: 3rem;
+ position: fixed;
+ top: -1rem;
+ z-index: -1;
+ font-size: 0;
+ display: none;
 }
 
 
@@ -126,6 +213,12 @@
         display: none;
       }
     }
+  }
+
+  .form {
+    padding: 2rem 2rem 0;
+    width: 75%;
+    border: 1px solid #1a1a1a;
   }
 
 }

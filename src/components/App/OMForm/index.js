@@ -10,7 +10,7 @@ import PageTitle from '../../generics/PageTitle';
 const OMForm = () => {
   const location = useLocation();
   const step = Number(location.search.split('=')[1]);
-  console.log(step);
+  
   return (
   <main className="form-page">
     <div className="form-page__thread">
@@ -35,20 +35,36 @@ const OMForm = () => {
     </div>
     <div className="form-page__container">
       {step === 1 && (
-        <Mission />
+        <div className="form-page__container">
+          <Mission step={step} />
+        </div>
+        
       )}
       {step === 2 && (
-        <Mission />
+        <div className="form-page__container">
+          <Mission step={step} />
+          <button className="form__section-field-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
+        </div>
       )}
       {step === 3 && (
-        <Mission />
+        <div className="form-page__container">
+          <Mission step={step} />
+          <button className="form__section-field-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
+        </div>
       )}
       {step === 4 && (
-        <Mission />
+        <div className="form-page__container">
+          <Mission step={step} />
+          <button className="form__section-field-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
+        </div>
       )}
       {step === 5 && (
-        <Mission />
+        <div className="form-page__container">
+          <Mission step={step} />
+          <button className="form__section-field-link" type='button'>Retour : Avance</button>
+        </div>
       )}
+
     </div>
 
   </main>

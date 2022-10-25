@@ -1,13 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
-import Upload from '../../../assets/images/upload.svg';
+import { useNavigate } from 'react-router-dom';
+import Map from '../../../assets/images/map.svg';
+import Pin from '../../../assets/images/pin.svg';
 
 import './style.scss';
 import FormSectionTitle from '../../generics/FormSectionTitle';
 import SplitFields from './Fields/SplitFields';
+import TextFieldWithIcon from './Fields/TextFieldWithIcon';
+import { displayRegionFieldsInFormMission } from '../../../selectors/domManipulators';
+import RefusalMessage from './Fields/RefusalMessage';
+import Buttons from './Fields/Buttons';
 
-const Mission = () => {
+const Mission = ({ step }) => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -15,9 +22,21 @@ const Mission = () => {
     formState:
     { errors },
   } = useForm();
+
   const onSubmit = (data) => {
     console.log(data);
+
+    // TODO : Process Data
+
+    // Next Step
+    const nextStep = step++;
+    navigate('/documents/ordre-de-mission/nouveau?etape=' + step++);
+
+    
   };
+
+  let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
+  refusal = "";
 
   const handleClickOnFileInput = (event) => {
     event.currentTarget.firstChild.click();
@@ -30,23 +49,7 @@ const Mission = () => {
   };
 
   const handleRegionClick = () => {
-    const isAbroad = document.querySelector('#étranger');
-    const domTom = document.querySelector('#dom-tom');
-
-    if ( isAbroad.checked ) {
-      document.querySelector('#country-field').classList.remove('form__section-field--hidden');
-      document.querySelector('#abroad-field').classList.remove('form__section-field--hidden');
-      document.querySelector('#abroad-report').classList.remove('form__section-field--hidden');
-    }
-    else if (domTom.checked) {
-      document.querySelector('#abroad-field').classList.remove('form__section-field--hidden');
-
-    }
-    else {
-      document.querySelector('#country-field').classList.add('form__section-field--hidden');
-      document.querySelector('#abroad-field').classList.add('form__section-field--hidden');
-      document.querySelector('#abroad-report').classList.add('form__section-field--hidden');
-    }
+    displayRegionFieldsInFormMission();
   };
   
   const adresses = [
@@ -98,8 +101,6 @@ const Mission = () => {
       </div>
       <div className="form__section">
         <FormSectionTitle>Lieu de la mission</FormSectionTitle>
-
-
         <div className="split-fields">
           <div className="form__section-field-radio">
             <input
@@ -135,54 +136,51 @@ const Mission = () => {
             <label htmlFor="étranger">Étranger (*)(**)</label>
           </div>
         </div>
-        <div className="form__section-field">
-          <label className="form__section-field-label" htmlFor="mission-adress">Adresse de la mission</label>
-          <input
-            id="mission-adress"
-            className="form__section-field-input"
-              {...register('mission-adress')}
-            />
-        </div>
 
-{/* -------------------------------------------------------------------------------------------------- */}
-        <div className="form__section-field form__section-field--hidden" id="country-field">
-          <label className="form__section-field-label" htmlFor="mission-adress">Pays</label>
-          <input
-            id="country"
-            className="form__section-field-input"
-              {...register('country')}
-            />
-        </div>
+        <TextFieldWithIcon
+          isHidden={false}
+          id={"mission-adress"}
+          name="Adresse de la mission"
+          icon={Pin}
+          register={register}
+        />
+        <TextFieldWithIcon
+          isHidden={true}
+          id={"country"}
+          name="Pays de la mission"
+          icon={Map}
+          register={register}
+        />
 {/* -------------------------------------------------------------------------------------------------- */}
         <div className="form__section-field form__section-field--hidden" id="abroad-field">
-          <div>
-            <label className="form__section-field-label" htmlFor="mission-adress">Per diem</label>
+          <p className="form__section-field-label">(*) Préciser : </p>
+          <div className="form__section-field-checkbox">
             <input
-              id="country"
               type="checkbox"
-              className="form__section-field-input"
+              id="per-diem"
+              value="per-diem"
                 {...register('abroad')}
               />
+            <label className="form__section-field-label" htmlFor="per-diem">Per diem</label>
           </div>
-          <div>
-            <label className="form__section-field-label" htmlFor="mission-adress">Frais réels</label>
+          <div className="form__section-field-checkbox">
             <input
-              id="country"
               type="checkbox"
-              className="form__section-field-input"
+              id="frais-reels"
+              value="frais-reels"
                 {...register('abroad')}
               />
+            <label className="form__section-field-label" htmlFor="mission-adress">Frais réels</label>
           </div>
         </div>
-        <p className="form__section-field form__section-field--hidden" id="abroad-report">
-          (**) Compte rendu à fournir au retour de la mission sur financement RI
-        </p>
-
-
+        <div className="form__section-field form__section-field--hidden" id="abroad-report">
+          <p className="form__section-field-label">(**) Compte rendu à fournir au retour de la mission sur financement RI</p>
+        </div>
       </div>
-
-      <button type="submit">Submit</button>
+      {refusal !== '' && <RefusalMessage message={refusal} />}
+      <Buttons step={step} />
     </form>
+    
   );
 };
 
