@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import Apple from '../../../assets/images/apple.png';
+import Moon from '../../../assets/images/moon.svg';
+import Sun from '../../../assets/images/sun.svg';
 import { Link } from 'react-router-dom';
 
 import './style.scss';
@@ -20,7 +22,11 @@ const Header = () => {
     const menu = document.querySelector('.menu');
     menu.classList.toggle('menu--open')
   };
+  const handleToggleTheme = () => {
+    // TODO : localstorage etc
 
+    document.querySelector(':root').classList.toggle('dark');
+  }
   
   return (
     <header className="header-container">
@@ -40,6 +46,15 @@ const Header = () => {
           </div>
         </div>
       </div>
+        <div className="header-theme">
+          
+        <img src={Sun} alt="" />
+          <label class="switch">
+            <input type="checkbox" onChange={handleToggleTheme}/>
+            <span class="slider round"></span>
+          </label>
+           <img src={Moon} alt="" />
+        </div>
       <div className="menu">
         <div className="menu-section">
           <h3>DAFC</h3>
