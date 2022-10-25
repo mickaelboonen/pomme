@@ -2,22 +2,34 @@
 @use 'vars';
 
 body {
-  font-family: sans-serif;
-  // background-color: #f0f;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 * {
   box-sizing: border-box;
 }
 
-/* 
-  // or you can import your own font
-  @font-face {
-    font-family: 'Roboto';
-    src: url('../assets/fonts/Roboto-Regular.ttf');
-  }
+$unimes : #E84E24;
+$fadedUnimes : fade-out($unimes, 0.3);
+$orange : #da8123;
 
-  body {
-    font-family: 'Roboto', sans-serif;
-  }
-*/
+:root:not(.dark) {
+  --menu-color: #e84e248e;
+  --menu-title-color: #1a1a1a;
+  --dark-color: #1a1a1a;
+  --primary-color: #1a1a1a;
+  --unimes-color: #E84E24;
+  --background-color: #fff;
+  --thread-background: #fff;
+  
+}
+
+:root.dark {
+  --menu-color: #1a1a1a;
+  --dark-color: #1a1a1a;
+  --menu-title-color: #E84E24;
+  --thread-background: #1a1a1a;
+  --primary-color: #dfdbdb;
+  --background-color: #dfdbdb;
+  --unimes-color: #E84E24;
+}

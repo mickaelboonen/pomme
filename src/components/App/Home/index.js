@@ -7,6 +7,7 @@ import './style.scss';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
+
   return (
     <main className="home">
       {/* <h1 className="home__title">

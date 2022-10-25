@@ -9,6 +9,11 @@ import OMForm from './OMForm';
 
 // == Composant
 function App() {
+  const toggleLight = () => {
+    // TODO : localstorage etc
+
+    document.querySelector(':root').classList.toggle('dark');
+  }
   return (
     <div className="app">
       <Header />
@@ -19,6 +24,8 @@ function App() {
         <Route path="/documents/:slug/nouveau" element={<OMForm />} />
         <Route element={<div>Perdu</div>} />
       </Routes>
+      <button style={{'position': 'fixed'}} onClick={toggleLight}>toggleLight</button>
+
       <script type="text/javascript" src="bootstrap-datetimepicker.de.js" charSet="UTF-8"></script>
     </div>
   );

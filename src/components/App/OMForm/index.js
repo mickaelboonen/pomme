@@ -33,40 +33,37 @@ const OMForm = () => {
     <div className="form-page__title">
       <PageTitle>Création d'un Ordre de Mission</PageTitle>
     </div>
-    <div className="form-page__container">
-      {step === 1 && (
-        <div className="form-page__container">
-          <Mission step={step} />
-        </div>
-        
-      )}
-      {step === 2 && (
-        <div className="form-page__container">
-          <Mission step={step} />
-          <button className="form__section-field-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
-        </div>
-      )}
-      {step === 3 && (
-        <div className="form-page__container">
-          <Mission step={step} />
-          <button className="form__section-field-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
-        </div>
-      )}
-      {step === 4 && (
-        <div className="form-page__container">
-          <Mission step={step} />
-          <button className="form__section-field-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
-        </div>
-      )}
-      {step === 5 && (
-        <div className="form-page__container">
-          <Mission step={step} />
-          <button className="form__section-field-link" type='button'>Retour : Avance</button>
-        </div>
-      )}
-
-    </div>
-
+    {step === 1 && (
+      <div className="form-page__container">
+        <Mission step={step} />
+        <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
+      </div>
+      
+    )}
+    {step === 2 && (
+      <div className="form-page__container">
+        <Mission step={step} />
+        <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
+      </div>
+    )}
+    {step === 3 && (
+      <div className="form-page__container">
+        <Mission step={step} />
+        <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
+      </div>
+    )}
+    {step === 4 && (
+      <div className="form-page__container">
+        <Mission step={step} />
+        <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
+      </div>
+    )}
+    {step === 5 && (
+      <div className="form-page__container">
+        <Mission step={step} />
+        <button className="form-page__container-link" type='button'>Retour : Avance</button>
+      </div>
+    )}
   </main>
 );}
 

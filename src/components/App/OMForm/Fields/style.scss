@@ -1,14 +1,15 @@
+@use 'src/styles/vars';
 
 .split-fields {
-  display: flex;
+  // display: flex;
   margin-bottom: 1rem;
 
   &__half {
-    width: 50%;
+    width: 100%;
     padding: 0.5rem;
 
     &:first-child {
-      border-right: 1px solid #1a1a1a ;
+      border-bottom: 1px solid #1a1a1a;
     }
 
     & p {
@@ -31,6 +32,21 @@
       }
       &-input {
         width: 100%;
+      }
+    }
+  }
+}
+
+
+@media (min-width: vars.$sm) {
+  .split-fields {
+    display: flex;
+    &__half {
+      width: 50%;
+
+      &:first-child {
+        border-right: 1px solid #1a1a1a;
+        border-bottom: 0;
       }
     }
   }

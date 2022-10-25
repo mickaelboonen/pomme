@@ -16,7 +16,7 @@ const Buttons = ({ step }) => {
     navigate('/documents/ordre-de-mission/nouveau?etape=' + previousStep);
   }
   return (
-    <div className="form__section-field">
+    <div className="form__section">
       <div className="form__section-field-buttons">
         { (step !== 1 && step !== 5) && <button type="button" id="previous-button" onClick={handleClick}>Retour : {steps[step - 2]}</button>}
         { step !== 5 && <button type="submit">Suivant : {steps[step]}</button>}

@@ -11,9 +11,9 @@
 }
 
 .form-section-title {
-  color: vars.$orange;
+  color: vars.$fadedUnimes;
   text-transform: uppercase;
-  border-bottom: 2px solid vars.$orange;
+  border-bottom: 2px solid vars.$fadedUnimes;
   text-align: left;
   padding-bottom: 0.5rem;
   font-weight: bold;
@@ -22,11 +22,15 @@
 }
 
 .page-title {
-  font-size: 2em;
+  font-size: 3em;
+  text-shadow: 2px 2px 2px #1a1a1a;
+  color: vars.$unimes;
   text-transform: uppercase;
   margin: 1rem;
   line-height: 120%;
 }
+
+
 .file-menu {
     display: none;
     width: 60%;
