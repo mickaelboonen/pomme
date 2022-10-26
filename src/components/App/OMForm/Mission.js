@@ -71,10 +71,10 @@ const Mission = ({ step }) => {
             />
         </div>
         <div className="form__section-field" >
-          <label className="form__section-field-label" htmlFor="motif-justif">Pièce justificative</label>
+          <label className="form__section-field-label" htmlFor="classe-certificate">Pièce justificative</label>
           <div className="form__section-field-input form__section-field-input--file" onClick={handleClickOnFileInput}>
             <input
-              id="motif-justif"
+              id="classe-certificate"
               type="file"
               {...register('motif-justif')}
               onChange={handleChange}
@@ -151,7 +151,6 @@ const Mission = ({ step }) => {
           icon={Map}
           register={register}
         />
-{/* -------------------------------------------------------------------------------------------------- */}
         <div className="form__section-field form__section-field--hidden" id="abroad-field">
           <p className="form__section-field-label">(*) Préciser : </p>
           <div className="form__section-field-checkbox">

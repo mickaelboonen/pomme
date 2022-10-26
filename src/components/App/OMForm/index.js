@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import Mission from './Mission';
 import PageTitle from '../../generics/PageTitle';
+import Transports from './Transports';
 
 const OMForm = () => {
   const location = useLocation();
@@ -42,7 +43,7 @@ const OMForm = () => {
     )}
     {step === 2 && (
       <div className="form-page__container">
-        <Mission step={step} />
+        <Transports step={step} />
         <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
       </div>
     )}
