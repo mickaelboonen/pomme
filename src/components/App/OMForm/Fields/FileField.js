@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './style.scss';
 import classNames from 'classnames';
 
-const FileField = ({ register, formField, id, isHidden = false }) => {
+const FileField = ({ register, formField, id, isHidden = false, pieces = ''}) => {
   const handleClickOnFileInput = (event) => {
     event.currentTarget.firstChild.click();
   };
@@ -27,6 +27,7 @@ const FileField = ({ register, formField, id, isHidden = false }) => {
       />
       <div />
     </div>
+    <p className="form__section-field-label form__section-field-label--infos">{pieces}</p>
   </div>
 );}
 

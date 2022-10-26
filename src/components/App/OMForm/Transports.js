@@ -11,6 +11,8 @@ import Buttons from './Fields/Buttons';
 import RadioInput from './Fields/RadioInput';
 import CheckboxInput from './Fields/CheckboxInput';
 import FileField from './Fields/FileField';
+import SwitchButton from '../../generics/SwitchButton';
+import SelectField from './Fields/SelectField';
 
 const Transports = ({ step }) => {
   const navigate = useNavigate();
@@ -105,36 +107,30 @@ const Transports = ({ step }) => {
       </div>
       <div className="form__section">
         <FormSectionTitle>Véhicule</FormSectionTitle>
-        <div className="form__section-field" id="work-adress">
-          <label className="form__section-field-label" htmlFor="motif">Véhicule utilisé</label>
-          <select
-            id="adresse-select"
-            className="form__section-field-input"
-            {...register('adresse-select')}
-            onChange={handleVehicleChange}
-          >
-            <option value="none">Pas de véhicule utilisé</option>
-            {vehicles.map((car) => <option key={car} value={car}>{car}</option>)}
-          </select>
-        </div>
-        {/* TODO */}
-        <div className="form__section-container" id="personal-car-field">
+        <SelectField
+          data={vehicles}
+          register={register}
+          formField="work-adress"
+          id="work-address-select"
+          handler={handleVehicleChange}
+          label="Véhicule utilisé"
+          blankValue={"Pas de véhicule utilisé"}
+        />
+        <div className="form__section-container form__section-field--hidden" id="personal-car-field">
           <div className="form__section-container-options">
             <FileField id="vehicle-authorization" formField="vehicle-authorization-file" register={register} />
             OU
             <div className="form__section-container-button">
-              <button>FAIRE LA DEMANDE</button>
+              <button type="button">FAIRE LA DEMANDE</button>
             </div>
           </div>
-          <p>RAPPEL : Remboursement Forfait SNCF 2ème classe</p>
+          <p className="form__section-container-reminder">RAPPEL : Remboursement Forfait SNCF 2ème classe</p>
         </div>
       </div>
       <div className="form__section">
         <FormSectionTitle>Déplacement pendant la mission</FormSectionTitle>
         <div className="form__section-field">
-          <p className="form__section-field-label">Classe</p>
-          <RadioInput id="business-class" formField="plane-class" label="Classe Affaires (*)" register={register} />
-          <RadioInput id="eco-class" formField="plane-class" label="Classe éco" register={register} />
+          <SwitchButton register={register} handler={() => null} isInForm formField={'public-transports'}/>
         </div>
         <div className="form__section-field">
           <p className="form__section-field-label">Autres</p>

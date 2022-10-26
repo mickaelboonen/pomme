@@ -215,6 +215,10 @@
           }
         }
       }
+
+      &-toggle {
+        text-align: left;
+      }
     }
   }
 }
@@ -251,10 +255,16 @@
         width: 40%;
 
         & button {
+          border: 1px solid #1a1a1a;
           width: 100%;
           height: 2.5rem;
           max-width: 100%;
           margin: 0;
+
+          &:focus,
+          &:hover {
+            color: #fff;
+          }
         }
       }
     } 

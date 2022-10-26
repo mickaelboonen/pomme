@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import Mission from './Mission';
 import PageTitle from '../../generics/PageTitle';
 import Transports from './Transports';
+import Hebergement from './Hebergement';
 
 const OMForm = () => {
   const location = useLocation();
@@ -49,7 +50,7 @@ const OMForm = () => {
     )}
     {step === 3 && (
       <div className="form-page__container">
-        <Mission step={step} />
+        <Hebergement step={step} />
         <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
       </div>
     )}
