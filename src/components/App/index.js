@@ -6,10 +6,19 @@ import './style.scss';
 import MyOMs from './MyOMs';
 import MyEFs from './MyEFs';
 import OMForm from './OMForm';
+import { useEffect } from 'react';
 
 // == Composant
 function App() {
+  const theme = localStorage.getItem('theme');
 
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.querySelector(':root').classList.toggle('dark');
+      const button = document.querySelector('#theme-preferences');
+      button.checked = true;
+    }
+  }, [])
   return (
     <div className="app">
       <Header />

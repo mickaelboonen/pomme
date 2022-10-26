@@ -22,9 +22,17 @@ const Header = () => {
     const menu = document.querySelector('.menu');
     menu.classList.toggle('menu--open')
   };
-  const handleToggleTheme = () => {
+  const handleToggleTheme = (event) => {
     // TODO : localstorage etc
+    const { checked } = event.target;
 
+    if (checked) {
+      localStorage.setItem('theme', 'dark');
+    }
+    else {
+      localStorage.removeItem('theme');
+    }
+    !event.target.checked;
     document.querySelector(':root').classList.toggle('dark');
   }
   
@@ -50,7 +58,7 @@ const Header = () => {
           
         <img src={Sun} alt="" />
           <label className="switch">
-            <input type="checkbox" onChange={handleToggleTheme}/>
+            <input id="theme-preferences" type="checkbox" onChange={handleToggleTheme}/>
             <span className="slider round"></span>
           </label>
            <img src={Moon} alt="" />
