@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './style.scss';
 import classNames from 'classnames';
 
-const TextField = ({ id, label, formField, register, isNumber = false, isHidden = false }) => {
+const TextField = ({ id, label, formField, register, isNumber = false, isHidden = false, min = '' }) => {
   const type = isNumber ? 'number' : 'text';
   return (
     <div className={classNames("form__section-field", { "form__section-field--hidden": isHidden })} id={formField}>
@@ -12,6 +12,7 @@ const TextField = ({ id, label, formField, register, isNumber = false, isHidden 
     <input
       id={id}
       type={type}
+      min={min}
       className="form__section-field-input"
         {...register(formField)}
       />

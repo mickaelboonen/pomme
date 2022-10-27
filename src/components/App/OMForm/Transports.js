@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import './style.scss';
 import FormSectionTitle from '../../generics/FormSectionTitle';
-import { displayRegionFieldsInFormMission } from '../../../selectors/domManipulators';
 import RefusalMessage from './Fields/RefusalMessage';
 import Buttons from './Fields/Buttons';
 import RadioInput from './Fields/RadioInput';
@@ -121,7 +120,8 @@ const Transports = ({ step }) => {
             <FileField id="vehicle-authorization" formField="vehicle-authorization-file" register={register} />
             OU
             <div className="form__section-container-button">
-              <button type="button">FAIRE LA DEMANDE</button>
+              <Link to="/documents/autorisation-de-vehicule/nouveau?etape=1">FAIRE LA DEMANDE</Link>
+              {/* <a type="button">FAIRE LA DEMANDE</button> */}
             </div>
           </div>
           <p className="form__section-container-reminder">RAPPEL : Remboursement Forfait SNCF 2ème classe</p>
@@ -130,8 +130,15 @@ const Transports = ({ step }) => {
       <div className="form__section">
         <FormSectionTitle>Déplacement pendant la mission</FormSectionTitle>
         <div className="form__section-field">
-          <SwitchButton register={register} handler={() => null} isInForm formField={'public-transports'}/>
-        </div>
+          <SwitchButton
+          register={register}
+          handler={() => null}
+          isInForm
+          formField={'public-transports'}
+          label="Transports en commun :"
+        />
+
+       </div>
         <div className="form__section-field">
           <p className="form__section-field-label">Autres</p>
           <CheckboxInput id="taxi" formField="others" label="Taxi" register={register} />

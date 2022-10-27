@@ -8,66 +8,51 @@ import Mission from './Mission';
 import PageTitle from '../../generics/PageTitle';
 import Transports from './Transports';
 import Hebergement from './Hebergement';
+import Avance from './Avance';
+import Signature from './Signature';
+import Thread from '../../generics/Thread';
 
-const OMForm = () => {
-  const location = useLocation();
-  const step = Number(location.search.split('=')[1]);
-  
+const OMForm = ({ step }) => {  
   return (
-  <main className="form-page">
-    <div className="form-page__thread">
-      <div className={classNames("form-page__thread-step" , {"form-page__thread-step--open" : step === 1})}>
-        Mission <span>- Étape {step} / 5</span>
+    <div>
+      <Thread step={step} />
+      <div className="form-page__title">
+        <PageTitle>Création d'un Ordre de Mission</PageTitle>
       </div>
-      <div className={classNames("form-page__thread-step" , {"form-page__thread-step--open" : step === 2})}>
-        Transports <span>- Étape {step} / 5</span>
-      </div>
-      <div className={classNames("form-page__thread-step" , {"form-page__thread-step--open" : step === 3})}>
-        Hébergements <span>- Étape {step} / 5</span>
-      </div>
-      <div className={classNames("form-page__thread-step" , {"form-page__thread-step--open" : step === 4})}>
-        Avance <span>- Étape {step} / 5</span>
-      </div>
-      <div className={classNames("form-page__thread-step" , {"form-page__thread-step--open" : step === 5})}>
-        Signature <span>- Étape {step} / 5</span>
-      </div>
+      {step === 1 && (
+        <div className="form-page__container">
+          <Mission step={step} />
+          <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
+        </div>
+        
+      )}
+      {step === 2 && (
+        <div className="form-page__container">
+          <Transports step={step} />
+          <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
+        </div>
+      )}
+      {step === 3 && (
+        <div className="form-page__container">
+          <Hebergement step={step} />
+          <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
+        </div>
+      )}
+      {step === 4 && (
+        <div className="form-page__container">
+          <Avance step={step} />
+          <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
+        </div>
+      )}
+      {step === 5 && (
+        <div className="form-page__container">
+          <Signature step={step} />
+          <button className="form-page__container-link" type='button'>Retour : Avance</button>
+        </div>
+      )}
     </div>
-    <div className="form-page__title">
-      <PageTitle>Création d'un Ordre de Mission</PageTitle>
-    </div>
-    {step === 1 && (
-      <div className="form-page__container">
-        <Mission step={step} />
-        <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
-      </div>
-      
-    )}
-    {step === 2 && (
-      <div className="form-page__container">
-        <Transports step={step} />
-        <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
-      </div>
-    )}
-    {step === 3 && (
-      <div className="form-page__container">
-        <Hebergement step={step} />
-        <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
-      </div>
-    )}
-    {step === 4 && (
-      <div className="form-page__container">
-        <Mission step={step} />
-        <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>
-      </div>
-    )}
-    {step === 5 && (
-      <div className="form-page__container">
-        <Mission step={step} />
-        <button className="form-page__container-link" type='button'>Retour : Avance</button>
-      </div>
-    )}
-  </main>
-);}
+  );
+};
 
 OMForm.propTypes = {
 

@@ -22,12 +22,20 @@
 }
 
 .page-title {
-  font-size: 3em;
+  font-size: 2em;
   text-shadow: 2px 2px 2px #1a1a1a;
   color: vars.$unimes;
   text-transform: uppercase;
   margin: 1rem;
   line-height: 120%;
+}
+
+
+@media (min-width: vars.$sm) {
+  .page-title {
+    font-size: 3em;
+
+  }
 }
 
 

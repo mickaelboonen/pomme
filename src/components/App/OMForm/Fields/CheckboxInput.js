@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 
 import './style.scss';
 
-const CheckboxInput = ({ register, formField, id, label}) => (
+const CheckboxInput = ({ register, formField, id, label, handler = null }) => (
   <div className="form__section-field-checkbox">
     <input
       type="checkbox"
       id={id}
       value={id}
-        {...register(formField)}
-      />
+      onClick={handler}
+      {...register(formField)}
+    />
     <label className="form__section-field-label" htmlFor={id}>{label}</label>
   </div>
 );

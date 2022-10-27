@@ -68,6 +68,7 @@ const handleHotelSwitch = (event) => {
           id="nights-number"
           formField="nights-number"
           register={register}
+          min="0"
           isNumber
           isHidden
           label="Nombre de nuits"
@@ -85,6 +86,7 @@ const handleHotelSwitch = (event) => {
           formField="outside-meals-number"
           register={register}
           isNumber
+          min="0"
           label="Nombre de repas payés par l'agent"
         />
         <TextField
@@ -92,6 +94,7 @@ const handleHotelSwitch = (event) => {
           formField="admin-meals-number"
           register={register}
           isNumber
+          min="0"
           label="Nombre de repas en restaurant administratif"
         />
       </div>

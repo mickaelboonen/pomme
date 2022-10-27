@@ -42,4 +42,8 @@ $sm : 600px;
   color: #1a1a1a;
   font-weight: bold;
   font-size: 0.7em;
+
+  &:hover {
+    color: #fff;
+  }
 }

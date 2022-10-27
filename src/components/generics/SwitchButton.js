@@ -13,7 +13,6 @@ const SwitchButton = ({ handler, formField, isInForm = false, register = null, l
         onClick={handler}
         {...register(formField)}
       />
-
      <span className="slider slider--form round"></span>
     </label>
   </div>

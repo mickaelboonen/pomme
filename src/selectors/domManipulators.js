@@ -22,3 +22,15 @@ export const displayRegionFieldsInFormMission = () => {
     document.querySelector('#abroad-report').classList.add('form__section-field--hidden');
   } 
 }
+
+export const toggleIsHiddenOnNextFormSection = (target) => {
+  const { checked } = target;
+  const nextSectionField = target.closest('.form__section-field').nextSibling;
+
+  if (checked) {
+    nextSectionField.classList.remove('form__section-field--hidden');
+  }
+  else {
+    nextSectionField.classList.add('form__section-field--hidden');
+  }
+}
