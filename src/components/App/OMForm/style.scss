@@ -19,6 +19,7 @@
       font-weight: bold;
       z-index: 1;
 
+
       &--open {
         @include vars.centeredFlex;
         z-index: 0;
@@ -250,6 +251,10 @@
     &-step {
       width: 20%;
       @include vars.centeredFlex;
+      
+      &--solo {
+        width: 100%;
+      }
 
       & span {
         display: none;

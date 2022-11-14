@@ -5,6 +5,7 @@ import './style.scss';
 import TitleH3 from '../../generics/TitleH3';
 import FileMenu from '../../generics/FileMenu';
 import FileDisplay from '../../generics/FileDisplay';
+import SoloThread from '../../generics/SoloThread';
 
 const MyOMs = () => {
 
@@ -103,6 +104,7 @@ const MyOMs = () => {
 
   return (
     <main className="myOms">
+      {/* <SoloThread>Ordres de Missions de {'mboone01'}</SoloThread> */}
       <h2 className="myOms__title">Ordres de Mission de {'mboone01'}</h2>
       <div className="myOms__button">
         <button type='button'>NOUVEAU</button>

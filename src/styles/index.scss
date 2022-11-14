@@ -9,35 +9,41 @@ body {
   box-sizing: border-box;
 }
 
-$unimes : #99384f;
-$fadedUnimes : fade-out($unimes, 0.3);
-$orange : #da8123;
-
-// THEME 5 
-// #742946
-// #99384f
-// #d1545e
-// #ff897f
-// #ffcc9c
+// $unimes : #99384f;
+// $fadedUnimes : fade-out($unimes, 0.3);
+// $orange : #da8123;
 
 
 :root:not(.dark) {
+  --first-color: #ffcc9c;
+  --second-color: #ff897f;
+  --third-color: #d1545e;
+  --fourth-color: #99384f;
+  --fifth-color: #742946;
+
   --menu-color: #ffcc9c;
   --menu-title-color: #742946;
   --dark-color: #742946;
   // --primary-color: #742946;
   --unimes-color: #99384f;
   --background-color: #fff;
-  --thread-background: #fff;
+  --thread-background: var(--second-color);
   
 }
 
 :root.dark {
-  --menu-color: #742946;
+  --first-color: #742946;
+  --second-color: #99384f;
+  --third-color: #d1545e;
+  --fourth-color: #ff897f;
+  --fifth-color: #ffcc9c;
+
+  --menu-color: var(--first-color);
+  --dark-color: var(--first-color);
   --dark-color: #1a1a1a;
-  --menu-title-color: #ffcc9c;
-  --thread-background: #99384f;
+  --menu-title-color: var(--fifth-color);
+  --thread-background: var(--second-color);
   --primary-color: #dfdbdb;
-  --background-color: #ffcc9c;
-  --unimes-color: #742946;
+  --background-color: var(--fifth-color);
+  --unimes-color: var(--first-color);
 }
