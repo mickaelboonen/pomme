@@ -16,7 +16,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1rem;
+    transform: skew(15deg,0);
+    // margin-bottom: 1rem;
 
     & .switch {
       margin: 0.5rem;
@@ -57,13 +58,76 @@
 }
 
 .menu {
-  height: 0;
+  margin-right: -1rem;
+  height: 100%;
+  transform: skew(-15deg,0);
+  display: none;
   transition: 1s;
-  overflow: hidden;
   color: var(--primary-color);
 
   &-section {
-    margin-bottom: 1rem;
+    position: relative;
+
+    &__item {
+      min-width: 10rem;
+      height: 100%;
+      color: var(--menu-title-color);
+      font-weight: bold;
+      font-size: 1.3em;
+      @include vars.centeredFlex;
+
+      &:last-of-type {
+        // width: 4rem;
+        min-width: 2rem;
+        // border: 1px solid blue;
+      }
+
+      &--last-open,
+      &:hover {
+        padding-left: 1.5rem;
+        background-color: #ff897f;
+        background: linear-gradient(90deg, rgba(209,84,94,1) 0%, rgba(255,137,127,1) 100%);
+        border-bottom: 5px solid #d1545e ;
+        color: #742946 ;
+      }
+
+      &--last-open {
+        background-color: #ff897f;
+        background: linear-gradient(90deg, rgba(255,137,127,1) 0%, rgba(209,84,94,1) 100%);
+        
+      }
+
+      &-list {
+        height: 0;
+        font-size: 0.7em;
+        color: #ffcc9c ;
+        width: 0;
+        overflow: hidden;
+        // transition: 1s;
+
+        & li {
+          margin: 0.3rem 0;
+        }
+      
+
+        &--open {
+          width: fit-content;
+          height: 8vh;
+          margin-left: 1rem;
+          padding-left: 0.2rem;
+          display: flex;
+          justify-content: center;
+          align-items: right;
+          flex-direction: column;
+          margin-right: 0.5rem;
+
+          &:nth-of-type(2) {
+            width: 12rem;
+          }
+        }
+      }
+
+    }
   }
 
   & h3 {
@@ -79,7 +143,7 @@
   & ul {
 
      & li {
-      margin: 1rem;
+      // margin: 1rem;
 
       & a {
         position: relative;
@@ -125,24 +189,24 @@
 
   .header {
 
-    &-container {
-      border-bottom: 0;
-      border-right: 1px solid black;
-      min-height: 100vh;
-      width: 30%;
-      max-width: 300px;
-      display: block;
-    }
+//     &-container {
+//       border-bottom: 0;
+//       border-right: 1px solid black;
+//       min-height: 100vh;
+//       width: 30%;
+//       max-width: 300px;
+//       display: block;
+//     }
   
     &__menu {
       display: none;
     }
 
     &__identity {
-      width: 100%;
-      display: block;
-      text-align: center;
-      margin-bottom: 1.5rem;
+//       width: 100%;
+//       display: block;
+//       text-align: center;
+//       margin-bottom: 1.5rem;
 
       &-title {
         font-weight: bold;
@@ -153,10 +217,11 @@
   }
 
   .menu {
-    height: fit-content;
+    display: flex;
     
   }
 }
+
 .menu-bar {
   width: 40px;
   border: 2px solid var(--menu-title-color);

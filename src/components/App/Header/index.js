@@ -35,14 +35,32 @@ const Header = () => {
     !event.target.checked;
     document.querySelector(':root').classList.toggle('dark');
   }
+
+  const handleHover = (event) => {
+    const el = event.currentTarget.querySelector('.menu-section__item-list');
+    el.classList.add('menu-section__item-list--open');
+
+    if (event.currentTarget.id === 'mon-compte') {
+      event.currentTarget.nextElementSibling.classList.add('menu-section__item--last-open');
+    }
+  };
+
+  const handleMouseOut = (event) => {
+    const el = event.currentTarget.querySelector('.menu-section__item-list');
+    el.classList.remove('menu-section__item-list--open')
+
+    if (event.currentTarget.id === 'mon-compte') {
+      event.currentTarget.nextElementSibling.classList.remove('menu-section__item--last-open');
+    }
+  };
   
   return (
-    <header className="header-container">
+    <header className="header-container" style={{'display': 'flex'}}>
       <div className="header">
         <div className="header__identity">
           <img className="header__identity-logo" src={Apple} alt="react logo" />
           <Link to="/"><h1 className="header__identity-title">POMME</h1></Link>   
-          <p>mboone01</p>
+          <p style={{'margin-left': '1rem'}}>Bonjour mboone01</p>
         </div>
         <div className="header__menu" onClick={handleBarsClick}>
           <div className="header__menu-bars">
@@ -53,17 +71,50 @@ const Header = () => {
             <div id="third-bar" className='menu-bar'/>
           </div>
         </div>
+        <nav className="menu">
+          <div className="header-theme">
+            <img src={Sun} alt="" />
+            <label className="switch">
+              <input id="theme-preferences" type="checkbox" onChange={handleToggleTheme}/>
+              <span className="slider round"></span>
+            </label>
+            <img src={Moon} alt="" />
+          </div>
+          <div className="menu-section__item" id="dafc" onMouseOver={handleHover} onMouseOut={handleMouseOut}>
+            <p>DAFC</p>
+            <ul className="menu-section__item-list">
+              <li>
+                <a>Ordres de Mission</a>
+              </li>
+              <li>
+                <a>États de frais</a>
+              </li>
+            </ul>
+          </div>
+          <div className="menu-section__item" id="a-signer" onMouseOver={handleHover} onMouseOut={handleMouseOut}>
+            <p>A SIGNER</p>
+            <ul className="menu-section__item-list">
+              <li>
+                <a>Ordres de Mission</a>
+              </li>
+              <li>
+                <a>États de frais</a>
+              </li>
+            </ul>
+          </div>
+          <div className="menu-section__item" id="mon-compte" onMouseOver={handleHover} onMouseOut={handleMouseOut}>
+            <p>MON COMPTE</p>
+            <ul className="menu-section__item-list">
+              <li><Link to="/utilisateur/mboone01/mes-ordres-de-mission">Mes Ordres de Mission <span id="mes-oms">1</span></Link></li>
+              <li><Link to="/utilisateur/mboone01/mes-états-de-frais">Mes États de Frais <span id="mes-efs"></span></Link></li>
+              <li><a>Mes Justificatifs</a></li>
+              <li><a>Se déconnecter</a></li>
+            </ul>
+          </div>
+          <div className="menu-section__item"/>
+        </nav>
       </div>
-        <div className="header-theme">
-          
-        <img src={Sun} alt="" />
-          <label className="switch">
-            <input id="theme-preferences" type="checkbox" onChange={handleToggleTheme}/>
-            <span className="slider round"></span>
-          </label>
-           <img src={Moon} alt="" />
-        </div>
-      <div className="menu">
+      {/* <nav className="menu">
         <div className="menu-section">
           <h3>DAFC</h3>
           <ul>
@@ -95,7 +146,7 @@ const Header = () => {
             <li><a>Se déconnecter</a></li>
           </ul>
         </div>
-      </div>
+      </nav> */}
     </header>
   );
 };
