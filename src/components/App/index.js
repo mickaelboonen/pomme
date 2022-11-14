@@ -28,7 +28,6 @@ function App() {
         <Route path="/utilisateur/:slug/mes-ordres-de-mission" element={<MyOMs />} />
         <Route path="/utilisateur/:slug/mes-états-de-frais" element={<MyEFs />} />
         <Route path="/documents/:slug/nouveau" element={<Forms />} />
-        <Route element={<div>Perdu</div>} />
       </Routes>
       <script type="text/javascript" src="bootstrap-datetimepicker.de.js" charSet="UTF-8"></script>
     </div>

@@ -9,27 +9,35 @@ body {
   box-sizing: border-box;
 }
 
-$unimes : #E84E24;
+$unimes : #99384f;
 $fadedUnimes : fade-out($unimes, 0.3);
 $orange : #da8123;
 
+// THEME 5 
+// #742946
+// #99384f
+// #d1545e
+// #ff897f
+// #ffcc9c
+
+
 :root:not(.dark) {
-  --menu-color: #e84e248e;
-  --menu-title-color: #1a1a1a;
-  --dark-color: #1a1a1a;
-  --primary-color: #1a1a1a;
-  --unimes-color: #E84E24;
+  --menu-color: #ffcc9c;
+  --menu-title-color: #742946;
+  --dark-color: #742946;
+  // --primary-color: #742946;
+  --unimes-color: #99384f;
   --background-color: #fff;
   --thread-background: #fff;
   
 }
 
 :root.dark {
-  --menu-color: #1a1a1a;
+  --menu-color: #742946;
   --dark-color: #1a1a1a;
-  --menu-title-color: #E84E24;
-  --thread-background: #1a1a1a;
+  --menu-title-color: #ffcc9c;
+  --thread-background: #99384f;
   --primary-color: #dfdbdb;
-  --background-color: #dfdbdb;
-  --unimes-color: #E84E24;
+  --background-color: #ffcc9c;
+  --unimes-color: #742946;
 }
