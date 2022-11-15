@@ -1,7 +1,25 @@
 @use 'src/styles/vars';
 
+@mixin defineFirstColor($color) {
+
+  @debug "divider offset: #{$color}";
+  @if $color == #742946 {
+    background-color: fade-out(#742946, 0.3);
+  }
+  @else if $color == #ffcc9c {
+    background-color : fade-out(#ffcc9c, 0.3);
+
+  }
+  
+}
+
+$test : #{var(--first-color)};
+
 .myOms {
-  width: 100%;
+  width:100%;
+  margin: auto;
+  height: 90vh;
+  // background-color: var(--background-color)
 
   &__title {
     font-size: 2em;
@@ -12,23 +30,41 @@
 
   &__button {
 
+    margin: 1rem 0;
+
     & a {
-      @include vars.button;
-      margin: 1rem auto;
+      @include vars.addButton;
+      // margin: 1rem auto;
+      width: 90%;
+      margin: auto;
     }
   }
 
   &__files {
-
+    display: none;
     margin-bottom: 4rem;
+    min-height: 50vh;
+    background-color: var(--lighter-first-color);
+    // @include defineFirstColor();
+
+    &--open {
+      display: flex;
+    }
+
+    &-menu {
+      width: 30%;
+      background-color: aquamarine;
+      height: 100%;
+    }
 
     &-container {
       display: flex;
+      margin: 2rem;
       flex-flow: row wrap;
       justify-content: space-between;
 
       &-item {
-        width: 45%;
+        width: 50%;
         display: flex;
         margin-bottom: 1rem;
 
@@ -36,7 +72,7 @@
           width: 100%;
 
           .file-display {
-            width: 40%;
+            width: 50%;
           }
         }
       }
@@ -83,6 +119,68 @@
           }
         }
       }
+    }
+  }
+}
+
+@media (min-width: 1000px) {
+
+  .myOms {
+    width: 50%;
+    
+    // &__button {
+    //   width: 100%;
+    //   text-align: right;
+
+    //   & button {
+    //     @include vars.button;
+    //     width: fit-content;
+    //     padding: 0.5rem 1.5rem;
+    //     margin-right: 1rem;
+        
+    //   }
+    // }
+
+    // &__files {
+
+    //   &-container {
+    //     display: flex;
+    //     flex-flow: row wrap;
+    //     justify-content: space-evenly;
+  
+    //     &-item {
+    //       width: fit-content;
+    //       display: flex;
+    //       margin-bottom: 1rem;
+
+    //       &--open {
+    //         width: 33%;
+  
+    //         .file-display {
+    //           width: 40%;
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
+  }
+}
+
+.tabs {
+  display: flex;
+
+  &__item {
+    width: 50%;
+    border: 1px solid #1a1a1a;
+    padding: 0.8rem;
+    text-transform: uppercase;
+    background-color: var(--third-color);
+    color: var(--second-color);
+
+    &--open {
+      background-color: var(--first-color);
+      color: var(--fifth-color);
+      box-shadow: 1px 1px 5px var(--second-color);
     }
   }
 }

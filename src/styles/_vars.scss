@@ -2,19 +2,20 @@
 
 // Colors
 
-$unimes : #ff897f;
-$fadedUnimes : fade-out($unimes, 0.3);
-$orange : #da8123;
+// $unimes : #ffcc9c;
+// $fadedUnimes : fade-out($unimes, 0.3);
+// $fadedUnimes : fade-out(#742946, 0.3);
+// $orange : #da8123;
 
 // Breakpoints 
 
 $sm : 600px;
 
 // Buttons
-@mixin button {
+@mixin addButton {
   width: 100%;
-  background-color: $unimes;
-  background-color: $orange;
+  background-color: var(--first-color);
+  display: block;
   border: 0;
   padding: 0.7rem;
   border-radius: 5px;
@@ -33,8 +34,8 @@ $sm : 600px;
 @mixin button {
   max-width: 45%;
   margin-right: 0.5rem;
-  background-color: $orange;
-  background-color: $fadedUnimes;
+  // background-color: $orange;
+  // background-color: $fadedUnimes;
   border: 0;
   padding: 0.5rem;
   border-radius: 5px;
@@ -51,7 +52,7 @@ $sm : 600px;
 @mixin pageTitle {
   font-size: 2em;
   text-shadow: 2px 2px 2px #1a1a1a;
-  color: $unimes;
+  color: var(--first-color);
   text-transform: uppercase;
   margin: 1rem;
   line-height: 120%;

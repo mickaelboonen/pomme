@@ -5,7 +5,6 @@ import TitleH3 from '../../generics/TitleH3';
 
 import './style.scss';
 import { Link } from 'react-router-dom';
-import PageTitle from '../../generics/PageTitle';
 
 const Home = () => {
   
@@ -29,7 +28,7 @@ const Home = () => {
         </Link>
         <div className="home__new-buttons-item">
           <img src={Plus} alt="" />
-          <p>Ordre de Mission</p>
+          <p>État de Frais</p>
         </div>
       </div>
     </section>

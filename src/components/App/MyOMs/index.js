@@ -6,9 +6,9 @@ import TitleH3 from '../../generics/TitleH3';
 import FileMenu from '../../generics/FileMenu';
 import FileDisplay from '../../generics/FileDisplay';
 import SoloThread from '../../generics/SoloThread';
+import PageTitle from '../../generics/PageTitle';
 
 const MyOMs = () => {
-
   // FAKE DATA
   const currentOMs = [
     {
@@ -102,16 +102,46 @@ const MyOMs = () => {
     });
   });
 
+  const handleClickOnTab = (event) => {
+    const { id } = event.currentTarget;
+    const ecSection = document.querySelector('#ec-om');
+    const okSection = document.querySelector('#ok-om');
+    const ecTab = document.querySelector('#ec');
+    const okTab = document.querySelector('#ok');
+
+    if (id === "ec") {
+      ecTab.classList.add('tabs__item--open');
+      okTab.classList.remove('tabs__item--open');
+      ecSection.classList.add('myOms__files--open');
+      okSection.classList.remove('myOms__files--open');
+    }
+    else {
+      ecTab.classList.remove('tabs__item--open');
+      okTab.classList.add('tabs__item--open');
+      ecSection.classList.remove('myOms__files--open');
+      okSection.classList.add('myOms__files--open');
+    }
+  }
+
   return (
     <main className="myOms">
       {/* <SoloThread>Ordres de Missions de {'mboone01'}</SoloThread> */}
-      <h2 className="myOms__title">Ordres de Mission de {'mboone01'}</h2>
+      <h2 className="myOms__title"></h2>
+      <PageTitle>Ordres de Mission de {'mboone01'}</PageTitle>
+      
       <div className="myOms__button">
-        <button type='button'>NOUVEAU</button>
+        {/* <button type='button'>NOUVEAU</button> */}
         <a href="/documents/ordre-de-mission/nouveau?etape=1">NOUVEAU</a>
       </div>
-      <section className="myOms__files">
-      <TitleH3>En cours</TitleH3>
+      <div className='tabs'>
+        
+        <div onClick={handleClickOnTab} className="tabs__item tabs__item--open" id="ec">En cours</div>
+        <div onClick={handleClickOnTab} className="tabs__item" id="ok">Validés</div>
+        
+        
+      </div>
+        
+      <section id="ec-om" className="myOms__files myOms__files--open">
         <div className="myOms__files-container">
           {currentOMs.map((om) => (
             <div key={om.id} className="myOms__files-container-item" onClick={toggleMenu}>
@@ -121,8 +151,8 @@ const MyOMs = () => {
           ))}
         </div>
       </section>
-      <section className="myOms__files">
-      <TitleH3>Validés</TitleH3>
+      <section id="ok-om" className="myOms__files">
+      {/* <TitleH3>Validés</TitleH3> */}
         <div className="myOms__files-container">
           {pastOMs.map((om) => (
             <div key={om.id} className="myOms__files-container-item" onClick={toggleMenu}>

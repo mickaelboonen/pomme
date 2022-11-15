@@ -1,5 +1,6 @@
 @use 'reset';
 @use 'vars';
+@use "sass:color";
 
 body {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -9,6 +10,9 @@ body {
   box-sizing: border-box;
 }
 
+$test: #ffcc9c;
+$lighter-first-light-color: fade-out(#ffcc9c, 0.5);
+$lighter-first-dark-color: fade-out(#742946, 0.5);
 // $unimes : #99384f;
 // $fadedUnimes : fade-out($unimes, 0.3);
 // $orange : #da8123;
@@ -16,6 +20,7 @@ body {
 
 :root:not(.dark) {
   --first-color: #ffcc9c;
+  --lighter-first-color: #{$lighter-first-light-color};
   --second-color: #ff897f;
   --third-color: #d1545e;
   --fourth-color: #99384f;
@@ -36,6 +41,7 @@ body {
 
 :root.dark {
   --first-color: #742946;
+  --lighter-first-color: #{$lighter-first-dark-color};
   --second-color: #99384f;
   --third-color: #d1545e;
   --fourth-color: #ff897f;
