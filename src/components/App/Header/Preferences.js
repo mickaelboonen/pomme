@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import './style.scss';
 import classNames from 'classnames';
 
-const Preferences = ({ isSkewed }) => {
+const Preferences = ({ isSkewed, id }) => {
   
   const handleToggleTheme = (event) => {
 
@@ -25,10 +25,10 @@ const Preferences = ({ isSkewed }) => {
   };
 
   return (
-  <div className={classNames("header-theme", {"header-theme--straight": isSkewed})} style={{'margin': 0}}>
+  <div className={classNames("header-theme", {"header-theme--straight": isSkewed})}>
     <img src={Sun} alt="" />
     <label className="switch">
-      <input id="theme-preferences" type="checkbox" onChange={handleToggleTheme}/>
+      <input id={`theme-switch-${id}`} type="checkbox" onChange={handleToggleTheme}/>
       <span className="slider round"></span>
     </label>
     <img src={Moon} alt="" />
@@ -41,6 +41,7 @@ Preferences.propTypes = {
 
 Preferences.defaultProps = {
   isSkewed: false,
+  id: 'header',
 };
 
 export default Preferences;

@@ -22,6 +22,7 @@
 
     &--straight {
       transform: skew(0deg,0);
+      margin-right: 0;
 
     }
 
@@ -72,100 +73,70 @@
   color: var(--primary-color);
 
   &-section {
-    position: relative;
-
-    &__item {
-      min-width: 10rem;
-      height: 100%;
-      color: var(--menu-title-color);
-      font-weight: bold;
-      font-size: 1.3em;
-      @include vars.centeredFlex;
-
-      &:last-of-type {
-        // width: 4rem;
-        min-width: 2rem;
-        // border: 1px solid blue;
-      }
-
-      &--last-open,
-      &:hover {
-        padding-left: 1.5rem;
-        background-color: #ff897f;
-        background: linear-gradient(90deg, rgba(209,84,94,1) 0%, rgba(255,137,127,1) 100%);
-        border-bottom: 5px solid #d1545e ;
-        color: #742946 ;
-      }
-
-      &--last-open {
-        background-color: #ff897f;
-        background: linear-gradient(90deg, rgba(255,137,127,1) 0%, rgba(209,84,94,1) 100%);
-        
-      }
-
-      &-list {
-        height: 0;
-        font-size: 0.7em;
-        color: #ffcc9c ;
-        width: 0;
-        overflow: hidden;
-        // transition: 1s;
-
-        & li {
-          margin: 0.3rem 0;
-        }
-      
-
-        &--open {
-          width: fit-content;
-          height: 8vh;
-          margin-left: 1rem;
-          padding-left: 0.2rem;
-          display: flex;
-          justify-content: center;
-          align-items: right;
-          flex-direction: column;
-          margin-right: 0.5rem;
-
-          &:nth-of-type(2) {
-            width: 12rem;
-          }
-        }
-      }
-
-    }
-  }
-
-  & h3 {
-    width: 90%;
-    margin: auto;
-    border-bottom: 1px solid var(--menu-title-color);
+    min-width: 10rem;
+    height: 100%;
     color: var(--menu-title-color);
     font-weight: bold;
     font-size: 1.3em;
-    padding: 0.5rem;
-  }
+    @include vars.centeredFlex;
 
-  & ul {
+    &:last-of-type {
+      min-width: 2rem;
+    }
 
-     & li {
-      // margin: 1rem;
+    &--last-open,
+    &:hover {
+      padding-left: 1.5rem;
+      background-color: var(--fourth-color);
+      border-bottom: 5px solid #d1545e ;
+      color: var(--first-color) ;
+    }
 
-      & a {
+    &--last-open {
+      background-color: var(--fourth-color);
+      margin-left: -1px;
+      
+    }
+
+    &-list {
+      height: 0;
+      font-size: 0.7em;
+      color: var(--third-color) ;
+      text-shadow: 1px 1px 1px var(--opposite-theme-color);
+      width: 0;
+      overflow: hidden;
+
+      & li {
+        margin: 0.3rem 0;
         position: relative;
-        // color: #dfdbdb;
       }
-     }
-  }
+    
 
+      &--open {
+        width: fit-content;
+        height: 8vh;
+        margin-left: 1rem;
+        padding-left: 0.2rem;
+        display: flex;
+        justify-content: center;
+        align-items: right;
+        flex-direction: column;
+        margin-right: 0.5rem;
+
+        &:nth-of-type(2) {
+          width: 12rem;
+        }
+      }
+    }
+  }
 
   &--open {
     height:90vh;
   }
 }
 
+// CSS for the responsive menu 
 .small-screen-menu {
-  // display: none;
   height: 0;
   transition: 1s;
   position: relative;
@@ -187,13 +158,13 @@
 
       &-item {
         margin: 0.5rem auto;
+        position: relative;
         color:var(--primary-color);
       }
     }
   }
 
   &--open {
-    // display: block;
   height: 90vh;
   }
 }
@@ -203,7 +174,7 @@
 #mes-oms {
   position: absolute;
   top: -15px;
-  background-color: #E84E24;
+  background-color: var(--second-color);
   width: 20px;
   height: 20px;
   text-align: center;
@@ -222,34 +193,25 @@
     height: 0;
     border-style: solid;
     border-width: 10px 10px 0 0;
-    border-color: #E84E24 transparent transparent transparent;
+    border-color: var(--second-color) transparent transparent transparent;
+  }
+}
+
+.small-screen-menu #mes-oms {
+  background-color: var(--fourth-color);
+
+  &::after {
+    border-color: var(--fourth-color) transparent transparent transparent;
   }
 }
 
 @media (min-width: vars.$sm) {
-
-
-  .header {
-
-//     &-container {
-//       border-bottom: 0;
-//       border-right: 1px solid black;
-//       min-height: 100vh;
-//       width: 30%;
-//       max-width: 300px;
-//       display: block;
-//     }
-  
+  .header {  
     &__burger {
       display: none;
     }
 
     &__identity {
-//       width: 100%;
-//       display: block;
-//       text-align: center;
-//       margin-bottom: 1.5rem;
-
       &-title {
         font-weight: bold;
         font-size: 2em;

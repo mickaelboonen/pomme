@@ -7,7 +7,7 @@ import Preferences from './Preferences';
 
 const SmallScreenMenu = () => (
   <nav className="small-screen-menu">
-    <Preferences isSkewed />
+    <Preferences isSkewed id="menu" />
     <div className="small-screen-menu__section">
       <h3  className="small-screen-menu__section-title">DAFC</h3>
       <ul className="small-screen-menu__section-list">

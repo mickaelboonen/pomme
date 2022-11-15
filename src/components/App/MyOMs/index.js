@@ -108,6 +108,7 @@ const MyOMs = () => {
       <h2 className="myOms__title">Ordres de Mission de {'mboone01'}</h2>
       <div className="myOms__button">
         <button type='button'>NOUVEAU</button>
+        <a href="/documents/ordre-de-mission/nouveau?etape=1">NOUVEAU</a>
       </div>
       <section className="myOms__files">
       <TitleH3>En cours</TitleH3>

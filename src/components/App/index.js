@@ -16,8 +16,10 @@ function App() {
   useEffect(() => {
     if (theme === 'dark') {
       document.querySelector(':root').classList.toggle('dark');
-      const button = document.querySelector('#theme-preferences');
-      button.checked = true;
+      const headerButton = document.querySelector('#theme-switch-header');
+      const menuButton = document.querySelector('#theme-switch-menu');
+      headerButton.checked = true;
+      menuButton.checked = true;
     }
   }, [])
   return (

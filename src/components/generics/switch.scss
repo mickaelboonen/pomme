@@ -27,7 +27,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #fff;
+  background-color: var(--fourth-color);
   -webkit-transition: .4s;
   transition: .4s;
 
@@ -38,7 +38,7 @@
     width: 16px;
     left: 4px;
     bottom: 4px;
-    background-color: vars.$fadedUnimes;
+    background-color: var(--second-color);
     -webkit-transition: .4s;
     transition: .4s;
   }
@@ -64,14 +64,14 @@
 
 
 input:checked + .slider {
-  background-color: vars.$unimes;
+  background-color: var(--fourth-color);
 }
 
 input:checked + .slider:before {
   -webkit-transform: translateX(36px);
   -ms-transform: translateX(36px);
   transform: translateX(36px);
-  background-color: #1a1a1a;
+  background-color: var(--first-color);
 }
 
 input:checked + .slider--form:before {

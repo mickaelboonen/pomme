@@ -24,20 +24,20 @@ const Header = () => {
   };
 
   const handleHover = (event) => {
-    const el = event.currentTarget.querySelector('.header__menu-section__item-list');
-    el.classList.add('header__menu-section__item-list--open');
+    const el = event.currentTarget.querySelector('.header__menu-section-list');
+    el.classList.add('header__menu-section-list--open');
 
     if (event.currentTarget.id === 'mon-compte') {
-      event.currentTarget.nextElementSibling.classList.add('header__menu-section__item--last-open');
+      event.currentTarget.nextElementSibling.classList.add('header__menu-section--last-open');
     }
   };
 
   const handleMouseOut = (event) => {
-    const el = event.currentTarget.querySelector('.header__menu-section__item-list');
-    el.classList.remove('header__menu-section__item-list--open')
+    const el = event.currentTarget.querySelector('.header__menu-section-list');
+    el.classList.remove('header__menu-section-list--open')
 
     if (event.currentTarget.id === 'mon-compte') {
-      event.currentTarget.nextElementSibling.classList.remove('header__menu-section__item--last-open');
+      event.currentTarget.nextElementSibling.classList.remove('header__menu-section--last-open');
     }
   };
   
@@ -47,7 +47,7 @@ const Header = () => {
         <div className="header__identity">
           <img className="header__identity-logo" src={Apple} alt="react logo" />
           <Link to="/"><h1 className="header__identity-title">POMME</h1></Link>   
-          <p style={{'margin-left': '1rem'}}>Bonjour mboone01</p>
+          <p style={{'marginLeft': '1rem'}}>Bonjour mboone01</p>
         </div>
         <div className="header__burger" onClick={handleBarsClick}>
           <div className="header__burger-bars">
@@ -60,30 +60,30 @@ const Header = () => {
         </div>
         <nav className="header__menu">
           <Preferences />
-          <div className="header__menu-section__item" id="dafc" onMouseOver={handleHover} onMouseOut={handleMouseOut}>
+          <div className="header__menu-section" id="dafc" onMouseOver={handleHover} onMouseOut={handleMouseOut}>
             <p>DAFC</p>
-            <ul className="header__menu-section__item-list">
+            <ul className="header__menu-section-list">
               <li><Link to="/dafc/ordres-de-mission">Ordres de Mission <span id="mes-oms">1</span></Link></li>
               <li><Link to="/dafc/états-de-frais">États de Frais <span id="mes-oms">1</span></Link></li>
             </ul>
           </div>
-          <div className="header__menu-section__item" id="a-signer" onMouseOver={handleHover} onMouseOut={handleMouseOut}>
+          <div className="header__menu-section" id="a-signer" onMouseOver={handleHover} onMouseOut={handleMouseOut}>
             <p>A SIGNER</p>
-            <ul className="header__menu-section__item-list">
+            <ul className="header__menu-section-list">
               <li><Link to="/gestionnaire/{role}/documents-à-signer/ordres-de-missions">Ordres de Mission <span id="mes-oms">1</span></Link></li>
               <li><Link to="/gestionnaire/{role}/documents-à-signer/états-de-frais">États de Frais <span id="mes-oms">1</span></Link></li>
             </ul>
           </div>
-          <div className="header__menu-section__item" id="mon-compte" onMouseOver={handleHover} onMouseOut={handleMouseOut}>
+          <div className="header__menu-section" id="mon-compte" onMouseOver={handleHover} onMouseOut={handleMouseOut}>
             <p>MON COMPTE</p>
-            <ul className="header__menu-section__item-list">
+            <ul className="header__menu-section-list">
               <li><Link to="/utilisateur/mboone01/mes-ordres-de-mission">Mes Ordres de Mission <span id="mes-oms">1</span></Link></li>
               <li><Link to="/utilisateur/mboone01/mes-états-de-frais">Mes États de Frais <span id="mes-efs"></span></Link></li>
               <li><a>Mes Justificatifs</a></li>
               <li><a>Se déconnecter</a></li>
             </ul>
           </div>
-          <div className="header__menu-section__item"/>
+          <div className="header__menu-section"/>
         </nav>
       </div>
       <SmallScreenMenu />
