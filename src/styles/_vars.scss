@@ -47,3 +47,12 @@ $sm : 600px;
     color: #fff;
   }
 }
+
+@mixin pageTitle {
+  font-size: 2em;
+  text-shadow: 2px 2px 2px #1a1a1a;
+  color: $unimes;
+  text-transform: uppercase;
+  margin: 1rem;
+  line-height: 120%;
+}

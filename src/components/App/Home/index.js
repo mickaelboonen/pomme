@@ -5,19 +5,19 @@ import TitleH3 from '../../generics/TitleH3';
 
 import './style.scss';
 import { Link } from 'react-router-dom';
+import PageTitle from '../../generics/PageTitle';
 
 const Home = () => {
-
+  
   return (
     <main className="home">
-      {/* <h1 className="home__title">
-        POMME
-        <span>P</span><span className="hidden-title">réparer son </span>
-        <span>O</span><span className="hidden-title">rdre de </span>
-        <span>M</span><span className="hidden-title">ission </span>
-        <span>M</span><span className="hidden-title">ême </span>
-        <span>E</span><span className="hidden-title">ndormi</span>
-      </h1> */}
+      <div className="home__title" >
+        <div className="home__title-group"><div className="home__title-group-capital">P</div><div className="home__title-group-rest">réparer son </div></div>
+        <div className="home__title-group"><div className="home__title-group-capital">O</div><div className="home__title-group-rest">rdre de </div></div>
+        <div className="home__title-group"><div className="home__title-group-capital">M</div><div className="home__title-group-rest">ission </div></div>
+        <div className="home__title-group"><div className="home__title-group-capital">M</div><div className="home__title-group-rest">ême </div></div>
+        <div className="home__title-group"><div className="home__title-group-capital">E</div><div className="home__title-group-rest">ndormi</div></div>
+      </div>
     <section className="home__new">
       <TitleH3>Nouveau document</TitleH3>
       <div className="home__new-buttons">
