@@ -1,25 +1,11 @@
 @use 'src/styles/vars';
 
-@mixin defineFirstColor($color) {
-
-  @debug "divider offset: #{$color}";
-  @if $color == #742946 {
-    background-color: fade-out(#742946, 0.3);
-  }
-  @else if $color == #ffcc9c {
-    background-color : fade-out(#ffcc9c, 0.3);
-
-  }
-  
-}
-
 $test : #{var(--first-color)};
 
-.myOms {
+.my-documents {
   width:100%;
   margin: auto;
   height: 90vh;
-  // background-color: var(--background-color)
 
   &__title {
     font-size: 2em;
@@ -37,27 +23,22 @@ $test : #{var(--first-color)};
       // margin: 1rem auto;
       width: 90%;
       margin: auto;
+      color: var(--opposite-theme-color);
     }
   }
 
   &__files {
     display: none;
     margin-bottom: 4rem;
-    min-height: 50vh;
+    min-height: 60vh;
     background-color: var(--lighter-first-color);
-    // @include defineFirstColor();
 
     &--open {
       display: flex;
     }
 
-    &-menu {
-      width: 30%;
-      background-color: aquamarine;
-      height: 100%;
-    }
-
     &-container {
+      width: 100%;
       display: flex;
       margin: 2rem;
       flex-flow: row wrap;
@@ -83,18 +64,16 @@ $test : #{var(--first-color)};
 
 @media (min-width: vars.$sm) {
 
-  .myOms {
+  .my-documents {
+    width: 80%;
     
     &__button {
       width: 100%;
-      text-align: right;
+      text-align: center;
 
-      & button {
-        @include vars.button;
+      & a {
         width: fit-content;
-        padding: 0.5rem 1.5rem;
-        margin-right: 1rem;
-        
+        padding: 0.8rem 1.2rem;        
       }
     }
 
@@ -103,18 +82,18 @@ $test : #{var(--first-color)};
       &-container {
         display: flex;
         flex-flow: row wrap;
-        justify-content: space-evenly;
+        justify-content: space-between;
   
         &-item {
-          width: fit-content;
+          width: 40%;
           display: flex;
           margin-bottom: 1rem;
 
           &--open {
-            width: 33%;
+            width: 100%;
   
             .file-display {
-              width: 40%;
+              width: 50%;
             }
           }
         }
@@ -125,44 +104,24 @@ $test : #{var(--first-color)};
 
 @media (min-width: 1000px) {
 
-  .myOms {
+  .my-documents {
     width: 50%;
-    
-    // &__button {
-    //   width: 100%;
-    //   text-align: right;
 
-    //   & button {
-    //     @include vars.button;
-    //     width: fit-content;
-    //     padding: 0.5rem 1.5rem;
-    //     margin-right: 1rem;
-        
-    //   }
-    // }
+    &__files {
 
-    // &__files {
-
-    //   &-container {
-    //     display: flex;
-    //     flex-flow: row wrap;
-    //     justify-content: space-evenly;
+      &-container {
   
-    //     &-item {
-    //       width: fit-content;
-    //       display: flex;
-    //       margin-bottom: 1rem;
+        &-item {
+          width: fit-content;
 
-    //       &--open {
-    //         width: 33%;
-  
-    //         .file-display {
-    //           width: 40%;
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
+          &--open {  
+            .file-display {
+              width: 70%;
+            }
+          }
+        }
+      }
+    }
   }
 }
 
@@ -176,6 +135,7 @@ $test : #{var(--first-color)};
     text-transform: uppercase;
     background-color: var(--third-color);
     color: var(--second-color);
+    color: #1a1a1a;
 
     &--open {
       background-color: var(--first-color);

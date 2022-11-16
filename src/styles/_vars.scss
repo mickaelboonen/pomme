@@ -1,12 +1,5 @@
 @use "sass:color";
 
-// Colors
-
-// $unimes : #ffcc9c;
-// $fadedUnimes : fade-out($unimes, 0.3);
-// $fadedUnimes : fade-out(#742946, 0.3);
-// $orange : #da8123;
-
 // Breakpoints 
 
 $sm : 600px;
@@ -14,7 +7,7 @@ $sm : 600px;
 // Buttons
 @mixin addButton {
   width: 100%;
-  background-color: var(--first-color);
+  background-color: var(--second-color);
   display: block;
   border: 0;
   padding: 0.7rem;
@@ -52,7 +45,7 @@ $sm : 600px;
 @mixin pageTitle {
   font-size: 2em;
   text-shadow: 2px 2px 2px #1a1a1a;
-  color: var(--first-color);
+  color: var(--second-color);
   text-transform: uppercase;
   margin: 1rem;
   line-height: 120%;

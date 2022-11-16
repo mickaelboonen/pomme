@@ -7,6 +7,7 @@ import FileMenu from '../../generics/FileMenu';
 import FileDisplay from '../../generics/FileDisplay';
 import SoloThread from '../../generics/SoloThread';
 import PageTitle from '../../generics/PageTitle';
+import Tabs from '../../generics/Tabs';
 
 const MyOMs = () => {
   // FAKE DATA
@@ -123,39 +124,43 @@ const MyOMs = () => {
     }
   }
 
+  const tabs = [
+    {
+      id: 'ec',
+      name: 'En cours',
+    },
+    {
+      id: 'ok',
+      name: 'Validés',
+    }
+  ]
   return (
-    <main className="myOms">
-      {/* <SoloThread>Ordres de Missions de {'mboone01'}</SoloThread> */}
-      <h2 className="myOms__title"></h2>
+    <main className="my-documents">
+      <h2 className="my-documents__title"></h2>
       <PageTitle>Ordres de Mission de {'mboone01'}</PageTitle>
-      
-      <div className="myOms__button">
-        {/* <button type='button'>NOUVEAU</button> */}
+      <div className="my-documents__button">
         <a href="/documents/ordre-de-mission/nouveau?etape=1">NOUVEAU</a>
       </div>
-      <div className='tabs'>
-        
+      <Tabs tabs={tabs} handler={handleClickOnTab} />
+      {/* <<div className='tabs'>
         <div onClick={handleClickOnTab} className="tabs__item tabs__item--open" id="ec">En cours</div>
         <div onClick={handleClickOnTab} className="tabs__item" id="ok">Validés</div>
-        
-        
-      </div>
-        
-      <section id="ec-om" className="myOms__files myOms__files--open">
-        <div className="myOms__files-container">
+      </div>> */}
+      <section id="ec-om" className="my-documents__files my-documents__files--open">
+        <div className="my-documents__files-container">
           {currentOMs.map((om) => (
-            <div key={om.id} className="myOms__files-container-item" onClick={toggleMenu}>
+            <div key={om.id} className="my-documents__files-container-item" onClick={toggleMenu}>
               <FileDisplay name={om.name} />
               <FileMenu status={om.status} />
             </div>
           ))}
         </div>
       </section>
-      <section id="ok-om" className="myOms__files">
+      <section id="ok-om" className="my-documents__files">
       {/* <TitleH3>Validés</TitleH3> */}
-        <div className="myOms__files-container">
+        <div className="my-documents__files-container">
           {pastOMs.map((om) => (
-            <div key={om.id} className="myOms__files-container-item" onClick={toggleMenu}>
+            <div key={om.id} className="my-documents__files-container-item" onClick={toggleMenu}>
               <FileDisplay name={om.name} />
               <FileMenu status={om.status} />
             </div>

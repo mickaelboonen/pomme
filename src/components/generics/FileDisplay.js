@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import File from '../../assets/images/file.svg';
+import File from '../../assets/images/pdf.svg';
 
 import './style.scss';
 

@@ -27,13 +27,6 @@
 }
 
 
-@media (min-width: vars.$sm) {
-  .page-title {
-    font-size: 3em;
-
-  }
-}
-
 
 .file-menu {
     display: none;
@@ -78,11 +71,27 @@
 
 .file-display {
   width: 100%;
+  text-align: center;
 
   &__name {
     width: 100%;
     word-break: break-all;
     font-size: 0.8em;
-    max-width: 150px;
+    color: var(--third-color);
   }
+
+  &__image {
+    max-width: 33%;
+  }
+}
+
+@media (min-width: vars.$sm) {
+  .page-title {
+    font-size: 3em;
+
+  }
+
+  // .file-display__image {
+  //   max-width: 33%;
+  // }
 }

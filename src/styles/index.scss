@@ -11,8 +11,10 @@ body {
 }
 
 $test: #ffcc9c;
-$lighter-first-light-color: fade-out(#ffcc9c, 0.5);
-$lighter-first-dark-color: fade-out(#742946, 0.5);
+$lighter-first-light-color: fade-out(#ffcc9c, 0.8);
+$lighter-first-dark-color: fade-out(#742946, 0.8);
+$lighter-second-light-color: fade-out(#ff897f, 0.7);
+$lighter-second-dark-color: fade-out(#99384f, 0.7);
 // $unimes : #99384f;
 // $fadedUnimes : fade-out($unimes, 0.3);
 // $orange : #da8123;
@@ -21,6 +23,7 @@ $lighter-first-dark-color: fade-out(#742946, 0.5);
 :root:not(.dark) {
   --first-color: #ffcc9c;
   --lighter-first-color: #{$lighter-first-light-color};
+  --lighter-second-color: #{$lighter-second-light-color};
   --second-color: #ff897f;
   --third-color: #d1545e;
   --fourth-color: #99384f;
@@ -42,6 +45,7 @@ $lighter-first-dark-color: fade-out(#742946, 0.5);
 :root.dark {
   --first-color: #742946;
   --lighter-first-color: #{$lighter-first-dark-color};
+  --lighter-second-color: #{$lighter-second-dark-color};
   --second-color: #99384f;
   --third-color: #d1545e;
   --fourth-color: #ff897f;
