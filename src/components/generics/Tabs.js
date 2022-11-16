@@ -13,6 +13,7 @@ const Tabs = ({ handler, tabs}) => {
           onClick={handler}
           className={classNames('tabs__item', {'tabs__item--open': tab.id === firstId})}
           id={tab.id}
+          key={tab.id}
         >
           {tab.name}
         </div>
@@ -23,10 +24,7 @@ const Tabs = ({ handler, tabs}) => {
 
 Tabs.propTypes = {
   handler: PropTypes.func.isRequired,
-  tabs: PropTypes.arrayOf.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-  })
+  tabs: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default Tabs;
