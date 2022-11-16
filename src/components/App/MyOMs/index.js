@@ -136,7 +136,6 @@ const MyOMs = () => {
   ]
   return (
     <main className="my-documents">
-      <h2 className="my-documents__title"></h2>
       <PageTitle>Ordres de Mission de {'mboone01'}</PageTitle>
       <div className="my-documents__button">
         <a href="/documents/ordre-de-mission/nouveau?etape=1">NOUVEAU</a>

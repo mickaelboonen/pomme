@@ -5,6 +5,8 @@ import './style.scss';
 import TitleH3 from '../../generics/TitleH3';
 import FileMenu from '../../generics/FileMenu';
 import FileDisplay from '../../generics/FileDisplay';
+import Tabs from '../../generics/Tabs';
+import PageTitle from '../../generics/PageTitle';
 
 const MyEFs = () => {
 
@@ -44,6 +46,78 @@ const MyEFs = () => {
       status: 10, 
     },
   ];
+
+  const tabs = [
+    {
+      id: 'ec',
+      name: 'En cours',
+    },
+    {
+      id: 'as',
+      name: 'A Signer',
+    },
+    {
+      id: 'ok',
+      name: 'Validés',
+    }
+  ]
+  const handleClickOnTab = (event) => {
+    const { id } = event.currentTarget;
+    const ecSection = document.querySelector('#ec-ef');
+    const okSection = document.querySelector('#ok-ef');
+    const ecTab = document.querySelector('#ec');
+    const sections = [ ecSection, okSection, asSection];
+    const asSection = document.querySelector('#as-ef');
+    const asTab = document.querySelector('#as');
+    const okTab = document.querySelector('#ok');
+    const tabs = [ ecTab, asTab, okTab];
+
+    if (id === "ec") {
+      sections.forEach((sec) => {
+        
+        if (sec.id === 'ec-ef') {
+          sec.classList.add('my-documents__files--open');
+        }
+        else {
+          sec.classList.remove('my-documents__files--open');
+        }
+      })
+      tabs.forEach((tab) => {
+        
+        console.log(tab);
+        if (tab.id === 'ec') {
+          tab.classList.add('tabs__item--open');
+        }
+        else {
+          tab.classList.remove('tabs__item--open');
+        }
+      })
+    }
+    else if (id === "as") {
+      
+      sections.forEach((sec) => {
+        console.log(sec);
+        if (sec.id === 'as-ef') {
+          sec.classList.add('my-documents__files--open');
+        }
+        else {
+          sec.classList.remove('my-documents__files--open');
+        }
+      })
+      tabs.forEach((tab) => {
+        
+        console.log(tab);
+        if (tab.id === 'as') {
+          tab.classList.add('tabs__item--open');
+        }
+        else {
+          tab.classList.remove('tabs__item--open');
+        }
+      })
+    }
+    else {
+    }
+  }
 
   /**
    * Modifies the DOM to open the side menu for each file and closes the previous menu
@@ -91,44 +165,77 @@ const MyEFs = () => {
   });
 
   return (
-    <main className="myOms">
-      <h2 className="myOms__title">États de Frais de {'mboone01'}</h2>
-      <div className="myOms__button">
-        <button type='button'>NOUVEAU</button>
+    <main className="my-documents">
+      <PageTitle>États de Frais de {'mboone01'}</PageTitle>
+      <div className="my-documents__button">
+        <a href="/documents/ordre-de-mission/nouveau?etape=1">NOUVEAU</a>
       </div>
-      <section className="myOms__files">
-      <TitleH3>Mes états de frais en cours</TitleH3>
-        <div className="myOms__files-container">
+      <Tabs tabs={tabs} handler={handleClickOnTab} />
+      <section id="ec-ef" className="my-documents__files my-documents__files--open">
+        <div className="my-documents__files-container">
           {currentEFs.map((om) => (
-            <div key={om.id} className="myOms__files-container-item" onClick={toggleMenu}>
+            <div key={om.id} className="my-documents__files-container-item" onClick={toggleMenu}>
               <FileDisplay name={om.name} />
               <FileMenu status={om.status} />
             </div>
           ))}
         </div>
       </section>
-      <section className="myOms__files">
-      <TitleH3>Mes états liquidatifs à signer</TitleH3>
-        <div className="myOms__files-container">
+      <section id="as-ef" className="my-documents__files">
+      {/* <TitleH3>Validés</TitleH3> */}
+        <div className="my-documents__files-container">
           {currentELs.map((om) => (
-            <div key={om.id} className="myOms__files-container-item" onClick={toggleMenu}>
+            <div key={om.id} className="my-documents__files-container-item" onClick={toggleMenu}>
               <FileDisplay name={om.name} />
               <FileMenu status={om.status} />
             </div>
           ))}
         </div>
       </section>
-      <section className="myOms__files">
-      <TitleH3>Me états liquidatifs validés</TitleH3>
-        <div className="myOms__files-container">
+      <section id="ok-ef" className="my-documents__files">
+      {/* <TitleH3>Validés</TitleH3> */}
+        <div className="my-documents__files-container">
           {pastELs.map((om) => (
-            <div key={om.id} className="myOms__files-container-item" onClick={toggleMenu}>
+            <div key={om.id} className="my-documents__files-container-item" onClick={toggleMenu}>
               <FileDisplay name={om.name} />
               <FileMenu status={om.status} />
             </div>
           ))}
         </div>
       </section>
+      <section className="my-documents__files">
+      <TitleH3>Mes états de frais en cours</TitleH3>
+        <div className="my-documents__files-container">
+          {currentEFs.map((om) => (
+            <div key={om.id} className="my-documents__files-container-item" onClick={toggleMenu}>
+              <FileDisplay name={om.name} />
+              <FileMenu status={om.status} />
+            </div>
+          ))}
+        </div>
+      </section>
+      {/* <section className="my-documents__files">
+      <TitleH3>Mes états liquidatifs à signer</TitleH3>
+        <div className="my-documents__files-container">
+          {pastELs.map((om) => (
+            <div key={om.id} className="my-documents__files-container-item" onClick={toggleMenu}>
+              <FileDisplay name={om.name} />
+              <FileMenu status={om.status} />
+            </div>
+          ))}
+        </div>
+      </section>
+      <section className="my-documents__files">
+      <TitleH3>Me états liquidatifs validés</TitleH3>
+        <div className="my-documents__files-container">
+          {pastELs.map((om) => (
+            <div key={om.id} className="my-documents__files-container-item" onClick={toggleMenu}>
+              <FileDisplay name={om.name} />
+              <FileMenu status={om.status} />
+            </div>
+          ))}
+        </div>
+      </section> */}
     </main>
   );
 };
