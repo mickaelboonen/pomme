@@ -62,7 +62,6 @@ const MyEFs = () => {
     }
   ]
   const displayWantedSection = (event) => {
-    const { id } = event.currentTarget;
 
     const wantedSection = document.querySelector(`#${event.currentTarget.id}-ef`);
     const allSections = document.querySelectorAll('.my-documents__files');

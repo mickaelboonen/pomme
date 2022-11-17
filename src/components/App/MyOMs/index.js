@@ -103,25 +103,19 @@ const MyOMs = () => {
     });
   });
 
-  const handleClickOnTab = (event) => {
-    const { id } = event.currentTarget;
-    const ecSection = document.querySelector('#ec-om');
-    const okSection = document.querySelector('#ok-om');
-    const ecTab = document.querySelector('#ec');
-    const okTab = document.querySelector('#ok');
+  const displayWantedSection = (event) => {
+    
+    const wantedSection = document.querySelector(`#${event.currentTarget.id}-om`);
+    const allSections = document.querySelectorAll('.my-documents__files');
 
-    if (id === "ec") {
-      ecTab.classList.add('tabs__item--open');
-      okTab.classList.remove('tabs__item--open');
-      ecSection.classList.add('myOms__files--open');
-      okSection.classList.remove('myOms__files--open');
-    }
-    else {
-      ecTab.classList.remove('tabs__item--open');
-      okTab.classList.add('tabs__item--open');
-      ecSection.classList.remove('myOms__files--open');
-      okSection.classList.add('myOms__files--open');
-    }
+    allSections.forEach((currentSection) => {
+      if (currentSection === wantedSection) {
+        wantedSection.classList.add('my-documents__files--open');
+      }
+      else {
+        currentSection.classList.remove('my-documents__files--open');
+      }
+    })
   }
 
   const tabs = [
@@ -140,7 +134,7 @@ const MyOMs = () => {
       <div className="my-documents__button">
         <a href="/documents/ordre-de-mission/nouveau?etape=1">NOUVEAU</a>
       </div>
-      <Tabs tabs={tabs} handler={handleClickOnTab} />
+      <Tabs tabs={tabs} handler={displayWantedSection} />
       {/* <<div className='tabs'>
         <div onClick={handleClickOnTab} className="tabs__item tabs__item--open" id="ec">En cours</div>
         <div onClick={handleClickOnTab} className="tabs__item" id="ok">Validés</div>
