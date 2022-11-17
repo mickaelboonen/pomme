@@ -103,8 +103,12 @@ const MyOMs = () => {
     });
   });
 
+  /**
+   * Toggles the section according to the clicked tab
+   * @param object event 
+   */
   const displayWantedSection = (event) => {
-    
+
     const wantedSection = document.querySelector(`#${event.currentTarget.id}-om`);
     const allSections = document.querySelectorAll('.my-documents__files');
 
@@ -116,7 +120,7 @@ const MyOMs = () => {
         currentSection.classList.remove('my-documents__files--open');
       }
     })
-  }
+  };
 
   const tabs = [
     {
@@ -127,7 +131,7 @@ const MyOMs = () => {
       id: 'ok',
       name: 'Validés',
     }
-  ]
+  ];
   return (
     <main className="my-documents">
       <PageTitle>Ordres de Mission de {'mboone01'}</PageTitle>

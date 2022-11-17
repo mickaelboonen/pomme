@@ -61,6 +61,11 @@ const MyEFs = () => {
       name: 'Validés',
     }
   ]
+
+  /**
+   * Toggles the section according to the clicked tab
+   * @param object event 
+   */
   const displayWantedSection = (event) => {
 
     const wantedSection = document.querySelector(`#${event.currentTarget.id}-ef`);
@@ -125,7 +130,7 @@ const MyEFs = () => {
     <main className="my-documents">
       <PageTitle>États de Frais de {'mboone01'}</PageTitle>
       <div className="my-documents__button">
-        <a href="/documents/ordre-de-mission/nouveau?etape=1">NOUVEAU</a>
+        <a href="/documents/etat-de-frais/nouveau?etape=1">NOUVEAU</a>
       </div>
       <Tabs tabs={tabs} handler={displayWantedSection} />
       <section id="ec-ef" className="my-documents__files my-documents__files--open">
@@ -139,7 +144,6 @@ const MyEFs = () => {
         </div>
       </section>
       <section id="as-ef" className="my-documents__files">
-      {/* <TitleH3>Validés</TitleH3> */}
         <div className="my-documents__files-container">
           {currentELs.map((om) => (
             <div key={om.id} className="my-documents__files-container-item" onClick={toggleMenu}>
@@ -150,7 +154,6 @@ const MyEFs = () => {
         </div>
       </section>
       <section id="ok-ef" className="my-documents__files">
-      {/* <TitleH3>Validés</TitleH3> */}
         <div className="my-documents__files-container">
           {pastELs.map((om) => (
             <div key={om.id} className="my-documents__files-container-item" onClick={toggleMenu}>
