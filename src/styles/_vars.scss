@@ -1,4 +1,5 @@
 @use "sass:color";
+@use 'src/styles/anais';
 
 // Breakpoints 
 
@@ -7,11 +8,12 @@ $sm : 600px;
 
 // THEME 
 // https://mybrandnewlogo.com/fr/generateur-de-palette-de-couleurs
-$darkestThemeColor: #742946;
-$darkerThemeColor: #99384f;
-$mediumThemeColor: #d1545e;
-$lighterThemeColor: #ff897f;
-$lightestThemeColor: #ffcc9c;
+
+// $darkestThemeColor: #742946;
+// $darkerThemeColor: #99384f;
+// $mediumThemeColor: #d1545e;
+// $lighterThemeColor: #ff897f;
+// $lightestThemeColor: #ffcc9c;
 
 // $darkestThemeColor: #100907;
 // $darkerThemeColor: #211f37;
@@ -49,16 +51,24 @@ $lightestThemeColor: #ffcc9c;
 // $lighterThemeColor: #e0e1ed;
 // $lightestThemeColor: #f8efed;
 
-$darkestThemeColor: #212820;
-$darkerThemeColor: #265447;
-$mediumThemeColor: #807f1a;
-$lighterThemeColor: #d5cb75;
-$lightestThemeColor: #e8e8be;
+// $darkestThemeColor: anais.$darkestThemeColor;
+// $darkerThemeColor: anais.$darkerThemeColor;
+// $mediumThemeColor: anais.$mediumThemeColor;
+// $lighterThemeColor: anais.$lighterThemeColor;
+// $lightestThemeColor: anais.$lightestThemeColor;
 
+// $darkestThemeColor: #212820;
+// $darkerThemeColor: #265447;
+// $mediumThemeColor: #807f1a;
+// $lighterThemeColor: #d5cb75;
+// $lightestThemeColor: #e8e8be;
 
+$darkestThemeColor: #020402;
+$darkerThemeColor: #0c2c30;
+$mediumThemeColor: #468884;
+$lighterThemeColor: #98c4ac;
+$lightestThemeColor: #dfe7da;
 
-
-$test: #ffcc9c;
 $lighter-first-light-color: fade-out($lightestThemeColor, 0.8);
 $lighter-first-dark-color: fade-out($darkestThemeColor, 0.8);
 $lighter-second-light-color: fade-out($lighterThemeColor, 0.7);
