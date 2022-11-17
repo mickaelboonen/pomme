@@ -9,11 +9,11 @@ $sm : 600px;
 // THEME 
 // https://mybrandnewlogo.com/fr/generateur-de-palette-de-couleurs
 
-// $darkestThemeColor: #742946;
-// $darkerThemeColor: #99384f;
-// $mediumThemeColor: #d1545e;
-// $lighterThemeColor: #ff897f;
-// $lightestThemeColor: #ffcc9c;
+$darkestThemeColor: #742946;
+$darkerThemeColor: #99384f;
+$mediumThemeColor: #d1545e;
+$lighterThemeColor: #ff897f;
+$lightestThemeColor: #ffcc9c;
 
 // $darkestThemeColor: #100907;
 // $darkerThemeColor: #211f37;
@@ -63,11 +63,11 @@ $sm : 600px;
 // $lighterThemeColor: #d5cb75;
 // $lightestThemeColor: #e8e8be;
 
-$darkestThemeColor: #020402;
-$darkerThemeColor: #0c2c30;
-$mediumThemeColor: #468884;
-$lighterThemeColor: #98c4ac;
-$lightestThemeColor: #dfe7da;
+// $darkestThemeColor: #020402;
+// $darkerThemeColor: #0c2c30;
+// $mediumThemeColor: #468884;
+// $lighterThemeColor: #98c4ac;
+// $lightestThemeColor: #dfe7da;
 
 $lighter-first-light-color: fade-out($lightestThemeColor, 0.8);
 $lighter-first-dark-color: fade-out($darkestThemeColor, 0.8);

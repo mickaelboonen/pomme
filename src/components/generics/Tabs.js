@@ -30,6 +30,12 @@ const Tabs = ({ handler, tabs}) => {
           key={tab.id}
         >
           {tab.name}
+          {tab.hasOwnProperty('notification') && (
+            <span className='tabs__item-notification'>
+              {tab.notification}
+            </span>
+          )}
+          
         </div>
       ))}
     </div>

@@ -9,6 +9,7 @@ import OMForm from './OMForm';
 import { useEffect } from 'react';
 import Forms from './Forms';
 import MyDocuments from './MyDocuments';
+import Gestionnaires from './Gestionnaire';
 
 // == Composant
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route path="/utilisateur/:slug/mes-ordres-de-mission" element={<MyDocuments />} />
         <Route path="/utilisateur/:slug/mes-états-de-frais" element={<MyDocuments />} />
         <Route path="/utilisateur/:slug/mes-%C3%A9tats-de-frais" element={<MyDocuments />} />
+        <Route path="/gestionnaire/:slug/documents-a-signer" element={<Gestionnaires />} />
         <Route path="/documents/:slug/nouveau" element={<Forms />} />
       </Routes>
       <script type="text/javascript" src="bootstrap-datetimepicker.de.js" charSet="UTF-8"></script>
