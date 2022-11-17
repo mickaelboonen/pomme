@@ -6,11 +6,25 @@ import classNames from 'classnames';
 
 const Tabs = ({ handler, tabs}) => {
   const firstId = tabs[0].id;
+  const handleClick = (event) => {
+    const openTab = document.querySelector(`#${event.currentTarget.id}`);
+    const allTabs = document.querySelectorAll('.tabs__item');
+
+    allTabs.forEach((currentTab) => {
+      if (currentTab === openTab) {
+        openTab.classList.add('tabs__item--open')
+      }
+      else {
+        currentTab.classList.remove('tabs__item--open')
+      }
+    })
+    handler(event);
+  }
   return (
     <div className='tabs'>
       {tabs.map((tab) => (
         <div
-          onClick={handler}
+          onClick={handleClick}
           className={classNames('tabs__item', {'tabs__item--open': tab.id === firstId})}
           id={tab.id}
           key={tab.id}

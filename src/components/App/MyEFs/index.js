@@ -61,62 +61,20 @@ const MyEFs = () => {
       name: 'Validés',
     }
   ]
-  const handleClickOnTab = (event) => {
+  const displayWantedSection = (event) => {
     const { id } = event.currentTarget;
-    const ecSection = document.querySelector('#ec-ef');
-    const okSection = document.querySelector('#ok-ef');
-    const ecTab = document.querySelector('#ec');
-    const sections = [ ecSection, okSection, asSection];
-    const asSection = document.querySelector('#as-ef');
-    const asTab = document.querySelector('#as');
-    const okTab = document.querySelector('#ok');
-    const tabs = [ ecTab, asTab, okTab];
 
-    if (id === "ec") {
-      sections.forEach((sec) => {
-        
-        if (sec.id === 'ec-ef') {
-          sec.classList.add('my-documents__files--open');
-        }
-        else {
-          sec.classList.remove('my-documents__files--open');
-        }
-      })
-      tabs.forEach((tab) => {
-        
-        console.log(tab);
-        if (tab.id === 'ec') {
-          tab.classList.add('tabs__item--open');
-        }
-        else {
-          tab.classList.remove('tabs__item--open');
-        }
-      })
-    }
-    else if (id === "as") {
-      
-      sections.forEach((sec) => {
-        console.log(sec);
-        if (sec.id === 'as-ef') {
-          sec.classList.add('my-documents__files--open');
-        }
-        else {
-          sec.classList.remove('my-documents__files--open');
-        }
-      })
-      tabs.forEach((tab) => {
-        
-        console.log(tab);
-        if (tab.id === 'as') {
-          tab.classList.add('tabs__item--open');
-        }
-        else {
-          tab.classList.remove('tabs__item--open');
-        }
-      })
-    }
-    else {
-    }
+    const wantedSection = document.querySelector(`#${event.currentTarget.id}-ef`);
+    const allSections = document.querySelectorAll('.my-documents__files');
+
+    allSections.forEach((currentSection) => {
+      if (currentSection === wantedSection) {
+        wantedSection.classList.add('my-documents__files--open');
+      }
+      else {
+        currentSection.classList.remove('my-documents__files--open');
+      }
+    })
   }
 
   /**
@@ -170,7 +128,7 @@ const MyEFs = () => {
       <div className="my-documents__button">
         <a href="/documents/ordre-de-mission/nouveau?etape=1">NOUVEAU</a>
       </div>
-      <Tabs tabs={tabs} handler={handleClickOnTab} />
+      <Tabs tabs={tabs} handler={displayWantedSection} />
       <section id="ec-ef" className="my-documents__files my-documents__files--open">
         <div className="my-documents__files-container">
           {currentEFs.map((om) => (
