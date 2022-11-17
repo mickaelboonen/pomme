@@ -4,6 +4,14 @@
 
 $sm : 600px;
 
+
+// THEME 
+$darkestThemeColor: #742946;
+$darkerThemeColor: #99384f;
+$mediumThemeColor: #d1545e;
+$lighterThemeColor: #ff897f;
+$lightestThemeColor: #ffcc9c;
+
 // Buttons
 @mixin addButton {
   width: 100%;
