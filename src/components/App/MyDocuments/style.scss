@@ -135,8 +135,9 @@ $test : #{var(--first-color)};
     padding: 0.8rem;
     text-transform: uppercase;
     background-color: var(--third-color);
-    color: var(--second-color);
     color: #1a1a1a;
+    @include vars.centeredFlex;
+
 
     &-notification {
       background-color: var(--second-color);
