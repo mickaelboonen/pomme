@@ -15,23 +15,23 @@ const Section = ({ id, data, isFirstSection }) => {
   const toggleMenu = (event) => {
     const { currentTarget } = event;
     const classes = currentTarget.classList;
-    const searchedClass = Array.from(classes).find((classname) => classname === "myOms__files-container-item--open" ); 
+    const searchedClass = Array.from(classes).find((classname) => classname === "my-documents__files-container-item--open" ); 
     const currentMenu = currentTarget.querySelector('.file-menu');
 
     // Gets the last opened menu and closes it 
     const openedMenu = document.querySelector('.file-menu--open');
     if (openedMenu) {
       openedMenu.classList.remove('file-menu--open');
-      openedMenu.parentNode.classList.remove('myOms__files-container-item--open');
+      openedMenu.parentNode.classList.remove('my-documents__files-container-item--open');
     }
     
     // Toggles the class on the current elements
     if (searchedClass === undefined) {
-      currentTarget.classList.add('myOms__files-container-item--open');
+      currentTarget.classList.add('my-documents__files-container-item--open');
       currentMenu.classList.add('file-menu--open');
     } 
     else {
-      currentTarget.classList.remove('myOms__files-container-item--open');
+      currentTarget.classList.remove('my-documents__files-container-item--open');
       currentMenu.classList.remove('file-menu--open');
 
     }
