@@ -21,20 +21,21 @@ $lighter-second-dark-color: fade-out(#99384f, 0.7);
 
 
 :root:not(.dark) {
-  --first-color: #ffcc9c;
-  --lighter-first-color: #{$lighter-first-light-color};
-  --lighter-second-color: #{$lighter-second-light-color};
-  --second-color: #ff897f;
-  --third-color: #d1545e;
-  --fourth-color: #99384f;
-  --fifth-color: #742946;
+  --first-color: #{vars.$lightestThemeColor};
+  --lighter-first-color: #{vars.$lighter-first-light-color};
+  --lighter-second-color: #{vars.$lighter-second-light-color};
+  --second-color: #{vars.$lighterThemeColor};
+  --third-color: #{vars.$mediumThemeColor};
+  --fourth-color: #{vars.$darkerThemeColor};
+  --fifth-color: #{vars.$darkestThemeColor};
   --opposite-theme-color: #1a1a1a;
+  --theme-color: #fff;
 
-  --menu-color: #ffcc9c;
-  --menu-title-color: #742946;
-  --dark-color: #742946;
+  --menu-color: #{vars.$lightestThemeColor};
+  --menu-title-color: #{vars.$darkestThemeColor};
+  --dark-color: #{vars.$darkestThemeColor};
   // --primary-color: #742946;
-  --unimes-color: #99384f;
+  --unimes-color: #{vars.$darkerThemeColor};
   --background-color: #fff;
   --thread-background: var(--second-color);
 
@@ -43,14 +44,15 @@ $lighter-second-dark-color: fade-out(#99384f, 0.7);
 }
 
 :root.dark {
-  --first-color: #742946;
-  --lighter-first-color: #{$lighter-first-dark-color};
-  --lighter-second-color: #{$lighter-second-dark-color};
-  --second-color: #99384f;
-  --third-color: #d1545e;
-  --fourth-color: #ff897f;
-  --fifth-color: #ffcc9c;
+  --first-color: #{vars.$darkestThemeColor};
+  --lighter-first-color: #{vars.$lighter-first-dark-color};
+  --lighter-second-color: #{vars.$lighter-second-dark-color};
+  --second-color: #{vars.$darkerThemeColor};
+  --third-color: #{vars.$mediumThemeColor};
+  --fourth-color: #{vars.$lighterThemeColor};
+  --fifth-color: #{vars.$lightestThemeColor};
   --opposite-theme-color: #fff;
+  --theme-color: var(--first-color);
 
   --menu-color: var(--first-color);
   --dark-color: var(--first-color);

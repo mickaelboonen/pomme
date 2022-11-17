@@ -78,7 +78,7 @@ input:checked + .slider--form:before {
   -webkit-transform: translateX(16px);
   -ms-transform: translateX(16px);
   transform: translateX(20px);
-  background-color: #fff;
+  background-color: var(--second-color);
 }
 
 /* Rounded sliders */
