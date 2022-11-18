@@ -53,6 +53,17 @@ const Section = ({ id, data, isFirstSection, hasLinks }) => {
     });
   });
 
+  let docType;
+
+
+  if (id.includes('om')) {
+    docType = 'ordre-de-mission';
+
+  }
+  else if (id.includes('ef')) {
+    docType = 'etat-de-frais';
+  }
+  console.log(id.includes('ef'));
   return (
     <section id={id} className={classNames("my-documents__files", {"my-documents__files--open": isFirstSection})}>
     {!hasLinks && (
@@ -69,7 +80,7 @@ const Section = ({ id, data, isFirstSection, hasLinks }) => {
       <div className="my-documents__files-container">
         {data.map((currentData) => (
           <div key={currentData.id} className="my-documents__files-container-item" onClick={toggleMenu}>
-            <FileDisplayLink {...currentData} docType="ordre-de-mission" role="dgs" />
+            <FileDisplayLink {...currentData} docType={docType} role="dgs" />
           </div>
         ))}
       </div>
