@@ -5,8 +5,9 @@ import FileDisplay from '../../generics/FileDisplay';
 
 import './style.scss';
 import classNames from 'classnames';
+import FileDisplayLink from '../../generics/FileDisplayLink';
 
-const Section = ({ id, data, isFirstSection }) => {
+const Section = ({ id, data, isFirstSection, hasLinks }) => {
 
   /**
    * Modifies the DOM to open the side menu for each file and closes the previous menu
@@ -54,6 +55,7 @@ const Section = ({ id, data, isFirstSection }) => {
 
   return (
     <section id={id} className={classNames("my-documents__files", {"my-documents__files--open": isFirstSection})}>
+    {!hasLinks && (
       <div className="my-documents__files-container">
         {data.map((currentData) => (
           <div key={currentData.id} className="my-documents__files-container-item" onClick={toggleMenu}>
@@ -62,6 +64,16 @@ const Section = ({ id, data, isFirstSection }) => {
           </div>
         ))}
       </div>
+    )}
+    {hasLinks && (
+      <div className="my-documents__files-container">
+        {data.map((currentData) => (
+          <div key={currentData.id} className="my-documents__files-container-item" onClick={toggleMenu}>
+            <FileDisplayLink {...currentData} docType="ordre-de-mission" role="dgs" />
+          </div>
+        ))}
+      </div>
+    )}
     </section>
   );
 };
@@ -72,6 +84,7 @@ Section.propTypes = {
 
 Section.defaultPropTypes = {
   isFirstSection: false,
+  hasLinks: false,
 };
 
 export default Section;

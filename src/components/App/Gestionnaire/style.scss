@@ -1,0 +1,62 @@
+@use 'src/styles/vars';
+
+.form__section-authentication {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background-color: var(--lighter-first-color);
+    backdrop-filter: blur(15px);
+    padding: 1rem;
+  
+  .double-auth{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    &__button {
+      & a {
+        @include vars.button;
+        @include vars.centeredFlex;
+        max-width: 100%;
+        margin: 0.8rem;
+        font-size: 1em;
+        height: 2.5rem;
+      }
+      & button {
+        all: unset;
+        cursor: pointer;
+        color: var(--third-color);
+        text-decoration: underline;
+        font-size: 0.8em;
+        margin: 1rem auto ;
+      }
+
+      &--hidden {
+        display: none;
+      }
+    }
+  }
+
+  &--open {
+    @include vars.centeredFlex;
+  }
+}
+
+@media (min-width: vars.$sm) {
+  .form__section-authentication {
+    align-items: flex-start;
+
+    .double-auth  {
+      margin: auto;
+      // border: 1px solid blue;
+      width: 20%;
+      height: 40%;
+      height: fit-content;
+      padding: 1.5rem;
+      background-color: rgba(255, 255, 255, 0.4);
+      border-radius: 5px;
+      box-shadow: 1px 1px 5px #1a1a1a;
+    }
+    
+  }
+}

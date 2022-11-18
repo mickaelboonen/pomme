@@ -54,7 +54,15 @@
   height: fit-content;
   padding: 1rem 1rem 0;
 
+  // TODO : pas bon, pas a cet endroit
+  &-page {
+    padding-top: 1rem;
+    position: relative;
+  }
+
   &__section {
+    
+
 
     &-container{
       border: 1px solid rgb(153, 150, 150);
@@ -66,9 +74,7 @@
         
       }
       &-button {
-        // TODO
-        // padding: 1rem;
-         & a {
+         & a, & button {
           @include vars.button;
           @include vars.centeredFlex;
           max-width: 100%;
@@ -77,6 +83,9 @@
           font-size: 1em;
           height: 2.5rem;
          }
+         &--hidden {
+            display: none;
+        }
       }
     }
 
@@ -222,6 +231,19 @@
 
           &:nth-of-type(2) {
             margin: 0;
+          }
+        }
+
+        &--validation {
+          flex-direction: column;
+
+          & button {
+            margin: 0 auto 1.5rem ;
+
+            &:nth-of-type(2),
+            &:nth-of-type(3) {
+              margin: 0 auto 0.5rem;
+            }
           }
         }
       }

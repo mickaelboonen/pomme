@@ -87,8 +87,8 @@ const Gestionnaires = () => {
     <main className="my-documents">
       <PageTitle>Documents à valider</PageTitle>
       <Tabs tabs={tabs} handler={displayWantedSection} />
-      <Section id={"om-section"} data={currentOMs} isFirstSection />
-      <Section id={"ef-section"} data={currentEFs} />
+      <Section id={"om-section"} data={currentOMs} isFirstSection hasLinks />
+      <Section id={"ef-section"} data={currentEFs} hasLinks />
     </main>
 );}
 
