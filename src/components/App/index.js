@@ -11,6 +11,7 @@ import Forms from './Forms';
 import MyDocuments from './MyDocuments';
 import Gestionnaires from './Gestionnaire';
 import DocValidationForm from './Gestionnaire/DocValidationForm';
+import DocRefusalForm from './Gestionnaire/DocRefusal';
 
 // == Composant
 function App() {
@@ -35,6 +36,7 @@ function App() {
         <Route path="/utilisateur/:slug/mes-%C3%A9tats-de-frais" element={<MyDocuments />} />
         <Route path="/gestionnaire/:slug/documents-a-signer" element={<Gestionnaires />} />
         <Route path="/gestionnaire/:slug/valider-un-document/:slug/:id" element={<DocValidationForm />} />
+        <Route path="/gestionnaire/:slug/refuser-un-ordre-de-mission/:id" element={<DocRefusalForm />} />
         <Route path="/documents/:slug/nouveau" element={<Forms />} />
       </Routes>
       <script type="text/javascript" src="bootstrap-datetimepicker.de.js" charSet="UTF-8"></script>

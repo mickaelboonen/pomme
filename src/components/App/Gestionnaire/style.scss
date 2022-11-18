@@ -42,6 +42,23 @@
   }
 }
 
+.form__section-refusal {
+  padding-bottom: 2rem;
+  & a {
+    display: block;
+    all: unset;
+    cursor: pointer;
+    color: #1a1a1a;
+    text-decoration: underline;
+    font-size: 0.8em;
+    // margin: 1rem auto ;
+
+    &:nth-of-type(1) {
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+
 @media (min-width: vars.$sm) {
   .form__section-authentication {
     align-items: flex-start;

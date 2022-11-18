@@ -25,6 +25,7 @@ const DocValidationForm = ({ role = "DGS"}) => {
 
   const location = useLocation();
   const pathnameArray = location.pathname.split('/');
+  const isOm = pathnameArray[pathnameArray.length - 2] === 'ordre-de-mission' ? true : false;
   const id = pathnameArray[pathnameArray.length - 1];
 
 
@@ -72,10 +73,12 @@ const DocValidationForm = ({ role = "DGS"}) => {
           <button id="submit-button" type="button" onClick={handleClickOnSubmit}>Signer en tant que {role}</button>
         </div>
       </div>
-      <div className="form__section">
-        <Link to={`/gestionnaire/${role}/refuser-un-ordre-de-mission/${id}`}>Refuser le document en l'état</Link>
-        <Link to={`/gestionnaire/${role}/refuser-un-ordre-de-mission/${id}`}>Refuser le document définitivement</Link>
-      </div>
+      {isOm && (
+        <div className="form__section form__section-refusal">
+          <Link to={`/gestionnaire/${role}/refuser-un-ordre-de-mission/${id}`}>Refuser le document en l'état</Link>
+          <Link to={`/gestionnaire/${role}/refuser-un-ordre-de-mission/${id}`}>Refuser le document définitivement</Link>
+        </div>
+      )}
     </form>
   </main>
 );}
