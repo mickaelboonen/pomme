@@ -5,6 +5,34 @@
   background-color: var(--lighter-first-color);
   min-height: 90vh;
 
+  &__notification {
+    width: 70%;
+    margin: auto;
+    background-color: var(--lighter-first-color);
+    border: 1px solid #1a1a1a;
+    padding: 1rem;
+
+    &-message {
+
+      &--refusal {
+        margin: 1rem auto;
+        width: 50%;
+        border-radius: 5px; 
+        background-color: rgb(250, 148, 148);
+        color: rgb(117, 13, 13);
+        padding: 0.5rem;
+        border: 1px solid rgb(117, 13, 13);
+      }
+      
+    }
+
+    &-button button{
+      
+      @include vars.button;
+      margin: 1rem;
+    }
+  }
+
   &__thread {
 
 
@@ -50,6 +78,7 @@
 
 .form {
   width: 90%;
+  margin: auto;
   max-width: 700px;
   height: fit-content;
   padding: 1rem 1rem 0;
@@ -62,6 +91,13 @@
 
   &__section {
     
+    &-notification {
+    }
+    
+    &-notification-message {
+      text-align: left;
+      margin: 1rem 1rem 2rem;
+    }
 
     &--documents {
       display: flex;
@@ -275,6 +311,10 @@
         padding: 0.5rem;
         border: 0.5px solid rgb(153, 150, 150);
         border-radius: 5px;
+      }
+
+      &-button {
+        margin: 1rem auto 2rem;
       }
     }
   }

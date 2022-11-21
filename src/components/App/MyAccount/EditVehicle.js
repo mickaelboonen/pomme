@@ -24,7 +24,7 @@ const EditVehicle = () => {
 
 
   // TODO : retrive data from DB about selected car to edit
-  
+
   return (
   <main className="form-page__container">
     <div className="form-page__title">
@@ -73,6 +73,7 @@ const EditVehicle = () => {
         </div>
       </div>
     </form>
+    <button className="form-page__container-link" type='button'>Retour</button>
   </main>
 );
 };
