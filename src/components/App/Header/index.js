@@ -40,6 +40,8 @@ const Header = () => {
       event.currentTarget.nextElementSibling.classList.remove('header__menu-section--last-open');
     }
   };
+
+  const userName = 'mboone01';
   
   return (
     <header className="header-container">
@@ -47,7 +49,7 @@ const Header = () => {
         <div className="header__identity">
           <img className="header__identity-logo" src={Apple} alt="react logo" />
           <Link to="/"><h1 className="header__identity-title">POMME</h1></Link>   
-          <p style={{'marginLeft': '1rem'}}>Bonjour mboone01</p>
+          <p style={{'marginLeft': '1rem'}}>Bonjour {userName}</p>
         </div>
         <div className="header__burger" onClick={handleBarsClick}>
           <div className="header__burger-bars">
@@ -77,9 +79,9 @@ const Header = () => {
           <div className="header__menu-section" id="mon-compte" onMouseOver={handleHover} onMouseOut={handleMouseOut}>
             <p>MON COMPTE</p>
             <ul className="header__menu-section-list">
-              <li><Link to="/utilisateur/mboone01/mes-ordres-de-mission">Mes Ordres de Mission <span id="mes-oms">1</span></Link></li>
-              <li><Link to="/utilisateur/mboone01/mes-états-de-frais">Mes États de Frais <span id="mes-efs"></span></Link></li>
-              <li><a>Mes Justificatifs</a></li>
+              <li><Link to={`/utilisateur/${userName}/mes-ordres-de-mission`}>Mes Ordres de Mission <span id="mes-oms">1</span></Link></li>
+              <li><Link to={`/utilisateur/${userName}/mes-états-de-frais`}>Mes États de Frais <span id="mes-efs"></span></Link></li>
+              <li><Link to={`/utilisateur/${userName}/mes-documents`}>Mes Justificatifs</Link></li>
               <li><a>Se déconnecter</a></li>
             </ul>
           </div>

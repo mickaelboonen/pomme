@@ -3,15 +3,13 @@ import Header from './Header';
 import Home from './Home';
 import { Routes, Route } from "react-router-dom";
 import './style.scss';
-import MyOMs from './MyOMs';
-import MyEFs from './MyEFs';
-import OMForm from './OMForm';
 import { useEffect } from 'react';
 import Forms from './Forms';
 import MyDocuments from './MyDocuments';
 import Gestionnaires from './Gestionnaire';
 import DocValidationForm from './Gestionnaire/DocValidationForm';
 import DocRefusalForm from './Gestionnaire/DocRefusal';
+import MyAccount from './MyAccount';
 
 // == Composant
 function App() {
@@ -38,6 +36,7 @@ function App() {
         <Route path="/gestionnaire/:slug/valider-un-document/:slug/:id" element={<DocValidationForm />} />
         <Route path="/gestionnaire/:slug/refuser-un-ordre-de-mission/:id" element={<DocRefusalForm />} />
         <Route path="/documents/:slug/nouveau" element={<Forms />} />
+        <Route path="/utilisateur/:slug/mes-documents" element={<MyAccount />} />
       </Routes>
       <script type="text/javascript" src="bootstrap-datetimepicker.de.js" charSet="UTF-8"></script>
     </div>
