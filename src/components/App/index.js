@@ -14,6 +14,7 @@ import AddVehicle from './MyAccount/AddVehicle';
 import EditVehicle from './MyAccount/EditVehicle';
 import RefusalNotification from './MyAccount/RefusalNotification';
 import ELForm from './MyAccount/ELForm';
+import TicketRequest from './MyAccount/TicketRequest';
 
 // == Composant
 function App() {
@@ -44,10 +45,12 @@ function App() {
         <Route path="/utilisateur/:slug/mes-documents/modifier-un-vehicule/:id" element={<EditVehicle />} />
         <Route path="/utilisateur/:slug/mes-documents/refus-de-mission" element={<RefusalNotification />} />
         <Route path="/utilisateur/:slug/mes-documents/état-liquidatif-à-signer" element={<ELForm />} />
+        <Route path="/utilisateur/:slug/mes-documents/demander-un-déplacement/:id" element={<TicketRequest />} />
         {/* TODO */}
         <Route path="/utilisateur/:slug/mes-documents/ajouter-un-v%C3%A9hicule" element={<AddVehicle />} />
         <Route path="/utilisateur/:slug/mes-documents/modifier-un-v%C3%A9hicule/:id" element={<EditVehicle />} />
         <Route path="/utilisateur/:slug/mes-documents/%C3%A9tat-liquidatif-%C3%A0-signer" element={<ELForm />} />
+        <Route path="/utilisateur/:slug/mes-documents/demander-un-d%C3%A9placement/:id" element={<TicketRequest />} />
         <Route path="/utilisateur/:slug/mes-%C3%A9tats-de-frais" element={<MyDocuments />} />
       </Routes>
       <script type="text/javascript" src="bootstrap-datetimepicker.de.js" charSet="UTF-8"></script>
