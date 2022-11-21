@@ -42,6 +42,7 @@ const Header = () => {
   };
 
   const userName = 'mboone01';
+  const role = 'dev'
   
   return (
     <header className="header-container">
@@ -70,11 +71,11 @@ const Header = () => {
             </ul>
           </div>
           <div className="header__menu-section" id="a-signer" onMouseOver={handleHover} onMouseOut={handleMouseOut}>
-            <p>A SIGNER</p>
-            <ul className="header__menu-section-list">
-              <li><Link to="/gestionnaire/{role}/documents-à-signer/ordres-de-missions">Ordres de Mission <span id="mes-oms">1</span></Link></li>
-              <li><Link to="/gestionnaire/{role}/documents-à-signer/états-de-frais">États de Frais <span id="mes-oms">1</span></Link></li>
-            </ul>
+            <Link to={`/gestionnaire/${role}/documents-a-signer`}>A SIGNER</Link>
+            {/* <ul className="header__menu-section-list">
+              <li><Link to={`/gestionnaire/${userName}/documents-a-signer/ordres-de-missions`}>Ordres de Mission <span id="mes-oms">1</span></Link></li>
+              <li><Link to={`/gestionnaire/${userName}/documents-a-signer/états-de-frais`}>États de Frais <span id="mes-oms">1</span></Link></li>
+            </ul> */}
           </div>
           <div className="header__menu-section" id="mon-compte" onMouseOver={handleHover} onMouseOut={handleMouseOut}>
             <p>MON COMPTE</p>

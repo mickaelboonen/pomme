@@ -7,7 +7,6 @@ import FormSectionTitle from '../../generics/FormSectionTitle';
 import RadioInput from '../OMForm/Fields/RadioInput';
 import ButtonElement from '../OMForm/Fields/ButtonElement';
 import Logo from '../../../assets/images/pdf.svg';
-import { Link, useNavigate } from 'react-router-dom';
 
 import './style.scss';
 import FileField from '../OMForm/Fields/FileField';
@@ -28,7 +27,7 @@ const TicketRequest = () => {
   const onSubmit = (data) => {
     console.log(data);
   };
-  const message = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque eos rem possimus expedita dolores odio qui voluptas architecto culpa nobis.'
+
   const id = 1
   const trainTickets = false;
   //TODO : verif train / avion
@@ -64,14 +63,12 @@ const TicketRequest = () => {
             formField="benefits"
             label="Abonnement"
             register={register}
-            // handler={handleRegionClick}
           />
           <RadioInput
             id="loyalty"
             formField="benefits"
             label="Fidélité"
             register={register}
-            // handler={handleRegionClick}
           />
         </div>
         <TextField 
