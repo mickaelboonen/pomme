@@ -37,7 +37,7 @@ const userName = 'mboone01';
     if (selectedVehicle !== "") {
       
       if (id === "edit") {
-        
+        navigate(`/utilisateur/${userName}/mes-documents/modifier-un-véhicule/${selectedVehicle}`);
       }
       else if (id === "delete") {
         
@@ -154,7 +154,7 @@ const userName = 'mboone01';
         <div className='form__section-half'>
           <SelectField
             register={() => {}}
-            data={['a', 'b', 'c']}
+            data={['1', '2', '3']}
             blankValue="Aucun véhicule sélectionné"
             formField="cars"
             id="input-cars"

@@ -11,6 +11,7 @@ import DocValidationForm from './Gestionnaire/DocValidationForm';
 import DocRefusalForm from './Gestionnaire/DocRefusal';
 import MyAccount from './MyAccount';
 import AddVehicle from './MyAccount/AddVehicle';
+import EditVehicle from './MyAccount/EditVehicle';
 
 // == Composant
 function App() {
@@ -38,8 +39,13 @@ function App() {
         <Route path="/documents/:slug/nouveau" element={<Forms />} />
         <Route path="/utilisateur/:slug/mes-documents" element={<MyAccount />} />
         <Route path="/utilisateur/:slug/mes-documents/ajouter-un-vehicule" element={<AddVehicle />} />
+        <Route path="/utilisateur/:slug/mes-documents/modifier-un-vehicule/:id" element={<EditVehicle />} />
+        {/* <Route path="/utilisateur/:slug/mes-documents/refus-de-mission" element={<EditVehicle />} />
+        <Route path="/utilisateur/:slug/mes-documents/état-liquidatif-à-signer" element={<EditVehicle />} /> */}
         {/* TODO */}
         <Route path="/utilisateur/:slug/mes-documents/ajouter-un-v%C3%A9hicule" element={<AddVehicle />} />
+        <Route path="/utilisateur/:slug/mes-documents/modifier-un-v%C3%A9hicule/:id" element={<EditVehicle />} />
+        {/* <Route path="/utilisateur/:slug/mes-documents/état-liquidatif-à-signer" element={<EditVehicle />} /> */}
         <Route path="/utilisateur/:slug/mes-%C3%A9tats-de-frais" element={<MyDocuments />} />
       </Routes>
       <script type="text/javascript" src="bootstrap-datetimepicker.de.js" charSet="UTF-8"></script>

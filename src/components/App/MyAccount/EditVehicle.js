@@ -8,7 +8,7 @@ import ButtonElement from '../OMForm/Fields/ButtonElement';
 
 import './style.scss';
 
-const AddVehicle = () => {
+const EditVehicle = () => {
   
   const {
     register,
@@ -21,14 +21,18 @@ const AddVehicle = () => {
   const onSubmit = (data) => {
     console.log(data);
   };
+
+
+  // TODO : retrive data from DB about selected car to edit
+  
   return (
   <main className="form-page__container">
     <div className="form-page__title">
-      <PageTitle>Ajouter un véhicule personnel</PageTitle>
+      <PageTitle>Modifier les informations d'un véhicule personnel</PageTitle>
     </div>
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section">
-        <FormSectionTitle>Ajouter un véhicule</FormSectionTitle>
+        <FormSectionTitle>Modifier un véhicule</FormSectionTitle>
         <TextField
           id="car-brand"
           label="Marque du véhicule"
@@ -73,8 +77,8 @@ const AddVehicle = () => {
 );
 };
 
-AddVehicle.propTypes = {
+EditVehicle.propTypes = {
 
 };
 
-export default AddVehicle;
+export default EditVehicle;
