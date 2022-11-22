@@ -17,7 +17,7 @@ const SmallScreenMenu = ({ userName = "mboone01", role = 'dev'}) => {
         <h3  className="small-screen-menu__section-title">DAFC</h3>
         <ul className="small-screen-menu__section-list">
           <li className="small-screen-menu__section-list-item" onMouseDown={handleMouseDown}><Link to={`/dafc/ordres-de-mission`}>Ordres de Mission <span id="mes-oms"></span></Link></li>
-          <li className="small-screen-menu__section-list-item" onMouseDown={handleMouseDown}><Link to={`/dafc/etats-de-frais`}>États de Frais <span id="mes-oms"></span></Link></li>
+          <li className="small-screen-menu__section-list-item" onMouseDown={handleMouseDown}><Link to={`/dafc/états-de-frais`}>États de Frais <span id="mes-oms"></span></Link></li>
         </ul>
       </div>
       <div className="small-screen-menu__section">

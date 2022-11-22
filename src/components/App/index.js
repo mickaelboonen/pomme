@@ -16,6 +16,10 @@ import RefusalNotification from './MyAccount/RefusalNotification';
 import ELForm from './MyAccount/ELForm';
 import TicketRequest from './MyAccount/TicketRequest';
 import DAFC from './DAFC';
+import EfControl from './DAFC/EfControl';
+import EfValidation from './DAFC/EfValidation';
+import OmToGFC from './DAFC/OmToGFC';
+import MyData from './MyAccount/newIndex';
 
 // == Composant
 function App() {
@@ -47,24 +51,25 @@ function App() {
         <Route path="/utilisateur/:slug/mes-documents/refus-de-mission" element={<RefusalNotification />} />
         <Route path="/utilisateur/:slug/mes-documents/état-liquidatif-à-signer" element={<ELForm />} />
         <Route path="/utilisateur/:slug/mes-documents/demander-un-déplacement/:id" element={<TicketRequest />} />
+        <Route path="/dafc/états-de-frais" element={<DAFC title="États de frais à valider"/>} />
+        <Route path="/dafc/états-de-frais/contrôler/:id" element={<EfControl />} />
+        <Route path="/dafc/états-de-frais/valider/:id" element={<EfValidation />} />
+        <Route path="/dafc/ordres-de-mission" element={<DAFC title="Ordres de mission à contrôler"/>} />
+        <Route path="/dafc/ordres-de-mission/saisir-un-ordre/:id" element={<OmToGFC />} />
 
-        {/* DAFC */}
-        <Route path="/dafc/états-de-frais" element={<DAFC />} />
-        <Route path="/dafc/états-de-frais/contrôler/:id" element={<DAFC />} />
-        <Route path="/dafc/états-de-frais/valider/:id" element={<DAFC />} />
-        <Route path="/dafc/ordres-de-mission" element={<DAFC />} />
-        <Route path="/dafc/ordres-de-mission/saisir-un-ordre/:id" element={<DAFC />} />
+        
         {/* TODO : Routes a supprimer lorsque j'aurai la réécriture d'url */}
-        <Route path="/dafc/%C3%A9tats-de-frais" element={<DAFC />} />
-        <Route path="/dafc/%C3%A9tats-de-frais/contr%C3%B4ler/:id" element={<DAFC />} />
-        <Route path="/dafc/%C3%A9tats-de-frais/valider/:id" element={<DAFC />} />
-        <Route path="/dafc/ordres-de-mission" element={<DAFC />} />
-        <Route path="/dafc/ordres-de-mission/saisir-un-ordre/:id" element={<DAFC />} />
+        <Route path="/dafc/%C3%A9tats-de-frais" element={<DAFC title="États de frais à valider"/>} />
+        <Route path="/dafc/%C3%A9tats-de-frais/contr%C3%B4ler/:id" element={<EfControl />} />
+        <Route path="/dafc/%C3%A9tats-de-frais/valider/:id" element={<EfValidation />} />
+        <Route path="/dafc/ordres-de-mission" element={<DAFC title="Ordres de mission à contrôler" />} />
+        <Route path="/dafc/ordres-de-mission/saisir-un-ordre/:id" element={<OmToGFC />} />
         <Route path="/utilisateur/:slug/mes-documents/ajouter-un-v%C3%A9hicule" element={<AddVehicle />} />
         <Route path="/utilisateur/:slug/mes-documents/modifier-un-v%C3%A9hicule/:id" element={<EditVehicle />} />
         <Route path="/utilisateur/:slug/mes-documents/%C3%A9tat-liquidatif-%C3%A0-signer" element={<ELForm />} />
         <Route path="/utilisateur/:slug/mes-documents/demander-un-d%C3%A9placement/:id" element={<TicketRequest />} />
         <Route path="/utilisateur/:slug/mes-%C3%A9tats-de-frais" element={<MyDocuments />} />
+        <Route path="/da"  element={<MyData />} />
       </Routes>
       <script type="text/javascript" src="bootstrap-datetimepicker.de.js" charSet="UTF-8"></script>
     </div>

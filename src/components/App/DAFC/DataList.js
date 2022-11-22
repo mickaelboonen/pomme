@@ -34,6 +34,7 @@ const DataList = ({ data, title, isEf }) => {
         <div className='dafc__container-buttons'>
           <ButtonElement
             isLink
+            link="/dafc/ordres-de-mission/saisir-un-ordre/1"
             type="button"
             label="Saisir l'OM dans GFC Missions"
           />
@@ -42,10 +43,14 @@ const DataList = ({ data, title, isEf }) => {
       {isEf && (
         <div className='dafc__container-buttons'>
           <ButtonElement
+            isLink
+            link="/dafc/états-de-frais/contrôler/1"
             type="button"
             label="Contrôler"
           />
           <ButtonElement
+            isLink
+            link="/dafc/états-de-frais/valider/1"
             type="button"
             label="Valider"
           />

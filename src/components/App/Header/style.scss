@@ -6,7 +6,7 @@
 }
 
 .header {
-  color: var(--primary-color);
+  color:  #dfdbdb;
   height: 10vh;
   width: 100%;
   display: flex;
@@ -70,7 +70,7 @@
   transform: skew(-15deg,0);
   display: none;
   transition: 1s;
-  color: var(--primary-color);
+  color:  #dfdbdb;
 
   &-section {
     min-width: 10rem;
@@ -159,7 +159,7 @@
       &-item {
         margin: 0.5rem auto;
         position: relative;
-        color:var(--primary-color);
+        color: #dfdbdb;
       }
     }
   }
