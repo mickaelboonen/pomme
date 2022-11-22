@@ -6,6 +6,7 @@ import ButtonElement from '../OMForm/Fields/ButtonElement';
 import Logo from '../../../assets/images/pdf.svg';
 
 import './style.scss';
+import FileProof from './FileProof';
 
 const EfControl = () => (
   <div className='dafc__container'>
@@ -16,8 +17,8 @@ const EfControl = () => (
       />
     <FormSectionTitle>Pièces justificatives</FormSectionTitle>
     <div className='dafc__container-section'>
-      {['1', '2', '3', '4'].map((id) => (
-        <img key={id} src={Logo} alt="" />
+      {['1', '2', '3', '4', '5', '6', '7', '8'].map((id) => (
+        <FileProof {...id} />
       ))}
     </div>
     <div className='dafc__container-buttons'>

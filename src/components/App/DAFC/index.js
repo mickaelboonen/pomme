@@ -22,10 +22,10 @@ const DAFC = () => {
   return (
     <main className='dafc'>
       <PageTitle>{title}</PageTitle>
-      {/* <DataList data={['1', '2', '3', '4']} title="États de frais à valider" isEf />
-      <DataList data={['1', '2', '3', '4']} title="Ordres de mission" /> */}
-      {/* <EfControl /> */}
-      {/* <EfValidation /> */}
+      <DataList data={['1', '2', '3', '4']} title="États de frais à valider" isEf />
+      <DataList data={['1', '2', '3', '4']} title="Ordres de mission" />
+      <EfControl />
+      <EfValidation />
       <OmToGFC />
       
     </main>

@@ -30,15 +30,16 @@ const DataList = ({ data, title, isEf }) => {
         label={`Liste des ${label}`}
         blankValue={`Veuillez sélectionner un ${value}`}
       />
-      {isEf && (
+      {!isEf && (
         <div className='dafc__container-buttons'>
           <ButtonElement
+            isLink
             type="button"
             label="Saisir l'OM dans GFC Missions"
           />
         </div>
       )}
-      {!isEf && (
+      {isEf && (
         <div className='dafc__container-buttons'>
           <ButtonElement
             type="button"

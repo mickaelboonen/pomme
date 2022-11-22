@@ -21,8 +21,8 @@ const OmToGFC = () => {
   const onSubmit = (data) => {
     console.log(data);
   };
-  const progress = '40%'
-  const message = '';
+  const progress = '95%'
+  const message = "Affiche l'erreur rencontrée, l'étape et invite à se rediriger sur l'appli GFC_MISSIONS pour finaliser la saisie et corriger l'erreur. Si la première étape a été validée, retourne l'ID de l'OM dans la base de données. Première erreur possible : le missionnaire n'est pas fournisseur dans la BDD GFC Missions et donc l'OM ne peut pas etre saisi pour lui.";
   return (
   <form className='form' onSubmit={handleSubmit(onSubmit)}>
     <FormSectionTitle>Ordre de Mission</FormSectionTitle>
@@ -32,11 +32,11 @@ const OmToGFC = () => {
       id="om"
       label="Ordre de Mission à télécharger"
     />
-    <FormSectionTitle>Processus de Saisie</FormSectionTitle>
+    <FormSectionTitle>Déversement dans GFC Missions</FormSectionTitle>
     <div className='form__section'>
       <div className='form__section-progress'>
         <div className='form__section-progress-partial' style={{'width': progress}}>
-          40%
+          <p className='form__section-progress-partial-percent'>{progress}</p>
         </div>
       </div>
     </div>
