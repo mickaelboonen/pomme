@@ -317,6 +317,17 @@
         margin: 1rem auto 2rem;
       }
     }
+
+    &-progress {
+      width: 100%;
+      border-radius: 5px;
+      overflow: hidden;
+      background-color: var(--first-color);
+
+      &-partial {
+        background-color: var(--second-color);
+      }
+    }
   }
 }
 

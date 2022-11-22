@@ -15,6 +15,7 @@ import EditVehicle from './MyAccount/EditVehicle';
 import RefusalNotification from './MyAccount/RefusalNotification';
 import ELForm from './MyAccount/ELForm';
 import TicketRequest from './MyAccount/TicketRequest';
+import DAFC from './DAFC';
 
 // == Composant
 function App() {
@@ -46,7 +47,19 @@ function App() {
         <Route path="/utilisateur/:slug/mes-documents/refus-de-mission" element={<RefusalNotification />} />
         <Route path="/utilisateur/:slug/mes-documents/état-liquidatif-à-signer" element={<ELForm />} />
         <Route path="/utilisateur/:slug/mes-documents/demander-un-déplacement/:id" element={<TicketRequest />} />
-        {/* TODO */}
+
+        {/* DAFC */}
+        <Route path="/dafc/états-de-frais" element={<DAFC />} />
+        <Route path="/dafc/états-de-frais/contrôler/:id" element={<DAFC />} />
+        <Route path="/dafc/états-de-frais/valider/:id" element={<DAFC />} />
+        <Route path="/dafc/ordres-de-mission" element={<DAFC />} />
+        <Route path="/dafc/ordres-de-mission/saisir-un-ordre/:id" element={<DAFC />} />
+        {/* TODO : Routes a supprimer lorsque j'aurai la réécriture d'url */}
+        <Route path="/dafc/%C3%A9tats-de-frais" element={<DAFC />} />
+        <Route path="/dafc/%C3%A9tats-de-frais/contr%C3%B4ler/:id" element={<DAFC />} />
+        <Route path="/dafc/%C3%A9tats-de-frais/valider/:id" element={<DAFC />} />
+        <Route path="/dafc/ordres-de-mission" element={<DAFC />} />
+        <Route path="/dafc/ordres-de-mission/saisir-un-ordre/:id" element={<DAFC />} />
         <Route path="/utilisateur/:slug/mes-documents/ajouter-un-v%C3%A9hicule" element={<AddVehicle />} />
         <Route path="/utilisateur/:slug/mes-documents/modifier-un-v%C3%A9hicule/:id" element={<EditVehicle />} />
         <Route path="/utilisateur/:slug/mes-documents/%C3%A9tat-liquidatif-%C3%A0-signer" element={<ELForm />} />
