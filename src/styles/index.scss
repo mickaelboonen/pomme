@@ -25,17 +25,17 @@ body {
   --darkerThemeColor: #99384f;
   --mediumThemeColor: #d1545e;
   --lighterThemeColor: #ff897f;
-  --lightestThemeColor: #ffcc9c;
+  --lightestThemeColor: 255, 204, 156;
 }
 
 
 :root:not(.dark) {
 
   --first-color: var(--lightestThemeColor);
-  --lighter-first-light-color: rgba(var(--first-color), 0.8);
-  --lighter-second-light-color: rgba(var(--second-color), 0.7);
-  --lighter-first-color: var(--lighter-first-light-color);
-  --lighter-second-color: var(--lighter-second-light-color);
+  // --lighter-first-light-color: rgba(var(--first-color), 0.8);
+  // --lighter-second-light-color: rgba(var(--second-color), 0.7);
+  --lighter-first-color: rgba(var(--first-color), 0.8);
+  --lighter-second-color: rgba(var(--second-color), 0.7);
   --second-color: var(--lighterThemeColor);
   --third-color: var(--mediumThemeColor);
   --fourth-color: var(--darkerThemeColor);
@@ -75,10 +75,10 @@ body {
 
 
   --first-color: var(--darkestThemeColor);
-  --lighter-first-dark-color: fade-out(var(--first-color), 0.8);
-  --lighter-second-dark-color: fade-out(var(--second-color), 0.7);
-  --lighter-first-color: var(--lighter-first-dark-color);
-  --lighter-second-color: var(--lighter-second-dark-color);
+  --lighter-first-color: rgba(var(--first-color), 0.8);
+  --lighter-second-color: rgba(var(--second-color), 0.7);
+  // --lighter-first-color: var(--lighter-first-dark-color);
+  // --lighter-second-color: var(--lighter-second-dark-color);
   --second-color: var(--darkerThemeColor);
   --third-color: var(--mediumThemeColor);
   --fourth-color: var(--lighterThemeColor);

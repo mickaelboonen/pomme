@@ -69,10 +69,10 @@ $lightestThemeColor: #ffcc9c;
 // $lighterThemeColor: #98c4ac;
 // $lightestThemeColor: #dfe7da;
 
-$lighter-first-light-color: fade-out($lightestThemeColor, 0.8);
-$lighter-first-dark-color: fade-out($darkestThemeColor, 0.8);
-$lighter-second-light-color: fade-out($lighterThemeColor, 0.7);
-$lighter-second-dark-color: fade-out($darkerThemeColor, 0.7);
+// $lighter-first-light-color: fade-out($lightestThemeColor, 0.8);
+// $lighter-first-dark-color: fade-out($darkestThemeColor, 0.8);
+// $lighter-second-light-color: fade-out($lighterThemeColor, 0.7);
+// $lighter-second-dark-color: fade-out($darkerThemeColor, 0.7);
 
 // Buttons
 @mixin addButton {
