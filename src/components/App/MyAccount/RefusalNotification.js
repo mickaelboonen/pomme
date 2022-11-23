@@ -5,7 +5,7 @@ import './style.scss';
 import PageTitle from '../../generics/PageTitle';
 
 const RefusalNotification = () => {
-  const message= '';
+  const message= 'test';
   return (
   <main className='form-page'>
     <PageTitle>Notification de refus définitif</PageTitle>
