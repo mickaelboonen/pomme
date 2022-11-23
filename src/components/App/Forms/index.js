@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import OMForm from '../OMForm';
+import EfForm from '../EfForm';
 import VehicleUseForm from '../VehicleUseForm';
 
 import './style.scss';
@@ -14,7 +15,7 @@ const Forms = () => {
     <main className="form-page">
       {target === 'autorisation-de-vehicule' && (<VehicleUseForm step={step} />) }
       {target === 'ordre-de-mission' && (<OMForm step={step} />) } 
-      {target === 'etat-de-frais' && (<OMForm step={step} />) } 
+      {target === 'etat-de-frais' && (<EfForm step={step} />) } 
     </main>
   );
 }
