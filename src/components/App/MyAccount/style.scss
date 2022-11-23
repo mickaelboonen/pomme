@@ -1,9 +1,12 @@
+@use 'src/styles/vars';
+
 #documents-validation {
     margin: 1rem auto 2rem;
 }
 
 .form__section-theme {
   display: flex;
+  margin-bottom: 2rem;
 
   &-colors {
     display: flex;
@@ -39,4 +42,15 @@
 
     }
   }
+}
+
+@media (min-width: vars.$sm) {
+  
+  .form__section-theme {
+
+    &-colors {
+      height: 5rem;
+      width: 30%;
+      }
+    }
 }

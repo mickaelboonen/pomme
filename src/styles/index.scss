@@ -10,104 +10,49 @@ body {
   box-sizing: border-box;
 }
 
-// $test: #ffcc9c;
-// $lighter-first-light-color: fade-out(#ffcc9c, 0.8);
-// $lighter-first-dark-color: fade-out(#742946, 0.8);
-// $lighter-second-light-color: fade-out(#ff897f, 0.7);
-// $lighter-second-dark-color: fade-out(#99384f, 0.7);
-// $unimes : #99384f;
-// $fadedUnimes : fade-out($unimes, 0.3);
-// $orange : #da8123;
-
 :root {
+  --darkestThemeColor: 116, 41, 70, 1;
+  --darkerThemeColor: 153, 56, 79, 1;
+  --mediumThemeColor: 209, 84, 94, 1;
+  --lighterThemeColor: 255, 137, 127, 1;
+  --lightestThemeColor: 255, 204, 156, 1;
+  --lighterLightestThemeColor: 255, 204, 156, 0.3;
+  --lighterDarkestThemeColor: 116, 41, 70, 0.25;
   
-  --darkestThemeColor: #742946;
-  --darkerThemeColor: #99384f;
-  --mediumThemeColor: #d1545e;
-  --lighterThemeColor: #ff897f;
-  --lightestThemeColor: 255, 204, 156;
+  --header-height: 10vh;
 }
 
 
 :root:not(.dark) {
 
-  --first-color: var(--lightestThemeColor);
-  // --lighter-first-light-color: rgba(var(--first-color), 0.8);
-  // --lighter-second-light-color: rgba(var(--second-color), 0.7);
-  --lighter-first-color: rgba(var(--first-color), 0.8);
-  --lighter-second-color: rgba(var(--second-color), 0.7);
-  --second-color: var(--lighterThemeColor);
-  --third-color: var(--mediumThemeColor);
-  --fourth-color: var(--darkerThemeColor);
-  --fifth-color: var(--darkestThemeColor);
+  --first-color: rgba(var(--lightestThemeColor));
+  --lighter-first-color: rgba(var(--lighterLightestThemeColor));
+  --second-color: rgba(var(--lighterThemeColor));
+  --third-color: rgba(var(--mediumThemeColor));
+  --fourth-color: rgba(var(--darkerThemeColor));
+  --fifth-color: rgba(var(--darkestThemeColor));
   --opposite-theme-color: #1a1a1a;
   --theme-color: #fff;
 
-  --menu-color: var(--lightestThemeColor);
-  --menu-title-color: var(--darkestThemeColor);
-  --dark-color: var(--darkestThemeColor);
-  --thread-background: var(--second-color);
-
-  --header-height: 10vh;
-
-
-
-  // --first-color: #{vars.$lightestThemeColor};
-  // --lighter-first-color: #{vars.$lighter-first-light-color};
-  // --lighter-second-color: #{vars.$lighter-second-light-color};
-  // --second-color: #{vars.$lighterThemeColor};
-  // --third-color: #{vars.$mediumThemeColor};
-  // --fourth-color: #{vars.$darkerThemeColor};
-  // --fifth-color: #{vars.$darkestThemeColor};
-  // --opposite-theme-color: #1a1a1a;
-  // --theme-color: #fff;
-
-  // --menu-color: #{vars.$lightestThemeColor};
-  // --menu-title-color: #{vars.$darkestThemeColor};
-  // --dark-color: #{vars.$darkestThemeColor};
-  // --thread-background: var(--second-color);
-
-  // --header-height: 10vh;
-  
+  --menu-color: rgba(var(--lightestThemeColor));
+  --menu-title-color: rgba(var(--darkestThemeColor));
+  --dark-color: rgba(var(--darkestThemeColor));
+  --thread-background: rgba(var(--lighterThemeColor));
 }
 
 :root.dark {
-
-
-  --first-color: var(--darkestThemeColor);
-  --lighter-first-color: rgba(var(--first-color), 0.8);
-  --lighter-second-color: rgba(var(--second-color), 0.7);
-  // --lighter-first-color: var(--lighter-first-dark-color);
-  // --lighter-second-color: var(--lighter-second-dark-color);
-  --second-color: var(--darkerThemeColor);
-  --third-color: var(--mediumThemeColor);
-  --fourth-color: var(--lighterThemeColor);
-  --fifth-color: var(--lightestThemeColor);
+  --first-color: rgba(var(--darkestThemeColor));
+  --lighter-first-color: rgba(var(--lighterDarkestThemeColor));
+  --second-color: rgba(var(--darkerThemeColor));
+  --third-color: rgba(var(--mediumThemeColor));
+  --fourth-color: rgba(var(--lighterThemeColor));
+  --fifth-color: rgba(var(--lightestThemeColor));
   --opposite-theme-color: #fff;
-  --theme-color: var(--first-color);
+  --theme-color: rgba(var(--darkestThemeColor));
 
-  --menu-color: var(--first-color);
+  --menu-color: rgba(var(--darkestThemeColor));
   --dark-color: #1a1a1a;
-  --menu-title-color: var(--fifth-color);
-  --thread-background: var(--second-color);
-
-
-  // --first-color: #{vars.$darkestThemeColor};
-  // --lighter-first-color: #{vars.$lighter-first-dark-color};
-  // --lighter-second-color: #{vars.$lighter-second-dark-color};
-  // --second-color: #{vars.$darkerThemeColor};
-  // --third-color: #{vars.$mediumThemeColor};
-  // --fourth-color: #{vars.$lighterThemeColor};
-  // --fifth-color: #{vars.$lightestThemeColor};
-  // --opposite-theme-color: #fff;
-  // --theme-color: var(--first-color);
-
-  // --menu-color: var(--first-color);
-  // --dark-color: #1a1a1a;
-  // --menu-title-color: var(--fifth-color);
-  // --thread-background: var(--second-color);
+  --menu-title-color: rgba(var(--lightestThemeColor));
+  --thread-background: rgba(var(--darkerThemeColor));
 }
 
-// main {
-//   height: 90vh;
-// }

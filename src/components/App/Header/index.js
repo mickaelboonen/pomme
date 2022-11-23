@@ -83,6 +83,7 @@ const Header = () => {
               <li><Link to={`/utilisateur/${userName}/mes-ordres-de-mission`}>Mes Ordres de Mission <span id="mes-oms">1</span></Link></li>
               <li><Link to={`/utilisateur/${userName}/mes-états-de-frais`}>Mes États de Frais <span id="mes-efs"></span></Link></li>
               <li><Link to={`/utilisateur/${userName}/mes-documents`}>Mes Justificatifs</Link></li>
+              <li><Link to={`/utilisateur/${userName}/mes-préférences`}>Mes Préférences</Link></li>
               <li><a>Se déconnecter</a></li>
             </ul>
           </div>

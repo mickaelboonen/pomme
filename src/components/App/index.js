@@ -19,11 +19,12 @@ import DAFC from './DAFC';
 import EfControl from './DAFC/EfControl';
 import EfValidation from './DAFC/EfValidation';
 import OmToGFC from './DAFC/OmToGFC';
-import MyData from './MyAccount/newIndex';
+import Preferences from './MyAccount/Preferences';
 
 // == Composant
 function App() {
   const theme = localStorage.getItem('theme');
+  const colorTheme = localStorage.getItem('color-theme');
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -32,6 +33,9 @@ function App() {
       const menuButton = document.querySelector('#theme-switch-menu');
       headerButton.checked = true;
       menuButton.checked = true;
+    }
+    if (colorTheme !== '') {
+      document.documentElement.style = colorTheme;
     }
   }, [])
   return (
@@ -46,11 +50,12 @@ function App() {
         <Route path="/gestionnaire/:slug/refuser-un-ordre-de-mission/:id" element={<DocRefusalForm />} />
         <Route path="/documents/:slug/nouveau" element={<Forms />} />
         <Route path="/utilisateur/:slug/mes-documents" element={<MyAccount />} />
-        <Route path="/utilisateur/:slug/mes-documents/ajouter-un-vehicule" element={<AddVehicle />} />
+        <Route path="/utilisateur/:slug/mes-documents/ajouter-un-véhicule" element={<AddVehicle />} />
         <Route path="/utilisateur/:slug/mes-documents/modifier-un-vehicule/:id" element={<EditVehicle />} />
         <Route path="/utilisateur/:slug/mes-documents/refus-de-mission" element={<RefusalNotification />} />
         <Route path="/utilisateur/:slug/mes-documents/état-liquidatif-à-signer" element={<ELForm />} />
         <Route path="/utilisateur/:slug/mes-documents/demander-un-déplacement/:id" element={<TicketRequest />} />
+        <Route path="/utilisateur/:slug/mes-préférences" element={<Preferences />} />
         <Route path="/dafc/états-de-frais" element={<DAFC title="États de frais à valider"/>} />
         <Route path="/dafc/états-de-frais/contrôler/:id" element={<EfControl />} />
         <Route path="/dafc/états-de-frais/valider/:id" element={<EfValidation />} />
@@ -60,6 +65,7 @@ function App() {
         
         {/* TODO : Routes a supprimer lorsque j'aurai la réécriture d'url */}
         <Route path="/dafc/%C3%A9tats-de-frais" element={<DAFC title="États de frais à valider"/>} />
+        <Route path="/utilisateur/:slug/mes-pr%C3%A9f%C3%A9rences" element={<Preferences />} />
         <Route path="/dafc/%C3%A9tats-de-frais/contr%C3%B4ler/:id" element={<EfControl />} />
         <Route path="/dafc/%C3%A9tats-de-frais/valider/:id" element={<EfValidation />} />
         <Route path="/dafc/ordres-de-mission" element={<DAFC title="Ordres de mission à contrôler" />} />
@@ -69,7 +75,6 @@ function App() {
         <Route path="/utilisateur/:slug/mes-documents/%C3%A9tat-liquidatif-%C3%A0-signer" element={<ELForm />} />
         <Route path="/utilisateur/:slug/mes-documents/demander-un-d%C3%A9placement/:id" element={<TicketRequest />} />
         <Route path="/utilisateur/:slug/mes-%C3%A9tats-de-frais" element={<MyDocuments />} />
-        <Route path="/da"  element={<MyData />} />
       </Routes>
       <script type="text/javascript" src="bootstrap-datetimepicker.de.js" charSet="UTF-8"></script>
     </div>
