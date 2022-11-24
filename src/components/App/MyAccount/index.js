@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import PropTypes from 'prop-types';
 
@@ -23,7 +23,7 @@ const MyAccount = () => {
   const onSubmit = (data) => {
     console.log(data);
   };
-const userName = 'mboone01';
+  const userName = 'mboone01';
 
   const handleClick = (event) => {
     const { id } = event.target;

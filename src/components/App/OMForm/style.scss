@@ -109,7 +109,8 @@
       margin-bottom: 1rem;
 
       &:nth-of-type(2) {
-        @include vars.centeredFlex;
+        // TROUVER UNE SOLUTION POUR LES PIECES JUTIFICATIVES
+        // @include vars.centeredFlex;
 
         & img {
           height: 100%;

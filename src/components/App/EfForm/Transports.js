@@ -1,18 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from 'react-router-dom';
-import Logo from '../../../assets/images/pdf.svg';
+import { useNavigate } from 'react-router-dom';
 
 import './style.scss';
 import FormSectionTitle from '../../generics/FormSectionTitle';
 import RefusalMessage from './Fields/RefusalMessage';
 import Buttons from './Fields/Buttons';
-import RadioInput from './Fields/RadioInput';
-import CheckboxInput from './Fields/CheckboxInput';
 import FileField from './Fields/FileField';
 import SwitchButton from '../../generics/SwitchButton';
-import SelectField from './Fields/SelectField';
 import TextField from './Fields/TextField';
 
 const Transports = ({ step }) => {
@@ -39,6 +35,7 @@ const Transports = ({ step }) => {
       max: '',
       label: 'Avion',
       filename: 'Avion.png',
+      filelabel:"Billets d'avion (si non payé par Unîmes)",
     },
     {
       formField: 'train',
@@ -46,6 +43,7 @@ const Transports = ({ step }) => {
       max: '',
       label: 'Train',
       filename: 'train.pdf',
+      filelabel:'Billets de train (si non payé par Unîmes)',
     },
     {
       formField: 'personal-car',
@@ -53,6 +51,7 @@ const Transports = ({ step }) => {
       max: '',
       label: 'Véhicule personnel (sur autorisation préalable)',
       filename: 'A changer',
+      filelabel:'A voir, champs supplémentaires',
     },
     {
       formField: 'rent-car',
@@ -60,6 +59,7 @@ const Transports = ({ step }) => {
       max: '',
       label: 'Véhicule de location (sur autorisation préalable)',
       filename: 'Filename.pdf',
+      filelabel:'Facture nominative acquittée du loueur',
     },
     {
       formField: 'fuel',
@@ -67,6 +67,7 @@ const Transports = ({ step }) => {
       max: '',
       label: 'Carburant pour véhicule personnel ou de location (sur autorisation préalable)',
       filename: 'Facture',
+      filelabel:'Facture',
     },
     {
       formField: 'toll',
@@ -74,6 +75,7 @@ const Transports = ({ step }) => {
       max: '',
       label: 'Frais de péage',
       filename: 'filename.pdf',
+      filelabel:'Reçu ou ticket',
     },
     {
       formField: 'parking',
@@ -81,6 +83,7 @@ const Transports = ({ step }) => {
       max: '',
       label: 'Parking',
       filename: 'filename.pdf',
+      filelabel:'Reçu ou ticket',
     },
     {
       formField: 'Taxi',
@@ -88,6 +91,7 @@ const Transports = ({ step }) => {
       max: '',
       label: 'Taxi',
       filename: 'filename.pdf',
+      filelabel:'Facture nominative acquittée',
     },
     {
       formField: 'public-transports',
@@ -95,6 +99,7 @@ const Transports = ({ step }) => {
       max: '',
       label: 'Bus, RER, métro',
       filename: 'filename.pdf',
+      filelabel:'Ticket',
     },
     {
       formField: 'research',
@@ -102,42 +107,10 @@ const Transports = ({ step }) => {
       max: '',
       label: "Frais d'inscription à un colloque ou réunion / séminaire scientifique (*)",
       filename: 'filename.pdf',
+      filelabel:'Facture nominative acquittée et programme',
     },
-    // {
-    //   formField: 'other',
-    //   id: 'other-field',
-    //   max: '',
-    //   label: 'Autres (à préciser)',
-    //   filename: 'filename.pdf',
-    // },
   ];
 
-
-  const handleVehicleChange = (event) => {
-    const personalCarField = document.querySelector('#personal-car-field');
-    const isHidden = personalCarField.className.includes('hidden');
-
-    if (event.target.value === 'Véhicule personnel, de prêt' && isHidden) {
-      personalCarField.classList.remove('form__section-field--hidden');
-    }
-    else {
-      personalCarField.classList.add('form__section-field--hidden');
-    }
-  };
-
-  const handleClick = () => {
-    
-    const firstClassTrain = document.querySelector('#first-class');
-    const businessClassPlane = document.querySelector('#business-class');
-    const parentSection = document.querySelector('#class-certificate').closest('.form__section-field');
-
-    if (firstClassTrain.checked || businessClassPlane.checked) {
-      parentSection.classList.remove('form__section-field--hidden');
-    }
-    else {
-      parentSection.classList.add('form__section-field--hidden');
-    }
-  };
 
   const handleSwitch = (event) => {
     const otherFieldsGroupElement = document.getElementById('other-fields');
@@ -152,13 +125,39 @@ const Transports = ({ step }) => {
       otherFieldsGroupElement.classList.add('form__section--hidden');
       otherTextFieldElement.classList.add('form__section-field--hidden');
     }
-  }
-  
-  const vehicles = [
-    'Véhicule personnel, de prêt', 
-    'Véhicule 1', 
-    'Véhicule 2', 
-  ];
+  } 
+
+  useEffect(() => {
+      const allHalves = document.querySelectorAll('.form__section--documents');
+
+        let heights = [];
+
+      Array.from(allHalves).forEach((section) => {
+        // console.log(section);
+        const currentHalves = [];
+        const labels = Array.from(section.querySelectorAll('label'));
+        // console.log(labels);
+        labels.forEach((currentLabel) => {
+          currentHalves.push(currentLabel.offsetHeight);
+        })
+        
+
+        if (currentHalves[0] > currentHalves[1]) {
+          labels[1].style.height = `${currentHalves[0]}px`;
+          labels[1].style.display = 'flex';
+          labels[1].style.alignItems = 'flex-end';
+        }
+        else if (currentHalves[1] > currentHalves[0]) {
+          labels[0].style.display = 'flex';
+          labels[0].style.alignItems = 'flex-end';
+
+        }
+        heights.push(currentHalves);
+
+      })
+        console.log(heights);
+
+  }, [])
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section">
@@ -177,9 +176,14 @@ const Transports = ({ step }) => {
               />
             </div>
             <div className='form__section-half'>
-              <img src={Logo} alt="" />
-              <p>{field.filename}</p>
-
+              <FileField
+                register={register}
+                formField={`${field.formField}-files`}
+                id={`${field.formField}-files`}
+                multiple
+                label={field.filelabel}
+                placeholder=""
+              />
             </div>
           </div>
         ))}
@@ -211,8 +215,14 @@ const Transports = ({ step }) => {
             />
           </div>
           <div className='form__section-half'>
-            <img src={Logo} alt="" />
-            <p>{'filename.png'}</p>
+            <FileField
+              register={register}
+              formField="other-amount-files"
+              id="other-amount-field-files"
+              multiple
+              label="Justificatifs de paiements, factures"
+              placeholder=""
+            />
           </div>
         </div>
       </div>
