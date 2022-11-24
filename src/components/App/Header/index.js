@@ -26,19 +26,11 @@ const Header = () => {
   const handleHover = (event) => {
     const el = event.currentTarget.querySelector('.header__menu-section-list');
     el.classList.add('header__menu-section-list--open');
-
-    if (event.currentTarget.id === 'mon-compte') {
-      event.currentTarget.nextElementSibling.classList.add('header__menu-section--last-open');
-    }
   };
 
   const handleMouseOut = (event) => {
     const el = event.currentTarget.querySelector('.header__menu-section-list');
     el.classList.remove('header__menu-section-list--open')
-
-    if (event.currentTarget.id === 'mon-compte') {
-      event.currentTarget.nextElementSibling.classList.remove('header__menu-section--last-open');
-    }
   };
 
   const userName = 'mboone01';
@@ -71,11 +63,11 @@ const Header = () => {
             </ul>
           </div>
           <div className="header__menu-section" id="a-signer" onMouseOver={handleHover} onMouseOut={handleMouseOut}>
-            <Link to={`/gestionnaire/${role}/documents-a-signer`}>A SIGNER</Link>
-            {/* <ul className="header__menu-section-list">
+            <Link to={`/gestionnaire/${role}/documents-a-signer`}>GESTIONNAIRE</Link>
+            <ul className="header__menu-section-list">
               <li><Link to={`/gestionnaire/${userName}/documents-a-signer/ordres-de-missions`}>Ordres de Mission <span id="mes-oms">1</span></Link></li>
               <li><Link to={`/gestionnaire/${userName}/documents-a-signer/états-de-frais`}>États de Frais <span id="mes-oms">1</span></Link></li>
-            </ul> */}
+            </ul>
           </div>
           <div className="header__menu-section" id="mon-compte" onMouseOver={handleHover} onMouseOut={handleMouseOut}>
             <p>MON COMPTE</p>
@@ -87,7 +79,6 @@ const Header = () => {
               <li><a>Se déconnecter</a></li>
             </ul>
           </div>
-          <div className="header__menu-section"/>
         </nav>
       </div>
       <SmallScreenMenu />

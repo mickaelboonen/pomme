@@ -1,7 +1,16 @@
 .app {
   text-align: center;
   width: 100%;
-  // background-color: #ffcc9c;
+  display: flex;
+  flex-direction: column;
+
+  & header {
+    order: 1;
+  }
+
+  & main {
+    order: 2;
+  }
 }
 
 

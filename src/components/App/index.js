@@ -40,7 +40,6 @@ function App() {
   }, [])
   return (
     <div className="app">
-      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/utilisateur/:slug/mes-ordres-de-mission" element={<MyDocuments />} />
@@ -76,6 +75,7 @@ function App() {
         <Route path="/utilisateur/:slug/mes-documents/demander-un-d%C3%A9placement/:id" element={<TicketRequest />} />
         <Route path="/utilisateur/:slug/mes-%C3%A9tats-de-frais" element={<MyDocuments />} />
       </Routes>
+      <Header />
       <script type="text/javascript" src="bootstrap-datetimepicker.de.js" charSet="UTF-8"></script>
     </div>
   );
