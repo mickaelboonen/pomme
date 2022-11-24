@@ -1,419 +1,138 @@
-// @use 'src/styles/vars';
+@use 'src/styles/vars';
 
-// .form-page  {
-//   width: 100%;
-//   background-color: var(--lighter-first-color);
-//   min-height: 90vh;
+.step {
+  border: 1px solid #1a1a1a;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #fff;
 
-//   &__notification {
-//     width: 70%;
-//     margin: auto;
-//     background-color: var(--lighter-first-color);
-//     border: 1px solid #1a1a1a;
-//     padding: 1rem;
+  &__title {
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 1rem;
+  }
 
-//     &-message {
-
-//       &--refusal {
-//         margin: 1rem auto;
-//         width: 50%;
-//         border-radius: 5px; 
-//         background-color: rgb(250, 148, 148);
-//         color: rgb(117, 13, 13);
-//         padding: 0.5rem;
-//         border: 1px solid rgb(117, 13, 13);
-//       }
-      
-//     }
-
-//     &-button button{
-      
-//       @include vars.button;
-//       margin: 1rem;
-//     }
-//   }
-
-//   &__thread {
-
-
-//     &-step {
-//       display: none;
-//       height: 5vh;
-//       border: 1px solid var(--dark-color);
-//       background-color: var(--thread-background);
-//       text-transform: uppercase;
-//       font-size: 0.8em;
-//       color: var(--fourth-color);
-//       font-weight: bold;
-//       // z-index: 0;
-
-
-//       &--open {
-//         @include vars.centeredFlex;
-//         // z-index: 0;
-//         font-style: italic;
-//         color: var(--first-color);
-//         // color: var(--fourth-color);
-//         // background-color: vars.$fadedUnimes;
-//         background-color: var(--fifth-color);
-//         box-shadow: 0px 0px 5px var(--dark-color);
-//       }
-//     }
-//   }
-
-//   &__container {
-//     @include vars.centeredFlex;
-//     flex-direction: column;
-
-//     &-link  {
-//       all: unset;
-//       cursor: pointer;
-//       color: var(--third-color);
-//       text-decoration: underline;
-//       font-size: 0.8em;
-//       margin: 1rem auto 2rem;
-//     }
-//   }
-// }
-
-// .form {
-//   width: 90%;
-//   margin: auto;
-//   max-width: 700px;
-//   height: fit-content;
-//   padding: 1rem 1rem 0;
-
-//   // TODO : pas bon, pas a cet endroit
-//   &-page {
-//     // padding-top: 1rem;
-//     position: relative;
-//   }
-
-//   &__section {
+  &__container {
     
-//     &-notification {
-//     }
+    &-date-place, &-classes {
+      padding: 1rem 0 0;
+      // border: 1px solid red;
+
+      &-title {
+        
+        text-transform: uppercase;
+        text-align: center;
+        font-size: 1.2em;
+        color: var(--third-color);
+        text-shadow: 1px 1px 1px var(--dark-color);
+        margin-bottom: 1rem;
+        border-bottom: 1px solid var(--dark-color);
+        padding-bottom: 0.3rem;
+      }
+    }
+  }
+}
+
+.classes {
+  width: 100%;
+  height: 80%;
+
+  & thead {
+    & tr {
+      height: 2rem;
+    }
+  }
+
+  & tr {
+    height: 3rem;
+    display: flex;
+    justify-content: space-between;
+
+    & td, & th {
+      height: 100%;
+      width: 31%;
+
+      &:nth-of-type(1) {
+        // width: 31%;
+        @include vars.centeredFlex;
+        justify-content: flex-end
+      }
+    }
+  }
+
+  & th {
+    @include vars.centeredFlex;
+    padding: 0.3rem;
+    text-transform: uppercase;
+  }
+}
+
+@media (min-width: vars.$sm) {
+  .step {
     
-//     &-notification-message {
-//       text-align: left;
-//       margin: 1rem 1rem 2rem;
-//     }
+    &__title {
+      text-transform: uppercase;
+      text-align: left;
+      font-size: 1.2em;
+      // color: var(--third-color);
+      margin-bottom: 1rem;
+    }
 
-//     &--documents {
-//       display: flex;
-//     }
+    &__container {
+      display: flex;
 
-//     &-half {
-//       width: 50%;
-//       height: 4rem;
-//       margin-bottom: 1rem;
-
-//       &:nth-of-type(2) {
-//         @include vars.centeredFlex;
-
-//         & img {
-//           height: 100%;
-//         }
-//       }
-//     }
-
-//     &-container{
-//       border: 1px solid rgb(153, 150, 150);
-//       padding: 0.5rem;
-//       border-radius: 5px;
-//       margin-bottom: 1rem;
-
-//       &-options {
+      &-date-place {
+        border-right: 1px solid var(--third-color);
+        border-bottom: 0;
+      }
+  
+      &-classes {
         
-//       }
-//       &-button {
-//          & a, & button {
-//           @include vars.button;
-//           @include vars.centeredFlex;
-//           max-width: 100%;
-//           margin: 0;
-//           margin: 1rem;
-//           font-size: 1em;
-//           height: 2.5rem;
-//          }
-//          &--hidden {
-//             display: none;
-//         }
-//       }
-//     }
+        &-title {
+          // height: 10%;
+        }
+      }
+      &-date-place, &-classes {
+        width: 50%;
+        padding: 1rem 1rem 0;
+        // border: 1px solid red;
+      }
+    }
+  }
+  
 
-//     &-field {
-//       display: flex;
-//       flex-flow: column nowrap;
-//       margin-bottom: 1rem;
+.classes {
+  width: 100%;
+  height: 80%;
 
-//       &-container {
-//         display: flex;
-//       }
+  & thead {
+    & tr {
+      height: 2rem;
+    }
+  }
 
-//       &-pre-input{
-//         width: 3rem;
-//         border: 0.5px solid rgb(153, 150, 150);
-//         background-color: var(--third-color);;
-//         border-right: 0;
-//         height: 2.5rem;
-//         border-radius: 5px 0 0 5px;
-//         margin-top: 0.1rem;
-//         @include vars.centeredFlex;
-//       }
+  & tr {
+    height: 3rem;
+    display: flex;
+    justify-content: space-between;
 
-//       &-input-text {
-//         width: calc(100% - 3.1rem);
-//         position: relative;
-//         padding: 0.5rem;
-//         min-height: 2.5rem;
-//         margin-top: 0.1rem;
-//         border-radius: 0 5px 5px 0;
-//         border: 0.5px solid rgb(153, 150, 150);
-//         border-width: 0.5px;
-//       }
+    & td, & th {
+      height: 100%;
+      width: 31%;
 
-//       &-input {
-//         width: 100%;
-//         position: relative;
-//         padding: 0.5rem;
-//         min-height: 2.5rem;
-//         margin-top: 0.1rem;
-//         border-radius: 5px;
-//         border: 0.5px solid rgb(153, 150, 150);
-//         background-color: #fff;
-//         border-width: 0.5px;
+      &:nth-of-type(1) {
+        width: 31%;
+        @include vars.centeredFlex;
+        justify-content: flex-end
+      }
+    }
+  }
 
-//         & div {
-//           text-align: left;
-//           margin-left: 3rem;
-//           height: 100%;
-//         }
-
-//         &--file {
-//           &-input {
-            
-//             padding-left: 3rem;
-//             position: fixed;
-//             top: -1rem;
-//             // z-index: -1;
-//             font-size: 0;
-//             display: none;
-//           }
-
-//           &::before {
-//             content: url('../../../assets/images/upload.svg');
-//             width: 3rem;
-//             left: 0rem;
-//             top: 0;
-//             background-color: var(--third-color);
-//             height: 100%;
-//             position: absolute;
-//             text-align: center;
-//             padding-top: 0.5rem;
-//             cursor: pointer;
-//           }
-//         }
-//         &--file::before {
-
-//         }
-
-//       }
-
-//       &-label {
-//         font-size: 0.7em;
-//         font-weight: bold;
-//         text-align: left;
-//         margin-bottom: 0.1rem;
-
-//         &--infos {
-//           font-style: italic;
-//           margin-top: 0.1rem
-//         }
-
-//         & span {
-//           font-variant-position: super;
-//         }
-//       }
-
-//       &-radio {
-//         display: flex;
-
-//         & input {
-//           margin-right: 1rem;
-//         }
-
-//         & label {
-//           font-size: 0.9em;
-//           text-align: left;
-//         }
-//       }
-
-//       &--hidden {
-//         display: none;
-//       }
-
-//       &-refusal {
-//         width: 80%;
-//         margin: auto;
-//         background-color: rgb(250, 148, 148);
-//         color: rgb(117, 13, 13);
-//         border: 1px solid rgb(117, 13, 13);
-//         padding: 1rem;
-//         border-radius: 10px;
-//       }
-
-//       &-checkbox {
-//         display: flex;
-//         align-items: center;
-//         margin: 0.5rem 0 0 1rem;
-
-//         &:nth-of-type(2) {
-//           margin-top: 0;
-//         }
-//       }
-
-//       &-buttons {
-//         display: flex;
-//         justify-content: center;
-//         margin: 2rem;
-
-
-//          & button {
-//           @include vars.button;
-
-//           &:nth-of-type(2) {
-//             margin: 0;
-//           }
-//         }
-
-//         &--validation {
-//           flex-direction: column;
-
-//           & button {
-//             margin: 0 auto 1.5rem ;
-
-//             &:nth-of-type(2),
-//             &:nth-of-type(3) {
-//               margin: 0 auto 0.5rem;
-//             }
-//           }
-//         }
-//       }
-
-//       &-toggle {
-//         text-align: left;
-//       }
-
-//       &-textarea {
-        
-//         font-family: inherit;
-//         padding: 0.5rem;
-//         border: 0.5px solid rgb(153, 150, 150);
-//         border-radius: 5px;
-//       }
-
-//       &-button {
-//         margin: 1rem auto 2rem;
-//       }
-//     }
-
-//     &-progress {
-//       width: 100%;
-//       height: 1.5rem;
-//       border-radius: 5px;
-//       overflow: hidden;
-//       background-color: var(--first-color);
-//       border: 1px solid var(--third-color);
-//       position: relative;
-//       margin-bottom: 2rem;
-
-//       &-partial {
-//         height: 100%;
-//         border-radius: inherit;
-//         background-color: var(--third-color);
-//         border: 2px solid var(--first-color);
-//         transition: 1s;
-        
-//         &-percent {
-//           position: absolute;
-//           left: 48%;
-//           top: 10%;
-//           color: var(--fifth-color);
-
-//           &--light {
-//             color: var(--first-color);
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
-
-
-
-// @media (min-width: vars.$sm) {
-//   .form-page {
-//     background-color: #fff;
-//     &__thread {
-//       width: 100%;
-//       display: flex;
-//       // z-index: -1;
-
-//       &-step {
-//         width: 20%;
-//         @include vars.centeredFlex;
-        
-//         &--solo {
-//           width: 100%;
-//         }
-
-//         & span {
-//           display: none;
-//         }
-//       }
-//     }
-//   }
-
-//   .form {
-//     padding: 2rem 2rem 0;
-//     width: 75%;
-//     background-color: var(--lighter-first-color);
-//     border: 1px solid #1a1a1a;
-
-//     &__section-container-options {
-//       display: flex;
-//       justify-content: space-between;
-//       align-items: center;
-
-//       & .form__section-field,
-//       & .form__section-container-button {
-//         width: 40%;
-
-//         & a {
-//           border: 1px solid #1a1a1a;
-//           width: 100%;
-//           height: 2.5rem;
-//           max-width: 100%;
-//           margin: 0;
-
-//           &:focus,
-//           &:hover {
-//             color: #fff;
-//           }
-//         }
-//       }
-//     } 
-//   }
-
-// }
-
-// @media (min-width: 800px) {
-//   .form-page__thread {
-
-//     &-step {
-//       font-size: 1em;
-//     }
-//   }
-
-// }
+  & th {
+    @include vars.centeredFlex;
+    padding: 0.3rem;
+    text-transform: uppercase;
+  }
+}
+}

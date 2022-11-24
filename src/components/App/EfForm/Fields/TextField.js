@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './style.scss';
 import classNames from 'classnames';
 
-const TextField = ({ placeholder, id, label, formField, register, isNumber, isHidden, min, value, disabled}) => {
+const TextField = ({ placeholder, id, label, formField, register, max, isNumber, isHidden, min, value, disabled}) => {
   const type = isNumber ? 'number' : 'text';
   return (
     <div className={classNames("form__section-field", { "form__section-field--hidden": isHidden })} id={formField}>
@@ -13,6 +13,7 @@ const TextField = ({ placeholder, id, label, formField, register, isNumber, isHi
         id={id}
         type={type}
         min={min}
+        max={max}
         value={value}
         disabled={disabled}
         placeholder={placeholder}
@@ -32,6 +33,7 @@ TextField.defaultProptypes = {
   isHidden: false,
   disabled: false,
   min: '',
+  max: '',
   value: null,
   placeholder: '',
 };
