@@ -28,7 +28,7 @@ const Signature = ({ step }) => {
 
     // Next Step
     const nextStep = step++;
-    // navigate('/documents/ordre-de-mission/nouveau?etape=' + step++);
+    navigate('/nouveau-document/ordre-de-mission?etape=' + step++);
 
     
   };

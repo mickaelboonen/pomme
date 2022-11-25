@@ -13,7 +13,7 @@ const Buttons = ({ step }) => {
   const handleClick = () => {
     let previousStep = step;
     previousStep--;
-    navigate('/documents/ordre-de-mission/nouveau?etape=' + previousStep);
+    navigate('/nouveau-document/ordre-de-mission?etape=' + previousStep);
   }
   return (
     <div className="form__section">

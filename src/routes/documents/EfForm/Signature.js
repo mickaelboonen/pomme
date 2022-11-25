@@ -26,10 +26,7 @@ const Signature = ({ step }) => {
 
     // TODO : Process Data
 
-    // Next Step
-    const nextStep = step++;
-    // navigate('/documents/ordre-de-mission/nouveau?etape=' + step++);
-
+    navigate('/nouveau-document/état-de-frais?etape=' + step++)
     
   };
 

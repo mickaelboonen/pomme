@@ -62,7 +62,7 @@ const Header = () => {
               <li><Link to="/dafc/états-de-frais">États de Frais <span id="mes-oms">1</span></Link></li>
             </ul>
           </div>
-          <div className="header__menu-section" id="a-signer" onMouseOver={handleHover} onMouseOut={handleMouseOut}>
+          <div className="header__menu-section" id="a-signer">
             <Link to={`/gestionnaire/${role}/documents-a-signer`}>GESTIONNAIRE</Link>
             {/* <ul className="header__menu-section-list">
               <li><Link to={`/gestionnaire/${userName}/documents-a-signer/ordres-de-missions`}>Ordres de Mission <span id="mes-oms">1</span></Link></li>

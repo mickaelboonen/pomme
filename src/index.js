@@ -83,8 +83,11 @@ const router = createBrowserRouter([
           },
           {
             path: 'mes-documents/',
-            element: <MyAccount />,
             children: [
+              {
+                index: true,
+                element: <MyAccount />
+              },
               {
                 path: 'ajouter-un-véhicule',
                 element: <AddVehicle />

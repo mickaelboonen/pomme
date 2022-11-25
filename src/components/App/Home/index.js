@@ -20,7 +20,7 @@ const Home = () => {
     <section className="home__new">
       <TitleH3>Nouveau document</TitleH3>
       <div className="home__new-buttons">
-        <Link to="/documents/ordre-de-mission/nouveau?etape=1">
+        <Link to="/nouveau-document/ordre-de-mission?etape=1">
           <div className="home__new-buttons-item">
             <img src={Plus} alt="" />
             <p>Ordre de Mission</p>
