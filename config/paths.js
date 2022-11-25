@@ -1,5 +1,6 @@
 const path = require('path');
 
+
 module.exports = {
   root: path.resolve(__dirname, '../'), // source files
   src: path.resolve(__dirname, '../src'), // source files

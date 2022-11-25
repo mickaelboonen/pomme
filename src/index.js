@@ -5,28 +5,27 @@ import {
   RouterProvider,
   Route,
 } from "react-router-dom";
-import DAFC from "./components/App/DAFC";
-import EfControl from "./components/App/DAFC/EfControl";
-import EfValidation from "./components/App/DAFC/EfValidation";
-import OmToGFC from "./components/App/DAFC/OmToGFC";
-import EfForm from "./components/App/EfForm";
-import Gestionnaires from "./components/App/Gestionnaire";
-import DocRefusalForm from "./components/App/Gestionnaire/DocRefusal";
-import DocValidationForm from "./components/App/Gestionnaire/DocValidationForm";
-// import "./index.css";
+import DAFC from "src/routes/dafc";
+import Layout from 'src/routes/layout';
+import Home from 'src/routes/layout/Home';
+import OmToGFC from "src/routes/dafc/OmToGFC";
+import OMForm from "src/routes/documents/OMForm";
+import EfForm from "src/routes/documents/EfForm";
+import EfControl from "src/routes/dafc/EfControl";
+import Gestionnaires from "src/routes/gestionnaire";
+import EfValidation from "src/routes/dafc/EfValidation";
+import MyAccount from "src/routes/utilisateur/MyAccount";
+import ELForm from "src/routes/utilisateur/MyAccount/ELForm";
+import MyDocuments from "src/routes/utilisateur/MyDocuments";
+import DocRefusalForm from "src/routes/gestionnaire/DocRefusal";
+import VehicleUseForm from "src/routes/documents/VehicleUseForm";
+import AddVehicle from "src/routes/utilisateur/MyAccount/AddVehicle";
+import EditVehicle from "src/routes/utilisateur/MyAccount/EditVehicle";
+import Preferences from "src/routes/utilisateur/MyAccount/Preferences";
+import DocValidationForm from "src/routes/gestionnaire/DocValidationForm";
+import TicketRequest from "src/routes/utilisateur/MyAccount/TicketRequest";
+import RefusalNotification from "src/routes/utilisateur/MyAccount/RefusalNotification";
 
-import Home from './components/App/Home';
-import Layout from './components/App/Layout';
-import MyAccount from "./components/App/MyAccount";
-import AddVehicle from "./components/App/MyAccount/AddVehicle";
-import EditVehicle from "./components/App/MyAccount/EditVehicle";
-import ELForm from "./components/App/MyAccount/ELForm";
-import Preferences from "./components/App/MyAccount/Preferences";
-import RefusalNotification from "./components/App/MyAccount/RefusalNotification";
-import TicketRequest from "./components/App/MyAccount/TicketRequest";
-import OMForm from "./components/App/OMForm";
-import VehicleUseForm from "./components/App/VehicleUseForm";
-import MyDocuments from "./routes/documents";
 
 const router = createBrowserRouter([
   {

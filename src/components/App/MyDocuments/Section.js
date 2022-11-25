@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import FileMenu from '../../generics/FileMenu';
-import FileDisplay from '../../generics/FileDisplay';
+import FileMenu from 'src/components/FileMenu';
+import FileDisplay from '../../FileDisplay';
 
 import './style.scss';
 import classNames from 'classnames';
-import FileDisplayLink from '../../generics/FileDisplayLink';
+import FileDisplayLink from 'src/components/FileDisplayLink';
 
 const Section = ({ id, data, isFirstSection, hasLinks }) => {
 

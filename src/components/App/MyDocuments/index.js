@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FileMenu from '../../generics/FileMenu';
-import FileDisplay from '../../generics/FileDisplay';
-import Tabs from '../../generics/Tabs';
-import PageTitle from '../../generics/PageTitle';
+// import FileMenu from 'src/components/FileMenu';
+// import FileDisplay from 'src/components/FileDisplay';
+import Tabs from '../../../components/Tabs';
+import PageTitle from '../../../components/PageTitle';
 
 import './style.scss';
 import { useLocation } from 'react-router-dom';

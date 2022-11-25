@@ -1,0 +1,67 @@
+@use 'src/styles/vars';
+
+.dafc {
+  padding-top: 1rem;
+  min-height: 90vh;
+  background-color: var(--lighter-first-color);
+
+  & h2 {
+    margin-bottom: 2rem;
+  }
+
+  &__container {
+    width: 90%;
+    margin: 1rem auto;
+
+    & h3 {
+      margin-top: 2rem;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+
+    &-section {
+
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+
+      &-image {
+        height: 5rem;
+      }
+    }
+  
+  }
+
+  & .form {
+    margin-bottom: 2rem;
+  }
+}
+
+.file-proof {
+
+  margin-bottom: 1rem;
+  &__image {
+    height: 5rem;
+  }
+  &__name {
+
+  }
+}
+
+@media (min-width: vars.$sm) {
+  .dafc {
+
+    background-color: #fff;
+    &__container {
+      width: 75%;
+      margin: 1rem auto;
+      background-color: var(--lighter-first-color);
+      border: 1px solid #1a1a1a;
+      padding: 2rem 2rem;
+      width: 36.5%;
+    }
+  }
+}

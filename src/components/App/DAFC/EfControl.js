@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FormSectionTitle from '../../generics/FormSectionTitle';
-import PageTitle from '../../generics/PageTitle';
-import ButtonElement from '../OMForm/Fields/ButtonElement';
+import FormSectionTitle from 'src/components/FormSectionTitle';
+import PageTitle from 'src/components/PageTitle';
+import ButtonElement from 'src/components/Fields/ButtonElement';
 
 import Logo from '../../../assets/images/pdf.svg';
 

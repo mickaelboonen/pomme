@@ -1,0 +1,87 @@
+@use 'src/styles/vars';
+
+.home {
+  height: 90vh;
+  padding: 1.5rem;
+
+  &__title {
+    min-height: 6rem;
+    @include vars.centeredFlex;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+
+    &-group {
+      display: flex;
+      align-items: flex-end;
+      height: 100%;
+    
+      &-capital, &-rest {
+        @include vars.pageTitle;
+        color: var(--second-color);
+        font-size: 6rem;
+        margin: 0;
+        line-height: normal;
+      }
+
+      &-rest  {
+        width: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: 1s;
+        text-transform: lowercase;
+        font-size: 2.5em;
+        @include vars.centeredFlex;
+        padding-bottom: 0.75rem;
+      }
+    }
+
+    &:hover {
+      & .home__title-group-rest {
+        width: fit-content;
+        margin-right: 1rem;
+        opacity: 1;
+        position: relative;
+      }
+    }
+  }
+
+  &__new {
+    margin-bottom: 2rem;
+
+    &-buttons {
+      display: flex;
+      justify-content: space-around;
+
+      &-item {
+        color: #1a1a1a;
+      }
+    }
+  }
+}
+
+@media (min-width: vars.$sm) {
+  .home {
+    padding: 3rem;
+    width: 70%;
+    margin: auto;
+  
+    &__new {
+      margin-bottom: 2rem;
+  
+      &-buttons {
+        display: flex;
+        justify-content: space-around;
+  
+        &-item {
+          // color: vars.$unimes;
+        }
+      }
+    }
+  }
+}
+
+// @media (min-width: 1000px) {
+//   .home {
+//     width: calc( 100vw - 300px);
+//   }
+// }

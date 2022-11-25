@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import './style.scss';
-import PageTitle from '../../generics/PageTitle';
-import Tabs from '../../generics/Tabs';
+import PageTitle from 'src/components/PageTitle';
+import Tabs from 'src/components/Tabs';
 import Section from '../MyDocuments/Section';
 
 const Gestionnaires = () => {

@@ -3,10 +3,10 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 
 import './style.scss';
-import FormSectionTitle from '../../generics/FormSectionTitle';
+import FormSectionTitle from 'src/components/FormSectionTitle';
 import RefusalMessage from './Fields/RefusalMessage';
 import Buttons from './Fields/Buttons';
-import SwitchButton from '../../generics/SwitchButton';
+import SwitchButton from 'src/components/SwitchButton';
 import TextField from './Fields/TextField';
 import FileField from './Fields/FileField';
 import TextareaField from './Fields/Textarea';

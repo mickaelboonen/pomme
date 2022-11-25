@@ -1,0 +1,58 @@
+@use 'src/styles/vars';
+
+.split-fields {
+  // display: flex;
+  margin-bottom: 1rem;
+
+  &__half {
+    width: 100%;
+    padding: 0.5rem;
+
+    &:first-child {
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    & p {
+      text-transform: uppercase;
+      font-weight: bold;
+      margin: 0.5rem;
+    }
+
+    &-field {
+
+      margin-bottom: 1rem;
+
+
+      &-label {
+        display: block;
+        text-transform: uppercase;
+        font-weight: bold;
+        margin: 0 auto 1rem;
+
+      }
+      &-input {
+        width: 100%;
+      }
+    }
+  }
+}
+
+
+@media (min-width: vars.$sm) {
+  .split-fields {
+    display: flex;
+    &__half {
+      width: 50%;
+
+      &:first-child {
+        border-right: 1px solid #1a1a1a;
+        border-bottom: 0;
+      }
+    }
+  }
+}
+
+.button {
+  @include vars.button;
+  border: 1px solid #1a1a1a;
+}

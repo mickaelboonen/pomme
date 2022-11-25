@@ -1,0 +1,170 @@
+@use 'src/styles/vars';
+
+$test : #{var(--first-color)};
+
+.my-documents {
+  width:100%;
+  margin: auto;
+  height: 90vh;
+  background-color: var(--lighter-first-color);
+  padding-top: 1rem;
+
+  &__title {
+    font-size: 2em;
+    text-transform: uppercase;
+    margin: 1rem;
+    line-height: 120%;
+  }
+
+  &__button {
+
+    margin: 1rem 0;
+
+    & a {
+      @include vars.addButton;
+      // margin: 1rem auto;
+      width: 90%;
+      margin: auto;
+      color: var(--opposite-theme-color);
+    }
+  }
+
+  &__files {
+    display: none;
+    margin-bottom: 4rem;
+    min-height: 60vh;
+    background-color: var(--lighter-first-color);
+
+    &--open {
+      display: flex;
+    }
+
+    &-container {
+      width: 100%;
+      height: fit-content;
+      display: flex;
+      margin: 2rem;
+      flex-flow: row wrap;
+      justify-content: space-between;
+
+      &-item {
+        width: 50%;
+        display: flex;
+        margin-bottom: 1rem;
+
+        &--open {
+          width: 100%;
+
+          .file-display {
+            width: 50%;
+          }
+        }
+      }
+    }
+  }
+
+  &__container {
+    width: 90%;
+    margin: 2rem auto;
+
+  }
+}
+
+
+@media (min-width: vars.$sm) {
+
+  .my-documents {
+    width: 80%;
+    background-color: #fff;
+    
+    &__button {
+      width: 100%;
+      text-align: center;
+
+      & a {
+        width: fit-content;
+        padding: 0.8rem 1.2rem;        
+      }
+    }
+
+    &__files {
+
+      &-container {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+  
+        &-item {
+          width: 40%;
+          display: flex;
+          margin-bottom: 1rem;
+
+          &--open {
+            width: 100%;
+  
+            .file-display {
+              width: 50%;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1000px) {
+
+  .my-documents {
+    width: 50%;
+
+    &__files {
+
+      &-container {
+  
+        &-item {
+          width: fit-content;
+
+          &--open {  
+            .file-display {
+              width: 70%;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.tabs {
+  display: flex;
+
+  &__item {
+    width: 50%;
+    border: 1px solid #1a1a1a;
+    padding: 0.8rem;
+    text-transform: uppercase;
+    background-color: var(--third-color);
+    color: #1a1a1a;
+    @include vars.centeredFlex;
+
+
+    &-notification {
+      background-color: var(--second-color);
+      border-radius: 50%;
+      margin-left: 0.5rem;
+      padding: 0.2rem 0.5rem;
+    }
+
+    &--open {
+      background-color: var(--first-color);
+      color: var(--fifth-color);
+      box-shadow: 1px 1px 5px var(--second-color);
+
+    }
+    &--open &-notification {
+        background-color: var(--third-color);
+        box-shadow: 1px 1px 1px #1a1a1a;
+        color: var(--first-color);
+      }
+  }
+}

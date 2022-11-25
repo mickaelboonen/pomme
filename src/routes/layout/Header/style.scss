@@ -1,0 +1,273 @@
+@use 'src/styles/vars';
+
+.header-container {
+  background-color: var(--menu-color);
+  // display: flex;
+}
+
+.header {
+  color:  var(--opposite-theme-color);
+  height: 10vh;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  z-index: 2;
+
+  &-theme {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+
+    &--straight {
+      transform: skew(0deg,0);
+      margin-right: 0;
+
+    }
+
+    & .switch {
+      margin: 0.5rem;
+    }
+  }
+
+  &__identity {
+
+    display: flex;
+    height: 100%;
+    align-items: center;
+
+    &-logo {
+      max-height: 10vh;
+      padding: 0.5rem;
+    }
+
+    &-title {
+      display: none;
+    }
+    
+  }
+
+  &__burger {
+    display: flex;
+    align-items: center;
+    height: inherit;
+    padding: 1.5rem;
+    
+
+    &-logo {
+      max-height: 100%;
+      margin: 1rem;
+
+    }
+    
+  }
+}
+
+.header__menu {
+  margin-right: -1rem;
+  height: 100%;
+  display: none;
+  transition: 1s;
+
+  &-section {
+
+    min-width: 10rem;
+    height: 100%;
+    color: var(--menu-title-color);
+    font-weight: bold;
+    font-size: 1.3em;
+    position: relative;
+    padding: 2rem;
+    @include vars.centeredFlex;
+
+    &:last-of-type {
+      margin-right: 2rem;
+    }
+
+
+
+    
+    &:hover {
+      padding-left: 1.5rem;
+      background-color: var(--fourth-color);
+      border-bottom: 5px solid var(--third-color) ;
+      color: var(--first-color) ;
+      width: 12rem;
+      transition: 1s;
+    }
+
+    &-list {
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+
+      width: 100%;
+      height: 0;
+
+      font-size: 0.7em;
+      color:#fff;
+      text-shadow: 1px 1px 1px var(--dark-color);
+      text-transform: uppercase;
+      
+      transition: 1s;
+      overflow: hidden;
+      padding: 0.5rem;
+
+      & li {
+        margin: 0.5rem;
+        position: relative;
+
+        &:hover {
+          color: var(--first-color);
+          font-style: italic;
+          font-size: 1.1em;
+        }
+      }
+    
+
+
+      &--open {
+        background-color: var(--fourth-color);
+        left: 0;
+        top: 100%;
+        height: fit-content;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        text-shadow: none;
+
+        &:nth-of-type(2) {
+          width: 12rem;
+        }
+      }
+    }
+  }
+
+  &--open {
+    height:90vh;
+  }
+}
+
+// CSS for the responsive menu 
+.small-screen-menu {
+  height: 0;
+  transition: 1s;
+  position: relative;
+  overflow: hidden;
+
+  &__section {
+      padding: 1rem;
+   
+    &-title {
+      color: var(--fifth-color);
+      width: 80%;
+      font-size: 1.5em;
+      margin: 0 auto 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--fifth-color);
+    }
+
+    &-list {
+
+      &-item {
+        margin: 0.5rem auto;
+        position: relative;
+        color:  var(--opposite-theme-color);;
+      }
+    }
+  }
+
+  &--open {
+  height: 90vh;
+  }
+}
+
+
+
+#mes-oms {
+  position: absolute;
+  top: -15px;
+  background-color: var(--second-color);
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  padding-top: 0.25rem;
+  border-radius: 5px;
+  color: white;
+  font-size: 0.8em;
+
+
+  &::after {
+    position: absolute;
+    content: '';
+    top: 15px;
+    left: 5px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 10px 0 0;
+    border-color: var(--second-color) transparent transparent transparent;
+  }
+}
+
+.small-screen-menu #mes-oms {
+  background-color: var(--fourth-color);
+
+  &::after {
+    border-color: var(--fourth-color) transparent transparent transparent;
+  }
+}
+
+@media (min-width: vars.$sm) {
+  .header {  
+    &__burger {
+      display: none;
+    }
+
+    &__identity {
+      &-title {
+        font-weight: bold;
+        font-size: 2em;
+        display: block;
+      }
+    }
+  }
+
+  .header__menu {
+    display: flex;
+    
+  }
+}
+
+.menu-bar {
+  width: 40px;
+  border: 2px solid var(--menu-title-color);
+  margin-top: 0.5rem;
+  transition: 0.6s;
+  position: relative;
+
+  &--ext {
+    border-color: transparent;
+    background-color: transparent;
+  }
+
+  &--int {
+    transform: rotate(45deg);
+  }
+
+  &--int-bis {
+    transform: rotate(-90deg);
+  }
+
+  &:first-child {
+    margin: 0;
+  }
+}
+
+#secondbis-bar {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: 40px;
+  margin: 0;
+}
