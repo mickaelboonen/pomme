@@ -44,45 +44,38 @@ function App() {
   return (
     <div className="app">
       <Routes>
-        <Route path="/" element={<Home />} />
+        {/* <Route path="/" element={<Home />} /> */}
         {/* <Route path="/utilisateur/:slug/mes-ordres-de-mission" element={<MyDocuments />} /> */}
         {/* <Route path="/utilisateur/:slug/mes-états-de-frais" element={<MyDocuments />} /> */}
-        <Route path="/gestionnaire/:slug/documents-a-signer" element={<Gestionnaires />} />
+        {/* <Route path="/gestionnaire/:slug/documents-a-signer" element={<Gestionnaires />} />
         <Route path="/gestionnaire/:slug/valider-un-document/:slug/:id" element={<DocValidationForm />} />
-        <Route path="/gestionnaire/:slug/refuser-un-ordre-de-mission/:id" element={<DocRefusalForm />} />
-        <Route path="/documents/autorisation-de-vehicule/nouveau" element={<VehicleUseForm step={1} />} />
-        <Route path="/documents/ordre-de-mission/nouveau" element={<OMForm step={1} />} />
-        <Route
-          path="/documents/:type/nouveau"
-          loader={({ params }) => {
-            console.log(params.type); // "hotspur"
-          }}
-          action={({ params }) => {  }}
-          element={<EfForm step={1} />}
-        />
-        <Route path="/documents/:slug/nouveau" element={<Forms />} />
+        <Route path="/gestionnaire/:slug/refuser-un-ordre-de-mission/:id" element={<DocRefusalForm />} /> */}
+        {/* <Route path="/documents/autorisation-de-vehicule/nouveau" element={<VehicleUseForm step={1} />} /> */}
+        {/* <Route path="/documents/ordre-de-mission/nouveau" element={<OMForm step={1} />} /> */}
+        {/* <Route path="/documents/:type/nouveau" element={<EfForm step={1} />} /> */}
+        {/* <Route path="/documents/:slug/nouveau" element={<Forms />} /> */}
         {/* <Route path="/utilisateur/:slug/mes-documents" element={<MyAccount />} />
         <Route path="/utilisateur/:slug/mes-documents/ajouter-un-véhicule" element={<AddVehicle />} />
         <Route path="/utilisateur/:slug/mes-documents/modifier-un-vehicule/:id" element={<EditVehicle />} />
         <Route path="/utilisateur/:slug/mes-documents/refus-de-mission" element={<RefusalNotification />} /> */}
         {/* <Route path="/utilisateur/:slug/mes-documents/état-liquidatif-à-signer" element={<ELForm />} /> */}
         {/* <Route path="/utilisateur/:slug/mes-documents/demander-un-déplacement/:id" element={<TicketRequest />} /> */}
-        <Route path="/utilisateur/:slug/mes-préférences" element={<Preferences />} />
-        <Route path="/dafc/états-de-frais" element={<DAFC title="États de frais à valider"/>} />
+        {/* <Route path="/utilisateur/:slug/mes-préférences" element={<Preferences />} /> */}
+        {/* <Route path="/dafc/états-de-frais" element={<DAFC title="États de frais à valider"/>} />
         <Route path="/dafc/états-de-frais/contrôler/:id" element={<EfControl />} />
         <Route path="/dafc/états-de-frais/valider/:id" element={<EfValidation />} />
         <Route path="/dafc/ordres-de-mission" element={<DAFC title="Ordres de mission à contrôler"/>} />
-        <Route path="/dafc/ordres-de-mission/saisir-un-ordre/:id" element={<OmToGFC />} />
+        <Route path="/dafc/ordres-de-mission/saisir-un-ordre/:id" element={<OmToGFC />} /> */}
 
         
         {/* TODO : Routes a supprimer lorsque j'aurai la réécriture d'url */}
-        <Route path="/documents/%C3%A9tat-de-frais/nouveau" element={<EfForm step={1}/>} />
+        {/* <Route path="/documents/%C3%A9tat-de-frais/nouveau" element={<EfForm step={1}/>} />
         <Route path="/dafc/%C3%A9tats-de-frais" element={<DAFC title="États de frais à valider"/>} />
         <Route path="/utilisateur/:slug/mes-pr%C3%A9f%C3%A9rences" element={<Preferences />} />
         <Route path="/dafc/%C3%A9tats-de-frais/contr%C3%B4ler/:id" element={<EfControl />} />
         <Route path="/dafc/%C3%A9tats-de-frais/valider/:id" element={<EfValidation />} />
         <Route path="/dafc/ordres-de-mission" element={<DAFC title="Ordres de mission à contrôler" />} />
-        <Route path="/dafc/ordres-de-mission/saisir-un-ordre/:id" element={<OmToGFC />} />
+        <Route path="/dafc/ordres-de-mission/saisir-un-ordre/:id" element={<OmToGFC />} /> */}
         {/* <Route path="/utilisateur/:slug/mes-documents/ajouter-un-v%C3%A9hicule" element={<AddVehicle />} />
         <Route path="/utilisateur/:slug/mes-documents/modifier-un-v%C3%A9hicule/:id" element={<EditVehicle />} />
         <Route path="/utilisateur/:slug/mes-documents/%C3%A9tat-liquidatif-%C3%A0-signer" element={<ELForm />} />

@@ -64,10 +64,10 @@ const Header = () => {
           </div>
           <div className="header__menu-section" id="a-signer" onMouseOver={handleHover} onMouseOut={handleMouseOut}>
             <Link to={`/gestionnaire/${role}/documents-a-signer`}>GESTIONNAIRE</Link>
-            <ul className="header__menu-section-list">
+            {/* <ul className="header__menu-section-list">
               <li><Link to={`/gestionnaire/${userName}/documents-a-signer/ordres-de-missions`}>Ordres de Mission <span id="mes-oms">1</span></Link></li>
               <li><Link to={`/gestionnaire/${userName}/documents-a-signer/états-de-frais`}>États de Frais <span id="mes-oms">1</span></Link></li>
-            </ul>
+            </ul> */}
           </div>
           <div className="header__menu-section" id="mon-compte" onMouseOver={handleHover} onMouseOut={handleMouseOut}>
             <p>MON COMPTE</p>
