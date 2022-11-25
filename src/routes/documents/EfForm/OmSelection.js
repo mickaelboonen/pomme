@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import Buttons from './Fields/Buttons';
-import SelectField from './Fields/SelectField';
+import Buttons from 'src/components/Fields/Buttons';
+import SelectField from 'src/components/Fields/SelectField';
 
 const OmSelection = ({ step }) => {
   return (

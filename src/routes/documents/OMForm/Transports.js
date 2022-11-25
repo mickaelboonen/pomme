@@ -5,13 +5,13 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import RefusalMessage from './Fields/RefusalMessage';
-import Buttons from './Fields/Buttons';
-import RadioInput from './Fields/RadioInput';
-import CheckboxInput from './Fields/CheckboxInput';
-import FileField from './Fields/FileField';
+import RefusalMessage from 'src/components/Fields/RefusalMessage';
+import Buttons from 'src/components/Fields/Buttons';
+import RadioInput from 'src/components/Fields/RadioInput';
+import CheckboxInput from 'src/components/Fields/CheckboxInput';
+import FileField from 'src/components/Fields/FileField';
 import SwitchButton from 'src/components/SwitchButton';
-import SelectField from './Fields/SelectField';
+import SelectField from 'src/components/Fields/SelectField';
 
 const Transports = ({ step }) => {
   const navigate = useNavigate();

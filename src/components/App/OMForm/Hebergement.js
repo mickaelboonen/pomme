@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router-dom';
 
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import RefusalMessage from './Fields/RefusalMessage';
-import Buttons from './Fields/Buttons';
-import RadioInput from './Fields/RadioInput';
+import RefusalMessage from 'src/components/Fields/RefusalMessage';
+import Buttons from 'src/components/Fields/Buttons';
+import RadioInput from 'src/components/Fields/RadioInput';
 import SwitchButton from 'src/components/SwitchButton';
-import TextField from './Fields/TextField';
+import TextField from 'src/components/Fields/TextField';
 
 const Hebergement = ({ step }) => {
   const navigate = useNavigate();

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './style.scss';
 import classNames from 'classnames';
 
-const FileField = ({ register, formField, id, isHidden, pieces, multiple, label, placeholder}) => {
+const FileField = ({ register, formField, id, isHidden, pieces, multiple, label, placeholder, disabled}) => {
   const handleClickOnFileInput = (event) => {
     event.currentTarget.firstChild.click();
   };
@@ -28,6 +28,7 @@ const FileField = ({ register, formField, id, isHidden, pieces, multiple, label,
         {...register(formField)}
         onChange={handleChange}
         multiple={multiple}
+        disabled={disabled}
       />
       <div />
     </div>
@@ -41,6 +42,7 @@ FileField.propTypes = {
 
 FileField.defaultProps = {
   multiple: false,
+  disabled: false,
   pieces: '',
   isHidden: false,
   placeholder: '',

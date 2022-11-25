@@ -7,16 +7,16 @@ import Pin from '../../../assets/images/pin.svg';
 
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import SplitFields from './Fields/SplitFields';
-import TextFieldWithIcon from './Fields/TextFieldWithIcon';
+import SplitFields from 'src/components/Fields/SplitFields';
+import TextFieldWithIcon from 'src/components/Fields/TextFieldWithIcon';
 import { displayRegionFieldsInFormMission } from '../../../selectors/domManipulators';
-import RefusalMessage from './Fields/RefusalMessage';
-import Buttons from './Fields/Buttons';
-import FileField from './Fields/FileField';
-import TextField from './Fields/TextField';
-import RadioInput from './Fields/RadioInput';
-import SelectField from './Fields/SelectField';
-import CheckboxInput from './Fields/CheckboxInput';
+import RefusalMessage from 'src/components/Fields/RefusalMessage';
+import Buttons from 'src/components/Fields/Buttons';
+import FileField from 'src/components/Fields/FileField';
+import TextField from 'src/components/Fields/TextField';
+import RadioInput from 'src/components/Fields/RadioInput';
+import SelectField from 'src/components/Fields/SelectField';
+import CheckboxInput from 'src/components/Fields/CheckboxInput';
 
 const Mission = ({ step }) => {
   const navigate = useNavigate();

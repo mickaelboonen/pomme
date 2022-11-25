@@ -5,11 +5,11 @@ import { useNavigate } from 'react-router-dom';
 
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import RefusalMessage from './Fields/RefusalMessage';
-import Buttons from './Fields/Buttons';
-import FileField from './Fields/FileField';
+import RefusalMessage from 'src/components/Fields/RefusalMessage';
+import Buttons from 'src/components/Fields/Buttons';
+import FileField from 'src/components/Fields/FileField';
 import SwitchButton from 'src/components/SwitchButton';
-import TextField from './Fields/TextField';
+import TextField from 'src/components/Fields/TextField';
 
 const Transports = ({ step }) => {
   const navigate = useNavigate();

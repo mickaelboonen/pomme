@@ -6,8 +6,8 @@ import AddButton from '../../../assets/images/add.svg';
 
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import RefusalMessage from './Fields/RefusalMessage';
-import Buttons from './Fields/Buttons';
+import RefusalMessage from 'src/components/Fields/RefusalMessage';
+import Buttons from 'src/components/Fields/Buttons';
 import Step from './Step';
 
 const Steps = ({ step }) => {

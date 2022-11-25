@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './style.scss';
 import classNames from 'classnames';
 
-const TextFieldWithIcon = ({ isHidden, id, icon, name, register }) => (
+const TextFieldWithIcon = ({ isHidden, id, icon, name, register, disabled}) => (
   <div
     className={classNames("form__section-field", {"form__section-field--hidden": isHidden})}
     id={`${id}-field`}
@@ -16,6 +16,7 @@ const TextFieldWithIcon = ({ isHidden, id, icon, name, register }) => (
       </div>
       <input
         id={id}
+        disabled={disabled}
         className="form__section-field-input-text"
           {...register(id)}
         />
@@ -30,5 +31,9 @@ TextFieldWithIcon.propTypes = {
   icon: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
 };
+
+TextFieldWithIcon.defaultProptypes = {
+  disabled: false,
+}
 
 export default TextFieldWithIcon;

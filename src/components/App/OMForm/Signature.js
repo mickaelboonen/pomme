@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router-dom';
 
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import RefusalMessage from './Fields/RefusalMessage';
-import Buttons from './Fields/Buttons';
+import RefusalMessage from 'src/components/Fields/RefusalMessage';
+import Buttons from 'src/components/Fields/Buttons';
 import SwitchButton from 'src/components/SwitchButton';
-import TextField from './Fields/TextField';
-import FileField from './Fields/FileField';
-import TextareaField from './Fields/Textarea';
+import TextField from 'src/components/Fields/TextField';
+import FileField from 'src/components/Fields/FileField';
+import TextareaField from 'src/components/Fields/Textarea';
 
 const Signature = ({ step }) => {
   const navigate = useNavigate();
