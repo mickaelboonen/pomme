@@ -41,7 +41,7 @@ const Header = () => {
       <div className="header">
         <div className="header__identity">
           <img className="header__identity-logo" src={Apple} alt="react logo" />
-          <Link to="/"><h1 className="header__identity-title">POMME</h1></Link>   
+          <Link to="/"><h1 className="header__identity-title">POM</h1></Link>   
           <p style={{'marginLeft': '1rem'}}>Bonjour {userName}</p>
         </div>
         <div className="header__burger" onClick={handleBarsClick}>
