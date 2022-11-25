@@ -13,8 +13,9 @@ import Signature from './Signature';
 import Thread from 'src/components/Thread';
 import ThreadAsTabs from 'src/components/ThreadAsTabs';
 
-const OMForm = ({ step }) => {  
-  
+const OMForm = () => {  
+  const { search } = useLocation();
+  const step = Number(search.slice(search.length - 1));
   const steps = [
     {
       name: 'Mission',

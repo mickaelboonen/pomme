@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import DAFC from "src/routes/dafc";
 import Layout from 'src/routes/layout';
+import ErrorPage from 'src/routes/error';
 import Home from 'src/routes/layout/Home';
 import OmToGFC from "src/routes/dafc/OmToGFC";
 import OMForm from "src/routes/documents/OMForm";
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -42,23 +44,23 @@ const router = createBrowserRouter([
         children: [
           {
             path: 'ordre-de-mission',
-            element: <OMForm step={1} />    
+            element: <OMForm />    
           },
           {
             path: 'autorisation-de-véhicule',
-            element: <VehicleUseForm step={1} />    
+            element: <VehicleUseForm />    
           },
           {
             path: 'autorisation-de-v%C3%A9hicule',
-            element: <VehicleUseForm step={1} />    
+            element: <VehicleUseForm />    
           },
           {
             path: 'état-de-frais',
-            element: <EfForm step={1} />    
+            element: <EfForm />    
           },
           {
             path: '%C3%A9tat-de-frais',
-            element: <EfForm step={1} />    
+            element: <EfForm />    
           },
 
         ],

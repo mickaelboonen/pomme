@@ -158,7 +158,7 @@ const MyDocuments = () => {
     <main className="my-documents">
       <PageTitle>{title}</PageTitle>
       <div className="my-documents__button">
-        <a href={`/documents/${slug}/nouveau?etape=1`}>NOUVEAU</a>
+        <a href={`/nouveau-document/${slug}?etape=1`}>NOUVEAU</a>
       </div>
       {isOm && <Tabs tabs={OMTabs} handler={displayWantedSection} />}
       {!isOm && <Tabs tabs={EFTabs} handler={displayWantedSection} />}

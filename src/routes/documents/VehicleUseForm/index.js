@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from "react-hook-form";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
@@ -16,7 +16,10 @@ import FileField from 'src/components/Fields/FileField';
 import SwitchButton from 'src/components/SwitchButton';
 import ButtonElement from 'src/components/Fields/ButtonElement';
 
-const VehicleUseForm = ({ step }) => {
+const VehicleUseForm = () => {
+  const { search } = useLocation();
+  const step = Number(search.slice(search.length - 1));
+  
   const navigate = useNavigate();
   const {
     register,

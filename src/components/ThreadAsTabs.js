@@ -16,7 +16,7 @@ const ThreadAsTabs = ({ step, tabs, isOm }) => {
       // todo : save data
       // then
       const target = isOm ? 'ordre-de-mission' : 'état-de-frais';
-      navigate('/documents/' + target + '/nouveau?etape=' + id);
+      navigate('/nouveau-document/' + target + '?etape=' + id);
     }
   };
   return (

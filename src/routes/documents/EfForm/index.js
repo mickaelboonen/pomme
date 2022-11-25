@@ -10,12 +10,11 @@ import Signature from './Signature';
 import OmSelection from './OmSelection';
 import Steps from './Steps';
 import ThreadAsTabs from 'src/components/ThreadAsTabs';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-const EfForm = ({ step }) => {  
-
-  let params = useParams();
-  console.log(params);
+const EfForm = () => {  
+  const { search } = useLocation();
+  const step = Number(search.slice(search.length - 1));
   const steps = [
     {
       name: 'OM',
