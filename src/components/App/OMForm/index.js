@@ -11,11 +11,35 @@ import Hebergement from './Hebergement';
 import Avance from './Avance';
 import Signature from './Signature';
 import Thread from '../../generics/Thread';
+import ThreadAsTabs from '../../generics/ThreadAsTabs';
 
 const OMForm = ({ step }) => {  
+  
+  const steps = [
+    {
+      name: 'Mission',
+      id: 1,
+    },
+    {
+      name: 'Transports',
+      id: 2,
+    },
+    {
+      name: 'Hébergements',
+      id: 3,
+    },
+    {
+      name: 'Étapes',
+      id: 4,
+    },
+    {
+      name: 'Signature',
+      id: 5,
+    },
+  ];
   return (
     <div className='form-container'>
-      <Thread step={step} />
+      <ThreadAsTabs step={step} tabs={steps} isOm/>
       <div className="form-page__title">
         <PageTitle>Création d'un Ordre de Mission</PageTitle>
       </div>

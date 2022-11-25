@@ -5,34 +5,8 @@ import classNames from 'classnames';
 import './style.scss';
 import { useNavigate } from 'react-router-dom';
 
-const ThreadAsTabs = ({ step }) => {
+const ThreadAsTabs = ({ step, tabs, isOm }) => {
   const navigate = useNavigate();
-  const tabs = [
-    {
-      name: 'OM',
-      id: 1,
-    },
-    {
-      name: 'Mission',
-      id: 2,
-    },
-    {
-      name: 'Transports',
-      id: 3,
-    },
-    {
-      name: 'Hébergements',
-      id: 4,
-    },
-    {
-      name: 'Étapes',
-      id: 5,
-    },
-    {
-      name: 'Signature',
-      id: 6,
-    },
-  ];
 
   const handleClickOnTab = (event) => {
     const { id } = event.target;
@@ -40,8 +14,9 @@ const ThreadAsTabs = ({ step }) => {
     if (window.confirm("Voulez-vous enregistrer les informations saisies ?")) {
 
       // todo : save data
-      // then 
-      navigate('/documents/etat-de-frais/nouveau?etape=' + id);
+      // then
+      const target = isOm ? 'ordre-de-mission' : 'état-de-frais';
+      navigate('/documents/' + target + '/nouveau?etape=' + id);
     }
   };
   return (
@@ -57,6 +32,9 @@ const ThreadAsTabs = ({ step }) => {
 
 ThreadAsTabs.propTypes = {
 
+};
+ThreadAsTabs.defaultProptypes = {
+  isOm: false,
 };
 
 export default ThreadAsTabs;

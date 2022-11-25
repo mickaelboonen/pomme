@@ -13,7 +13,7 @@ const MyDocuments = () => {
   const location = useLocation();
   let isOm = false;
   let title = `États de Frais de ${"mboone01"}`;
-  let slug = 'etat-de-frais'
+  let slug = 'état-de-frais'
   
   if (location.pathname.includes('ordres-de-mission')) {
     isOm = true;

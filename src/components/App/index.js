@@ -20,6 +20,9 @@ import EfControl from './DAFC/EfControl';
 import EfValidation from './DAFC/EfValidation';
 import OmToGFC from './DAFC/OmToGFC';
 import Preferences from './MyAccount/Preferences';
+import VehicleUseForm from './VehicleUseForm';
+import OMForm from './OMForm';
+import EfForm from './EfForm';
 
 // == Composant
 function App() {
@@ -47,7 +50,10 @@ function App() {
         <Route path="/gestionnaire/:slug/documents-a-signer" element={<Gestionnaires />} />
         <Route path="/gestionnaire/:slug/valider-un-document/:slug/:id" element={<DocValidationForm />} />
         <Route path="/gestionnaire/:slug/refuser-un-ordre-de-mission/:id" element={<DocRefusalForm />} />
-        <Route path="/documents/:slug/nouveau" element={<Forms />} />
+        <Route path="/documents/autorisation-de-vehicule/nouveau" element={<VehicleUseForm step={1} />} />
+        <Route path="/documents/ordre-de-mission/nouveau" element={<OMForm step={1} />} />
+        <Route path="/documents/état-de-frais/nouveau" element={<EfForm step={1} />} />
+        {/* <Route path="/documents/:slug/nouveau" element={<Forms />} /> */}
         <Route path="/utilisateur/:slug/mes-documents" element={<MyAccount />} />
         <Route path="/utilisateur/:slug/mes-documents/ajouter-un-véhicule" element={<AddVehicle />} />
         <Route path="/utilisateur/:slug/mes-documents/modifier-un-vehicule/:id" element={<EditVehicle />} />
@@ -63,6 +69,7 @@ function App() {
 
         
         {/* TODO : Routes a supprimer lorsque j'aurai la réécriture d'url */}
+        <Route path="/documents/%C3%A9tat-de-frais/nouveau" element={<Forms />} />
         <Route path="/dafc/%C3%A9tats-de-frais" element={<DAFC title="États de frais à valider"/>} />
         <Route path="/utilisateur/:slug/mes-pr%C3%A9f%C3%A9rences" element={<Preferences />} />
         <Route path="/dafc/%C3%A9tats-de-frais/contr%C3%B4ler/:id" element={<EfControl />} />

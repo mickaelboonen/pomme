@@ -11,11 +11,13 @@ const Forms = () => {
   const location = useLocation();
   const target = location.pathname.split('/')[2];
   const step = Number(location.search.split('=')[1]);
+  console.log(target);
   return (
     <main className="form-page">
       {target === 'autorisation-de-vehicule' && (<VehicleUseForm step={step} />) }
       {target === 'ordre-de-mission' && (<OMForm step={step} />) } 
-      {target === 'etat-de-frais' && (<EfForm step={step} />) } 
+      {target === 'état-de-frais' && (<EfForm step={step} />) } 
+      {target === '%C3%A9tat-de-frais' && (<EfForm step={step} />) } 
     </main>
   );
 }

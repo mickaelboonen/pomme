@@ -4,32 +4,14 @@ import PropTypes from 'prop-types';
 import './style.scss';
 import Mission from './Mission';
 import PageTitle from '../../generics/PageTitle';
-import Tabs from '../../generics/Tabs';
 import Transports from './Transports';
 import Hebergement from './Hebergement';
 import Signature from './Signature';
-import Thread from '../../generics/Thread';
 import OmSelection from './OmSelection';
 import Steps from './Steps';
 import ThreadAsTabs from '../../generics/ThreadAsTabs';
 
-const OMForm = ({ step }) => {  
-  console.log(step);
-  // <div className={classNames("form-page__thread-step" , {"form-page__thread-step--open" : step === 1})}>
-  //   Mission <span>- Étape {step} / 5</span>
-  // </div>
-  // <div className={classNames("form-page__thread-step" , {"form-page__thread-step--open" : step === 2})}>
-  //   Transports <span>- Étape {step} / 5</span>
-  // </div>
-  // <div className={classNames("form-page__thread-step" , {"form-page__thread-step--open" : step === 3})}>
-  //   Hébergements <span>- Étape {step} / 5</span>
-  // </div>
-  // <div className={classNames("form-page__thread-step" , {"form-page__thread-step--open" : step === 4})}>
-  //   Avance <span>- Étape {step} / 5</span>
-  // </div>
-  // <div className={classNames("form-page__thread-step" , {"form-page__thread-step--open" : step === 5})}>
-  //   Signature <span>- Étape {step} / 5</span>
-  // </div>
+const EfForm = ({ step }) => {  
   const steps = [
     {
       name: 'OM',
@@ -55,10 +37,10 @@ const OMForm = ({ step }) => {
       name: 'Signature',
       id: 6,
     },
-  ]
+  ];
   return (
     <div className='form-container'>
-      <ThreadAsTabs step={step} />
+      <ThreadAsTabs step={step} tabs={steps} />
       <div className="form-page__title">
         <PageTitle>Création d'un État de frais</PageTitle>
       </div>
@@ -76,8 +58,8 @@ const OMForm = ({ step }) => {
   );
 };
 
-OMForm.propTypes = {
+EfForm.propTypes = {
 
 };
 
-export default OMForm;
+export default EfForm;
