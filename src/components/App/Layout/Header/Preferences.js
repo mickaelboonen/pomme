@@ -1,6 +1,6 @@
 import React from 'react';
-import Moon from '../../../assets/images/moon.svg';
-import Sun from '../../../assets/images/sun.svg';
+import Moon from '../../../../assets/images/moon.svg';
+import Sun from '../../../../assets/images/sun.svg';
 import PropTypes from 'prop-types';
 
 import './style.scss';

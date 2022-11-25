@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import Apple from '../../../assets/images/apple.png';
+import Apple from '../../../../assets/images/apple.png';
 import { Link } from 'react-router-dom';
 
 import './style.scss';

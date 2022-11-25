@@ -10,8 +10,12 @@ import Signature from './Signature';
 import OmSelection from './OmSelection';
 import Steps from './Steps';
 import ThreadAsTabs from '../../generics/ThreadAsTabs';
+import { useParams } from 'react-router-dom';
 
 const EfForm = ({ step }) => {  
+
+  let params = useParams();
+  console.log(params);
   const steps = [
     {
       name: 'OM',
