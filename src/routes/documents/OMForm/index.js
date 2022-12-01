@@ -30,7 +30,7 @@ const OMForm = () => {
       id: 3,
     },
     {
-      name: 'Étapes',
+      name: 'Avance',
       id: 4,
     },
     {

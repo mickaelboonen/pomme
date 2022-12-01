@@ -82,6 +82,7 @@
   max-width: 700px;
   height: fit-content;
   padding: 1rem 1rem 0;
+  border-radius: vars.$radius;
 
   // TODO : pas bon, pas a cet endroit
   &-page {

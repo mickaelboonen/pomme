@@ -6,10 +6,10 @@ import SelectField from 'src/components/Fields/SelectField';
 import DateField from 'src/components/Fields/DateField';
 import TextField from 'src/components/Fields/TextField';
 
-const Step = ({ register }) => {
+const Step = ({ register, stepNumber }) => {
   return (
   <div className='step'>
-    <h4 className='step__title'>Etape</h4>
+    <h4 className='step__title'>Etape {stepNumber}</h4>
     <div className='step__container'>
       <div className='step__container-date-place'>
         <p className='step__container-date-place-title'>Date et Lieu</p>

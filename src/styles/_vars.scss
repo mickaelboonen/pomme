@@ -5,6 +5,8 @@
 
 $sm : 600px;
 
+$radius : 5px;
+
 
 // THEME 
 // https://mybrandnewlogo.com/fr/generateur-de-palette-de-couleurs
@@ -117,6 +119,7 @@ $lightestThemeColor: #dfe7da;
   text-shadow: 2px 2px 2px #1a1a1a;
   color: var(--second-color);
   text-transform: uppercase;
-  margin: 1rem;
+  margin: 2rem;
   line-height: 120%;
+  text-align: center;
 }

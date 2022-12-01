@@ -31,6 +31,8 @@ const SplitFields = ({ register }) => {
             <input
               type="radio"
               name=""
+              checked
+              disabled
               id="departure-home"
               value="departure-home"
               onClick={handleClickonRadio}
@@ -42,6 +44,7 @@ const SplitFields = ({ register }) => {
             <input
               type="radio"
               name=""
+              disabled
               id="departure-work"
               value="departure-work"
               onClick={handleClickonRadio}
@@ -63,6 +66,7 @@ const SplitFields = ({ register }) => {
               type="radio"
               onClick={handleClickonRadio}
               name=""
+              disabled
               id="return-home"
               value="return-home"
               {...register('return-place')}
@@ -72,6 +76,8 @@ const SplitFields = ({ register }) => {
           <div className="form__section-field-radio">
             <input
               type="radio"
+              checked
+              disabled
               name=""
               id="return-work"
               value="return-work"

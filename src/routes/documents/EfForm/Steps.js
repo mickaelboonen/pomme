@@ -42,7 +42,7 @@ const Steps = ({ step }) => {
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section">
         <FormSectionTitle>Étapes</FormSectionTitle>
-        {steps.map((currentStep) => <Step register={register} />)}
+        {steps.map((currentStep) => <Step register={register} stepNumber={stepNumber} />)}
         {/* <Step register={register} /> */}
 
 
