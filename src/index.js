@@ -71,7 +71,10 @@ const router = createBrowserRouter([
         children: [
           {
             path: 'mes-ordres-de-mission',
-            element: <MyDocuments />
+            element: <MyDocuments />,
+            // loader: async ({ params }) => {
+            //   console.log(params.slug);
+            // }
           },
           {
             path: 'mes-%C3%A9tats-de-frais',

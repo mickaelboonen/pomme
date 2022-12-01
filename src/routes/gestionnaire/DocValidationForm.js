@@ -1,18 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import PageTitle from 'src/components/PageTitle';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 
 import './style.scss';
 import FileField from 'src/components/Fields/FileField';
 import SelectField from 'src/components/Fields/SelectField';
-import TextField from 'src/components/Fields/TextField';
-import RadioInput from 'src/components/Fields/RadioInput';
 import DoubleAuthentication from './DoubleAuthentication';
 
 const DocValidationForm = ({ role = "DGS"}) => {
+  const params = useParams();
   const {
     register,
     handleSubmit,
@@ -23,10 +22,8 @@ const DocValidationForm = ({ role = "DGS"}) => {
 
   const budget = ['1', '2', '3'];
 
-  const location = useLocation();
-  const pathnameArray = location.pathname.split('/');
-  const isOm = pathnameArray[pathnameArray.length - 2] === 'ordre-de-mission' ? true : false;
-  const id = pathnameArray[pathnameArray.length - 1];
+  const isOm = params.slug === 'ordre-de-mission' ? true : false;
+  const { id } = params;
 
 
   const handleClickOnSubmit = () => {

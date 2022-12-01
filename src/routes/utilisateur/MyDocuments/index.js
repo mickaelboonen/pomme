@@ -6,9 +6,8 @@ import Tabs from '../../../components/Tabs';
 import PageTitle from '../../../components/PageTitle';
 
 import './style.scss';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import Section from './Section';
-
 const MyDocuments = () => {
   const location = useLocation();
   let isOm = false;
@@ -153,6 +152,9 @@ const MyDocuments = () => {
       }
     })
   }
+
+  const params = useParams();
+  console.log(params);
 
   return (
     <main className="my-documents">
