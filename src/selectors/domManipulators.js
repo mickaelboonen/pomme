@@ -34,3 +34,25 @@ export const toggleIsHiddenOnNextFormSection = (target) => {
     nextSectionField.classList.add('form__section-field--hidden');
   }
 }
+// HEADER DOM MANIPULATION -------------------------------------------------------
+
+export const toggleBurgerMenu = () => {
+
+  const firstBar = document.querySelector('#first-bar');
+  const secondBar = document.querySelector('#second-bar');
+  const secondBarChild = document.querySelector('#secondbis-bar');
+  const menu = document.querySelector('.small-screen-menu');
+  const thirdBar = document.querySelector('#third-bar');
+  firstBar.classList.toggle('menu-bar--ext')
+  secondBar.classList.toggle('menu-bar--int')
+  secondBarChild.classList.toggle('menu-bar--int-bis')
+  thirdBar.classList.toggle('menu-bar--ext')
+  
+  menu.classList.toggle('small-screen-menu--open')
+};
+
+export const toggleNavList = (event) => {
+  
+  const el = event.currentTarget.querySelector('.header__menu-section-list');
+  el.classList.toggle('header__menu-section-list--open')
+}

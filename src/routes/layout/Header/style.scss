@@ -2,7 +2,6 @@
 
 .header-container {
   background-color: var(--menu-color);
-  // display: flex;
 }
 
 .header {
@@ -17,7 +16,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 1rem;
 
     &--straight {
       transform: skew(0deg,0);
@@ -43,6 +41,10 @@
 
     &-title {
       display: none;
+    }
+
+    &-user {
+      margin-left: 1rem;
     }
     
   }
@@ -71,24 +73,14 @@
 
   &-section {
 
-    min-width: 10rem;
+    width: 10rem;
     height: 100%;
     color: var(--menu-title-color);
-    font-weight: bold;
     font-size: 1.3em;
     position: relative;
-    padding: 2rem;
     @include vars.centeredFlex;
 
-    &:last-of-type {
-      margin-right: 2rem;
-    }
-
-
-
-    
     &:hover {
-      padding-left: 1.5rem;
       background-color: var(--fourth-color);
       border-bottom: 5px solid var(--third-color) ;
       color: var(--first-color) ;
@@ -129,7 +121,7 @@
       &--open {
         background-color: var(--fourth-color);
         left: 0;
-        top: 100%;
+        top: calc(100% + 5px);
         height: fit-content;
         display: flex;
         justify-content: center;
@@ -219,6 +211,10 @@
 }
 
 @media (min-width: vars.$sm) {
+  .header-container {
+    padding: 0 1rem 0 0;
+  }
+
   .header {  
     &__burger {
       display: none;
