@@ -1,0 +1,51 @@
+@use 'src/styles/vars';
+
+.error {
+  padding: 1rem;
+  background-color: var(--lighter-first-color);
+  height: 90vh;
+
+  &__container {
+    margin: auto;
+    border-radius: vars.$radius;
+    text-align: center;
+      
+    &-message {
+    margin: 1rem 0 ;
+    color: #1a1a1a;
+    }
+
+
+
+    &-link {
+      color: var(--second-color);
+      text-decoration: underline;
+
+      &:hover {
+      font-style: italic;
+        color: var(--third-color);
+      }
+
+      &--404 {
+        display: block;
+        text-align: center;
+      }
+    }
+  }
+}
+
+@media (min-width: vars.$sm) {
+  .error {
+    background-color: #fff;
+
+    &__container {
+      background-color: var(--lighter-first-color);
+      border: 1px solid #1a1a1a;
+      width: 40%;
+      
+      &-message {
+      margin: 2rem;
+      }
+    }
+  }
+}

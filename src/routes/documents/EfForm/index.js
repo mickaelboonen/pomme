@@ -13,7 +13,7 @@ import ThreadAsTabs from 'src/components/ThreadAsTabs';
 import { useLocation, useParams } from 'react-router-dom';
 
 const EfForm = () => {  
-  // const params = useParams();
+  const params = useParams();
   console.log(params);
   const { search } = useLocation();
   const step = Number(search.slice(search.length - 1));
