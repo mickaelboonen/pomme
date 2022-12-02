@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import './style.scss';
-import Mission from './Mission';
+import Mission from 'src/routes/documents/OMForm/Mission';
 import PageTitle from 'src/components/PageTitle';
 import Transports from './Transports';
 import Hebergement from './Hebergement';
@@ -10,9 +10,11 @@ import Signature from './Signature';
 import OmSelection from './OmSelection';
 import Steps from './Steps';
 import ThreadAsTabs from 'src/components/ThreadAsTabs';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 const EfForm = () => {  
+  // const params = useParams();
+  console.log(params);
   const { search } = useLocation();
   const step = Number(search.slice(search.length - 1));
   const steps = [
@@ -49,7 +51,7 @@ const EfForm = () => {
       </div>
       <div className="form-page__container">
         {step === 1 && <OmSelection step={step} />}
-        {step === 2 && <Mission step={step} />}
+        {step === 2 && <Mission step={step} isEF />}
         {step === 3 && <Transports step={step} />}
         {step === 4 && <Hebergement step={step} />}
         {step === 5 && <Steps step={step} />}

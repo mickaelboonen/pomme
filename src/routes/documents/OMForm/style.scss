@@ -4,6 +4,7 @@
   width: 100%;
   background-color: var(--lighter-first-color);
   min-height: 90vh;
+  position: relative;
 
   &__notification {
     width: 70%;
@@ -50,11 +51,8 @@
 
       &--open {
         @include vars.centeredFlex;
-        // z-index: 0;
         font-style: italic;
         color: var(--first-color);
-        // color: var(--fourth-color);
-        // background-color: vars.$fadedUnimes;
         background-color: var(--fifth-color);
         box-shadow: 0px 0px 5px var(--dark-color);
       }
@@ -84,39 +82,11 @@
   padding: 1rem 1rem 0;
   border-radius: vars.$radius;
 
-  // TODO : pas bon, pas a cet endroit
-  &-page {
-    // padding-top: 1rem;
-    position: relative;
-  }
-
   &__section {
-    
-    &-notification {
-    }
     
     &-notification-message {
       text-align: left;
       margin: 1rem 1rem 2rem;
-    }
-
-    &--documents {
-      display: flex;
-    }
-
-    &-half {
-      width: 50%;
-      height: 4rem;
-      margin-bottom: 1rem;
-
-      &:nth-of-type(2) {
-        // TROUVER UNE SOLUTION POUR LES PIECES JUTIFICATIVES
-        // @include vars.centeredFlex;
-
-        & img {
-          height: 100%;
-        }
-      }
     }
 
     &-container{
@@ -141,182 +111,6 @@
          &--hidden {
             display: none;
         }
-      }
-    }
-
-    &-field {
-      display: flex;
-      flex-flow: column nowrap;
-      margin-bottom: 1rem;
-
-      &-container {
-        display: flex;
-      }
-
-      &-pre-input{
-        width: 3rem;
-        border: 0.5px solid rgb(153, 150, 150);
-        background-color: var(--third-color);;
-        border-right: 0;
-        height: 2.5rem;
-        border-radius: 5px 0 0 5px;
-        margin-top: 0.1rem;
-        @include vars.centeredFlex;
-      }
-
-      &-input-text {
-        width: calc(100% - 3.1rem);
-        position: relative;
-        padding: 0.5rem;
-        min-height: 2.5rem;
-        margin-top: 0.1rem;
-        border-radius: 0 5px 5px 0;
-        border: 0.5px solid rgb(153, 150, 150);
-        border-width: 0.5px;
-      }
-
-      &-input {
-        width: 100%;
-        position: relative;
-        padding: 0.5rem;
-        min-height: 2.5rem;
-        margin-top: 0.1rem;
-        border-radius: 5px;
-        border: 0.5px solid rgb(153, 150, 150);
-        background-color: #fff;
-        border-width: 0.5px;
-
-        & div {
-          text-align: left;
-          margin-left: 3rem;
-          height: 100%;
-        }
-
-        &--file {
-          &-input {
-            
-            padding-left: 3rem;
-            position: fixed;
-            top: -1rem;
-            // z-index: -1;
-            font-size: 0;
-            display: none;
-          }
-
-          &::before {
-            content: url('../../../assets/images/upload.svg');
-            width: 3rem;
-            left: 0rem;
-            top: 0;
-            background-color: var(--third-color);
-            height: 100%;
-            position: absolute;
-            text-align: center;
-            padding-top: 0.5rem;
-            cursor: pointer;
-          }
-        }
-        &--file::before {
-
-        }
-
-      }
-
-      &-label {
-        font-size: 0.7em;
-        font-weight: bold;
-        text-align: left;
-        margin-bottom: 0.1rem;
-
-        &--infos {
-          font-style: italic;
-          margin-top: 0.1rem
-        }
-
-        & span {
-          font-variant-position: super;
-        }
-      }
-
-      &-radio {
-        display: flex;
-
-        & input {
-          margin-right: 1rem;
-        }
-
-        & label {
-          font-size: 0.9em;
-          text-align: left;
-        }
-      }
-
-      &--hidden {
-        display: none;
-      }
-
-      &-refusal {
-        width: 80%;
-        margin: auto;
-        background-color: rgb(250, 148, 148);
-        color: rgb(117, 13, 13);
-        border: 1px solid rgb(117, 13, 13);
-        padding: 1rem;
-        border-radius: 10px;
-      }
-
-      &-checkbox {
-        display: flex;
-        align-items: center;
-        margin: 0.5rem 0 0 1rem;
-
-        &:nth-of-type(2) {
-          margin-top: 0;
-        }
-      }
-
-      &-buttons {
-        display: flex;
-        justify-content: center;
-        margin: 2rem;
-
-
-         & button {
-          @include vars.button;
-
-          &:nth-of-type(2) {
-            margin: 0;
-          }
-        }
-
-        &--validation {
-          flex-direction: column;
-
-          & button {
-            margin: 0 auto 1.5rem ;
-
-            &:nth-of-type(2),
-            &:nth-of-type(3) {
-              margin: 0 auto 0.5rem;
-            }
-          }
-        }
-      }
-
-      &-toggle {
-        text-align: left;
-      }
-
-      &-textarea {
-        
-        font-family: inherit;
-        padding: 0.5rem;
-        border: 0.5px solid rgb(153, 150, 150);
-        border-radius: 5px;
-      }
-
-      &-button {
-        margin: 1rem auto 2rem;
       }
     }
 
@@ -387,29 +181,32 @@
     background-color: var(--lighter-first-color);
     border: 1px solid #1a1a1a;
 
-    &__section-container-options {
+    &__section {
+
+      &-container-options {
       display: flex;
       justify-content: space-between;
       align-items: center;
 
-      & .form__section-field,
-      & .form__section-container-button {
-        width: 40%;
+        & .form__section-field,
+        & .form__section-container-button {
+          width: 40%;
 
-        & a {
-          border: 1px solid #1a1a1a;
-          width: 100%;
-          height: 2.5rem;
-          max-width: 100%;
-          margin: 0;
+          & a {
+            border: 1px solid #1a1a1a;
+            width: 100%;
+            height: 2.5rem;
+            max-width: 100%;
+            margin: 0;
 
-          &:focus,
-          &:hover {
-            color: #fff;
+            &:focus,
+            &:hover {
+              color: #fff;
+            }
           }
         }
-      }
-    } 
+      } 
+    }
   }
 
 }

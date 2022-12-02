@@ -72,11 +72,11 @@ const Transports = ({ step }) => {
   ];
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
-      <div className="form__section">
+      {/* <div className="form__section"> */}
         <FormSectionTitle>Départ et retour</FormSectionTitle>
-        <div className="split-fields">
-          <div className="split-fields__half">
-            <h4>TRAIN</h4>
+        <div className="form__section form__section--split">
+          <div className="form__section-half">
+            <h4 className="form__section-half-title">TRAIN</h4>
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Classe</label>
               <RadioInput id="first-class" formField="train-class" label="Première classe (*)" register={register} handler={handleClick}/>
@@ -88,8 +88,9 @@ const Transports = ({ step }) => {
               <RadioInput id="user-train" formField="train-payment" label="Avancé par l'agent" register={register} />
             </div>
           </div>
-          <div className="split-fields__half">
-            <h4>AVION</h4>
+          <div className="form__section-half--separator" />
+          <div className="form__section-half">
+            <h4 className="form__section-half-title">AVION</h4>
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Classe</label>
               <RadioInput id="business-class" formField="plane-class" label="Classe Affaires (*)" register={register} handler={handleClick} />
@@ -103,8 +104,8 @@ const Transports = ({ step }) => {
           </div>
         </div>
         <FileField id="class-certificate" formField="class-certificate" register={register} isHidden={true} />
-      </div>
-      <div className="form__section">
+      {/* </div> */}
+      {/* <div className="form__section" */}
         <FormSectionTitle>Véhicule</FormSectionTitle>
         <SelectField
           data={vehicles}
@@ -126,8 +127,8 @@ const Transports = ({ step }) => {
           </div>
           <p className="form__section-container-reminder">RAPPEL : Remboursement Forfait SNCF 2ème classe</p>
         </div>
-      </div>
-      <div className="form__section">
+      {/* </div> */}
+      {/* <div className="form__section"> */}
         <FormSectionTitle>Déplacement pendant la mission</FormSectionTitle>
         <div className="form__section-field">
           <SwitchButton
@@ -144,7 +145,7 @@ const Transports = ({ step }) => {
           <CheckboxInput id="taxi" formField="others" label="Taxi" register={register} />
           <CheckboxInput id="parking" formField="others" label="Parking" register={register} />
         </div>
-      </div>
+      {/* </div> */}
       {refusal !== '' && <RefusalMessage message={refusal} />}
       <Buttons step={step} />
     </form>

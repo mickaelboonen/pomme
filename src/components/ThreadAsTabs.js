@@ -11,20 +11,24 @@ const ThreadAsTabs = ({ step, tabs, isOm }) => {
   const handleClickOnTab = (event) => {
     const { id } = event.target;
 
-    if (window.confirm("Voulez-vous enregistrer les informations saisies ?")) {
-
-      // todo : save data
-      // then
-      const target = isOm ? 'ordre-de-mission' : 'état-de-frais';
-      navigate('/nouveau-document/' + target + '?etape=' + id);
+    if (window.innerWidth >= 600) {
+      if (window.confirm("Voulez-vous enregistrer les informations saisies ?")) {
+        const target = isOm ? 'ordre-de-mission' : 'état-de-frais';
+        navigate('/nouveau-document/' + target + '?etape=' + id);
+      }
     }
   };
   return (
     <div className="form-page__thread">
       {tabs.map((tab) => (
-        <div className={classNames("form-page__thread-step" , {"form-page__thread-step--open" : step === tab.id})} onClick={handleClickOnTab} id={tab.id}>
-          {tab.name} <span>- Étape {step} / 5</span>
-      </div>
+        <div
+          className={classNames("form-page__thread-step" , {"form-page__thread-step--open" : step === tab.id})}
+          onClick={handleClickOnTab}
+          key={tab.id}
+          id={tab.id}
+          >
+            {tab.name} <span>- Étape {step} / 5</span>
+        </div>
       ))}
     </div>
   );

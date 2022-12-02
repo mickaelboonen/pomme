@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
+import RadioInput from 'src/components/Fields/RadioInput';
+import DateField from 'src/components/Fields/DateField';
 
 const SplitFields = ({ register }) => {
   const handleClickonRadio = (event) => {
     const departureFromWork = document.querySelector('#departure-work');
     const returnToWork = document.querySelector('#return-work');
-
-
-  
 
     if ( departureFromWork.checked || returnToWork.checked ) {
 
@@ -19,73 +18,58 @@ const SplitFields = ({ register }) => {
     }
   }
   return (
-    <div className="split-fields">
-      <div className="split-fields__half">
-        <div className="split-fields__half-field">
-          <label className="split-fields__half-field-label" htmlFor="departure">Départ</label>
-          <input className="split-fields__half-field-input" type="datetime-local" id="departure" {...register('departure')} />
-        </div>
+    <div className="form__section form__section--split">
+      <div className="form__section-half">
+        <DateField
+          type="datetime-local"
+          id="departure"
+          label="Jour et Heure de départ"
+          register={register}
+          formField="departure"
+        />
         <div className="form__section-field">
-          <label className="form__section-field-label" htmlFor="departure-place">Lieu</label>
-          <div className="form__section-field-radio">
-            <input
-              type="radio"
-              name=""
-              checked
-              disabled
-              id="departure-home"
-              value="departure-home"
-              onClick={handleClickonRadio}
-              {...register('departure-place')}
-            />
-            <label htmlFor="departure-home">Résidence familiale</label>
-          </div>
-          <div className="form__section-field-radio">
-            <input
-              type="radio"
-              name=""
-              disabled
-              id="departure-work"
-              value="departure-work"
-              onClick={handleClickonRadio}
-              {...register('departure-place')}
-            />
-            <label htmlFor="departure-work">Résidence administrative</label>
-          </div>
+          <label className="form__section-field-label" htmlFor="departure-place">Lieu de départ</label>
+          <RadioInput
+            id="departure-home"
+            formField="train-class"
+            label="Résidence familiale"
+            register={register}
+            handler={handleClickonRadio}
+          />
+          <RadioInput
+            id="departure-work"
+            formField="train-class"
+            label="Résidence administrative"
+            register={register}
+            handler={handleClickonRadio}
+          />
         </div>
       </div>
-      <div className="split-fields__half">
-        <div className="split-fields__half-field">
-          <label className="split-fields__half-field-label" htmlFor="return">Retour</label>
-          <input className="split-fields__half-field-input" type="datetime-local" id="return" {...register('return')} />
-        </div>
+      <div className="form__section-half form__section-half--separator" />
+      <div className="form__section-half">
+        <DateField
+          type="datetime-local"
+          id="return"
+          label="Jour et Heure de retour"
+          register={register}
+          formField="return"
+        />
         <div className="form__section-field">
-          <label className="form__section-field-label" htmlFor="return-place">Lieu</label>
-          <div className="form__section-field-radio">
-            <input
-              type="radio"
-              onClick={handleClickonRadio}
-              name=""
-              disabled
-              id="return-home"
-              value="return-home"
-              {...register('return-place')}
-            />
-            <label htmlFor="return-home">Résidence familiale</label>
-          </div>
-          <div className="form__section-field-radio">
-            <input
-              type="radio"
-              checked
-              disabled
-              name=""
-              id="return-work"
-              value="return-work"
-              {...register('return-place')}
-              onClick={handleClickonRadio}
-            />
-            <label htmlFor="return-work">Résidence administrative</label>
-          </div>
+          <label className="form__section-field-label" htmlFor="departure-place">Lieu de retour</label>
+          <RadioInput
+            id="return-home"
+            formField="return-place"
+            label="Résidence familiale"
+            register={register}
+            handler={handleClickonRadio}
+          />
+          <RadioInput
+            id="return-work"
+            formField="return-place"
+            label="Résidence administrative"
+            register={register}
+            handler={handleClickonRadio}
+          />
         </div>
       </div>
     </div>
