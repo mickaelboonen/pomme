@@ -5,8 +5,7 @@ import Apple from 'src/assets/images/apple.png';
 import './style.scss';
 import { Link } from 'react-router-dom';
 import Preferences from './Preferences';
-import { toggleBurgerMenu } from 'src/selectors/domManipulators';
-import { toggleNavList } from '../../../selectors/domManipulators';
+import { toggleBurgerMenu, toggleNavList } from 'src/selectors/domManipulators';
 import BurgerIcon from './BurgerIcon';
 
 const DesktopHeader = () => {
