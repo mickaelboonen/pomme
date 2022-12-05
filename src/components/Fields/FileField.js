@@ -4,7 +4,19 @@ import PropTypes from 'prop-types';
 import './style.scss';
 import classNames from 'classnames';
 
-const FileField = ({ register, formField, id, isHidden, pieces, multiple, label, placeholder, disabled}) => {
+const FileField = ({
+  register,
+  formField,
+  id,
+  isHidden,
+  pieces,
+  multiple,
+  label,
+  placeholder,
+  disabled,
+  error,
+  required
+}) => {
   const handleClickOnFileInput = (event) => {
     event.currentTarget.firstChild.click();
   };
@@ -25,7 +37,10 @@ const FileField = ({ register, formField, id, isHidden, pieces, multiple, label,
         className="form__section-field-input--file-input"
         type="file"
         placeholder={placeholder}
-        {...register(formField)}
+        {...register(formField, {
+          required: required,
+          
+          })}
         onChange={handleChange}
         multiple={multiple}
         disabled={disabled}
@@ -33,6 +48,8 @@ const FileField = ({ register, formField, id, isHidden, pieces, multiple, label,
       <div />
     </div>
     <p className="form__section-field-label form__section-field-label--infos">{pieces}</p>
+    <p className={classNames("form__section-field-error", { "form__section-field-error--open": error?.message.length > 0 })}>{error?.message}</p>
+  
   </div>
 );}
 

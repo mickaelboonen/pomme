@@ -4,7 +4,21 @@ import PropTypes from 'prop-types';
 import './style.scss';
 import classNames from 'classnames';
 
-const TextField = ({ placeholder, id, label, formField, register, max, isNumber, isHidden, min, value, disabled}) => {
+const TextField = ({
+  id,
+  max,
+  min,
+  value,
+  label,
+  error,
+  register,
+  disabled,
+  required,
+  isNumber,
+  isHidden,
+  formField,
+  placeholder,
+}) => {
   const type = isNumber ? 'number' : 'text';
   return (
     <div className={classNames("form__section-field", { "form__section-field--hidden": isHidden })} id={formField}>
@@ -18,8 +32,14 @@ const TextField = ({ placeholder, id, label, formField, register, max, isNumber,
         disabled={disabled}
         placeholder={placeholder}
         className="form__section-field-input"
-          {...register(formField)}
+          {...register(formField, {
+            required: required,
+            // validate: {
+            //   notNull: (v) => (v !== '' || required),
+            // }
+          })}
         />
+        <p className={classNames("form__section-field-error", { "form__section-field-error--open": error?.message.length > 0 })}>{error?.message}</p>
     </div>
   );
 };
@@ -36,6 +56,7 @@ TextField.defaultProptypes = {
   max: '',
   value: null,
   placeholder: '',
+  required: null,
 };
 
 export default TextField;

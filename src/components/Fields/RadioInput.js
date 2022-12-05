@@ -3,8 +3,17 @@ import PropTypes from 'prop-types';
 
 import './style.scss';
 
-const RadioInput = ({ checked, id, formField, label, register, handler, disabled}) => (
-  <div className="form__section-field-radio">
+const RadioInput = ({
+  required,
+  checked,
+  id,
+  formField,
+  label,
+  register,
+  handler,
+  disabled
+}) => (
+  <div className="form__section-field-radio" id={formField}>
     <input
       type="radio"
       name=""
@@ -12,8 +21,11 @@ const RadioInput = ({ checked, id, formField, label, register, handler, disabled
       value={id}
       checked={checked}
       disabled={disabled}
-      {...register(formField)}
+      {...register(formField, {
+        required: required
+      })}
       onClick={handler}
+      
     />
     <label htmlFor={id}>{label}</label>
   </div>
