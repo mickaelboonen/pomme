@@ -20,11 +20,15 @@ $test : #{var(--first-color)};
 
     margin: 1rem 0;
 
-    & a {
+    & a, & button {
       @include vars.addButton;
       // margin: 1rem auto;
-      width: 90%;
+      width: fit-content;
+      padding: 0.8rem 1.3rem;
       margin: auto;
+      font-size: 1em;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      font-weight: bold;
       color: var(--opposite-theme-color);
     }
   }

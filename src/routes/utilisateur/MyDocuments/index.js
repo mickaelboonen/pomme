@@ -6,7 +6,7 @@ import Tabs from '../../../components/Tabs';
 import PageTitle from '../../../components/PageTitle';
 
 import './style.scss';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Section from './Section';
 const MyDocuments = () => {
   const location = useLocation();
@@ -156,11 +156,34 @@ const MyDocuments = () => {
   const params = useParams();
   console.log(params);
 
+  const navigate = useNavigate();
+  const handleClickOnNewOM = () => {
+
+    if (window.confirm('Voulez-vous créer un nouvel Ordre de Mission ?')) {
+      const userId = "mboone01";
+      const omName = `OM_${userId}_`;
+      const newOM = {
+        id: 1,
+        omName: omName,
+        status: 1,
+        omUrl: 'path',
+        userId: userId,
+        comments: '',
+      }
+      localStorage.setItem('newOm', JSON.stringify(newOM));
+
+      // NAVIGATE TO DO IN THE REDUCER
+      navigate(`/nouveau-document/${slug}?etape=1&id=${1}`)
+      // TODO : add new entry into Db with these two infos
+    }
+  }
+
   return (
     <main className="my-documents">
       <PageTitle>{title}</PageTitle>
       <div className="my-documents__button">
-        <a href={`/nouveau-document/${slug}?etape=1`}>NOUVEAU</a>
+        {/* <a href={`/nouveau-document/${slug}?etape=1`}>NOUVEAU</a> */}
+        <button type="button" onClick={handleClickOnNewOM}>NOUVEAU</button>
       </div>
       {isOm && <Tabs tabs={OMTabs} handler={displayWantedSection} />}
       {!isOm && <Tabs tabs={EFTabs} handler={displayWantedSection} />}
