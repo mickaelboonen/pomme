@@ -33,7 +33,7 @@ const SelectField = ({
       <option value="">{blankValue}</option>
       {data.map((item) => <option key={item} value={item}>{item}</option>)}
     </select>
-    <p className={classNames("form__section-field-error", { "form__section-field-error--open": error?.message.length > 0 })}>{error?.message}</p>
+    {error && <p className={classNames("form__section-field-error", { "form__section-field-error--open": error?.message.length > 0 })}>{error?.message}</p>}
   </div>
 );
 

@@ -33,65 +33,77 @@ const Mission = ({ step, isEF }) => {
     formState:
     { errors },
   } = useForm();
-  console.log('errors: ', errors);
 
-  // console.log(watch(errors));
-
+  const errs = watch(errors);
+  console.log("errors", errs);
   const onSubmit = (data) => {
+    console.log('----------------------------------------------------------');
     console.log('submitted data: ', data);
+    console.log(errors);
     // navigate('/nouveau-document/ordre-de-mission?etape=' + step++);
   };
 
 
-  const leavesFromWork = () => {
+  // const leavesFromWork = () => {
     
-    const departureFromWork = document.querySelector('#departure-work');
-    const returnToWork = document.querySelector('#return-work');
+  //   const departureFromWork = document.querySelector('#departure-work');
+  //   const returnToWork = document.querySelector('#return-work');
 
     
-    if ( departureFromWork.checked || returnToWork.checked ) {
-      console.log('leaves from work');
-      register('workAddress', {
-        required: "TOI LA",
-      })
+  //   if ( departureFromWork.checked || returnToWork.checked ) {
+  //     console.log('leaves from work');
+  //     register('listWorkAddresses', {
+  //       required: "TOI LA",
+  //     })
 
-      const selectElement = document.querySelector('#work-address-select');
+  //     const selectElement = document.querySelector('#work-address-select');
 
-      if (selectElement.value === '') {
-        console.log('NOP');
-        // setError("workAddress", {
-        //   type: "custom",
-        //   message: "something is wrong"
-        // })
-        // 
-      }
-    }
-    else {
-      // return "error message";
-      unregister("workAddress");
-    }
-  }
+  //     if (selectElement.value === '') {
+  //       console.log('NOP');
+  //       // setError("listWorkAddresses", {
+  //       //   type: "custom",
+  //       //   message: "something is wrong"
+  //       // })
+  //       // 
+  //     }
+  //   }
+  //   else {
+  //     // return "error message";
+  //     unregister("listWorkAddresses");
+  //   }
+  // }
 
   let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
   refusal = "";
 
-  const { region , departurePlace, returnPlace } = watch(['region', 'departurePlace', 'returnPlace' ]);
-  console.log(region , departurePlace, returnPlace);
+  const [region , departurePlace, returnPlace] = watch(['region', 'departurePlace', 'returnPlace' ]);
 
 
   useEffect(() => {
-    console.log('in UseEffect: ',  departurePlace, returnPlace);
-    if (departurePlace || returnPlace) {
-    // if (departurePlace.contains('work') || returnPlace.contains('work')) {
-      register("workAddress", {
+    console.log(returnPlace);
+    
+    if (returnPlace && returnPlace.includes('work')) {
+      register("listWorkAddresses", {
+        required:"Merci de sélectionner une adresse administrative."
+      });
+    }
+    else {
+      unregister("listWorkAddresses");
+    }
+  }, [returnPlace])
+
+  useEffect(() => {
+    console.log(departurePlace);
+    if (departurePlace && departurePlace.includes('work')) {
+      register("listWorkAddresses", {
         required:"Merci de sélectionner une adresse administrative."
       });
 
     }
     else {
-      unregister("workAddress");
+      unregister("listWorkAddresses");
     }
-  }, [unregister, departurePlace, returnPlace])
+  }, [departurePlace])
   
   useEffect(() => {
     if (region === "métropole") {
@@ -101,10 +113,10 @@ const Mission = ({ step, isEF }) => {
     }
     else if (region === "dom-tom") {
       register("abroadCosts", {
-        required: 'i wanna knwo'
+        required: "Merci de sélectionner l'option qui correspond."
       });
     }
-    else {
+    else if (region === "étranger") {
       register("country", {
         required:"Merci de sélectionner l'option qui correspond."
       });
@@ -132,10 +144,10 @@ const Mission = ({ step, isEF }) => {
 
     if ( departureFromWork.checked || returnToWork.checked ) {
 
-      document.querySelector('#workAddress').classList.remove('form__section-field--hidden');
+      document.querySelector('#listWorkAddresses').classList.remove('form__section-field--hidden');
     }
     else {
-      document.querySelector('#workAddress').classList.add('form__section-field--hidden');
+      document.querySelector('#listWorkAddresses').classList.add('form__section-field--hidden');
     }
   }
 
@@ -249,12 +261,12 @@ const Mission = ({ step, isEF }) => {
           disabled={isEF}
           data={adresses}
           register={register}
-          validators={{leavesFromWork: leavesFromWork}}
-          error={errors.workAddress}
-          formField="workAddress"
+          // validators={{leavesFromWork: leavesFromWork}}
+          error={errors.listWorkAddresses}
+          formField="listWorkAddresses"
           id="work-address-select"
           label="Adresse administrative"
-          required="Merci de sélectionner une adresse administrative."
+          // required="Merci de sélectionner une adresse administrative."
           blankValue={"Veuillez sélectionner l'adresse administrative qui vous correspond"}
         />
       </div>
