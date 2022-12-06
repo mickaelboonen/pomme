@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 
 const initialState = {
   steps: [
@@ -23,56 +23,59 @@ const initialState = {
       id: 5,
     },
   ],
-  omForm : {
-    missionGoal: '',
-    missionGoalFile: {},
-    departure: '',
-    trainClass: null,
-    return: '',
-    returnPlace: null,
-    workAdress: '',
-    region: null,
-    missionAdress: '',
-    country: '',
-    abroad: false,
-    actualCosts: false
-},
-    textareaSettings: {
-      name: 'content',
-      label: "Votre Demande :",
-      placeholder: "Votre Demande",
-      required: {
-        required: "Vous n'avez pas formulé votre demande."
-      },
-      constraint: {
-        min: 1,
-        rows: 5,
-      },
-      classname: '',
+  omForm : [
+    {
+      id: 1,
+      step: 'mission',
+      data: {},
     },
-    responseMessage: '',
-    responseClass: '',
+    {
+      id: 2,
+      step: 'transports',
+      data: {},
+    },
+    {
+      id: 3,
+      step: 'hebergements',
+      data: {},
+    },
+    {
+      id: 4,
+      step: 'avance',
+      data: {},
+    },
+    {
+      id: 5,
+      step: 'signature',
+      data: {},
+    }
+  ],
+  id: 1245,
+
 };
-const contactSlice = createSlice({
+const omFormSlice = createSlice({
     name: 'omForm',
     initialState,
     reducers: {
-      createTicket: () => {
-      },
-      showTicketCreationResponse: (state, action) => {
-        const { status } = action.payload;
-        if (status === 404 || status === 500) {
-            state.responseMessage = 'Foiré';
-            state.responseClass = 'contact__response--error';
+      saveMissionFormData: (state, action) => {
+        
+        let currentIndex;
+        state.omForm.forEach((step) => {
+          if (step.step === "mission") {
+            currentIndex = state.omForm.indexOf(step);
           }
-        else if (status === 201) {
-        state.responseMessage = 'Réussi';
-        state.responseClass = 'contact__response--success';
+        });
+
+        if (currentIndex !== -1) {
+          state.omForm[currentIndex].data = action.payload;
         }
+        
+
+
       }
     },
 });
 
-export const { createTicket, showTicketCreationResponse } = contactSlice.actions;
+export const { saveMissionFormData } = omFormSlice.actions;
 
-export default contactSlice.reducer;
+export default omFormSlice.reducer;

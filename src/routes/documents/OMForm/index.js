@@ -20,6 +20,24 @@ const OMForm = () => {
   const { search } = useLocation();
   const step = Number(search.slice(search.length - 1));
 
+  const mission = {
+    abroadCosts:null,
+    country:"",
+    departure:"2022-12-07T15:47",
+    departurePlace:"departure-home",
+    listWorkAddresses:"",
+    missionAdress:"Paris",
+    missionGoal:"Formation Java",
+    missionGoalFile:"path",
+    region:"métropole",
+    return:"2022-12-20T15:47",
+    returnPlace:"return-home",
+  };
+  
+  localStorage.setItem('mission', JSON.stringify(mission));
+
+
+
   return (
     <div className='form-container'>
       <ThreadAsTabs step={step} tabs={steps} isOm/>

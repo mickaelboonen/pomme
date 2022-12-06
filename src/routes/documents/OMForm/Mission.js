@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Map from '../../../assets/images/map.svg';
 import Pin from '../../../assets/images/pin.svg';
 
@@ -20,10 +21,12 @@ import DateField from 'src/components/Fields/DateField';
 import TextareaField from 'src/components/Fields/Textarea';
 import SwitchButton from 'src/components/SwitchButton';
 import { handleRegionFields, handleWorkAddressSelect } from 'src/selectors/formValidationsFunctions';
-import { toggleIsHiddenOnWorkAddressesList } from '../../../selectors/domManipulators';
+import { toggleIsHiddenOnWorkAddressesList } from 'src/selectors/domManipulators';
+import { saveMissionFormData } from 'src/reducer/omForm';
 
 const Mission = ({ step, isEF }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -38,7 +41,21 @@ const Mission = ({ step, isEF }) => {
   const onSubmit = (data) => {
     console.log('----------------------------------------------------------');
     console.log('submitted data: ', data);
+
+    // TODO - ERROR : 
+    //A non-serializable value was detected in an action, in the path: `payload.missionGoalFile`. Value: FileList {length: 0} 
+    
+    // TODO : save file first then save data with the path of the file
+    data.missionGoalFile = 'path';
+
+    // Enregistrer dans la BDD directement
+    dispatch(saveMissionFormData(data));
     // navigate('/nouveau-document/ordre-de-mission?etape=' + step++);
+  };
+
+  const advance = () => {
+    const data = JSON.parse(localStorage.getItem('mission'));
+    dispatch(saveMissionFormData(data));
   };
 
   let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
@@ -294,6 +311,7 @@ const Mission = ({ step, isEF }) => {
       )}
       {refusal !== '' && <RefusalMessage message={refusal} />}
       <Buttons step={step} />
+      <button type='button' onClick={advance}>Click</button>
     </form>
     
   );
