@@ -34,6 +34,19 @@ export const toggleIsHiddenOnNextFormSection = (target) => {
     nextSectionField.classList.add('form__section-field--hidden');
   }
 }
+
+export const toggleIsHiddenOnWorkAddressesList = () => {
+  const departureFromWork = document.querySelector('#departure-work');
+  const returnToWork = document.querySelector('#return-work');
+
+  if ( departureFromWork.checked || returnToWork.checked ) {
+
+    document.querySelector('#listWorkAddresses').classList.remove('form__section-field--hidden');
+  }
+  else {
+    document.querySelector('#listWorkAddresses').classList.add('form__section-field--hidden');
+  }
+}
 // HEADER DOM MANIPULATION -------------------------------------------------------
 
 export const toggleBurgerMenu = () => {

@@ -9,7 +9,7 @@ import Pin from '../../../assets/images/pin.svg';
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import TextFieldWithIcon from 'src/components/Fields/TextFieldWithIcon';
-import { displayRegionFieldsInFormMission } from '../../../selectors/domManipulators';
+import { displayRegionFieldsInFormMission } from 'src/selectors/domManipulators';
 import RefusalMessage from 'src/components/Fields/RefusalMessage';
 import Buttons from 'src/components/Fields/Buttons';
 import FileField from 'src/components/Fields/FileField';
@@ -20,6 +20,7 @@ import DateField from 'src/components/Fields/DateField';
 import TextareaField from 'src/components/Fields/Textarea';
 import SwitchButton from 'src/components/SwitchButton';
 import { handleRegionFields, handleWorkAddressSelect } from 'src/selectors/formValidationsFunctions';
+import { toggleIsHiddenOnWorkAddressesList } from '../../../selectors/domManipulators';
 
 const Mission = ({ step, isEF }) => {
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ const Mission = ({ step, isEF }) => {
   refusal = "";
 
   const [region , departurePlace, returnPlace] = watch(['region', 'departurePlace', 'returnPlace' ]);
+  
   useEffect(() => {
     handleWorkAddressSelect(returnPlace, register, unregister);
   }, [returnPlace]);
@@ -69,16 +71,7 @@ const Mission = ({ step, isEF }) => {
   ];
 
   const handleClickonRadio = () => {
-    const departureFromWork = document.querySelector('#departure-work');
-    const returnToWork = document.querySelector('#return-work');
-
-    if ( departureFromWork.checked || returnToWork.checked ) {
-
-      document.querySelector('#listWorkAddresses').classList.remove('form__section-field--hidden');
-    }
-    else {
-      document.querySelector('#listWorkAddresses').classList.add('form__section-field--hidden');
-    }
+    toggleIsHiddenOnWorkAddressesList();
   }
 
   const toggleDisabledFields = () => {
