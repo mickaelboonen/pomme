@@ -16,10 +16,10 @@ import FileField from 'src/components/Fields/FileField';
 import TextField from 'src/components/Fields/TextField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import SelectField from 'src/components/Fields/SelectField';
-import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import DateField from 'src/components/Fields/DateField';
 import TextareaField from 'src/components/Fields/Textarea';
 import SwitchButton from 'src/components/SwitchButton';
+import { handleRegionFields, handleWorkAddressSelect } from 'src/selectors/formValidationsFunctions';
 
 const Mission = ({ step, isEF }) => {
   const navigate = useNavigate();
@@ -33,98 +33,28 @@ const Mission = ({ step, isEF }) => {
     formState:
     { errors },
   } = useForm();
-
-  const errs = watch(errors);
-  console.log("errors", errs);
+  
   const onSubmit = (data) => {
     console.log('----------------------------------------------------------');
     console.log('submitted data: ', data);
-    console.log(errors);
     // navigate('/nouveau-document/ordre-de-mission?etape=' + step++);
   };
-
-
-  // const leavesFromWork = () => {
-    
-  //   const departureFromWork = document.querySelector('#departure-work');
-  //   const returnToWork = document.querySelector('#return-work');
-
-    
-  //   if ( departureFromWork.checked || returnToWork.checked ) {
-  //     console.log('leaves from work');
-  //     register('listWorkAddresses', {
-  //       required: "TOI LA",
-  //     })
-
-  //     const selectElement = document.querySelector('#work-address-select');
-
-  //     if (selectElement.value === '') {
-  //       console.log('NOP');
-  //       // setError("listWorkAddresses", {
-  //       //   type: "custom",
-  //       //   message: "something is wrong"
-  //       // })
-  //       // 
-  //     }
-  //   }
-  //   else {
-  //     // return "error message";
-  //     unregister("listWorkAddresses");
-  //   }
-  // }
 
   let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
   refusal = "";
 
   const [region , departurePlace, returnPlace] = watch(['region', 'departurePlace', 'returnPlace' ]);
-
+  useEffect(() => {
+    handleWorkAddressSelect(returnPlace, register, unregister);
+  }, [returnPlace]);
 
   useEffect(() => {
-    console.log(returnPlace);
-    
-    if (returnPlace && returnPlace.includes('work')) {
-      register("listWorkAddresses", {
-        required:"Merci de sélectionner une adresse administrative."
-      });
-    }
-    else {
-      unregister("listWorkAddresses");
-    }
-  }, [returnPlace])
-
-  useEffect(() => {
-    console.log(departurePlace);
-    if (departurePlace && departurePlace.includes('work')) {
-      register("listWorkAddresses", {
-        required:"Merci de sélectionner une adresse administrative."
-      });
-
-    }
-    else {
-      unregister("listWorkAddresses");
-    }
-  }, [departurePlace])
+    handleWorkAddressSelect(departurePlace, register, unregister);
+  }, [departurePlace]);
   
   useEffect(() => {
-    if (region === "métropole") {
-      unregister("country");
-      unregister("abroadCosts");
-
-    }
-    else if (region === "dom-tom") {
-      register("abroadCosts", {
-        required: "Merci de sélectionner l'option qui correspond."
-      });
-    }
-    else if (region === "étranger") {
-      register("country", {
-        required:"Merci de sélectionner l'option qui correspond."
-      });
-      register("abroadCosts", {
-        required:"Merci de sélectionner l'option qui correspond."
-      });
-    }
-  }, [unregister, region])
+    handleRegionFields(region, register, unregister);
+  }, [unregister, region]);
 
 
   const handleRegionClick = () => {
