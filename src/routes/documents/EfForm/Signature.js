@@ -9,7 +9,7 @@ import Buttons from 'src/components/Fields/Buttons';
 import SwitchButton from 'src/components/SwitchButton';
 import TextField from 'src/components/Fields/TextField';
 import FileField from 'src/components/Fields/FileField';
-import TextareaField from 'src/components/Fields/Textarea';
+import TextareaField from 'src/components/Fields/TextareaField';
 
 const Signature = ({ step }) => {
   const navigate = useNavigate();

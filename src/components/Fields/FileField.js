@@ -39,6 +39,7 @@ const FileField = ({
           required: required,
           
           })}
+        name={formField}
         onChange={handleChange}
         multiple={multiple}
         disabled={disabled}

@@ -6,7 +6,7 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 import FileField from 'src/components/Fields/FileField';
 import { useForm } from 'react-hook-form';
 import TextField from 'src/components/Fields/TextField';
-import TextareaField from 'src/components/Fields/Textarea';
+import TextareaField from 'src/components/Fields/TextareaField';
 import ButtonElement from 'src/components/Fields/ButtonElement';
 import PageTitle from 'src/components/PageTitle';
 

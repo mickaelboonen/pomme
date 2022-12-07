@@ -33,19 +33,33 @@ const Transports = ({ step }) => {
   // console.log(watch(errors));
   const onSubmit = (data) => {
 
-    console.log(data);
+    console.log("------------------------------------------------------", data, "------------------------------------------------------");
     const errorElement = document.getElementById('transports-error');
+    const dispensationErrorElement = document.getElementById('dispensation-error');
     
     if (!data.trainClass && !data.planeClass && data.vehicle === "Pas de véhicule sélectionné") {
-      console.log('fail');
       errorElement.textContent = "Vous devez choisir un moyen de transport pour vous rendre sur le lieu de la mission."
       errorElement.classList.add("form__section-field-error--open");
     }
     else {
-      if (errorElement.textContent == '') {
         errorElement.textContent = ""
         errorElement.classList.remove("form__section-field-error--open");
+
+      if (data.dispensation.length === 0 && !data.dispensationForValidation) {
+        dispensationErrorElement.textContent = "Merci de fournir la dérogation signée par le Président ou d'en faire la demande."
+        dispensationErrorElement.classList.add("form__section-field-error--open");
+
+        // TODO : stop
       }
+      else {
+        dispensationErrorElement.textContent = ""
+        dispensationErrorElement.classList.remove("form__section-field-error--open");
+
+        // TODO : GO ON
+
+      }
+
+      localStorage.setItem('transports', data);
     }
     // navigate('/nouveau-document/ordre-de-mission?etape=' + step++);
   };
@@ -81,15 +95,14 @@ const Transports = ({ step }) => {
       register("trainPayment", {
         required: "Merci de sélectionner l'option qui correspond."
       });
-      register("classCertificate", {
-        required: "Merci de fournir la dérogation signée par le Président."
-      });
     }
     if (trainClass === 'first-class') {
       parentSection.classList.remove('form__section-field--hidden');
     }
     else if (trainClass === 'second-class') {
       parentSection.classList.add('form__section-field--hidden');
+      unregister('dispensation');
+      unregister('dispensationForValidation');
 
     }
   }, [trainClass])
@@ -99,16 +112,14 @@ const Transports = ({ step }) => {
       register("trainPayment", {
         required: "Merci de sélectionner l'option qui correspond."
       });
-      register("classCertificate", {
-        required: "Merci de fournir la dérogation signée par le Président."
-      });
-      required=""
     }
     if (planeClass === 'business-class') {
       parentSection.classList.remove('form__section-field--hidden');
     }
     else if (planeClass === 'eco-class') {
       parentSection.classList.add('form__section-field--hidden');
+      unregister('dispensation');
+      unregister('dispensationForValidation');
 
     }
   }, [planeClass])
@@ -138,8 +149,6 @@ const Transports = ({ step }) => {
               <label className="form__section-field-label" htmlFor="departure-place">Classe</label>
               <RadioInput id="first-class" formField="trainClass" label="Première classe (*)" register={register} />
               <RadioInput id="second-class" formField="trainClass" label="Deuxième classe" register={register} />
-              { errors.trainClass && <p className={classNames("form__section-field-error", { "form__section-field-error--open": errors.trainClass.message.length > 0 })}>{errors.trainClass.message}</p> 
-}
             </div>
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Règlement</label>
@@ -155,25 +164,37 @@ const Transports = ({ step }) => {
               <label className="form__section-field-label" htmlFor="departure-place">Classe</label>
               <RadioInput id="business-class" formField="planeClass" label="Classe Affaires (*)" register={register} />
               <RadioInput id="eco-class" formField="planeClass" label="Classe éco" register={register} />
-              { errors.planeClass && <p className={classNames("form__section-field-error", { "form__section-field-error--open": errors.planeClass.message.length > 0 })}>{errors.planeClass.message}</p> }
             </div>
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Règlement</label>
               <RadioInput id="unimes-plane" formField="planePayment" label="Réglé par Unîmes" register={register} />
               <RadioInput id="userPane" formField="planePayment" label="Avancé par l'agent" register={register} />
-              { errors.planePayment && <p className={classNames("form__section-field-error", { "form__section-field-error--open": errors.planePayment.message.length > 0 })}>{errors.planePayment.message}</p> }
+              { errors.planePayment && <p className="form__section-field-error form__section-field-error--open">{errors.planePayment.message}</p> }
             </div>
           </div>
         </div>
         <div className="form__section-container form__section-field--hidden" id="upper-class-request">
-          <h4 className="form__section-container-title">Demande de Première Classe ou Classe Affaire</h4>
+          <h4 className="form__section-container-title">Demande de Dérogation Première Classe ou Classe Affaire</h4>
           <div className="form__section-container-options">
-            <FileField id="class-certificate" formField="classCertificate" error={errors.classCertificate} register={register} />
-            OU
-            <div className="form__section-container-button">
-              <Link to="/documents/autorisation-de-vehicule/nouveau?etape=1">FAIRE LA DEMANDE</Link>
+            <FileField id="dispensation-field" formField="dispensation" register={register} />
+            <span className="form__section-container-options__separator">OU</span>
+            <div className="form__section-field">
+              <CheckboxInput id="dispensation-for-validation-field" formField="dispensationForValidation" label="Demande en cours" register={register} columnDisplay />
             </div>
+            <span className="form__section-container-options__separator">OU</span>
+            <div className="form__section-container-button">
+              <Link to="/nouveau-document/demande-de-dérogation">FAIRE LA DEMANDE</Link>
+            </div>
+            {/* <SwitchButton
+              register={register}
+              handler={() => null}
+              isInForm
+              formField={'publicTransports'}
+              label="Demande en cours"
+            /> */}
           </div>
+          <p id="dispensation-error" className="form__section-field-error" />
+          { errors.dispensationForValidation && <p className="form__section-field-error form__section-field-error--open">{errors.dispensationForValidation.message}</p> }
         </div>
       {/* </div> */}
       {/* <div className="form__section" */}
@@ -193,8 +214,7 @@ const Transports = ({ step }) => {
             <FileField id="vehicle-authorization" formField="vehicleAuthorizationFile" register={register} />
             OU
             <div className="form__section-container-button">
-              <Link to="/nouveau-document/autorisation-de-véhicule?etape=1">FAIRE LA DEMANDE</Link>
-              {/* <a type="button">FAIRE LA DEMANDE</button> */}
+              <Link to="/nouveau-document/autorisation-de-véhicule">FAIRE LA DEMANDE</Link>
             </div>
           </div>
           <p className="form__section-container-reminder">RAPPEL : Remboursement Forfait SNCF 2ème classe</p>
@@ -204,14 +224,13 @@ const Transports = ({ step }) => {
         <FormSectionTitle>Déplacement pendant la mission</FormSectionTitle>
         <div className="form__section-field">
           <SwitchButton
-          register={register}
-          handler={() => null}
-          isInForm
-          formField={'publicTransports'}
-          label="Transports en commun :"
-        />
-
-       </div>
+            register={register}
+            handler={() => null}
+            isInForm
+            formField={'publicTransports'}
+            label="Transports en commun :"
+          />
+        </div>
         <div className="form__section-field">
           <p className="form__section-field-label">Autres</p>
           <CheckboxInput id="taxi" formField="others" label="Taxi" register={register} />

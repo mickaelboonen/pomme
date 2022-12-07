@@ -7,8 +7,6 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 import RadioInput from 'src/components/Fields/RadioInput';
 import TextField from 'src/components/Fields/TextField';
 import PageTitle from 'src/components/PageTitle';
-
-import './style.scss';
 import SelectField from 'src/components/Fields/SelectField';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import { toggleIsHiddenOnNextFormSection } from '../../../selectors/domManipulators';

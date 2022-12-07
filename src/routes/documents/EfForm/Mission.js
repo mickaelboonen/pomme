@@ -18,7 +18,7 @@ import RadioInput from 'src/components/Fields/RadioInput';
 import SelectField from 'src/components/Fields/SelectField';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import SwitchButton from 'src/components/SwitchButton';
-import TextareaField from 'src/components/Fields/Textarea';
+import TextareaField from 'src/components/Fields/TextareaField';
 
 const Mission = ({ step }) => {
   const navigate = useNavigate();

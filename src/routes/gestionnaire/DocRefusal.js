@@ -8,7 +8,7 @@ import './style.scss';
 import TextField from 'src/components/Fields/TextField';
 
 import './style.scss';
-import TextareaField from 'src/components/Fields/Textarea';
+import TextareaField from 'src/components/Fields/TextareaField';
 
 const DocRefusalForm = ({ role = "DGS"}) => {
   const {

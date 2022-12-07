@@ -18,7 +18,7 @@ import TextField from 'src/components/Fields/TextField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import SelectField from 'src/components/Fields/SelectField';
 import DateField from 'src/components/Fields/DateField';
-import TextareaField from 'src/components/Fields/Textarea';
+import TextareaField from 'src/components/Fields/TextareaField';
 import SwitchButton from 'src/components/SwitchButton';
 import { handleRegionFields, handleWorkAddressSelect } from 'src/selectors/formValidationsFunctions';
 import { toggleIsHiddenOnWorkAddressesList } from 'src/selectors/domManipulators';

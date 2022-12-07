@@ -17,6 +17,7 @@ import EfForm from "src/routes/documents/EfForm";
 import EfControl from "src/routes/dafc/EfControl";
 import Gestionnaires from "src/routes/gestionnaire";
 import EfValidation from "src/routes/dafc/EfValidation";
+import Derogation from "src/routes/documents/Derogation";
 import MyAccount from "src/routes/utilisateur/MyAccount";
 import ELForm from "src/routes/utilisateur/MyAccount/ELForm";
 import MyDocuments from "src/routes/utilisateur/MyDocuments";
@@ -64,6 +65,14 @@ const router = createBrowserRouter([
           {
             path: '%C3%A9tat-de-frais',
             element: <EfForm />    
+          },
+          {
+            path: 'demande-de-dérogation',
+            element: <Derogation />   
+          },
+          {
+            path: 'demande-de-d%C3%A9rogation',
+            element: <Derogation />      
           },
 
         ],

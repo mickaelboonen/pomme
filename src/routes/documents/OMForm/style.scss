@@ -91,6 +91,7 @@
 
     &-container{
       border: 1px solid rgb(153, 150, 150);
+      background-color: #fff;
       padding: 0.5rem;
       border-radius: 5px;
       margin-bottom: 1rem;
@@ -190,7 +191,7 @@
 
         & .form__section-field,
         & .form__section-container-button {
-          width: 40%;
+          width: 30%;
 
           & a {
             border: 1px solid #1a1a1a;
@@ -204,6 +205,11 @@
               color: #fff;
             }
           }
+        }
+
+        & .form__section-field:nth-of-type(2) {
+          width: 15%;
+          margin-bottom: 0.3rem;
         }
       } 
     }
