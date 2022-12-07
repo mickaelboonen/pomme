@@ -44,3 +44,16 @@ export const handleRegionFields = (region, register, unregister) => {
     });
   }
 }
+
+export const handleTrainOrPlaneFields = (transportClass) => {
+
+  // const parentSection = document.querySelector('#upper-class-request');
+  // const currentClass = transportClass.split('-')[0];
+  // console.log(currentClass, parentSection);
+  // if (currentClass === 'first' && currentClass === 'business') {
+  //   parentSection.classList.remove('form__section-field--hidden');
+  // }
+  // else if (currentClass === 'second' || currentClass === 'eco') {
+  //   parentSection.classList.add('form__section-field--hidden');
+  // }
+}

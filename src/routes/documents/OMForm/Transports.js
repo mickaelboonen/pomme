@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
@@ -14,7 +14,8 @@ import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import FileField from 'src/components/Fields/FileField';
 import SwitchButton from 'src/components/SwitchButton';
 import SelectField from 'src/components/Fields/SelectField';
-import ButtonElement from 'src/components/Fields/ButtonElement';
+import { handleTrainOrPlaneFields } from '../../../selectors/formValidationsFunctions';
+
 
 const Transports = ({ step }) => {
   console.log("rendu");
@@ -59,9 +60,9 @@ const Transports = ({ step }) => {
 
       }
 
-      localStorage.setItem('transports', data);
+      localStorage.setItem('transports', JSON.stringify(data));
     }
-    // navigate('/nouveau-document/ordre-de-mission?etape=' + step++);
+    navigate('/nouveau-document/ordre-de-mission?etape=' + step++);
   };
 
   let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
@@ -101,15 +102,13 @@ const Transports = ({ step }) => {
     }
     else if (trainClass === 'second-class') {
       parentSection.classList.add('form__section-field--hidden');
-      unregister('dispensation');
-      unregister('dispensationForValidation');
 
     }
   }, [trainClass])
   useEffect(() => {
     const parentSection = document.querySelector('#upper-class-request');
     if (planeClass) {
-      register("trainPayment", {
+      register("planePayment", {
         required: "Merci de sélectionner l'option qui correspond."
       });
     }
@@ -118,8 +117,6 @@ const Transports = ({ step }) => {
     }
     else if (planeClass === 'eco-class') {
       parentSection.classList.add('form__section-field--hidden');
-      unregister('dispensation');
-      unregister('dispensationForValidation');
 
     }
   }, [planeClass])
