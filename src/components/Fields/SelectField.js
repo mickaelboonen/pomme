@@ -30,7 +30,7 @@ const SelectField = ({
       })}
       disabled={disabled}
     >
-      <option value="">{blankValue}</option>
+      <option>{blankValue}</option>
       {data.map((item) => <option key={item} value={item}>{item}</option>)}
     </select>
     {error && <p className={classNames("form__section-field-error", { "form__section-field-error--open": error?.message.length > 0 })}>{error?.message}</p>}

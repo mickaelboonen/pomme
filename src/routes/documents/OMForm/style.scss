@@ -186,7 +186,7 @@
       &-container-options {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-end;
 
         & .form__section-field,
         & .form__section-container-button {

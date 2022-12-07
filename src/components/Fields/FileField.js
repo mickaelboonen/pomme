@@ -26,8 +26,6 @@ const FileField = ({
     const filename = value.slice(12);
     nextSibling.textContent = filename;
   };
-
-
   return (
   <div id={id} className={classNames("form__section-field", {"form__section-field--hidden": isHidden})} >
     <label className="form__section-field-label" htmlFor={id}>{label}</label>
@@ -47,8 +45,8 @@ const FileField = ({
       />
       <div />
     </div>
-    <p className="form__section-field-label form__section-field-label--infos">{pieces}</p>
-    <p className={classNames("form__section-field-error", { "form__section-field-error--open": error?.message.length > 0 })}>{error?.message}</p>
+    {pieces !== "" && <p className="form__section-field-label form__section-field-label--infos">{pieces}</p>}
+    {error !== undefined && <p className="form__section-field-error form__section-field-error--open">{error?.message}</p>}
   
   </div>
 );}
