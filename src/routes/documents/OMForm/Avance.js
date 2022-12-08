@@ -148,6 +148,7 @@ const Avance = ({ step }) => {
               formField="nights"
               register={register}
               isNumber
+              disabled
               min="0"
               value={nightsNumber}
               label="Nombre de nuits"
@@ -159,6 +160,7 @@ const Avance = ({ step }) => {
               formField="meals"
               register={register}
               isNumber
+              disabled
               min="0"
               label="Nombre de repas"
               value={totalMeals}
