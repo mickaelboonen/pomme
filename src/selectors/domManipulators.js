@@ -47,6 +47,48 @@ export const toggleIsHiddenOnWorkAddressesList = () => {
     document.querySelector('#listWorkAddresses').classList.add('form__section-field--hidden');
   }
 }
+
+
+/**
+ * components/App/OMForm/Transports
+ */
+export const toggleVehicleFields = (value) => {
+  const personalCarField = document.querySelector('#personal-car-field');
+  const isHidden = personalCarField.className.includes('hidden');
+
+  if (value === 'Véhicule personnel, de prêt' && isHidden) {
+    personalCarField.classList.remove('form__section-field--hidden');
+  }
+  else {
+    personalCarField.classList.add('form__section-field--hidden');
+  }
+}
+
+
+/**
+ * components/App/OMForm/Transports
+ */
+export const toggleDerogationSection = (element, transportClass) => {
+  
+  const classToManipulate = 'form__section-field--hidden';
+  
+  if (transportClass === 'first-class' || transportClass === 'business-class' ) {
+    element.classList.remove(classToManipulate);
+  }
+  else if (transportClass === 'second-class' || transportClass === 'eco-class') {
+    element.classList.add(classToManipulate);
+  }
+  else {
+    if (transportClass === 'Véhicule personnel, de prêt') {
+      element.classList.remove(classToManipulate);
+    }
+    else {
+      element.classList.add(classToManipulate);
+    }
+  }
+}
+
+
 // HEADER DOM MANIPULATION -------------------------------------------------------
 
 export const toggleBurgerMenu = () => {

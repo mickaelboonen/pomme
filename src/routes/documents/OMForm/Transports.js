@@ -14,11 +14,11 @@ import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import FileField from 'src/components/Fields/FileField';
 import SwitchButton from 'src/components/SwitchButton';
 import SelectField from 'src/components/Fields/SelectField';
-import { handleTrainOrPlaneFields } from '../../../selectors/formValidationsFunctions';
+import { handleValidationErrorsManually } from 'src/selectors/formValidationsFunctions';
+import { toggleDerogationSection, toggleVehicleFields } from 'src/selectors/domManipulators';
 
 
 const Transports = ({ step }) => {
-  console.log("rendu");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
@@ -37,24 +37,29 @@ const Transports = ({ step }) => {
     console.log("------------------------------------------------------", data, "------------------------------------------------------");
     const errorElement = document.getElementById('transports-error');
     const dispensationErrorElement = document.getElementById('dispensation-error');
+    const vehicleAuthorizationErrorElement = document.getElementById('vehicle-authorization-error');
     
     if (!data.trainClass && !data.planeClass && data.vehicle === "Pas de véhicule sélectionné") {
-      errorElement.textContent = "Vous devez choisir un moyen de transport pour vous rendre sur le lieu de la mission."
-      errorElement.classList.add("form__section-field-error--open");
+      handleValidationErrorsManually(errorElement, "Vous devez choisir un moyen de transport pour vous rendre sur le lieu de la mission.", true )
     }
+    // Here at least one way to move is selected
     else {
-        errorElement.textContent = ""
-        errorElement.classList.remove("form__section-field-error--open");
+      // So we reset the global error
+        handleValidationErrorsManually(errorElement, "")
 
-      if (data.dispensation.length === 0 && !data.dispensationForValidation) {
-        dispensationErrorElement.textContent = "Merci de fournir la dérogation signée par le Président ou d'en faire la demande."
-        dispensationErrorElement.classList.add("form__section-field-error--open");
+      if ((data.trainClass || data.planeClass) && data.dispensation.length === 0 && !data.dispensationForValidation) {
+        handleValidationErrorsManually(dispensationErrorElement,"Merci de fournir la dérogation signée par le Président ou d'en faire la demande.", true);
 
         // TODO : stop
       }
+      else if (data.vehicle !== "Pas de véhicule sélectionné" && data.vehicleAuthorizationFile.length === 0 && !data.vehicleAuthorizationFileForValidation) {
+        handleValidationErrorsManually(vehicleAuthorizationErrorElement,"Merci de fournir la demande d'autorisation d'utilisation d'un véhicule ou d'en faire la demande.", true);
+        // TODO : stop
+
+      }
       else {
-        dispensationErrorElement.textContent = ""
-        dispensationErrorElement.classList.remove("form__section-field-error--open");
+        handleValidationErrorsManually(dispensationErrorElement, "");
+        handleValidationErrorsManually(vehicleAuthorizationErrorElement, "");
 
         // TODO : GO ON
 
@@ -70,16 +75,7 @@ const Transports = ({ step }) => {
 
 
   const handleVehicleChange = (event) => {
-    const personalCarField = document.querySelector('#personal-car-field');
-    const isHidden = personalCarField.className.includes('hidden');
-    console.log(personalCarField);
-
-    if (event.target.value === 'Véhicule personnel, de prêt' && isHidden) {
-      personalCarField.classList.remove('form__section-field--hidden');
-    }
-    else {
-      personalCarField.classList.add('form__section-field--hidden');
-    }
+    toggleVehicleFields(event.target.value);
   };
   
   const vehicles = [
@@ -90,6 +86,7 @@ const Transports = ({ step }) => {
 
   // -----------------------------------------------------------------------------------------------------------------------------------------
   const [trainClass , planeClass, vehicle] = watch(['trainClass', 'planeClass', 'vehicle' ]);
+  
   useEffect(() => {
     const parentSection = document.querySelector('#upper-class-request');
     if (trainClass) {
@@ -97,14 +94,9 @@ const Transports = ({ step }) => {
         required: "Merci de sélectionner l'option qui correspond."
       });
     }
-    if (trainClass === 'first-class') {
-      parentSection.classList.remove('form__section-field--hidden');
-    }
-    else if (trainClass === 'second-class') {
-      parentSection.classList.add('form__section-field--hidden');
+    toggleDerogationSection(parentSection, trainClass);
+  }, [trainClass]);
 
-    }
-  }, [trainClass])
   useEffect(() => {
     const parentSection = document.querySelector('#upper-class-request');
     if (planeClass) {
@@ -112,29 +104,14 @@ const Transports = ({ step }) => {
         required: "Merci de sélectionner l'option qui correspond."
       });
     }
-    if (planeClass === 'business-class') {
-      parentSection.classList.remove('form__section-field--hidden');
-    }
-    else if (planeClass === 'eco-class') {
-      parentSection.classList.add('form__section-field--hidden');
+    toggleDerogationSection(parentSection, planeClass);
+  }, [planeClass]);
 
-    }
-  }, [planeClass])
   useEffect(() => {
     const personalCarField = document.querySelector('#personal-car-field');
-    const isHidden = personalCarField.className.includes('hidden');
-    
-    if (vehicle !== "Pas de véhicule sélectionné") {
+    toggleDerogationSection(personalCarField, vehicle)
+  }, [vehicle]);
 
-    }
-
-    if (vehicle === 'Véhicule personnel, de prêt' && isHidden) {
-      personalCarField.classList.remove('form__section-field--hidden');
-    }
-    else {
-      personalCarField.classList.add('form__section-field--hidden');
-    }
-  }, [vehicle])
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       {/* <div className="form__section"> */}
@@ -191,7 +168,6 @@ const Transports = ({ step }) => {
             /> */}
           </div>
           <p id="dispensation-error" className="form__section-field-error" />
-          { errors.dispensationForValidation && <p className="form__section-field-error form__section-field-error--open">{errors.dispensationForValidation.message}</p> }
         </div>
       {/* </div> */}
       {/* <div className="form__section" */}
@@ -209,12 +185,17 @@ const Transports = ({ step }) => {
           <h4 className="form__section-container-title">DEMANDE D'AUTORISATION PRÉALABLE D'UTILISATION D'UN VÉHICULE</h4>
           <div className="form__section-container-options">
             <FileField id="vehicle-authorization" formField="vehicleAuthorizationFile" register={register} />
-            OU
+            <span className="form__section-container-options__separator">OU</span>
+            <div className="form__section-field">
+              <CheckboxInput id="dispensation-for-validation-field" formField="vehicleAuthorizationFileForValidation" label="Demande en cours" register={register} columnDisplay />
+            </div>
+            <span className="form__section-container-options__separator">OU</span>
             <div className="form__section-container-button">
               <Link to="/nouveau-document/autorisation-de-véhicule">FAIRE LA DEMANDE</Link>
             </div>
           </div>
           <p className="form__section-container-reminder">RAPPEL : Remboursement Forfait SNCF 2ème classe</p>
+          <p id="vehicle-authorization-error" className="form__section-field-error" />
         </div>
       {/* </div> */}
       {/* <div className="form__section"> */}

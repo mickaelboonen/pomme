@@ -45,15 +45,23 @@ export const handleRegionFields = (region, register, unregister) => {
   }
 }
 
-export const handleTrainOrPlaneFields = (transportClass) => {
+/**
+ * Some validation cannot be handled before the submit in the om transports form
+ * So we handle them manually during the submit
+ * 
+ * @param {DOM element} element 
+ * @param {string} content 
+ * @param {boolean} toAdd 
+ */
+export const handleValidationErrorsManually = (element, content, toAdd = false) => {
+  element.textContent = content;
 
-  // const parentSection = document.querySelector('#upper-class-request');
-  // const currentClass = transportClass.split('-')[0];
-  // console.log(currentClass, parentSection);
-  // if (currentClass === 'first' && currentClass === 'business') {
-  //   parentSection.classList.remove('form__section-field--hidden');
-  // }
-  // else if (currentClass === 'second' || currentClass === 'eco') {
-  //   parentSection.classList.add('form__section-field--hidden');
-  // }
+  const classToManipulate = "form__section-field-error--open";
+  if (toAdd) {
+    element.classList.add(classToManipulate);
+  }
+  else {
+    element.classList.remove(classToManipulate);
+  }
+  
 }
