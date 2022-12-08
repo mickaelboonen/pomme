@@ -89,6 +89,26 @@ export const toggleDerogationSection = (element, transportClass) => {
 }
 
 
+/**
+ * components/App/OMForm/Transports
+ */
+export const toggleHotelSwitch = (event) => {
+  const { checked } = event.target;
+    const section = event.target.closest('.form__section-field');
+    const nightNumberField = section.nextSibling;
+    const nightPaymentField = nightNumberField.nextSibling;
+
+  if (checked) {
+    nightNumberField.classList.remove('form__section-field--hidden');
+    nightPaymentField.classList.remove('form__section-field--hidden');
+  }
+  else {
+    nightNumberField.classList.add('form__section-field--hidden');
+    nightPaymentField.classList.add('form__section-field--hidden');
+  }
+}
+
+
 // HEADER DOM MANIPULATION -------------------------------------------------------
 
 export const toggleBurgerMenu = () => {

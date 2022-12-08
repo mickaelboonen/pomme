@@ -10,6 +10,7 @@ import RadioInput from 'src/components/Fields/RadioInput';
 import SwitchButton from 'src/components/SwitchButton';
 import TextField from 'src/components/Fields/TextField';
 import { useSelector, useDispatch } from 'react-redux';
+import { toggleHotelSwitch } from '../../../selectors/domManipulators';
 
 const Hebergement = ({ step }) => {
     console.log('rendu');
@@ -115,19 +116,7 @@ const Hebergement = ({ step }) => {
   })
 
 const handleHotelSwitch = (event) => {
-  const { checked } = event.target;
-    const section = event.target.closest('.form__section-field');
-    const nightNumberField = section.nextSibling;
-    const nightPaymentField = nightNumberField.nextSibling;
-
-  if (checked) {
-    nightNumberField.classList.remove('form__section-field--hidden');
-    nightPaymentField.classList.remove('form__section-field--hidden');
-  }
-  else {
-    nightNumberField.classList.add('form__section-field--hidden');
-    nightPaymentField.classList.add('form__section-field--hidden');
-  }
+  toggleHotelSwitch(event);
 
 };
   return (
