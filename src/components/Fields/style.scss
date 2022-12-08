@@ -259,12 +259,12 @@
       color: rgb(117, 13, 13);
       background-color: rgb(250, 148, 148);
       border-radius: vars.$radius;
-      margin: 0.5rem 0;
       font-style: italic;
       font-size: 0.8rem;
 
       &--open {
       padding: 0.5rem;
+      margin: 0.5rem 0;
 
       }
     }

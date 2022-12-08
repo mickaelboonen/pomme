@@ -90,7 +90,7 @@ export const toggleDerogationSection = (element, transportClass) => {
 
 
 /**
- * components/App/OMForm/Transports
+ * components/App/OMForm/Hebergement
  */
 export const toggleHotelSwitch = (event) => {
   const { checked } = event.target;

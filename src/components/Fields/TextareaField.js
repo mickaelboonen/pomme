@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import './style.scss';
 import classNames from 'classnames';
 
-const TextareaField = ({ id, label, formField, register, placeholder, isHidden, rows, required, error }) => (
+const TextareaField = ({ id, label, formField, register, placeholder, isHidden, rows, required, error }) => {
+  // console.log(error);
+  return (
   <div id={id} className={classNames("form__section-field", {"form__section-field--hidden": isHidden})}>
     <label className="form__section-field-label" htmlFor={id}>{label}</label>
     <textarea
@@ -17,9 +19,9 @@ const TextareaField = ({ id, label, formField, register, placeholder, isHidden, 
       className="form__section-field-textarea"
       rows={rows}
     />
-    <p className={classNames("form__section-field-error", { "form__section-field-error--open": error?.message.length > 0 })}>{error?.message}</p>
+    {error && <p className="form__section-field-error form__section-field-error--open">{error.message}</p>}
   </div>
-);
+);}
 
 TextareaField.propTypes = {
 
