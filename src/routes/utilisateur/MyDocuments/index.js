@@ -158,7 +158,8 @@ const MyDocuments = () => {
   const navigate = useNavigate();
   const handleClickOnNewOM = () => {
 
-    if (window.confirm('Voulez-vous créer un nouvel Ordre de Mission ?')) {
+    
+    if (window.confirm('Voulez-vous créer un nouvel ' + slug.replace(/-/g, ' ') + ' ?')) {
       const userId = "mboone01";
       const omName = `OM_${userId}_`;
       const newOM = {

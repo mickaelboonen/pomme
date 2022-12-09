@@ -24,7 +24,7 @@ const OmSelection = ({ step }) => {
 
   const onSubmit = (data) => {
     console.log(data);
-    // navigate('/nouveau-document/état-de-frais?etape=' + step++ + )
+    navigate(`/nouveau-document/état-de-frais?etape=${step++}&id=${data.omList}` )
   };
 
   return (
@@ -38,6 +38,8 @@ const OmSelection = ({ step }) => {
           id="work-address-select"
           label="Sélectionner l'OM dont vous voulez faire l'état de frais"
           blankValue={"Liste des OMs disponibles pour un remboursement"}
+          required="Merci de sélectionner l'Ordre de Mission"
+          error={errors.omList}
         />
       </div>
       <Buttons step={step} />

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useForm } from "react-hook-form";
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useLoaderData, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Map from '../../../assets/images/map.svg';
 import Pin from '../../../assets/images/pin.svg';
@@ -23,11 +23,15 @@ import SwitchButton from 'src/components/SwitchButton';
 import { handleRegionFields, handleWorkAddressSelect } from 'src/selectors/formValidationsFunctions';
 import { toggleIsHiddenOnWorkAddressesList } from 'src/selectors/domManipulators';
 import { saveMissionFormData } from 'src/reducer/omForm';
-import HiddenField from '../../../components/Fields/HiddenField';
+import HiddenField from 'src/components/Fields/HiddenField';
 
 const Mission = ({ step, isEF }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const loader = useLoaderData();
+  console.log('loader : ', loader);
+  
+  
   const [searchParams] = useSearchParams();
 
   const omId = searchParams.get('id');
