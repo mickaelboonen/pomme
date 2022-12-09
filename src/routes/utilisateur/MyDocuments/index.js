@@ -154,7 +154,6 @@ const MyDocuments = () => {
   }
 
   const params = useParams();
-  console.log(params);
 
   const navigate = useNavigate();
   const handleClickOnNewOM = () => {
@@ -182,7 +181,6 @@ const MyDocuments = () => {
     <main className="my-documents">
       <PageTitle>{title}</PageTitle>
       <div className="my-documents__button">
-        {/* <a href={`/nouveau-document/${slug}?etape=1`}>NOUVEAU</a> */}
         <button type="button" onClick={handleClickOnNewOM}>NOUVEAU</button>
       </div>
       {isOm && <Tabs tabs={OMTabs} handler={displayWantedSection} />}

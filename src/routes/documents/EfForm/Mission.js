@@ -41,7 +41,6 @@ const Mission = ({ step }) => {
   const handleRegionClick = () => {
     displayRegionFieldsInFormMission();
   };
-  
   const adresses = [
     'adresse Vauban', 
     'adresse Carmes', 

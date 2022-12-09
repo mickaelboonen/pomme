@@ -30,8 +30,15 @@ const SelectField = ({
       })}
       disabled={disabled}
     >
-      <option>{blankValue}</option>
-      {data.map((item) => <option key={item} value={item}>{item}</option>)}
+      <option value="">{blankValue}</option>
+      {data.map((item) => {
+        if (typeof(item) === 'string') {
+          return <option key={item} value={item}>{item}</option>;
+        }
+        else {
+          return <option key={item.id} value={item.id}>{item.omName}</option>;
+        }
+      })}
     </select>
     {error && <p className={classNames("form__section-field-error", { "form__section-field-error--open": error?.message.length > 0 })}>{error?.message}</p>}
   </div>
