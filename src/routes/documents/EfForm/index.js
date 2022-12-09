@@ -53,7 +53,7 @@ const EfForm = () => {
       </div>
       <div className="form-page__container">
         {step === 1 && <OmSelection step={step} />}
-        {step === 2 && <Mission step={step} isEF />}
+        {step === 2 && <Mission step={step} isEfForm />}
         {step === 3 && <Transports step={step} />}
         {step === 4 && <Hebergement step={step} />}
         {step === 5 && <Steps step={step} />}
