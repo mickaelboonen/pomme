@@ -144,6 +144,118 @@ const Preferences = () => {
           handler={handleClick}
         />
       </div>
+      <div className='form__section-theme'>
+        <div className='form__section-theme-colors'>
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#0c3043'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#12475b'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#1a6f78'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#20959f'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#2bc9c7'}} />
+        </div>
+        <RadioInput
+          id="blue"
+          formField="theme"
+          label="Blue"
+          register={register}
+          handler={handleClick}
+        />
+      </div>
+      <div className='form__section-theme'>
+        <div className='form__section-theme-colors'>
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#100907'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#211f37'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#585b88'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#979dea'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#d0dbef'}} />
+        </div>
+        <RadioInput
+          id="olive"
+          formField="theme"
+          label="Olive"
+          register={register}
+          handler={handleClick}
+        />
+      </div>
+      <div className='form__section-theme'>
+        <div className='form__section-theme-colors'>
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#3d2d3f'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#5c4159'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#8a617e'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#ca8cad'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#fbc4e8'}} />
+        </div>
+        <RadioInput
+          id="olive"
+          formField="theme"
+          label="Olive"
+          register={register}
+          handler={handleClick}
+        />
+      </div>
+      <div className='form__section-theme'>
+        <div className='form__section-theme-colors'>
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#468b88'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#98bea8'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#cad6c6'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#ede8d8'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#f6f5eb'}} />
+        </div>
+        <RadioInput
+          id="olive"
+          formField="theme"
+          label="Olive"
+          register={register}
+          handler={handleClick}
+        />
+      </div>
+      <div className='form__section-theme'>
+        <div className='form__section-theme-colors'>
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#6ba1ca'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#60b3ce'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#93d0dc'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#cbeaeb'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#f3f3f3'}} />
+        </div>
+        <RadioInput
+          id="olive"
+          formField="theme"
+          label="Olive"
+          register={register}
+          handler={handleClick}
+        />
+      </div>
+      <div className='form__section-theme'>
+        <div className='form__section-theme-colors'>
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#403036'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#5e485b'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#927078'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#d0a6a4'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#d1bdb0'}} />
+        </div>
+        <RadioInput
+          id="olive"
+          formField="theme"
+          label="Olive"
+          register={register}
+          handler={handleClick}
+        />
+      </div>
+      <div className='form__section-theme'>
+        <div className='form__section-theme-colors'>
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#132c36'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#1b4043'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#285d58'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#377072'}} />
+          <div className='form__section-theme-colors-color' style={{'backgroundColor': '#55a19b'}} />
+        </div>
+        <RadioInput
+          id="olive"
+          formField="theme"
+          label="Olive"
+          register={register}
+          handler={handleClick}
+        />
+      </div>
     </form>
   </main>
 );}
