@@ -75,7 +75,18 @@ const router = createBrowserRouter([
           },
           {
             path: '%C3%A9tat-de-frais',
-            element: <EfForm />    
+            element: <EfForm />,
+            loader: async ({ request }) => {
+              const url = new URL(request.url);
+              const omId = url.searchParams.get("id");
+              const step = url.searchParams.get("etape");
+
+              // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
+              if (step === '2') {
+                const omMission = localStorage.getItem('mission');
+                return JSON.parse(omMission);
+              }
+            },  
           },
           {
             path: 'demande-de-dérogation',

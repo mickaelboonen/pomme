@@ -15,6 +15,7 @@ import RefusalMessage from 'src/components/Fields/RefusalMessage';
 import Buttons from 'src/components/Fields/Buttons';
 import FileField from 'src/components/Fields/FileField';
 import TextField from 'src/components/Fields/TextField';
+import ControlledTextField from 'src/components/ControlledFields/TextField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import SelectField from 'src/components/Fields/SelectField';
 import DateField from 'src/components/Fields/DateField';
@@ -24,28 +25,43 @@ import { handleRegionFields, handleWorkAddressSelect } from 'src/selectors/formV
 import { toggleIsHiddenOnWorkAddressesList } from 'src/selectors/domManipulators';
 import { saveMissionFormData } from 'src/reducer/omForm';
 import HiddenField from 'src/components/Fields/HiddenField';
+import Controller from '../../../components/ControlledFields/Controller';
 
 const Mission = ({ step, isEF }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loader = useLoaderData();
-  console.log('loader : ', loader);
   
   
   const [searchParams] = useSearchParams();
 
   const omId = searchParams.get('id');
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   control,
+  //   watch,
+  //   unregister,
+  //   setError,
+  //   getValues,
+  //   formState:
+  //   { errors },
+  // } = useForm();
+
   const {
     register,
     handleSubmit,
+    control,
     watch,
     unregister,
     setError,
     getValues,
     formState:
     { errors },
-  } = useForm();
-  
+  } = useForm({
+    defaultValues: loader,
+  });
+  console.log(control);
   const onSubmit = (data) => {
     console.log('----------------------------------------------------------');
     console.log('submitted data: ', data);
@@ -112,6 +128,22 @@ const Mission = ({ step, isEF }) => {
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section">
         <FormSectionTitle>Raison de la mission</FormSectionTitle>
+        {/* <Controller
+        {... {control, register, name: 'test', rules: {required: "Merci de renseigner le motif de la mission"}, render: () => <TextField />}} */}
+
+        {/* /> */}
+        {/* <ControlledTextField
+          control={control}
+          id="motif"
+          disabled={isEF}
+          formField="missionGoal"
+          label="Motif de la mission"
+          register={register}
+          required=''
+          error={errors.missionGoal}
+          name="missionGoal"
+          rules={{}}
+        /> */}
         <TextField
           id="motif"
           disabled={isEF}
