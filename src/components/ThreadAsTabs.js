@@ -3,9 +3,13 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import './style.scss';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const ThreadAsTabs = ({ step, tabs, isOm }) => {
+  
+  const [searchParams] = useSearchParams();
+
+  const omId = searchParams.get('id');
   const navigate = useNavigate();
 
   const handleClickOnTab = (event) => {
@@ -14,7 +18,7 @@ const ThreadAsTabs = ({ step, tabs, isOm }) => {
     if (window.innerWidth >= 600) {
       if (window.confirm("Voulez-vous enregistrer les informations saisies ?")) {
         const target = isOm ? 'ordre-de-mission' : 'état-de-frais';
-        navigate('/nouveau-document/' + target + '?etape=' + id);
+        navigate('/nouveau-document/' + target + '?etape=' + id + '&id=' + omId);
       }
     }
   };

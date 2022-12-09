@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
@@ -9,6 +9,7 @@ import Buttons from 'src/components/Fields/Buttons';
 import RadioInput from 'src/components/Fields/RadioInput';
 import SwitchButton from 'src/components/SwitchButton';
 import TextField from 'src/components/Fields/TextField';
+import HiddenField from 'src/components/Fields/HiddenField';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleHotelSwitch } from '../../../selectors/domManipulators';
 
@@ -16,6 +17,9 @@ const Hebergement = ({ step }) => {
     console.log('rendu');
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
+
+  const omId = searchParams.get('id');
   const {
     register,
     unregister,
@@ -41,7 +45,9 @@ const Hebergement = ({ step }) => {
       mealsErrorElement.classList.remove('form__section-field-error--open')
       delete data.maxMealsNumber;
       localStorage.setItem('hebergement', JSON.stringify(data))
-      
+     
+      navigate('/nouveau-document/ordre-de-mission?etape=' + step++ + '&id=' + omId);
+
     }
     // TODO : Process Data
     
@@ -123,6 +129,7 @@ const handleHotelSwitch = (event) => {
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section">
         <FormSectionTitle>Hébergement</FormSectionTitle>
+        <HiddenField id="omId" value={omId} register={register} />
         <div className="form__section-field">
           <SwitchButton
             register={register}

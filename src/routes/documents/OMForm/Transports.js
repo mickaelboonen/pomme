@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import './style.scss';
@@ -14,6 +14,7 @@ import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import FileField from 'src/components/Fields/FileField';
 import SwitchButton from 'src/components/SwitchButton';
 import SelectField from 'src/components/Fields/SelectField';
+import HiddenField from 'src/components/Fields/HiddenField';
 import { handleValidationErrorsManually } from 'src/selectors/formValidationsFunctions';
 import { toggleDerogationSection, toggleVehicleFields } from 'src/selectors/domManipulators';
 
@@ -21,6 +22,9 @@ import { toggleDerogationSection, toggleVehicleFields } from 'src/selectors/domM
 const Transports = ({ step }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const omId = searchParams.get('id');
   const {
     register,
     unregister,
@@ -67,7 +71,7 @@ const Transports = ({ step }) => {
 
       localStorage.setItem('transports', JSON.stringify(data));
     }
-    navigate('/nouveau-document/ordre-de-mission?etape=' + step++);
+    navigate('/nouveau-document/ordre-de-mission?etape=' + step++ + '&id=' + omId);
   };
 
   let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
@@ -198,23 +202,24 @@ const Transports = ({ step }) => {
           <p id="vehicle-authorization-error" className="form__section-field-error" />
         </div>
       {/* </div> */}
-      {/* <div className="form__section"> */}
-        <FormSectionTitle>Déplacement pendant la mission</FormSectionTitle>
-        <div className="form__section-field">
-          <SwitchButton
-            register={register}
-            handler={() => null}
-            isInForm
-            formField={'publicTransports'}
-            label="Transports en commun :"
-          />
+        <div className="form__section">
+          <FormSectionTitle>Déplacement pendant la mission</FormSectionTitle>
+          <div className="form__section-field">
+            <SwitchButton
+              register={register}
+              handler={() => null}
+              isInForm
+              formField={'publicTransports'}
+              label="Transports en commun :"
+            />
+          </div>
+          <div className="form__section-field">
+            <p className="form__section-field-label">Autres</p>
+            <CheckboxInput id="taxi" formField="others" label="Taxi" register={register} />
+            <CheckboxInput id="parking" formField="others" label="Parking" register={register} />
+          </div>
+          <HiddenField id="omId" value={omId} register={register} />
         </div>
-        <div className="form__section-field">
-          <p className="form__section-field-label">Autres</p>
-          <CheckboxInput id="taxi" formField="others" label="Taxi" register={register} />
-          <CheckboxInput id="parking" formField="others" label="Parking" register={register} />
-        </div>
-      {/* </div> */}
       <p id="transports-error" className="form__section-field-error" />
       {refusal !== '' && <RefusalMessage message={refusal} />}
       <Buttons step={step} />

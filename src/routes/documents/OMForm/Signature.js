@@ -1,18 +1,21 @@
 import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import RefusalMessage from 'src/components/Fields/RefusalMessage';
 import Buttons from 'src/components/Fields/Buttons';
-import SwitchButton from 'src/components/SwitchButton';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import FileField from 'src/components/Fields/FileField';
 import TextareaField from 'src/components/Fields/TextareaField';
+import HiddenField from 'src/components/Fields/HiddenField';
 
 const Signature = ({ step }) => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const omId = searchParams.get('id');
   const {
     register,
     unregister,
@@ -27,7 +30,8 @@ const Signature = ({ step }) => {
     console.log(data);
 
     // TODO : Process Data
-    navigate('/nouveau-document/ordre-de-mission?etape=' + step++);
+    localStorage.setItem('signature', JSON.stringify(data))
+    // navigate('/nouveau-document/ordre-de-mission?etape=' + step++);
 
     
   };
@@ -79,6 +83,7 @@ const Signature = ({ step }) => {
           id="signature"
           error={errors.signature}
         />
+        <HiddenField id="omId" value={omId} register={register} />
       </div>
 
       <div className="form__section">

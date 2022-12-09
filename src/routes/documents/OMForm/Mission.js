@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useForm } from "react-hook-form";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Map from '../../../assets/images/map.svg';
 import Pin from '../../../assets/images/pin.svg';
@@ -23,10 +23,14 @@ import SwitchButton from 'src/components/SwitchButton';
 import { handleRegionFields, handleWorkAddressSelect } from 'src/selectors/formValidationsFunctions';
 import { toggleIsHiddenOnWorkAddressesList } from 'src/selectors/domManipulators';
 import { saveMissionFormData } from 'src/reducer/omForm';
+import HiddenField from '../../../components/Fields/HiddenField';
 
 const Mission = ({ step, isEF }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
+
+  const omId = searchParams.get('id');
   const {
     register,
     handleSubmit,
@@ -122,6 +126,7 @@ const Mission = ({ step, isEF }) => {
           error={errors.missionGoalFile}
           pieces="Joindre impérativement convocation, mail ou tout autre document en attestant"
         />
+        <HiddenField id="omId" value={omId} register={register} />
       </div>
       <div className="form__section">
         <FormSectionTitle>Départ et retour</FormSectionTitle>

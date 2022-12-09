@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Avance from './Avance';
@@ -17,8 +17,8 @@ const OMForm = () => {
   const dispatch = useDispatch();
   const { steps, omForm } = useSelector((state) => state.omForm);
   
-  const { search } = useLocation();
-  const step = Number(search.slice(search.length - 1));
+  const [searchParams] = useSearchParams();
+  const step = Number(searchParams.get('etape'));
 
   const mission = {
     abroadCosts:null,
