@@ -4,13 +4,14 @@ import classNames from 'classnames';
 import { useForm } from "react-hook-form";
 import { useLoaderData, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import Map from '../../../assets/images/map.svg';
-import Pin from '../../../assets/images/pin.svg';
+import Map from 'src/assets/images/map.svg';
+import Pin from 'src/assets/images/pin.svg';
 
 import './style.scss';
+
+// Components
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import TextFieldWithIcon from 'src/components/Fields/TextFieldWithIcon';
-import { displayRegionFieldsInFormMission } from 'src/selectors/domManipulators';
 import RefusalMessage from 'src/components/Fields/RefusalMessage';
 import Buttons from 'src/components/Fields/Buttons';
 import FileField from 'src/components/Fields/FileField';
@@ -18,19 +19,22 @@ import TextField from 'src/components/Fields/TextField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import SelectField from 'src/components/Fields/SelectField';
 import DateField from 'src/components/Fields/DateField';
-import TextareaField from 'src/components/Fields/TextareaField';
-import SwitchButton from 'src/components/SwitchButton';
 import HiddenField from 'src/components/Fields/HiddenField';
-import { handleRegionFields, handleWorkAddressSelect } from 'src/selectors/formValidationsFunctions';
-import { toggleIsHiddenOnWorkAddressesList } from 'src/selectors/domManipulators';
-import { saveMissionFormData } from 'src/reducer/omForm';
-import { enableMissionFormFields } from '../../../reducer/efForm';
 import EfMission from '../EfForm/Mission';
+
+// Selectors 
+import { handleRegionFields, handleWorkAddressSelect } from 'src/selectors/formValidationsFunctions';
+import { toggleIsHiddenOnWorkAddressesList, displayRegionFieldsInFormMission } from 'src/selectors/domManipulators';
+
+// Reducer
+import { saveMissionFormData } from 'src/reducer/omForm';
+import { enableMissionFormFields } from 'src/reducer/efForm';
 
 const Mission = ({ step, isEfForm }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loader = useLoaderData();
+  
   
   const { isMissionFormDisabled } = useSelector((state) => state.efForm);
   
@@ -41,11 +45,8 @@ const Mission = ({ step, isEfForm }) => {
   const {
     register,
     handleSubmit,
-    control,
     watch,
     unregister,
-    setError,
-    getValues,
     formState:
     { errors },
   } = useForm({
@@ -63,8 +64,17 @@ const Mission = ({ step, isEfForm }) => {
     data.missionGoalFile = 'path';
 
     // Enregistrer dans la BDD directement
-    dispatch(saveMissionFormData(data));
-    // navigate('/nouveau-document/ordre-de-mission?etape=' + step++);
+    if (isEfForm) {
+      // console.log(step++);
+      // dispatch(saveMissionFormData(data));
+      navigate('/nouveau-document/état-de-frais?etape=' + step++ + '&id=' + omId);
+
+    }
+    else {
+      dispatch(saveMissionFormData(data));
+      navigate('/nouveau-document/ordre-de-mission?etape=' + step++ + '&id=' + omId);
+
+    }
   };
 
   const advance = () => {
@@ -76,14 +86,15 @@ const Mission = ({ step, isEfForm }) => {
   refusal = "";
 
   const [region , departurePlace, returnPlace] = watch(['region', 'departurePlace', 'returnPlace' ]);
-  const x = watch('modificationSwitch');
-  console.log(x);
+  const modificationSwitch = watch('modificationSwitch');
+  console.log(modificationSwitch);
   
   useEffect(() => {
-    if (x) {
-      register('missionGoalFile', {
-        required: "Joindre impérativement convocation, mail ou tout autre document en attestant.",
-      });
+    console.log('modification switch : ', modificationSwitch);
+    if (modificationSwitch) {
+      // register('missionGoalFile', {
+      //   required: "Joindre impérativement convocation, mail ou tout autre document en attestant.",
+      // });
       register('departurePlace', {
         required: "Merci de sélectionner l'option qui correspond.",
       });
@@ -93,7 +104,12 @@ const Mission = ({ step, isEfForm }) => {
       register('region', {
         required: "Joindre impérativement convocation, mail ou tout autre document en attestant.",
       });
-
+      register('modificationJustifications', {
+        required: 'Merci de justifier la ou les modifications.',
+      });
+      register('modificationFiles', {
+        required: 'Merci de fournir la ou les pièces justifiant la modification des champs.',
+      });
     }
   })
 
@@ -144,19 +160,17 @@ const Mission = ({ step, isEfForm }) => {
 
         <TextField
           id="motif"
-          disabled={isMissionFormDisabled}
+          disabled={true}
           formField="missionGoal"
           label="Motif de la mission"
           register={register}
-          required="Merci de renseigner le motif de la mission"
           error={errors.missionGoal}
         />
         <FileField
-          disabled={isMissionFormDisabled}
+          disabled={true}
           id="mission-goal"
           formField="missionGoalFile"
           register={register}
-          // required="Merci de fournir le justificatif de la mission"
           error={errors.missionGoalFile}
           pieces="Joindre impérativement convocation, mail ou tout autre document en attestant"
         />
@@ -320,7 +334,7 @@ const Mission = ({ step, isEfForm }) => {
           <p className="form__section-field-label">(**) Compte rendu à fournir au retour de la mission sur financement RI</p>
         </div>
       </div>
-      {isEfForm && <EfMission watch={watch} register={register} unregister={unregister} errors={errors} handler={toggleDisabledFields} />}
+      {isEfForm && <EfMission modificationSwitch={modificationSwitch} watch={watch} register={register} unregister={unregister} errors={errors} handler={toggleDisabledFields} />}
       {refusal !== '' && <RefusalMessage message={refusal} />}
       <Buttons step={step} />
       <button type='button' onClick={advance}>Click</button>
