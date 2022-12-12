@@ -1,5 +1,55 @@
 
 /**
+ * routes/documents/EfForm/Transports
+ */
+export const toggleSwitchOnOtherExpenses = (isChecked) => {
+    const otherFieldsGroupElement = document.getElementById('other-fields');
+    const otherTextFieldElement = document.getElementById('other');
+
+    if (isChecked) {
+      otherFieldsGroupElement.classList.remove('form__section--hidden');
+      otherTextFieldElement.classList.remove('form__section-field--hidden');
+    }
+    else {
+      otherFieldsGroupElement.classList.add('form__section--hidden');
+      otherTextFieldElement.classList.add('form__section-field--hidden');
+    }
+
+}
+/**
+ * routes/documents/EfForm/Transports
+ */
+export const equalizeFields = () => {
+
+  const allHalves = document.querySelectorAll('.form__section--documents');
+
+  let heights = [];
+
+  Array.from(allHalves).forEach((section) => {
+
+    const currentHalves = [];
+    const labels = Array.from(section.querySelectorAll('label'));
+    
+    labels.forEach((currentLabel) => {
+      currentHalves.push(currentLabel.offsetHeight);
+    })
+
+    if (currentHalves[0] > currentHalves[1]) {
+      labels[1].style.height = `${currentHalves[0]}px`;
+      labels[1].style.display = 'flex';
+      labels[1].style.alignItems = 'flex-end';
+    }
+    else if (currentHalves[1] > currentHalves[0]) {
+      labels[0].style.display = 'flex';
+      labels[0].style.alignItems = 'flex-end';
+
+    }
+    heights.push(currentHalves);
+
+  })
+
+}
+/**
  * components/App/OMForm/Mission
  */
 export const displayRegionFieldsInFormMission = () => {

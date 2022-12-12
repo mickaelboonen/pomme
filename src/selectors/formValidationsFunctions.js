@@ -1,5 +1,67 @@
 
   /**
+   * Registers the field that matches the data selected in the OM form
+   * 
+   * @param {object} omTransports 
+   * @param {function} register 
+   */
+ export const applyRegisterFromData = (omTransports, register) => {
+
+  const { trainPayment, planePayment, publicTransports, others, vehicle } = omTransports;
+
+    if (trainPayment === "user-train" ) {
+      register('train', {
+        required: 'Veuillez saisir le montant payé pour ce transport.'
+      })
+      register('trainFiles', {
+        required: 'Veuillez fournir le justificatif de paiement.'
+      })
+    }
+    if (planePayment === "user-plane") {
+      register('plane', {
+        required: 'Veuillez saisir le montant payé pour ce transport.'
+      })
+      register('planeFiles', {
+        required: 'Veuillez fournir le justificatif de paiement.'
+      })
+    }
+    if (publicTransports) {
+      register('publicTransports', {
+        required: 'Veuillez saisir le montant payé pour ce transport.'
+      })
+      register('publicTransportsFiles', {
+        required: 'Veuillez fournir le justificatif de paiement.'
+      })
+    }
+    if (others !== false) {
+      if (others.indexOf('taxi') != -1) {
+        register('taxi', {
+          required: 'Veuillez saisir le montant payé pour ce transport.'
+        })
+        register('taxiFiles', {
+          required: 'Veuillez fournir le justificatif de paiement.'
+        })
+      }
+      
+      if (others.indexOf('parking') != -1) {
+        register('parking', {
+          required: 'Veuillez saisir le montant payé pour ce transport.'
+        })
+        register('parkingFiles', {
+          required: 'Veuillez fournir le justificatif de paiement.'
+        })
+      }
+    }
+    if (vehicle === "Véhicule personnel, de prêt") {
+      register('fuel', {
+        required: 'Veuillez saisir le montant payé pour ce transport.'
+      })
+      register('fuelFiles', {
+        required: 'Veuillez fournir le justificatif de paiement.'
+      })
+    }
+}
+  /**
    * Registers or unregisters the list of work adresses in the OM Form - mission step
    * 
    * @param {string} place 
