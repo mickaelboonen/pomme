@@ -2,6 +2,22 @@
   /**
    * Registers the field that matches the data selected in the OM form
    * 
+   * @param {object} omData 
+   * @param {function} register 
+   */
+ export const applyRegisterFromHebergementData = (omData, register) => {
+    if (omData.hotel) {
+      register('hotel', {
+        required: "Veuillez saisir le montant de vos frais d'hébergement."
+      })
+      register('hotelFiles', {
+        required: 'Veuillez fournir le justificatif de paiement.'
+      })
+    }
+}
+  /**
+   * Registers the field that matches the data selected in the OM form
+   * 
    * @param {object} omTransports 
    * @param {function} register 
    */

@@ -74,7 +74,29 @@ const initialState = {
       label: "Frais d'inscription à un colloque ou réunion / séminaire scientifique (*)",
       filelabel:'Facture nominative acquittée et programme',
     },
-  ],
+    ],
+    mealFields: [
+      {
+        id: 'admin-restaurant-field',
+        formField: 'admin-restaurant',
+        label: 'Repas pris dans un restaurant administratif ou assimilé',
+      },
+      {
+        id: 'paid-by-agent-in-France-field',
+        formField: 'paid-by-agent-in-France',
+        label: 'Repas à titre onéreux en France',
+      },
+      {
+        id: 'free-in-France-field',
+        formField: 'free-in-France',
+        label: 'Repas à titre gratuit en France',
+      },
+      {
+        id: 'paid-by-agent-overseas-field',
+        formField: 'paid-by-agent-overseas',
+        label: "Repas à titre onéreux à l'étranger",
+      },
+    ],
 
 };
 const omFormSlice = createSlice({

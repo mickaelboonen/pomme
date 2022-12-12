@@ -1,21 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
-import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import RefusalMessage from 'src/components/Fields/RefusalMessage';
 import Buttons from 'src/components/Fields/Buttons';
-import RadioInput from 'src/components/Fields/RadioInput';
-import SwitchButton from 'src/components/SwitchButton';
 import TextField from 'src/components/Fields/TextField';
 import FileField from 'src/components/Fields/FileField';
 
+import { applyRegisterFromHebergementData } from 'src/selectors/formValidationsFunctions';
+
 const Hebergement = ({ step }) => {
   const navigate = useNavigate();
+  
+  const [searchParams] = useSearchParams();
+  const omId = searchParams.get('id');
+
   const {
     register,
     handleSubmit,
+    trigger,
     watch,
     formState:
     { errors },
@@ -23,47 +29,31 @@ const Hebergement = ({ step }) => {
 
   const onSubmit = (data) => {
     console.log(data);    
-    navigate('/nouveau-document/état-de-frais?etape=' + step++)
+    navigate('/nouveau-document/état-de-frais?etape=' + step++ + '&id=' + omId)
   };
+  const { refusalMessage, mealFields } = useSelector((state) => state.efForm)
+  
+  const omHebergement = JSON.parse(localStorage.getItem('hebergement'));
+  const hotel = watch('hotel');
 
-  let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
-  refusal = "";
+  useEffect(() => {
+    applyRegisterFromHebergementData(omHebergement, register);
 
-  <TextField
-  id="outside-meals-number"
-  formField="outside-meals-number"
-  register={register}
-  isNumber
-  min="0"
-  label="Nombre de repas payés par l'agent"
-/>
-  const mealFields = [
-    {
-      id: 'admin-restaurant-field',
-      formField: 'admin-restaurant',
-      label: 'Repas pris dans un restaurant administratif ou assimilé',
-    },
-    {
-      id: 'paid-by-agent-in-France-field',
-      formField: 'paid-by-agent-in-France',
-      label: 'Repas à titre onéreux en France',
-    },
-    {
-      id: 'free-in-France-field',
-      formField: 'free-in-France',
-      label: 'Repas à titre gratuit en France',
-    },
-    {
-      id: 'paid-by-agent-overseas-field',
-      formField: 'paid-by-agent-overseas',
-      label: "Repas à titre onéreux à l'étranger",
-    },
-  ];
+    if (Number(hotel) > 0) {
+      register('hotelFiles', {
+        required: 'Veuillez fournir le justificatif de paiement.'
+      })
+    }
+  });
 
+  useEffect(() => {
+    trigger();
+  }, []);
+  
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <FormSectionTitle>Hébergement</FormSectionTitle>
-      <div className='form__section form__section--documents' id="other-fields">
+      <div className='form__section form__section--documents'>
         <div className='form__section-half'>
           <TextField
             isNumber
@@ -73,16 +63,18 @@ const Hebergement = ({ step }) => {
             register={register}
             label="Hébergement à titre onéreux (France et étranger)"
             placeholder="Montant"
+            error={errors.hotel}
           />
         </div>
         <div className='form__section-half'>
           <FileField
             register={register}
-            formField="hotel-files"
+            formField="hotelFiles"
             id="hotel-files-field"
             multiple
             label="Facture"
             placeholder=""
+            error={errors.hotelFiles}
           />
         </div>
       </div>
@@ -110,7 +102,7 @@ const Hebergement = ({ step }) => {
           />
         ))}
       </div>
-      {refusal !== '' && <RefusalMessage message={refusal} />}
+      {refusalMessage !== '' && <RefusalMessage message={refusalMessage} />}
       <Buttons step={step} />
     </form>
     
