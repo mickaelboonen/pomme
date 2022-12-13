@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import './style.scss';
@@ -12,7 +12,11 @@ import FileField from 'src/components/Fields/FileField';
 
 import { applyRegisterFromHebergementData } from 'src/selectors/formValidationsFunctions';
 
+import { efHelp } from 'src/data/efHelp';
+import { toggleHelp } from '../../../reducer/efForm';
+
 const Hebergement = ({ step }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   
   const [searchParams] = useSearchParams();
@@ -50,6 +54,18 @@ const Hebergement = ({ step }) => {
   useEffect(() => {
     trigger();
   }, []);
+
+  const showHelp = (event) => {
+    console.log(event.target.id);
+
+    const { id } = event.target;
+
+    const el = document.getElementById(`${id}-help`);
+
+    const currentHelp = efHelp.find((e) => e.id === id);
+    dispatch(toggleHelp(currentHelp));
+
+  };
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
@@ -100,6 +116,8 @@ const Hebergement = ({ step }) => {
             min="0"
             placeholder="Nombre de repas"
             label={field.label}
+            hasHelp
+            helpFunction={showHelp}
           />
         ))}
       </div>

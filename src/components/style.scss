@@ -99,8 +99,29 @@
     font-size: 3em;
 
   }
+}
 
-  // .file-display__image {
-  //   max-width: 33%;
-  // }
+.help {
+  display: none;
+  background-color: var(--lighter-first-color);
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border-radius: vars.$radius;
+  font-style: italic;
+
+  &__title {
+    color: var(--first-color);
+    text-transform: uppercase;
+    text-decoration: underline;
+  }
+
+  &__message {
+    margin-left: 1rem;
+    margin-top: 0.5rem;
+    font-size: 0.9em;
+  }
+
+  &--open {
+    display: block;
+  }
 }

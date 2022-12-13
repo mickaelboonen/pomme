@@ -10,12 +10,10 @@ import Signature from './Signature';
 import OmSelection from './OmSelection';
 import Steps from './Steps';
 import ThreadAsTabs from 'src/components/ThreadAsTabs';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+import Help from 'src/components/Help';
 
-const EfForm = () => {  
-  const params = useParams();
-
-    
+const EfForm = () => {      
   const [searchParams] = useSearchParams();
   const step = Number(searchParams.get('etape'));
 
@@ -46,20 +44,20 @@ const EfForm = () => {
     },
   ];
   return (
-    <div className='form-container'>
+    <div className='form-root'>
       <ThreadAsTabs step={step} tabs={steps} />
-      <div className="form-page__title">
-        <PageTitle>Création d'un État de frais</PageTitle>
-      </div>
-      <div className="form-page__container">
-        {step === 1 && <OmSelection step={step} />}
-        {step === 2 && <Mission step={step} isEfForm />}
-        {step === 3 && <Transports step={step} />}
-        {step === 4 && <Hebergement step={step} />}
-        {step === 5 && <Steps step={step} />}
-        {step === 6 && <Signature step={step} />}
-        {step !== 6 && <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>}
-        {step === 6 && <button className="form-page__container-link" type='button'>Retour : Avance</button>}
+      <PageTitle>Création d'un État de frais</PageTitle>
+      <div className='form-root__container'>
+        <div className="form-page__container">
+          {step === 1 && <OmSelection step={step} />}
+          {step === 2 && <Mission step={step} isEfForm />}
+          {step === 3 && <Transports step={step} />}
+          {step === 4 && <Hebergement step={step} />}
+          {step === 5 && <Steps step={step} />}
+          {step === 6 && <Signature step={step} />}
+          {step !== 6 && <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>}
+          {step === 6 && <button className="form-page__container-link" type='button'>Retour : Avance</button>}
+        </div>
       </div>
     </div>
   );

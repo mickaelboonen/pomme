@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { efHelp } from '../data/efHelp';
 
 const initialState = {
     isMissionFormDisabled: true,
@@ -97,6 +98,8 @@ const initialState = {
         label: "Repas à titre onéreux à l'étranger",
       },
     ],
+    helpMessages: efHelp,
+    currentHelp: {},
 
 };
 const omFormSlice = createSlice({
@@ -121,10 +124,23 @@ const omFormSlice = createSlice({
       },
       enableMissionFormFields: (state, action) => {
         state.isMissionFormDisabled = !action.payload;
+      },
+      toggleHelp: (state, action) => {
+
+        console.log(action.payload.id, state);
+        const currentHelpState = JSON.parse(JSON.stringify(state.currentHelp));
+        console.log(currentHelpState);
+        if (action.payload.id === currentHelpState.id ) {
+
+          state.currentHelp = {};
+        } else {
+          state.currentHelp = action.payload;
+        }
+        
       }
     },
 });
 
-export const { saveMissionFormData, enableMissionFormFields } = omFormSlice.actions;
+export const { saveMissionFormData, enableMissionFormFields, toggleHelp } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

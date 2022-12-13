@@ -62,6 +62,7 @@
   &__container {
     @include vars.centeredFlex;
     flex-direction: column;
+    position: relative;
 
     &-link  {
       all: unset;
