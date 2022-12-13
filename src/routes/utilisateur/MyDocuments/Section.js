@@ -70,7 +70,7 @@ const Section = ({ id, data, isFirstSection, hasLinks }) => {
       <div className="my-documents__files-container">
         {data.map((currentData) => (
           <div key={currentData.id} className="my-documents__files-container-item" onClick={toggleMenu}>
-            <FileDisplay name={currentData.name} />
+            <FileDisplay name={currentData.omName} />
             <FileMenu status={currentData.status} />
           </div>
         ))}

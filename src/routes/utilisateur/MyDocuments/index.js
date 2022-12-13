@@ -1,14 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import FileMenu from '.../../../components/FileMenu';
-// import FileDisplay from '.../../../components/FileDisplay';
-import Tabs from '../../../components/Tabs';
-import PageTitle from '../../../components/PageTitle';
+// import FileMenu from '.src/components/FileMenu';
+// import FileDisplay from '.src/components/FileDisplay';
+import Tabs from 'src/components/Tabs';
+import PageTitle from 'src/components/PageTitle';
+
+import { currentOMs, pastOMs, currentEFs , currentELs, pastELs } from 'src/data/fakeData';
 
 import './style.scss';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import Section from './Section';
+
+
 const MyDocuments = () => {
+
+  const navigate = useNavigate();
   const location = useLocation();
   let isOm = false;
   let title = `États de Frais de ${"mboone01"}`;
@@ -20,92 +26,15 @@ const MyDocuments = () => {
     slug = 'ordre-de-mission';
   }
 
+  const currentOM = JSON.parse(localStorage.getItem('newOm'));
   
-  // FAKE DATA
-  const currentEFs = [
-    {
-      id: 1,
-      name: 'EF_BOONEN_091022',
-      status: 8, 
-    },
-  ];
-
-  // FAKE DATA
-  const currentELs = [
-    {
-      id: 1,
-      name: 'EF_BOONEN_120922',
-      status: 10, 
-    },
-    {
-      id: 3,
-      name: 'EF_BOONEN_011022',
-      status: 10, 
-    },
-  ];
-
-  // FAKE DATA
-  const pastELs = [
-    {
-      id: 1,
-      name: 'EF_BOONEN_120922',
-      status: 10, 
-    },
-    {
-      id: 3,
-      name: 'EF_BOONEN_011022',
-      status: 10, 
-    },
-  ];
-
+  if (currentOM !== null) {
+    currentOMs.push(currentOM);
+  }
+  console.log(currentOMs);
   
-  // FAKE DATA
-  const currentOMs = [
-    {
-      id: 1,
-      name: 'OM_BOONEN_091022',
-      status: 8, 
-    },
-    {
-      id: 2,
-      name: 'OM_BOONENMICKAEL_121022',
-      status: 9, 
-    },
-    {
-      id: 3,
-      name: 'OM_BOONEN_2010222',
-      status: 6, 
-    },
-    {
-      id: 4,
-      name: 'OM_BOONEN_091022',
-      status: 8, 
-    },
-    {
-      id: 5,
-      name: 'OM_BOONENMICKAEL_121022',
-      status: 9, 
-    },
-    {
-      id: 6,
-      name: 'OM_BOONEN_2010222',
-      status: 6, 
-    },
-  ];
 
-  // FAKE DATA
-  const pastOMs = [
-    {
-      id: 1,
-      name: 'OM_BOONEN_120922',
-      status: 10, 
-    },
-    {
-      id: 3,
-      name: 'OM_BOONEN_011022',
-      status: 10, 
-    },
-  ];
+
 
   const OMTabs = [
     {
@@ -152,10 +81,6 @@ const MyDocuments = () => {
       }
     })
   }
-
-  const params = useParams();
-
-  const navigate = useNavigate();
   const handleClickOnNewOM = () => {
 
     
