@@ -30,7 +30,7 @@ const TextField = ({
   }
 
   const { currentHelp } = useSelector((state) => state.efForm);
-  console.log('currentHelp : ', currentHelp);
+
   return (
     <div className={classNames("form__section-field", { "form__section-field--hidden": isHidden })} id={formField}>
       <label className="form__section-field-label" htmlFor={id}>{label}</label>
@@ -48,10 +48,8 @@ const TextField = ({
               {...register(formField, {
                 required: required,
               })}
-            />
-            
-            <img src={HelpImg} alt="" style={{marginLeft: '1rem'}} id={id} onClick={handleClick}/>
-              
+          />
+          <img src={HelpImg} alt="" style={{marginLeft: '1rem'}} id={id} onClick={handleClick}/>
         </div>
       )}
       {hasHelp && <Help {...currentHelp} domId={id} />}

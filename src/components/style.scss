@@ -121,6 +121,11 @@
     font-size: 0.9em;
   }
 
+  &__link {
+    color: var(--third-color);
+    text-decoration: underline;
+  }
+
   &--open {
     display: block;
   }
