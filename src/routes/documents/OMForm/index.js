@@ -45,7 +45,7 @@ const OMForm = () => {
         <PageTitle>Création d'un Ordre de Mission</PageTitle>
       </div>
       <div className="form-page__container">
-        {step === 1 && <Mission dispatch={dispatch} step={step} />}
+        {step === 1 && <Mission dispatch={dispatch} step={step} isEfForm={false} />}
         {step === 2 && <Transports dispatch={dispatch} step={step} />}
         {step === 3 && <Hebergement dispatch={dispatch} step={step} />}
         {step === 4 && <Avance dispatch={dispatch} step={step} />}

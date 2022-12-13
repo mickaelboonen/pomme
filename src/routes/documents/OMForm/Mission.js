@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useForm } from "react-hook-form";
-import { useLoaderData, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useLoaderData, useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Map from 'src/assets/images/map.svg';
 import Pin from 'src/assets/images/pin.svg';
@@ -153,7 +153,7 @@ const Mission = ({ step, isEfForm }) => {
     
     dispatch(enableMissionFormFields(event.currentTarget.checked));
   }
-  console.log(isEfForm);
+  console.log('isEfForm : ', isEfForm, 'isMissionFormDisabled : ', isMissionFormDisabled);
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
     {/* // <form className="form" onSubmit={handleSubmitManually}> */}
@@ -162,14 +162,14 @@ const Mission = ({ step, isEfForm }) => {
 
         <TextField
           id="motif"
-          disabled={isEfForm}
+          disabled={isEfForm && isMissionFormDisabled}
           formField="missionGoal"
           label="Motif de la mission"
           register={register}
           error={errors.missionGoal}
         />
         <FileField
-          disabled={isEfForm}
+          disabled={isEfForm && isMissionFormDisabled}
           id="mission-goal"
           formField="missionGoalFile"
           register={register}
@@ -183,7 +183,7 @@ const Mission = ({ step, isEfForm }) => {
         <div className="form__section form__section--split">
           <div className="form__section-half">
             <DateField
-              disabled={isMissionFormDisabled}
+              disabled={isEfForm && isMissionFormDisabled}
               type="datetime-local"
               id="departure"
               label="Jour et Heure de départ"
@@ -195,7 +195,7 @@ const Mission = ({ step, isEfForm }) => {
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Lieu de départ</label>
               <RadioInput
-                disabled={isMissionFormDisabled}
+                disabled={isEfForm && isMissionFormDisabled}
                 id="departure-home"
                 formField="departurePlace"
                 label="Résidence familiale"
@@ -204,7 +204,7 @@ const Mission = ({ step, isEfForm }) => {
                 handler={handleClickonRadio}
               />
               <RadioInput
-                disabled={isMissionFormDisabled}
+                disabled={isEfForm && isMissionFormDisabled}
                 id="departure-work"
                 formField="departurePlace"
                 label="Résidence administrative"
@@ -218,7 +218,7 @@ const Mission = ({ step, isEfForm }) => {
           <div className="form__section-half form__section-half--separator" />
           <div className="form__section-half">
             <DateField
-              disabled={isMissionFormDisabled}
+              disabled={isEfForm && isMissionFormDisabled}
               type="datetime-local"
               id="return"
               label="Jour et Heure de retour"
@@ -230,7 +230,7 @@ const Mission = ({ step, isEfForm }) => {
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Lieu de retour</label>
               <RadioInput
-                disabled={isMissionFormDisabled}
+                disabled={isEfForm && isMissionFormDisabled}
                 id="return-home"
                 formField="returnPlace"
                 label="Résidence familiale"
@@ -239,7 +239,7 @@ const Mission = ({ step, isEfForm }) => {
                 handler={handleClickonRadio}
               />
               <RadioInput
-                disabled={isMissionFormDisabled}
+                disabled={isEfForm && isMissionFormDisabled}
                 id="return-work"
                 formField="returnPlace"
                 label="Résidence administrative"
@@ -253,7 +253,7 @@ const Mission = ({ step, isEfForm }) => {
         </div>
         <SelectField
           isHidden
-          disabled={isMissionFormDisabled}
+          disabled={isEfForm && isMissionFormDisabled}
           data={adresses}
           register={register}
           // validators={{leavesFromWork: leavesFromWork}}
@@ -269,7 +269,7 @@ const Mission = ({ step, isEfForm }) => {
         <FormSectionTitle>Lieu de la mission</FormSectionTitle>
         <div className="form__section form__section--split">
           <RadioInput
-            disabled={isMissionFormDisabled}
+            disabled={isEfForm && isMissionFormDisabled}
             id="métropole"
             formField="region"
             label="France Métropolitaine"
@@ -278,7 +278,7 @@ const Mission = ({ step, isEfForm }) => {
             handler={handleRegionClick}
           />
           <RadioInput
-            disabled={isMissionFormDisabled}
+            disabled={isEfForm && isMissionFormDisabled}
             id="dom-tom"
             formField="region"
             label="DOM / TOM (*)"
@@ -287,7 +287,7 @@ const Mission = ({ step, isEfForm }) => {
             handler={handleRegionClick}
           />
           <RadioInput
-            disabled={isMissionFormDisabled}
+            disabled={isEfForm && isMissionFormDisabled}
             id="étranger"
             formField="region"
             label="Étranger (*)(**)"
@@ -298,7 +298,7 @@ const Mission = ({ step, isEfForm }) => {
         </div>
         <p className={classNames("form__section-field-error", { "form__section-field-error--open": errors.region?.message.length > 0 })}>{errors.region?.message}</p> 
         <TextFieldWithIcon
-          disabled={isMissionFormDisabled}
+          disabled={isEfForm && isMissionFormDisabled}
           isHidden={false}
           id={"missionAdress"}
           name="Adresse de la mission"
@@ -308,7 +308,7 @@ const Mission = ({ step, isEfForm }) => {
           error={errors.missionAdress}
         />
         <TextFieldWithIcon
-          disabled={isMissionFormDisabled}
+          disabled={isEfForm && isMissionFormDisabled}
           isHidden={true}
           id="country"
           name="Pays de la mission"
