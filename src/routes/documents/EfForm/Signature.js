@@ -1,34 +1,72 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import RefusalMessage from 'src/components/Fields/RefusalMessage';
 import Buttons from 'src/components/Fields/Buttons';
-import SwitchButton from 'src/components/SwitchButton';
-import TextField from 'src/components/Fields/TextField';
+import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import FileField from 'src/components/Fields/FileField';
 import TextareaField from 'src/components/Fields/TextareaField';
+import HiddenField from 'src/components/Fields/HiddenField';
 
 const Signature = ({ step }) => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const omId = searchParams.get('id');
   const {
     register,
+    unregister,
     handleSubmit,
     watch,
+    setValue,
     formState:
     { errors },
   } = useForm();
 
   const onSubmit = (data) => {
     console.log(data);
+    
+    if (typeof data.signature === 'object') {
+      // TODO : save image then get the path
+    }
 
-    // TODO : Process Data
+    if (data.savedSignature) {
+      // TODO : fetch signature
+      data.signature = "path";
+    }
 
-    navigate('/nouveau-document/état-de-frais?etape=' + step++)
+    localStorage.setItem('signatureEF', JSON.stringify(data))
+    // navigate('/nouveau-document/état-de-frais?etape=' + step++)
     
   };
+
+  const savedSignature = watch('savedSignature');
+  useEffect(() => {
+    
+    const checkbox = document.getElementById('saved-signature-field');
+    checkbox.checked = true;
+    setValue("savedSignature", true);
+  }, [])
+
+  useEffect(() => {
+      const signatureField = document.getElementById('signature');
+
+    if (!savedSignature) {
+      signatureField.classList.remove('form__section-field--hidden');
+      register("signature", {
+        required:"Merci de signer votre ordre de mission.",
+      })
+    }
+    else {
+      signatureField.classList.add('form__section-field--hidden');
+      unregister("signature")
+    }
+    
+
+  }, [savedSignature])
 
   let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
   refusal = "";
@@ -36,14 +74,24 @@ const Signature = ({ step }) => {
 
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
-      <div className="form__section">
+<div className="form__section">
         <FormSectionTitle>Signature</FormSectionTitle>
+        <div className="form__section-field" id="abroad-field">
+          <CheckboxInput
+            register={register}
+            formField="savedSignature"
+            id="saved-signature-field"
+            label="Utiliser la signature enregistrée dans mon profil"
+          />
+        </div>
         <FileField 
           register={register}
-          formField="signature-file"
+          isHidden
+          formField="signature"
           id="signature"
-          pieces=""
+          error={errors.signature}
         />
+        <HiddenField id="omId" value={omId} register={register} />
       </div>
       <div className="form__section">
         <FormSectionTitle>Autres</FormSectionTitle>

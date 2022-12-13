@@ -151,7 +151,7 @@ const Mission = ({ step, isEfForm }) => {
     
     dispatch(enableMissionFormFields(event.currentTarget.checked));
   }
-  
+  console.log(isEfForm);
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
     {/* // <form className="form" onSubmit={handleSubmitManually}> */}
@@ -160,14 +160,14 @@ const Mission = ({ step, isEfForm }) => {
 
         <TextField
           id="motif"
-          disabled={true}
+          disabled={isEfForm}
           formField="missionGoal"
           label="Motif de la mission"
           register={register}
           error={errors.missionGoal}
         />
         <FileField
-          disabled={true}
+          disabled={isEfForm}
           id="mission-goal"
           formField="missionGoalFile"
           register={register}
