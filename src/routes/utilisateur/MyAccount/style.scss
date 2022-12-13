@@ -4,53 +4,100 @@
     margin: 1rem auto 2rem;
 }
 
-.form__section-theme {
-  display: flex;
-  margin-bottom: 2rem;
+.theme {
+  border-radius: 5px;
+  height: fit-content;
+  margin: auto;
+  max-width: 700px;
+  padding: 1rem 1rem 0;
+  width: 90%;
 
-  &-colors {
-    display: flex;
-    width: 40%;
-    height: 3rem;
-    border: 1px solid #000;
-    border-radius: 5px;
-    overflow: hidden;
+  &__container {
 
-    &-color {
-      width: 20%;
-      height: 100%;
+    &-theme {
+      display: flex;
+      margin-bottom: 2rem;
 
-      &:nth-of-type(1) {
-        background-color: #020402 ;
-      }
-      &:nth-of-type(2) {
-        
-        background-color: #0c2c30 ;
-      }
-      &:nth-of-type(3) {
-        
-        background-color: #468884 ;
-      }
-      &:nth-of-type(4) {
-        
-        background-color: #98c4ac ;
-      }
-      &:nth-of-type(5) {
-        background-color: #dfe7da ;
-        
-      }
+      &-colors {
+        display: flex;
+        width: 40%;
+        height: 3rem;
+        border: 1px solid #000;
+        border-radius: 5px;
+        overflow: hidden;
 
+        &-color {
+          width: 20%;
+          height: 100%;
+
+          &:nth-of-type(1) {
+            background-color: #020402 ;
+          }
+          &:nth-of-type(2) {
+            
+            background-color: #0c2c30 ;
+          }
+          &:nth-of-type(3) {
+            
+            background-color: #468884 ;
+          }
+          &:nth-of-type(4) {
+            
+            background-color: #98c4ac ;
+          }
+          &:nth-of-type(5) {
+            background-color: #dfe7da ;
+            
+          }
+
+        }
+      }
     }
   }
 }
 
+.my-preferences {
+  background-color: var(--lighter-first-color);
+  height: 90vh;
+  margin: auto;
+  padding-top: 1rem;
+  width: 100%;
+}
 @media (min-width: vars.$sm) {
   
-  .form__section-theme {
+  .theme {
+    background-color: var(--lighter-first-color);
+    border: 1px solid #1a1a1a;
+    padding: 2rem 2rem 0;
+    width: 90%;
+  
+    &__container {
 
-    &-colors {
-      height: 5rem;
-      width: 30%;
+      display: flex;
+      flex-wrap: wrap;
+      
+
+      &-theme {
+        width: 50%;
+
+        &-colors {
+          height: 5rem;
+          width: 50%;
+        }
       }
     }
+  }
+
+  .my-preferences {
+    background-color: #fff;
+    width: 80%;
+  }
 }
+
+@media (min-width: 1000px) {
+  
+  .theme {
+    width: 75%;
+  }
+}
+

@@ -27,7 +27,7 @@ const RadioInput = ({
       onClick={handler}
       
     />
-    <label htmlFor={id}>{label}</label>
+    <label className="form__section-field-label" htmlFor={id}>{label}</label>
   </div>
 );
 
@@ -35,9 +35,10 @@ RadioInput.propTypes = {
 
 };
 
-RadioInput.defaultProptypes = {
+RadioInput.defaultProps = {
   handler: null,
   disabled: false,
+  register: () => {},
 };
 
 export default RadioInput;
