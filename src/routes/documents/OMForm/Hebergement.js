@@ -46,7 +46,8 @@ const Hebergement = ({ step }) => {
       delete data.maxMealsNumber;
       localStorage.setItem('hebergement', JSON.stringify(data))
      
-      navigate('/nouveau-document/ordre-de-mission?etape=' + step++ + '&id=' + omId);
+      const nextStep = step + 1;
+      navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId)
 
     }
     // TODO : Process Data

@@ -23,8 +23,9 @@ const OmSelection = ({ step }) => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
-    navigate(`/nouveau-document/état-de-frais?etape=${step++}&id=${data.omList}` )
+    // console.log(data);
+    const nextStep = step + 1;
+    navigate(`/nouveau-document/état-de-frais?etape=${nextStep}&id=${data.omList}` )
   };
 
   return (

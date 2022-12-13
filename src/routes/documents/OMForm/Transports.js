@@ -70,8 +70,9 @@ const Transports = ({ step }) => {
       }
 
       localStorage.setItem('transports', JSON.stringify(data));
+      const nextStep = step + 1;
+      navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId)
     }
-    navigate('/nouveau-document/ordre-de-mission?etape=' + step++ + '&id=' + omId);
   };
 
   let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";

@@ -39,7 +39,8 @@ const Signature = ({ step }) => {
     }
 
     localStorage.setItem('signatureEF', JSON.stringify(data))
-    // navigate('/nouveau-document/état-de-frais?etape=' + step++)
+    const nextStep = step + 1;
+    navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId)
     
   };
 

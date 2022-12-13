@@ -67,12 +67,14 @@ const Mission = ({ step, isEfForm }) => {
     if (isEfForm) {
       // console.log(step++);
       // dispatch(saveMissionFormData(data));
-      navigate('/nouveau-document/état-de-frais?etape=' + step++ + '&id=' + omId);
+      const nextStep = step + 1;
+      navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId);
 
     }
     else {
       dispatch(saveMissionFormData(data));
-      navigate('/nouveau-document/ordre-de-mission?etape=' + step++ + '&id=' + omId);
+      const nextStep = step + 1;
+      navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId);
 
     }
   };

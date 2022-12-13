@@ -29,7 +29,8 @@ const Hebergement = ({ step }) => {
 
   const onSubmit = (data) => {
     console.log(data);    
-    navigate('/nouveau-document/état-de-frais?etape=' + step++ + '&id=' + omId)
+    const nextStep = step + 1;
+    navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId)
   };
   const { refusalMessage, mealFields } = useSelector((state) => state.efForm)
   

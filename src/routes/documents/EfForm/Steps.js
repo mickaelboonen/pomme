@@ -22,7 +22,8 @@ const Steps = ({ step }) => {
 
   const onSubmit = (data) => {
     console.log(data);
-    navigate('/nouveau-document/état-de-frais?etape=' + step++)
+    const nextStep = step + 1;
+    // navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId)
   };
 
   let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
