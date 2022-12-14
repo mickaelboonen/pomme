@@ -34,12 +34,12 @@ const Home = () => {
         </Link>
       </div>
     </section>
-    <section className="home__new">
+    {/* <section className="home__new">
       <TitleH3>A signer</TitleH3>
       <div className="home__new-buttons">
         Test
       </div>
-    </section>
+    </section> */}
 
     </main>
   );

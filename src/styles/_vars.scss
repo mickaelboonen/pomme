@@ -17,64 +17,6 @@ $mediumThemeColor: #d1545e;
 $lighterThemeColor: #ff897f;
 $lightestThemeColor: #ffcc9c;
 
-$darkestThemeColor: #100907;
-$darkerThemeColor: #211f37;
-$mediumThemeColor: #585b88;
-$lighterThemeColor: #979dea;
-$lightestThemeColor: #d0dbef;
-
-$darkestThemeColor: #502d55;
-$darkerThemeColor: #763762;;
-$mediumThemeColor: #ae4b75;
-$lighterThemeColor: #fa6d89;
-$lightestThemeColor: #ffa19c;
-
-$darkestThemeColor: #471923;
-$darkerThemeColor: #6f2f2e;
-$mediumThemeColor: #a15238;
-$lighterThemeColor: #da8642;
-$lightestThemeColor: #ffcc4d;
-
-$darkestThemeColor: #009aff;
-$darkerThemeColor: #3db2ff;
-$mediumThemeColor: #afd0ff;
-$lighterThemeColor: #edf0ff;
-$lightestThemeColor: #ffffff;
-
-$darkestThemeColor: #003f60;
-$darkerThemeColor: #005676;
-$mediumThemeColor: #007b94;
-$lighterThemeColor: #00afb6;
-$lightestThemeColor: #00f3d8;
-
-$darkestThemeColor: #12090a;
-$darkerThemeColor: #50303f;
-$mediumThemeColor: #70afe4;
-$lighterThemeColor: #e0e1ed;
-$lightestThemeColor: #f8efed;
-
-// $darkestThemeColor: anais.$darkestThemeColor;
-// $darkerThemeColor: anais.$darkerThemeColor;
-// $mediumThemeColor: anais.$mediumThemeColor;
-// $lighterThemeColor: anais.$lighterThemeColor;
-// $lightestThemeColor: anais.$lightestThemeColor;
-
-$darkestThemeColor: #212820;
-$darkerThemeColor: #265447;
-$mediumThemeColor: #807f1a;
-$lighterThemeColor: #d5cb75;
-$lightestThemeColor: #e8e8be;
-
-$darkestThemeColor: #020402;
-$darkerThemeColor: #0c2c30;
-$mediumThemeColor: #468884;
-$lighterThemeColor: #98c4ac;
-$lightestThemeColor: #dfe7da;
-
-// $lighter-first-light-color: fade-out($lightestThemeColor, 0.8);
-// $lighter-first-dark-color: fade-out($darkestThemeColor, 0.8);
-// $lighter-second-light-color: fade-out($lighterThemeColor, 0.7);
-// $lighter-second-dark-color: fade-out($darkerThemeColor, 0.7);
 
 // Buttons
 @mixin addButton {
@@ -119,7 +61,7 @@ $lightestThemeColor: #dfe7da;
   text-shadow: 2px 2px 2px #1a1a1a;
   color: var(--second-color);
   text-transform: uppercase;
-  margin: 2rem;
+  margin: 0 auto 2rem;
   line-height: 120%;
   text-align: center;
 }

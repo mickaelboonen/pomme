@@ -351,7 +351,7 @@ const Mission = ({ step, isEfForm }) => {
       {isEfForm && <EfMission modificationSwitch={modificationSwitch} watch={watch} register={register} unregister={unregister} errors={errors} handler={toggleDisabledFields} />}
       {refusal !== '' && <RefusalMessage message={refusal} />}
       <Buttons step={step} />
-      <button type='button' onClick={advance}>Click</button>
+      {/* <button type='button' onClick={advance}>Click</button> */}
     </form>
     
   );

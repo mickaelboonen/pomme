@@ -5,6 +5,7 @@
   background-color: var(--lighter-first-color);
   min-height: 90vh;
   position: relative;
+  padding-top: 2rem;
 
   &__notification {
     width: 70%;
@@ -69,6 +70,8 @@
       cursor: pointer;
       color: var(--third-color);
       text-decoration: underline;
+      text-align: center;
+      display: block;
       font-size: 0.8em;
       margin: 1rem auto 2rem;
     }
