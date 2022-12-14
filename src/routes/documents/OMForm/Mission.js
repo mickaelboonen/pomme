@@ -72,6 +72,15 @@ const Mission = ({ step, isEfForm }) => {
 
     }
     else {
+      const omInitialData = JSON.parse(localStorage.getItem('newOm'));
+      const departure = new Date(data.departure);
+      
+      const dateForFile = `${departure.getDate()}-${departure.getMonth()}-${departure.getFullYear()}`;
+      omInitialData.omName += dateForFile;
+
+      localStorage.removeItem('newOm');
+      localStorage.setItem('newOm', JSON.stringify(omInitialData));
+
       dispatch(saveMissionFormData(data));
       const nextStep = step + 1;
       navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId);
@@ -89,10 +98,8 @@ const Mission = ({ step, isEfForm }) => {
 
   const [region , departurePlace, returnPlace] = watch(['region', 'departurePlace', 'returnPlace' ]);
   const modificationSwitch = watch('modificationSwitch');
-  console.log(modificationSwitch);
   
   useEffect(() => {
-    console.log('modification switch : ', modificationSwitch);
     if (modificationSwitch) {
       // register('missionGoalFile', {
       //   required: "Joindre impérativement convocation, mail ou tout autre document en attestant.",
@@ -153,7 +160,6 @@ const Mission = ({ step, isEfForm }) => {
     
     dispatch(enableMissionFormFields(event.currentTarget.checked));
   }
-  console.log('isEfForm : ', isEfForm, 'isMissionFormDisabled : ', isMissionFormDisabled);
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
     {/* // <form className="form" onSubmit={handleSubmitManually}> */}
