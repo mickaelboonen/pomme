@@ -12,6 +12,7 @@
   &__container {
     width: 90%;
     margin: 1rem auto;
+    border-radius: vars.$radius;
 
     & h3 {
       margin-top: 2rem;

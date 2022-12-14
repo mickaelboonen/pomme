@@ -130,3 +130,52 @@
     display: block;
   }
 }
+
+// TABS ----------------------------------------------------------------
+
+
+.tabs {
+  display: flex;
+  border-radius: vars.$radius vars.$radius 0 0;
+  overflow: hidden;
+
+  &__item {
+    width: 50%;
+    border: 1px solid #1a1a1a;
+    padding: 0.8rem;
+    text-transform: uppercase;
+    background-color: var(--third-color);
+    color: #1a1a1a;
+    @include vars.centeredFlex;
+
+    &:nth-of-type(1) {
+      border-radius: vars.$radius 0 0 0;
+    }
+    
+    &:nth-last-of-type(1) {
+      border-radius: 0 vars.$radius 0 0;
+    }
+
+
+
+
+    &-notification {
+      background-color: var(--second-color);
+      border-radius: 50%;
+      margin-left: 0.5rem;
+      padding: 0.2rem 0.5rem;
+    }
+
+    &--open {
+      background-color: var(--first-color);
+      color: var(--fifth-color);
+      box-shadow: 1px 1px 5px var(--second-color);
+
+    }
+    &--open &-notification {
+        background-color: var(--third-color);
+        box-shadow: 1px 1px 1px #1a1a1a;
+        color: var(--first-color);
+      }
+  }
+}
