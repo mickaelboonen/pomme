@@ -47,7 +47,7 @@ const Hebergement = ({ step }) => {
       localStorage.setItem('hebergement', JSON.stringify(data))
      
       const nextStep = step + 1;
-      navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId)
+      navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId)
 
     }
     // TODO : Process Data
@@ -105,6 +105,7 @@ const Hebergement = ({ step }) => {
 
   const maxMealNumber = getMaxMeals(mission);
   const maxNightsNumber = getMaxNights(mission);
+  console.log(maxMealNumber, maxNightsNumber);
 
 
 

@@ -27,11 +27,14 @@ const MyDocuments = () => {
   }
 
   const currentOM = JSON.parse(localStorage.getItem('newOm'));
+  const currentEF = JSON.parse(localStorage.getItem('newEf'));
   
   if (currentOM !== null) {
     currentOMs.push(currentOM);
   }
-  console.log(currentOMs);
+  if (currentEF !== null) {
+    currentEFs.push(currentEF);
+  }
   
 
 
@@ -85,17 +88,20 @@ const MyDocuments = () => {
 
     
     if (window.confirm('Voulez-vous créer un nouvel ' + slug.replace(/-/g, ' ') + ' ?')) {
-      const userId = "mboone01";
-      const omName = `OM_${userId}_`;
-      const newOM = {
-        id: 1,
-        omName: omName,
-        status: 1,
-        omUrl: 'path',
-        userId: userId,
-        comments: '',
+
+      if (slug === 'ordre-de-mission') {
+        const userId = "mboone01";
+        const omName = `OM_${userId}_`;
+        const newOM = {
+          id: 1,
+          name: omName,
+          status: 1,
+          omUrl: 'path',
+          userId: userId,
+          comments: '',
+        }
+        localStorage.setItem('newOm', JSON.stringify(newOM));
       }
-      localStorage.setItem('newOm', JSON.stringify(newOM));
 
       // NAVIGATE TO DO IN THE REDUCER
       navigate(`/nouveau-document/${slug}?etape=1&id=${1}`)

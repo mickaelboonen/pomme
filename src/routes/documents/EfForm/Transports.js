@@ -35,6 +35,7 @@ const Transports = ({ step }) => {
   const onSubmit = (data) => {
     console.log(data);
     const nextStep = step + 1;
+    localStorage.setItem('transportsEf', JSON.stringify(data));
     navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId)
   };
 

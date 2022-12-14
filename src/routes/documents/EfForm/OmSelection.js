@@ -24,7 +24,17 @@ const OmSelection = ({ step }) => {
 
   const onSubmit = (data) => {
     // console.log(data);
+
+    const selectedOm = JSON.parse(localStorage.getItem('newOm'));
     const nextStep = step + 1;
+    const newEf = {
+      id: data.omList,
+      name: 'EF' + selectedOm.name.slice(2),
+      status: 1,
+      omUrl: selectedOm.omUrl,
+      userId: selectedOm.userId,
+    }
+    localStorage.setItem('newEf', JSON.stringify(newEf));
     navigate(`/nouveau-document/état-de-frais?etape=${nextStep}&id=${data.omList}` )
   };
 

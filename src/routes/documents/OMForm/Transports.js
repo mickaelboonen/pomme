@@ -71,7 +71,7 @@ const Transports = ({ step }) => {
 
       localStorage.setItem('transports', JSON.stringify(data));
       const nextStep = step + 1;
-      navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId)
+      navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId)
     }
   };
 

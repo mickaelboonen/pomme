@@ -36,7 +36,7 @@ const SelectField = ({
           return <option key={item} value={item}>{item}</option>;
         }
         else {
-          return <option key={item.id} value={item.id}>{item.omName}</option>;
+          return <option key={item.id} value={item.id}>{item.name}</option>;
         }
       })}
     </select>

@@ -33,7 +33,7 @@ const Avance = ({ step }) => {
     // TODO : Process Data
     localStorage.setItem('advance', JSON.stringify(data))
     const nextStep = step + 1;
-    navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId)
+    navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId)
   };
 
   let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";

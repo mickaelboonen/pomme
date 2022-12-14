@@ -68,10 +68,15 @@ const Mission = ({ step, isEfForm }) => {
       // console.log(step++);
       // dispatch(saveMissionFormData(data));
       const nextStep = step + 1;
+        localStorage.setItem('missionEf', JSON.stringify(data));
       navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId);
 
     }
     else {
+
+
+      dispatch(saveMissionFormData(data));
+
       const omInitialData = JSON.parse(localStorage.getItem('newOm'));
       const departure = new Date(data.departure);
       
@@ -80,8 +85,9 @@ const Mission = ({ step, isEfForm }) => {
 
       localStorage.removeItem('newOm');
       localStorage.setItem('newOm', JSON.stringify(omInitialData));
+      localStorage.setItem('mission', JSON.stringify(data));
 
-      dispatch(saveMissionFormData(data));
+
       const nextStep = step + 1;
       navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId);
 

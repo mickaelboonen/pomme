@@ -34,6 +34,7 @@ const Hebergement = ({ step }) => {
   const onSubmit = (data) => {
     console.log(data);    
     const nextStep = step + 1;
+    localStorage.setItem('hebergementEf', JSON.stringify(data));
     navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId)
   };
   const { refusalMessage, mealFields } = useSelector((state) => state.efForm)
