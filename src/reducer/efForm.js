@@ -4,6 +4,7 @@ import { efHelp } from '../data/efHelp';
 const initialState = {
     isMissionFormDisabled: true,
     refusalMessage: '',
+    nextEFarget: '',
     transportsFields: [
     {
       formField: 'plane',
@@ -100,6 +101,20 @@ const initialState = {
     ],
     helpMessages: efHelp,
     currentHelp: {},
+    EFTabs: [
+      {
+        id: 'ec',
+        name: 'En cours',
+      },
+      {
+        id: 'as',
+        name: 'A Signer',
+      },
+      {
+        id: 'ok',
+        name: 'Validés',
+      }
+    ],
 
 };
 const omFormSlice = createSlice({

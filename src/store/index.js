@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import omFormReducer from 'src/reducer/omForm';
 import efFormReducer from 'src/reducer/efForm';
 
-// import teamMiddleware from '../middlewares/teamMiddleware';
+import omMiddleware from '../middlewares/omMiddleware';
 // import playMiddleware from '../middlewares/playMiddleware';
 // import dateMiddleware from '../middlewares/dateMiddleware';
 // import galerieMiddleware from '../middlewares/galerieMiddleware';
@@ -14,7 +14,7 @@ export const store = configureStore({
     omForm: omFormReducer,
     efForm: efFormReducer,
   }, 
-  // middleware: [galerieMiddleware, teamMiddleware, playMiddleware, dateMiddleware, newsletterMiddleware, contactMiddleware],
+  middleware: [omMiddleware],
 });
 
 export default store;

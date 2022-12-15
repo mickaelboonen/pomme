@@ -1,21 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-// import FileMenu from '.src/components/FileMenu';
-// import FileDisplay from '.src/components/FileDisplay';
+
+// Components
 import Tabs from 'src/components/Tabs';
 import PageTitle from 'src/components/PageTitle';
 
 import { currentOMs, pastOMs, currentEFs , currentELs, pastELs } from 'src/data/fakeData';
 
 import './style.scss';
-import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useLoaderData, useLocation, useNavigate, useParams } from 'react-router-dom';
 import Section from './Section';
+import { useDispatch, useSelector } from 'react-redux';
+import { addNewOM } from 'src/reducer/omForm';
 
 
 const MyDocuments = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
+  const params = useParams();
+  const loaderData = useLoaderData();
+  console.log(loaderData);
+
+  const { currentOM, nextOMTarget, OMTabs } = useSelector((state) => state.omForm);
+  const { nextEFTarget, EFTabs } = useSelector((state) => state.omForm);
+
+  // useEffect(() => {
+  //   if (nextOMTarget !== '') {
+  //     navigate(nextOMTarget);
+  //   }
+  //   else if (nextEFTarget !== '') {
+  //     navigate(nextEFTarget);
+  //   }
+  // }, [nextOMTarget, nextEFTarget]);
+
   let isOm = false;
   let title = `États de Frais de ${"mboone01"}`;
   let slug = 'état-de-frais'
@@ -26,7 +45,6 @@ const MyDocuments = () => {
     slug = 'ordre-de-mission';
   }
 
-  const currentOM = JSON.parse(localStorage.getItem('newOm'));
   const currentEF = JSON.parse(localStorage.getItem('newEf'));
   
   if (currentOM !== null) {
@@ -35,34 +53,6 @@ const MyDocuments = () => {
   if (currentEF !== null) {
     currentEFs.push(currentEF);
   }
-  
-
-
-
-  const OMTabs = [
-    {
-      id: 'ec',
-      name: 'En cours',
-    },
-    {
-      id: 'ok',
-      name: 'Validés',
-    }
-  ];
-  const EFTabs = [
-    {
-      id: 'ec',
-      name: 'En cours',
-    },
-    {
-      id: 'as',
-      name: 'A Signer',
-    },
-    {
-      id: 'ok',
-      name: 'Validés',
-    }
-  ]
   
 
   /**
@@ -84,28 +74,22 @@ const MyDocuments = () => {
       }
     })
   }
-  const handleClickOnNewOM = () => {
 
-    
+  const handleClickOnNewOM = () => {    
     if (window.confirm('Voulez-vous créer un nouvel ' + slug.replace(/-/g, ' ') + ' ?')) {
-
       if (slug === 'ordre-de-mission') {
-        const userId = "mboone01";
+        const userId = params.slug;
         const omName = `OM_${userId}_`;
         const newOM = {
-          id: 1,
           name: omName,
           status: 1,
-          omUrl: 'path',
-          userId: userId,
+          url: 'path',
+          missioner: userId,
           comments: '',
         }
-        localStorage.setItem('newOm', JSON.stringify(newOM));
+        
+        dispatch(addNewOM(newOM)); 
       }
-
-      // NAVIGATE TO DO IN THE REDUCER
-      navigate(`/nouveau-document/${slug}?etape=1&id=${1}`)
-      // TODO : add new entry into Db with these two infos
     }
   }
 

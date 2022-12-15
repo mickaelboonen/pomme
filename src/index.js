@@ -29,6 +29,7 @@ import Preferences from "src/routes/utilisateur/MyAccount/Preferences";
 import DocValidationForm from "src/routes/gestionnaire/DocValidationForm";
 import TicketRequest from "src/routes/utilisateur/MyAccount/TicketRequest";
 import RefusalNotification from "src/routes/utilisateur/MyAccount/RefusalNotification";
+import { fetchOMs } from "./reducer/omForm";
 
 
 
@@ -106,9 +107,15 @@ const router = createBrowserRouter([
           {
             path: 'mes-ordres-de-mission',
             element: <MyDocuments />,
-            // loader: async ({ params }) => {
-            //   console.log(params.slug);
-            // }
+            loader: async ({ params }) => {
+              
+               store.dispatch(fetchOMs(params.slug));
+
+              // return fetch(`http://10.30.20.87:8000/api/om/get-by-missioner/${params.slug}`);
+
+              // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
+
+            }, 
           },
           {
             path: 'mes-%C3%A9tats-de-frais',
