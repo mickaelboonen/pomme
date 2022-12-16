@@ -62,6 +62,7 @@ const initialState = {
       name: 'Validés',
     }
   ],
+  userOms: [],
 };
 const omFormSlice = createSlice({
     name: 'omForm',
@@ -91,10 +92,13 @@ const omFormSlice = createSlice({
         state.nextOMTarget = `/nouveau-document/ordre-de-mission?etape=1&id=${action.payload.id}`;
       },
       fetchOMs: (state, action) => {
-      }
+      },
+      saveUserOms: (state, action) => {
+        state.userOms = action.payload;
+      },
     },
 });
 
-export const { fetchOMs, addNewOM, saveMissionFormData, saveNewOm } = omFormSlice.actions;
+export const { saveUserOms, fetchOMs, addNewOM, saveMissionFormData, saveNewOm } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

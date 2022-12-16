@@ -107,14 +107,8 @@ const router = createBrowserRouter([
           {
             path: 'mes-ordres-de-mission',
             element: <MyDocuments />,
-            loader: async ({ params }) => {
-              
+            loader: async ({ params, request }) => {
                store.dispatch(fetchOMs(params.slug));
-
-              // return fetch(`http://10.30.20.87:8000/api/om/get-by-missioner/${params.slug}`);
-
-              // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
-
             }, 
           },
           {

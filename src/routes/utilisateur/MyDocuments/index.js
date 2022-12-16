@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { addNewOM } from 'src/reducer/omForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLoaderData, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 // Components
+import Section from './Section';
 import Tabs from 'src/components/Tabs';
 import PageTitle from 'src/components/PageTitle';
 
-import { currentOMs, pastOMs, currentEFs , currentELs, pastELs } from 'src/data/fakeData';
+import { currentEFs , currentELs, pastELs } from 'src/data/fakeData';
 
 import './style.scss';
-import { useLoaderData, useLocation, useNavigate, useParams } from 'react-router-dom';
-import Section from './Section';
-import { useDispatch, useSelector } from 'react-redux';
-import { addNewOM } from 'src/reducer/omForm';
 
 
 const MyDocuments = () => {
@@ -21,12 +21,12 @@ const MyDocuments = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const loaderData = useLoaderData();
-  console.log(loaderData);
+  console.log("loaderData : ", loaderData);
 
-  const { currentOM, nextOMTarget, OMTabs } = useSelector((state) => state.omForm);
-  const { nextEFTarget, EFTabs } = useSelector((state) => state.omForm);
+  const { currentOM, nextOMTarget, OMTabs, userOms } = useSelector((state) => state.omForm);
+  const { nextEFTarget, EFTabs } = useSelector((state) => state.efForm);
 
-  // useEffect(() => {
+  //   useEffect(() => {
   //   if (nextOMTarget !== '') {
   //     navigate(nextOMTarget);
   //   }
@@ -35,24 +35,37 @@ const MyDocuments = () => {
   //   }
   // }, [nextOMTarget, nextEFTarget]);
 
-  let isOm = false;
-  let title = `États de Frais de ${"mboone01"}`;
-  let slug = 'état-de-frais'
+  console.log(userOms);
+
+  const currentOMs = userOms.filter((om) => om.status === 1);
+  const pastOMs = userOms.filter((om) => om.status === 8);
   
-  if (location.pathname.includes('ordres-de-mission')) {
-    isOm = true;
-    title = `Ordres de Mission de ${"mboone01"}`;
-    slug = 'ordre-de-mission';
+  const pageData = (path, user) => {
+    let pageData = {};
+
+    if (path.includes('ordres-de-mission')) {
+      pageData.isOm = true;
+      pageData.title = 'Ordres de Mission de ' + user;
+      pageData.slug = 'ordre-de-mission'
+    }
+    else {
+      pageData.isOm = false;
+      pageData.title = `États de Frais de ${user}`;
+      pageData.slug = 'état-de-frais'
+    }
+
+    return pageData;
   }
 
+  const { isOm, title, slug } = pageData(location.pathname, params.slug);
+
+  //-----------------------------------------------------------------------------------------------------------------------------------------------------
   const currentEF = JSON.parse(localStorage.getItem('newEf'));
-  
-  if (currentOM !== null) {
-    currentOMs.push(currentOM);
-  }
+
   if (currentEF !== null) {
     currentEFs.push(currentEF);
   }
+  //-----------------------------------------------------------------------------------------------------------------------------------------------------
   
 
   /**
@@ -76,12 +89,11 @@ const MyDocuments = () => {
   }
 
   const handleClickOnNewOM = () => {    
+    const userId = params.slug;
     if (window.confirm('Voulez-vous créer un nouvel ' + slug.replace(/-/g, ' ') + ' ?')) {
       if (slug === 'ordre-de-mission') {
-        const userId = params.slug;
-        const omName = `OM_${userId}_`;
         const newOM = {
-          name: omName,
+          name: `OM_${userId}_`,
           status: 1,
           url: 'path',
           missioner: userId,
@@ -89,6 +101,17 @@ const MyDocuments = () => {
         }
         
         dispatch(addNewOM(newOM)); 
+      }
+      else if (slug === 'état-de-frais') {
+        const newEF = {
+          name: `EF_${userId}_`,
+          status: 1,
+          url: 'path',
+          missioner: userId,
+          comments: '',
+        }
+        
+        // dispatch(addNewEF(newEF)); 
       }
     }
   }

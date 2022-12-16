@@ -1,8 +1,8 @@
-import { saveNewOm } from 'src/reducer/omForm';
+import { saveNewOm, saveUserOms } from 'src/reducer/omForm';
 import api from './api';
 
 
-api.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 api.defaults.headers['Content-Type'] = 'application/json';
 
 const omMiddleware = (store) => (next) => (action) => {
@@ -21,12 +21,9 @@ const omMiddleware = (store) => (next) => (action) => {
       break;
 
     case 'omForm/fetchOMs':
-      api.post("/api/om/get-by-missioner", action.payload,)
+      api.get("/api/om/" + action.payload,)
         .then((response) => {
-          console.log('fetchOMS : ', response);
-          // const finalisedOM = action.payload;
-          // finalisedOM.id = response.data;
-          // store.dispatch(saveNewOm(finalisedOM))
+          store.dispatch(saveUserOms(response.data))
         })
         .catch((error) => {
           console.error('add new om', error);
