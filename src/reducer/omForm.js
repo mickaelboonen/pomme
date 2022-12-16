@@ -68,7 +68,7 @@ const omFormSlice = createSlice({
     name: 'omForm',
     initialState,
     reducers: {
-      saveMissionFormData: (state, action) => {
+      addNewMission: (state, action) => {
         
         let currentIndex;
         state.omForm.forEach((step) => {
@@ -99,6 +99,6 @@ const omFormSlice = createSlice({
     },
 });
 
-export const { saveUserOms, fetchOMs, addNewOM, saveMissionFormData, saveNewOm } = omFormSlice.actions;
+export const { saveUserOms, fetchOMs, addNewOM, addNewMission, saveNewOm } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

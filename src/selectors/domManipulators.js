@@ -87,14 +87,14 @@ export const toggleIsHiddenOnNextFormSection = (target) => {
 
 export const toggleIsHiddenOnWorkAddressesList = () => {
   const departureFromWork = document.querySelector('#departure-work');
-  const returnToWork = document.querySelector('#return-work');
+  const comebackToWork = document.querySelector('#comeback-work');
 
-  if ( departureFromWork.checked || returnToWork.checked ) {
+  if ( departureFromWork.checked || comebackToWork.checked ) {
 
-    document.querySelector('#listWorkAddresses').classList.remove('form__section-field--hidden');
+    document.querySelector('#workAdress').classList.remove('form__section-field--hidden');
   }
   else {
-    document.querySelector('#listWorkAddresses').classList.add('form__section-field--hidden');
+    document.querySelector('#workAdress').classList.add('form__section-field--hidden');
   }
 }
 

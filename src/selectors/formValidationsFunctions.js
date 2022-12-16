@@ -86,12 +86,12 @@
    */
  export const handleWorkAddressSelect = (place, register, unregister) => {
   if (place && place.includes('work')) {
-    register("listWorkAddresses", {
+    register("workAdress", {
       required:"Merci de sélectionner une adresse administrative."
     });
   }
   else {
-    unregister("listWorkAddresses");
+    unregister("workAdress");
   }
 }
 

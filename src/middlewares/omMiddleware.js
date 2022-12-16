@@ -20,17 +20,31 @@ const omMiddleware = (store) => (next) => (action) => {
         });
       break;
 
-    case 'omForm/fetchOMs':
-      api.get("/api/om/" + action.payload,)
-        .then((response) => {
-          store.dispatch(saveUserOms(response.data))
-        })
-        .catch((error) => {
-          console.error('add new om', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
-        });
-      break;
+      case 'omForm/fetchOMs':
+        api.get("/api/om/" + action.payload,)
+          .then((response) => {
+            store.dispatch(saveUserOms(response.data))
+          })
+          .catch((error) => {
+            console.error('add new om', error);
+            // store.dispatch(showTicketCreationResponse(error.response))
+          });
+        break;
 
+
+        case 'omForm/addNewMission':
+          console.log('here');
+          api.post("/api/om/mission/add" , action.payload,)
+            .then((response) => {
+              console.log(response);
+              // store.dispatch(saveUserOms(response.data))
+            })
+            .catch((error) => {
+              console.error('add new om', error);
+              // store.dispatch(showTicketCreationResponse(error.response))
+            });
+          break;
+      
     default:
   }
   next(action);

@@ -27,7 +27,7 @@ import { handleRegionFields, handleWorkAddressSelect } from 'src/selectors/formV
 import { toggleIsHiddenOnWorkAddressesList, displayRegionFieldsInFormMission } from 'src/selectors/domManipulators';
 
 // Reducer
-import { saveMissionFormData } from 'src/reducer/omForm';
+import { addNewMission } from 'src/reducer/omForm';
 import { enableMissionFormFields } from 'src/reducer/efForm';
 
 const Mission = ({ step, isEfForm }) => {
@@ -58,62 +58,62 @@ const Mission = ({ step, isEfForm }) => {
     console.log('submitted data: ', data);
 
     // TODO - ERROR : 
-    //A non-serializable value was detected in an action, in the path: `payload.missionGoalFile`. Value: FileList {length: 0} 
+    //A non-serializable value was detected in an action, in the path: `payload.missionPurposeFile`. Value: FileList {length: 0} 
     
     // TODO : save file first then save data with the path of the file
-    data.missionGoalFile = 'path';
+    data.missionPurposeFile = 'path';
 
     // Enregistrer dans la BDD directement
     if (isEfForm) {
       // console.log(step++);
-      // dispatch(saveMissionFormData(data));
+      // dispatch(addNewMission(data));
       const nextStep = step + 1;
         localStorage.setItem('missionEf', JSON.stringify(data));
-      navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId);
+      // navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId);
 
     }
     else {
 
 
-      dispatch(saveMissionFormData(data));
+      dispatch(addNewMission(data));
 
-      const omInitialData = JSON.parse(localStorage.getItem('newOm'));
-      const departure = new Date(data.departure);
+      // const omInitialData = JSON.parse(localStorage.getItem('newOm'));
+      // const departure = new Date(data.departure);
       
-      const dateForFile = `${departure.getDate()}-${departure.getMonth()}-${departure.getFullYear()}`;
-      omInitialData.omName += dateForFile;
+      // const dateForFile = `${departure.getDate()}-${departure.getMonth()}-${departure.getFullYear()}`;
+      // omInitialData.omName += dateForFile;
 
-      localStorage.removeItem('newOm');
-      localStorage.setItem('newOm', JSON.stringify(omInitialData));
-      localStorage.setItem('mission', JSON.stringify(data));
+      // localStorage.removeItem('newOm');
+      // localStorage.setItem('newOm', JSON.stringify(omInitialData));
+      // localStorage.setItem('mission', JSON.stringify(data));
 
 
       const nextStep = step + 1;
-      navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId);
+      // navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId);
 
     }
   };
 
   const advance = () => {
     const data = JSON.parse(localStorage.getItem('mission'));
-    dispatch(saveMissionFormData(data));
+    dispatch(addNewMission(data));
   };
 
   let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
   refusal = "";
 
-  const [region , departurePlace, returnPlace] = watch(['region', 'departurePlace', 'returnPlace' ]);
+  const [region , departurePlace, comebackPlace] = watch(['region', 'departurePlace', 'comebackPlace' ]);
   const modificationSwitch = watch('modificationSwitch');
   
   useEffect(() => {
     if (modificationSwitch) {
-      // register('missionGoalFile', {
+      // register('missionPurposeFile', {
       //   required: "Joindre impérativement convocation, mail ou tout autre document en attestant.",
       // });
       register('departurePlace', {
         required: "Merci de sélectionner l'option qui correspond.",
       });
-      register('returnPlace', {
+      register('comebackPlace', {
         required: "Merci de sélectionner l'option qui correspond.",
       });
       register('region', {
@@ -129,8 +129,8 @@ const Mission = ({ step, isEfForm }) => {
   })
 
   useEffect(() => {
-    handleWorkAddressSelect(returnPlace, register, unregister);
-  }, [returnPlace]);
+    handleWorkAddressSelect(comebackPlace, register, unregister);
+  }, [comebackPlace]);
 
   useEffect(() => {
     handleWorkAddressSelect(departurePlace, register, unregister);
@@ -175,17 +175,17 @@ const Mission = ({ step, isEfForm }) => {
         <TextField
           id="motif"
           disabled={isEfForm && isMissionFormDisabled}
-          formField="missionGoal"
+          formField="missionPurpose"
           label="Motif de la mission"
           register={register}
-          error={errors.missionGoal}
+          error={errors.missionPurpose}
         />
         <FileField
           disabled={isEfForm && isMissionFormDisabled}
           id="mission-goal"
-          formField="missionGoalFile"
+          formField="missionPurposeFile"
           register={register}
-          error={errors.missionGoalFile}
+          error={errors.missionPurposeFile}
           pieces="Joindre impérativement convocation, mail ou tout autre document en attestant"
         />
         <HiddenField id="omId" value={omId} register={register} />
@@ -232,19 +232,19 @@ const Mission = ({ step, isEfForm }) => {
             <DateField
               disabled={isEfForm && isMissionFormDisabled}
               type="datetime-local"
-              id="return"
+              id="comeback"
               label="Jour et Heure de retour"
               register={register}
-              formField="return"
-              error={errors.return}
+              formField="comeback"
+              error={errors.comeback}
               required="Veuillez renseigner le jour et l'heure du retour."
             />
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Lieu de retour</label>
               <RadioInput
                 disabled={isEfForm && isMissionFormDisabled}
-                id="return-home"
-                formField="returnPlace"
+                id="comeback-home"
+                formField="comebackPlace"
                 label="Résidence familiale"
                 register={register}
                 // required="Merci de sélectionner l'option qui correspond"
@@ -252,14 +252,14 @@ const Mission = ({ step, isEfForm }) => {
               />
               <RadioInput
                 disabled={isEfForm && isMissionFormDisabled}
-                id="return-work"
-                formField="returnPlace"
+                id="comeback-work"
+                formField="comebackPlace"
                 label="Résidence administrative"
                 register={register}
                 // required="Merci de sélectionner l'option qui correspond"
                 handler={handleClickonRadio}
               />
-              <p className={classNames("form__section-field-error", { "form__section-field-error--open": errors.returnPlace?.message.length > 0 })}>{errors.returnPlace?.message}</p> 
+              <p className={classNames("form__section-field-error", { "form__section-field-error--open": errors.comebackPlace?.message.length > 0 })}>{errors.comebackPlace?.message}</p> 
             </div>
           </div>
         </div>
@@ -269,8 +269,8 @@ const Mission = ({ step, isEfForm }) => {
           data={adresses}
           register={register}
           // validators={{leavesFromWork: leavesFromWork}}
-          error={errors.listWorkAddresses}
-          formField="listWorkAddresses"
+          error={errors.workAdress}
+          formField="workAdress"
           id="work-address-select"
           label="Adresse administrative"
           // required="Merci de sélectionner une adresse administrative."
