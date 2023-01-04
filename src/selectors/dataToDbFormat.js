@@ -26,9 +26,9 @@ export const turnTransportsDataToDbFormat = (data) => {
     transportType: [],
     transportClass: [],
     transportPayment: [],
-    publicTransports: publicTransports
+    publicTransports: publicTransports,
   };
-
+  
   if (data.others) {
     data.others.forEach((option) => {
       if (option === 'taxi') {

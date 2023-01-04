@@ -26,13 +26,13 @@ const FileField = ({
 
   // Handles the selection of the file
   const handleChange = (event) => {
-    // Sets the selected value into the field
-    setValue(formField, event.target.files[0]);
 
     // Displays the name of the selected file 
-    const { nextSibling, value } = event.target;
-    const filename = value.slice(12);
-    nextSibling.textContent = filename;
+    const filename = event.target.files[0].name;
+    event.target.nextSibling.textContent = filename;
+
+    // Sets the selected value into the field
+    setValue(formField, event.target.files[0]);
   };
   
   return (
