@@ -31,33 +31,46 @@ const omMiddleware = (store) => (next) => (action) => {
         });
       break;
 
+    case 'omForm/updateMission':
+      api.post("/api/om/mission/update" , action.payload,)
+        .then((response) => {
+          console.log(response);
+          // store.dispatch(saveUserOms(response.data))
+        })
+        .catch((error) => {
+          console.error('update new om', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
 
-      case 'omForm/updateMission':
-        api.post("/api/om/mission/update" , action.payload,)
-          .then((response) => {
-            console.log(response);
-            // store.dispatch(saveUserOms(response.data))
-          })
-          .catch((error) => {
-            console.error('update new om', error);
-            // store.dispatch(showTicketCreationResponse(error.response))
-          });
-        break;
+
+    case 'omForm/updateTransports':
+      console.log('here');
+      api.post("/api/om/transports/update" , action.payload,)
+        .then((response) => {
+          console.log(response);
+          // store.dispatch(saveUserOms(response.data))
+        })
+        .catch((error) => {
+          console.error('update new om', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
 
 
-      case 'omForm/updateTransports':
-        console.log('here');
-        api.post("/api/om/transports/update" , action.payload,)
-          .then((response) => {
-            console.log(response);
-            // store.dispatch(saveUserOms(response.data))
-          })
-          .catch((error) => {
-            console.error('update new om', error);
-            // store.dispatch(showTicketCreationResponse(error.response))
-          });
-        break;
-      
+    case 'omForm/updateAccomodations':
+      console.log('here');
+      api.post("/api/om/accomodations/update" , action.payload,)
+        .then((response) => {
+          console.log(response);
+          // store.dispatch(saveUserOms(response.data))
+        })
+        .catch((error) => {
+          console.error('update accomodations', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
+    
     default:
   }
   next(action);

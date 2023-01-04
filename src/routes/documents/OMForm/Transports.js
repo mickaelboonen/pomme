@@ -31,6 +31,7 @@ const Transports = ({ step }) => {
     register,
     unregister,
     setError,
+    setValue,
     handleSubmit,
     watch,
     formState:
@@ -69,29 +70,18 @@ const Transports = ({ step }) => {
         handleValidationErrorsManually(dispensationErrorElement, "");
         handleValidationErrorsManually(vehicleAuthorizationErrorElement, "");
 
+        // TODO : GO ON - SAVE FILES 
+
+
         const databaseData = turnTransportsDataToDbFormat(data);
-        // TODO : GO ON
-        // console.log("before dispatch");
 
-      dispatch(updateTransports(databaseData));
+        dispatch(updateTransports(databaseData));
 
-      }
-
-      // localStorage.setItem('transports', JSON.stringify(data));
       // const nextStep = step + 1;
       // navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId)
-      // {
-      //   id,
-      //   om_id,
-      //   vehicle_id,
-      //   transport_type,
-      //   transport_class,
-      //   transport_payment,
-      //   vehicle_authorization,
-      //   transport_dispensation,
-      //   public_transports,
-      //   taxi, parking,
-      // }
+      }
+      
+
     }
   };
 
@@ -175,7 +165,7 @@ const Transports = ({ step }) => {
         <div className="form__section-container form__section-field--hidden" id="upper-class-request">
           <h4 className="form__section-container-title">Demande de Dérogation Première Classe ou Classe Affaire</h4>
           <div className="form__section-container-options">
-            <FileField id="dispensation-field" formField="dispensation" register={register} />
+            <FileField id="dispensation-field" setValue={setValue} formField="dispensation" register={register} />
             <span className="form__section-container-options__separator">OU</span>
             <div className="form__section-field">
               <CheckboxInput id="dispensation-for-validation-field" formField="dispensationForValidation" label="Demande en cours" register={register} columnDisplay />
@@ -184,13 +174,6 @@ const Transports = ({ step }) => {
             <div className="form__section-container-button">
               <Link to="/nouveau-document/demande-de-dérogation">FAIRE LA DEMANDE</Link>
             </div>
-            {/* <SwitchButton
-              register={register}
-              handler={() => null}
-              isInForm
-              formField={'publicTransports'}
-              label="Demande en cours"
-            /> */}
           </div>
           <p id="dispensation-error" className="form__section-field-error" />
         </div>
@@ -209,7 +192,7 @@ const Transports = ({ step }) => {
         <div className="form__section-container form__section-field--hidden" id="personal-car-field">
           <h4 className="form__section-container-title">DEMANDE D'AUTORISATION PRÉALABLE D'UTILISATION D'UN VÉHICULE</h4>
           <div className="form__section-container-options">
-            <FileField id="vehicle-authorization" formField="vehicleAuthorizationFile" register={register} />
+            <FileField id="vehicle-authorization" setValue={setValue} formField="vehicleAuthorizationFile" register={register} />
             <span className="form__section-container-options__separator">OU</span>
             <div className="form__section-field">
               <CheckboxInput id="dispensation-for-validation-field" formField="vehicleAuthorizationFileForValidation" label="Demande en cours" register={register} columnDisplay />

@@ -15,17 +15,26 @@ const FileField = ({
   placeholder,
   disabled,
   error,
-  required
+  required,
+  setValue
 }) => {
+
+  // Triggers the click on the file input that's hidden
   const handleClickOnFileInput = (event) => {
     event.currentTarget.firstChild.click();
   };
 
+  // Handles the selection of the file
   const handleChange = (event) => {
+    // Sets the selected value into the field
+    setValue(formField, event.target.files[0]);
+
+    // Displays the name of the selected file 
     const { nextSibling, value } = event.target;
     const filename = value.slice(12);
     nextSibling.textContent = filename;
   };
+  
   return (
   <div id={id} className={classNames("form__section-field", {"form__section-field--hidden": isHidden})} >
     <label className="form__section-field-label" htmlFor={id}>{label}</label>

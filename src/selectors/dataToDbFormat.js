@@ -1,3 +1,9 @@
+/**
+ * From the data we collected in the OM transports form, we adapt it to match the correct format for the database
+ *  
+ * @param {object} data form data
+ * @returns object that is to be sent to the API
+ */
 export const turnTransportsDataToDbFormat = (data) => {
 
   const {
