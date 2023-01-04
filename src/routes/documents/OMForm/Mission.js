@@ -27,7 +27,7 @@ import { handleRegionFields, handleWorkAddressSelect } from 'src/selectors/formV
 import { toggleIsHiddenOnWorkAddressesList, displayRegionFieldsInFormMission } from 'src/selectors/domManipulators';
 
 // Reducer
-import { addNewMission } from 'src/reducer/omForm';
+import { updateMission } from 'src/reducer/omForm';
 import { enableMissionFormFields } from 'src/reducer/efForm';
 
 const Mission = ({ step, isEfForm }) => {
@@ -75,7 +75,7 @@ const Mission = ({ step, isEfForm }) => {
     else {
 
 
-      dispatch(addNewMission(data));
+      dispatch(updateMission(data));
 
       // const omInitialData = JSON.parse(localStorage.getItem('newOm'));
       // const departure = new Date(data.departure);

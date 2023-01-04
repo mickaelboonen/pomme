@@ -17,6 +17,8 @@ import SelectField from 'src/components/Fields/SelectField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import { handleValidationErrorsManually } from 'src/selectors/formValidationsFunctions';
 import { toggleDerogationSection, toggleVehicleFields } from 'src/selectors/domManipulators';
+import { updateTransports } from 'src/reducer/omForm';
+import { turnTransportsDataToDbFormat } from '../../../selectors/dataToDbFormat';
 
 
 const Transports = ({ step }) => {
@@ -51,27 +53,45 @@ const Transports = ({ step }) => {
       // So we reset the global error
         handleValidationErrorsManually(errorElement, "")
 
-      if ((data.trainClass || data.planeClass) && data.dispensation.length === 0 && !data.dispensationForValidation) {
+      if ((data.trainClass === "first-class" || data.planeClass === "business-class") && data.dispensation.length === 0 && !data.dispensationForValidation) {
         handleValidationErrorsManually(dispensationErrorElement,"Merci de fournir la dérogation signée par le Président ou d'en faire la demande.", true);
 
         // TODO : stop
+        console.log("dispensation problem");
       }
-      else if (data.vehicle !== "Pas de véhicule sélectionné" && data.vehicleAuthorizationFile.length === 0 && !data.vehicleAuthorizationFileForValidation) {
+      else if (data.vehicle === "Pas de véhicule sélectionné" && data.vehicleAuthorizationFile.length === 0 && !data.vehicleAuthorizationFileForValidation) {
         handleValidationErrorsManually(vehicleAuthorizationErrorElement,"Merci de fournir la demande d'autorisation d'utilisation d'un véhicule ou d'en faire la demande.", true);
         // TODO : stop
+        console.log("vehicle problem");
 
       }
       else {
         handleValidationErrorsManually(dispensationErrorElement, "");
         handleValidationErrorsManually(vehicleAuthorizationErrorElement, "");
 
+        const databaseData = turnTransportsDataToDbFormat(data);
         // TODO : GO ON
+        // console.log("before dispatch");
+
+      dispatch(updateTransports(databaseData));
 
       }
 
-      localStorage.setItem('transports', JSON.stringify(data));
-      const nextStep = step + 1;
-      navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId)
+      // localStorage.setItem('transports', JSON.stringify(data));
+      // const nextStep = step + 1;
+      // navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId)
+      // {
+      //   id,
+      //   om_id,
+      //   vehicle_id,
+      //   transport_type,
+      //   transport_class,
+      //   transport_payment,
+      //   vehicle_authorization,
+      //   transport_dispensation,
+      //   public_transports,
+      //   taxi, parking,
+      // }
     }
   };
 
@@ -131,8 +151,8 @@ const Transports = ({ step }) => {
             </div>
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Règlement</label>
-              <RadioInput id="unimes-train" formField="trainPayment" label="Réglé par Unîmes" register={register} />
-              <RadioInput id="user-train" formField="trainPayment" label="Avancé par l'agent" register={register} />
+              <RadioInput id="unimes" formField="trainPayment" label="Réglé par Unîmes" register={register} />
+              <RadioInput id="agent" formField="trainPayment" label="Avancé par l'agent" register={register} />
               { errors.trainPayment && <p className={classNames("form__section-field-error", { "form__section-field-error--open": errors.trainPayment.message.length > 0 })}>{errors.trainPayment.message}</p>}
             </div>
           </div>
@@ -146,8 +166,8 @@ const Transports = ({ step }) => {
             </div>
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Règlement</label>
-              <RadioInput id="unimes-plane" formField="planePayment" label="Réglé par Unîmes" register={register} />
-              <RadioInput id="userPane" formField="planePayment" label="Avancé par l'agent" register={register} />
+              <RadioInput id="unimes" formField="planePayment" label="Réglé par Unîmes" register={register} />
+              <RadioInput id="user" formField="planePayment" label="Avancé par l'agent" register={register} />
               { errors.planePayment && <p className="form__section-field-error form__section-field-error--open">{errors.planePayment.message}</p> }
             </div>
           </div>
