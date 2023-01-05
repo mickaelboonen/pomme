@@ -108,9 +108,12 @@ const omFormSlice = createSlice({
       saveUserOms: (state, action) => {
         state.userOms = action.payload;
       },
+      uploadFile: () => {
+
+      },
     },
 });
 
-export const { saveUserOms, fetchOMs, addNewOM, updateMission, updateTransports, saveNewOm } = omFormSlice.actions;
+export const { saveUserOms, fetchOMs, addNewOM, updateMission, uploadFile, updateTransports, saveNewOm } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

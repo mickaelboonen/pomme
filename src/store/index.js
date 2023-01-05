@@ -3,7 +3,7 @@ import omFormReducer from 'src/reducer/omForm';
 import efFormReducer from 'src/reducer/efForm';
 
 import omMiddleware from '../middlewares/omMiddleware';
-// import playMiddleware from '../middlewares/playMiddleware';
+import fileMiddleware from '../middlewares/fileMiddleware';
 // import dateMiddleware from '../middlewares/dateMiddleware';
 // import galerieMiddleware from '../middlewares/galerieMiddleware';
 // import contactMiddleware from '../middlewares/contactMiddleware';
@@ -14,7 +14,7 @@ export const store = configureStore({
     omForm: omFormReducer,
     efForm: efFormReducer,
   }, 
-  middleware: [omMiddleware],
+  middleware: [omMiddleware, fileMiddleware],
 });
 
 export default store;

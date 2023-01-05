@@ -1,5 +1,5 @@
 import { saveNewOm, saveUserOms } from 'src/reducer/omForm';
-import api from './api';
+import { api } from './api';
 
 
 api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -45,8 +45,8 @@ const omMiddleware = (store) => (next) => (action) => {
 
 
     case 'omForm/updateTransports':
-      console.log('here');
-      api.post("/api/om/transports/update" , action.payload,)
+      console.log(action.type, action.payload);
+      api.post("/api/om/transports/update" , action.payload)
         .then((response) => {
           console.log(response);
           // store.dispatch(saveUserOms(response.data))

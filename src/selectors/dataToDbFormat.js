@@ -39,6 +39,10 @@ export const turnTransportsDataToDbFormat = (data) => {
       }
     })
   }
+  else {
+    dataToBeSubmitted.parking = false;
+    dataToBeSubmitted.taxi = false;
+  }
 
   if (trainClass !== null) {
     dataToBeSubmitted.transportType.push('train');
@@ -58,12 +62,18 @@ export const turnTransportsDataToDbFormat = (data) => {
   else if (vehicle !== "") {
     dataToBeSubmitted.vehicleAuthorization = vehicleAuthorizationFile;
   }
+  else {
+    dataToBeSubmitted.vehicleAuthorization = null;
+  }
 
   if (dispensationForValidation) {
     dataToBeSubmitted.transportDispensation = "pending";
   }
   else if (trainClass === "first-class" || planeClass === "business-class") {
     dataToBeSubmitted.transportDispensation = dispensation;
+  }
+  else {
+    dataToBeSubmitted.transportDispensation = null;
   }
   
   return dataToBeSubmitted;

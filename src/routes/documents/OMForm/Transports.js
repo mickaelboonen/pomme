@@ -19,6 +19,7 @@ import { handleValidationErrorsManually } from 'src/selectors/formValidationsFun
 import { toggleDerogationSection, toggleVehicleFields } from 'src/selectors/domManipulators';
 import { updateTransports } from 'src/reducer/omForm';
 import { turnTransportsDataToDbFormat } from '../../../selectors/dataToDbFormat';
+import { uploadFile } from '../../../reducer/omForm';
 
 
 const Transports = ({ step }) => {
@@ -41,7 +42,6 @@ const Transports = ({ step }) => {
   // console.log(watch(errors));
   const onSubmit = (data) => {
 
-    console.log("------------------------------------------------------", data, "------------------------------------------------------");
     const errorElement = document.getElementById('transports-error');
     const dispensationErrorElement = document.getElementById('dispensation-error');
     const vehicleAuthorizationErrorElement = document.getElementById('vehicle-authorization-error');
@@ -73,9 +73,15 @@ const Transports = ({ step }) => {
         // TODO : GO ON - SAVE FILES 
 
 
+
         const databaseData = turnTransportsDataToDbFormat(data);
 
-        dispatch(updateTransports(databaseData));
+        if (databaseData.transportDispensation || databaseData.vehicleAuthorization) {
+          dispatch(uploadFile(databaseData));
+        }
+        else {
+          dispatch(updateTransports(databaseData));
+        }
 
       // const nextStep = step + 1;
       // navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId)
@@ -141,7 +147,7 @@ const Transports = ({ step }) => {
             </div>
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Règlement</label>
-              <RadioInput id="unimes" formField="trainPayment" label="Réglé par Unîmes" register={register} />
+              <RadioInput id="unimes-t" formField="trainPayment" label="Réglé par Unîmes" register={register} />
               <RadioInput id="agent" formField="trainPayment" label="Avancé par l'agent" register={register} />
               { errors.trainPayment && <p className={classNames("form__section-field-error", { "form__section-field-error--open": errors.trainPayment.message.length > 0 })}>{errors.trainPayment.message}</p>}
             </div>
@@ -156,7 +162,7 @@ const Transports = ({ step }) => {
             </div>
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Règlement</label>
-              <RadioInput id="unimes" formField="planePayment" label="Réglé par Unîmes" register={register} />
+              <RadioInput id="unimes-p" formField="planePayment" label="Réglé par Unîmes" register={register} />
               <RadioInput id="user" formField="planePayment" label="Avancé par l'agent" register={register} />
               { errors.planePayment && <p className="form__section-field-error form__section-field-error--open">{errors.planePayment.message}</p> }
             </div>
