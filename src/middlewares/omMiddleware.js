@@ -45,15 +45,16 @@ const omMiddleware = (store) => (next) => (action) => {
 
 
     case 'omForm/updateTransports':
-      console.log(action.type, action.payload);
+      // TODO : See if POST method is the right one ? Should be PATCH / PUT but not working
       api.post("/api/om/transports/update" , action.payload)
         .then((response) => {
           console.log(response);
-          // store.dispatch(saveUserOms(response.data))
+          // TODO : success message
+          // TODO : loader ? 
         })
         .catch((error) => {
           console.error('update new om', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          // TODO : error message
         });
       break;
 

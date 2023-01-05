@@ -1,33 +1,38 @@
-import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 import './style.scss';
-import FormSectionTitle from 'src/components/FormSectionTitle';
-import RefusalMessage from 'src/components/Fields/RefusalMessage';
+
+// Components
 import Buttons from 'src/components/Fields/Buttons';
-import RadioInput from 'src/components/Fields/RadioInput';
-import CheckboxInput from 'src/components/Fields/CheckboxInput';
-import FileField from 'src/components/Fields/FileField';
 import SwitchButton from 'src/components/SwitchButton';
+import FileField from 'src/components/Fields/FileField';
+import RadioInput from 'src/components/Fields/RadioInput';
 import SelectField from 'src/components/Fields/SelectField';
 import HiddenField from 'src/components/Fields/HiddenField';
+import FormSectionTitle from 'src/components/FormSectionTitle';
+import CheckboxInput from 'src/components/Fields/CheckboxInput';
+import RefusalMessage from 'src/components/Fields/RefusalMessage';
+
+// Actions
+import { updateTransports } from 'src/reducer/omForm';
+
+// Selectors
+import { uploadFile } from 'src/reducer/omForm';
+import { turnTransportsDataToDbFormat } from 'src/selectors/dataToDbFormat';
 import { handleValidationErrorsManually } from 'src/selectors/formValidationsFunctions';
 import { toggleDerogationSection, toggleVehicleFields } from 'src/selectors/domManipulators';
-import { updateTransports } from 'src/reducer/omForm';
-import { turnTransportsDataToDbFormat } from '../../../selectors/dataToDbFormat';
-import { uploadFile } from '../../../reducer/omForm';
-
 
 const Transports = ({ step }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-
   const omId = searchParams.get('id');
+
   const {
     register,
     unregister,
@@ -39,7 +44,6 @@ const Transports = ({ step }) => {
     { errors },
   } = useForm();
 
-  // console.log(watch(errors));
   const onSubmit = (data) => {
 
     const errorElement = document.getElementById('transports-error');
@@ -56,33 +60,30 @@ const Transports = ({ step }) => {
 
       if ((data.trainClass === "first-class" || data.planeClass === "business-class") && data.dispensation.length === 0 && !data.dispensationForValidation) {
         handleValidationErrorsManually(dispensationErrorElement,"Merci de fournir la dérogation signée par le Président ou d'en faire la demande.", true);
-
-        // TODO : stop
-        console.log("dispensation problem");
       }
+
       else if (data.vehicle === "Pas de véhicule sélectionné" && data.vehicleAuthorizationFile.length === 0 && !data.vehicleAuthorizationFileForValidation) {
         handleValidationErrorsManually(vehicleAuthorizationErrorElement,"Merci de fournir la demande d'autorisation d'utilisation d'un véhicule ou d'en faire la demande.", true);
-        // TODO : stop
-        console.log("vehicle problem");
 
       }
       else {
+        // Clears the errors
         handleValidationErrorsManually(dispensationErrorElement, "");
         handleValidationErrorsManually(vehicleAuthorizationErrorElement, "");
 
-        // TODO : GO ON - SAVE FILES 
-
-
-
+        // Formats the data for the database
         const databaseData = turnTransportsDataToDbFormat(data);
 
+        // If any file has been selected (for the train, plane or car), we upload it
         if (databaseData.transportDispensation || databaseData.vehicleAuthorization) {
           dispatch(uploadFile(databaseData));
         }
+        // Else we directly update the transports entity
         else {
           dispatch(updateTransports(databaseData));
         }
 
+        // TODO : find how to go to the next page
       // const nextStep = step + 1;
       // navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId)
       }
@@ -105,7 +106,7 @@ const Transports = ({ step }) => {
     'Véhicule 2', 
   ];
 
-  // -----------------------------------------------------------------------------------------------------------------------------------------
+  // FORM FIELDS -----------------------------------------------------------------------------------------------------------------------------------------
   const [trainClass , planeClass, vehicle] = watch(['trainClass', 'planeClass', 'vehicle' ]);
   
   useEffect(() => {

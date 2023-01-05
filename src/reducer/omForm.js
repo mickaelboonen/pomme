@@ -85,7 +85,7 @@ const omFormSlice = createSlice({
 
       },
       updateTransports: (state, action) => {
-        console.log("reducer");
+        
       },
       updateAccomodations: (state, action) => {
 

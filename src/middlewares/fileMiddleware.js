@@ -11,6 +11,7 @@ const omMiddleware = (store) => (next) => (action) => {
 
       const filesToUpload = [];
 
+      // Setting the data for the request
       if (action.payload.transportDispensation) {
         const transportDispensation = {
           omId: action.payload.omId,
@@ -28,13 +29,14 @@ const omMiddleware = (store) => (next) => (action) => {
         filesToUpload.push(vehicleAuthorization);
       }
 
+      // TODO : See if POST method is the right one ? Methods that can add files (post) and delete them (delete)
       fileApi.post("/api/files/om/transports", filesToUpload)
         .then((response) => {
 
           const tranportsData = action.payload;
 
+          // Retrieving the url for each file and assigning it to the right property
           response.data.forEach((file) => {
-
             if (file.type === 'transport-dispensation') {
               tranportsData.transportDispensation = file.file.url;
             }
@@ -43,13 +45,12 @@ const omMiddleware = (store) => (next) => (action) => {
             }
           })
 
-
+          // Now updates the transports values in the database
           store.dispatch(updateTransports(tranportsData));
-          // store.dispatch(saveNewOm(finalisedOM))
         })
         .catch((error) => {
           console.error('addfiles', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          // TODO : error
         });
       break;
 
