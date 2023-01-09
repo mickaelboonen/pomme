@@ -80,3 +80,42 @@ export const turnTransportsDataToDbFormat = (data) => {
 
 
 }
+
+/**
+ * From the data we collected in the OM transports form, we adapt it to match the correct format for the database
+ *  
+ * @param {object} data form data
+ * @returns object that is to be sent to the API
+ */
+export const turnAdvanceDataToDbFormat = (data) => {
+
+  const {
+    omId,
+    advanceAmount,
+    hotelQuotation,
+    meals,
+    nights,
+    otherExpensesAmount,
+    otherExpensesNames,
+    rib,
+    total
+  } = data;
+
+  const dataToBeSubmitted = {
+    omId: omId,
+    advanceAmount: advanceAmount,
+    totalAmount: total,
+    hotelQuotation: hotelQuotation,
+    nightsNumber: nights,
+    mealsNumber: meals,
+    otherExpensesAmount: otherExpensesAmount === "" ? 0 : otherExpensesAmount,
+    otherExpensesJustification :otherExpensesNames === "" ? 0 : otherExpensesNames,
+    agentRib: rib
+
+  };
+  console.log(data);
+  
+  return dataToBeSubmitted;
+
+
+}

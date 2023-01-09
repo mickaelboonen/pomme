@@ -12,7 +12,7 @@ const omMiddleware = (store) => (next) => (action) => {
       const filesToUpload = [];
 
       const { data, step } = action.payload;
-
+      
       if (step === "transports") {
         // Setting the data for the request
         if (data.transportDispensation) {
@@ -38,31 +38,46 @@ const omMiddleware = (store) => (next) => (action) => {
           type: 'hotel-quotation',
           file: data.hotelQuotation,
         }
-        filesToUpload.push(hotelQuotation);
+        const rib = {
+          omId: data.omId,
+          type: 'rib',
+          file: data.agentRib,
+        }
+        filesToUpload.push(hotelQuotation, rib);
       }
-
+      
       // TODO : See if POST method is the right one ? Methods that can add files (post) and delete them (delete)
       fileApi.post("/api/files/om/" + step, filesToUpload)
         .then((response) => {
 
-          const tranportsData = action.payload;
+          const { data } = action.payload;
+          console.log(data);
 
           // Retrieving the url for each file and assigning it to the right property
           response.data.forEach((file) => {
+            
             if (file.type === 'transport-dispensation') {
-              tranportsData.transportDispensation = file.file.url;
+              data.transportDispensation = file.file.url;
             }
             else if (file.type === 'vehicle-authorization') {
-              tranportsData.vehicleAuthorization = file.file.url;
+              data.vehicleAuthorization = file.file.url;
+            }
+            else if (file.type === 'hotel-quotation') {
+              data.hotelQuotation = file.file.url;
+            }
+            else if (file.type === 'rib') {
+              data.agentRib = file.file.url;
             }
           })
 
           // Now updates the transports values in the database
           if (step === 'transports') {
-            store.dispatch(updateTransports(tranportsData));
+            store.dispatch(updateTransports(data));
           }
           else if (step === 'advance') {
-            // store.dispatch(updateAdvance({}));
+            delete data.advance;
+            console.log('before update : ', data);
+            store.dispatch(updateAdvance(data));
 
           }
           

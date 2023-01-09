@@ -17,9 +17,9 @@ import HiddenField from 'src/components/Fields/HiddenField';
 
 // Actions
 import { uploadFile, updateAdvance } from 'src/reducer/omForm';
+import { turnAdvanceDataToDbFormat } from '../../../selectors/dataToDbFormat';
 
 // Selectors
-import { handleValidationErrorsManually } from 'src/selectors/formValidationsFunctions';
 
 
 const Avance = ({ step }) => {
@@ -46,6 +46,7 @@ const Avance = ({ step }) => {
 
   const onSubmit = (data) => {
     // If the user is requesting an advance
+    
     if (data.advance) {
 
       let errorCount = 0;
@@ -70,11 +71,15 @@ const Avance = ({ step }) => {
       }
 
       // We upload the hotel quotation first
-      dispatch(uploadFile({data: data, step: 'advance'}))
+      data.meals = totalMeals;
+      data.nights = Number(nightsNumber);
+      const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);      
+      dispatch(uploadFile({data: dataToBeSubmitted, step: 'advance'}))
 
     }
     else {
-      dispatch(updateAdvance(data));
+      const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);
+      dispatch(updateAdvance(dataToBeSubmitted));
     }
 
     const nextStep = step + 1;
