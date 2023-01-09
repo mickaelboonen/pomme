@@ -1,4 +1,4 @@
-import { updateTransports, saveUserOms } from 'src/reducer/omForm';
+import { updateTransports, updateAdvance } from 'src/reducer/omForm';
 import { fileApi } from './api';
 
 
@@ -8,29 +8,41 @@ fileApi.defaults.headers['Content-Type'] = 'multipart/form-data';
 const omMiddleware = (store) => (next) => (action) => {
   switch (action.type) {
     case 'omForm/uploadFile':
-
+      console.log(action.payload);
       const filesToUpload = [];
 
-      // Setting the data for the request
-      if (action.payload.transportDispensation) {
-        const transportDispensation = {
-          omId: action.payload.omId,
-          type: 'transport-dispensation',
-          file: action.payload.transportDispensation,
+      const { data, step } = action.payload;
+
+      if (step === "transports") {
+        // Setting the data for the request
+        if (data.transportDispensation) {
+          const transportDispensation = {
+            omId: data.omId,
+            type: 'transport-dispensation',
+            file: data.transportDispensation,
+          }
+          filesToUpload.push(transportDispensation);
         }
-        filesToUpload.push(transportDispensation);
+        if (data.vehicleAuthorization) {
+          const vehicleAuthorization = {
+            omId: data.omId,
+            type: 'vehicle-authorization',
+            file: data.vehicleAuthorization,
+          }
+          filesToUpload.push(vehicleAuthorization);
+        }
       }
-      if (action.payload.vehicleAuthorization) {
-        const vehicleAuthorization = {
-          omId: action.payload.omId,
-          type: 'vehicle-authorization',
-          file: action.payload.vehicleAuthorization,
+      else if (step === "advance") {
+        const hotelQuotation = {
+          omId: data.omId,
+          type: 'hotel-quotation',
+          file: data.hotelQuotation,
         }
-        filesToUpload.push(vehicleAuthorization);
+        filesToUpload.push(hotelQuotation);
       }
 
       // TODO : See if POST method is the right one ? Methods that can add files (post) and delete them (delete)
-      fileApi.post("/api/files/om/transports", filesToUpload)
+      fileApi.post("/api/files/om/" + step, filesToUpload)
         .then((response) => {
 
           const tranportsData = action.payload;
@@ -46,7 +58,14 @@ const omMiddleware = (store) => (next) => (action) => {
           })
 
           // Now updates the transports values in the database
-          store.dispatch(updateTransports(tranportsData));
+          if (step === 'transports') {
+            store.dispatch(updateTransports(tranportsData));
+          }
+          else if (step === 'advance') {
+            // store.dispatch(updateAdvance({}));
+
+          }
+          
         })
         .catch((error) => {
           console.error('addfiles', error);

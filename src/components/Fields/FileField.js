@@ -36,7 +36,7 @@ const FileField = ({
   };
   
   return (
-  <div id={id} className={classNames("form__section-field", {"form__section-field--hidden": isHidden})} >
+  <div id={formField} className={classNames("form__section-field", {"form__section-field--hidden": isHidden})} >
     <label className="form__section-field-label" htmlFor={id}>{label}</label>
     <div className="form__section-field-input form__section-field-input--file" onClick={handleClickOnFileInput}>
       <input

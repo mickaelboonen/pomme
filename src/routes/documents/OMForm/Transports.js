@@ -20,9 +20,9 @@ import RefusalMessage from 'src/components/Fields/RefusalMessage';
 
 // Actions
 import { updateTransports } from 'src/reducer/omForm';
+import { uploadFile } from 'src/reducer/omForm';
 
 // Selectors
-import { uploadFile } from 'src/reducer/omForm';
 import { turnTransportsDataToDbFormat } from 'src/selectors/dataToDbFormat';
 import { handleValidationErrorsManually } from 'src/selectors/formValidationsFunctions';
 import { toggleDerogationSection, toggleVehicleFields } from 'src/selectors/domManipulators';
@@ -76,7 +76,7 @@ const Transports = ({ step }) => {
 
         // If any file has been selected (for the train, plane or car), we upload it
         if (databaseData.transportDispensation || databaseData.vehicleAuthorization) {
-          dispatch(uploadFile(databaseData));
+          dispatch(uploadFile({data: databaseData, step: 'transports'}));
         }
         // Else we directly update the transports entity
         else {
@@ -199,7 +199,12 @@ const Transports = ({ step }) => {
         <div className="form__section-container form__section-field--hidden" id="personal-car-field">
           <h4 className="form__section-container-title">DEMANDE D'AUTORISATION PRÉALABLE D'UTILISATION D'UN VÉHICULE</h4>
           <div className="form__section-container-options">
-            <FileField id="vehicle-authorization" setValue={setValue} formField="vehicleAuthorizationFile" register={register} />
+            <FileField
+              id="vehicle-authorization"
+              setValue={setValue}
+              formField="vehicleAuthorizationFile"
+              register={register}
+            />
             <span className="form__section-container-options__separator">OU</span>
             <div className="form__section-field">
               <CheckboxInput id="dispensation-for-validation-field" formField="vehicleAuthorizationFileForValidation" label="Demande en cours" register={register} columnDisplay />
