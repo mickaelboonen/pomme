@@ -1,4 +1,4 @@
-import { updateTransports, updateAdvance } from 'src/reducer/omForm';
+import { updateTransports, updateAdvance, updateMore } from 'src/reducer/omForm';
 import { fileApi } from './api';
 
 
@@ -54,18 +54,33 @@ const omMiddleware = (store) => (next) => (action) => {
           }
           filesToUpload.push(hotelQuotation, signature);
         }
+        
         if (data.otherFiles) {
           
         }
       }
-      return;
+      else if (step === "more") {
+        data.files.forEach((file) => {
+          const fileToUpload = {
+            omId: data.omId,
+            type: 'more',
+            file: file,
+          }
+          filesToUpload.push(fileToUpload);
+        })
+      }
+      console.log('filesToUpload', filesToUpload);
+      // return;
       
       // TODO : See if POST method is the right one ? Methods that can add files (post) and delete them (delete)
       fileApi.post("/api/files/om/" + step, filesToUpload)
         .then((response) => {
 
           const { data } = action.payload;
-          console.log(data);
+          console.log(response.data);
+          if (step === "more") {
+            data.files = [];
+          }
 
           // Retrieving the url for each file and assigning it to the right property
           response.data.forEach((file) => {
@@ -82,6 +97,9 @@ const omMiddleware = (store) => (next) => (action) => {
             else if (file.type === 'rib') {
               data.agentRib = file.file.url;
             }
+            else if (file.type === 'more') {
+              data.files.push(file.file.url);
+            }
           })
 
           // Now updates the transports values in the database
@@ -92,6 +110,11 @@ const omMiddleware = (store) => (next) => (action) => {
             delete data.advance;
             console.log('before update : ', data);
             store.dispatch(updateAdvance(data));
+
+          }
+          else if (step === 'more') {
+            console.log('before update : ', data);
+            store.dispatch(updateMore(data));
 
           }
           

@@ -136,8 +136,8 @@ export const turnSignatureDataToDbFormat = (data, signatureUrl) => {
   const dataToBeSubmitted = {
     omId: omId,
     organizerSignature: null,
-    otherFiles: otherFiles,
-    otherInfos: otherInfos,
+    files: otherFiles,
+    informations: otherInfos,
   };
 
   if (savedSignature) {

@@ -40,17 +40,17 @@ const Signature = ({ step }) => {
     if (data.savedSignature) {
 
       const formattedData = turnSignatureDataToDbFormat(data, signature);
-      console.log(formattedData.otherFiles.length);
+      console.log(formattedData);
+      console.log(data.otherFiles.length);
 
-      // TODO : modifier le File Field pour prendre en compte le multi file parce que la il ne prend que l premier.
       // TODO : Ensuite faire la verif pour l'upload des pieces
       // TODO : ensuite créer la table pour le OM_More
       // TODO : update signature et update more
-      if (typeof formattedData.agentSignature === 'object') {
+      if (typeof formattedData.agentSignature === 'file') {
         dispatch(uploadFile({ data: formattedData, step: 'signature'})); 
         console.log('NO');
       }
-      else if (formattedData.otherFiles.getName()) {
+      else if (data.otherFiles.length > 0) {
 
         dispatch(uploadFile({ data: formattedData, step: 'more'})); 
         console.log('YO');

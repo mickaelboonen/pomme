@@ -87,6 +87,9 @@ const omFormSlice = createSlice({
       updateTransports: (state, action) => {
         
       },
+      updateMore: (state, action) => {
+        
+      },
       updateAccomodations: (state, action) => {
 
       },
@@ -114,6 +117,6 @@ const omFormSlice = createSlice({
     },
 });
 
-export const { saveUserOms, fetchOMs, addNewOM, updateMission, uploadFile, updateTransports, saveNewOm, updateAdvance } = omFormSlice.actions;
+export const { saveUserOms, fetchOMs, addNewOM, updateMission, uploadFile, updateTransports, saveNewOm, updateAdvance, updateMore } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

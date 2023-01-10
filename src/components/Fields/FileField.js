@@ -26,13 +26,25 @@ const FileField = ({
 
   // Handles the selection of the file
   const handleChange = (event) => {
+    const fileList = Array.from(event.target.files);
 
+    if (multiple) {
+      if (fileList.length > 1) {
+        event.target.nextSibling.textContent = 'Plusieurs fichiers sélectionnés';
+      }
+      else {
+        event.target.nextSibling.textContent = fileList[0].name;
+      }
+      // Sets the selected value into the field
+      setValue(formField, fileList);
+    }
+    else {
     // Displays the name of the selected file 
-    const filename = event.target.files[0].name;
+    const filename = fileList[0].name;
     event.target.nextSibling.textContent = filename;
-
-    // Sets the selected value into the field
-    setValue(formField, event.target.files[0]);
+      // Sets the selected value into the field
+      setValue(formField, fileList[0]);
+    }
   };
   
   return (
