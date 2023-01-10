@@ -48,7 +48,12 @@ const initialState = {
       id: 5,
       step: 'signature',
       data: {},
-    }
+    }, 
+    {
+      id: 6,
+      step: 'more',
+      data: {},
+    }, 
   ],
   currentOM: {},
   nextOMTarget: '',
@@ -114,9 +119,15 @@ const omFormSlice = createSlice({
       uploadFile: () => {
 
       },
+      getMission: (state, action) => {
+
+      },
+      saveMission: (state, action) => {
+        state.omForm[0].data = action.payload;
+      }
     },
 });
 
-export const { saveUserOms, fetchOMs, addNewOM, updateMission, uploadFile, updateTransports, saveNewOm, updateAdvance, updateMore } = omFormSlice.actions;
+export const { saveUserOms, fetchOMs, addNewOM, updateMission, uploadFile, updateTransports, saveNewOm, updateAdvance, updateMore, getMission, saveMission } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

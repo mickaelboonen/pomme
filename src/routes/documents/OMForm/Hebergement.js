@@ -1,20 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import './style.scss';
-import FormSectionTitle from 'src/components/FormSectionTitle';
-import RefusalMessage from 'src/components/Fields/RefusalMessage';
+
+// Components
 import Buttons from 'src/components/Fields/Buttons';
-import RadioInput from 'src/components/Fields/RadioInput';
 import SwitchButton from 'src/components/SwitchButton';
 import TextField from 'src/components/Fields/TextField';
+import RadioInput from 'src/components/Fields/RadioInput';
 import HiddenField from 'src/components/Fields/HiddenField';
-import { useSelector, useDispatch } from 'react-redux';
-import { toggleHotelSwitch } from '../../../selectors/domManipulators';
+import FormSectionTitle from 'src/components/FormSectionTitle';
+import RefusalMessage from 'src/components/Fields/RefusalMessage';
+import { turnAccomodationDataToDbFormat } from '../../../selectors/dataToDbFormat';
+
 
 const Hebergement = ({ step }) => {
-    console.log('rendu');
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
@@ -22,9 +25,7 @@ const Hebergement = ({ step }) => {
   const omId = searchParams.get('id');
   const {
     register,
-    unregister,
     handleSubmit,
-    watch,
     formState:
     { errors },
   } = useForm();
@@ -44,10 +45,13 @@ const Hebergement = ({ step }) => {
       mealsErrorElement.textContent = "";
       mealsErrorElement.classList.remove('form__section-field-error--open')
       delete data.maxMealsNumber;
-      localStorage.setItem('hebergement', JSON.stringify(data))
-     
+      
+      const dataToBeSubmitted = turnAccomodationDataToDbFormat(data);
+      dispatch(updateAccomodations(dataToBeSubmitted));
+
+      
       const nextStep = step + 1;
-      navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId)
+      // navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId)
 
     }
     // TODO : Process Data
@@ -59,7 +63,9 @@ const Hebergement = ({ step }) => {
   let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
   refusal = "";
 
-  const mission = JSON.parse(localStorage.getItem('mission'));
+  const { omForm } = useSelector((state) => state.omForm);
+
+  const missionData = omForm[0].data;
 
   const handleMealsDependingOnHour = (hour, mealNumber) => {
 
@@ -79,12 +85,13 @@ const Hebergement = ({ step }) => {
   const getMaxMeals = (mission) => {
     let maxMealNumber = 0;
     const depart = new Date(mission.departure);
-    const back = new Date(mission.return);
+    const comeback = new Date(mission.comeback);
     
     const firstDay = depart.getDate();
-    const lastDay = back.getDate();
+    const lastDay = comeback.getDate();
+    
     const timeToDepart = depart.getHours();
-    const timeToLeave = back.getHours();
+    const timeToLeave = comeback.getHours();
     const fullDays = lastDay - firstDay - 1;
     maxMealNumber += (fullDays * 2);
 
@@ -96,37 +103,23 @@ const Hebergement = ({ step }) => {
 
   const getMaxNights = (mission) => {
     const depart = new Date(mission.departure);
-    const back = new Date(mission.return);
+    const comeback = new Date(mission.comeback);
     
     const firstDay = depart.getDate();
-    const lastDay = back.getDate();
+    const lastDay = comeback.getDate();
     return lastDay - firstDay;
   }
 
-  const maxMealNumber = getMaxMeals(mission);
-  const maxNightsNumber = getMaxNights(mission);
-  console.log(maxMealNumber, maxNightsNumber);
+  const maxMealNumber = getMaxMeals(missionData);
+  const maxNightsNumber = getMaxNights(missionData);
 
+  const [isHotelSelected, setIsHotelSelected] = useState(false);
 
+  const handleHotelSwitch = (event) => {
+    setIsHotelSelected(event.target.checked);
 
-  const hotel = watch("hotel");
+  };
 
-  useEffect(() => {
-    if (hotel) {
-      register("hotelPayment", {
-        required: "Merci de renseigner le champ."
-      });
-      register("nightsNumber", {
-        required: "Merci de renseigner le nombre de nuits d'hôtel."
-      });
-
-    }
-  })
-
-const handleHotelSwitch = (event) => {
-  toggleHotelSwitch(event);
-
-};
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section">
@@ -141,24 +134,28 @@ const handleHotelSwitch = (event) => {
             label="Hotel :"
           />
         </div>
-        <TextField
-          id="nights-number-field"
-          formField="nightsNumber"
-          register={register}
-          min="0"
-          max={maxNightsNumber}
-          isNumber
-          isHidden
-          error={errors.nightsNumber}
-          label="Nombre de nuits"
-          placeholder="Vous ne pouvez saisir plus de nuits que le nombre calculé selon vos dates de missions."
-        />
-        <div className="form__section-field form__section-field--hidden">
-          <p className="form__section-field-label">Réglement</p>
-          <RadioInput id="unimes" formField="hotelPayment" label="Payé par Unîmes" register={register} />
-          <RadioInput id="agent" formField="hotelPayment" label="Avancé par l'agent" register={register} />
-          {errors.hotelPayment && <p className='form__section-field-error form__section-field-error--open'>{errors.hotelPayment.message}</p>}
-        </div>
+        {isHotelSelected && (
+          <TextField
+            id="nights-number-field"
+            formField="nightsNumber"
+            register={register}
+            min="0"
+            max={maxNightsNumber}
+            isNumber
+            required="Merci de renseigner le nombre de nuits d'hôtel."
+            error={errors.nightsNumber}
+            label="Nombre de nuits"
+            placeholder="Vous ne pouvez saisir plus de nuits que le nombre calculé selon vos dates de missions."
+          />
+        )}
+        {isHotelSelected && (
+          <div className="form__section-field">
+            <p className="form__section-field-label">Réglement</p>
+            <RadioInput id="unimes" formField="hotelPayment" label="Payé par Unîmes" register={register} required="Merci de renseigner le champ." />
+            <RadioInput id="agent" formField="hotelPayment" label="Avancé par l'agent" register={register} required="Merci de renseigner le champ." />
+            {errors.hotelPayment && <p className='form__section-field-error form__section-field-error--open'>{errors.hotelPayment.message}</p>}
+          </div>
+        )}
       </div>
       <div className="form__section">
         <FormSectionTitle>Repas</FormSectionTitle>

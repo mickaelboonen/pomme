@@ -19,6 +19,19 @@ const omMiddleware = (store) => (next) => (action) => {
           // store.dispatch(showTicketCreationResponse(error.response))
         });
       break;
+    case 'app/getMission':
+      api.get("/api/om/mission/" + action.payload)
+        .then((response) => {
+          // if (response.data.length > 0) {
+            console.log(response.data);
+            // store.dispatch(saveSignature(response.data[0]))
+          // }
+        })
+        .catch((error) => {
+          console.error('get signature', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
 
   
     default:

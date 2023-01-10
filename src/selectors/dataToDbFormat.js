@@ -149,3 +149,32 @@ export const turnSignatureDataToDbFormat = (data, signatureUrl) => {
   
   return dataToBeSubmitted;
 }
+
+/**
+ * From the data we collected in the OM transports form, we adapt it to match the correct format for the database
+ *  
+ * @param {object} data form data
+ * @returns object that is to be sent to the API
+ */
+export const turnAccomodationDataToDbFormat = (data) => {
+
+  const {
+    omId,
+    hotel,
+    hotelPayment,
+    nightsNumber,
+    outsideMealsNumber,
+    adminMealsNumber
+  } = data;
+
+  const dataToBeSubmitted = {
+    omId: omId,
+    hotel: hotel,
+    nightsNumber: nightsNumber,
+    hotelPayment: hotelPayment,
+    mealsPaidByAgentoutsideMealsNumber: outsideMealsNumber,
+    mealsInAdminRestaurants: adminMealsNumber,
+  };
+
+  return dataToBeSubmitted;
+}

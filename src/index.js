@@ -31,7 +31,7 @@ import TicketRequest from "src/routes/utilisateur/MyAccount/TicketRequest";
 import RefusalNotification from "src/routes/utilisateur/MyAccount/RefusalNotification";
 
 
-import { fetchOMs } from "./reducer/omForm";
+import { fetchOMs, getMission } from "./reducer/omForm";
 import { getSignature } from "./reducer/app";
 
 
@@ -56,24 +56,14 @@ const router = createBrowserRouter([
             loader: async ({ request }) => {
               const url = new URL(request.url);
               const step = url.searchParams.get("etape");
+              const id = url.searchParams.get("id");
 
               // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
-              if (step === '5') {
+              if (step === '3') {
+                store.dispatch(getMission(id));
+              }
+              else if (step === '5') {
                 store.dispatch(getSignature('mboone01'));
-                // let fileArray = [];
-                // fetch('http://localhost:8000/api/perm-file/signature/mboone01', {
-                //   method: 'GET', mode: 'cors', cache: 'no-cache'
-                // })
-                //   .then((response) => {
-                //     return response.json();
-                //   })
-                //     .then((file) => {
-                //       if (file.length > 0) {
-                //         fileArray.push(file[0]);
-                //       }
-                //       return file;
-                //     })
-                // console.log('fileArray' , fileArray);
               }
             },    
           },
