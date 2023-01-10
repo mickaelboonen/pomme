@@ -8,10 +8,10 @@ fileApi.defaults.headers['Content-Type'] = 'multipart/form-data';
 const omMiddleware = (store) => (next) => (action) => {
   switch (action.type) {
     case 'omForm/uploadFile':
-      console.log(action.payload);
       const filesToUpload = [];
 
       const { data, step } = action.payload;
+      console.log(step);
       
       if (step === "transports") {
         // Setting the data for the request
@@ -45,6 +45,20 @@ const omMiddleware = (store) => (next) => (action) => {
         }
         filesToUpload.push(hotelQuotation, rib);
       }
+      else if (step === "signature") {
+        if (typeof data.signature !== 'string') {
+          const signature = {
+            omId: data.omId,
+            type: 'signature',
+            file: data.signature,
+          }
+          filesToUpload.push(hotelQuotation, signature);
+        }
+        if (data.otherFiles) {
+          
+        }
+      }
+      return;
       
       // TODO : See if POST method is the right one ? Methods that can add files (post) and delete them (delete)
       fileApi.post("/api/files/om/" + step, filesToUpload)

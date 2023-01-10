@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLoaderData, useNavigate, useSearchParams } from 'react-router-dom';
 
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
@@ -10,18 +10,24 @@ import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import FileField from 'src/components/Fields/FileField';
 import TextareaField from 'src/components/Fields/TextareaField';
 import HiddenField from 'src/components/Fields/HiddenField';
+import { useDispatch, useSelector } from 'react-redux';
+import { turnSignatureDataToDbFormat } from '../../../selectors/dataToDbFormat';
+import { uploadFile } from '../../../reducer/omForm';
 
 const Signature = ({ step }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
+
+  const { signature } = useSelector((state) => state.app);
 
   const omId = searchParams.get('id');
   const {
     register,
     unregister,
     handleSubmit,
-    watch,
     setValue,
+    watch,
     formState:
     { errors },
   } = useForm();
@@ -30,20 +36,50 @@ const Signature = ({ step }) => {
     console.log(data);
 
     // TODO : Process Data
-    localStorage.setItem('signature', JSON.stringify(data))
+
+    if (data.savedSignature) {
+
+      const formattedData = turnSignatureDataToDbFormat(data, signature);
+      console.log(formattedData.otherFiles.length);
+
+      // TODO : modifier le File Field pour prendre en compte le multi file parce que la il ne prend que l premier.
+      // TODO : Ensuite faire la verif pour l'upload des pieces
+      // TODO : ensuite créer la table pour le OM_More
+      // TODO : update signature et update more
+      if (typeof formattedData.agentSignature === 'object') {
+        dispatch(uploadFile({ data: formattedData, step: 'signature'})); 
+        console.log('NO');
+      }
+      else if (formattedData.otherFiles.getName()) {
+
+        dispatch(uploadFile({ data: formattedData, step: 'more'})); 
+        console.log('YO');
+      }
+
+      // dispatch(uploadFile({ data: formattedData, step: 'signature'})); 
+
+      // dispatch(updateSignature({ 
+      //   omId: data.omId,
+      //   otherFiles: data.otherFiles,
+      //   otherInfos: data.otherInfos,
+      // }))
+
+    }
     // navigate('/nouveau-document/ordre-de-mission?etape=' + step++);
 
     
   };
 
-  const savedSignature = watch('savedSignature');
   useEffect(() => {
-    
-    const checkbox = document.getElementById('saved-signature-field');
-    checkbox.checked = true;
-    setValue("savedSignature", true);
-  }, [])
+    if (signature !== null) {
+      const checkbox = document.getElementById('saved-signature-field');
+      checkbox.checked = true;
+      setValue("savedSignature", true);
 
+    }
+  }, [signature])
+
+  const savedSignature = watch('savedSignature');
   useEffect(() => {
       const signatureField = document.getElementById('signature');
 
@@ -77,6 +113,7 @@ const Signature = ({ step }) => {
           />
         </div>
         <FileField 
+          setValue={setValue}
           register={register}
           isHidden
           formField="signature"
@@ -96,6 +133,7 @@ const Signature = ({ step }) => {
           placeholder="Tout renseignements utiles, des cas articuliers non pris en charge par le formulaire"
         />
         <FileField 
+          setValue={setValue}
           register={register}
           formField="otherFiles"
           id="other"

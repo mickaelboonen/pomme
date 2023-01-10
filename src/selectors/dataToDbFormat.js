@@ -113,9 +113,39 @@ export const turnAdvanceDataToDbFormat = (data) => {
     agentRib: rib
 
   };
-  console.log(data);
   
   return dataToBeSubmitted;
+}
 
+/**
+ * From the data we collected in the OM transports form, we adapt it to match the correct format for the database
+ *  
+ * @param {object} data form data
+ * @returns object that is to be sent to the API
+ */
+export const turnSignatureDataToDbFormat = (data, signatureUrl) => {
 
+  const {
+    omId,
+    savedSignature,
+    otherInfos,
+    otherFiles,
+    signature
+  } = data;
+
+  const dataToBeSubmitted = {
+    omId: omId,
+    organizerSignature: null,
+    otherFiles: otherFiles,
+    otherInfos: otherInfos,
+  };
+
+  if (savedSignature) {
+    dataToBeSubmitted.agentSignature = signatureUrl;
+  }
+  else {
+    dataToBeSubmitted.agentSignature = signature;
+  }
+  
+  return dataToBeSubmitted;
 }
