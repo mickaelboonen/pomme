@@ -14,6 +14,7 @@ import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import RefusalMessage from 'src/components/Fields/RefusalMessage';
 import { turnAccomodationDataToDbFormat } from '../../../selectors/dataToDbFormat';
+import { updateAccomodations } from '../../../reducer/omForm';
 
 
 const Hebergement = ({ step }) => {
@@ -49,7 +50,7 @@ const Hebergement = ({ step }) => {
       const dataToBeSubmitted = turnAccomodationDataToDbFormat(data);
       dispatch(updateAccomodations(dataToBeSubmitted));
 
-      
+
       const nextStep = step + 1;
       // navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId)
 

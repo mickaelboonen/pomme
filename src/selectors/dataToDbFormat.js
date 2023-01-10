@@ -172,7 +172,7 @@ export const turnAccomodationDataToDbFormat = (data) => {
     hotel: hotel,
     nightsNumber: nightsNumber,
     hotelPayment: hotelPayment,
-    mealsPaidByAgentoutsideMealsNumber: outsideMealsNumber,
+    mealsPaidByAgent: outsideMealsNumber,
     mealsInAdminRestaurants: adminMealsNumber,
   };
 
