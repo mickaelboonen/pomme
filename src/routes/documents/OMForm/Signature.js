@@ -19,14 +19,14 @@ const Signature = ({ step }) => {
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
 
-  const { signature } = useSelector((state) => state.app);
+  const { userSignature } = useSelector((state) => state.app);
   
   const omId = searchParams.get('id');
   const {
     register,
-    unregister,
     handleSubmit,
     setValue,
+    setError,
     watch,
     formState:
     { errors },
@@ -48,6 +48,10 @@ const Signature = ({ step }) => {
       }
     }
     else {
+      
+      if (data.signature.length === 0) {
+        setError('signature', { type: 'custom', message: "Merci de signer votre ordre de mission." });
+      }
 
       dispatch(uploadFile({ data: formattedData, step: 'signature'}));
 
@@ -65,24 +69,23 @@ const Signature = ({ step }) => {
 
   const [hasNoSignatureSaved, setHasNoSignatureSaved] = useState(true);
   const savedSignature = watch('savedSignature');
-
+  
   useEffect(() => {
+    
     if (!savedSignature) {
-    console.log("savedSignature false : '", savedSignature);
-    setHasNoSignatureSaved(true);
+      setHasNoSignatureSaved(true);
     }
     else {
-      console.log("savedSignature true : '", savedSignature);
       setHasNoSignatureSaved(false);
     }
   }, [savedSignature])
 
   useEffect(() => {
-    if (signature) {
+    if (userSignature) {
       setHasNoSignatureSaved(false);
       setValue("savedSignature", true);
     }
-  }, [signature])
+  }, [userSignature])
 
   let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
   refusal = "";
@@ -103,10 +106,8 @@ const Signature = ({ step }) => {
           <FileField 
             setValue={setValue}
             register={register}
-            // isHidden
             formField="signature"
             id="signature"
-            required="Merci de signer votre ordre de mission."
             error={errors.signature}
           />
         )}

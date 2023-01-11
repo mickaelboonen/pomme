@@ -46,20 +46,15 @@ const omMiddleware = (store) => (next) => (action) => {
         filesToUpload.push(hotelQuotation, rib);
       }
       else if (step === "signature") {
-        if (typeof data.signature !== 'string') {
-          const signature = {
-            omId: data.omId,
-            type: 'signature',
-            file: data.signature,
-          }
-          filesToUpload.push(hotelQuotation, signature);
+        const signature = {
+          omId: data.omId,
+          type: 'signature',
+          file: data.agentSignature,
         }
-        
-        if (data.otherFiles) {
-          
-        }
+        filesToUpload.push(signature);
       }
       else if (step === "more") {
+        console.log(data);
         data.files.forEach((file) => {
           const fileToUpload = {
             omId: data.omId,

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   user: 'mboone01',
-  signature: null,
+  userSignature: null,
   vehicles: [
     {
       id: 0,
@@ -17,7 +17,7 @@ const omFormSlice = createSlice({
       getVehicles: () => {},
       getSignature: () => {},
       saveSignature: (state, action) => {
-        state.signature = action.payload.url;
+        state.userSignature = action.payload.url;
       },
       saveVehicles: (state, action) => {
         action.payload.forEach((vehicle) => state.vehicles.push(vehicle));
