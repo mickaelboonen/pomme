@@ -71,19 +71,33 @@ const omMiddleware = (store) => (next) => (action) => {
         });
       break;
 
-    case 'omForm/updateMore':
-      // TODO : See if POST method is the right one ? Should be PATCH / PUT but not working
-      api.post("/api/om/more/update" , action.payload)
-        .then((response) => {
-          console.log("SUCCESS MORE : ", response);
-          // TODO : success message
-          // TODO : loader ? 
-        })
-        .catch((error) => {
-          console.error('update more', error);
-          // TODO : error message
-        });
-    break;
+      case 'omForm/updateMore':
+        // TODO : See if POST method is the right one ? Should be PATCH / PUT but not working
+        api.post("/api/om/more/update" , action.payload)
+          .then((response) => {
+            console.log("SUCCESS MORE : ", response);
+            // TODO : success message
+            // TODO : loader ? 
+          })
+          .catch((error) => {
+            console.error('update more', error);
+            // TODO : error message
+          });
+      break;
+
+      case 'omForm/updateSignature':
+        // TODO : See if POST method is the right one ? Should be PATCH / PUT but not working
+        api.post("/api/om/signature/update" , action.payload)
+          .then((response) => {
+            console.log("SUCCESS MORE : ", response);
+            // TODO : success message
+            // TODO : loader ? 
+          })
+          .catch((error) => {
+            console.error('update more', error);
+            // TODO : error message
+          });
+      break;
 
     case 'omForm/updateAccomodations':
       console.log('here');

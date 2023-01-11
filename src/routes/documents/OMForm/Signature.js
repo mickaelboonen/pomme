@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useLoaderData, useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ import TextareaField from 'src/components/Fields/TextareaField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import { useDispatch, useSelector } from 'react-redux';
 import { turnSignatureDataToDbFormat } from '../../../selectors/dataToDbFormat';
-import { uploadFile } from '../../../reducer/omForm';
+import { updateMore, updateSignature, uploadFile } from '../../../reducer/omForm';
 
 const Signature = ({ step }) => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const Signature = ({ step }) => {
   const [searchParams] = useSearchParams();
 
   const { signature } = useSelector((state) => state.app);
-
+  
   const omId = searchParams.get('id');
   const {
     register,
@@ -33,69 +33,56 @@ const Signature = ({ step }) => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
-
-    // TODO : Process Data
+    
+    const formattedData = turnSignatureDataToDbFormat(data, signature);
 
     if (data.savedSignature) {
 
-      const formattedData = turnSignatureDataToDbFormat(data, signature);
-      console.log(formattedData);
-      console.log(data.otherFiles.length);
-
-      // TODO : Ensuite faire la verif pour l'upload des pieces
-      // TODO : ensuite créer la table pour le OM_More
-      // TODO : update signature et update more
-      if (typeof formattedData.agentSignature === 'file') {
-        dispatch(uploadFile({ data: formattedData, step: 'signature'})); 
-        console.log('NO');
-      }
-      else if (data.otherFiles.length > 0) {
-
+      dispatch(updateSignature(formattedData));
+      
+      if (data.otherFiles.length > 0) {
         dispatch(uploadFile({ data: formattedData, step: 'more'})); 
-        console.log('YO');
       }
+      else {
+        dispatch(updateMore(formattedData));
+      }
+    }
+    else {
 
-      // dispatch(uploadFile({ data: formattedData, step: 'signature'})); 
+      dispatch(uploadFile({ data: formattedData, step: 'signature'}));
 
-      // dispatch(updateSignature({ 
-      //   omId: data.omId,
-      //   otherFiles: data.otherFiles,
-      //   otherInfos: data.otherInfos,
-      // }))
-
+      if (data.otherFiles.length > 0) {
+        dispatch(uploadFile({ data: formattedData, step: 'more'})); 
+      }
+      else {
+        dispatch(updateMore(formattedData));
+      }
     }
     // navigate('/nouveau-document/ordre-de-mission?etape=' + step++);
 
     
   };
 
-  useEffect(() => {
-    if (signature !== null) {
-      const checkbox = document.getElementById('saved-signature-field');
-      checkbox.checked = true;
-      setValue("savedSignature", true);
-
-    }
-  }, [signature])
-
+  const [hasNoSignatureSaved, setHasNoSignatureSaved] = useState(true);
   const savedSignature = watch('savedSignature');
-  useEffect(() => {
-      const signatureField = document.getElementById('signature');
 
+  useEffect(() => {
     if (!savedSignature) {
-      signatureField.classList.remove('form__section-field--hidden');
-      register("signature", {
-        required:"Merci de signer votre ordre de mission.",
-      })
+    console.log("savedSignature false : '", savedSignature);
+    setHasNoSignatureSaved(true);
     }
     else {
-      signatureField.classList.add('form__section-field--hidden');
-      unregister("signature")
+      console.log("savedSignature true : '", savedSignature);
+      setHasNoSignatureSaved(false);
     }
-    
-
   }, [savedSignature])
+
+  useEffect(() => {
+    if (signature) {
+      setHasNoSignatureSaved(false);
+      setValue("savedSignature", true);
+    }
+  }, [signature])
 
   let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
   refusal = "";
@@ -112,14 +99,17 @@ const Signature = ({ step }) => {
             label="Utiliser la signature enregistrée dans mon profil"
           />
         </div>
-        <FileField 
-          setValue={setValue}
-          register={register}
-          isHidden
-          formField="signature"
-          id="signature"
-          error={errors.signature}
-        />
+        {hasNoSignatureSaved && (
+          <FileField 
+            setValue={setValue}
+            register={register}
+            // isHidden
+            formField="signature"
+            id="signature"
+            required="Merci de signer votre ordre de mission."
+            error={errors.signature}
+          />
+        )}
         <HiddenField id="omId" value={omId} register={register} />
       </div>
 

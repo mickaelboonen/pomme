@@ -1,4 +1,4 @@
-import { saveSignature } from 'src/reducer/app';
+import { saveSignature, saveVehicles } from 'src/reducer/app';
 import { api } from './api';
 
 
@@ -16,6 +16,17 @@ const omMiddleware = (store) => (next) => (action) => {
         })
         .catch((error) => {
           console.error('get signature', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
+    case 'app/getVehicles':
+      const { app : { user } } = store.getState();
+      api.get("/api/vehicles/" + user)
+        .then((response) => {
+          store.dispatch(saveVehicles(response.data))
+        })
+        .catch((error) => {
+          console.error('get vehicles', error);
           // store.dispatch(showTicketCreationResponse(error.response))
         });
       break;
