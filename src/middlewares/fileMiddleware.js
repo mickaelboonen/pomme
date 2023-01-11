@@ -1,4 +1,4 @@
-import { updateTransports, updateAdvance, updateMore } from 'src/reducer/omForm';
+import { updateTransports, updateAdvance, updateMore, updateMission } from 'src/reducer/omForm';
 import { fileApi } from './api';
 
 
@@ -69,6 +69,14 @@ const omMiddleware = (store) => (next) => (action) => {
           filesToUpload.push(fileToUpload);
         })
       }
+      else if (step === 'mission') {
+        const mission = {
+          omId: data.omId,
+          type: 'mission',
+          file: data.missionPurposeFile,
+        }
+        filesToUpload.push(mission);
+      }
       console.log('filesToUpload', filesToUpload);
       // return;
       
@@ -78,6 +86,7 @@ const omMiddleware = (store) => (next) => (action) => {
 
           const { data } = action.payload;
           console.log(response.data);
+
           if (step === "more") {
             data.files = [];
           }
@@ -100,6 +109,9 @@ const omMiddleware = (store) => (next) => (action) => {
             else if (file.type === 'more') {
               data.files.push(file.file.url);
             }
+            else if (file.type === 'mission') {
+              data.missionPurposeFile = file.file.url;
+            }
           })
 
           // Now updates the transports values in the database
@@ -108,14 +120,15 @@ const omMiddleware = (store) => (next) => (action) => {
           }
           else if (step === 'advance') {
             delete data.advance;
-            console.log('before update : ', data);
             store.dispatch(updateAdvance(data));
-
           }
           else if (step === 'more') {
             console.log('before update : ', data);
             store.dispatch(updateMore(data));
-
+          }
+          else if (step === 'mission') {
+            console.log('before update : ', data);
+            store.dispatch(updateMission(data));
           }
           
         })

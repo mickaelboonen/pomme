@@ -27,7 +27,7 @@ import { handleRegionFields, handleWorkAddressSelect } from 'src/selectors/formV
 import { toggleIsHiddenOnWorkAddressesList, displayRegionFieldsInFormMission } from 'src/selectors/domManipulators';
 
 // Reducer
-import { updateMission } from 'src/reducer/omForm';
+import { updateMission, uploadFile } from 'src/reducer/omForm';
 import { enableMissionFormFields } from 'src/reducer/efForm';
 
 const Mission = ({ step, isEfForm }) => {
@@ -46,6 +46,7 @@ const Mission = ({ step, isEfForm }) => {
     register,
     handleSubmit,
     watch,
+    setValue,
     unregister,
     formState:
     { errors },
@@ -56,36 +57,21 @@ const Mission = ({ step, isEfForm }) => {
   const onSubmit = (data) => {
     console.log('----------------------------------------------------------');
     console.log('submitted data: ', data);
-
-    // TODO - ERROR : 
-    //A non-serializable value was detected in an action, in the path: `payload.missionPurposeFile`. Value: FileList {length: 0} 
     
     // TODO : save file first then save data with the path of the file
-    data.missionPurposeFile = 'path';
 
     // Enregistrer dans la BDD directement
     if (isEfForm) {
-      // console.log(step++);
-      // dispatch(addNewMission(data));
+
       const nextStep = step + 1;
-        localStorage.setItem('missionEf', JSON.stringify(data));
       // navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId);
 
     }
     else {
 
+      dispatch(uploadFile({data: data, step: 'mission'}));
 
-      dispatch(updateMission(data));
-
-      // const omInitialData = JSON.parse(localStorage.getItem('newOm'));
-      // const departure = new Date(data.departure);
-      
-      // const dateForFile = `${departure.getDate()}-${departure.getMonth()}-${departure.getFullYear()}`;
-      // omInitialData.omName += dateForFile;
-
-      // localStorage.removeItem('newOm');
-      // localStorage.setItem('newOm', JSON.stringify(omInitialData));
-      // localStorage.setItem('mission', JSON.stringify(data));
+      // dispatch(updateMission(data));
 
 
       const nextStep = step + 1;
@@ -182,6 +168,7 @@ const Mission = ({ step, isEfForm }) => {
         />
         <FileField
           disabled={isEfForm && isMissionFormDisabled}
+          setValue={setValue}
           id="mission-goal"
           formField="missionPurposeFile"
           register={register}

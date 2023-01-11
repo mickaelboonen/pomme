@@ -43,7 +43,6 @@ const omMiddleware = (store) => (next) => (action) => {
         });
       break;
 
-
     case 'omForm/updateTransports':
       // TODO : See if POST method is the right one ? Should be PATCH / PUT but not working
       api.post("/api/om/transports/update" , action.payload)
@@ -57,7 +56,6 @@ const omMiddleware = (store) => (next) => (action) => {
           // TODO : error message
         });
       break;
-
 
     case 'omForm/updateAdvance':
       // TODO : See if POST method is the right one ? Should be PATCH / PUT but not working
@@ -73,7 +71,6 @@ const omMiddleware = (store) => (next) => (action) => {
         });
       break;
 
-
     case 'omForm/updateMore':
       // TODO : See if POST method is the right one ? Should be PATCH / PUT but not working
       api.post("/api/om/more/update" , action.payload)
@@ -88,7 +85,6 @@ const omMiddleware = (store) => (next) => (action) => {
         });
     break;
 
-
     case 'omForm/updateAccomodations':
       console.log('here');
       api.post("/api/om/accomodations/update" , action.payload,)
@@ -101,20 +97,21 @@ const omMiddleware = (store) => (next) => (action) => {
           // store.dispatch(showTicketCreationResponse(error.response))
         });
       break;
-    case 'omForm/getMission':
-      api.get("/api/om/mission/" + action.payload)
-        .then((response) => {
-          // if (response.data.length > 0) {
-            console.log(response.data);
-            store.dispatch(saveMission(response.data[0]))
-          // }
-        })
-        .catch((error) => {
-          console.error('get signature', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
-        });
-      break;
     
+    case 'omForm/getMission':
+    api.get("/api/om/mission/find/" + action.payload)
+      .then((response) => {
+        // if (response.data.length > 0) {
+          console.log(response.data);
+          store.dispatch(saveMission(response.data[0]))
+        // }
+      })
+      .catch((error) => {
+        console.error('get signature', error);
+        // store.dispatch(showTicketCreationResponse(error.response))
+      });
+    break;
+  
     default:
   }
   next(action);
