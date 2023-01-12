@@ -190,3 +190,63 @@ export const defineValidationRulesForMission = (isEfForm, isFormModified) => {
 
   return errorMessages;
 }
+
+/**
+ * 
+ * @param {string} missionStep Is it departure time or return time
+ * @param {integer} hour 
+ * @param {integer} mealNumber 
+ * @returns {integer} mealNumber
+ */
+export const handlePartialDayMeals = (missionStep, hour, mealNumber) => {
+
+    if (missionStep === 'departure') {
+      
+      if (hour > 21) {
+        return mealNumber;
+      }
+      else if (hour > 14) {
+        mealNumber += 1;
+      }
+      else {
+        mealNumber += 2;
+      }
+    }
+    else {
+      if (hour > 21) {
+        return mealNumber;
+      }
+      else if (hour > 14) {
+        mealNumber += 1;
+      }
+      else if (hour > 11) {
+        mealNumber += 2;
+      }
+
+    }
+    return mealNumber;
+}
+
+export const getMaxMealsAndNights = (data, forNights = false) => {
+
+    let maxMealNumber = 0;
+    const depart = new Date(data.departure);
+    const comeback = new Date(data.comeback);
+    
+    const firstDay = depart.getDate();
+    const lastDay = comeback.getDate();
+
+    if (forNights) {
+      return lastDay - firstDay;
+    }
+    
+    const timeToDepart = depart.getHours();
+    const timeToLeave = comeback.getHours();
+    const fullDays = lastDay - firstDay - 1;
+    maxMealNumber += (fullDays * 2);
+    
+    maxMealNumber = handlePartialDayMeals('departure', timeToDepart, maxMealNumber);
+    maxMealNumber = handlePartialDayMeals('return', timeToLeave, maxMealNumber);
+
+    return maxMealNumber;
+}

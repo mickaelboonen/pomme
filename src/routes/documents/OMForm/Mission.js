@@ -96,7 +96,7 @@ const Mission = ({ step, isEfForm }) => {
         }
       }
       else {
-        // dispatch(uploadFile({data: data, step: 'mission'}));
+        dispatch(uploadFile({data: data, step: 'mission'}));
       }
       
       const nextStep = step + 1;

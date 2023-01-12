@@ -15,6 +15,7 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 import RefusalMessage from 'src/components/Fields/RefusalMessage';
 import { turnAccomodationDataToDbFormat } from '../../../selectors/dataToDbFormat';
 import { updateAccomodations } from '../../../reducer/omForm';
+import { getMaxMealsAndNights } from '../../../selectors/formValidationsFunctions';
 
 
 const Hebergement = ({ step }) => {
@@ -68,51 +69,8 @@ const Hebergement = ({ step }) => {
 
   const missionData = omForm[0].data;
 
-  const handleMealsDependingOnHour = (hour, mealNumber) => {
-
-    if (hour > 21) {
-
-    }
-    else if (hour > 14) {
-      mealNumber += 1;
-    }
-    else {
-      mealNumber += 2;
-
-    }
-    return mealNumber;
-  };
-
-  const getMaxMeals = (mission) => {
-    let maxMealNumber = 0;
-    const depart = new Date(mission.departure);
-    const comeback = new Date(mission.comeback);
-    
-    const firstDay = depart.getDate();
-    const lastDay = comeback.getDate();
-    
-    const timeToDepart = depart.getHours();
-    const timeToLeave = comeback.getHours();
-    const fullDays = lastDay - firstDay - 1;
-    maxMealNumber += (fullDays * 2);
-
-    maxMealNumber = handleMealsDependingOnHour(timeToDepart, maxMealNumber);
-    maxMealNumber = handleMealsDependingOnHour(timeToLeave, maxMealNumber);
-
-    return maxMealNumber;
-  }
-
-  const getMaxNights = (mission) => {
-    const depart = new Date(mission.departure);
-    const comeback = new Date(mission.comeback);
-    
-    const firstDay = depart.getDate();
-    const lastDay = comeback.getDate();
-    return lastDay - firstDay;
-  }
-
-  const maxMealNumber = getMaxMeals(missionData);
-  const maxNightsNumber = getMaxNights(missionData);
+  const maxMealNumber = getMaxMealsAndNights(missionData);
+  const maxNightsNumber = getMaxMealsAndNights(missionData, true);
 
   const [isHotelSelected, setIsHotelSelected] = useState(false);
 
