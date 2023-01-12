@@ -144,3 +144,49 @@ export const handleValidationErrorsManually = (element, content, toAdd = false) 
   }
   
 }
+
+/**
+ * Returns an array of validation rules for the mission part for the OM or the EF 
+ * @param {boolean} isEfForm 
+ * @param {boolean} isFormModified 
+ * @returns 
+ */
+export const defineValidationRulesForMission = (isEfForm, isFormModified) => {
+
+  let errorMessages = {
+    missionPurpose: null,
+    missionPurposeFile: null,
+    departure: null,
+    departurePlace: null,
+    comeback: null,
+    comebackPlace: null,
+    region: null,
+    missionAdress: null,
+    workAdress: null,
+    country: null,
+    abroadCosts: null
+  }
+
+  if (isEfForm) {
+    if (isFormModified) {
+      errorMessages.missionPurpose = 'Merci de rensigner le motif de la mission.';
+      errorMessages.departure = "Veuillez renseigner le jour et l'heure de départ.";
+      errorMessages.departurePlace = "Veuillez renseigner le lieu de départ lors de votre départ en mission.";
+      errorMessages.comeback = "Veuillez renseigner le jour et l'heure du retour.";
+      errorMessages.comebackPlace = "Veuillez renseigner le lieu d'arrivée lors de votre retour de mission.";
+      errorMessages.region = "Merci de sélectionner l'option qui correspond.";
+      errorMessages.missionAdress = "Merci de renseigner l'adresse de la mission.";
+    }
+  }
+  else {
+    errorMessages.missionPurpose = 'Merci de rensigner le motif de la mission.';
+    errorMessages.departure = "Veuillez renseigner le jour et l'heure de départ.";
+    errorMessages.departurePlace = "Veuillez renseigner le lieu de départ lors de votre départ en mission.";
+    errorMessages.comeback = "Veuillez renseigner le jour et l'heure du retour.";
+    errorMessages.comebackPlace = "Veuillez renseigner le lieu d'arrivée lors de votre retour de mission.";
+    errorMessages.region = "Merci de sélectionner l'option qui correspond.";
+    errorMessages.missionAdress = "Merci de renseigner l'adresse de la mission.";
+  }
+
+  return errorMessages;
+}

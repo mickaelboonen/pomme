@@ -27,18 +27,17 @@ import { handleRegionFields, handleWorkAddressSelect } from 'src/selectors/formV
 import { toggleIsHiddenOnWorkAddressesList, displayRegionFieldsInFormMission } from 'src/selectors/domManipulators';
 
 // Reducer
-import { updateMission, uploadFile } from 'src/reducer/omForm';
+import { uploadFile } from 'src/reducer/omForm';
 import { enableMissionFormFields } from 'src/reducer/efForm';
+import { defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
 
 const Mission = ({ step, isEfForm }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loader = useLoaderData();
   
-  
   const { isMissionFormDisabled } = useSelector((state) => state.efForm);
-  
-  
+
   const [searchParams] = useSearchParams();
 
   const omId = searchParams.get('id');
@@ -47,6 +46,7 @@ const Mission = ({ step, isEfForm }) => {
     handleSubmit,
     watch,
     setValue,
+    setError,
     unregister,
     formState:
     { errors },
@@ -55,13 +55,21 @@ const Mission = ({ step, isEfForm }) => {
   });
   
   const onSubmit = (data) => {
-    console.log('----------------------------------------------------------');
-    console.log('submitted data: ', data);
-    
-    // TODO : save file first then save data with the path of the file
+    console.log(data);
 
-    // Enregistrer dans la BDD directement
+    if (data.missionPurposeFile.length === 0) {
+      setError('missionPurposeFile', { type: 'custom', message: 'Merci de fournir le justificatif de la mission.'})
+      return;
+    }
     if (isEfForm) {
+
+      if (data.modification && data.modificationFiles.length === 0) {
+        setError('modificationFiles', { type: 'custom', message: 'Merci de fournir la ou les pièces justifiant la modification.'})
+        return;
+      }
+
+      // TODO : bien faire les verifs / validations pour l'EF 
+
 
       const nextStep = step + 1;
       // navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId);
@@ -69,50 +77,42 @@ const Mission = ({ step, isEfForm }) => {
     }
     else {
 
-      dispatch(uploadFile({data: data, step: 'mission'}));
+      const departure = new Date(data.departure);
+      const comeback = new Date(data.comeback);
 
-      // dispatch(updateMission(data));
+      const diffDays = comeback.getDate() - departure.getDate();
 
+      if (diffDays < 0) {
+        setError('comeback', {type: 'custom', message: 'La date de retour ne peut précéder la date de départ.'})
+      }
+      else if (diffDays === 0) {
+        const diffHours = comeback.getHours() - departure.getHours();
 
+        if (diffHours < 0) {
+          setError('comeback', {type: 'custom', message: "L'heure de retour ne peut précéder l'heure de départ."})
+        }
+        else if (diffHours === 0) {
+          setError('comeback', {type: 'custom', message: 'Merci de renseigner une heure de retour valide.'})
+        }
+      }
+      else {
+        // dispatch(uploadFile({data: data, step: 'mission'}));
+      }
+      
       const nextStep = step + 1;
       // navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId);
 
     }
   };
 
-  const advance = () => {
-    const data = JSON.parse(localStorage.getItem('mission'));
-    dispatch(addNewMission(data));
-  };
+  const modificationSwitch = watch('modificationSwitch');
+  const errorMessages = defineValidationRulesForMission(isEfForm, modificationSwitch);
 
   let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
   refusal = "";
 
   const [region , departurePlace, comebackPlace] = watch(['region', 'departurePlace', 'comebackPlace' ]);
-  const modificationSwitch = watch('modificationSwitch');
-  
-  useEffect(() => {
-    if (modificationSwitch) {
-      // register('missionPurposeFile', {
-      //   required: "Joindre impérativement convocation, mail ou tout autre document en attestant.",
-      // });
-      register('departurePlace', {
-        required: "Merci de sélectionner l'option qui correspond.",
-      });
-      register('comebackPlace', {
-        required: "Merci de sélectionner l'option qui correspond.",
-      });
-      register('region', {
-        required: "Joindre impérativement convocation, mail ou tout autre document en attestant.",
-      });
-      register('modificationJustifications', {
-        required: 'Merci de justifier la ou les modifications.',
-      });
-      register('modificationFiles', {
-        required: 'Merci de fournir la ou les pièces justifiant la modification des champs.',
-      });
-    }
-  })
+
 
   useEffect(() => {
     handleWorkAddressSelect(comebackPlace, register, unregister);
@@ -143,18 +143,11 @@ const Mission = ({ step, isEfForm }) => {
   }
 
   const toggleDisabledFields = (event) => {
-    
-    const justificationTextareaField = document.getElementById('justifications');
-    justificationTextareaField.classList.toggle('form__section-field--hidden');
-
-    const justificationFileField = document.getElementById('modification-files-input');
-    justificationFileField.classList.toggle('form__section-field--hidden');
-    
     dispatch(enableMissionFormFields(event.currentTarget.checked));
   }
+
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
-    {/* // <form className="form" onSubmit={handleSubmitManually}> */}
       <div className="form__section">
         <FormSectionTitle>Raison de la mission</FormSectionTitle>
 
@@ -165,6 +158,7 @@ const Mission = ({ step, isEfForm }) => {
           label="Motif de la mission"
           register={register}
           error={errors.missionPurpose}
+          required={errorMessages.missionPurpose}
         />
         <FileField
           disabled={isEfForm && isMissionFormDisabled}
@@ -189,7 +183,7 @@ const Mission = ({ step, isEfForm }) => {
               register={register}
               formField="departure"
               error={errors.departure}
-              required="Veuillez renseigner le jour et l'heure de départ."
+              required={errorMessages.departure}
             />
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Lieu de départ</label>
@@ -199,8 +193,8 @@ const Mission = ({ step, isEfForm }) => {
                 formField="departurePlace"
                 label="Résidence familiale"
                 register={register}
-                // required="Merci de sélectionner l'option qui correspond"
                 handler={handleClickonRadio}
+                required={errorMessages.departurePlace}
               />
               <RadioInput
                 disabled={isEfForm && isMissionFormDisabled}
@@ -208,10 +202,10 @@ const Mission = ({ step, isEfForm }) => {
                 formField="departurePlace"
                 label="Résidence administrative"
                 register={register}
-                // required="Merci de sélectionner l'option qui correspond"
                 handler={handleClickonRadio}
+                required={errorMessages.departurePlace}
               />
-              <p className={classNames("form__section-field-error", { "form__section-field-error--open": errors.departurePlace?.message.length > 0 })}>{errors.departurePlace?.message}</p> 
+              {errors.departurePlace &&<p className="form__section-field-error form__section-field-error--open">{errors.departurePlace.message}</p>}
             </div>
           </div>
           <div className="form__section-half form__section-half--separator" />
@@ -224,7 +218,7 @@ const Mission = ({ step, isEfForm }) => {
               register={register}
               formField="comeback"
               error={errors.comeback}
-              required="Veuillez renseigner le jour et l'heure du retour."
+              required={errorMessages.comeback}
             />
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Lieu de retour</label>
@@ -234,8 +228,8 @@ const Mission = ({ step, isEfForm }) => {
                 formField="comebackPlace"
                 label="Résidence familiale"
                 register={register}
-                // required="Merci de sélectionner l'option qui correspond"
                 handler={handleClickonRadio}
+                required={errorMessages.comebackPlace}
               />
               <RadioInput
                 disabled={isEfForm && isMissionFormDisabled}
@@ -243,10 +237,10 @@ const Mission = ({ step, isEfForm }) => {
                 formField="comebackPlace"
                 label="Résidence administrative"
                 register={register}
-                // required="Merci de sélectionner l'option qui correspond"
                 handler={handleClickonRadio}
+                required={errorMessages.comebackPlace}
               />
-              <p className={classNames("form__section-field-error", { "form__section-field-error--open": errors.comebackPlace?.message.length > 0 })}>{errors.comebackPlace?.message}</p> 
+              {errors.comebackPlace && <p className="form__section-field-error form__section-field-error--open">{errors.comebackPlace.message}</p>}
             </div>
           </div>
         </div>
@@ -255,13 +249,12 @@ const Mission = ({ step, isEfForm }) => {
           disabled={isEfForm && isMissionFormDisabled}
           data={adresses}
           register={register}
-          // validators={{leavesFromWork: leavesFromWork}}
           error={errors.workAdress}
           formField="workAdress"
           id="work-address-select"
           label="Adresse administrative"
-          // required="Merci de sélectionner une adresse administrative."
           blankValue={"Veuillez sélectionner l'adresse administrative qui vous correspond"}
+          required={errorMessages.workAdress}
         />
       </div>
       <div className='form__section'>
@@ -273,8 +266,8 @@ const Mission = ({ step, isEfForm }) => {
             formField="region"
             label="France Métropolitaine"
             register={register}
-            // required="Merci de sélectionner l'option qui correspond"
             handler={handleRegionClick}
+            required={errorMessages.region}
           />
           <RadioInput
             disabled={isEfForm && isMissionFormDisabled}
@@ -282,8 +275,8 @@ const Mission = ({ step, isEfForm }) => {
             formField="region"
             label="DOM / TOM (*)"
             register={register}
-            // required="Merci de sélectionner l'option qui correspond"
             handler={handleRegionClick}
+            required={errorMessages.region}
           />
           <RadioInput
             disabled={isEfForm && isMissionFormDisabled}
@@ -291,19 +284,19 @@ const Mission = ({ step, isEfForm }) => {
             formField="region"
             label="Étranger (*)(**)"
             register={register}
-            // required="Merci de sélectionner l'option qui correspond"
             handler={handleRegionClick}
+            required={errorMessages.region}
           />
         </div>
-        <p className={classNames("form__section-field-error", { "form__section-field-error--open": errors.region?.message.length > 0 })}>{errors.region?.message}</p> 
+        {errors.region && <p className="form__section-field-error form__section-field-error--open">{errors.region.message}</p>}
         <TextFieldWithIcon
           disabled={isEfForm && isMissionFormDisabled}
           isHidden={false}
-          id={"missionAdress"}
+          id="missionAdress"
           name="Adresse de la mission"
           icon={Pin}
           register={register}
-          required="Merci de renseigner l'adresse de la mission"
+          required={errorMessages.missionAdress}
           error={errors.missionAdress}
         />
         <TextFieldWithIcon
@@ -314,6 +307,7 @@ const Mission = ({ step, isEfForm }) => {
           icon={Map}
           register={register}
           error={errors.country}
+          required={errorMessages.country}
         />
         <div className="form__section-field form__section-field--hidden" id="abroad-field">
           <p className="form__section-field-label">(*) Préciser : </p>
@@ -322,23 +316,32 @@ const Mission = ({ step, isEfForm }) => {
             formField="abroadCosts"
             id="per-diem"
             label="Per diem"
+            required={errorMessages.abroadCosts}
           />
           <RadioInput
             register={register}
             formField="abroadCosts"
             id="frais-reels"
             label="Frais réels"
+            required={errorMessages.abroadCosts}
           />
-          <p className={classNames("form__section-field-error", { "form__section-field-error--open": errors.abroadCosts?.message.length > 0 })}>{errors.abroadCosts?.message}</p> 
+        {errors.abroadCosts && <p className="form__section-field-error form__section-field-error--open">{errors.abroadCosts.message}</p>}
         </div>
         <div className="form__section-field form__section-field--hidden" id="abroad-report">
           <p className="form__section-field-label">(**) Compte rendu à fournir au retour de la mission sur financement RI</p>
         </div>
       </div>
-      {isEfForm && <EfMission modificationSwitch={modificationSwitch} watch={watch} register={register} unregister={unregister} errors={errors} handler={toggleDisabledFields} />}
+      {isEfForm && (
+        <EfMission
+          setValue={setValue}
+          register={register}
+          errors={errors}
+          handler={toggleDisabledFields}
+          modificationSwitch={modificationSwitch}
+        />
+      )}
       {refusal !== '' && <RefusalMessage message={refusal} />}
       <Buttons step={step} />
-      {/* <button type='button' onClick={advance}>Click</button> */}
     </form>
     
   );

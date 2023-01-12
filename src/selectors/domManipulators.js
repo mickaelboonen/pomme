@@ -62,6 +62,7 @@ export const displayRegionFieldsInFormMission = () => {
     document.querySelector('#abroad-report').classList.remove('form__section-field--hidden');
   }
   else if (domTom.checked) {
+    document.querySelector('#country-field').classList.add('form__section-field--hidden');
     document.querySelector('#abroad-field').classList.remove('form__section-field--hidden');
     document.querySelector('#abroad-report').classList.add('form__section-field--hidden');
 

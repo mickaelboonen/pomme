@@ -27,7 +27,7 @@ const DateField = ({
     />
     <p className={classNames("form__section-field-error", { "form__section-field-error--open": error?.message.length > 0 })}>{error?.message}</p> 
   </div>
-);
+  );
 
 DateField.propTypes = {
 
