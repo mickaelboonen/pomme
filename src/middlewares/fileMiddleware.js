@@ -1,4 +1,4 @@
-import { updateTransports, updateAdvance, updateMore, updateMission } from 'src/reducer/omForm';
+import { updateTransports, updateAdvance, updateMore, updateMission, updateSignature } from 'src/reducer/omForm';
 import { fileApi } from './api';
 
 
@@ -72,8 +72,6 @@ const omMiddleware = (store) => (next) => (action) => {
         }
         filesToUpload.push(mission);
       }
-      console.log('filesToUpload', filesToUpload);
-      // return;
       
       // TODO : See if POST method is the right one ? Methods that can add files (post) and delete them (delete)
       fileApi.post("/api/files/om/" + step, filesToUpload)
@@ -107,6 +105,9 @@ const omMiddleware = (store) => (next) => (action) => {
             else if (file.type === 'mission') {
               data.missionPurposeFile = file.file.url;
             }
+            else if (file.type === 'signature') {
+              data.agentSignature = file.file.url;
+            }
           })
 
           // Now updates the transports values in the database
@@ -124,6 +125,10 @@ const omMiddleware = (store) => (next) => (action) => {
           else if (step === 'mission') {
             console.log('before update : ', data);
             store.dispatch(updateMission(data));
+          }
+          else if (step === 'signature') {
+            console.log('before update : ', data);
+            store.dispatch(updateSignature(data));
           }
           
         })
