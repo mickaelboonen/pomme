@@ -28,6 +28,7 @@ const Hebergement = ({ step }) => {
   const {
     register,
     handleSubmit,
+    setError,
     formState:
     { errors },
   } = useForm();
@@ -36,20 +37,30 @@ const Hebergement = ({ step }) => {
     console.log("------------------------------------------------------", data, "------------------------------------------------------");
     // console.log(maxMealsNumber);
     const mealsErrorElement = document.getElementById('meals-error');
+    const nightsErrorElement = document.getElementById('nights-error');
     const totalMeals = Number(data.adminMealsNumber) + Number(data.outsideMealsNumber);
-    
-    if (totalMeals > data.maxMealsNumber) {
-      mealsErrorElement.textContent = "Vous avez saisi plus de repas qu'autorisé. Vous avez le droit à : " + data.maxMealsNumber+ ' repas dans le cadre de votre mission.';
+
+    console.log(data.nightsNumber , maxNightsNumber, data.nightsNumber > maxNightsNumber);
+
+    if (totalMeals > maxMealsNumber) {
+      mealsErrorElement.textContent = "Vous avez saisi plus de repas qu'autorisé. Vous avez le droit à : " + maxMealsNumber+ ' repas dans le cadre de votre mission.';
       mealsErrorElement.classList.add('form__section-field-error--open')
+    }
+    else if (data.nightsNumber > maxNightsNumber) {
+      nightsErrorElement.textContent = "Vous avez saisi plus de nuits qu'autorisé. Vous avez le droit à : " + maxNightsNumber+ ' nuits dans le cadre de votre mission.';
+      nightsErrorElement.classList.add('form__section-field-error--open')
+
     }
     else {
       
+      nightsErrorElement.textContent = "";
+      nightsErrorElement.classList.remove('form__section-field-error--open')
       mealsErrorElement.textContent = "";
       mealsErrorElement.classList.remove('form__section-field-error--open')
       delete data.maxMealsNumber;
       
       const dataToBeSubmitted = turnAccomodationDataToDbFormat(data);
-      dispatch(updateAccomodations(dataToBeSubmitted));
+      // dispatch(updateAccomodations(dataToBeSubmitted));
 
 
       const nextStep = step + 1;
@@ -69,7 +80,7 @@ const Hebergement = ({ step }) => {
 
   const missionData = omForm[0].data;
 
-  const maxMealNumber = getMaxMealsAndNights(missionData);
+  const maxMealsNumber = getMaxMealsAndNights(missionData);
   const maxNightsNumber = getMaxMealsAndNights(missionData, true);
 
   const [isHotelSelected, setIsHotelSelected] = useState(false);
@@ -115,6 +126,8 @@ const Hebergement = ({ step }) => {
             {errors.hotelPayment && <p className='form__section-field-error form__section-field-error--open'>{errors.hotelPayment.message}</p>}
           </div>
         )}
+        { (!isNaN(maxNightsNumber) && isHotelSelected) && <p className="form__section-field-label form__section-field-label--infos">Vous avez le droit à un total de : <span style={{color: 'red', margin: '0 0.2rem'}}>{maxNightsNumber}</span> nuits à l'hôtel.</p>}
+        <p id="nights-error" className="form__section-field-error"/>
       </div>
       <div className="form__section">
         <FormSectionTitle>Repas</FormSectionTitle>
@@ -124,7 +137,7 @@ const Hebergement = ({ step }) => {
           register={register}
           isNumber
           min="0"
-          max={maxMealNumber}
+          max={maxMealsNumber}
           label="Nombre de repas payés par l'agent"
           required="Merci de renseigner le nombre de repas prévus à la charge de l'agent"
           placeholder="Vous ne pouvez saisir plus de repas que le nombre calculé selon vos dates de missions."
@@ -136,15 +149,16 @@ const Hebergement = ({ step }) => {
           register={register}
           isNumber
           min="0"
-          max={maxMealNumber}
+          max={maxMealsNumber}
           label="Nombre de repas en restaurant administratif"
           required="Merci de renseigner le nombre de repas en restaurant administratif"
           placeholder="Vous ne pouvez saisir plus de repas que le nombre calculé selon vos dates de missions."
           error={errors.adminMealsNumber}
         />
-        <input id="max-meals-field" name="max-meals-field" type="hidden" value={maxMealNumber} {...register('maxMealsNumber')} />
+        {/* <input id="max-meals-field" name="max-meals-field" type="hidden" value={maxMealsNumber} {...register('maxMealsNumber')} /> */}
       </div>
-      <p id="meals-error" className="form__section-field-error" />
+      { !isNaN(maxMealsNumber) && <p className="form__section-field-label form__section-field-label--infos">Vous avez le droit à un total de : <span style={{color: 'red', margin: '0 0.2rem'}}>{maxMealsNumber}</span> repas.</p>}
+      <p id="meals-error" className="form__section-field-error"/>
       {refusal !== '' && <RefusalMessage message={refusal} />}
       <Buttons step={step} />
     </form>
