@@ -1,4 +1,4 @@
-import { saveNewOm, saveUserOms, saveMission } from 'src/reducer/omForm';
+import { saveNewOm, saveOm, saveUserOms, saveMission } from 'src/reducer/omForm';
 import { api } from './api';
 
 
@@ -19,9 +19,31 @@ const omMiddleware = (store) => (next) => (action) => {
           // store.dispatch(showTicketCreationResponse(error.response))
         });
       break;
+    case 'omForm/fetchOm':
+      api.get("/api/om/find/" + action.payload)
+        .then((response) => {
+          console.log(response);
+          store.dispatch(saveOm(response.data))
+        })
+        .catch((error) => {
+          console.error('fetch om', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
 
     case 'omForm/fetchOMs':
       api.get("/api/om/" + action.payload,)
+        .then((response) => {
+          store.dispatch(saveUserOms(response.data))
+        })
+        .catch((error) => {
+          console.error('add new om', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
+
+    case 'omForm/updateOmName':
+      api.post("/api/om/rename/" + action.payload.id, action.payload)
         .then((response) => {
           store.dispatch(saveUserOms(response.data))
         })

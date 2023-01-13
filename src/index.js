@@ -31,7 +31,7 @@ import TicketRequest from "src/routes/utilisateur/MyAccount/TicketRequest";
 import RefusalNotification from "src/routes/utilisateur/MyAccount/RefusalNotification";
 
 
-import { fetchOMs, getMission } from "./reducer/omForm";
+import { fetchOMs, getMission, fetchOm } from "./reducer/omForm";
 import { getSignature, getVehicles } from "./reducer/app";
 
 
@@ -59,7 +59,7 @@ const router = createBrowserRouter([
               const id = url.searchParams.get("id");
 
               // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
-              if (step === '3') {
+              if (step === '3' || step === '4') {
                 store.dispatch(getMission(id));
               }
               else if (step === '5') {
@@ -67,6 +67,9 @@ const router = createBrowserRouter([
               }
               else if (step === '2') {
                 store.dispatch(getVehicles());
+              }
+              else if (step === '1') {
+                store.dispatch(fetchOm(id))
               }
             },    
           },

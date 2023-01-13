@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import './style.scss';
@@ -18,6 +18,7 @@ import HiddenField from 'src/components/Fields/HiddenField';
 // Actions
 import { uploadFile, updateAdvance } from 'src/reducer/omForm';
 import { turnAdvanceDataToDbFormat } from '../../../selectors/dataToDbFormat';
+import { getMaxMealsAndNights } from '../../../selectors/formValidationsFunctions';
 
 // Selectors
 
@@ -113,9 +114,12 @@ const Avance = ({ step }) => {
     }
   }, [otherExpensesAmount])
 
-  let { nightsNumber, outsideMealsNumber, adminMealsNumber} = JSON.parse(localStorage.getItem('hebergement'));
-  const totalMeals = Number(adminMealsNumber) + Number(outsideMealsNumber);
-  nightsNumber = nightsNumber === '' ? 0 : nightsNumber;
+  const { omForm } = useSelector((state) => state.omForm);
+
+  const missionData = omForm[0].data;
+
+  const maxMealsNumber = getMaxMealsAndNights(missionData);
+  const maxNightsNumber = getMaxMealsAndNights(missionData, true);
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
@@ -182,7 +186,7 @@ const Avance = ({ step }) => {
                 isNumber
                 disabled
                 min="0"
-                value={nightsNumber}
+                value={maxNightsNumber}
                 label="Nombre de nuits"
               />
             </div>
@@ -195,7 +199,7 @@ const Avance = ({ step }) => {
                 disabled
                 min="0"
                 label="Nombre de repas"
-                value={totalMeals}
+                value={maxMealsNumber}
                 
               />
             </div>

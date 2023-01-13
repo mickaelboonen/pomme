@@ -73,61 +73,46 @@ const omFormSlice = createSlice({
     name: 'omForm',
     initialState,
     reducers: {
+      saveOm: () => {},
+      fetchOm: () => {},
+      addNewOM: () => {},
+      fetchOMs: () => {},
+      uploadFile: () => {},
+      getMission: () => {},
+      updateMore: () => {},
+      updateOmName: () => {},
+      updateAdvance: () => {},
+      updateSignature: () => {},
+      updateTransports: () => {},
+      updateAccomodations: () => {},
       updateMission: (state, action) => {
-        
         let currentIndex;
         state.omForm.forEach((step) => {
           if (step.step === "mission") {
             currentIndex = state.omForm.indexOf(step);
           }
         });
-
         if (currentIndex !== -1) {
           state.omForm[currentIndex].data = action.payload;
         }
-        
-
-
       },
-      updateTransports: (state, action) => {
-        
-      },
-      updateMore: (state, action) => {
-        
-      },
-      updateAccomodations: (state, action) => {
-
-      },
-      updateAdvance: (state, action) => {
-
-      },
-      updateSignature: (state, action) => {
-
-      },
-      addNewOM: (state, action) => {
-
+      saveOm: (state, action) => {
+        state.currentOM = action.payload;
       },
       saveNewOm: (state, action) => {
         state.currentOM = action.payload;
         state.nextOMTarget = `/nouveau-document/ordre-de-mission?etape=1&id=${action.payload.id}`;
       },
-      fetchOMs: (state, action) => {
-      },
+      fetchOMs: () => {},
       saveUserOms: (state, action) => {
         state.userOms = action.payload;
       },
-      uploadFile: () => {
-
-      },
-      getMission: (state, action) => {
-
-      },
       saveMission: (state, action) => {
         state.omForm[0].data = action.payload;
-      }
+      },
     },
 });
 
-export const { updateSignature, saveUserOms, fetchOMs, addNewOM, updateMission, uploadFile, updateTransports, saveNewOm, updateAdvance, updateMore, getMission, saveMission, updateAccomodations } = omFormSlice.actions;
+export const { fetchOm, saveOm, updateOmName, updateSignature, saveUserOms, fetchOMs, addNewOM, updateMission, uploadFile, updateTransports, saveNewOm, updateAdvance, updateMore, getMission, saveMission, updateAccomodations } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

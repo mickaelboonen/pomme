@@ -27,7 +27,7 @@ import { handleRegionFields, handleWorkAddressSelect } from 'src/selectors/formV
 import { toggleIsHiddenOnWorkAddressesList, displayRegionFieldsInFormMission } from 'src/selectors/domManipulators';
 
 // Reducer
-import { uploadFile } from 'src/reducer/omForm';
+import { uploadFile, updateOmName } from 'src/reducer/omForm';
 import { enableMissionFormFields } from 'src/reducer/efForm';
 import { defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
 
@@ -37,6 +37,7 @@ const Mission = ({ step, isEfForm }) => {
   const loader = useLoaderData();
   
   const { isMissionFormDisabled } = useSelector((state) => state.efForm);
+  const { currentOM } = useSelector((state) => state.omForm);
 
   const [searchParams] = useSearchParams();
 
@@ -97,6 +98,13 @@ const Mission = ({ step, isEfForm }) => {
       }
       else {
         dispatch(uploadFile({data: data, step: 'mission'}));
+        
+        const dateForFile = `${departure.getDate()}-${departure.getMonth()}-${departure.getFullYear()}`;
+        const currentOmName = currentOM.name.split('_');
+        
+        if (currentOmName[2] !== dateForFile) {
+          dispatch(updateOmName({omId: data.omId, name: dateForFile}));
+        }
       }
       
       const nextStep = step + 1;
