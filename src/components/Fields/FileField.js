@@ -11,6 +11,7 @@ const FileField = ({
   isHidden,
   pieces,
   multiple,
+  fileName,
   label,
   placeholder,
   disabled,
@@ -65,7 +66,7 @@ const FileField = ({
         multiple={multiple}
         disabled={disabled}
       />
-      <div />
+      <div>{fileName}</div>
     </div>
     {pieces !== "" && <p className="form__section-field-label form__section-field-label--infos">{pieces}</p>}
     {error !== undefined && <p className="form__section-field-error form__section-field-error--open">{error?.message}</p>}

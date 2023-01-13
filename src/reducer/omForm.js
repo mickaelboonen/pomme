@@ -68,6 +68,7 @@ const initialState = {
     }
   ],
   userOms: [],
+  loader: false,
 };
 const omFormSlice = createSlice({
     name: 'omForm',
@@ -78,7 +79,13 @@ const omFormSlice = createSlice({
       addNewOM: () => {},
       fetchOMs: () => {},
       uploadFile: () => {},
-      getMission: () => {},
+      getMission: (state) => {
+        state.loader = true
+      },
+      getTransports: () => {},
+      getAccomodations: () => {},
+      getAdvance: () => {},
+      getSignature: () => {},
       updateMore: () => {},
       updateOmName: () => {},
       updateAdvance: () => {},
@@ -109,10 +116,28 @@ const omFormSlice = createSlice({
       },
       saveMission: (state, action) => {
         state.omForm[0].data = action.payload;
+        state.loader = false;
       },
     },
 });
 
-export const { fetchOm, saveOm, updateOmName, updateSignature, saveUserOms, fetchOMs, addNewOM, updateMission, uploadFile, updateTransports, saveNewOm, updateAdvance, updateMore, getMission, saveMission, updateAccomodations } = omFormSlice.actions;
+export const {
+  fetchOm,
+  saveOm,
+  updateOmName,
+  updateSignature,
+  saveUserOms,
+  fetchOMs,
+  addNewOM,
+  updateMission,
+  uploadFile,
+  updateTransports,
+  saveNewOm,
+  updateAdvance,
+  updateMore,
+  getMission,
+  saveMission,
+  updateAccomodations
+} = omFormSlice.actions;
 
 export default omFormSlice.reducer;

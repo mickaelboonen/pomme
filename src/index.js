@@ -31,8 +31,8 @@ import TicketRequest from "src/routes/utilisateur/MyAccount/TicketRequest";
 import RefusalNotification from "src/routes/utilisateur/MyAccount/RefusalNotification";
 
 
-import { fetchOMs, getMission, fetchOm } from "./reducer/omForm";
-import { getSignature, getVehicles } from "./reducer/app";
+import { fetchOMs, getMission, fetchOm } from "src/reducer/omForm";
+import { getSignature, getVehicles } from "src/reducer/app";
 
 
 
@@ -71,7 +71,90 @@ const router = createBrowserRouter([
               else if (step === '1') {
                 store.dispatch(fetchOm(id))
               }
+
+              const { app : { nextStep} } = store.getState();
+              console.log("next step is : ", nextStep);
+              return url;  
             },    
+          },
+          {
+            path: 'autorisation-de-véhicule',
+            element: <VehicleUseForm />    
+          },
+          {
+            path: 'autorisation-de-v%C3%A9hicule',
+            element: <VehicleUseForm />    
+          },
+          {
+            path: 'état-de-frais',
+            element: <EfForm />,
+            loader: async ({ request }) => {
+              const url = new URL(request.url);
+              const omId = url.searchParams.get("id");
+              const step = url.searchParams.get("etape");
+
+              // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
+              if (step === '2') {
+                const omMission = localStorage.getItem('mission');
+                return JSON.parse(omMission);
+              }
+            },    
+          },
+          {
+            path: '%C3%A9tat-de-frais',
+            element: <EfForm />,
+            loader: async ({ request }) => {
+              const url = new URL(request.url);
+              const omId = url.searchParams.get("id");
+              const step = url.searchParams.get("etape");
+
+              // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
+              if (step === '2') {
+                const omMission = localStorage.getItem('mission');
+                return JSON.parse(omMission);
+              }
+            },  
+          },
+          {
+            path: 'demande-de-dérogation',
+            element: <Derogation />   
+          },
+          {
+            path: 'demande-de-d%C3%A9rogation',
+            element: <Derogation />      
+          },
+
+        ],
+      },
+      // documents to update
+      {
+        path: 'modifier-un-document/',
+        children: [
+          {
+            path: 'ordre-de-mission',
+            element: <OMForm />    ,
+            loader: async ({ request }) => {
+              const url = new URL(request.url);
+              const step = url.searchParams.get("etape");
+              const id = url.searchParams.get("id");
+
+              // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
+              if (step === '3' || step === '4') {
+                store.dispatch(getMission(id));
+              }
+              else if (step === '5') {
+                store.dispatch(getSignature('mboone01'));
+              }
+              else if (step === '2') {
+                store.dispatch(getVehicles());
+              }
+              else if (step === '1') {
+                store.dispatch(fetchOm(id));
+                store.dispatch(getMission(id));
+              }
+              
+            return url;  
+            },
           },
           {
             path: 'autorisation-de-véhicule',

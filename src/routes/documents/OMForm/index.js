@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { useLocation, useSearchParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useLoaderData, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import Avance from './Avance';
 import Mission from './Mission';
@@ -14,11 +14,20 @@ import ThreadAsTabs from 'src/components/ThreadAsTabs';
 import './style.scss';
 
 const OMForm = () => {  
-  const dispatch = useDispatch();
-  const { steps, omForm } = useSelector((state) => state.omForm);
+  const { steps, omForm, loader } = useSelector((state) => state.omForm);
+  const { currentStep } = useSelector((state) => state.app);
+
+  const loaderData = useLoaderData();
+  const navigate = useNavigate();
   
-  const [searchParams] = useSearchParams();
-  const step = Number(searchParams.get('etape'));
+  const step = Number(loaderData.searchParams.get('etape'));
+  const id = Number(loaderData.searchParams.get('id'));
+  
+  useEffect(() => {
+    if (currentStep !== step) {
+      navigate(loaderData.pathname + `?etape=${currentStep}&id=${id}`)
+    }
+  }, [currentStep])
 
   return (
     <div className='form-container'>
@@ -27,11 +36,14 @@ const OMForm = () => {
         <PageTitle>Création d'un Ordre de Mission</PageTitle>
       </div>
       <div className="form-page__container">
-        {step === 1 && <Mission step={step} isEfForm={false} />}
-        {step === 2 && <Transports step={step} />}
-        {step === 3 && <Hebergement step={step} />}
-        {step === 4 && <Avance step={step} />}
-        {step === 5 && <Signature step={step} />}
+        
+        {loader && <div>Loading</div>}
+
+        {(step === 1 && !loader) && <Mission step={step} isEfForm={false} />}
+        {(step === 2 && !loader) && <Transports step={step} />}
+        {(step === 3 && !loader) && <Hebergement step={step} />}
+        {(step === 4 && !loader) && <Avance step={step} />}
+        {(step === 5 && !loader) && <Signature step={step} />}
         {step !== 5 && <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>}
         {step === 5 && <button className="form-page__container-link" type='button'>Retour : Avance</button>}
       </div>

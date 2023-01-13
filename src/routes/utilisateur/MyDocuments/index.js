@@ -21,21 +21,18 @@ const MyDocuments = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const loaderData = useLoaderData();
-  console.log("loaderData : ", loaderData);
+  
 
   const { currentOM, nextOMTarget, OMTabs, userOms } = useSelector((state) => state.omForm);
   const { nextEFTarget, EFTabs } = useSelector((state) => state.efForm);
+  const { currentStep } = useSelector((state) => state.app);
 
-  //   useEffect(() => {
-  //   if (nextOMTarget !== '') {
-  //     navigate(nextOMTarget);
-  //   }
-  //   else if (nextEFTarget !== '') {
-  //     navigate(nextEFTarget);
-  //   }
-  // }, [nextOMTarget, nextEFTarget]);
-
-  console.log(userOms);
+  useEffect(() => {
+    if (currentStep === 1) {
+      console.log(currentStep);
+      navigate(`/nouveau-document/ordre-de-mission?etape=${currentStep}&id=${currentOM.id}`)
+    }
+  }, [currentStep])
 
   const currentOMs = userOms.filter((om) => om.status === 1);
   const pastOMs = userOms.filter((om) => om.status === 8);

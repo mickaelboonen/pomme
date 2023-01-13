@@ -1,4 +1,5 @@
 import { saveNewOm, saveOm, saveUserOms, saveMission } from 'src/reducer/omForm';
+import { advanceToNextStep } from 'src/reducer/app';
 import { api } from './api';
 
 
@@ -13,6 +14,7 @@ const omMiddleware = (store) => (next) => (action) => {
           const finalisedOM = action.payload;
           finalisedOM.id = response.data;
           store.dispatch(saveNewOm(finalisedOM))
+          store.dispatch(advanceToNextStep(1));
         })
         .catch((error) => {
           console.error('add new om', error);
@@ -46,6 +48,7 @@ const omMiddleware = (store) => (next) => (action) => {
       api.post("/api/om/rename/" + action.payload.id, action.payload)
         .then((response) => {
           store.dispatch(saveUserOms(response.data))
+          store.dispatch(advanceToNextStep(2));
         })
         .catch((error) => {
           console.error('add new om', error);
@@ -57,6 +60,7 @@ const omMiddleware = (store) => (next) => (action) => {
       api.post("/api/om/mission/update" , action.payload,)
         .then((response) => {
           console.log(response);
+          store.dispatch(advanceToNextStep(2));
           // store.dispatch(saveUserOms(response.data))
         })
         .catch((error) => {
@@ -70,6 +74,7 @@ const omMiddleware = (store) => (next) => (action) => {
       api.post("/api/om/transports/update" , action.payload)
         .then((response) => {
           console.log(response);
+          store.dispatch(advanceToNextStep(3));
           // TODO : success message
           // TODO : loader ? 
         })
@@ -84,6 +89,7 @@ const omMiddleware = (store) => (next) => (action) => {
       api.post("/api/om/advance/update" , action.payload)
         .then((response) => {
           console.log(response);
+          store.dispatch(advanceToNextStep(5));
           // TODO : success message
           // TODO : loader ? 
         })
@@ -98,6 +104,7 @@ const omMiddleware = (store) => (next) => (action) => {
         api.post("/api/om/more/update" , action.payload)
           .then((response) => {
             console.log("SUCCESS MORE : ", response);
+            store.dispatch(advanceToNextStep(6));
             // TODO : success message
             // TODO : loader ? 
           })
@@ -127,6 +134,7 @@ const omMiddleware = (store) => (next) => (action) => {
         .then((response) => {
           console.log(response);
           // store.dispatch(saveUserOms(response.data))
+          store.dispatch(advanceToNextStep(4));
         })
         .catch((error) => {
           console.error('update accomodations', error);

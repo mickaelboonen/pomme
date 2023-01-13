@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { useForm } from "react-hook-form";
-import { useLoaderData, useNavigate, useSearchParams } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Map from 'src/assets/images/map.svg';
 import Pin from 'src/assets/images/pin.svg';
@@ -27,7 +25,7 @@ import { handleRegionFields, handleWorkAddressSelect } from 'src/selectors/formV
 import { toggleIsHiddenOnWorkAddressesList, displayRegionFieldsInFormMission } from 'src/selectors/domManipulators';
 
 // Reducer
-import { uploadFile, updateOmName } from 'src/reducer/omForm';
+import { uploadFile, updateOmName, updateMission } from 'src/reducer/omForm';
 import { enableMissionFormFields } from 'src/reducer/efForm';
 import { defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
 
@@ -37,24 +35,57 @@ const Mission = ({ step, isEfForm }) => {
   const loader = useLoaderData();
   
   const { isMissionFormDisabled } = useSelector((state) => state.efForm);
-  const { currentOM } = useSelector((state) => state.omForm);
+  const { currentOM, omForm } = useSelector((state) => state.omForm);
+  
+  const omId = loader.searchParams.get('id');
 
-  const [searchParams] = useSearchParams();
+    
 
-  const omId = searchParams.get('id');
+  let defaultValues = {
+    country: "",
+    abroadCosts: null,
+    departure: null,
+    departurePlace: null,
+    workAdress: null,
+    missionAdress: null,
+    missionPurpose: null,
+    missionPurposeFile: null,
+    region: null,
+    comeback: null,
+    comebackPlace: null
+};
+
+  if (loader.pathname.includes('modifier')) {
+    defaultValues = omForm[0].data;
+  }
+  
+  const getSavedFileName = (urlFile) => {
+    const file = urlFile.split('\\');
+    return file[file.length - 1];
+  }
+
+
+  const fileName = defaultValues.missionPurposeFile ? getSavedFileName(defaultValues.missionPurposeFile): '';
+
   const {
     register,
     handleSubmit,
     watch,
-    setValue,
     setError,
+    setValue,
     unregister,
     formState:
-    { errors },
+    { errors }
   } = useForm({
-    defaultValues: loader,
+    defaultValues: defaultValues,
   });
   
+  if (loader.pathname.includes('modifier')) {
+    setValue('departure', defaultValues.departure.slice(0, 16));
+    setValue('comeback', defaultValues.comeback.slice(0, 16));
+    // setValue('omId', defaultValues.om.id);
+  }
+
   const onSubmit = (data) => {
     console.log(data);
 
@@ -97,8 +128,14 @@ const Mission = ({ step, isEfForm }) => {
         }
       }
       else {
-        dispatch(uploadFile({data: data, step: 'mission'}));
-        
+        if (typeof data.missionPurposeFile === 'string') {
+          delete data.om;
+          dispatch(updateMission(data))
+        }
+        else {
+           dispatch(uploadFile({data: data, step: 'mission'}));
+        }
+       
         const dateForFile = `${departure.getDate()}-${departure.getMonth() + 1}-${departure.getFullYear()}`;
         const currentOmName = currentOM.name.split('_');
         
@@ -173,6 +210,7 @@ const Mission = ({ step, isEfForm }) => {
           setValue={setValue}
           id="mission-goal"
           formField="missionPurposeFile"
+          fileName={fileName}
           register={register}
           error={errors.missionPurposeFile}
           pieces="Joindre impérativement convocation, mail ou tout autre document en attestant"
