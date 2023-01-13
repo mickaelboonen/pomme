@@ -60,7 +60,7 @@ const Hebergement = ({ step }) => {
       delete data.maxMealsNumber;
       
       const dataToBeSubmitted = turnAccomodationDataToDbFormat(data);
-      // dispatch(updateAccomodations(dataToBeSubmitted));
+      dispatch(updateAccomodations(dataToBeSubmitted));
 
 
       const nextStep = step + 1;

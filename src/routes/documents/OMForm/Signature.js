@@ -33,8 +33,8 @@ const Signature = ({ step }) => {
   } = useForm();
 
   const onSubmit = (data) => {
-    
-    const formattedData = turnSignatureDataToDbFormat(data, signature);
+    console.log(data);
+    const formattedData = turnSignatureDataToDbFormat(data, userSignature);
 
     if (data.savedSignature) {
 

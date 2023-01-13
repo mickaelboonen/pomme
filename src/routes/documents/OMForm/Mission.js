@@ -99,7 +99,7 @@ const Mission = ({ step, isEfForm }) => {
       else {
         dispatch(uploadFile({data: data, step: 'mission'}));
         
-        const dateForFile = `${departure.getDate()}-${departure.getMonth()}-${departure.getFullYear()}`;
+        const dateForFile = `${departure.getDate()}-${departure.getMonth() + 1}-${departure.getFullYear()}`;
         const currentOmName = currentOM.name.split('_');
         
         if (currentOmName[2] !== dateForFile) {

@@ -47,6 +47,7 @@ const Avance = ({ step }) => {
 
   const onSubmit = (data) => {
     // If the user is requesting an advance
+    console.log(data);
     
     if (data.advance) {
 
@@ -72,8 +73,8 @@ const Avance = ({ step }) => {
       }
 
       // We upload the hotel quotation first
-      data.meals = totalMeals;
-      data.nights = Number(nightsNumber);
+      data.meals = maxMealsNumber;
+      data.nights = Number(maxNightsNumber);
       const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);      
       dispatch(uploadFile({data: dataToBeSubmitted, step: 'advance'}))
 
