@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useLoaderData } from 'react-router-dom';
 
 import './style.scss';
 
 // Components
+import ApiResponse from 'src/components/ApiResponse';
 import Buttons from 'src/components/Fields/Buttons';
 import SwitchButton from 'src/components/SwitchButton';
 import TextField from 'src/components/Fields/TextField';
@@ -15,6 +16,7 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 import RefusalMessage from 'src/components/Fields/RefusalMessage';
 import { turnAccomodationDataToDbFormat } from '../../../selectors/dataToDbFormat';
 import { updateAccomodations } from '../../../reducer/omForm';
+import { clearMessage } from '../../../reducer/app';
 import { getMaxMealsAndNights } from '../../../selectors/formValidationsFunctions';
 
 
@@ -22,9 +24,30 @@ const Hebergement = ({ step }) => {
   
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [searchParams] = useSearchParams();
+  const loader = useLoaderData();
+  const omId = loader.searchParams.get('id');
 
-  const omId = searchParams.get('id');
+    const areWeUpdatingData = loader.pathname.includes('modifier');
+  
+
+  const { app: { apiMessage },
+    omForm: { omForm },
+  } = useSelector((state) => state);
+  
+  useEffect(() => {
+    if (apiMessage.status && apiMessage.status === 200) {
+      setTimeout(() => {
+        dispatch(clearMessage());
+      }, "4500")
+      setTimeout(() => {
+        if (areWeUpdatingData) {
+          const nextStep = step + 1;
+          navigate(loader.pathname + '?etape=' + nextStep + '&id=' + omId);
+        }
+      }, "5000")
+    }
+  }, [apiMessage])
+
   const {
     register,
     handleSubmit,
@@ -75,8 +98,6 @@ const Hebergement = ({ step }) => {
 
   let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
   refusal = "";
-
-  const { omForm } = useSelector((state) => state.omForm);
 
   const missionData = omForm[0].data;
 
@@ -160,6 +181,8 @@ const Hebergement = ({ step }) => {
       { !isNaN(maxMealsNumber) && <p className="form__section-field-label form__section-field-label--infos">Vous avez le droit à un total de : <span style={{color: 'red', margin: '0 0.2rem'}}>{maxMealsNumber}</span> repas.</p>}
       <p id="meals-error" className="form__section-field-error"/>
       {refusal !== '' && <RefusalMessage message={refusal} />}
+      {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
+
       <Buttons step={step} />
     </form>
     

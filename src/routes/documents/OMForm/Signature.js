@@ -13,15 +13,34 @@ import HiddenField from 'src/components/Fields/HiddenField';
 import { useDispatch, useSelector } from 'react-redux';
 import { turnSignatureDataToDbFormat } from '../../../selectors/dataToDbFormat';
 import { updateMore, updateSignature, uploadFile } from '../../../reducer/omForm';
+import { clearMessage } from '../../../reducer/app';
+import ApiResponse from '../../../components/ApiResponse';
 
 const Signature = ({ step }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [searchParams] = useSearchParams();
-
-  const { userSignature } = useSelector((state) => state.app);
+  const loader = useLoaderData();
+  const omId = loader.searchParams.get('id');
+  const areWeUpdatingData = loader.pathname.includes('modifier');
   
-  const omId = searchParams.get('id');
+
+  const { app: { apiMessage, userSignature },
+  } = useSelector((state) => state);
+  
+  useEffect(() => {
+    if (apiMessage.status && apiMessage.status === 200) {
+      setTimeout(() => {
+        dispatch(clearMessage());
+      }, "4500")
+      setTimeout(() => {
+        if (areWeUpdatingData) {
+          const nextStep = step + 1;
+          navigate(loader.pathname + '?etape=' + nextStep + '&id=' + omId);
+        }
+      }, "5000")
+    }
+  }, [apiMessage]);
+  
   const {
     register,
     handleSubmit,
@@ -132,6 +151,7 @@ const Signature = ({ step }) => {
         />
       </div>
       {refusal !== '' && <RefusalMessage message={refusal} />}
+      {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
       <Buttons step={step} />
     </form>
     

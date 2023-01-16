@@ -47,8 +47,8 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/updateOmName':
       api.post("/api/om/rename/" + action.payload.id, action.payload)
         .then((response) => {
-          store.dispatch(saveUserOms(response.data))
-          store.dispatch(advanceToNextStep(2));
+          store.dispatch(saveUserOms(response.data));
+          store.dispatch(setApiResponse(response));
         })
         .catch((error) => {
           console.error('add new om', error);
@@ -60,9 +60,7 @@ const omMiddleware = (store) => (next) => (action) => {
       api.post("/api/om/mission/update" , action.payload,)
         .then((response) => {
           console.log(response);
-          // store.dispatch(advanceToNextStep(2));
           store.dispatch(setApiResponse(response));
-          // store.dispatch(saveUserOms(response.data))
         })
         .catch((error) => {
           console.error('update new om', error);
@@ -75,9 +73,7 @@ const omMiddleware = (store) => (next) => (action) => {
       api.post("/api/om/transports/update" , action.payload)
         .then((response) => {
           console.log(response);
-          store.dispatch(advanceToNextStep(3));
-          // TODO : success message
-          // TODO : loader ? 
+          store.dispatch(setApiResponse(response));
         })
         .catch((error) => {
           console.error('update new om', error);
@@ -90,9 +86,7 @@ const omMiddleware = (store) => (next) => (action) => {
       api.post("/api/om/advance/update" , action.payload)
         .then((response) => {
           console.log(response);
-          store.dispatch(advanceToNextStep(5));
-          // TODO : success message
-          // TODO : loader ? 
+          store.dispatch(setApiResponse(response));
         })
         .catch((error) => {
           console.error('update advance', error);
@@ -105,9 +99,7 @@ const omMiddleware = (store) => (next) => (action) => {
         api.post("/api/om/more/update" , action.payload)
           .then((response) => {
             console.log("SUCCESS MORE : ", response);
-            store.dispatch(advanceToNextStep(6));
-            // TODO : success message
-            // TODO : loader ? 
+            store.dispatch(setApiResponse(response));
           })
           .catch((error) => {
             console.error('update more', error);
@@ -119,9 +111,7 @@ const omMiddleware = (store) => (next) => (action) => {
         // TODO : See if POST method is the right one ? Should be PATCH / PUT but not working
         api.post("/api/om/signature/update" , action.payload)
           .then((response) => {
-            console.log("SUCCESS MORE : ", response);
-            // TODO : success message
-            // TODO : loader ? 
+            store.dispatch(setApiResponse(response));
           })
           .catch((error) => {
             console.error('update more', error);
@@ -133,9 +123,7 @@ const omMiddleware = (store) => (next) => (action) => {
       console.log('here');
       api.post("/api/om/accomodations/update" , action.payload,)
         .then((response) => {
-          console.log(response);
-          // store.dispatch(saveUserOms(response.data))
-          store.dispatch(advanceToNextStep(4));
+          store.dispatch(setApiResponse(response));
         })
         .catch((error) => {
           console.error('update accomodations', error);

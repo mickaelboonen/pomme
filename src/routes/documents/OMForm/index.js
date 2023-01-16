@@ -14,20 +14,14 @@ import ThreadAsTabs from 'src/components/ThreadAsTabs';
 import './style.scss';
 
 const OMForm = () => {  
-  const { steps, omForm, loader } = useSelector((state) => state.omForm);
-  const { currentStep } = useSelector((state) => state.app);
+  const { steps, loader } = useSelector((state) => state.omForm);
+  
 
   const loaderData = useLoaderData();
-  const navigate = useNavigate();
   
   const step = Number(loaderData.searchParams.get('etape'));
   const id = Number(loaderData.searchParams.get('id'));
   
-  useEffect(() => {
-    if (currentStep !== step) {
-      navigate(loaderData.pathname + `?etape=${currentStep}&id=${id}`)
-    }
-  }, [currentStep])
 
   return (
     <div className='form-container'>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useLoaderData } from 'react-router-dom';
 
 import './style.scss';
 
@@ -22,14 +22,36 @@ import { getMaxMealsAndNights } from '../../../selectors/formValidationsFunction
 
 // Selectors
 
+import { clearMessage } from '../../../reducer/app';
+import ApiResponse from '../../../components/ApiResponse';
 
 const Avance = ({ step }) => {
   // ATTENTION : lots of rendu
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
+  const loader = useLoaderData();
+  const omId = loader.searchParams.get('id');
+  const areWeUpdatingData = loader.pathname.includes('modifier');
+  
 
-  const omId = searchParams.get('id');
+  const { app: { apiMessage },
+    omForm: { omForm },
+  } = useSelector((state) => state);
+  
+  useEffect(() => {
+    if (apiMessage.status && apiMessage.status === 200) {
+      setTimeout(() => {
+        dispatch(clearMessage());
+      }, "4500")
+      setTimeout(() => {
+        if (areWeUpdatingData) {
+          const nextStep = step + 1;
+          navigate(loader.pathname + '?etape=' + nextStep + '&id=' + omId);
+        }
+      }, "5000")
+    }
+  }, [apiMessage])
+  
   const {
     register,
     handleSubmit,
@@ -114,8 +136,6 @@ const Avance = ({ step }) => {
       });
     }
   }, [otherExpensesAmount])
-
-  const { omForm } = useSelector((state) => state.omForm);
 
   const missionData = omForm[0].data;
 
@@ -239,20 +259,13 @@ const Avance = ({ step }) => {
               error={errors.rib}
               // required="Veuillez fournir votre RIB."            
             />
-            {/* <FileField
-              setValue={setValue}
-              register={register}
-              formField="signature"
-              id="signature-field"
-              label="Votre signature"
-              error={errors.signature}
-              // required="Veuillez signer la demande."
-            /> */}
           </div>
         </div>
       )} 
       
       {refusal !== '' && <RefusalMessage message={refusal} />}
+      {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
+
       <Buttons step={step} />
     </form>
     
