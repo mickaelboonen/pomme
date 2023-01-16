@@ -30,10 +30,13 @@ const omFormSlice = createSlice({
       setApiResponse: (state, action) => {
 
         state.apiMessage = action.payload;
+      },
+      clearMessage: (state) => {
+        state.apiMessage = {};
       }
     },
 });
 
-export const { setApiResponse, advanceToNextStep, getSignature, saveSignature, getVehicles, saveVehicles } = omFormSlice.actions;
+export const { clearMessage, setApiResponse, advanceToNextStep, getSignature, saveSignature, getVehicles, saveVehicles } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

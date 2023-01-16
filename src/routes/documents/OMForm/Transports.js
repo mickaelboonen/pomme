@@ -3,11 +3,13 @@ import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useLoaderData } from 'react-router-dom';
 
 import './style.scss';
 
 // Components
+import ApiResponse from '../../../components/ApiResponse';
+
 import Buttons from 'src/components/Fields/Buttons';
 import SwitchButton from 'src/components/SwitchButton';
 import FileField from 'src/components/Fields/FileField';
@@ -28,9 +30,26 @@ import { turnTransportsDataToDbFormat } from 'src/selectors/dataToDbFormat';
 const Transports = ({ step }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const omId = searchParams.get('id');
+  const loader = useLoaderData();
+  const omId = loader.searchParams.get('id');
 
+  const areWeUpdatingData = loader.pathname.includes('modifier');
+
+  
+  const { app: { apiMessage },
+  } = useSelector((state) => state);
+
+    
+  useEffect(() => {
+    if (apiMessage.status && apiMessage.status === 200) {
+      setTimeout(() => {
+        if (areWeUpdatingData) {
+          const nextStep = step + 1;
+          navigate(loader.pathname + '?etape=' + nextStep + '&id=' + omId);
+        }
+      }, "5000")
+    }
+  }, [apiMessage])
   
   const {
     register,
@@ -282,6 +301,8 @@ const Transports = ({ step }) => {
         </div>
       {errors.transports && <p className="form__section-field-error form__section-field-error--open">{errors.transports.message}</p>}
       {refusal !== '' && <RefusalMessage message={refusal} />}
+      {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
+
       <Buttons step={step} />
     </form>
     

@@ -27,6 +27,7 @@ import { toggleIsHiddenOnWorkAddressesList, displayRegionFieldsInFormMission } f
 // Reducer
 import { uploadFile, updateOmName, updateMission } from 'src/reducer/omForm';
 import { enableMissionFormFields } from 'src/reducer/efForm';
+import { clearMessage } from 'src/reducer/app';
 import { defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
 import ApiResponse from '../../../components/ApiResponse';
 
@@ -46,7 +47,10 @@ const Mission = ({ step, isEfForm }) => {
   useEffect(() => {
     if (apiMessage.status && apiMessage.status === 200) {
       setTimeout(() => {
-        if (!areWeUpdatingData) {
+        dispatch(clearMessage());
+      }, "4500")
+      setTimeout(() => {
+        if (areWeUpdatingData) {
           const nextStep = step + 1;
           navigate(loader.pathname + '?etape=' + nextStep + '&id=' + omId);
         }
