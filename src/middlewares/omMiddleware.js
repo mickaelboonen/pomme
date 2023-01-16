@@ -1,5 +1,5 @@
-import { saveNewOm, saveOm, saveUserOms, saveMission } from 'src/reducer/omForm';
-import { advanceToNextStep } from 'src/reducer/app';
+import {  saveNewOm, saveOm, saveUserOms, saveMission } from 'src/reducer/omForm';
+import { advanceToNextStep,setApiResponse } from 'src/reducer/app';
 import { api } from './api';
 
 
@@ -60,7 +60,8 @@ const omMiddleware = (store) => (next) => (action) => {
       api.post("/api/om/mission/update" , action.payload,)
         .then((response) => {
           console.log(response);
-          store.dispatch(advanceToNextStep(2));
+          // store.dispatch(advanceToNextStep(2));
+          store.dispatch(setApiResponse(response));
           // store.dispatch(saveUserOms(response.data))
         })
         .catch((error) => {

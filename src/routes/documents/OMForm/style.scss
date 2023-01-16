@@ -152,6 +152,27 @@
     &--hidden {
       display: none;
     }
+
+    &-message {
+
+      width: 80%;
+      margin: auto;
+      padding: 1rem;
+      border-radius: 10px;
+
+      &--error {
+        background-color: rgb(250, 148, 148);
+        color: rgb(117, 13, 13);
+        border: 1px solid rgb(117, 13, 13);
+
+      }
+
+      &--success {
+        background-color: rgb(148, 250, 190);
+        color: rgb(13, 117, 27);
+        border: 1px solid rgb(13, 117, 27);
+      }
+    }
   }
 }
 

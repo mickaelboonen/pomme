@@ -28,16 +28,31 @@ import { toggleIsHiddenOnWorkAddressesList, displayRegionFieldsInFormMission } f
 import { uploadFile, updateOmName, updateMission } from 'src/reducer/omForm';
 import { enableMissionFormFields } from 'src/reducer/efForm';
 import { defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
+import ApiResponse from '../../../components/ApiResponse';
 
 const Mission = ({ step, isEfForm }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loader = useLoaderData();
-  
-  const { isMissionFormDisabled } = useSelector((state) => state.efForm);
-  const { currentOM, omForm } = useSelector((state) => state.omForm);
-  
   const omId = loader.searchParams.get('id');
+  const areWeUpdatingData = loader.pathname.includes('modifier');
+  
+
+  const { app: { apiMessage },
+    omForm: { currentOM, omForm },
+    efForm: { isMissionFormDisabled }
+  } = useSelector((state) => state);
+  
+  useEffect(() => {
+    if (apiMessage.status && apiMessage.status === 200) {
+      setTimeout(() => {
+        if (!areWeUpdatingData) {
+          const nextStep = step + 1;
+          navigate(loader.pathname + '?etape=' + nextStep + '&id=' + omId);
+        }
+      }, "5000")
+    }
+  }, [apiMessage])
 
     
 
@@ -83,7 +98,6 @@ const Mission = ({ step, isEfForm }) => {
   if (loader.pathname.includes('modifier')) {
     setValue('departure', defaultValues.departure.slice(0, 16));
     setValue('comeback', defaultValues.comeback.slice(0, 16));
-    // setValue('omId', defaultValues.om.id);
   }
 
   const onSubmit = (data) => {
@@ -101,10 +115,7 @@ const Mission = ({ step, isEfForm }) => {
       }
 
       // TODO : bien faire les verifs / validations pour l'EF 
-
-
-      const nextStep = step + 1;
-      // navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId);
+      
 
     }
     else {
@@ -143,10 +154,6 @@ const Mission = ({ step, isEfForm }) => {
           dispatch(updateOmName({omId: data.omId, name: dateForFile}));
         }
       }
-      
-      const nextStep = step + 1;
-      // navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId);
-
     }
   };
 
@@ -387,6 +394,7 @@ const Mission = ({ step, isEfForm }) => {
         />
       )}
       {refusal !== '' && <RefusalMessage message={refusal} />}
+      {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
       <Buttons step={step} />
     </form>
     

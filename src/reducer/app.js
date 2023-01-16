@@ -10,6 +10,7 @@ const initialState = {
     },
   ],
   currentStep: 1,
+  apiMessage: {},
 };
 const omFormSlice = createSlice({
     name: 'app',
@@ -21,14 +22,18 @@ const omFormSlice = createSlice({
         state.userSignature = action.payload.url;
       },
       advanceToNextStep: (state, action) => {
-        state.currentStep = action.payload;
+        // state.currentStep = action.payload;s
       },
       saveVehicles: (state, action) => {
         action.payload.forEach((vehicle) => state.vehicles.push(vehicle));
       },
+      setApiResponse: (state, action) => {
+
+        state.apiMessage = action.payload;
+      }
     },
 });
 
-export const { advanceToNextStep, getSignature, saveSignature, getVehicles, saveVehicles } = omFormSlice.actions;
+export const { setApiResponse, advanceToNextStep, getSignature, saveSignature, getVehicles, saveVehicles } = omFormSlice.actions;
 
 export default omFormSlice.reducer;
