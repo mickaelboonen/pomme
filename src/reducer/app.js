@@ -9,7 +9,7 @@ const initialState = {
       name: 'Véhicule personnel, de prêt'
     },
   ],
-  currentStep: 0,
+  currentStep: 1,
 };
 const omFormSlice = createSlice({
     name: 'app',
