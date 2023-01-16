@@ -37,6 +37,7 @@ const Transports = ({ step }) => {
 
   
   const { app: { apiMessage },
+    omForm: { omForm }
   } = useSelector((state) => state);
 
     
@@ -51,6 +52,10 @@ const Transports = ({ step }) => {
     }
   }, [apiMessage])
   
+  const transportsData = omForm.find((omStep) => omStep.step === 'transports');
+
+  const defaultValues = transportsData.data;
+
   const {
     register,
     setValue,
@@ -61,6 +66,7 @@ const Transports = ({ step }) => {
     formState:
     { errors },
   } = useForm();
+  console.log(watch());
 
   const onSubmit = (data) => {
     

@@ -1,4 +1,4 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   steps: [
@@ -32,12 +32,28 @@ const initialState = {
     {
       id: 2,
       step: 'transports',
-      data: {},
+      data: {
+        vehicleAuthorization: null,
+        transportDispensation: null,
+        publicTransports: true,
+        taxi: false,
+        parking: false,
+        transportType: null,
+        transportPayment: null,
+        transportClass: null,
+    },
     },
     {
       id: 3,
-      step: 'hebergements',
-      data: {},
+      step: 'accomodations',
+      data: {
+        omId: null,
+        hotel: false,
+        nightsNumber: null,
+        hotelPayment: null,
+        mealsPaidByAgent: null,
+        mealsInAdminRestaurants: null,
+      },
     },
     {
       id: 4,
@@ -82,10 +98,14 @@ const omFormSlice = createSlice({
       getMission: (state) => {
         state.loader = true
       },
-      getTransports: () => {},
-      getAccomodations: () => {},
-      getAdvance: () => {},
-      getSignature: () => {},
+      getTransports: (state) => {
+        state.loader = true},
+      getAccomodations: (state) => {
+        state.loader = true},
+      getAdvance: (state) => {
+        state.loader = true},
+      getSignature: (state) => {
+        state.loader = true},
       updateMore: () => {},
       updateOmName: () => {},
       updateAdvance: () => {},
@@ -116,6 +136,73 @@ const omFormSlice = createSlice({
       },
       saveMission: (state, action) => {
         state.omForm[0].data = action.payload;
+        state.omForm[0].data.omId = action.payload.om.id;
+        state.loader = false;
+      },
+      saveTransports: (state, action) => {
+        // state.omForm[1].data = action.payload;
+        console.log('-------------------------------------------------------', action.payload);
+
+        const trucbis =  {
+          trainClass: null,
+          trainPayment: null,
+          planeClass: null,
+          planePayment: null,
+          vehicle: action.payload.vehicle ? action.payload.vehicle.id : null,
+          publicTransports: action.payload.publicTransports,
+          others:  [action.payload.taxi],
+          omId: 62,
+          vehicleAuthorizationFile: {},
+          vehicleAuthorizationFileForValidation: false
+        }
+
+        if (action.payload.taxi) {
+          trucbis.others.push('taxi');
+        }
+        if (action.payload.parking) {
+          trucbis.others.push('parking');
+        }
+        if (action.payload.transportClass.length === 1) {
+          if (action.payload.transportClass[0].includes('first')) {
+            trucbis.trainClass = action.payload.transportClass[0];
+          }
+          else if (action.payload.transportClass[0].includes('business')) {
+            trucbis.planeClass = action.payload.transportClass[0];
+          }
+        }
+        else if (action.payload.transportClass.length === 2) {
+          trucbis.trainClass = action.payload.transportClass.find((trainClass) => trainClass === "first-class");
+          trucbis.planeClass = action.payload.transportClass.find((planeClass) => planeClass === "business-class");
+          
+        }
+
+
+
+
+
+
+
+
+
+        console.log(trucbis, '-------------------------------------------------');
+        state.omForm[0].data = trucbis;
+
+        state.omForm[1].data.omId = action.payload.om.id;
+        state.loader = false;
+      },
+      saveAccomodations: (state, action) => {
+        state.omForm[2].data = action.payload;
+        state.omForm[2].data.omId = action.payload.om.id;
+        state.loader = false;
+      },
+      saveMore: (state, action) => {
+        state.omForm[5].data = action.payload;
+        state.omForm[5].data.omId = action.payload.om.id;
+        state.loader = false;
+      },
+      saveAdvance: (state, action) => {
+        state.omForm[4].data = action.payload;
+        state.omForm[4].data.omId = action.payload.om.id;
         state.loader = false;
       },
     },
@@ -136,7 +223,15 @@ export const {
   updateAdvance,
   updateMore,
   getMission,
+  getTransports,
+  getAdvance,
+  getAccomodations,
+  getMore,
   saveMission,
+  saveTransports,
+  saveAccomodations,
+  saveAdvance,
+  saveMore,
   updateAccomodations
 } = omFormSlice.actions;
 

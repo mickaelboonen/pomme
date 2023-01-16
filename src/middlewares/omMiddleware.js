@@ -1,4 +1,13 @@
-import {  saveNewOm, saveOm, saveUserOms, saveMission } from 'src/reducer/omForm';
+import {
+  saveNewOm,
+  saveOm,
+  saveUserOms,
+  saveMission,
+  saveTransports,
+  saveAccomodations,
+  saveAdvance,
+  saveMore,
+} from 'src/reducer/omForm';
 import { advanceToNextStep,setApiResponse } from 'src/reducer/app';
 import { api } from './api';
 
@@ -132,18 +141,74 @@ const omMiddleware = (store) => (next) => (action) => {
       break;
     
     case 'omForm/getMission':
-    api.get("/api/om/mission/find/" + action.payload)
-      .then((response) => {
-        // if (response.data.length > 0) {
-          console.log(response.data);
-          store.dispatch(saveMission(response.data[0]))
-        // }
-      })
-      .catch((error) => {
-        console.error('get signature', error);
-        // store.dispatch(showTicketCreationResponse(error.response))
-      });
-    break;
+      api.get("/api/om/mission/find/" + action.payload)
+        .then((response) => {
+          // if (response.data.length > 0) {
+            console.log(response.data);
+            store.dispatch(saveMission(response.data[0]))
+          // }
+        })
+        .catch((error) => {
+          console.error('get signature', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
+    
+    case 'omForm/getTransports':
+      api.get("/api/om/transports/find/" + action.payload)
+        .then((response) => {
+          // if (response.data.length > 0) {
+            console.log(response.data);
+            store.dispatch(saveTransports(response.data[0]))
+          // }
+        })
+        .catch((error) => {
+          console.error('get signature', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
+    
+    case 'omForm/getAccomodations':
+      api.get("/api/om/accomodations/find/" + action.payload)
+        .then((response) => {
+          // if (response.data.length > 0) {
+            console.log(response.data);
+            store.dispatch(saveAccomodations(response.data[0]))
+          // }
+        })
+        .catch((error) => {
+          console.error('get signature', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
+    
+    case 'omForm/getMore':
+      api.get("/api/om/more/find/" + action.payload)
+        .then((response) => {
+          // if (response.data.length > 0) {
+            console.log(response.data);
+            store.dispatch(saveMore(response.data[0]))
+          // }
+        })
+        .catch((error) => {
+          console.error('get signature', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
+    
+    case 'omForm/getAdvance':
+      api.get("/api/om/advance/find/" + action.payload)
+        .then((response) => {
+          // if (response.data.length > 0) {
+            console.log(response.data);
+            store.dispatch(saveAdvance(response.data[0]))
+          // }
+        })
+        .catch((error) => {
+          console.error('get signature', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
   
     default:
   }

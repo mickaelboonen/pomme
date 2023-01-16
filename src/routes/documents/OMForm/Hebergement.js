@@ -20,16 +20,15 @@ import { clearMessage } from '../../../reducer/app';
 import { getMaxMealsAndNights } from '../../../selectors/formValidationsFunctions';
 
 
-const Hebergement = ({ step }) => {
+const Accomodations = ({ step }) => {
   
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loader = useLoaderData();
   const omId = loader.searchParams.get('id');
 
-    const areWeUpdatingData = loader.pathname.includes('modifier');
+  const areWeUpdatingData = loader.pathname.includes('modifier');
   
-
   const { app: { apiMessage },
     omForm: { omForm },
   } = useSelector((state) => state);
@@ -48,13 +47,19 @@ const Hebergement = ({ step }) => {
     }
   }, [apiMessage])
 
+  const accomodationsData = omForm.find((omStep) => omStep.step === 'accomodations');
+
+  const defaultValues = accomodationsData.data;
+  
   const {
     register,
     handleSubmit,
     setError,
     formState:
     { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: defaultValues,
+  });
 
   const onSubmit = (data) => {
     console.log("------------------------------------------------------", data, "------------------------------------------------------");
@@ -104,7 +109,7 @@ const Hebergement = ({ step }) => {
   const maxMealsNumber = getMaxMealsAndNights(missionData);
   const maxNightsNumber = getMaxMealsAndNights(missionData, true);
 
-  const [isHotelSelected, setIsHotelSelected] = useState(false);
+  const [isHotelSelected, setIsHotelSelected] = useState(defaultValues.hotel);
 
   const handleHotelSwitch = (event) => {
     setIsHotelSelected(event.target.checked);
@@ -154,7 +159,7 @@ const Hebergement = ({ step }) => {
         <FormSectionTitle>Repas</FormSectionTitle>
         <TextField
           id="outside-meals-number-field"
-          formField="outsideMealsNumber"
+          formField="mealsPaidByAgent"
           register={register}
           isNumber
           min="0"
@@ -166,7 +171,7 @@ const Hebergement = ({ step }) => {
         />
         <TextField
           id="admin-meals-number-field"
-          formField="adminMealsNumber"
+          formField="mealsInAdminRestaurants"
           register={register}
           isNumber
           min="0"
@@ -189,8 +194,8 @@ const Hebergement = ({ step }) => {
   );
 };
 
-Hebergement.propTypes = {
+Accomodations.propTypes = {
 
 };
 
-export default Hebergement;
+export default Accomodations;
