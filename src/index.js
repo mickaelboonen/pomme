@@ -71,9 +71,6 @@ const router = createBrowserRouter([
               else if (step === '1') {
                 store.dispatch(fetchOm(id))
               }
-
-              const { app : { nextStep} } = store.getState();
-              console.log("next step is : ", nextStep);
               return url;  
             },    
           },

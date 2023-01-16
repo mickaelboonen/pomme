@@ -25,7 +25,7 @@ const OMForm = () => {
 
   return (
     <div className='form-container'>
-      <ThreadAsTabs step={step} tabs={steps} isOm/>
+      <ThreadAsTabs step={step} tabs={steps} isOm urlData={loaderData} />
       <div className="form-page__title">
         <PageTitle>Création d'un Ordre de Mission</PageTitle>
       </div>
