@@ -86,7 +86,7 @@ const omMiddleware = (store) => (next) => (action) => {
 
           // Retrieving the url for each file and assigning it to the right property
           response.data.forEach((file) => {
-            
+            console.log(file);
             if (file.type === 'transport-dispensation') {
               data.transportDispensation = file.file.url;
             }
@@ -112,6 +112,7 @@ const omMiddleware = (store) => (next) => (action) => {
 
           // Now updates the transports values in the database
           if (step === 'transports') {
+            console.log('middleware here');
             store.dispatch(updateTransports(data));
           }
           else if (step === 'advance') {

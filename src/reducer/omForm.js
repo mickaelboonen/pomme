@@ -35,13 +35,13 @@ const initialState = {
       data: {
         vehicleAuthorization: null,
         transportDispensation: null,
-        publicTransports: true,
+        publicTransports: false,
         taxi: false,
         parking: false,
         transportType: null,
         transportPayment: null,
         transportClass: null,
-    },
+      },
     },
     {
       id: 3,
@@ -140,54 +140,65 @@ const omFormSlice = createSlice({
         state.loader = false;
       },
       saveTransports: (state, action) => {
-        // state.omForm[1].data = action.payload;
-        console.log('-------------------------------------------------------', action.payload);
-
-        const trucbis =  {
+        
+        const dataForTheComponent =  {
           trainClass: null,
           trainPayment: null,
           planeClass: null,
           planePayment: null,
           vehicle: action.payload.vehicle ? action.payload.vehicle.id : null,
           publicTransports: action.payload.publicTransports,
-          others:  [action.payload.taxi],
-          omId: 62,
-          vehicleAuthorizationFile: {},
-          vehicleAuthorizationFileForValidation: false
+          others:  [],
+          omId: action.payload.om.id,
+          vehicleAuthorizationFile: null,
+          vehicleAuthorizationFileForValidation: false,
+          dispensation: null,
+          dispensationForValidation: false,
         }
+        
 
         if (action.payload.taxi) {
-          trucbis.others.push('taxi');
+          dataForTheComponent.others.push('taxi');
         }
         if (action.payload.parking) {
-          trucbis.others.push('parking');
+          dataForTheComponent.others.push('parking');
         }
-        if (action.payload.transportClass.length === 1) {
-          if (action.payload.transportClass[0].includes('first')) {
-            trucbis.trainClass = action.payload.transportClass[0];
+        
+        action.payload.transportClass.forEach((service) => {
+          if (service === 'first-class' || service === 'second-class') {
+            dataForTheComponent.trainClass = service;
           }
-          else if (action.payload.transportClass[0].includes('business')) {
-            trucbis.planeClass = action.payload.transportClass[0];
+          else if (service === 'business-class' || service === 'eco-class') {
+            dataForTheComponent.planeClass = service;
+            
           }
-        }
-        else if (action.payload.transportClass.length === 2) {
-          trucbis.trainClass = action.payload.transportClass.find((trainClass) => trainClass === "first-class");
-          trucbis.planeClass = action.payload.transportClass.find((planeClass) => planeClass === "business-class");
+        })
+        action.payload.transportPayment.forEach((service) => {
           
+          if (service === 'train-paid-by-unimes-t' || service === 'train-paid-by-agent') {
+            dataForTheComponent.trainPayment = service.slice(14);
+          }
+          else if (service === 'plane-paid-by-unimes-t' || service === 'plane-paid-by-user') {
+            dataForTheComponent.planePayment = service.slice(14);
+            
+          }
+        })
+
+        if (action.payload.vehicleAuthorization === 'pending') {
+          dataForTheComponent.vehicleAuthorizationFileForValidation = true;
+        }
+        else if (action.payload.vehicleAuthorization !== null) {
+          dataForTheComponent.vehicleAuthorizationFile = action.payload.vehicleAuthorization;
         }
 
+        if (action.payload.transportDispensation === 'pending') {
+          dataForTheComponent.dispensationForValidation = true;
+        }
+        else if (action.payload.transportDispensation !== null) {
+          dataForTheComponent.dispensation = action.payload.transportDispensation;
+        }
 
-
-
-
-
-
-
-
-        console.log(trucbis, '-------------------------------------------------');
-        state.omForm[0].data = trucbis;
-
-        state.omForm[1].data.omId = action.payload.om.id;
+        state.omForm[1].data = dataForTheComponent;
         state.loader = false;
       },
       saveAccomodations: (state, action) => {

@@ -8,9 +8,9 @@ import { Link, useNavigate, useLoaderData } from 'react-router-dom';
 import './style.scss';
 
 // Components
-import ApiResponse from '../../../components/ApiResponse';
 
 import Buttons from 'src/components/Fields/Buttons';
+import ApiResponse from 'srrc/components/ApiResponse';
 import SwitchButton from 'src/components/SwitchButton';
 import FileField from 'src/components/Fields/FileField';
 import RadioInput from 'src/components/Fields/RadioInput';
@@ -26,6 +26,7 @@ import { uploadFile } from 'src/reducer/omForm';
 
 // Selectors
 import { turnTransportsDataToDbFormat } from 'src/selectors/dataToDbFormat';
+import { getSavedFileName } from 'srrc/selectors/formDataGetters';
 
 const Transports = ({ step }) => {
   const dispatch = useDispatch();
@@ -56,6 +57,9 @@ const Transports = ({ step }) => {
 
   const defaultValues = transportsData.data;
 
+  const dispensationFileName = defaultValues.dispensation ? getSavedFileName(defaultValues.dispensation): '';
+  const authorizationFileName = defaultValues.vehicleAuthorizationFile ? getSavedFileName(defaultValues.vehicleAuthorizationFile): '';
+
   const {
     register,
     setValue,
@@ -65,11 +69,12 @@ const Transports = ({ step }) => {
     watch,
     formState:
     { errors },
-  } = useForm();
-  console.log(watch());
+  } = useForm({ defaultValues: defaultValues});
+  
 
   const onSubmit = (data) => {
-    
+    console.log(data);
+    // return;
     // If no transports have been chosen
     if (data.trainClass === null && data.planeClass === null &&  data.vehicle === "") {
       setError('transports', { type: 'custom', message: 'Vous devez choisir un moyen de transport pour vous rendre sur le lieu de la mission.' });
@@ -77,15 +82,14 @@ const Transports = ({ step }) => {
     else {
       // We initialize the error count
       let countErrors = 0;
-
       // If first class train or business class plane has been selected but no dispensation was submitted or given
-      if ((data.trainClass === "first-class" || data.planeClass === "business-class") && data.dispensation.length === 0 && !data.dispensationForValidation) {
+      if ((data.trainClass === "first-class" || data.planeClass === "business-class") && !data.dispensationForValidation && (!data.dispensation || data.dispensation.length === 0) ) {
         setError('derogation', { type: 'custom', message: "Merci de fournir la dérogation signée par le Président ou d'en faire la demande." });
         countErrors++;
       }
 
       // If a vehicle has been selected but no authorization was submitted or given
-      if (data.vehicle !== "" && data.vehicleAuthorizationFile.length === 0 && !data.vehicleAuthorizationFileForValidation) {
+      if (data.vehicle !== "" && !data.vehicleAuthorizationFileForValidation && (!data.vehicleAuthorizationFile || data.vehicleAuthorizationFile.length === 0)) {
         setError('authorization', { type: 'custom', message: "Merci de fournir la demande d'autorisation d'utilisation d'un véhicule ou d'en faire la demande." });
         countErrors++;
       }
@@ -95,22 +99,18 @@ const Transports = ({ step }) => {
         
         // Formats the data for the database
         const databaseData = turnTransportsDataToDbFormat(data);
+        console.log('HERE : ', databaseData);
 
         // If any file has been selected (for the train, plane or car), we upload it
-        if (databaseData.transportDispensation || databaseData.vehicleAuthorization) {
+        if ((databaseData.transportDispensation && databaseData.transportDispensation !== 'pending')
+        || (databaseData.vehicleAuthorization && databaseData.vehicleAuthorization !== 'pending')) {
           dispatch(uploadFile({data: databaseData, step: 'transports'}));
         }
         // Else we directly update the transports entity
         else {
           dispatch(updateTransports(databaseData));
         }
-
-        // TODO : find how to go to the next page
-      // const nextStep = step + 1;
-      // navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId)
       }
-      
-
     }
   };
 
@@ -169,6 +169,20 @@ const Transports = ({ step }) => {
 
   }, [vehicleAuthorizationFile, vehicleAuthorizationFileForValidation, dispensation, dispensationForValidation])
 
+  const handleClickOnDelete = (event) => {
+    const { id } = event.target;
+    
+    let target = id.slice(7);
+
+    if (target === 'authorization') {
+      target = 'vehicleAuthorizationFile';
+    }
+  
+    setValue(target, null);
+    const nameElement = document.getElementById(target + '-field').nextElementSibling;
+    nameElement.textContent = '';
+  }
+  console.log(dispensation);
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       {/* <div className="form__section"> */}
@@ -239,7 +253,7 @@ const Transports = ({ step }) => {
           <div className="form__section-container" id="upper-class-request">
             <h4 className="form__section-container-title">Demande de Dérogation Première Classe ou Classe Affaire</h4>
             <div className="form__section-container-options">
-              <FileField id="dispensation-field" setValue={setValue} formField="dispensation" register={register} />
+              <FileField fileName={dispensationFileName} id="dispensation-field" setValue={setValue} formField="dispensation" register={register} />
               <span className="form__section-container-options__separator">OU</span>
               <div className="form__section-field">
                 <CheckboxInput id="dispensation-for-validation-field" formField="dispensationForValidation" label="Demande en cours" register={register} columnDisplay />
@@ -249,6 +263,7 @@ const Transports = ({ step }) => {
                 <Link to="/nouveau-document/demande-de-dérogation">FAIRE LA DEMANDE</Link>
               </div>
             </div>
+            {dispensation && <button id ='delete-dispensation' type='button' onClick={handleClickOnDelete}>Supprimer la pièce choisie</button>}
             {errors.derogation && <p className="form__section-field-error form__section-field-error--open">{errors.derogation.message}</p>}
           </div>
         )}
@@ -268,10 +283,11 @@ const Transports = ({ step }) => {
             <h4 className="form__section-container-title">DEMANDE D'AUTORISATION PRÉALABLE D'UTILISATION D'UN VÉHICULE</h4>
             <div className="form__section-container-options">
               <FileField
-                id="vehicle-authorization"
+                id="vehicleAuthorizationFile-field"
                 setValue={setValue}
                 formField="vehicleAuthorizationFile"
                 register={register}
+                fileName={authorizationFileName}
               />
               <span className="form__section-container-options__separator">OU</span>
               <div className="form__section-field">
@@ -283,6 +299,7 @@ const Transports = ({ step }) => {
               </div>
             </div>
             <p className="form__section-container-reminder">RAPPEL : Remboursement Forfait SNCF 2ème classe</p>
+            {vehicleAuthorizationFile && <button id ='delete-authorization' type='button' onClick={handleClickOnDelete}>Supprimer la pièce choisie</button>}
             {errors.authorization && <p className="form__section-field-error form__section-field-error--open">{errors.authorization.message}</p>}
           </div>
         )}

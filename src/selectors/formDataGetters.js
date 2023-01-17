@@ -10,3 +10,8 @@ export const getAccomodationsDefault = (path) => {
   }
   return data;
 }
+
+export const getSavedFileName = (urlFile) => {
+  const file = urlFile.split('\\');
+  return file[file.length - 1];
+}
