@@ -57,7 +57,7 @@ const initialState = {
     },
     {
       id: 4,
-      step: 'avance',
+      step: 'advance',
       data: {},
     },
     {
@@ -174,7 +174,7 @@ const omFormSlice = createSlice({
           }
         })
         action.payload.transportPayment.forEach((service) => {
-          
+
           if (service === 'train-paid-by-unimes-t' || service === 'train-paid-by-agent') {
             dataForTheComponent.trainPayment = service.slice(14);
           }
@@ -212,8 +212,18 @@ const omFormSlice = createSlice({
         state.loader = false;
       },
       saveAdvance: (state, action) => {
-        state.omForm[4].data = action.payload;
-        state.omForm[4].data.omId = action.payload.om.id;
+        const dataForTheComponent =  {
+          advance: action.payload.advanceAmount ? true : false,
+          omId: action.payload.om.id,
+          total: action.payload.totalAmount,
+          advanceAmount: action.payload.advanceAmount,
+          hotelQuotation: action.payload.hotelQuotation,
+          otherExpensesAmount: action.payload.otherExpensesAmount,
+          otherExpensesNames: action.payload.otherExpensesJustitication,
+          rib: action.payload.agentRib,
+        }
+        console.log(dataForTheComponent);
+        state.omForm[3].data = dataForTheComponent;
         state.loader = false;
       },
     },

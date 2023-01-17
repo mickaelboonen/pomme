@@ -17,13 +17,14 @@ import HiddenField from 'src/components/Fields/HiddenField';
 
 // Actions
 import { uploadFile, updateAdvance } from 'src/reducer/omForm';
-import { turnAdvanceDataToDbFormat } from '../../../selectors/dataToDbFormat';
-import { getMaxMealsAndNights } from '../../../selectors/formValidationsFunctions';
+import { turnAdvanceDataToDbFormat } from 'src/selectors/dataToDbFormat';
+import { getMaxMealsAndNights } from 'src/selectors/formValidationsFunctions';
 
 // Selectors
 
-import { clearMessage } from '../../../reducer/app';
-import ApiResponse from '../../../components/ApiResponse';
+import { clearMessage } from 'src/reducer/app';
+import ApiResponse from 'src/components/ApiResponse';
+import { getSavedFileName } from '../../../selectors/formDataGetters';
 
 const Avance = ({ step }) => {
   // ATTENTION : lots of rendu
@@ -52,6 +53,12 @@ const Avance = ({ step }) => {
     }
   }, [apiMessage])
   
+  const defaultValues = omForm.find((omStep) => omStep.step === 'advance').data;
+  
+  const ribFileName = defaultValues.rib ? getSavedFileName(defaultValues.rib): '';
+  const quotationFileName = defaultValues.hotelQuotation ? getSavedFileName(defaultValues.hotelQuotation): '';
+
+
   const {
     register,
     handleSubmit,
@@ -61,20 +68,20 @@ const Avance = ({ step }) => {
     clearErrors,
     formState:
     { errors },
-  } = useForm();
+  } = useForm({ defaultValues: defaultValues});
   
   const [total, otherExpensesAmount] = watch(['total', 'otherExpensesAmount']);
-  
-  const [isAdvanceRequested, setIsAdvanceRequested] = useState(false);
+    console.log(defaultValues);
+  const [isAdvanceRequested, setIsAdvanceRequested] = useState(defaultValues.advance);
 
   const onSubmit = (data) => {
     // If the user is requesting an advance
     console.log(data);
     
     if (data.advance) {
-
+ 
       let errorCount = 0;
-      if (data.hotelQuotation.length === 0) {
+      if (!data.hotelQuotation || data.hotelQuotation.length === 0) {
         setError('hotelQuotation', { type: 'custom', message: "Merci de fournir le devis de l'hôtel." });
         errorCount++;
       }
@@ -82,7 +89,7 @@ const Avance = ({ step }) => {
         clearErrors('hotelQuotation');
       }
       
-      if (data.rib.length === 0) {
+      if (!data.rib || data.rib.length === 0) {
         setError('rib', { type: 'custom', message: "Veuillez fournir votre RIB." });
         errorCount++;
       }
@@ -98,16 +105,22 @@ const Avance = ({ step }) => {
       data.meals = maxMealsNumber;
       data.nights = Number(maxNightsNumber);
       const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);      
-      dispatch(uploadFile({data: dataToBeSubmitted, step: 'advance'}))
 
+      console.log(dataToBeSubmitted);
+      // dispatch(uploadFile({data: dataToBeSubmitted, step: 'advance'}))
+
+      if ( typeof dataToBeSubmitted.agentRib !== 'string' || typeof dataToBeSubmitted.hotelQuotation !== 'string') {
+        console.log('AM I HERE ?');
+        dispatch(uploadFile({data: dataToBeSubmitted, step: 'advance'}))
+      }
+      else {
+        dispatch(updateAdvance(dataToBeSubmitted));
+      }
     }
     else {
       const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);
       dispatch(updateAdvance(dataToBeSubmitted));
     }
-
-    const nextStep = step + 1;
-    // navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId)
   };
 
   let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
@@ -194,6 +207,7 @@ const Avance = ({ step }) => {
               formField="hotelQuotation"
               id="hotel-quote-file-field"
               label="Devis de l'hôtel"
+              fileName={quotationFileName}
               // required="Merci de fournir le devis de l'hôtel."
               error={errors.hotelQuotation}
             />
@@ -256,6 +270,7 @@ const Avance = ({ step }) => {
               formField="rib"
               id="rib-file-field"
               label="RIB"
+              fileName={ribFileName}
               error={errors.rib}
               // required="Veuillez fournir votre RIB."            
             />

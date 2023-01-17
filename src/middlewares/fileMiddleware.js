@@ -16,34 +16,44 @@ const omMiddleware = (store) => (next) => (action) => {
       if (step === "transports") {
         // Setting the data for the request
         if (data.transportDispensation) {
-          const transportDispensation = {
-            omId: data.omId,
-            type: 'transport-dispensation',
-            file: data.transportDispensation,
+          if (typeof data.transportDispensation !== 'string') {
+            const transportDispensation = {
+              omId: data.omId,
+              type: 'transport-dispensation',
+              file: data.transportDispensation,
+            }
+            filesToUpload.push(transportDispensation);
           }
-          filesToUpload.push(transportDispensation);
         }
         if (data.vehicleAuthorization) {
-          const vehicleAuthorization = {
-            omId: data.omId,
-            type: 'vehicle-authorization',
-            file: data.vehicleAuthorization,
+          
+          if (typeof data.vehicleAuthorization !== 'string') {
+            const vehicleAuthorization = {
+              omId: data.omId,
+              type: 'vehicle-authorization',
+              file: data.vehicleAuthorization,
+            }
+            filesToUpload.push(vehicleAuthorization);
           }
-          filesToUpload.push(vehicleAuthorization);
         }
       }
       else if (step === "advance") {
-        const hotelQuotation = {
-          omId: data.omId,
-          type: 'hotel-quotation',
-          file: data.hotelQuotation,
+        if (typeof data.hotelQuotation !== 'string') {
+          const hotelQuotation = {
+            omId: data.omId,
+            type: 'hotel-quotation',
+            file: data.hotelQuotation,
+          }
+          filesToUpload.push(hotelQuotation);
         }
-        const rib = {
-          omId: data.omId,
-          type: 'rib',
-          file: data.agentRib,
+        if (typeof data.agentRib !== 'string') {
+          const rib = {
+            omId: data.omId,
+            type: 'rib',
+            file: data.agentRib,
+          }
+          filesToUpload.push(rib);
         }
-        filesToUpload.push(hotelQuotation, rib);
       }
       else if (step === "signature") {
         const signature = {
@@ -72,6 +82,7 @@ const omMiddleware = (store) => (next) => (action) => {
         }
         filesToUpload.push(mission);
       }
+      console.log('filesToUpload - ', filesToUpload);
       
       // TODO : See if POST method is the right one ? Methods that can add files (post) and delete them (delete)
       fileApi.post("/api/files/om/" + step, filesToUpload)
@@ -124,6 +135,7 @@ const omMiddleware = (store) => (next) => (action) => {
             store.dispatch(updateMore(data));
           }
           else if (step === 'mission') {
+            delete data.om;
             console.log('before update : ', data);
             store.dispatch(updateMission(data));
           }

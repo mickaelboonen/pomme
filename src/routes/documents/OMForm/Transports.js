@@ -10,7 +10,7 @@ import './style.scss';
 // Components
 
 import Buttons from 'src/components/Fields/Buttons';
-import ApiResponse from 'srrc/components/ApiResponse';
+import ApiResponse from 'src/components/ApiResponse';
 import SwitchButton from 'src/components/SwitchButton';
 import FileField from 'src/components/Fields/FileField';
 import RadioInput from 'src/components/Fields/RadioInput';
@@ -26,7 +26,7 @@ import { uploadFile } from 'src/reducer/omForm';
 
 // Selectors
 import { turnTransportsDataToDbFormat } from 'src/selectors/dataToDbFormat';
-import { getSavedFileName } from 'srrc/selectors/formDataGetters';
+import { getSavedFileName } from 'src/selectors/formDataGetters';
 
 const Transports = ({ step }) => {
   const dispatch = useDispatch();
