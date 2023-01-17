@@ -11,11 +11,11 @@ const omMiddleware = (store) => (next) => (action) => {
       const filesToUpload = [];
 
       const { data, step } = action.payload;
-      console.log(step);
+      console.log("------ FILE MIDDLEWARE : ", step);
       
       if (step === "transports") {
         // Setting the data for the request
-        if (data.transportDispensation) {
+        // if (data.transportDispensation) {
           if (typeof data.transportDispensation !== 'string') {
             const transportDispensation = {
               omId: data.omId,
@@ -24,8 +24,8 @@ const omMiddleware = (store) => (next) => (action) => {
             }
             filesToUpload.push(transportDispensation);
           }
-        }
-        if (data.vehicleAuthorization) {
+        // }
+        // if (data.vehicleAuthorization) {
           
           if (typeof data.vehicleAuthorization !== 'string') {
             const vehicleAuthorization = {
@@ -35,7 +35,7 @@ const omMiddleware = (store) => (next) => (action) => {
             }
             filesToUpload.push(vehicleAuthorization);
           }
-        }
+        // }
       }
       else if (step === "advance") {
         if (typeof data.hotelQuotation !== 'string') {

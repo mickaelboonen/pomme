@@ -102,8 +102,8 @@ const Transports = ({ step }) => {
         console.log('HERE : ', databaseData);
 
         // If any file has been selected (for the train, plane or car), we upload it
-        if ((databaseData.transportDispensation && databaseData.transportDispensation !== 'pending')
-        || (databaseData.vehicleAuthorization && databaseData.vehicleAuthorization !== 'pending')) {
+        if (typeof databaseData.transportDispensation !== 'string' || typeof databaseData.vehicleAuthorization !== 'string') {
+          console.log('there is aa least one file');
           dispatch(uploadFile({data: databaseData, step: 'transports'}));
         }
         // Else we directly update the transports entity
@@ -182,7 +182,7 @@ const Transports = ({ step }) => {
     const nameElement = document.getElementById(target + '-field').nextElementSibling;
     nameElement.textContent = '';
   }
-  console.log(dispensation);
+  
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       {/* <div className="form__section"> */}
@@ -326,7 +326,7 @@ const Transports = ({ step }) => {
       {refusal !== '' && <RefusalMessage message={refusal} />}
       {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
 
-      <Buttons step={step} />
+      <Buttons step={step} id={omId} url={loader} watch={watch} update={updateTransports} />
     </form>
     
   );
