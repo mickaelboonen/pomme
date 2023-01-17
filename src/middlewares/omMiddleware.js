@@ -183,12 +183,9 @@ const omMiddleware = (store) => (next) => (action) => {
       break;
     
     case 'omForm/getMore':
-      api.get("/api/om/more/find/" + action.payload)
+      api.get("/api/om/more-and-signature/find/" + action.payload)
         .then((response) => {
-          // if (response.data.length > 0) {
-            console.log(response.data);
-            store.dispatch(saveMore(response.data[0]))
-          // }
+            store.dispatch(saveMore(response.data))
         })
         .catch((error) => {
           console.error('get signature', error);

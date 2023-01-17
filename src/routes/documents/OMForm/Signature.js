@@ -15,6 +15,7 @@ import { turnSignatureDataToDbFormat } from '../../../selectors/dataToDbFormat';
 import { updateMore, updateSignature, uploadFile } from '../../../reducer/omForm';
 import { clearMessage } from '../../../reducer/app';
 import ApiResponse from '../../../components/ApiResponse';
+import { getSavedFileName } from 'src/selectors/formDataGetters';
 
 const Signature = ({ step }) => {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const Signature = ({ step }) => {
   
 
   const { app: { apiMessage, userSignature },
+    omForm: { omForm },
   } = useSelector((state) => state);
   
   useEffect(() => {
@@ -41,6 +43,19 @@ const Signature = ({ step }) => {
     }
   }, [apiMessage]);
   
+  const defaultValues = omForm.find((omStep) => omStep.step === 'signature').data;
+
+  let fileNames= '';
+  
+  if (defaultValues.otherFiles.length === 1) {
+    fileNames = getSavedFileName(defaultValues.otherFiles[0]);
+  }
+  else if (defaultValues.otherFiles.length > 1) {
+    defaultValues.otherFiles.forEach((file) => {
+      fileNames += getSavedFileName(file) + ' - ';
+    })
+  }
+
   const {
     register,
     handleSubmit,
@@ -49,10 +64,9 @@ const Signature = ({ step }) => {
     watch,
     formState:
     { errors },
-  } = useForm();
-
+  } = useForm({ defaultValues: defaultValues });
+  
   const onSubmit = (data) => {
-    console.log(data);
     const formattedData = turnSignatureDataToDbFormat(data, userSignature);
 
     if (data.savedSignature) {
@@ -148,6 +162,7 @@ const Signature = ({ step }) => {
           formField="otherFiles"
           id="other"
           multiple
+          fileName={fileNames}
         />
       </div>
       {refusal !== '' && <RefusalMessage message={refusal} />}

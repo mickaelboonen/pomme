@@ -105,7 +105,11 @@ const omFormSlice = createSlice({
       getAdvance: (state) => {
         state.loader = true},
       getSignature: (state) => {
-        state.loader = true},
+        state.loader = true
+      },
+      getMore: (state) => {
+        state.loader = true;
+      },
       updateMore: () => {},
       updateOmName: () => {},
       updateAdvance: () => {},
@@ -207,8 +211,19 @@ const omFormSlice = createSlice({
         state.loader = false;
       },
       saveMore: (state, action) => {
-        state.omForm[5].data = action.payload;
-        state.omForm[5].data.omId = action.payload.om.id;
+        console.log('-------------------------');
+        console.log(action.payload);
+        const { signature, more } = action.payload;
+        const dataForTheComponent =  {
+            savedSignature: signature.agentSignature ? true : false,
+            signature: signature.agentSignature ,
+            omId: signature.om.id,
+            otherInfos: more.informations,
+            otherFiles: more.files,
+        }
+        console.log(dataForTheComponent);
+        console.log('-------------------------');
+        state.omForm[4].data = dataForTheComponent;
         state.loader = false;
       },
       saveAdvance: (state, action) => {

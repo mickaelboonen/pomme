@@ -33,7 +33,7 @@ import RefusalNotification from "src/routes/utilisateur/MyAccount/RefusalNotific
 
 import { fetchOMs, getMission, fetchOm, getTransports } from "src/reducer/omForm";
 import { getSignature, getVehicles } from "src/reducer/app";
-import { getAccomodations, getAdvance } from "./reducer/omForm";
+import { getAccomodations, getAdvance, getMore } from "./reducer/omForm";
 
 
 
@@ -148,6 +148,7 @@ const router = createBrowserRouter([
               }
               else if (step === '5') {
                 store.dispatch(getSignature('mboone01'));
+                store.dispatch(getMore(id));
               }
               else if (step === '2') {
                 store.dispatch(getVehicles());
