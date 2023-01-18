@@ -38,7 +38,7 @@ const omMiddleware = (store) => (next) => (action) => {
         // }
       }
       else if (step === "advance") {
-        if (typeof data.hotelQuotation !== 'string') {
+        if (data.hotelQuotation && typeof data.hotelQuotation !== 'string') {
           const hotelQuotation = {
             omId: data.omId,
             type: 'hotel-quotation',
@@ -46,7 +46,7 @@ const omMiddleware = (store) => (next) => (action) => {
           }
           filesToUpload.push(hotelQuotation);
         }
-        if (typeof data.agentRib !== 'string') {
+        if (data.agentRib && typeof data.agentRib !== 'string') {
           const rib = {
             omId: data.omId,
             type: 'rib',

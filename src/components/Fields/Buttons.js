@@ -7,7 +7,8 @@ import { useDispatch } from 'react-redux';
 import { uploadFile } from 'src/reducer/omForm';
 import {
   turnTransportsDataToDbFormat,
-  turnAccomodationDataToDbFormat
+  turnAccomodationDataToDbFormat,
+  turnAdvanceDataToDbFormat
 } from 'src/selectors/dataToDbFormat';
 
 const Buttons = ({ step, url, id, watch, update, secondUpdate}) => {
@@ -61,7 +62,17 @@ const Buttons = ({ step, url, id, watch, update, secondUpdate}) => {
     }
 
     else if (step === 4) {
+      const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);      
       
+
+      if ( dataToBeSubmitted.agentRib || dataToBeSubmitted.hotelQuotation ) {
+        console.log('AM I HERE ?');
+        dispatch(uploadFile({data: dataToBeSubmitted, step: 'advance'}))
+      }
+      else {
+        console.log('OR HERE ?');
+        dispatch(updateAdvance(dataToBeSubmitted));
+      }
     }
 
     else if (step === 5) {
