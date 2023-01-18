@@ -100,8 +100,12 @@ const Mission = ({ step, isEfForm }) => {
   });
   
   if (loader.pathname.includes('modifier')) {
-    setValue('departure', defaultValues.departure.slice(0, 16));
-    setValue('comeback', defaultValues.comeback.slice(0, 16));
+    if (defaultValues.departure) {
+      setValue('departure', defaultValues.departure.slice(0, 16));
+    }
+    if (defaultValues.comeback) {
+      setValue('comeback', defaultValues.comeback.slice(0, 16));
+    }
   }
 
   const onSubmit = (data) => {
@@ -399,7 +403,13 @@ const Mission = ({ step, isEfForm }) => {
       )}
       {refusal !== '' && <RefusalMessage message={refusal} />}
       {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
-      <Buttons step={step} url={loader}/>
+      <Buttons
+        step={step}
+        id={omId}
+        url={loader}
+        watch={watch}
+        update={updateMission}
+      />
     </form>
     
   );

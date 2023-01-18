@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { uploadFile } from 'src/reducer/omForm';
 import { turnTransportsDataToDbFormat } from 'src/selectors/dataToDbFormat';
 
-const Buttons = ({ step, url, id, watch, update}) => {
+const Buttons = ({ step, url, id, watch, update, secondUpdate}) => {
   
   const dispatch = useDispatch();
 
@@ -16,19 +16,36 @@ const Buttons = ({ step, url, id, watch, update}) => {
   
   const handleClick = () => {
     const data = watch();
-    // dispatch(saveDataAsItIs({ data: formData, step: step}));
-    
+    console.log(data);
     if (step === 1) {
-
+      if (typeof data.missionPurposeFile === 'string' || !data.missionPurposeFile) {
+        // delete data.om;
+        dispatch(update(data));
+      }
+      else {
+         dispatch(uploadFile({data: data, step: 'mission'}));
+      }
     }
     else if (step === 2) {
       const databaseData = turnTransportsDataToDbFormat(data);
-      if (typeof databaseData.transportDispensation !== 'string' || typeof databaseData.vehicleAuthorization !== 'string') {
-        dispatch(uploadFile({data: databaseData, step: 'transports'}));
+
+      const typesToIgnore = ['string', null];
+      console.log(typesToIgnore.indexOf(typeof databaseData.transportDispensation) , typesToIgnore.indexOf(typeof databaseData.vehicleAuthorization));
+      
+      // if (typesToIgnore.indexOf(typeof databaseData.transportDispensation) === -1 || typesToIgnore.indexOf(typeof databaseData.vehicleAuthorization) === -1) {
+      // console.log('here ?');
+      if ((databaseData.transportDispensation && databaseData.transportDispensation.length > 0) || (databaseData.transportDispensation && databaseData.transportDispensation.length > 0)) {
+      // dispatch(uploadFile({data: databaseData, step: 'transports'}));
+      console.log('upload files');
       }
+        
+      // }
       // Else we directly update the transports entity
       else {
+        console.log('update data');
         dispatch(update(databaseData));
+        // TODO : last erreur
+        // "The identifier id is missing for a query of App\\Entity\\Vehicle"
       }
     }
 
@@ -44,10 +61,6 @@ const Buttons = ({ step, url, id, watch, update}) => {
       
     }
 
-
-
-
-    // saveToDb();
   }
   return (
     <div className="form__section">
@@ -63,6 +76,10 @@ const Buttons = ({ step, url, id, watch, update}) => {
 
 Buttons.propTypes = {
   step: PropTypes.number.isRequired,
+};
+
+Buttons.defaultProps = {
+  secondUpdate: null,
 };
 
 export default Buttons;

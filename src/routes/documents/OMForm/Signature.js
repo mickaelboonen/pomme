@@ -167,7 +167,15 @@ const Signature = ({ step }) => {
       </div>
       {refusal !== '' && <RefusalMessage message={refusal} />}
       {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
-      <Buttons step={step} />
+
+      <Buttons
+        step={step}
+        id={omId}
+        url={loader}
+        watch={watch}
+        update={updateSignature}
+        secondUpdate={updateMore}
+      />
     </form>
     
   );

@@ -66,6 +66,7 @@ const omMiddleware = (store) => (next) => (action) => {
       break;
 
     case 'omForm/updateMission':
+      delete action.payload.om;
       api.post("/api/om/mission/update" , action.payload,)
         .then((response) => {
           console.log(response);
