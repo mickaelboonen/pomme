@@ -5,7 +5,10 @@ import './style.scss';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { uploadFile } from 'src/reducer/omForm';
-import { turnTransportsDataToDbFormat } from 'src/selectors/dataToDbFormat';
+import {
+  turnTransportsDataToDbFormat,
+  turnAccomodationDataToDbFormat
+} from 'src/selectors/dataToDbFormat';
 
 const Buttons = ({ step, url, id, watch, update, secondUpdate}) => {
   
@@ -35,8 +38,8 @@ const Buttons = ({ step, url, id, watch, update, secondUpdate}) => {
       // if (typesToIgnore.indexOf(typeof databaseData.transportDispensation) === -1 || typesToIgnore.indexOf(typeof databaseData.vehicleAuthorization) === -1) {
       // console.log('here ?');
       if ((databaseData.transportDispensation && databaseData.transportDispensation.length > 0) || (databaseData.transportDispensation && databaseData.transportDispensation.length > 0)) {
-      // dispatch(uploadFile({data: databaseData, step: 'transports'}));
-      console.log('upload files');
+        dispatch(uploadFile({data: databaseData, step: 'transports'}));
+        console.log('upload files');
       }
         
       // }
@@ -51,6 +54,10 @@ const Buttons = ({ step, url, id, watch, update, secondUpdate}) => {
 
     else if (step === 3) {
       
+      data.omId = id;
+      const dataToBeSubmitted = turnAccomodationDataToDbFormat(data);
+      // console.log(dataToBeSubmitted);
+      dispatch(update(dataToBeSubmitted));
     }
 
     else if (step === 4) {

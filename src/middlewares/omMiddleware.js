@@ -130,9 +130,10 @@ const omMiddleware = (store) => (next) => (action) => {
       break;
 
     case 'omForm/updateAccomodations':
-      console.log('here');
+      console.log('omForm/updateAccomodations', action.payload);
       api.post("/api/om/accomodations/update" , action.payload,)
         .then((response) => {
+          console.log(response);
           store.dispatch(setApiResponse(response));
         })
         .catch((error) => {

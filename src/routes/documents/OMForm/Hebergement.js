@@ -54,7 +54,7 @@ const Accomodations = ({ step }) => {
   const {
     register,
     handleSubmit,
-    setError,
+    watch,
     formState:
     { errors },
   } = useForm({
@@ -153,6 +153,7 @@ const Accomodations = ({ step }) => {
           </div>
         )}
         { (!isNaN(maxNightsNumber) && isHotelSelected) && <p className="form__section-field-label form__section-field-label--infos">Vous avez le droit à un total de : <span style={{color: 'red', margin: '0 0.2rem'}}>{maxNightsNumber}</span> nuits à l'hôtel.</p>}
+        {maxNightsNumber < 0 && <p id="nights-error" className="form__section-field-error form__section-field-error--open">Les dates saisies pour la mission sont incorrectes. Merci de les corriger pour pouvoir procéder à cette étape.</p>}
         <p id="nights-error" className="form__section-field-error"/>
       </div>
       <div className="form__section">
@@ -185,6 +186,7 @@ const Accomodations = ({ step }) => {
       </div>
       { !isNaN(maxMealsNumber) && <p className="form__section-field-label form__section-field-label--infos">Vous avez le droit à un total de : <span style={{color: 'red', margin: '0 0.2rem'}}>{maxMealsNumber}</span> repas.</p>}
       <p id="meals-error" className="form__section-field-error"/>
+      {maxNightsNumber < 0 && <p id="nights-error" className="form__section-field-error form__section-field-error--open">Les dates saisies pour la mission sont incorrectes. Merci de les corriger pour pouvoir procéder à cette étape.</p>}
       {refusal !== '' && <RefusalMessage message={refusal} />}
       {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
 

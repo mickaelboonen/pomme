@@ -157,24 +157,13 @@ export const turnSignatureDataToDbFormat = (data, signatureUrl) => {
  * @returns object that is to be sent to the API
  */
 export const turnAccomodationDataToDbFormat = (data) => {
-
-  const {
-    omId,
-    hotel,
-    hotelPayment,
-    nightsNumber,
-    outsideMealsNumber,
-    adminMealsNumber
-  } = data;
-
-  const dataToBeSubmitted = {
-    omId: omId,
-    hotel: hotel,
-    nightsNumber: nightsNumber,
-    hotelPayment: hotelPayment,
-    mealsPaidByAgent: outsideMealsNumber,
-    mealsInAdminRestaurants: adminMealsNumber,
+    
+  return {
+    omId: data.omId,
+    hotel: data.hotel,
+    nightsNumber: data.nightsNumber,
+    hotelPayment: data.hotelPayment,
+    mealsPaidByAgent: data.mealsPaidByAgent,
+    mealsInAdminRestaurants: data.mealsInAdminRestaurants,
   };
-
-  return dataToBeSubmitted;
 }
