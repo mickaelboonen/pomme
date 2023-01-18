@@ -5,7 +5,7 @@ import { api } from './api';
 api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 api.defaults.headers['Content-Type'] = 'application/json';
 
-const omMiddleware = (store) => (next) => (action) => {
+const appMiddleware = (store) => (next) => (action) => {
   switch (action.type) {
     case 'app/getSignature':
       api.get("/api/perm-file/signature/" + action.payload)
@@ -50,4 +50,4 @@ const omMiddleware = (store) => (next) => (action) => {
   next(action);
 };
 
-export default omMiddleware;
+export default appMiddleware;

@@ -8,30 +8,31 @@ import Pin from 'src/assets/images/pin.svg';
 import './style.scss';
 
 // Components
-import FormSectionTitle from 'src/components/FormSectionTitle';
-import TextFieldWithIcon from 'src/components/Fields/TextFieldWithIcon';
-import RefusalMessage from 'src/components/Fields/RefusalMessage';
+import EfMission from '../EfForm/Mission';
 import Buttons from 'src/components/Fields/Buttons';
+import ApiResponse from 'src/components/ApiResponse';
+import DateField from 'src/components/Fields/DateField';
 import FileField from 'src/components/Fields/FileField';
 import TextField from 'src/components/Fields/TextField';
 import RadioInput from 'src/components/Fields/RadioInput';
-import SelectField from 'src/components/Fields/SelectField';
-import DateField from 'src/components/Fields/DateField';
 import HiddenField from 'src/components/Fields/HiddenField';
-import EfMission from '../EfForm/Mission';
+import SelectField from 'src/components/Fields/SelectField';
+import FormSectionTitle from 'src/components/FormSectionTitle';
+import RefusalMessage from 'src/components/Fields/RefusalMessage';
+import TextFieldWithIcon from 'src/components/Fields/TextFieldWithIcon';
 
 // Selectors 
-import { handleRegionFields, handleWorkAddressSelect } from 'src/selectors/formValidationsFunctions';
-import { toggleIsHiddenOnWorkAddressesList, displayRegionFieldsInFormMission } from 'src/selectors/domManipulators';
+import { displayRegionFieldsInFormMission } from 'src/selectors/domManipulators';
+import { handleRegionFields, defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
+import { getSavedFileName } from 'src/selectors/formDataGetters';
 
 // Reducer
-import { uploadFile, updateOmName, updateMission } from 'src/reducer/omForm';
-import { enableMissionFormFields } from 'src/reducer/efForm';
 import { clearMessage } from 'src/reducer/app';
-import { defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
-import ApiResponse from '../../../components/ApiResponse';
+import { enableMissionFormFields } from 'src/reducer/efForm';
+import { uploadFile, updateOmName, updateMission } from 'src/reducer/omForm';
 
 const Mission = ({ step, isEfForm }) => {
+    console.log('rendu');
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loader = useLoaderData();
@@ -40,15 +41,17 @@ const Mission = ({ step, isEfForm }) => {
   
 
   const { app: { apiMessage },
-    omForm: { currentOM, omForm },
+    omForm: { currentOM, omForm, refusal, adresses },
     efForm: { isMissionFormDisabled }
   } = useSelector((state) => state);
   
+  // TODO : problem with setApiResponse when savingAsItis
   useEffect(() => {
     if (apiMessage.status && apiMessage.status === 200) {
+      console.log('am i here ?');
       setTimeout(() => {
         dispatch(clearMessage());
-      }, "4500")
+      }, "4900")
       setTimeout(() => {
         if (areWeUpdatingData) {
           const nextStep = step + 1;
@@ -58,48 +61,20 @@ const Mission = ({ step, isEfForm }) => {
     }
   }, [apiMessage])
 
-    
-
-  let defaultValues = {
-    country: "",
-    abroadCosts: null,
-    departure: null,
-    departurePlace: null,
-    workAdress: null,
-    missionAdress: null,
-    missionPurpose: null,
-    missionPurposeFile: null,
-    region: null,
-    comeback: null,
-    comebackPlace: null
-};
-
-  if (loader.pathname.includes('modifier')) {
-    defaultValues = omForm[0].data;
-  }
+  const defaultValues = omForm.find((omStep) => omStep.step === 'mission').data;
   
-  const getSavedFileName = (urlFile) => {
-    const file = urlFile.split('\\');
-    return file[file.length - 1];
-  }
-
-
   const fileName = defaultValues.missionPurposeFile ? getSavedFileName(defaultValues.missionPurposeFile): '';
 
   const {
-    register,
-    handleSubmit,
-    watch,
-    setError,
-    setValue,
-    unregister,
+    register, handleSubmit, watch,
+    setError, setValue, unregister,
     formState:
     { errors }
   } = useForm({
     defaultValues: defaultValues,
   });
   
-  if (loader.pathname.includes('modifier')) {
+  if (areWeUpdatingData) {
     if (defaultValues.departure) {
       setValue('departure', defaultValues.departure.slice(0, 16));
     }
@@ -111,7 +86,7 @@ const Mission = ({ step, isEfForm }) => {
   const onSubmit = (data) => {
     console.log(data);
 
-    if (data.missionPurposeFile.length === 0) {
+    if (!data.missionPurposeFile || data.missionPurposeFile.length === 0) {
       setError('missionPurposeFile', { type: 'custom', message: 'Merci de fournir le justificatif de la mission.'})
       return;
     }
@@ -165,22 +140,13 @@ const Mission = ({ step, isEfForm }) => {
     }
   };
 
-  const modificationSwitch = watch('modificationSwitch');
   const errorMessages = defineValidationRulesForMission(isEfForm, modificationSwitch);
 
-  let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
-  refusal = "";
+  const [region , modificationSwitch] = watch(['region',  'modificationSwitch' ]);
 
-  const [region , departurePlace, comebackPlace] = watch(['region', 'departurePlace', 'comebackPlace' ]);
-
-
-  useEffect(() => {
-    handleWorkAddressSelect(comebackPlace, register, unregister);
-  }, [comebackPlace]);
-
-  useEffect(() => {
-    handleWorkAddressSelect(departurePlace, register, unregister);
-  }, [departurePlace]);
+  // TODO : rendre le champ tjrs visible obligatoire
+  // Rajouter un champ adresse normée si adresse différente
+  
   
   useEffect(() => {
     handleRegionFields(region, register, unregister);
@@ -191,17 +157,6 @@ const Mission = ({ step, isEfForm }) => {
     displayRegionFieldsInFormMission();
   };
   
-  const adresses = [
-    'adresse Vauban', 
-    'adresse Carmes', 
-    'adresse Hoche', 
-    'adresse XYZ', 
-  ];
-
-  const handleClickonRadio = () => {
-    toggleIsHiddenOnWorkAddressesList();
-  }
-
   const toggleDisabledFields = (event) => {
     dispatch(enableMissionFormFields(event.currentTarget.checked));
   }
@@ -254,7 +209,6 @@ const Mission = ({ step, isEfForm }) => {
                 formField="departurePlace"
                 label="Résidence familiale"
                 register={register}
-                handler={handleClickonRadio}
                 required={errorMessages.departurePlace}
               />
               <RadioInput
@@ -263,7 +217,6 @@ const Mission = ({ step, isEfForm }) => {
                 formField="departurePlace"
                 label="Résidence administrative"
                 register={register}
-                handler={handleClickonRadio}
                 required={errorMessages.departurePlace}
               />
               {errors.departurePlace &&<p className="form__section-field-error form__section-field-error--open">{errors.departurePlace.message}</p>}
@@ -289,7 +242,6 @@ const Mission = ({ step, isEfForm }) => {
                 formField="comebackPlace"
                 label="Résidence familiale"
                 register={register}
-                handler={handleClickonRadio}
                 required={errorMessages.comebackPlace}
               />
               <RadioInput
@@ -298,7 +250,6 @@ const Mission = ({ step, isEfForm }) => {
                 formField="comebackPlace"
                 label="Résidence administrative"
                 register={register}
-                handler={handleClickonRadio}
                 required={errorMessages.comebackPlace}
               />
               {errors.comebackPlace && <p className="form__section-field-error form__section-field-error--open">{errors.comebackPlace.message}</p>}
@@ -306,7 +257,7 @@ const Mission = ({ step, isEfForm }) => {
           </div>
         </div>
         <SelectField
-          isHidden
+          // isHidden
           disabled={isEfForm && isMissionFormDisabled}
           data={adresses}
           register={register}

@@ -37,7 +37,7 @@ const Accomodations = ({ step }) => {
     if (apiMessage.status && apiMessage.status === 200) {
       setTimeout(() => {
         dispatch(clearMessage());
-      }, "4500")
+      }, "4900")
       setTimeout(() => {
         if (areWeUpdatingData) {
           const nextStep = step + 1;

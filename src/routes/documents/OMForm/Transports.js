@@ -21,8 +21,8 @@ import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import RefusalMessage from 'src/components/Fields/RefusalMessage';
 
 // Actions
-import { updateTransports } from 'src/reducer/omForm';
-import { uploadFile } from 'src/reducer/omForm';
+import { updateTransports, uploadFile} from 'src/reducer/omForm';
+import { clearMessage } from 'src/reducer/app';
 
 // Selectors
 import { turnTransportsDataToDbFormat } from 'src/selectors/dataToDbFormat';
@@ -44,6 +44,9 @@ const Transports = ({ step }) => {
     
   useEffect(() => {
     if (apiMessage.status && apiMessage.status === 200) {
+      setTimeout(() => {
+        dispatch(clearMessage());
+      }, "4900");
       setTimeout(() => {
         if (areWeUpdatingData) {
           const nextStep = step + 1;

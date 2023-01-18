@@ -176,6 +176,7 @@ export const defineValidationRulesForMission = (isEfForm, isFormModified) => {
       errorMessages.comebackPlace = "Veuillez renseigner le lieu d'arrivée lors de votre retour de mission.";
       errorMessages.region = "Merci de sélectionner l'option qui correspond.";
       errorMessages.missionAdress = "Merci de renseigner l'adresse de la mission.";
+      errorMessages.workAdress = "Merci de renseigner l'adresse de votre résidence administrative.";
     }
   }
   else {
@@ -186,6 +187,7 @@ export const defineValidationRulesForMission = (isEfForm, isFormModified) => {
     errorMessages.comebackPlace = "Veuillez renseigner le lieu d'arrivée lors de votre retour de mission.";
     errorMessages.region = "Merci de sélectionner l'option qui correspond.";
     errorMessages.missionAdress = "Merci de renseigner l'adresse de la mission.";
+    errorMessages.workAdress = "Merci de renseigner l'adresse de votre résidence administrative.";
   }
 
   return errorMessages;

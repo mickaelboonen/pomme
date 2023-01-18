@@ -14,9 +14,8 @@ const omMiddleware = (store) => (next) => (action) => {
       console.log("------ FILE MIDDLEWARE : ", step);
       
       if (step === "transports") {
-        // Setting the data for the request
-        // if (data.transportDispensation) {
-          if (typeof data.transportDispensation !== 'string') {
+        
+          if (data.transportDispensation && typeof data.transportDispensation !== 'string') {
             const transportDispensation = {
               omId: data.omId,
               type: 'transport-dispensation',
@@ -24,10 +23,9 @@ const omMiddleware = (store) => (next) => (action) => {
             }
             filesToUpload.push(transportDispensation);
           }
-        // }
-        // if (data.vehicleAuthorization) {
           
-          if (typeof data.vehicleAuthorization !== 'string') {
+          
+          if (data.vehicleAuthorization &&typeof data.vehicleAuthorization !== 'string') {
             const vehicleAuthorization = {
               omId: data.omId,
               type: 'vehicle-authorization',
@@ -35,7 +33,6 @@ const omMiddleware = (store) => (next) => (action) => {
             }
             filesToUpload.push(vehicleAuthorization);
           }
-        // }
       }
       else if (step === "advance") {
         if (data.hotelQuotation && typeof data.hotelQuotation !== 'string') {

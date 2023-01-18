@@ -2,7 +2,7 @@ import React  from 'react';
 import PropTypes from 'prop-types';
 
 import './style.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { uploadFile } from 'src/reducer/omForm';
 import {
@@ -15,41 +15,45 @@ import {
 const Buttons = ({ step, url, id, watch, update, secondUpdate, userSignature}) => {
   
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const nextStep = step + 1;
   const backStep = step - 1;
   
   const handleClick = () => {
     const data = watch();
-    console.log(data);
+    
     if (step === 1) { // --------------------------------------------------------------------------------
-      if (typeof data.missionPurposeFile === 'string' || !data.missionPurposeFile) {
-        // delete data.om;
-        dispatch(update(data));
+      if (data.missionPurposeFile && typeof data.missionPurposeFile !== 'string') {
+        dispatch(uploadFile({data: data, step: 'mission'}));
+        // navigate(url.pathname + '?' + url.searchParams);
       }
       else {
-         dispatch(uploadFile({data: data, step: 'mission'}));
+        dispatch(update(data));
+        // navigate(url.pathname + '?' + url.searchParams);
       }
     }
     else if (step === 2) { // --------------------------------------------------------------------------------
       const databaseData = turnTransportsDataToDbFormat(data);
 
-      if ((databaseData.transportDispensation && databaseData.transportDispensation.length > 0) || (databaseData.transportDispensation && databaseData.transportDispensation.length > 0)) {
+      !databaseData.vehicleId ? databaseData.vehicleId = "" : databaseData.vehicleId;
+
+      if (databaseData.transportDispensation && typeof databaseData.transportDispensation !== 'string') {
         dispatch(uploadFile({data: databaseData, step: 'transports'}));
-      }
+      } 
+      else if (databaseData.vehicleAuthorization && typeof databaseData.vehicleAuthorization !== 'string') {
+        dispatch(uploadFile({data: databaseData, step: 'transports'}));
+      } 
       else {
+        // console.log(databaseData);
         dispatch(update(databaseData));
-        // TODO : last erreur
-        // "The identifier id is missing for a query of App\\Entity\\Vehicle"
       }
     }
-
     else if (step === 3) { // --------------------------------------------------------------------------------
       data.omId = id;
       const dataToBeSubmitted = turnAccomodationDataToDbFormat(data);
       dispatch(update(dataToBeSubmitted));
     }
-
     else if (step === 4) { // --------------------------------------------------------------------------------
       const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);      
       
@@ -61,7 +65,6 @@ const Buttons = ({ step, url, id, watch, update, secondUpdate, userSignature}) =
         dispatch(updateAdvance(dataToBeSubmitted));
       }
     }
-
     else if (step === 5) { // --------------------------------------------------------------------------------
       const formattedData = turnSignatureDataToDbFormat(data, userSignature);
 

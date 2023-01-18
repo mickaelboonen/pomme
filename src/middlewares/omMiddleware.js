@@ -8,7 +8,7 @@ import {
   saveAdvance,
   saveMore,
 } from 'src/reducer/omForm';
-import { advanceToNextStep,setApiResponse } from 'src/reducer/app';
+import { setApiResponse } from 'src/reducer/app';
 import { api } from './api';
 
 
@@ -23,7 +23,6 @@ const omMiddleware = (store) => (next) => (action) => {
           const finalisedOM = action.payload;
           finalisedOM.id = response.data;
           store.dispatch(saveNewOm(finalisedOM))
-          store.dispatch(advanceToNextStep(1));
         })
         .catch((error) => {
           console.error('add new om', error);

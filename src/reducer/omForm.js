@@ -27,7 +27,18 @@ const initialState = {
     {
       id: 1,
       step: 'mission',
-      data: {},
+      data: {
+        country: "",
+        abroadCosts: null,
+        departure: null,
+        departurePlace: null,
+        workAdress: null,
+        missionAdress: null,
+        missionPurpose: null,
+        missionPurposeFile: null,
+        region: null,
+        comeback: null,
+        comebackPlace: null},
     },
     {
       id: 2,
@@ -85,6 +96,13 @@ const initialState = {
   ],
   userOms: [],
   loader: false,
+  refusal: '',
+  adresses: [
+    'adresse Vauban', 
+    'adresse Carmes', 
+    'adresse Hoche', 
+    'adresse XYZ', 
+  ]
 };
 const omFormSlice = createSlice({
     name: 'omForm',
@@ -116,17 +134,7 @@ const omFormSlice = createSlice({
       updateSignature: () => {},
       updateTransports: () => {},
       updateAccomodations: () => {},
-      updateMission: (state, action) => {
-        let currentIndex;
-        state.omForm.forEach((step) => {
-          if (step.step === "mission") {
-            currentIndex = state.omForm.indexOf(step);
-          }
-        });
-        if (currentIndex !== -1) {
-          state.omForm[currentIndex].data = action.payload;
-        }
-      },
+      updateMission: () => {},
       saveOm: (state, action) => {
         state.currentOM = action.payload;
       },
@@ -142,6 +150,7 @@ const omFormSlice = createSlice({
         state.omForm[0].data = action.payload;
         state.omForm[0].data.omId = action.payload.om.id;
         state.loader = false;
+        state.loaderType = '';
       },
       saveTransports: (state, action) => {
         
