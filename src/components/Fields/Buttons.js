@@ -26,11 +26,11 @@ const Buttons = ({ step, url, id, watch, update, secondUpdate, userSignature}) =
     if (step === 1) { // --------------------------------------------------------------------------------
       if (data.missionPurposeFile && typeof data.missionPurposeFile !== 'string') {
         dispatch(uploadFile({data: data, step: 'mission'}));
-        // navigate(url.pathname + '?' + url.searchParams);
+        navigate(url.pathname + '?' + url.searchParams);
       }
       else {
         dispatch(update(data));
-        // navigate(url.pathname + '?' + url.searchParams);
+        navigate(url.pathname + '?' + url.searchParams);
       }
     }
     else if (step === 2) { // --------------------------------------------------------------------------------

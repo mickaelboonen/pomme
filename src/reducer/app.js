@@ -25,8 +25,7 @@ const omFormSlice = createSlice({
         action.payload.forEach((vehicle) => state.vehicles.push(vehicle));
       },
       setApiResponse: (state, action) => {
-        console.log(action.payload);
-        // state.apiMessage = action.payload;
+        state.apiMessage = action.payload;
       },
       clearMessage: (state) => {
         state.apiMessage = {};
