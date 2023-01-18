@@ -175,6 +175,7 @@ const Signature = ({ step }) => {
         watch={watch}
         update={updateSignature}
         secondUpdate={updateMore}
+        userSignature={userSignature}
       />
     </form>
     

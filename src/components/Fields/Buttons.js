@@ -8,10 +8,11 @@ import { uploadFile } from 'src/reducer/omForm';
 import {
   turnTransportsDataToDbFormat,
   turnAccomodationDataToDbFormat,
-  turnAdvanceDataToDbFormat
+  turnAdvanceDataToDbFormat,
+  turnSignatureDataToDbFormat
 } from 'src/selectors/dataToDbFormat';
 
-const Buttons = ({ step, url, id, watch, update, secondUpdate}) => {
+const Buttons = ({ step, url, id, watch, update, secondUpdate, userSignature}) => {
   
   const dispatch = useDispatch();
 
@@ -21,7 +22,7 @@ const Buttons = ({ step, url, id, watch, update, secondUpdate}) => {
   const handleClick = () => {
     const data = watch();
     console.log(data);
-    if (step === 1) {
+    if (step === 1) { // --------------------------------------------------------------------------------
       if (typeof data.missionPurposeFile === 'string' || !data.missionPurposeFile) {
         // delete data.om;
         dispatch(update(data));
@@ -30,56 +31,55 @@ const Buttons = ({ step, url, id, watch, update, secondUpdate}) => {
          dispatch(uploadFile({data: data, step: 'mission'}));
       }
     }
-    else if (step === 2) {
+    else if (step === 2) { // --------------------------------------------------------------------------------
       const databaseData = turnTransportsDataToDbFormat(data);
 
-      const typesToIgnore = ['string', null];
-      console.log(typesToIgnore.indexOf(typeof databaseData.transportDispensation) , typesToIgnore.indexOf(typeof databaseData.vehicleAuthorization));
-      
-      // if (typesToIgnore.indexOf(typeof databaseData.transportDispensation) === -1 || typesToIgnore.indexOf(typeof databaseData.vehicleAuthorization) === -1) {
-      // console.log('here ?');
       if ((databaseData.transportDispensation && databaseData.transportDispensation.length > 0) || (databaseData.transportDispensation && databaseData.transportDispensation.length > 0)) {
         dispatch(uploadFile({data: databaseData, step: 'transports'}));
-        console.log('upload files');
       }
-        
-      // }
-      // Else we directly update the transports entity
       else {
-        console.log('update data');
         dispatch(update(databaseData));
         // TODO : last erreur
         // "The identifier id is missing for a query of App\\Entity\\Vehicle"
       }
     }
 
-    else if (step === 3) {
-      
+    else if (step === 3) { // --------------------------------------------------------------------------------
       data.omId = id;
       const dataToBeSubmitted = turnAccomodationDataToDbFormat(data);
-      // console.log(dataToBeSubmitted);
       dispatch(update(dataToBeSubmitted));
     }
 
-    else if (step === 4) {
+    else if (step === 4) { // --------------------------------------------------------------------------------
       const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);      
       
 
       if ( dataToBeSubmitted.agentRib || dataToBeSubmitted.hotelQuotation ) {
-        console.log('AM I HERE ?');
         dispatch(uploadFile({data: dataToBeSubmitted, step: 'advance'}))
       }
       else {
-        console.log('OR HERE ?');
         dispatch(updateAdvance(dataToBeSubmitted));
       }
     }
 
-    else if (step === 5) {
-      
-    }
+    else if (step === 5) { // --------------------------------------------------------------------------------
+      const formattedData = turnSignatureDataToDbFormat(data, userSignature);
 
+      if (formattedData.agentSignature && typeof formattedData.agentSignature !== 'string') {
+        dispatch(uploadFile({ data: formattedData, step: 'signature'}));
+      } 
+      else {
+        dispatch(update(formattedData));
+      }
+      if (formattedData.files.length > 0 ) {
+        dispatch(uploadFile({ data: formattedData, step: 'more'}));
+      }
+      else {
+        dispatch(secondUpdate(formattedData));
+      }
+    }
   }
+
   return (
     <div className="form__section">
       <div className="form__section-field-buttons">
@@ -98,6 +98,7 @@ Buttons.propTypes = {
 
 Buttons.defaultProps = {
   secondUpdate: null,
+  userSignature: null,
 };
 
 export default Buttons;
