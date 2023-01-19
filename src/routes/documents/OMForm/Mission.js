@@ -32,6 +32,7 @@ import { clearMessage } from 'src/reducer/app';
 import { enableMissionFormFields } from 'src/reducer/efForm';
 import { uploadFile, updateOmName, updateMission } from 'src/reducer/omForm';
 import RequestWithFile from '../../../components/Fields/RequestWithFile';
+import ScientificEvent from './ScientificEventFields';
 
 const Mission = ({ step, isEfForm }) => {
     console.log('rendu');
@@ -115,6 +116,11 @@ const Mission = ({ step, isEfForm }) => {
     }
     else {
 
+      if (!data.science) {
+        data.budget = null;
+        data.presentation = null;
+      }
+      
       const departure = new Date(data.departure);
       const comeback = new Date(data.comeback);
 
@@ -207,7 +213,7 @@ const Mission = ({ step, isEfForm }) => {
           formField="science"
           label="Est-ce que c'est un événement scientifique ?"
         />
-        {isMissionAScienceEvent && (
+        {/* {isMissionAScienceEvent && (
           <RequestWithFile 
             requestType={'science'}
             register={register}
@@ -217,7 +223,7 @@ const Mission = ({ step, isEfForm }) => {
             updating={areWeUpdatingData}
             id="missionPurposeFile"
           />
-        )}
+        )} */}
         {!isMissionAScienceEvent && (
           <FileField
             disabled={isEfForm && isMissionFormDisabled}
@@ -228,6 +234,14 @@ const Mission = ({ step, isEfForm }) => {
             register={register}
             error={errors.missionPurposeFile}
             pieces="Joindre impérativement convocation, mail ou tout autre document en attestant"
+          />
+        )}
+        {isMissionAScienceEvent && (
+          <ScientificEvent
+            errors={errors}
+            setValue={setValue}
+            register={register}
+            filename={fileName}
           />
         )}
         <HiddenField id="omId" value={omId} register={register} />

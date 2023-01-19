@@ -151,7 +151,7 @@ export const handleValidationErrorsManually = (element, content, toAdd = false) 
  * @param {boolean} isFormModified 
  * @returns 
  */
-export const defineValidationRulesForMission = (isEfForm, isFormModified) => {
+export const defineValidationRulesForMission = (isEfForm, isFormModified, isScientific = false) => {
 
   let errorMessages = {
     missionPurpose: null,
@@ -164,7 +164,9 @@ export const defineValidationRulesForMission = (isEfForm, isFormModified) => {
     missionAdress: null,
     workAdress: null,
     country: null,
-    abroadCosts: null
+    abroadCosts: null,
+    budget: null,
+    presentation: null,
   }
 
   if (isEfForm) {

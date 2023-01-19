@@ -12,9 +12,9 @@
 }
 
 .form-section-title {
-  color: vars.$darkestThemeColor;
+  color: rgba(var(--darkestThemeColor));
   text-transform: uppercase;
-  border-bottom: 2px solid vars.$darkestThemeColor;
+  border-bottom: 2px solid rgba(var(--darkestThemeColor));
   text-align: left;
   padding-bottom: 0.5rem;
   font-weight: bold;
