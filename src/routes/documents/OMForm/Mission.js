@@ -11,6 +11,7 @@ import './style.scss';
 import EfMission from '../EfForm/Mission';
 import Buttons from 'src/components/Fields/Buttons';
 import ApiResponse from 'src/components/ApiResponse';
+import SwitchButton from 'src/components/SwitchButton';
 import DateField from 'src/components/Fields/DateField';
 import FileField from 'src/components/Fields/FileField';
 import TextField from 'src/components/Fields/TextField';
@@ -30,6 +31,7 @@ import { getSavedFileName } from 'src/selectors/formDataGetters';
 import { clearMessage } from 'src/reducer/app';
 import { enableMissionFormFields } from 'src/reducer/efForm';
 import { uploadFile, updateOmName, updateMission } from 'src/reducer/omForm';
+import RequestWithFile from '../../../components/Fields/RequestWithFile';
 
 const Mission = ({ step, isEfForm }) => {
     console.log('rendu');
@@ -164,6 +166,10 @@ const Mission = ({ step, isEfForm }) => {
   const setComebackValue = (value) => {
     setValue('comeback', value);
   }
+
+  const toggleScienceForm = (event) => {
+    console.log(event.target.checked);
+  }
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section">
@@ -177,6 +183,19 @@ const Mission = ({ step, isEfForm }) => {
           register={register}
           error={errors.missionPurpose}
           required={errorMessages.missionPurpose}
+        />
+        <SwitchButton
+          register={register}
+          handler={toggleScienceForm}
+          isInForm
+          formField="science"
+          label="Est-ce que c'est un event scientifique ?"
+        />
+        <RequestWithFile 
+          requestType={'science'}
+          register={register}
+          setValue={setValue}
+          errors={errors}
         />
         <FileField
           disabled={isEfForm && isMissionFormDisabled}

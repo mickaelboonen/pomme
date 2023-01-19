@@ -28,6 +28,7 @@ CheckboxInput.defaulProps = {
   handler: null,
   columnDisplay: false,
   checked: false,
+  required: null,
 };
 
 export default CheckboxInput;
