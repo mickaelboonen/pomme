@@ -3,19 +3,20 @@ import PropTypes from 'prop-types';
 
 import './style.scss';
 
-const FileMenu = ({ status }) => {
+const FileMenu = ({ status, id}) => {
   // TODO : faire toutes les verifs de statut une fois les statuts décidés
 
   let validated = false;
   if (status === 10) {
     validated = true;
   }
-
+  console.log(id);
+  //TODO : changer le lien
   return (
     <div className="file-menu">
     {!validated && (
       <ul className="file-menu__list">
-        <li  className="file-menu__list-li"><a href="#">Reprendre / Modifier</a></li>
+        <li  className="file-menu__list-li"><a href={"/modifier-un-document/ordre-de-mission?etape=1&id=" + id}>Reprendre / Modifier</a></li>
         <li  className="file-menu__list-li"><a href="#">Faire une demande de déplacement</a></li>
         { status === 9 && (<li  className="file-menu__list-li"><a href="#">Prendre connaissance du refus et supprimer</a></li>)}
       </ul>

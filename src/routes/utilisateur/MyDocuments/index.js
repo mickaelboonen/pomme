@@ -27,12 +27,12 @@ const MyDocuments = () => {
   const { nextEFTarget, EFTabs } = useSelector((state) => state.efForm);
   const { currentStep } = useSelector((state) => state.app);
 
-  useEffect(() => {
-    if (currentStep === 1) {
-      console.log(currentStep);
-      navigate(`/nouveau-document/ordre-de-mission?etape=${currentStep}&id=${currentOM.id}`)
-    }
-  }, [currentStep])
+  // useEffect(() => {
+  //   if (currentStep === 1) {
+  //     console.log(currentStep);
+  //     navigate(`/nouveau-document/ordre-de-mission?etape=${currentStep}&id=${currentOM.id}`)
+  //   }
+  // }, [currentStep])
 
   const currentOMs = userOms.filter((om) => om.status === 1);
   const pastOMs = userOms.filter((om) => om.status === 8);
