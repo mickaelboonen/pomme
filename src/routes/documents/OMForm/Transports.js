@@ -266,7 +266,7 @@ const Transports = ({ step }) => {
                 <Link to="/nouveau-document/demande-de-dérogation">FAIRE LA DEMANDE</Link>
               </div>
             </div>
-            {dispensation && <button id ='delete-dispensation' type='button' onClick={handleClickOnDelete}>Supprimer la pièce choisie</button>}
+            {dispensation && <button className="form__section-container-delete-button" id ='delete-dispensation' type='button' onClick={handleClickOnDelete}>Supprimer la pièce choisie</button>}
             {errors.derogation && <p className="form__section-field-error form__section-field-error--open">{errors.derogation.message}</p>}
           </div>
         )}
@@ -301,8 +301,8 @@ const Transports = ({ step }) => {
                 <Link to="/nouveau-document/autorisation-de-véhicule">FAIRE LA DEMANDE</Link>
               </div>
             </div>
+            {vehicleAuthorizationFile && <button id ='delete-authorization' className="form__section-container-delete-button" type='button' onClick={handleClickOnDelete}>Supprimer la pièce choisie</button>}
             <p className="form__section-container-reminder">RAPPEL : Remboursement Forfait SNCF 2ème classe</p>
-            {vehicleAuthorizationFile && <button id ='delete-authorization' type='button' onClick={handleClickOnDelete}>Supprimer la pièce choisie</button>}
             {errors.authorization && <p className="form__section-field-error form__section-field-error--open">{errors.authorization.message}</p>}
           </div>
         )}
