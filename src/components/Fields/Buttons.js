@@ -22,6 +22,8 @@ const Buttons = ({ step, url, id, watch, update, secondUpdate, userSignature}) =
   
   const handleClick = () => {
     const data = watch();
+    console.log(data);
+    return;
     
     if (step === 1) { // --------------------------------------------------------------------------------
       if (data.missionPurposeFile && typeof data.missionPurposeFile !== 'string') {

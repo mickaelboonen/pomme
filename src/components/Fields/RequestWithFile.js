@@ -19,6 +19,8 @@ const RequestWithFile = ({
   filename, // name of the file (when updating a form)
   errors, // array of errors
   file, // null or File element 
+  updating,
+  id
 }) => {
   
   
@@ -38,39 +40,39 @@ const RequestWithFile = ({
   }
 
 
-  const handleClickOnDelete = (event) => {
-    const { id } = event.target;
-    
-    let target = id.slice(7);
-
-    if (target === 'authorization') {
-      target = 'vehicleAuthorizationFile';
-    }
-  
-    setValue(target, null);
-    const nameElement = document.getElementById(target + '-field').nextElementSibling;
+  const handleClickOnDelete = () => {
+    setValue(id, null);
+    const nameElement = document.getElementById(id + '-field').nextElementSibling;
     nameElement.textContent = '';
   }
-
+  
+  let error = '';
+  if (errors.hasOwnProperty(id)) {
+    error = errors[id].message;
+  }
+  else {
+    error = '';
+  }
   
   return (
     <div className="form__section-container" id="upper-class-request">
       <h4 className="form__section-container-title">{title}</h4>
       <div className="form__section-container-options">
-        {requestType !== 'science' && (
+        
+        {updating && (
           <FileField
             fileName={filename}
-            id="dispensation-field"
+            id={id + '-field'}
             setValue={setValue}
-            formField="dispensation"
+            formField={id}
             register={register}
           />
         )}
-        {requestType !== 'science' && <span className="form__section-container-options__separator">OU</span>}
+        {updating && <span className="form__section-container-options__separator">{requestType === 'science' ? 'ET' : 'OU'}</span>}
         <div className="form__section-field">
           <CheckboxInput
-            id="dispensation-for-validation-field"
-            formField="dispensationForValidation"
+            id={id + '-for-validation-field'}
+            formField={id + 'ForValidation'}
             label="Demande en cours"
             register={register}
             columnDisplay
@@ -81,8 +83,8 @@ const RequestWithFile = ({
           <Link to={link}>FAIRE LA DEMANDE</Link>
         </div>
       </div>
-      {(file && requestType !== 'science') && <button className="form__section-container-delete-button" id ='delete-dispensation' type='button' onClick={handleClickOnDelete}>Supprimer la pièce choisie</button>}
-      {errors.derogation && <p className="form__section-field-error form__section-field-error--open">{errors.derogation.message}</p>}
+      {(file || typeof filename === 'string') && <button className="form__section-container-delete-button" id ={'delete-' + id} type='button' onClick={handleClickOnDelete}>Supprimer la pièce choisie</button>}
+      {error !== "" && <p className="form__section-field-error form__section-field-error--open">{error}</p>}
     </div>
   );
 }

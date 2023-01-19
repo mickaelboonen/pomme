@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -83,12 +83,22 @@ const Mission = ({ step, isEfForm }) => {
     if (defaultValues.comeback) {
       setValue('comeback', defaultValues.comeback.slice(0, 16));
     }
+    if (defaultValues.science && defaultValues.missionPurposeFile === 'pending') {
+      setValue('missionPurposeFileForValidation', true);
+    }
+
   }
 
   const onSubmit = (data) => {
     console.log(data);
 
-    if (!data.missionPurposeFile || data.missionPurposeFile.length === 0) {
+    if (data.science) {
+      if ((!data.missionPurposeFile || data.missionPurposeFile.length === 0) && !data.missionPurposeFileForValidation) {
+        setError('missionPurposeFile', { type: 'custom', message: 'Merci de fournir le justificatif de la mission.'})
+        return;
+      }
+    }
+    else if (!data.missionPurposeFile || data.missionPurposeFile.length === 0) {
       setError('missionPurposeFile', { type: 'custom', message: 'Merci de fournir le justificatif de la mission.'})
       return;
     }
@@ -124,8 +134,12 @@ const Mission = ({ step, isEfForm }) => {
         }
       }
       else {
-        if (typeof data.missionPurposeFile === 'string') {
+        if (!data.missionPurposeFile || typeof data.missionPurposeFile === 'string') {
           delete data.om;
+          if (data.science && data.missionPurposeFileForValidation) {
+            data.missionPurposeFile = 'pending';
+          }
+          delete data.missionPurposeFileForValidation;
           dispatch(updateMission(data))
         }
         else {
@@ -149,7 +163,8 @@ const Mission = ({ step, isEfForm }) => {
   // TODO : rendre le champ tjrs visible obligatoire
   // Rajouter un champ adresse normée si adresse différente
   
-  
+  const [isMissionAScienceEvent, setIsMissionAScienceEvent] = useState(defaultValues.science);
+
   useEffect(() => {
     handleRegionFields(region, register, unregister);
   }, [unregister, region]);
@@ -168,8 +183,9 @@ const Mission = ({ step, isEfForm }) => {
   }
 
   const toggleScienceForm = (event) => {
-    console.log(event.target.checked);
+    setIsMissionAScienceEvent(event.target.checked);
   }
+  console.log(errors);
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section">
@@ -189,24 +205,31 @@ const Mission = ({ step, isEfForm }) => {
           handler={toggleScienceForm}
           isInForm
           formField="science"
-          label="Est-ce que c'est un event scientifique ?"
+          label="Est-ce que c'est un événement scientifique ?"
         />
-        <RequestWithFile 
-          requestType={'science'}
-          register={register}
-          setValue={setValue}
-          errors={errors}
-        />
-        <FileField
-          disabled={isEfForm && isMissionFormDisabled}
-          setValue={setValue}
-          id="mission-goal"
-          formField="missionPurposeFile"
-          fileName={fileName}
-          register={register}
-          error={errors.missionPurposeFile}
-          pieces="Joindre impérativement convocation, mail ou tout autre document en attestant"
-        />
+        {isMissionAScienceEvent && (
+          <RequestWithFile 
+            requestType={'science'}
+            register={register}
+            setValue={setValue}
+            errors={errors}
+            filename={fileName}
+            updating={areWeUpdatingData}
+            id="missionPurposeFile"
+          />
+        )}
+        {!isMissionAScienceEvent && (
+          <FileField
+            disabled={isEfForm && isMissionFormDisabled}
+            setValue={setValue}
+            id="mission-goal"
+            formField="missionPurposeFile"
+            fileName={fileName}
+            register={register}
+            error={errors.missionPurposeFile}
+            pieces="Joindre impérativement convocation, mail ou tout autre document en attestant"
+          />
+        )}
         <HiddenField id="omId" value={omId} register={register} />
       </div>
       <div className="form__section">
