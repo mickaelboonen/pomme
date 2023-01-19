@@ -66,7 +66,19 @@ const Mission = ({ step, isEfForm }) => {
 
   const defaultValues = omForm.find((omStep) => omStep.step === 'mission').data;
   
-  const fileName = defaultValues.missionPurposeFile ? getSavedFileName(defaultValues.missionPurposeFile): '';
+  let fileName = '';
+
+  if (defaultValues.missionPurposeFile) {
+    defaultValues.missionPurposeFile.forEach((file) => {
+
+      fileName += getSavedFileName(file);
+
+      if (defaultValues.missionPurposeFile.length > 1) {
+        fileName += ' - ';
+      }
+    })
+  }
+
 
   const {
     register, handleSubmit, watch,
@@ -213,21 +225,11 @@ const Mission = ({ step, isEfForm }) => {
           formField="science"
           label="Est-ce que c'est un événement scientifique ?"
         />
-        {/* {isMissionAScienceEvent && (
-          <RequestWithFile 
-            requestType={'science'}
-            register={register}
-            setValue={setValue}
-            errors={errors}
-            filename={fileName}
-            updating={areWeUpdatingData}
-            id="missionPurposeFile"
-          />
-        )} */}
         {!isMissionAScienceEvent && (
           <FileField
             disabled={isEfForm && isMissionFormDisabled}
             setValue={setValue}
+            multiple
             id="mission-goal"
             formField="missionPurposeFile"
             fileName={fileName}

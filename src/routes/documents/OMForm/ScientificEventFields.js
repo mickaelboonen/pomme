@@ -38,18 +38,19 @@ const ScientificEvent = ({ setValue, register, errors, filename}) => {
         id="budget-field"
         label="Quel budget / contrat est concerné ?"
         formField="budget"
-        required="Merci de renseigner lu budget ou le contrat concerné par l'événement."
         placeholder=""
         error={errors.budget}
       />
       <FileField
         setValue={setValue}
+        multiple
         id="missionPurposeFile-field"
         formField="missionPurposeFile"
         fileName={filename}
         register={register}
         error={errors.missionPurposeFile}
         label="Jutificatif d'événement"
+        pieces="Si le document est langue étrangère, merci de fournir une traduction en plus."
       />
     </div>
   );

@@ -72,12 +72,14 @@ const omMiddleware = (store) => (next) => (action) => {
         })
       }
       else if (step === 'mission') {
-        const mission = {
-          omId: data.omId,
-          type: 'mission',
-          file: data.missionPurposeFile,
-        }
-        filesToUpload.push(mission);
+        data.missionPurposeFile.forEach((file) => {
+          const fileToUpload = {
+            omId: data.omId,
+            type: 'mission',
+            file: file,
+          }
+          filesToUpload.push(fileToUpload);
+        })
       }
       console.log('filesToUpload - ', filesToUpload);
       
@@ -86,15 +88,18 @@ const omMiddleware = (store) => (next) => (action) => {
         .then((response) => {
 
           const { data } = action.payload;
-          console.log(response.data);
+          console.log('-----------------------------------------------------',response.data);
 
           if (step === "more") {
             data.files = [];
           }
+          else if (step === 'mission') {
+            data.missionPurposeFile = [];
+          }
 
           // Retrieving the url for each file and assigning it to the right property
           response.data.forEach((file) => {
-            console.log(file);
+            // console.log(file);
             if (file.type === 'transport-dispensation') {
               data.transportDispensation = file.file.url;
             }
@@ -111,13 +116,13 @@ const omMiddleware = (store) => (next) => (action) => {
               data.files.push(file.file.url);
             }
             else if (file.type === 'mission') {
-              data.missionPurposeFile = file.file.url;
+              data.missionPurposeFile.push(file.file.url);
             }
             else if (file.type === 'signature') {
               data.agentSignature = file.file.url;
             }
           })
-
+          
           // Now updates the transports values in the database
           if (step === 'transports') {
             console.log('middleware here');
