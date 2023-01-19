@@ -13,7 +13,13 @@ const DateField = ({
   disabled,
   error,
   required,
-}) => (
+  handler,
+}) => {
+  const handleChange = (event) => {
+    handler(event.target.value);
+  };
+
+  return (
   <div className="form__section-field" id={formField}>
     <label className="form__section-field-label" htmlFor={id}>{label}</label>
     <input
@@ -24,10 +30,17 @@ const DateField = ({
         {...register(formField, {
           required: required
         })}
+      onChange={handleChange}
     />
     <p className={classNames("form__section-field-error", { "form__section-field-error--open": error?.message.length > 0 })}>{error?.message}</p> 
   </div>
   );
+};
+
+DateField.defaultProps = {
+  handler: null,
+};
+
 
 DateField.propTypes = {
 

@@ -161,6 +161,9 @@ const Mission = ({ step, isEfForm }) => {
     dispatch(enableMissionFormFields(event.currentTarget.checked));
   }
 
+  const setComebackValue = (value) => {
+    setValue('comeback', value);
+  }
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section">
@@ -219,7 +222,7 @@ const Mission = ({ step, isEfForm }) => {
                 register={register}
                 required={errorMessages.departurePlace}
               />
-              {errors.departurePlace &&<p className="form__section-field-error form__section-field-error--open">{errors.departurePlace.message}</p>}
+              {errors.departurePlace && <p className="form__section-field-error form__section-field-error--open">{errors.departurePlace.message}</p>}
             </div>
           </div>
           <div className="form__section-half form__section-half--separator" />
@@ -233,6 +236,7 @@ const Mission = ({ step, isEfForm }) => {
               formField="comeback"
               error={errors.comeback}
               required={errorMessages.comeback}
+              handler={setComebackValue}
             />
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Lieu de retour</label>
