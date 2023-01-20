@@ -12,7 +12,7 @@ import {
   turnSignatureDataToDbFormat
 } from 'src/selectors/dataToDbFormat';
 
-const Buttons = ({ step, url, id, watch, update, secondUpdate, userSignature}) => {
+const Buttons = ({ trigger, step, url, id, watch, update, secondUpdate, userSignature}) => {
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,6 +23,7 @@ const Buttons = ({ step, url, id, watch, update, secondUpdate, userSignature}) =
   const handleClick = () => {
     const data = watch();
     console.log(data);
+    trigger()
     return;
     
     if (step === 1) { // --------------------------------------------------------------------------------

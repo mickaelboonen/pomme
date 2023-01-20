@@ -17,7 +17,9 @@ export const turnTransportsDataToDbFormat = (data) => {
     vehicleAuthorizationFile,
     dispensationForValidation,
     dispensation,
-    vehicleAuthorizationFileForValidation
+    vehicleAuthorizationFileForValidation,
+    taxiDispensation,
+    taxiDispensationForValidation
   } = data;
 
   const dataToBeSubmitted = {
@@ -74,6 +76,14 @@ export const turnTransportsDataToDbFormat = (data) => {
   }
   else {
     dataToBeSubmitted.transportDispensation = null;
+  }
+
+  if (taxiDispensationForValidation) {
+    dataToBeSubmitted.taxiDispensation = "pending";
+  }
+
+  if (taxiDispensation) {
+    dataToBeSubmitted.taxiDispensation = taxiDispensation;
   }
   
   return dataToBeSubmitted;
