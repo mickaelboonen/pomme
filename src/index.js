@@ -115,11 +115,19 @@ const router = createBrowserRouter([
           },
           {
             path: 'demande-de-dérogation',
-            element: <Derogation />   
+            element: <Derogation />,
+            loader: async ({ request }) => {
+              const url = new URL(request.url);
+              return url;  
+            },     
           },
           {
             path: 'demande-de-d%C3%A9rogation',
-            element: <Derogation />      
+            element: <Derogation />,
+            loader: async ({ request }) => {
+              const url = new URL(request.url);
+              return url;  
+            },     
           },
 
         ],

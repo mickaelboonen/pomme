@@ -127,6 +127,25 @@ const Transports = ({ step }) => {
   // FORM FIELDS -----------------------------------------------------------------------------------------------------------------------------------------
   const [trainClass , planeClass, vehicle, vehicleAuthorizationFile, vehicleAuthorizationFileForValidation, dispensation, dispensationForValidation] = watch(['trainClass', 'planeClass', 'vehicle', 'vehicleAuthorizationFile', 'vehicleAuthorizationFileForValidation', 'dispensation', 'dispensationForValidation' ]);
 
+  let dispensationTarget = [];
+  if (trainClass ==='first-class') {
+    dispensationTarget.push('train');
+  }
+  else {
+    const index = dispensationTarget.indexOf('train');
+    if (index > 0) {
+      dispensationTarget.splice(index, 1);
+    }
+  }
+  if (planeClass ==='business-class') {
+    dispensationTarget.push("plane");
+  }
+  else {
+    const index = dispensationTarget.indexOf('plane');
+    if (index > 0) {
+      dispensationTarget.splice(index, 1);
+    }
+  }
   // Clears the derogation error
   useEffect(() => {
     if (planeClass !== null) {
@@ -263,7 +282,7 @@ const Transports = ({ step }) => {
               </div>
               <span className="form__section-container-options__separator">OU</span>
               <div className="form__section-container-button">
-                <Link to="/nouveau-document/demande-de-dérogation">FAIRE LA DEMANDE</Link>
+                <Link to={"/nouveau-document/demande-de-dérogation?omId=" + omId + "&type=" + dispensationTarget}>FAIRE LA DEMANDE</Link>
               </div>
             </div>
             {dispensation && <button className="form__section-container-delete-button" id ='delete-dispensation' type='button' onClick={handleClickOnDelete}>Supprimer la pièce choisie</button>}
