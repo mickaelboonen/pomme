@@ -113,6 +113,7 @@ const omFormSlice = createSlice({
       addNewOM: () => {},
       fetchOMs: () => {},
       uploadFile: () => {},
+      createDerogation: () => {},
       getMission: (state) => {
         state.loader = true
       },
@@ -162,12 +163,25 @@ const omFormSlice = createSlice({
           vehicle: action.payload.vehicle ? action.payload.vehicle.id : null,
           publicTransports: action.payload.publicTransports,
           others:  [],
+          dispensations:  action.payload.dispensations,
           omId: action.payload.om.id,
           vehicleAuthorizationFile: null,
           vehicleAuthorizationFileForValidation: false,
           dispensation: null,
           dispensationForValidation: false,
         }
+
+        action.payload.dispensations.forEach((dispensation) => {
+
+          if (dispensation && (dispensation.type.includes('train') || dispensation.type.includes('avion'))) {
+      
+            dataForTheComponent.dispensationForValidation = true;
+          }
+          else if (dispensation && dispensation.type.includes('taxi')) {
+      
+          }
+          
+        });
         
 
         if (action.payload.taxi) {
@@ -176,8 +190,8 @@ const omFormSlice = createSlice({
         if (action.payload.parking) {
           dataForTheComponent.others.push('parking');
         }
-        
-        action.payload.transportClass.forEach((service) => {
+        console.log(action.payload);
+        action.payload.transport_class.forEach((service) => {
           if (service === 'first-class' || service === 'second-class') {
             dataForTheComponent.trainClass = service;
           }
@@ -186,7 +200,7 @@ const omFormSlice = createSlice({
             
           }
         })
-        action.payload.transportPayment.forEach((service) => {
+        action.payload.transport_payment.forEach((service) => {
 
           if (service === 'train-paid-by-unimes-t' || service === 'train-paid-by-agent') {
             dataForTheComponent.trainPayment = service.slice(14);
@@ -197,18 +211,18 @@ const omFormSlice = createSlice({
           }
         })
 
-        if (action.payload.vehicleAuthorization === 'pending') {
+        if (action.payload.vehicle_authorization === 'pending') {
           dataForTheComponent.vehicleAuthorizationFileForValidation = true;
         }
-        else if (action.payload.vehicleAuthorization !== null) {
-          dataForTheComponent.vehicleAuthorizationFile = action.payload.vehicleAuthorization;
+        else if (action.payload.vehicle_authorization !== null) {
+          dataForTheComponent.vehicleAuthorizationFile = action.payload.vehicle_authorization;
         }
 
-        if (action.payload.transportDispensation === 'pending') {
+        if (action.payload.transport_dispensation === 'pending') {
           dataForTheComponent.dispensationForValidation = true;
         }
-        else if (action.payload.transportDispensation !== null) {
-          dataForTheComponent.dispensation = action.payload.transportDispensation;
+        else if (action.payload.transport_dispensation !== null) {
+          dataForTheComponent.dispensation = action.payload.transport_dispensation;
         }
 
         state.omForm[1].data = dataForTheComponent;
@@ -277,7 +291,8 @@ export const {
   saveAccomodations,
   saveAdvance,
   saveMore,
-  updateAccomodations
+  updateAccomodations,
+  createDerogation,
 } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

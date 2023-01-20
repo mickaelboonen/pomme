@@ -63,6 +63,8 @@ const Transports = ({ step }) => {
   const dispensationFileName = defaultValues.dispensation ? getSavedFileName(defaultValues.dispensation): '';
   const authorizationFileName = defaultValues.vehicleAuthorizationFile ? getSavedFileName(defaultValues.vehicleAuthorizationFile): '';
 
+  
+  console.log(defaultValues);
   const {
     register,
     setValue,
@@ -74,7 +76,6 @@ const Transports = ({ step }) => {
     { errors },
   } = useForm({ defaultValues: defaultValues});
   
-
   const onSubmit = (data) => {
     console.log(data);
     // return;
@@ -127,6 +128,7 @@ const Transports = ({ step }) => {
   // FORM FIELDS -----------------------------------------------------------------------------------------------------------------------------------------
   const [trainClass , planeClass, vehicle, vehicleAuthorizationFile, vehicleAuthorizationFileForValidation, dispensation, dispensationForValidation] = watch(['trainClass', 'planeClass', 'vehicle', 'vehicleAuthorizationFile', 'vehicleAuthorizationFileForValidation', 'dispensation', 'dispensationForValidation' ]);
 
+  // TODO : Selecteurs
   let dispensationTarget = [];
   if (trainClass ==='first-class') {
     dispensationTarget.push('train');
@@ -146,6 +148,9 @@ const Transports = ({ step }) => {
       dispensationTarget.splice(index, 1);
     }
   }
+
+
+
   // Clears the derogation error
   useEffect(() => {
     if (planeClass !== null) {

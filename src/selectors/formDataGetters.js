@@ -13,5 +13,15 @@ export const getAccomodationsDefault = (path) => {
 
 export const getSavedFileName = (urlFile) => {
   const file = urlFile.split('\\');
-  return file[file.length - 1];
+  const  filename = file[file.length - 1];
+
+  
+  const destructuredFilename = filename.split('-');
+  destructuredFilename.pop();
+
+  let  finalName = destructuredFilename.join('-');
+  const filenameParts = filename.split('.');
+  finalName += '.' + filenameParts[filenameParts.length -1];
+  
+  return finalName;
 }

@@ -9,12 +9,15 @@ import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import ButtonElement from 'src/components/Fields/ButtonElement';
 import TextareaField from 'src/components/Fields/TextareaField';
+import { useDispatch } from 'react-redux';
+import { createDerogation } from '../../../reducer/omForm';
 
 const Derogation = () => {
   
   
   const navigate = useNavigate();
   const loader = useLoaderData();
+  const dispatch = useDispatch();
 
   const types = loader.searchParams.get('type').split(',');
   const omId = loader.searchParams.get('omId');
@@ -47,6 +50,7 @@ const Derogation = () => {
     data.type = lol;
     console.log(data);
 
+    dispatch(createDerogation(data));
     // TODO : Process Data
     // On récupère les données de l'utilisateur et on envoie à la validation.
     // navigate('/nouveau-document/ordre-de-mission?etape=2');

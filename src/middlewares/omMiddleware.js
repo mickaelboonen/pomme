@@ -156,7 +156,9 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/getTransports':
       api.get("/api/om/transports/find/" + action.payload)
         .then((response) => {
-            store.dispatch(saveTransports(response.data[0]))
+          const data = JSON.parse(response.data);
+
+            store.dispatch(saveTransports(data[0]))
         })
         .catch((error) => {
           console.error('get signature', error);
@@ -198,6 +200,20 @@ const omMiddleware = (store) => (next) => (action) => {
           // store.dispatch(showTicketCreationResponse(error.response))
         });
       break;
+    
+    case 'omForm/createDerogation':
+      console.log('here');
+      api.post("/api/om/derogation/create", action.payload)
+        .then((response) => {
+            // store.dispatch(saveAdvance(response.data[0]))
+            console.log(response.data);
+        })
+        .catch((error) => {
+          console.error('get signature', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
+    
   
     default:
   }
