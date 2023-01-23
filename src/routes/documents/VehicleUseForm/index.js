@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from "react-hook-form";
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLoaderData } from 'react-router-dom';
 
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
@@ -13,10 +13,15 @@ import { toggleIsHiddenOnNextFormSection } from '../../../selectors/domManipulat
 import FileField from 'src/components/Fields/FileField';
 import SwitchButton from 'src/components/SwitchButton';
 import ButtonElement from 'src/components/Fields/ButtonElement';
+import { useState } from 'react';
 
 const VehicleUseForm = () => {
-  const { search } = useLocation();
-  const step = Number(search.slice(search.length - 1));
+  const url = useLoaderData();
+  const carId = url.searchParams.get('vehicle');
+  const omId = url.searchParams.get('omId');
+
+  const [personalCar, setPersonalCar] = useState(carId);
+  console.log(carId, omId);
   
   const navigate = useNavigate();
   const {
@@ -32,9 +37,9 @@ const VehicleUseForm = () => {
 
     // TODO : Process Data
 
-    // Next Step
-    const nextStep = step++;
-    navigate('/nouveau-document/ordre-de-mission?etape=' + step++);
+    // // Next Step
+    // const nextStep = step++;
+    // navigate('/nouveau-document/ordre-de-mission?etape=' + step++);
 
     
   };
@@ -121,8 +126,10 @@ const VehicleUseForm = () => {
       <form className="form" onSubmit={handleSubmit(onSubmit)}>
         <div className="form__section">
           <FormSectionTitle>Voiture</FormSectionTitle>
-          <div className="form__section-field">
-            <label className="form__section-field-label" htmlFor="departure-place">Type de véhicule</label>
+          <label className="form__section-field-label" htmlFor="departure-place">Type de véhicule</label>
+
+          <div className="form__section  form__section--split">
+            {/* <label className="form__section-field-label" htmlFor="departure-place">Type de véhicule</label> */}
             <RadioInput
               id="personnal-car"
               formField="car-type"
@@ -144,35 +151,37 @@ const VehicleUseForm = () => {
               register={register}
               handler={handleVehicleType}
             />
-            <p>(*) Produire obligatoirement la photocopie de la carte grise et de l'attestation d'assurance</p>
           </div>
-          {/*  TODO : select est in */}
+          <p className="form__section-field-label form__section-field-label--infos">(*) Produire obligatoirement la photocopie de la carte grise et de l'attestation d'assurance</p>
           <SelectField 
             register={register}
             blankValue="Pas de véhicule enregistré"
             data={['1', '2', '3', 'Nouveau véhicule']}
             id="vehicles-list"
-            isHidden
+            // isHidden
             handler={handleNewCar}
             formField="preregistered-vehicle"
             label="Sélectionner un véhicule déjà enregistré"
           />
+          <div className="form__section  form__section--split">
+            <TextField
+              // isHidden
+              id="car-brand"
+              label="Marque du véhicule"
+              formField="car-brand"
+              register={register}
+            />
+            <TextField
+              // isHidden
+              id="car-registration"
+              label="Numéro d'immatriculation"
+              formField="car-registration"
+              register={register}
+            />
+            </div>
+            <div className="form__section  form__section--split">
           <TextField
-            isHidden
-            id="car-brand"
-            label="Marque du véhicule"
-            formField="car-brand"
-            register={register}
-          />
-          <TextField
-            isHidden
-            id="car-registration"
-            label="Numéro d'immatriculation"
-            formField="car-registration"
-            register={register}
-          />
-          <TextField
-            isHidden
+            // isHidden
             id="car-rating"
             label="Puissance fiscale"
             formField="car-rating"
@@ -181,19 +190,20 @@ const VehicleUseForm = () => {
             min="0"
           />
           <TextField
-            isHidden
+            // isHidden
             id="car-insurance"
             label="Compagnie d'assurance"
             formField="car-insurance"
             register={register}
-          />
+          /></div>
+          <div className="form__section  form__section--split">
           <TextField
-            isHidden
+            // isHidden
             id="police-number"
             label="Numéro Police"
             formField="police-number"
             register={register}
-          />
+          /></div>
           <div className="form__section-field-button form__section-field--hidden">
             <ButtonElement
               isHidden

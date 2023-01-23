@@ -17,12 +17,16 @@ const omFormSlice = createSlice({
     initialState,
     reducers: {
       getVehicles: () => {},
+      getVehicle: () => {},
       getSignature: () => {},
       saveSignature: (state, action) => {
         state.userSignature = action.payload.url;
       },
       saveVehicles: (state, action) => {
         action.payload.forEach((vehicle) => state.vehicles.push(vehicle));
+      },
+      saveVehicle: (state, action) => {
+        // action.payload.forEach((vehicle) => state.vehicles.push(vehicle));
       },
       setApiResponse: (state, action) => {
         state.apiMessage = action.payload;
@@ -33,6 +37,6 @@ const omFormSlice = createSlice({
     },
 });
 
-export const { clearMessage, setApiResponse, getSignature, saveSignature, getVehicles, saveVehicles } = omFormSlice.actions;
+export const { clearMessage, setApiResponse, getSignature, saveSignature, getVehicles, getVehicle, saveVehicle, saveVehicles } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

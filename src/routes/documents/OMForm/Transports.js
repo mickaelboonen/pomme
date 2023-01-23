@@ -291,7 +291,7 @@ const Transports = ({ step }) => {
           id="vehicleAuthorizationFile"
           data={defaultValues}
           permanentOm={permanentOm}
-          link={"/nouveau-document/autorisation-de-véhicule?omId=" + omId}
+          link={"/nouveau-document/autorisation-de-véhicule?omId=" + omId + '&vehicle=' + vehicle}
         />
       )}
       <div className="form__section">

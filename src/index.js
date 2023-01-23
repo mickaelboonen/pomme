@@ -32,7 +32,7 @@ import RefusalNotification from "src/routes/utilisateur/MyAccount/RefusalNotific
 
 
 import { fetchOMs, getMission, fetchOm, getTransports } from "src/reducer/omForm";
-import { getSignature, getVehicles } from "src/reducer/app";
+import { getSignature, getVehicles, getVehicle } from "src/reducer/app";
 import { getAccomodations, getAdvance, getMore } from "./reducer/omForm";
 
 
@@ -77,11 +77,23 @@ const router = createBrowserRouter([
           },
           {
             path: 'autorisation-de-véhicule',
-            element: <VehicleUseForm />    
+            element: <VehicleUseForm />,
+            loader: async ({ request }) => {
+              const url = new URL(request.url);
+              const carId = url.searchParams.get('vehicle');
+              store.dispatch(getVehicle(carId))
+              return url;  
+            },    
           },
           {
             path: 'autorisation-de-v%C3%A9hicule',
-            element: <VehicleUseForm />    
+            element: <VehicleUseForm />,
+            loader: async ({ request }) => {
+              const url = new URL(request.url);
+              const carId = url.searchParams.get('vehicle');
+              store.dispatch(getVehicle(carId))
+              return url;  
+            },       
           },
           {
             path: 'état-de-frais',
