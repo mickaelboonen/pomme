@@ -11,6 +11,22 @@ const initialState = {
   ],
   currentStep: 1,
   apiMessage: {},
+  currentVehicle: {},
+  formDefaultValues: {
+    carType: null,
+    selectedVehicle: null,
+    carBrand: null,
+    carRegistration: null,
+    carRating: null,
+    carInsurance: null,
+    policeNumber: null,
+    reasons: null,
+    otherReason: null,
+    carRegistrationFile: null,
+    carInsuranceFile: null,
+    signature: null,
+    externalSignature: null
+  }
 };
 const omFormSlice = createSlice({
     name: 'app',
@@ -34,9 +50,22 @@ const omFormSlice = createSlice({
       clearMessage: (state) => {
         state.apiMessage = {};
       },
+      displayVehicle: (state, action) => {
+        
+        const vehicleToShow = state.vehicles.find((vehicle) => vehicle.id === Number(action.payload))
+        
+        state.formDefaultValues. carBrand= vehicleToShow.make;
+        state.formDefaultValues. carRegistration= vehicleToShow.licensePlate;
+        state.formDefaultValues. carRating= vehicleToShow.rating;
+        state.formDefaultValues. carInsurance= vehicleToShow.insurance;
+        state.formDefaultValues. policeNumber= vehicleToShow.police;
+        
+        
+        state.currentVehicle = vehicleToShow;
+      }
     },
 });
 
-export const { clearMessage, setApiResponse, getSignature, saveSignature, getVehicles, getVehicle, saveVehicle, saveVehicles } = omFormSlice.actions;
+export const { displayVehicle, clearMessage, setApiResponse, getSignature, saveSignature, getVehicles, getVehicle, saveVehicle, saveVehicles } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

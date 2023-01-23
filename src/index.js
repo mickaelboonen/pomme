@@ -81,7 +81,8 @@ const router = createBrowserRouter([
             loader: async ({ request }) => {
               const url = new URL(request.url);
               const carId = url.searchParams.get('vehicle');
-              store.dispatch(getVehicle(carId))
+              store.dispatch(getVehicles());
+              // store.dispatch(getVehicle(carId));
               return url;  
             },    
           },
@@ -91,7 +92,8 @@ const router = createBrowserRouter([
             loader: async ({ request }) => {
               const url = new URL(request.url);
               const carId = url.searchParams.get('vehicle');
-              store.dispatch(getVehicle(carId))
+              store.dispatch(getVehicles());
+              // store.dispatch(getVehicle(carId));
               return url;  
             },       
           },

@@ -14,38 +14,37 @@ import FileField from 'src/components/Fields/FileField';
 import SwitchButton from 'src/components/SwitchButton';
 import ButtonElement from 'src/components/Fields/ButtonElement';
 import { useState } from 'react';
+import VehicleData from './VehicleData';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { displayVehicle } from '../../../reducer/app';
 
 const VehicleUseForm = () => {
+  console.log('rendu');
   const url = useLoaderData();
+  const dispatch = useDispatch();
   const carId = url.searchParams.get('vehicle');
   const omId = url.searchParams.get('omId');
 
-  const [personalCar, setPersonalCar] = useState(carId);
-  console.log(carId, omId);
+  const [showCarList, setShowCarList] = useState(true);
+
+  const { vehicles, currentVehicle , formDefaultValues} = useSelector((state) => state.app);
   
   const navigate = useNavigate();
+  console.log(formDefaultValues);
   const {
     register,
     handleSubmit,
     watch,
     formState:
     { errors },
-  } = useForm();
+  } = useForm({ defaultValues: formDefaultValues});
 
+  const [carType] = watch(['carType']);
+  
   const onSubmit = (data) => {
     console.log(data);
-
-    // TODO : Process Data
-
-    // // Next Step
-    // const nextStep = step++;
-    // navigate('/nouveau-document/ordre-de-mission?etape=' + step++);
-
-    
   };
-
-  let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
-  refusal = "";
 
   const reasons = [
     {
@@ -71,51 +70,36 @@ const VehicleUseForm = () => {
   ];
 
   const handleOtherReason = (event) => {
-    toggleIsHiddenOnNextFormSection(event.target);
+    // toggleIsHiddenOnNextFormSection(event.target);
   };
 
   const handleExternalUserCar = (event) => {
-    toggleIsHiddenOnNextFormSection(event.target);
+    // toggleIsHiddenOnNextFormSection(event.target);
 
-    const validateButton = document.querySelector('.form').lastChild.lastChild;
-    if (event.target.checked) {
-      validateButton.classList.add('form__section-field--hidden')
-    }
-    else {
-      validateButton.classList.remove('form__section-field--hidden')
-    }
+    // const validateButton = document.querySelector('.form').lastChild.lastChild;
+    // if (event.target.checked) {
+    //   validateButton.classList.add('form__section-field--hidden')
+    // }
+    // else {
+    //   validateButton.classList.remove('form__section-field--hidden')
+    // }
 
   };
 
   const handleNewCar = (event) => {
-    const children = Array.from(event.target.closest('.form__section').childNodes);
-    for (let i = 0; i < 3; i++) {
-      children.shift();
-    }
-    if (event.target.value === "Nouveau véhicule") {
-      children.forEach((child) => {
-        child.classList.remove('form__section-field--hidden');
-      }) 
-    }
-    else {
-      children.forEach((child) => {
-        child.classList.add('form__section-field--hidden');
-      }) 
-    }
+    console.log(event.target.value);
+    dispatch(displayVehicle(event.target.value));
   }
 
-  const handleVehicleType = () => {
-    const personalCarElement = document.querySelector('#personnal-car');
-    const switchSection = document.querySelector('#public-transports').closest('.form__section-field');
+  const handleVehicleType = (event) => {
+    const { value } = event.target;
 
-    if (personalCarElement.checked) {
-      switchSection.classList.remove('form__section-field--hidden');
-      toggleIsHiddenOnNextFormSection(personalCarElement);
+    if (value === 'rent-car') {
+      setShowCarList(false);
     }
     else {
-      switchSection.classList.add('form__section-field--hidden');
-      toggleIsHiddenOnNextFormSection(switchSection);
-      toggleIsHiddenOnNextFormSection(personalCarElement);
+
+      setShowCarList(true);
     }
   }
   return (
@@ -131,86 +115,40 @@ const VehicleUseForm = () => {
           <div className="form__section  form__section--split">
             {/* <label className="form__section-field-label" htmlFor="departure-place">Type de véhicule</label> */}
             <RadioInput
-              id="personnal-car"
-              formField="car-type"
+              id="personal-car"
+              formField="carType"
               label="Véhicule personnel, de prêt (*)"
               register={register}
               handler={handleVehicleType}
             />
             <RadioInput
               id="rent-car"
-              formField="car-type"
+              formField="carType"
               label="Véhicule de location"
               register={register}
               handler={handleVehicleType}
             />
             <RadioInput
               id="company-car"
-              formField="car-type"
+              formField="carType"
               label="Véhicule de service"
               register={register}
               handler={handleVehicleType}
             />
           </div>
           <p className="form__section-field-label form__section-field-label--infos">(*) Produire obligatoirement la photocopie de la carte grise et de l'attestation d'assurance</p>
-          <SelectField 
-            register={register}
-            blankValue="Pas de véhicule enregistré"
-            data={['1', '2', '3', 'Nouveau véhicule']}
-            id="vehicles-list"
-            // isHidden
-            handler={handleNewCar}
-            formField="preregistered-vehicle"
-            label="Sélectionner un véhicule déjà enregistré"
-          />
-          <div className="form__section  form__section--split">
-            <TextField
-              // isHidden
-              id="car-brand"
-              label="Marque du véhicule"
-              formField="car-brand"
+          {showCarList && (
+            <SelectField 
               register={register}
+              blankValue="Pas de véhicule enregistré"
+              data={vehicles}
+              id="vehicles-list"
+              handler={handleNewCar}
+              formField="selectedVehicle"
+              label="Sélectionner un véhicule déjà enregistré"
             />
-            <TextField
-              // isHidden
-              id="car-registration"
-              label="Numéro d'immatriculation"
-              formField="car-registration"
-              register={register}
-            />
-            </div>
-            <div className="form__section  form__section--split">
-          <TextField
-            // isHidden
-            id="car-rating"
-            label="Puissance fiscale"
-            formField="car-rating"
-            register={register}
-            isNumber
-            min="0"
-          />
-          <TextField
-            // isHidden
-            id="car-insurance"
-            label="Compagnie d'assurance"
-            formField="car-insurance"
-            register={register}
-          /></div>
-          <div className="form__section  form__section--split">
-          <TextField
-            // isHidden
-            id="police-number"
-            label="Numéro Police"
-            formField="police-number"
-            register={register}
-          /></div>
-          <div className="form__section-field-button form__section-field--hidden">
-            <ButtonElement
-              isHidden
-              type="button"
-              label="Enregistrer le véhicule"          
-            />
-          </div>
+          )}
+          <VehicleData register={register} carType={carType} errors={errors} />
         </div>
         <div className="form__section">
           <FormSectionTitle>Raison</FormSectionTitle>
@@ -236,7 +174,7 @@ const VehicleUseForm = () => {
           <TextField
             id="other-reason"
             label="Autre raison"
-            formField="other-reason"
+            formField="otherReason"
             register={register}
             isHidden
           />
@@ -246,13 +184,13 @@ const VehicleUseForm = () => {
           <FileField
             register={register}
             formField="car-registration-file"
-            id="car-registration-document"
+            id="carRegistrationDocument"
             label="Carte grise"
           />
           <FileField
             register={register}
             formField="car-insurance-file"
-            id="car-insurance-file"
+            id="carInsuranceFile"
             label="Attestation d'assurance"
           />
         </div>
@@ -261,7 +199,7 @@ const VehicleUseForm = () => {
           <FileField
             register={register}
             formField="signature"
-            id="user-signature"
+            id="userSignature"
             label="Signature"
           />
         </div>
@@ -269,7 +207,7 @@ const VehicleUseForm = () => {
           <FormSectionTitle>Dernière étape</FormSectionTitle>
           <div className="form__section-field form__section-field--hidden">
             <SwitchButton
-              formField="external-signature"
+              formField="externalSignature"
               isInForm
               register={register}
               handler={handleExternalUserCar}

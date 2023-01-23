@@ -17,18 +17,22 @@ const SelectField = ({
   validators,
   error,
   required
-}) => (
+}) => {
+  const handleChange = (event) => {
+    handler(event);
+  }
+  return (
   <div className={classNames("form__section-field", { "form__section-field--hidden": isHidden })} id={formField}>
     <label className="form__section-field-label" htmlFor={id}>{label}</label>
     <select
       id={id}
       className="form__section-field-input"
-      onChange={handler}
       {...register(formField, {
         required: required,
         validate: validators
       })}
       disabled={disabled}
+      onChange={handleChange}
     >
       <option value="">{blankValue}</option>
       {data.map((item) => {
@@ -42,7 +46,7 @@ const SelectField = ({
     </select>
     {error && <p className={classNames("form__section-field-error", { "form__section-field-error--open": error?.message.length > 0 })}>{error?.message}</p>}
   </div>
-);
+);}
 
 SelectField.propTypes = {
 
