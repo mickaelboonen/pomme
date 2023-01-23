@@ -10,6 +10,7 @@ import {
 } from 'src/reducer/omForm';
 import { setApiResponse } from 'src/reducer/app';
 import { api } from './api';
+import { validateSideForm } from '../reducer/omForm';
 
 
 api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -205,8 +206,7 @@ const omMiddleware = (store) => (next) => (action) => {
       console.log('here');
       api.post("/api/om/derogation/create", action.payload)
         .then((response) => {
-            // store.dispatch(saveAdvance(response.data[0]))
-            console.log(response.data);
+            store.dispatch(validateSideForm(response.data));
         })
         .catch((error) => {
           console.error('get signature', error);

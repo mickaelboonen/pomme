@@ -14,7 +14,6 @@ import { getSavedFileName } from 'src/selectors/formDataGetters';
 import './style.scss';
 
 const RequestWithFile = ({
-  requestType, // so we know where we are
   register, // function
   setValue, // function
   errors, // array of errors
@@ -22,25 +21,23 @@ const RequestWithFile = ({
   id, // id for the different elements
   data, // parent form data
   permanentOm, // bool
-  watch,
-  clearErrors 
+  watch, // function
+  clearErrors  // function
 }) => {
+  
+  console.log(id, id);
   const filename = data[id] ? getSavedFileName(data[id]): '';
   
   let title = '';
-  if (requestType === 'science') {
-    title = "Demande d'Autorisation de participation à un événement scientifique"
-
-  }
-  else if (requestType === 'dispensation') {
+  if (id === 'dispensation') {
     title = "Demande de dérogation première classe ou classe affaire"
 
   }
-  else if (requestType === 'taxiDispensation') {
+  else if (id === 'taxiDispensation') {
     title = "Demande de dérogation taxi"
 
   }
-  else if (requestType === 'authorization') {
+  else if (id === 'vehicleAuthorizationFile') {
     title = "Demande d'autorisation préalable d'utilisation d'un véhicule'"
 
   }
@@ -59,23 +56,20 @@ const RequestWithFile = ({
     error = '';
   }
 
-  // TODO : trying to access data dynamically
-
-  const [data[id], data[id + 'ForValidation']] = watch([id, id + 'ForValidation']);
-   useEffect(() => {
-    console.log(data[id]);
-    if (data[id] instanceof File || data[id + 'ForValidation']) {
-      console.log('here');
+  const [fileField, fileFieldForValidation] = watch([id, id + 'ForValidation']);
+  
+  // Dynamically clearing errors when the value of the input is set
+  useEffect(() => {
+    if (fileField instanceof File || fileFieldForValidation) {
       clearErrors(id);
     }
-  }, [data[id], data[id + 'ForValidation']])
+  }, [fileField, fileFieldForValidation])
 
   
   return (
     <div className="form__section-container" id="upper-class-request">
       <h4 className="form__section-container-title">{title}</h4>
       <div className="form__section-container-options">
-        
         {permanentOm && (
           <FileField
             fileName={filename}
@@ -85,7 +79,7 @@ const RequestWithFile = ({
             register={register}
           />
         )}
-        {permanentOm && <span className="form__section-container-options__separator">{requestType === 'science' ? 'ET' : 'OU'}</span>}
+        {permanentOm && <span className="form__section-container-options__separator">OU</span>}
         <div className="form__section-field">
           <CheckboxInput
             id={id + '-for-validation-field'}
@@ -107,13 +101,19 @@ const RequestWithFile = ({
 }
 
 RequestWithFile.propTypes = {
+  data: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
+  permanentOm: PropTypes.bool.isRequired,
 
-};
+  // Strings
+  id: PropTypes.string.isRequired,
+  link: PropTypes.string.isRequired,
 
-
-RequestWithFile.defaultProps = {
-  filename: null,
-  file: null,
+  // Functions
+  register: PropTypes.func.isRequired,
+  setValue: PropTypes.func.isRequired,
+  watch: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired, 
 };
 
 export default RequestWithFile;

@@ -9,15 +9,16 @@ import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import ButtonElement from 'src/components/Fields/ButtonElement';
 import TextareaField from 'src/components/Fields/TextareaField';
-import { useDispatch } from 'react-redux';
-import { createDerogation } from '../../../reducer/omForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { createDerogation, clearSideForm } from '../../../reducer/omForm';
+import { useEffect } from 'react';
 
 const Derogation = () => {
-  
   
   const navigate = useNavigate();
   const loader = useLoaderData();
   const dispatch = useDispatch();
+  const { isSideFormInDB } = useSelector((state) => state.omForm);
 
   const types = loader.searchParams.get('type').split(',');
   const omId = loader.searchParams.get('omId');
@@ -46,6 +47,13 @@ const Derogation = () => {
     { errors },
   } = useForm();
 
+  useEffect(() => {
+    if (isSideFormInDB) {
+      dispatch(clearSideForm());
+      navigate('/modifier-un-document/ordre-de-mission?etape=2&id=63');
+    }
+  }, [isSideFormInDB])
+
   const onSubmit = (data) => {
     data.type = lol;
     console.log(data);
@@ -70,8 +78,6 @@ const Derogation = () => {
               label="Type de dérogation"
               formField="type"
               value={lol}
-              // required="Merci de renseigner le motif de la dérogation"
-              // error={errors.type}
             />
             <TextareaField 
               register={register}
@@ -94,7 +100,6 @@ const Derogation = () => {
           <div className="form__section">
             <div className="form__section-field-button">
               <ButtonElement
-                // isHidden
                 type="submit"
                 label="Envoyer la demande"          
               />

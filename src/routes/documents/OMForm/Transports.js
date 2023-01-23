@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, useLoaderData } from 'react-router-dom';
+import { useNavigate, useLoaderData } from 'react-router-dom';
 
 import './style.scss';
 
@@ -12,13 +12,11 @@ import './style.scss';
 import Buttons from 'src/components/Fields/Buttons';
 import ApiResponse from 'src/components/ApiResponse';
 import SwitchButton from 'src/components/SwitchButton';
-import FileField from 'src/components/Fields/FileField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import SelectField from 'src/components/Fields/SelectField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
-import RefusalMessage from 'src/components/Fields/RefusalMessage';
 import RequestWithFile from 'src/components/Fields/RequestWithFile';
 
 // Actions
@@ -59,6 +57,8 @@ const Transports = ({ step }) => {
   
   const defaultValues = omForm.find((omStep) => omStep.step === 'transports').data;
 
+  console.log(defaultValues)
+  
   const {
     register,
     setValue,
@@ -122,10 +122,11 @@ const Transports = ({ step }) => {
   // State to manage components
   const [needsDerogation, setNeedsDerogation] = useState(false);
   const [needsAuthorization, setNeedsAuthorization] = useState(!defaultValues.vehicle ? false : true);
-  const [needsTaxiDispensation, setNeedsTaxiDispensation] = useState(false);
+  console.log(defaultValues.taxiDispensationForValidation);
+  const [needsTaxiDispensation, setNeedsTaxiDispensation] = useState(defaultValues.taxiDispensationForValidation);
   const { vehicles } = useSelector((state) => state.app);
   // FORM FIELDS -----------------------------------------------------------------------------------------------------------------------------------------
-  const [trainClass , planeClass, vehicle, vehicleAuthorizationFile, vehicleAuthorizationFileForValidation, dispensation, dispensationForValidation, others, taxiDispensation, taxiDispensationForValidation] = watch(['trainClass', 'planeClass', 'vehicle', 'vehicleAuthorizationFile', 'vehicleAuthorizationFileForValidation', 'dispensation', 'dispensationForValidation', 'others', 'taxiDispensation', 'taxiDispensationForValidation']);
+  const [trainClass , planeClass, vehicle, others] = watch(['trainClass', 'planeClass', 'vehicle', 'others']);
 
   // TODO : Selecteurs
   let dispensationTarget = [];
@@ -191,21 +192,7 @@ const Transports = ({ step }) => {
 
     clearErrors('transports');
   }, [trainClass, planeClass, vehicle])
-
-  // Clears the authorization error
-  // useEffect(() => {
-  //   if (dispensation instanceof File || dispensationForValidation) {
-  //     clearErrors('derogation');
-  //   }
-  //   if (vehicleAuthorizationFile instanceof File || vehicleAuthorizationFileForValidation) {
-  //     clearErrors('authorization');
-  //   }
-  //   if (taxiDispensation instanceof File || taxiDispensationForValidation) {
-  //     clearErrors('taxiDispensation');
-  //   }
-
-  // }, [vehicleAuthorizationFile, vehicleAuthorizationFileForValidation, dispensation, dispensationForValidation, taxiDispensation, taxiDispensationForValidation])
-
+  
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <FormSectionTitle>Départ et retour</FormSectionTitle>
@@ -278,7 +265,6 @@ const Transports = ({ step }) => {
           errors={errors}
           watch={watch}
           clearErrors={clearErrors}
-          file={defaultValues.dispensation}
           id="dispensation"
           data={defaultValues}
           permanentOm={permanentOm}
@@ -296,7 +282,7 @@ const Transports = ({ step }) => {
       />
       {needsAuthorization && (
         <RequestWithFile
-          requestType="authorization"
+          requestType="vehicleAuthorizationFile"
           register={register}
           setValue={setValue}
           watch={watch}

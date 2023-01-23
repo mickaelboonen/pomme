@@ -102,7 +102,8 @@ const initialState = {
     'adresse Carmes', 
     'adresse Hoche', 
     'adresse XYZ', 
-  ]
+  ],
+  isSideFormInDB: false,
 };
 const omFormSlice = createSlice({
     name: 'omForm',
@@ -114,6 +115,12 @@ const omFormSlice = createSlice({
       fetchOMs: () => {},
       uploadFile: () => {},
       createDerogation: () => {},
+      clearSideForm: (state) => {
+        state.isSideFormInDB = false;
+      },
+      validateSideForm: (state) => {
+        state.isSideFormInDB = true;
+      },
       getMission: (state) => {
         state.loader = true
       },
@@ -169,6 +176,8 @@ const omFormSlice = createSlice({
           vehicleAuthorizationFileForValidation: false,
           dispensation: null,
           dispensationForValidation: false,
+          taxiDispensation: null,
+          taxiDispensationForValidation: false,
         }
 
         action.payload.dispensations.forEach((dispensation) => {
@@ -178,6 +187,11 @@ const omFormSlice = createSlice({
             dataForTheComponent.dispensationForValidation = true;
           }
           else if (dispensation && dispensation.type.includes('taxi')) {
+            if (dataForTheComponent.others.indexOf('taxi') === -1) {
+              dataForTheComponent.taxiDispensationForValidation = true;
+              dataForTheComponent.others.push('taxi');
+            }
+            
       
           }
           
@@ -190,7 +204,7 @@ const omFormSlice = createSlice({
         if (action.payload.parking) {
           dataForTheComponent.others.push('parking');
         }
-        console.log(action.payload);
+        
         action.payload.transport_class.forEach((service) => {
           if (service === 'first-class' || service === 'second-class') {
             dataForTheComponent.trainClass = service;
@@ -293,6 +307,8 @@ export const {
   saveMore,
   updateAccomodations,
   createDerogation,
+  clearSideForm,
+  validateSideForm,
 } = omFormSlice.actions;
 
 export default omFormSlice.reducer;
