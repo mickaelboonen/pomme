@@ -1,4 +1,4 @@
-import { saveSignature, saveVehicles } from 'src/reducer/app';
+import { saveSignature, saveVehicles, saveVehicleDocuments } from 'src/reducer/app';
 import { api } from './api';
 
 
@@ -27,6 +27,18 @@ const appMiddleware = (store) => (next) => (action) => {
         })
         .catch((error) => {
           console.error('get vehicles', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
+    case 'app/getVehicleDocuments':
+      api.get("/api/perm-file/vehicle/" + action.payload)
+        .then((response) => {
+          if (response.data.length > 0) {
+            store.dispatch(saveVehicleDocuments(response.data))
+          }
+        })
+        .catch((error) => {
+          console.error('get vehicle documents', error);
           // store.dispatch(showTicketCreationResponse(error.response))
         });
       break;

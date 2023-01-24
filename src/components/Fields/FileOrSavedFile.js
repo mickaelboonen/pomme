@@ -5,14 +5,14 @@ import FileField from 'src/components/Fields/FileField';
 
 import './style.scss';
 
-const FileOrSavedFile = ({ register, setValue, id, label, hasSavedDocument}) => {
-
+const FileOrSavedFile = ({ checkboxHandler, register, setValue, id, label, hasSavedDocument}) => {
   const idWithCapitalFirstLetter = id[0].toUpperCase() + id.slice(1);
   return (
     <div className="form__section-field">
       <CheckboxInput
         register={register}
         formField={"saved" + idWithCapitalFirstLetter}
+        handler={checkboxHandler}
         id={"saved-" + id +"-field"}
         label={"Utiliser la " + label.toLowerCase() + " enregistrée dans mon profil"}
       />  

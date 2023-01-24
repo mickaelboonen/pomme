@@ -9,37 +9,68 @@ const initialState = {
       name: 'Véhicule personnel, de prêt'
     },
   ],
+  unimesVehicles: [],
+  documents: [],
   currentStep: 1,
   apiMessage: {},
   currentVehicle: {},
   formDefaultValues: {
-    carType: 'rent-car',
+    carType: null,
     selectedVehicle: null,
     carBrand: null,
     carRegistration: null,
     carRating: null,
     carInsurance: null,
     policeNumber: null,
-    reasons: ['handicap'],
+    reasons: [],
     otherReason: null,
-    carRegistrationFile: 'bliblabloubli',
+    savedRegistration: false,
+    carRegistrationFile: null,
+    savedRegistration: false,
     carInsuranceFile: null,
     signature: null,
     externalSignature: null
-  }
+  },
+  loader: true,
 };
 const omFormSlice = createSlice({
     name: 'app',
     initialState,
     reducers: {
       getVehicles: () => {},
-      getVehicle: () => {},
+      getVehicleDocuments: () => {},
       getSignature: () => {},
+      saveVehicleDocuments: (state, action) => {
+        state.documents= action.payload;
+
+        action.payload.forEach((doc) => {
+          if (doc.type === 'registration') {
+            state.formDefaultValues.carRegistrationFile = doc.url;
+            state.formDefaultValues.savedRegistration = true;
+          }
+          if (doc.type === 'insurance') {
+            state.formDefaultValues.carInsuranceFile = doc.url;
+            state.formDefaultValues.savedInsurance = true;
+
+          }
+        })
+        state.loader = false;
+      },
       saveSignature: (state, action) => {
         state.userSignature = action.payload.url;
       },
       saveVehicles: (state, action) => {
-        action.payload.forEach((vehicle) => state.vehicles.push(vehicle));
+
+
+
+        action.payload.forEach((vehicle) => {
+          if (vehicle.user === 'unimes') {
+            state.unimesVehicles.push(vehicle)
+          }
+          else {
+            state.vehicles.push(vehicle)
+          }
+        });
       },
       saveVehicle: (state, action) => {
         // action.payload.forEach((vehicle) => state.vehicles.push(vehicle));
@@ -67,6 +98,6 @@ const omFormSlice = createSlice({
     },
 });
 
-export const { displayVehicle, clearMessage, setApiResponse, getSignature, saveSignature, getVehicles, getVehicle, saveVehicle, saveVehicles } = omFormSlice.actions;
+export const { saveVehicleDocuments, displayVehicle, clearMessage, setApiResponse, getSignature, saveSignature, getVehicles, getVehicleDocuments, saveVehicle, saveVehicles } = omFormSlice.actions;
 
 export default omFormSlice.reducer;
