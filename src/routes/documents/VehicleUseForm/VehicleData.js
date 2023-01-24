@@ -17,7 +17,7 @@ const VehicleData = ({ register, carType, errors}) => {
         label="Marque du véhicule"
         formField="carBrand"
         register={register}
-        // required='Merci de renseigner la marque de la voiture.'
+        required='Merci de renseigner la marque de la voiture.'
         error={errors.carBrand}
       />
       <TextField
@@ -25,7 +25,7 @@ const VehicleData = ({ register, carType, errors}) => {
         label="Numéro d'immatriculation"
         formField="carRegistration"
         register={register}
-        // required="Merci de renseigner la plaque d'immatriculation de la voiture."
+        required="Merci de renseigner la plaque d'immatriculation de la voiture."
         error={errors.carRegistration}
       />
     </div>
@@ -37,7 +37,7 @@ const VehicleData = ({ register, carType, errors}) => {
         register={register}
         isNumber
         min="0"
-        // required='Merci de renseigner la puissance fiscale de la voiture.'
+        required='Merci de renseigner la puissance fiscale de la voiture.'
         error={errors.carRating}
       />
       <TextField
@@ -45,7 +45,7 @@ const VehicleData = ({ register, carType, errors}) => {
         label="Compagnie d'assurance"
         formField="carInsurance"
         register={register}
-        // required="Merci de renseigner la compagnie assurant la voiture."
+        required="Merci de renseigner la compagnie assurant la voiture."
         error={errors.carInsurance}
       />
     </div>
@@ -55,7 +55,7 @@ const VehicleData = ({ register, carType, errors}) => {
         label="Numéro Police"
         formField="policeNumber"
         register={register}
-        // required="Merci de renseigner le numéro de police."
+        required="Merci de renseigner le numéro de police."
         error={errors.policeNumber}
       />
     </div>

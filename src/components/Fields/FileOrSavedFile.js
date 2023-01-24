@@ -5,7 +5,7 @@ import FileField from 'src/components/Fields/FileField';
 
 import './style.scss';
 
-const FileOrSavedFile = ({ checkboxHandler, register, setValue, id, label, hasSavedDocument}) => {
+const FileOrSavedFile = ({errors, required, checkboxHandler, register, setValue, id, label, hasSavedDocument}) => {
   const idWithCapitalFirstLetter = id[0].toUpperCase() + id.slice(1);
   return (
     <div className="form__section-field">
@@ -23,6 +23,8 @@ const FileOrSavedFile = ({ checkboxHandler, register, setValue, id, label, hasSa
           formField={"car" + idWithCapitalFirstLetter +"File"}
           id={"car-" + id +"-document"}
           label={label}
+          required={required}
+          error={errors["car" + idWithCapitalFirstLetter +"File"]}
         />
       )}
     </div>

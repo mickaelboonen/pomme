@@ -16,7 +16,7 @@ import { useState } from 'react';
 import VehicleData from './VehicleData';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { displayVehicle } from '../../../reducer/app';
+import { displayVehicle, createVehicle, requestVehicleAuthorization } from '../../../reducer/app';
 import FileOrSavedFile from '../../../components/Fields/FileOrSavedFile';
 
 const VehicleUseForm = () => {
@@ -41,6 +41,8 @@ const VehicleUseForm = () => {
     setValue,
     watch,
     reset,
+    setError,
+    clearErrors,
     formState:
     { errors },
   } = useForm({ defaultValues: formDefaultValues});
@@ -52,7 +54,7 @@ const VehicleUseForm = () => {
   const [hasSavedRegistration, setSavedRegistration] = useState(false);
   const [vehiclesList, setVehiclesList] = useState([]);
 
-  const [carType, externalSignature, savedRegistration, savedInsurance] = watch(['carType', 'externalSignature', 'savedRegistration', 'savedInsurance']);
+  const [carType, externalSignature, savedRegistration, savedInsurance, carRegistrationFile, carInsuranceFile] = watch(['carType', 'externalSignature', 'savedRegistration', 'savedInsurance', 'carRegistrationFile', 'carInsuranceFile']);
 
   useEffect(() => {
     if (formDefaultValues.savedInsurance) {
@@ -80,7 +82,79 @@ const VehicleUseForm = () => {
   
   const onSubmit = (data) => {
     console.log(data);
+    
+    if (data.reasons.length === 0) {
+      setError('reasons', {type: 'custom', message : "Merci de justifier l'utilisation du véhicule."})
+      return;
+    }
+
+    if (!data.selectedVehicle || data.selectedVehicle === '0') {
+
+      // TODO : we upload Vehicle into DB then Files then form
+      
+      dispatch(createVehicle(data));
+      // if ((typeof data.carRegistrationFile !== 'string' && data.carRegistrationFile.length > 0)
+      // || (typeof data.carInsuranceFile !== 'string' && data.carInsuranceFile.length > 0)) {
+      //   console.log('there is aa least one file');
+      //   // dispatch(uploadFile({data: data, step: 'authorization'}));
+      // }
+      // else {
+      //   console.log('pas de file, direct on create dans la BDD : ', data);
+      //   // dispatch(requestVehicleAuthorization(data));
+
+      // }
+
+    }
+    else {
+
+      if (typeof data.carRegistrationFile !== 'string' && data.carRegistrationFile.length > 0) {
+        console.log('there is aa least one file');
+        // dispatch(uploadFile({data: data, step: 'authorization'}));
+      }
+      if (typeof data.carInsuranceFile !== 'string' && data.carInsuranceFile.length > 0) {
+        console.log('there is aa least one file');
+        // dispatch(uploadFile({data: data, step: 'authorization'}));
+      }
+      else {
+        console.log('pas de file, direct on create dans la BDD : ', data);
+        // dispatch(requestVehicleAuthorization(data));
+      }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   };
+
+  useEffect(() => {
+    if (carRegistrationFile instanceof File) {
+      clearErrors('carRegistrationFile');
+    }
+    if (carInsuranceFile instanceof File) {
+      clearErrors('carInsuranceFile');
+    }
+  }, [carRegistrationFile, carInsuranceFile])
 
   const reasons = [
     {
@@ -111,7 +185,6 @@ const VehicleUseForm = () => {
   const handleNewCar = (event) => {
     dispatch(displayVehicle(event.target.value));
   }
-  
   
   return (
     <div className="form-page__container">
@@ -192,6 +265,7 @@ const VehicleUseForm = () => {
               register={register}
               isHidden
             />
+            { errors.reasons && <p className="form__section-field-error form__section-field-error--open">{errors.reasons.message}</p>}
           </div>
           <div className="form__section">
             <FormSectionTitle>Documents</FormSectionTitle>
@@ -201,6 +275,8 @@ const VehicleUseForm = () => {
               id="registration"
               label="Carte grise"
               hasSavedDocument={hasSavedRegistration}
+              errors={errors}
+              required="Merci de fournir la carte grise du véhicule."
             />
             <FileOrSavedFile
               register={register}
@@ -208,6 +284,8 @@ const VehicleUseForm = () => {
               id="insurance"
               label="Attestation d'assurance"
               hasSavedDocument={hasSavedInsurance}
+              errors={errors}
+              required="Merci de fournir l'attestation du véhicule."
             />
           </div>
           {externalSignature && (

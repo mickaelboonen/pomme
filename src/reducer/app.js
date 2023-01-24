@@ -94,10 +94,29 @@ const omFormSlice = createSlice({
         state.formDefaultValues.policeNumber= vehicleToShow.police;
         
         state.currentVehicle = vehicleToShow;
-      }
+      },
+      createVehicle: () => {
+        
+      },
+      requestVehicleAuthorization: () => {
+        
+      },
     },
 });
 
-export const { saveVehicleDocuments, displayVehicle, clearMessage, setApiResponse, getSignature, saveSignature, getVehicles, getVehicleDocuments, saveVehicle, saveVehicles } = omFormSlice.actions;
+export const {
+  saveVehicleDocuments,
+  displayVehicle,
+  clearMessage,
+  setApiResponse,
+  getSignature,
+  saveSignature,
+  getVehicles,
+  getVehicleDocuments,
+  saveVehicle,
+  saveVehicles,
+  createVehicle,
+  requestVehicleAuthorization
+} = omFormSlice.actions;
 
 export default omFormSlice.reducer;

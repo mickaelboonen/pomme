@@ -6,7 +6,7 @@ import appReducer from 'src/reducer/app';
 import omMiddleware from '../middlewares/omMiddleware';
 import fileMiddleware from '../middlewares/fileMiddleware';
 import appMiddleware from '../middlewares/appMiddleware';
-// import galerieMiddleware from '../middlewares/galerieMiddleware';
+import vehicleMiddleware from '../middlewares/vehicleMiddleware';
 // import contactMiddleware from '../middlewares/contactMiddleware';
 // import newsletterMiddleware from '../middlewares/newsletterMiddleware';
 
@@ -16,7 +16,7 @@ export const store = configureStore({
     omForm: omFormReducer,
     efForm: efFormReducer,
   }, 
-  middleware: [omMiddleware, fileMiddleware, appMiddleware],
+  middleware: [omMiddleware, fileMiddleware, appMiddleware, vehicleMiddleware],
 });
 
 export default store;
