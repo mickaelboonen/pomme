@@ -8,14 +8,16 @@ import './style.scss';
 const VehicleData = ({ register, carType, errors}) => {
   
   return (
-  <div>
-    <div className="form__section  form__section--split">
+  <div id="carForm">
+    
+    <h4 className="form__section-container-title">RENSEIGNEMENTS SUR LA VOITURE</h4>
+    <div className="form__section form__section--split" >
       <TextField
         id="car-brand"
         label="Marque du véhicule"
         formField="carBrand"
         register={register}
-        required='LOL'
+        // required='Merci de renseigner la marque de la voiture.'
         error={errors.carBrand}
       />
       <TextField
@@ -23,7 +25,7 @@ const VehicleData = ({ register, carType, errors}) => {
         label="Numéro d'immatriculation"
         formField="carRegistration"
         register={register}
-        required='LOL'
+        // required="Merci de renseigner la plaque d'immatriculation de la voiture."
         error={errors.carRegistration}
       />
     </div>
@@ -35,7 +37,7 @@ const VehicleData = ({ register, carType, errors}) => {
         register={register}
         isNumber
         min="0"
-        required='LOL'
+        // required='Merci de renseigner la puissance fiscale de la voiture.'
         error={errors.carRating}
       />
       <TextField
@@ -43,7 +45,7 @@ const VehicleData = ({ register, carType, errors}) => {
         label="Compagnie d'assurance"
         formField="carInsurance"
         register={register}
-        required='LOL'
+        // required="Merci de renseigner la compagnie assurant la voiture."
         error={errors.carInsurance}
       />
     </div>
@@ -53,7 +55,7 @@ const VehicleData = ({ register, carType, errors}) => {
         label="Numéro Police"
         formField="policeNumber"
         register={register}
-        required='LOL'
+        // required="Merci de renseigner le numéro de police."
         error={errors.policeNumber}
       />
     </div>

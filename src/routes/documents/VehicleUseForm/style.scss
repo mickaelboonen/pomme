@@ -1,0 +1,21 @@
+#carBrand, #carRating {
+  margin-right: 1rem;
+}
+
+#carForm {
+  .form__section {
+    margin-bottom: 0;
+
+    &-field {
+      margin-bottom: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 1rem;
+    }
+  }
+
+  & button{
+    margin-bottom: 1rem;
+  }
+}

@@ -13,16 +13,16 @@ const initialState = {
   apiMessage: {},
   currentVehicle: {},
   formDefaultValues: {
-    carType: null,
+    carType: 'rent-car',
     selectedVehicle: null,
     carBrand: null,
     carRegistration: null,
     carRating: null,
     carInsurance: null,
     policeNumber: null,
-    reasons: null,
+    reasons: ['handicap'],
     otherReason: null,
-    carRegistrationFile: null,
+    carRegistrationFile: 'bliblabloubli',
     carInsuranceFile: null,
     signature: null,
     externalSignature: null
@@ -54,12 +54,13 @@ const omFormSlice = createSlice({
         
         const vehicleToShow = state.vehicles.find((vehicle) => vehicle.id === Number(action.payload))
         
-        state.formDefaultValues. carBrand= vehicleToShow.make;
-        state.formDefaultValues. carRegistration= vehicleToShow.licensePlate;
-        state.formDefaultValues. carRating= vehicleToShow.rating;
-        state.formDefaultValues. carInsurance= vehicleToShow.insurance;
-        state.formDefaultValues. policeNumber= vehicleToShow.police;
-        
+        state.formDefaultValues.carType= 'personal-car';
+        state.formDefaultValues.selectedVehicle= vehicleToShow.id;
+        state.formDefaultValues.carBrand= vehicleToShow.make;
+        state.formDefaultValues.carRegistration= vehicleToShow.licensePlate;
+        state.formDefaultValues.carRating= vehicleToShow.rating;
+        state.formDefaultValues.carInsurance= vehicleToShow.insurance;
+        state.formDefaultValues.policeNumber= vehicleToShow.police;
         
         state.currentVehicle = vehicleToShow;
       }

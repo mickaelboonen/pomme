@@ -18,24 +18,31 @@ import VehicleData from './VehicleData';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { displayVehicle } from '../../../reducer/app';
+import FileOrSavedFile from '../../../components/Fields/FileOrSavedFile';
 
 const VehicleUseForm = () => {
-  console.log('rendu');
+  // console.log('rendu');
   const url = useLoaderData();
   const dispatch = useDispatch();
   const carId = url.searchParams.get('vehicle');
   const omId = url.searchParams.get('omId');
 
-  const [showCarList, setShowCarList] = useState(true);
 
-  const { vehicles, currentVehicle , formDefaultValues} = useSelector((state) => state.app);
-  
+  let { vehicles, formDefaultValues} = useSelector((state) => state.app);
+  const [showCarList, setShowCarList] = useState(formDefaultValues.carType === 'rent-car' ? false : true);
   const navigate = useNavigate();
-  console.log(formDefaultValues);
+  // console.log(formDefaultValues);
+
+  useEffect(() => {
+    reset(formDefaultValues);
+  }, [formDefaultValues])
+
   const {
     register,
     handleSubmit,
+    setValue,
     watch,
+    reset,
     formState:
     { errors },
   } = useForm({ defaultValues: formDefaultValues});
@@ -87,7 +94,7 @@ const VehicleUseForm = () => {
   };
 
   const handleNewCar = (event) => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     dispatch(displayVehicle(event.target.value));
   }
 
@@ -102,6 +109,7 @@ const VehicleUseForm = () => {
       setShowCarList(true);
     }
   }
+  
   return (
     <div className="form-page__container">
       <div className="form-page__title">
@@ -136,7 +144,6 @@ const VehicleUseForm = () => {
               handler={handleVehicleType}
             />
           </div>
-          <p className="form__section-field-label form__section-field-label--infos">(*) Produire obligatoirement la photocopie de la carte grise et de l'attestation d'assurance</p>
           {showCarList && (
             <SelectField 
               register={register}
@@ -148,7 +155,11 @@ const VehicleUseForm = () => {
               label="Sélectionner un véhicule déjà enregistré"
             />
           )}
-          <VehicleData register={register} carType={carType} errors={errors} />
+          <div className="form__section-container">
+            <VehicleData register={register} carType={carType} errors={errors} />
+          </div>
+          <p className="form__section-field-label form__section-field-label--infos" style={{marginBottom: '1rem'}}>(*) Produire obligatoirement la photocopie de la carte grise et de l'attestation d'assurance</p>
+
         </div>
         <div className="form__section">
           <FormSectionTitle>Raison</FormSectionTitle>
@@ -181,17 +192,19 @@ const VehicleUseForm = () => {
         </div>
         <div className="form__section">
           <FormSectionTitle>Documents</FormSectionTitle>
-          <FileField
+          <FileOrSavedFile
             register={register}
-            formField="car-registration-file"
-            id="carRegistrationDocument"
+            setValue={setValue}
+            id="registration"
             label="Carte grise"
+            hasSavedDocument={false}
           />
-          <FileField
+          <FileOrSavedFile
             register={register}
-            formField="car-insurance-file"
-            id="carInsuranceFile"
+            setValue={setValue}
+            id="insurance"
             label="Attestation d'assurance"
+            hasSavedDocument={true}
           />
         </div>
         <div className="form__section">
