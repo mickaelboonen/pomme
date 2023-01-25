@@ -20,7 +20,7 @@ import { displayVehicle, createVehicle, requestVehicleAuthorization } from '../.
 import FileOrSavedFile from '../../../components/Fields/FileOrSavedFile';
 
 const VehicleUseForm = () => {
-  console.log('rendu');
+  
   const url = useLoaderData();
   const dispatch = useDispatch();
   // const navigate = useNavigate();
@@ -93,17 +93,6 @@ const VehicleUseForm = () => {
       // TODO : we upload Vehicle into DB then Files then form
       
       dispatch(createVehicle(data));
-      // if ((typeof data.carRegistrationFile !== 'string' && data.carRegistrationFile.length > 0)
-      // || (typeof data.carInsuranceFile !== 'string' && data.carInsuranceFile.length > 0)) {
-      //   console.log('there is aa least one file');
-      //   // dispatch(uploadFile({data: data, step: 'authorization'}));
-      // }
-      // else {
-      //   console.log('pas de file, direct on create dans la BDD : ', data);
-      //   // dispatch(requestVehicleAuthorization(data));
-
-      // }
-
     }
     else {
 
@@ -121,38 +110,16 @@ const VehicleUseForm = () => {
       }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   };
 
   useEffect(() => {
     if (carRegistrationFile instanceof File) {
       clearErrors('carRegistrationFile');
+      setValue('carRegistrationFile', carRegistrationFile);
     }
     if (carInsuranceFile instanceof File) {
       clearErrors('carInsuranceFile');
+      setValue('carInsuranceFile', carInsuranceFile);
     }
   }, [carRegistrationFile, carInsuranceFile])
 
@@ -276,7 +243,7 @@ const VehicleUseForm = () => {
               label="Carte grise"
               hasSavedDocument={hasSavedRegistration}
               errors={errors}
-              required="Merci de fournir la carte grise du véhicule."
+              // required="Merci de fournir la carte grise du véhicule."
             />
             <FileOrSavedFile
               register={register}
@@ -285,7 +252,7 @@ const VehicleUseForm = () => {
               label="Attestation d'assurance"
               hasSavedDocument={hasSavedInsurance}
               errors={errors}
-              required="Merci de fournir l'attestation du véhicule."
+              // required="Merci de fournir l'attestation du véhicule."
             />
           </div>
           {externalSignature && (

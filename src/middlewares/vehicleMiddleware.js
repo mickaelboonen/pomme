@@ -1,4 +1,6 @@
 import { saveSignature, saveVehicles, saveVehicleDocuments } from 'src/reducer/app';
+import { uploadFile } from 'src/reducer/omForm';
+import { requestVehicleAuthorization } from '../reducer/app';
 import { api } from './api';
 
 
@@ -14,9 +16,36 @@ const vehicleMiddleware = (store) => (next) => (action) => {
       api.post("/api/vehicle/add/" + user, action.payload)
         .then((response) => {
 
-          console.log(response.data);
+          console.log("/api/vehicle/add/ : ", response.data);
 
-          // TODO : once here - Verif if files.
+          const newDataFormat = {
+            vehicle_id: Number(response.data.selectedVehicle),
+            registration_document: action.payload.carRegistrationFile,
+            externalSignature: action.payload.signature,
+            insurance: action.payload.carInsuranceFile,
+            reasons: response.data.reasons,
+            type: response.data.carType,
+          }
+          console.log('newDataFormat : ', newDataFormat);
+
+          if (newDataFormat.registration_document instanceof File) {
+            console.log('there is a least one file');
+            store.dispatch(uploadFile({data: newDataFormat, step: 'authorization', docType: 'authorization'}));
+          }
+          else if (newDataFormat.insurance instanceof File) {
+            console.log('there is aa least one file');
+            store.dispatch(uploadFile({data: newDataFormat, step: 'authorization', docType: 'authorization'}));
+          }
+          else if (newDataFormat.signature instanceof File) {
+            console.log('there is aaa least one file');
+            store.dispatch(uploadFile({data: newDataFormat, step: 'authorization', docType: 'authorization'}));
+          }
+          else {
+            console.log('there are no files sad');
+            store.dispatch(requestVehicleAuthorization(newDataFormat));
+          }
+
+// TODO : once here - Verif if files.
           // TODO : if files, upload files then create REQUEST
           // TODO : or else, create request 
         })

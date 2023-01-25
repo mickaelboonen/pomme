@@ -10,8 +10,7 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/uploadFile':
       const filesToUpload = [];
 
-      const { data, step } = action.payload;
-      console.log("------ FILE MIDDLEWARE : ", step);
+      const { data, step, docType } = action.payload;
       
       if (step === "transports") {
         
@@ -81,20 +80,57 @@ const omMiddleware = (store) => (next) => (action) => {
           filesToUpload.push(fileToUpload);
         })
       }
+      else if (step === 'authorization') {
+
+        if (data.externalSignature && typeof data.externalSignature !== 'string') {
+          data.externalSignature.forEach((signa) => {
+            const signature = {
+              omId: data.omId,
+              type: 'externalSignature',
+              file: signa.externalSignature,
+            }
+            filesToUpload.push(signature);
+
+          })
+        }
+
+        if (data.registration_document && typeof data.registration_document !== 'string') {
+
+            const registration = {
+              omId: data.omId,
+              type: 'registration',
+              file: data.registration_document,
+            }
+            filesToUpload.push(registration);
+        }
+
+        if (data.signature && typeof data.signature !== 'string') {
+            const insurance = {
+              omId: data.omId,
+              type: 'insurance',
+              file: signa.insurance,
+            }
+            filesToUpload.push(insurance);
+        }
+      }
       console.log('filesToUpload - ', filesToUpload);
       
+      const type = docType ? docType : 'om';
       // TODO : See if POST method is the right one ? Methods that can add files (post) and delete them (delete)
-      fileApi.post("/api/files/om/" + step, filesToUpload)
+      fileApi.post(`/api/files/${type}/${step}`, filesToUpload)
         .then((response) => {
 
           const { data } = action.payload;
-          console.log('-----------------------------------------------------',response.data);
+          console.log('API/FILES/'+docType ? docType : 'OM'+'/' + step + ' : ',response.data);
 
           if (step === "more") {
             data.files = [];
           }
           else if (step === 'mission') {
             data.missionPurposeFile = [];
+          }
+          else if (step === 'authorization') {
+            data.externalSignature = [];
           }
 
           // Retrieving the url for each file and assigning it to the right property
@@ -121,6 +157,15 @@ const omMiddleware = (store) => (next) => (action) => {
             else if (file.type === 'signature') {
               data.agentSignature = file.file.url;
             }
+            else if (file.type === 'externalSignature') {
+              data.externalSignature.push(file.file.url);
+            }
+            else if (file.type === 'insurance') {
+              data.carInsuranceFile = file.file.url;
+            }
+            else if (file.type === 'registration') {
+              data.carRegistrationFile = file.file.url;
+            }
           })
           
           // Now updates the transports values in the database
@@ -144,6 +189,10 @@ const omMiddleware = (store) => (next) => (action) => {
           else if (step === 'signature') {
             console.log('before update : ', data);
             store.dispatch(updateSignature(data));
+          }
+          else if (step === 'authorization') {
+            console.log('before update : ', data);
+            // store.dispatch(requestVehicleAuthorization(data));
           }
           
         })
