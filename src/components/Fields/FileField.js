@@ -44,6 +44,7 @@ const FileField = ({
     const filename = fileList[0].name;
     event.target.nextSibling.textContent = filename;
       // Sets the selected value into the field
+      console.log(formField, fileList[0]);
       setValue(formField, fileList[0]);
     }
   };

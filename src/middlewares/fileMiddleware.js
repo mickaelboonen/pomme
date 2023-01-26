@@ -1,16 +1,19 @@
 import { updateTransports, updateAdvance, updateMore, updateMission, updateSignature } from 'src/reducer/omForm';
 import { fileApi } from './api';
+import { requestVehicleAuthorization } from '../reducer/app';
 
 
 fileApi.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 fileApi.defaults.headers['Content-Type'] = 'multipart/form-data';
 
 const omMiddleware = (store) => (next) => (action) => {
+  const { app: { user }} = store.getState()
   switch (action.type) {
     case 'omForm/uploadFile':
       const filesToUpload = [];
 
       const { data, step, docType } = action.payload;
+      console.log('DATA IN THE FILEMIDDLEWARE : ', data);
       
       if (step === "transports") {
         
@@ -87,6 +90,7 @@ const omMiddleware = (store) => (next) => (action) => {
             const signature = {
               omId: data.omId,
               type: 'externalSignature',
+              user: user,
               file: signa.externalSignature,
             }
             filesToUpload.push(signature);
@@ -94,21 +98,23 @@ const omMiddleware = (store) => (next) => (action) => {
           })
         }
 
-        if (data.registration_document && typeof data.registration_document !== 'string') {
+        if (data.registration_document instanceof File) {
 
             const registration = {
               omId: data.omId,
               type: 'registration',
+              user: user,
               file: data.registration_document,
             }
             filesToUpload.push(registration);
         }
 
-        if (data.signature && typeof data.signature !== 'string') {
+        if (data.insurance instanceof File) {
             const insurance = {
               omId: data.omId,
               type: 'insurance',
-              file: signa.insurance,
+              user: user,
+              file: data.insurance,
             }
             filesToUpload.push(insurance);
         }
@@ -121,7 +127,6 @@ const omMiddleware = (store) => (next) => (action) => {
         .then((response) => {
 
           const { data } = action.payload;
-          console.log('API/FILES/'+docType ? docType : 'OM'+'/' + step + ' : ',response.data);
 
           if (step === "more") {
             data.files = [];
@@ -161,10 +166,10 @@ const omMiddleware = (store) => (next) => (action) => {
               data.externalSignature.push(file.file.url);
             }
             else if (file.type === 'insurance') {
-              data.carInsuranceFile = file.file.url;
+              data.insurance = file.file.url;
             }
             else if (file.type === 'registration') {
-              data.carRegistrationFile = file.file.url;
+              data.registration_document = file.file.url;
             }
           })
           
@@ -192,7 +197,7 @@ const omMiddleware = (store) => (next) => (action) => {
           }
           else if (step === 'authorization') {
             console.log('before update : ', data);
-            // store.dispatch(requestVehicleAuthorization(data));
+            store.dispatch(requestVehicleAuthorization(data));
           }
           
         })

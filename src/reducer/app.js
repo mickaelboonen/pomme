@@ -8,6 +8,18 @@ const initialState = {
       id: 0,
       name: 'Véhicule personnel, de prêt'
     },
+    {
+      id: 1,
+      name: 'Covoiturage (passager)'
+    },
+    {
+      id: 2,
+      name: 'Véhicule de service'
+    },
+    {
+      id: 3,
+      name: 'Véhicule de location'
+    },
   ],
   unimesVehicles: [],
   documents: [],
@@ -60,9 +72,8 @@ const omFormSlice = createSlice({
         state.userSignature = action.payload.url;
       },
       saveVehicles: (state, action) => {
-
-
-
+        state.unimesVehicles = [];
+        state.vehicles = [];
         action.payload.forEach((vehicle) => {
           if (vehicle.user === 'unimes') {
             state.unimesVehicles.push(vehicle)

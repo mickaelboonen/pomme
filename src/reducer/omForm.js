@@ -171,6 +171,7 @@ const omFormSlice = createSlice({
           publicTransports: action.payload.publicTransports,
           others:  [],
           dispensations:  action.payload.dispensations,
+          authorizations:  action.payload.authorizations,
           omId: action.payload.om.id,
           vehicleAuthorizationFile: null,
           vehicleAuthorizationFileForValidation: false,

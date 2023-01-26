@@ -25,7 +25,6 @@ const RequestWithFile = ({
   clearErrors  // function
 }) => {
   
-  console.log(id, id);
   const filename = data[id] ? getSavedFileName(data[id]): '';
   
   let title = '';
@@ -91,7 +90,7 @@ const RequestWithFile = ({
         </div>
         <span className="form__section-container-options__separator">OU</span>
         <div className="form__section-container-button">
-          <Link to={link}>FAIRE LA DEMANDE</Link>
+          <Link id={id + '-link'} to={link}>FAIRE LA DEMANDE</Link>
         </div>
       </div>
       {(data.file || typeof filename === 'string') && <button className="form__section-container-delete-button" id ={'delete-' + id} type='button' onClick={handleClickOnDelete}>Supprimer la pièce choisie</button>}

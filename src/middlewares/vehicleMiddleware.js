@@ -1,6 +1,6 @@
-import { saveSignature, saveVehicles, saveVehicleDocuments } from 'src/reducer/app';
+import { saveSignature, saveVehicles, saveVehicleDocuments, requestVehicleAuthorization } from 'src/reducer/app';
 import { uploadFile } from 'src/reducer/omForm';
-import { requestVehicleAuthorization } from '../reducer/app';
+import { validateSideForm } from '../reducer/omForm';
 import { api } from './api';
 
 
@@ -16,9 +16,8 @@ const vehicleMiddleware = (store) => (next) => (action) => {
       api.post("/api/vehicle/add/" + user, action.payload)
         .then((response) => {
 
-          console.log("/api/vehicle/add/ : ", response.data);
-
           const newDataFormat = {
+            omId: Number(response.data.omID),
             vehicle_id: Number(response.data.selectedVehicle),
             registration_document: action.payload.carRegistrationFile,
             externalSignature: action.payload.signature,
@@ -26,10 +25,9 @@ const vehicleMiddleware = (store) => (next) => (action) => {
             reasons: response.data.reasons,
             type: response.data.carType,
           }
-          console.log('newDataFormat : ', newDataFormat);
 
           if (newDataFormat.registration_document instanceof File) {
-            console.log('there is a least one file');
+            console.log('there is a least one file : ', newDataFormat);
             store.dispatch(uploadFile({data: newDataFormat, step: 'authorization', docType: 'authorization'}));
           }
           else if (newDataFormat.insurance instanceof File) {
@@ -70,6 +68,17 @@ const vehicleMiddleware = (store) => (next) => (action) => {
           if (response.data.length > 0) {
             store.dispatch(saveVehicleDocuments(response.data))
           }
+        })
+        .catch((error) => {
+          console.error('get vehicle documents', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
+    case 'app/requestVehicleAuthorization':
+      api.post("/api/vehicle/authorization/add", action.payload)
+        .then((response) => {
+          console.log(response.data);
+          store.dispatch(validateSideForm());
         })
         .catch((error) => {
           console.error('get vehicle documents', error);

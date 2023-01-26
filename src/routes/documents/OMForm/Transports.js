@@ -56,8 +56,6 @@ const Transports = ({ step }) => {
   }, [apiMessage])
   
   const defaultValues = omForm.find((omStep) => omStep.step === 'transports').data;
-
-  console.log(defaultValues)
   
   const {
     register,
@@ -104,7 +102,7 @@ const Transports = ({ step }) => {
         // Formats the data for the database
         const databaseData = turnTransportsDataToDbFormat(data);
         console.log('HERE : ', databaseData);
-        return;
+        // return;
 
         // If any file has been selected (for the train, plane or car), we upload it
         if (typeof databaseData.transportDispensation !== 'string' || typeof databaseData.vehicleAuthorization !== 'string') {
@@ -122,12 +120,11 @@ const Transports = ({ step }) => {
   // State to manage components
   const [needsDerogation, setNeedsDerogation] = useState(false);
   const [needsAuthorization, setNeedsAuthorization] = useState(!defaultValues.vehicle ? false : true);
-  console.log(defaultValues.taxiDispensationForValidation);
   const [needsTaxiDispensation, setNeedsTaxiDispensation] = useState(defaultValues.taxiDispensationForValidation);
   const { vehicles } = useSelector((state) => state.app);
   // FORM FIELDS -----------------------------------------------------------------------------------------------------------------------------------------
-  const [trainClass , planeClass, vehicle, others] = watch(['trainClass', 'planeClass', 'vehicle', 'others']);
-
+  const [trainClass , planeClass, others] = watch(['trainClass', 'planeClass', 'others']);
+  
   // TODO : Selecteurs
   let dispensationTarget = [];
   if (trainClass ==='first-class') {
@@ -158,7 +155,6 @@ const Transports = ({ step }) => {
     }
   }, [others])
 
-
   // Clears the derogation error
   useEffect(() => {
     if (planeClass !== null) {
@@ -183,15 +179,24 @@ const Transports = ({ step }) => {
       setNeedsDerogation(false);
     }
 
-    if (vehicle !== "" && vehicle) {
+    clearErrors('transports');
+  }, [trainClass, planeClass])
+
+  let vehicleTypeTarget = null;
+  /**
+   * Toggles the FileOrSavedFileComponent
+   * @param {*} event 
+   */
+  const changeVehicle = (event) => {
+
+    if (event.target.value !== "1" && event.target.value !== "") {
       setNeedsAuthorization(true);
+      clearErrors('transports');
     }
     else {
       setNeedsAuthorization(false);
     }
-
-    clearErrors('transports');
-  }, [trainClass, planeClass, vehicle])
+  }
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
@@ -276,6 +281,7 @@ const Transports = ({ step }) => {
         data={vehicles}
         register={register}
         formField="vehicle"
+        handler={changeVehicle}
         id="vehicle-select"
         label="Véhicule utilisé"
         blankValue={"Pas de véhicule sélectionné"}
@@ -291,7 +297,7 @@ const Transports = ({ step }) => {
           id="vehicleAuthorizationFile"
           data={defaultValues}
           permanentOm={permanentOm}
-          link={"/nouveau-document/autorisation-de-véhicule?omId=" + omId + '&vehicle=' + vehicle}
+          link={"/nouveau-document/autorisation-de-véhicule?omId=" + omId}
         />
       )}
       <div className="form__section">
@@ -309,6 +315,7 @@ const Transports = ({ step }) => {
           <p className="form__section-field-label">Autres</p>
           <CheckboxInput id="taxi" formField="others" label="Taxi" register={register} />
           <CheckboxInput id="parking" formField="others" label="Parking" register={register} />
+          <CheckboxInput id="ferry" formField="others" label="Ferry (bateau)" register={register} />
         </div>
         {needsTaxiDispensation && (
           <RequestWithFile

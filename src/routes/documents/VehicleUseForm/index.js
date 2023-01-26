@@ -1,40 +1,50 @@
-import React from 'react';
 import { useForm } from "react-hook-form";
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLoaderData } from 'react-router-dom';
 
 import './style.scss';
-import FormSectionTitle from 'src/components/FormSectionTitle';
-import RadioInput from 'src/components/Fields/RadioInput';
-import TextField from 'src/components/Fields/TextField';
-import PageTitle from 'src/components/PageTitle';
-import SelectField from 'src/components/Fields/SelectField';
-import CheckboxInput from 'src/components/Fields/CheckboxInput';
-import FileField from 'src/components/Fields/FileField';
-import SwitchButton from 'src/components/SwitchButton';
-import ButtonElement from 'src/components/Fields/ButtonElement';
-import { useState } from 'react';
+
+// Components
 import VehicleData from './VehicleData';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { displayVehicle, createVehicle, requestVehicleAuthorization } from '../../../reducer/app';
-import FileOrSavedFile from '../../../components/Fields/FileOrSavedFile';
+import PageTitle from 'src/components/PageTitle';
+import SwitchButton from 'src/components/SwitchButton';
+import TextField from 'src/components/Fields/TextField';
+import FileField from 'src/components/Fields/FileField';
+import RadioInput from 'src/components/Fields/RadioInput';
+import HiddenField from 'src/components/Fields/HiddenField';
+import SelectField from 'src/components/Fields/SelectField';
+import FormSectionTitle from 'src/components/FormSectionTitle';
+import CheckboxInput from 'src/components/Fields/CheckboxInput';
+import ButtonElement from 'src/components/Fields/ButtonElement';
+import FileOrSavedFile from 'src/components/Fields/FileOrSavedFile';
+
+// Actions
+import { clearSideForm,} from 'src/reducer/omForm';
+import { displayVehicle, createVehicle, requestVehicleAuthorization } from 'src/reducer/app';
 
 const VehicleUseForm = () => {
   
   const url = useLoaderData();
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  // const carId = url.searchParams.get('vehicle');
-  // const omId = url.searchParams.get('omId');
+  const navigate = useNavigate();
+  const omId = url.searchParams.get('omId');
 
+  let { app: { vehicles, formDefaultValues, unimesVehicles, loader },
+    omForm: { isSideFormInDB }
+  } = useSelector((state) => state);
 
-  let { vehicles, formDefaultValues, unimesVehicles, loader} = useSelector((state) => state.app);
+  useEffect(() => {
+    if (isSideFormInDB) {
+      dispatch(clearSideForm());
+      navigate('/modifier-un-document/ordre-de-mission?etape=2&id='+ omId);
+    }
+  }, [isSideFormInDB])
 
   useEffect(() => {
     reset(formDefaultValues);
   }, [formDefaultValues])
-
-  // if (!loader) 
+  
   const {
     register,
     handleSubmit,
@@ -46,15 +56,20 @@ const VehicleUseForm = () => {
     formState:
     { errors },
   } = useForm({ defaultValues: formDefaultValues});
-
   
-
   const [showCarList, setShowCarList] = useState(true);
   const [hasSavedInsurance, setSavedInsurance] = useState(false);
   const [hasSavedRegistration, setSavedRegistration] = useState(false);
   const [vehiclesList, setVehiclesList] = useState([]);
 
-  const [carType, externalSignature, savedRegistration, savedInsurance, carRegistrationFile, carInsuranceFile] = watch(['carType', 'externalSignature', 'savedRegistration', 'savedInsurance', 'carRegistrationFile', 'carInsuranceFile']);
+  const [
+    carType,
+    externalSignature,
+    savedRegistration,
+    savedInsurance,
+    carRegistrationFile,
+    carInsuranceFile
+  ] = watch(['carType', 'externalSignature', 'savedRegistration', 'savedInsurance', 'carRegistrationFile', 'carInsuranceFile']);
 
   useEffect(() => {
     if (formDefaultValues.savedInsurance) {
@@ -82,33 +97,54 @@ const VehicleUseForm = () => {
   
   const onSubmit = (data) => {
     console.log(data);
-    
+    let countErrors = 0;
     if (data.reasons.length === 0) {
       setError('reasons', {type: 'custom', message : "Merci de justifier l'utilisation du véhicule."})
-      return;
+      countErrors++;
+    }
+    
+    if (!data.savedRegistration && typeof data.carRegistrationFile !== 'object') {
+      setError('carRegistrationFile', {type: 'custom', message : "Merci de fournir la carte grise du véhicule."})
+      countErrors++;
+    }
+    
+    if (!data.savedInsurance && typeof data.carInsuranceFile !== 'object') {
+      setError('carInsuranceFile', {type: 'custom', message : "Merci de fournir l'attestation d'assurance du véhicule."})
+      countErrors++;
     }
 
-    if (!data.selectedVehicle || data.selectedVehicle === '0') {
+    console.log(errors, countErrors);
+    
+    if (countErrors === 0) {
 
-      // TODO : we upload Vehicle into DB then Files then form
-      
-      dispatch(createVehicle(data));
-    }
-    else {
+      console.log('ALL GOOD');
 
-      if (typeof data.carRegistrationFile !== 'string' && data.carRegistrationFile.length > 0) {
-        console.log('there is aa least one file');
-        // dispatch(uploadFile({data: data, step: 'authorization'}));
-      }
-      if (typeof data.carInsuranceFile !== 'string' && data.carInsuranceFile.length > 0) {
-        console.log('there is aa least one file');
-        // dispatch(uploadFile({data: data, step: 'authorization'}));
+      if (!data.selectedVehicle || data.selectedVehicle === '0') {
+
+        // TODO : we upload Vehicle into DB then Files then form
+        
+        dispatch(createVehicle(data));
       }
       else {
-        console.log('pas de file, direct on create dans la BDD : ', data);
-        // dispatch(requestVehicleAuthorization(data));
+        if (typeof data.carRegistrationFile !== 'string' && data.carRegistrationFile.length > 0) {
+          dispatch(uploadFile({data: data, step: 'authorization'}));
+        }
+        if (typeof data.carInsuranceFile !== 'string' && data.carInsuranceFile.length > 0) {
+          dispatch(uploadFile({data: data, step: 'authorization'}));
+        }
+        else {          
+          const newDataFormat = {
+            omId: Number(data.omId),
+            vehicle_id: Number(data.selectedVehicle),
+            registration_document: data.carRegistrationFile,
+            externalSignature: [],
+            insurance: data.carInsuranceFile,
+            reasons: data.reasons,
+            type: data.carType,
+          };
+          dispatch(requestVehicleAuthorization(newDataFormat));
+        }
       }
-
     }
   };
 
@@ -198,11 +234,8 @@ const VehicleUseForm = () => {
                 label="Sélectionner un véhicule déjà enregistré"
               />
             )}
-            <div className="form__section-container">
-              <VehicleData register={register} carType={carType} errors={errors} />
-            </div>
+            <VehicleData register={register} errors={errors} />
             <p className="form__section-field-label form__section-field-label--infos" style={{marginBottom: '1rem'}}>(*) Produire obligatoirement la photocopie de la carte grise et de l'attestation d'assurance</p>
-
           </div>
           <div className="form__section">
             <FormSectionTitle>Raison</FormSectionTitle>
@@ -243,7 +276,6 @@ const VehicleUseForm = () => {
               label="Carte grise"
               hasSavedDocument={hasSavedRegistration}
               errors={errors}
-              // required="Merci de fournir la carte grise du véhicule."
             />
             <FileOrSavedFile
               register={register}
@@ -252,7 +284,6 @@ const VehicleUseForm = () => {
               label="Attestation d'assurance"
               hasSavedDocument={hasSavedInsurance}
               errors={errors}
-              // required="Merci de fournir l'attestation du véhicule."
             />
           </div>
           {externalSignature && (
@@ -268,7 +299,13 @@ const VehicleUseForm = () => {
             </div>
           )}
           <div className="form__section">
+            <HiddenField
+              value={omId}
+              register={register}
+              id="omId"
+            />
             <FormSectionTitle>Dernière étape</FormSectionTitle>
+            
             {carType === 'personal-car' && (
               <div className="form__section-field">
                 <SwitchButton

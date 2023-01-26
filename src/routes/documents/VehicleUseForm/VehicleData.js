@@ -1,15 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'src/components/Fields/TextField';
-import ButtonElement from 'src/components/Fields/ButtonElement';
 
 import './style.scss';
 
-const VehicleData = ({ register, carType, errors}) => {
+const VehicleData = ({ register, errors }) => {
   
   return (
-  <div id="carForm">
-    
+  <div className="form__section-container" id="carForm">
     <h4 className="form__section-container-title">RENSEIGNEMENTS SUR LA VOITURE</h4>
     <div className="form__section form__section--split" >
       <TextField
@@ -59,20 +57,12 @@ const VehicleData = ({ register, carType, errors}) => {
         error={errors.policeNumber}
       />
     </div>
-    {carType === 'personal-car' &&(
-      <div className="form__section-field-button form__section-field--hidden">
-        <ButtonElement
-          isHidden
-          type="button"
-          label="Enregistrer le véhicule"          
-        />
-      </div>
-    )}
   </div>
 );}
 
 VehicleData.propTypes = {
-
+  register: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
 };
 
 export default VehicleData;

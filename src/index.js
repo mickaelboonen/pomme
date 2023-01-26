@@ -67,7 +67,7 @@ const router = createBrowserRouter([
                 store.dispatch(getSignature('mboone01'));
               }
               else if (step === '2') {
-                store.dispatch(getVehicles());
+                // store.dispatch(getVehicles());
               }
               else if (step === '1') {
                 store.dispatch(fetchOm(id))
@@ -173,7 +173,7 @@ const router = createBrowserRouter([
                 store.dispatch(getMore(id));
               }
               else if (step === '2') {
-                store.dispatch(getVehicles());
+                // store.dispatch(getVehicles());
                 store.dispatch(getTransports(id));
               }
               else if (step === '1') {
