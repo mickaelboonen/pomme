@@ -86,16 +86,13 @@ const omMiddleware = (store) => (next) => (action) => {
       else if (step === 'authorization') {
 
         if (data.externalSignature && typeof data.externalSignature !== 'string') {
-          data.externalSignature.forEach((signa) => {
-            const signature = {
-              omId: data.omId,
-              type: 'externalSignature',
-              user: user,
-              file: signa.externalSignature,
-            }
-            filesToUpload.push(signature);
-
-          })
+          const signature = {
+            omId: data.omId,
+            type: 'externalSignature',
+            user: user,
+            file: data.externalSignature,
+          }
+          filesToUpload.push(signature);
         }
 
         if (data.registration_document instanceof File) {

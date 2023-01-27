@@ -2,6 +2,7 @@ import { saveVehicles, saveVehicleDocuments, requestVehicleAuthorization } from 
 import { uploadFile, validateSideForm } from 'src/reducer/omForm';
 
 import { api } from './api';
+import { setMessage } from '../reducer/vehicle';
 
 
 api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -71,6 +72,7 @@ const vehicleMiddleware = (store) => (next) => (action) => {
         .then((response) => {
           console.log(response.data);
           store.dispatch(validateSideForm());
+          store.dispatch(setMessage(response));
         })
         .catch((error) => {
           console.error('vehicle/requestVehicleAuthorization', error);

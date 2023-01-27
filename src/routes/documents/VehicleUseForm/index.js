@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import classNames from "classnames";
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLoaderData } from 'react-router-dom';
@@ -21,7 +22,8 @@ import FileOrSavedFile from 'src/components/Fields/FileOrSavedFile';
 
 // Actions
 import { clearSideForm, uploadFile } from 'src/reducer/omForm';
-import { displayVehicle, createVehicle, requestVehicleAuthorization } from 'src/reducer/vehicle';
+import { displayVehicle, createVehicle, requestVehicleAuthorization, stayOnAuthorizationForm, clearMessage, resetPdfNeed } from 'src/reducer/vehicle';
+
 
 const VehicleUseForm = () => {
   
@@ -33,13 +35,22 @@ const VehicleUseForm = () => {
   let { 
     // app: { vehicles, formDefaultValues, unimesVehicles, loader },
     omForm: { isSideFormInDB },
-    vehicle: { needsPDF ,vehicles, formDefaultValues, unimesVehicles, loader },
+    vehicle: { message, needsPdf , vehicles, formDefaultValues, unimesVehicles, loader },
   } = useSelector((state) => state);
+
 
   useEffect(() => {
     if (isSideFormInDB) {
       dispatch(clearSideForm());
-      navigate('/modifier-un-document/ordre-de-mission?etape=2&id='+ omId);
+      console.log('needsPdf : ', needsPdf);
+
+      if (!needsPdf) {
+        dispatch(clearMessage());
+        navigate('/modifier-un-document/ordre-de-mission?etape=2&id='+ omId);
+      }
+      else {
+
+      }
     }
   }, [isSideFormInDB])
 
@@ -119,6 +130,10 @@ const VehicleUseForm = () => {
     
     if (countErrors === 0) {
 
+      if (data.externalSignature) {
+        dispatch(stayOnAuthorizationForm())
+      }
+
       console.log('ALL GOOD');
 
       if (!data.selectedVehicle || data.selectedVehicle === '0') {
@@ -188,6 +203,12 @@ const VehicleUseForm = () => {
 
   const handleNewCar = (event) => {
     dispatch(displayVehicle(event.target.value));
+  }
+
+  const generatePdf = () => {
+    dispatch(resetPdfNeed());
+    // TODO : PDF
+    console.log('I want the PDF of the Auth');
   }
   
   return (
@@ -301,13 +322,12 @@ const VehicleUseForm = () => {
             </div>
           )}
           <div className="form__section">
+            <FormSectionTitle>Dernière étape</FormSectionTitle>
             <HiddenField
               value={omId}
               register={register}
               id="omId"
             />
-            <FormSectionTitle>Dernière étape</FormSectionTitle>
-            
             {carType === 'personal-car' && (
               <div className="form__section-field">
                 <SwitchButton
@@ -322,14 +342,29 @@ const VehicleUseForm = () => {
               <div className="form__section-field" id="external-signature-button">
                 <div className="form__section-field-button">
                   <ButtonElement 
-                    type="button"
-                    label="Enregistrer la demande et générer le PDF de la demande"
+                    type="submit"
+                    label="Enregistrer la demande"
                   />
+                  
+                  {needsPdf && (
+                    <ButtonElement 
+                      type="button"
+                      label="Générer le PDF de la demande"
+                      onClick={generatePdf}
+                    />
+                  )}
                 </div>
-                  <p className="form__section-field-label form__section-field-label--car-form">Veuillez télécharger le PDF de la demande et le faire signer aux personnes extérieures concernées</p>
-                  <a href="">Retourner au formulaire de l'ordre de mission</a>
+                {needsPdf && <p className="form__section-field-label form__section-field-label--car-form">Veuillez télécharger le PDF de la demande et le faire signer aux personnes extérieures concernées</p>}
+                {message && (
+                  <div className="form__section-field">
+                    <p className={classNames('form__section-message', {'form__section-message--success': message.status === 200, 'form__section-message--error': message.status !== 200})}>
+                      {message.data}
+                    </p>
+                  </div>
+                )}
+                {needsPdf && <a href="">Retourner au formulaire de l'ordre de mission</a>}
               </div>
-            )}
+            )} 
             {!externalSignature && (
               <div className="form__section-field">
                 <div className="form__section-field-button">

@@ -121,7 +121,25 @@ const Transports = ({ step }) => {
   const [needsDerogation, setNeedsDerogation] = useState(false);
   const [needsAuthorization, setNeedsAuthorization] = useState(!defaultValues.vehicle ? false : true);
   const [needsTaxiDispensation, setNeedsTaxiDispensation] = useState(defaultValues.taxiDispensationForValidation);
-  const { vehicles } = useSelector((state) => state.app);
+
+  const vehiclePossibilities = [
+    {
+      id: 0,
+      name: 'Véhicule personnel, de prêt'
+    },
+    {
+      id: 1,
+      name: 'Covoiturage (passager)'
+    },
+    {
+      id: 2,
+      name: 'Véhicule de service'
+    },
+    {
+      id: 3,
+      name: 'Véhicule de location'
+    },
+  ];
   // FORM FIELDS -----------------------------------------------------------------------------------------------------------------------------------------
   const [trainClass , planeClass, others] = watch(['trainClass', 'planeClass', 'others']);
   
@@ -278,7 +296,7 @@ const Transports = ({ step }) => {
       )}
       <FormSectionTitle>Véhicule</FormSectionTitle>
       <SelectField
-        data={vehicles}
+        data={vehiclePossibilities}
         register={register}
         formField="vehicle"
         handler={changeVehicle}

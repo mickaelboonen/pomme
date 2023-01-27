@@ -1,24 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  vehicles: [
-    {
-      id: 0,
-      name: 'Véhicule personnel, de prêt'
-    },
-    {
-      id: 1,
-      name: 'Covoiturage (passager)'
-    },
-    {
-      id: 2,
-      name: 'Véhicule de service'
-    },
-    {
-      id: 3,
-      name: 'Véhicule de location'
-    },
-  ],
+  vehicles: [],
   unimesVehicles: [],
   documents: [],
   currentVehicle: {},
@@ -40,7 +23,8 @@ const initialState = {
     externalSignature: null
   },
   loader: true,
-  needsPDF: false,
+  needsPdf: false,
+  message: null,
 };
 const vehicleSlice = createSlice({
     name: 'vehicle',
@@ -64,9 +48,6 @@ const vehicleSlice = createSlice({
         })
         state.loader = false;
       },
-      saveSignature: (state, action) => {
-        state.userSignature = action.payload.url;
-      },
       saveVehicles: (state, action) => {
         state.unimesVehicles = [];
         state.vehicles = [];
@@ -82,43 +63,61 @@ const vehicleSlice = createSlice({
       saveVehicle: (state, action) => {
         // action.payload.forEach((vehicle) => state.vehicles.push(vehicle));
       },
-      setApiResponse: (state, action) => {
-        state.apiMessage = action.payload;
-      },
       displayVehicle: (state, action) => {
         
         const vehicleToShow = state.vehicles.find((vehicle) => vehicle.id === Number(action.payload))
+        let isUnimeVehicle = false;
+
+        state.unimesVehicles.find((vehicle) => {
+          if (vehicleToShow && vehicle.id === vehicleToShow.id) {
+            isUnimeVehicle = true;
+          }
+        });
         
-        state.formDefaultValues.carType= 'personal-car';
-        state.formDefaultValues.selectedVehicle= vehicleToShow.id;
-        state.formDefaultValues.carBrand= vehicleToShow.make;
-        state.formDefaultValues.carRegistration= vehicleToShow.licensePlate;
-        state.formDefaultValues.carRating= vehicleToShow.rating;
-        state.formDefaultValues.carInsurance= vehicleToShow.insurance;
-        state.formDefaultValues.policeNumber= vehicleToShow.police;
-        
+        state.formDefaultValues.carType= isUnimeVehicle ? 'company-car': 'personal-car';
+        state.formDefaultValues.selectedVehicle= vehicleToShow ? vehicleToShow.id : '';
+        state.formDefaultValues.carBrand= vehicleToShow ? vehicleToShow.make : '';
+        state.formDefaultValues.carRegistration= vehicleToShow ? vehicleToShow.licensePlate : '';
+        state.formDefaultValues.carRating= vehicleToShow ? vehicleToShow.rating : '';
+        state.formDefaultValues.carInsurance= vehicleToShow ? vehicleToShow.insurance : '';
+        state.formDefaultValues.policeNumber= vehicleToShow ? vehicleToShow.police : '';
         state.currentVehicle = vehicleToShow;
+        
+        state.currentVehicle = vehicleToShow ? vehicleToShow : {};
       },
       createVehicle: () => {
       },
       requestVehicleAuthorization: () => {
       },
+      stayOnAuthorizationForm: (state, action) => {
+        state.needsPdf = true;
+        state.successMessage = action.payload;
+      },
+      resetPdfNeed: (state) => {
+        state.needsPdf = false;
+      },
+      setMessage: (state, action) => {
+        state.message = action.payload;
+      },
+      clearMessage: (state) => {
+        state.message = null;
+      }
     },
 });
 
 export const {
   saveVehicleDocuments,
   displayVehicle,
-  clearMessage,
-  setApiResponse,
-  getSignature,
-  saveSignature,
   getVehicles,
   getVehicleDocuments,
   saveVehicle,
   saveVehicles,
   createVehicle,
-  requestVehicleAuthorization
+  requestVehicleAuthorization,
+  stayOnAuthorizationForm,
+  resetPdfNeed,
+  setMessage,
+  clearMessage
 } = vehicleSlice.actions;
 
 export default vehicleSlice.reducer;
