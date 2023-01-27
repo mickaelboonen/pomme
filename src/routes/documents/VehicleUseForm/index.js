@@ -20,8 +20,8 @@ import ButtonElement from 'src/components/Fields/ButtonElement';
 import FileOrSavedFile from 'src/components/Fields/FileOrSavedFile';
 
 // Actions
-import { clearSideForm,} from 'src/reducer/omForm';
-import { displayVehicle, createVehicle, requestVehicleAuthorization } from 'src/reducer/app';
+import { clearSideForm, uploadFile } from 'src/reducer/omForm';
+import { displayVehicle, createVehicle, requestVehicleAuthorization } from 'src/reducer/vehicle';
 
 const VehicleUseForm = () => {
   
@@ -30,8 +30,10 @@ const VehicleUseForm = () => {
   const navigate = useNavigate();
   const omId = url.searchParams.get('omId');
 
-  let { app: { vehicles, formDefaultValues, unimesVehicles, loader },
-    omForm: { isSideFormInDB }
+  let { 
+    // app: { vehicles, formDefaultValues, unimesVehicles, loader },
+    omForm: { isSideFormInDB },
+    vehicle: { needsPDF ,vehicles, formDefaultValues, unimesVehicles, loader },
   } = useSelector((state) => state);
 
   useEffect(() => {
@@ -120,19 +122,10 @@ const VehicleUseForm = () => {
       console.log('ALL GOOD');
 
       if (!data.selectedVehicle || data.selectedVehicle === '0') {
-
-        // TODO : we upload Vehicle into DB then Files then form
         
         dispatch(createVehicle(data));
       }
       else {
-        if (typeof data.carRegistrationFile !== 'string' && data.carRegistrationFile.length > 0) {
-          dispatch(uploadFile({data: data, step: 'authorization'}));
-        }
-        if (typeof data.carInsuranceFile !== 'string' && data.carInsuranceFile.length > 0) {
-          dispatch(uploadFile({data: data, step: 'authorization'}));
-        }
-        else {          
           const newDataFormat = {
             omId: Number(data.omId),
             vehicle_id: Number(data.selectedVehicle),
@@ -142,6 +135,14 @@ const VehicleUseForm = () => {
             reasons: data.reasons,
             type: data.carType,
           };
+
+        if (data.carRegistrationFile instanceof File || data.carInsuranceFile instanceof File) {
+
+          dispatch(uploadFile({data: newDataFormat, step: 'authorization', docType: 'authorization'}));
+        }
+        else {          
+          console.log('no files, lets go');
+
           dispatch(requestVehicleAuthorization(newDataFormat));
         }
       }
@@ -291,6 +292,7 @@ const VehicleUseForm = () => {
               <FormSectionTitle>Signatures</FormSectionTitle>
               <FileField
                 register={register}
+                setValue={setValue}
                 formField="signature"
                 id="userSignature"
                 label="Signature"

@@ -1,6 +1,6 @@
 import { updateTransports, updateAdvance, updateMore, updateMission, updateSignature } from 'src/reducer/omForm';
 import { fileApi } from './api';
-import { requestVehicleAuthorization } from '../reducer/app';
+import { requestVehicleAuthorization } from '../reducer/vehicle';
 
 
 fileApi.defaults.headers.get['Access-Control-Allow-Origin'] = '*';

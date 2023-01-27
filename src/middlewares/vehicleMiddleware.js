@@ -1,6 +1,6 @@
-import { saveSignature, saveVehicles, saveVehicleDocuments, requestVehicleAuthorization } from 'src/reducer/app';
-import { uploadFile } from 'src/reducer/omForm';
-import { validateSideForm } from '../reducer/omForm';
+import { saveVehicles, saveVehicleDocuments, requestVehicleAuthorization } from 'src/reducer/vehicle';
+import { uploadFile, validateSideForm } from 'src/reducer/omForm';
+
 import { api } from './api';
 
 
@@ -11,13 +11,12 @@ api.defaults.headers['Content-Type'] = 'application/json';
 const vehicleMiddleware = (store) => (next) => (action) => {
   const { app : { user } } = store.getState();
   switch (action.type) {
-    case 'app/createVehicle':
-    // const { app : { user } } = store.getState();
+    case 'vehicle/createVehicle':
       api.post("/api/vehicle/add/" + user, action.payload)
         .then((response) => {
 
           const newDataFormat = {
-            omId: Number(response.data.omID),
+            omId: Number(response.data.omId),
             vehicle_id: Number(response.data.selectedVehicle),
             registration_document: action.payload.carRegistrationFile,
             externalSignature: action.payload.signature,
@@ -31,38 +30,32 @@ const vehicleMiddleware = (store) => (next) => (action) => {
             store.dispatch(uploadFile({data: newDataFormat, step: 'authorization', docType: 'authorization'}));
           }
           else if (newDataFormat.insurance instanceof File) {
-            console.log('there is aa least one file');
+            console.log('there is aa least one file', newDataFormat);
             store.dispatch(uploadFile({data: newDataFormat, step: 'authorization', docType: 'authorization'}));
           }
           else if (newDataFormat.signature instanceof File) {
-            console.log('there is aaa least one file');
+            console.log('there is aaa least one file', newDataFormat);
             store.dispatch(uploadFile({data: newDataFormat, step: 'authorization', docType: 'authorization'}));
           }
           else {
-            console.log('there are no files sad');
+            console.log('there are no files sad', newDataFormat);
             store.dispatch(requestVehicleAuthorization(newDataFormat));
           }
-
-// TODO : once here - Verif if files.
-          // TODO : if files, upload files then create REQUEST
-          // TODO : or else, create request 
         })
         .catch((error) => {
           console.error('get signature', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
         });
       break;
-    case 'app/getVehicles':
+    case 'vehicle/getVehicles':
       api.get("/api/vehicles/" + user)
         .then((response) => {
           store.dispatch(saveVehicles(response.data))
         })
         .catch((error) => {
           console.error('get vehicles', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
         });
       break;
-    case 'app/getVehicleDocuments':
+    case 'vehicle/getVehicleDocuments':
       api.get("/api/perm-file/vehicle/" + action.payload)
         .then((response) => {
           if (response.data.length > 0) {
@@ -71,18 +64,16 @@ const vehicleMiddleware = (store) => (next) => (action) => {
         })
         .catch((error) => {
           console.error('get vehicle documents', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
         });
       break;
-    case 'app/requestVehicleAuthorization':
+    case 'vehicle/requestVehicleAuthorization':
       api.post("/api/vehicle/authorization/add", action.payload)
         .then((response) => {
           console.log(response.data);
           store.dispatch(validateSideForm());
         })
         .catch((error) => {
-          console.error('get vehicle documents', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          console.error('vehicle/requestVehicleAuthorization', error);
         });
       break;
 
