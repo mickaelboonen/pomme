@@ -5,6 +5,7 @@ const initialState = {
   userSignature: null,
   apiMessage: {},
   loader: true,
+  isModalOpen: false,
 };
 const omFormSlice = createSlice({
     name: 'app',
@@ -22,6 +23,9 @@ const omFormSlice = createSlice({
       clearMessage: (state) => {
         state.apiMessage = {};
       },
+      toggleModal:(state) => {
+        state.isModalOpen = !state.isModalOpen;
+      }
     },
 });
 
@@ -32,6 +36,7 @@ export const {
   setApiResponse,
   getSignature,
   saveSignature,
+  toggleModal,
 } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

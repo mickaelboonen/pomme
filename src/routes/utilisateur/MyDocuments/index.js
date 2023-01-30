@@ -11,7 +11,11 @@ import PageTitle from 'src/components/PageTitle';
 
 import { currentEFs , currentELs, pastELs } from 'src/data/fakeData';
 
+import { toggleModal } from 'src/reducer/app';
+
+
 import './style.scss';
+import Modal from '../../../components/Modal';
 
 
 const MyDocuments = () => {
@@ -25,7 +29,7 @@ const MyDocuments = () => {
 
   const { currentOM, nextOMTarget, OMTabs, userOms } = useSelector((state) => state.omForm);
   const { nextEFTarget, EFTabs } = useSelector((state) => state.efForm);
-  const { currentStep } = useSelector((state) => state.app);
+  const { isModalOpen } = useSelector((state) => state.app);
 
   // useEffect(() => {
   //   if (currentStep === 1) {
@@ -85,36 +89,39 @@ const MyDocuments = () => {
     })
   }
 
-  const handleClickOnNewOM = () => {    
-    const userId = params.slug;
-    if (window.confirm('Voulez-vous créer un nouvel ' + slug.replace(/-/g, ' ') + ' ?')) {
-      if (slug === 'ordre-de-mission') {
-        const newOM = {
-          name: `OM_${userId}_`,
-          status: 1,
-          url: 'path',
-          missioner: userId,
-          comments: '',
-        }
+  const handleClickOnNewOM = () => {
+    dispatch(toggleModal())
+    // toggleModal
+
+    // const userId = params.slug;
+    // if (window.confirm('Voulez-vous créer un nouvel ' + slug.replace(/-/g, ' ') + ' ?')) {
+    //   if (slug === 'ordre-de-mission') {
+    //     const newOM = {
+    //       name: `OM_${userId}_`,
+    //       status: 1,
+    //       url: 'path',
+    //       missioner: userId,
+    //       comments: '',
+    //     }
         
-        dispatch(addNewOM(newOM)); 
-      }
-      else if (slug === 'état-de-frais') {
-        const newEF = {
-          name: `EF_${userId}_`,
-          status: 1,
-          url: 'path',
-          missioner: userId,
-          comments: '',
-        }
+    //     dispatch(addNewOM(newOM)); 
+    //   }
+    //   else if (slug === 'état-de-frais') {
+    //     const newEF = {
+    //       name: `EF_${userId}_`,
+    //       status: 1,
+    //       url: 'path',
+    //       missioner: userId,
+    //       comments: '',
+    //     }
         
-        // dispatch(addNewEF(newEF)); 
-      }
-    }
+    //     // dispatch(addNewEF(newEF)); 
+    //   }
+    // }
   }
 
   return (
-    <main className="my-documents">
+    <main className="my-documents my-documents--blurred">
       <PageTitle>{title}</PageTitle>
       <div className="my-documents__button">
         <button type="button" onClick={handleClickOnNewOM}>NOUVEAU</button>
@@ -126,6 +133,7 @@ const MyDocuments = () => {
       {!isOm && <Section id={"ec-ef"} data={currentEFs} isFirstSection />}
       {!isOm && <Section id={"as-ef"} data={currentELs} />}
       {!isOm && <Section id={"ok-ef"} data={pastELs} />}
+      {isModalOpen && <Modal />}
     </main>
   );
 };

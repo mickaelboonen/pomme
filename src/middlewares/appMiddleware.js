@@ -4,7 +4,9 @@ import CasClient, { constant } from "react-cas-client";
 
 
 let casEndpoint = "cas.unimes.fr";
-let casOptions = { version: constant.CAS_VERSION_3_0 };
+let casOptions = { version: constant.CAS_VERSION_3_0,
+  validation_proxy: true,
+  validation_proxy_path: '/cas_proxy' };
 
 let casClient = new CasClient(casEndpoint, casOptions);
 
@@ -42,14 +44,14 @@ const appMiddleware = (store) => (next) => (action) => {
     case 'app/authenticate':  
 
     
-      casClient
-        .auth()
-          .then(successRes => {
-            console.log(successRes);
-          })
-          .catch(errorRes => {
-            console.log('error : ', errorRes);
-          });
+      // casClient
+      //   .auth() 
+      //     .then(successRes => {
+      //       console.log(successRes);
+      //     })
+      //     .catch(errorRes => {
+      //       console.log('error : ', errorRes);
+      //     });
 
         // api.get('/api/authenticate')
         //   .then(() => {
