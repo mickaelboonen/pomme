@@ -1,5 +1,12 @@
-import { saveSignature, saveVehicles, saveVehicleDocuments } from 'src/reducer/app';
+import { saveSignature } from 'src/reducer/app';
 import { api } from './api';
+import CasClient, { constant } from "react-cas-client";
+
+
+let casEndpoint = "cas.unimes.fr";
+let casOptions = { version: constant.CAS_VERSION_3_0 };
+
+let casClient = new CasClient(casEndpoint, casOptions);
 
 
 api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -32,6 +39,26 @@ const appMiddleware = (store) => (next) => (action) => {
           // store.dispatch(showTicketCreationResponse(error.response))
         });
       break;
+    case 'app/authenticate':  
+
+    
+      casClient
+        .auth()
+          .then(successRes => {
+            console.log(successRes);
+          })
+          .catch(errorRes => {
+            console.log('error : ', errorRes);
+          });
+
+        // api.get('/api/authenticate')
+        //   .then(() => {
+        //       console.log(response.data);
+        //   })
+        //   .catch((error) => {
+        //     console.error('authenticate', error);
+        //   })
+    break;
 
   
     default:

@@ -37,9 +37,9 @@ const Home = () => {
       </div>
     </section>
     <section className="home__new" style={{height: '20rem'}}>
-      <PDFViewer>
+      {/* <PDFViewer>
         <MyPDF data={omForm[0].data} />
-      </PDFViewer>
+      </PDFViewer> */}
     </section>
 
     </main>

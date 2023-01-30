@@ -10,6 +10,8 @@ const omFormSlice = createSlice({
     name: 'app',
     initialState,
     reducers: {
+      authenticate: () => {},
+      saveUser: () => {},
       getSignature: () => {},
       saveSignature: (state, action) => {
         state.userSignature = action.payload.url;
@@ -24,6 +26,8 @@ const omFormSlice = createSlice({
 });
 
 export const {
+  authenticate, 
+  saveUser,
   clearMessage,
   setApiResponse,
   getSignature,

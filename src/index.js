@@ -31,7 +31,7 @@ import TicketRequest from "src/routes/utilisateur/MyAccount/TicketRequest";
 import RefusalNotification from "src/routes/utilisateur/MyAccount/RefusalNotification";
 
 
-import { getSignature } from "src/reducer/app";
+import { getSignature, authenticate } from "src/reducer/app";
 import { getVehicles, getVehicleDocuments } from "src/reducer/vehicle";
 import { fetchOMs, getMission, fetchOm, getTransports, getAccomodations, getAdvance, getMore  } from "src/reducer/omForm";
 
@@ -42,6 +42,9 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     errorElement: <ErrorPage />,
+    loader: async ({ request }) => {
+      store.dispatch(authenticate());
+    }, 
     children: [
       {
         index: true,

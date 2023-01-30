@@ -25,6 +25,13 @@ module.exports = {
       src: paths.src,
       app: paths.src,
     },
+    fallback: {
+      stream: require.resolve("stream-browserify"),
+      buffer: require.resolve("buffer/"),
+      "timers": require.resolve("timers-browserify"),
+      // "stream": false,
+      // "timers": false,
+    }
   },
   plugins: [
     new webpack.DefinePlugin( {
