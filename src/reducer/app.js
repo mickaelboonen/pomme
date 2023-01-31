@@ -24,6 +24,7 @@ const omFormSlice = createSlice({
         state.apiMessage = {};
       },
       toggleModal:(state) => {
+        console.log('here');
         state.isModalOpen = !state.isModalOpen;
       }
     },

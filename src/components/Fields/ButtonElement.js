@@ -23,6 +23,7 @@ ButtonElement.propTypes = {
 ButtonElement.defaultProps = {
   handler: null,
   isLink: false,
+  link: null,
 };
 
 export default ButtonElement;

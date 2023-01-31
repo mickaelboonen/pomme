@@ -150,6 +150,9 @@ const omFormSlice = createSlice({
         state.currentOM = action.payload;
         state.nextOMTarget = `/nouveau-document/ordre-de-mission?etape=1&id=${action.payload.id}`;
       },
+      clearOMTarget: (state) => {
+        state.nextOMTarget = '';
+      },
       fetchOMs: () => {},
       saveUserOms: (state, action) => {
         state.userOms = action.payload;
@@ -310,6 +313,7 @@ export const {
   createDerogation,
   clearSideForm,
   validateSideForm,
+  clearOMTarget,
 } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

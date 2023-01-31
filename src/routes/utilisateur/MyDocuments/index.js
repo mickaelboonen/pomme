@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { addNewOM } from 'src/reducer/omForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLoaderData, useLocation, useNavigate, useParams } from 'react-router-dom';
+import classNames from 'classnames';
 
 // Components
 import Section from './Section';
@@ -12,6 +12,7 @@ import PageTitle from 'src/components/PageTitle';
 import { currentEFs , currentELs, pastELs } from 'src/data/fakeData';
 
 import { toggleModal } from 'src/reducer/app';
+import { addNewOM, clearOMTarget } from 'src/reducer/omForm';
 
 
 import './style.scss';
@@ -31,12 +32,13 @@ const MyDocuments = () => {
   const { nextEFTarget, EFTabs } = useSelector((state) => state.efForm);
   const { isModalOpen } = useSelector((state) => state.app);
 
-  // useEffect(() => {
-  //   if (currentStep === 1) {
-  //     console.log(currentStep);
-  //     navigate(`/nouveau-document/ordre-de-mission?etape=${currentStep}&id=${currentOM.id}`)
-  //   }
-  // }, [currentStep])
+  useEffect(() => {
+    if (nextOMTarget !== '') {
+      dispatch(toggleModal());
+      dispatch(clearOMTarget());
+      navigate(nextOMTarget);
+    }
+  }, [nextOMTarget])
 
   const currentOMs = userOms.filter((om) => om.status === 1);
   const pastOMs = userOms.filter((om) => om.status === 8);
@@ -91,37 +93,10 @@ const MyDocuments = () => {
 
   const handleClickOnNewOM = () => {
     dispatch(toggleModal())
-    // toggleModal
-
-    // const userId = params.slug;
-    // if (window.confirm('Voulez-vous créer un nouvel ' + slug.replace(/-/g, ' ') + ' ?')) {
-    //   if (slug === 'ordre-de-mission') {
-    //     const newOM = {
-    //       name: `OM_${userId}_`,
-    //       status: 1,
-    //       url: 'path',
-    //       missioner: userId,
-    //       comments: '',
-    //     }
-        
-    //     dispatch(addNewOM(newOM)); 
-    //   }
-    //   else if (slug === 'état-de-frais') {
-    //     const newEF = {
-    //       name: `EF_${userId}_`,
-    //       status: 1,
-    //       url: 'path',
-    //       missioner: userId,
-    //       comments: '',
-    //     }
-        
-    //     // dispatch(addNewEF(newEF)); 
-    //   }
-    // }
   }
 
   return (
-    <main className="my-documents my-documents--blurred">
+    <main className="my-documents">
       <PageTitle>{title}</PageTitle>
       <div className="my-documents__button">
         <button type="button" onClick={handleClickOnNewOM}>NOUVEAU</button>
@@ -133,7 +108,8 @@ const MyDocuments = () => {
       {!isOm && <Section id={"ec-ef"} data={currentEFs} isFirstSection />}
       {!isOm && <Section id={"as-ef"} data={currentELs} />}
       {!isOm && <Section id={"ok-ef"} data={pastELs} />}
-      {isModalOpen && <Modal />}
+      <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
+      {isModalOpen && <Modal target={slug.replace(/-/g, ' ')} user={params.slug} />}
     </main>
   );
 };

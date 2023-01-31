@@ -1,23 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FormSectionTitle from 'src/components/FormSectionTitle';
-import SwitchButton from 'src/components/SwitchButton';
 import { useForm } from "react-hook-form";
-
+import { useDispatch } from 'react-redux';
 
 import './modalStyle.scss';
 
-const Modal = (props) => {
+// Components 
+import SwitchButton from 'src/components/SwitchButton';
+import FormSectionTitle from 'src/components/FormSectionTitle';
+import ButtonElement from 'src/components/Fields/ButtonElement';
 
+// Actions
+import { toggleModal } from '../reducer/app';
+import { addNewOM } from 'src/reducer/omForm';
+
+const Modal = ({ target, user }) => {
+
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
-    watch,
-    setValue,
-    setError,
-    clearErrors,
-    formState:
-    { errors },
   } = useForm({ 
     defaultValues: {
       duration: true,
@@ -26,20 +28,44 @@ const Modal = (props) => {
   });
 
   const close = () => {
-  console.log("close");
-}
+    dispatch(toggleModal());
+  }
 
   const onSubmit = (data) => {
     // If the user is requesting an advance
-    console.log(data);
+    console.log(data, '-----------------------', target);
+
+    if (target === 'ordre de mission') {
+      const newOM = {
+        name: `OM_${user}_`,
+        status: 1,
+        url: 'path',
+        missioner: user,
+        comments: '',
+        expenses: data.withExpenses,
+        isPonctual: data.duration,
+      }
+      
+      dispatch(addNewOM(newOM)); 
+    }
+    else if (target === 'état de frais') {
+      const newEF = {
+        name: `EF_${user}_`,
+        status: 1,
+        url: 'path',
+        missioner: user,
+        comments: '',
+      }
+      
+      // dispatch(addNewEF(newEF)); 
+    }
   }
 
   return (
     <div className='modal'>
-        <h1>Adding a new Person</h1>
-        <form className="form" onSubmit={handleSubmit(onSubmit)}>
+        <form className="modal__form" onSubmit={handleSubmit(onSubmit)}>
           <div className="form__section">
-            <FormSectionTitle>Avance</FormSectionTitle>
+            <FormSectionTitle>Créer un nouvel {target} ?</FormSectionTitle>
             <div className="form__section-field">
               <SwitchButton
                 register={register}
@@ -55,9 +81,16 @@ const Modal = (props) => {
               />
             </div>
           </div>
-          <div id="buttons">
-              <button type="submit">OK</button>
-              <button type="button" onClick={close}>Cancel</button>
+          <div className="form__section-field-buttons" id="modal-button">
+            <ButtonElement
+              type="submit"
+              label="Valider"
+              />
+            <ButtonElement
+              type="button"
+              label="Annuler"
+              handler={close}
+            />
           </div>
         </form>
     </div>

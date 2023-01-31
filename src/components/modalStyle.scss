@@ -1,7 +1,68 @@
+@use 'src/styles/vars';
+
 .modal {
   position: absolute;
-  inset: 6.5rem 0 0 0;
-  background-color: #1a1a1a;
-  opacity: 0.20;
-  filter: blur(10px);
+  inset: 0 0 0 0;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+
+  &__background {
+    position: absolute;
+    inset: 0;
+    display: none;
+    background-color: #1a1a1a71;
+
+    &--open {
+
+      display: block;
+      backdrop-filter: blur(10px);
+    }
+  }
+
+  &__form {
+    opacity: 1;
+
+    background-color: #fff;
+    height: fit-content;
+    padding: 1rem;
+    border-radius: vars.$radius;
+  }
+}
+
+#modal-button {
+  margin: 1rem;
+}
+
+
+@media (min-width: vars.$sm) {
+  .modal {
+    position: absolute;
+    inset: 0 0 0 0;
+    display: flex;
+    // padding-top: 17rem;
+    justify-content: center;
+  
+    &__background {
+      position: absolute;
+      inset: 0;
+      display: none;
+      background-color: #1a1a1a71;
+  
+      &--open {
+  
+        display: block;
+        backdrop-filter: blur(10px);
+      }
+    }
+  
+    &__form {
+      opacity: 1;
+  
+      background-color: #fff;
+      height: fit-content;
+      padding: 1rem;
+      border-radius: vars.$radius;
+    }
+  }
 }

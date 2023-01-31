@@ -9,10 +9,6 @@ $test : #{var(--first-color)};
   background-color: var(--lighter-first-color);
   padding-top: 1rem;
 
-  &--blurred {
-    filter: brightness(10px);
-  }
-
   &__title {
     font-size: 2em;
     text-transform: uppercase;
