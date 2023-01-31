@@ -1,4 +1,5 @@
 @use 'src/styles/vars';
+@use 'sass:math';
 
 $test : #{var(--first-color)};
 
@@ -34,11 +35,42 @@ $test : #{var(--first-color)};
   }
 
   &__files {
-    display: none;
+    // display: flex;
+    // display: none;
+    padding: 1.5rem;
     margin-bottom: 4rem;
     min-height: 60vh;
     background-color: var(--lighter-first-color);
     border-radius: 0 0 vars.$radius vars.$radius;
+
+    &-buttons {
+      display: flex;
+      justify-content: center;
+      // flex-wrap: wrap;
+      margin: 2rem;
+
+
+        & a {
+        @include vars.button;
+        margin-bottom: 0.5rem;
+        max-width: none;
+        font-size: 0.9em;
+        text-align: center;
+      }
+
+      &--validation {
+        flex-direction: column;
+
+        & button {
+          margin: 0 auto 1.5rem ;
+
+          &:nth-of-type(2),
+          &:nth-of-type(3) {
+            margin: 0 auto 0.5rem;
+          }
+        }
+      }
+    }
 
     &--open {
       display: flex;
@@ -137,5 +169,84 @@ $test : #{var(--first-color)};
         }
       }
     }
+  }
+}
+
+.om-status {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: vars.$radius;
+  border: 1px solid #1a1a1a;
+
+  &__steps {
+    width: 100%;
+    min-height: 3rem;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+
+    &-step {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      margin-right: 1rem;
+      justify-content: center;
+      border-radius: math.div(vars.$radius, 2);
+      text-transform: uppercase;
+
+      &--validated {
+        background-color: rgb(148, 250, 190);
+        color: rgb(13, 117, 27);
+        border: 1px solid rgb(13, 117, 27);
+        position: relative;
+
+        &::after {
+          content: '\002714';
+          position: absolute;
+          bottom: -0.50rem;
+          right: -0.50rem;
+          text-align: center;
+          font-weight: bold;
+          border-radius: 50%;
+          padding: 0.2rem;
+          height: 1.5rem;
+          width: 1.5rem;
+          background-color: rgb(148, 250, 190);
+          color: rgb(13, 117, 27);
+          border: 1px solid rgb(13, 117, 27);
+        }
+      }
+
+      &--not-validated {
+        background-color: rgb(250, 148, 148);
+        color: rgb(117, 13, 13);
+        border: 1px solid rgb(117, 13, 13);
+        position: relative;
+
+        &::after {
+          content: '\002716';
+          position: absolute;
+          bottom: -0.50rem;
+          right: -0.50rem;
+          text-align: center;
+          font-weight: bold;
+          border-radius: 50%;
+          padding: 0.2rem;
+          height: 1.5rem;
+          width: 1.5rem;
+          background-color: rgb(250, 148, 148);
+          color: rgb(117, 13, 13);
+          border: 1px solid rgb(117, 13, 13);
+        }
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  &__message {
+
   }
 }

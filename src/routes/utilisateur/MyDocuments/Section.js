@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import FileMenu from '../../../components/FileMenu';
-import FileDisplay from '../../../components/FileDisplay';
+import FileMenu from 'src/components/FileMenu';
+import FileDisplay from 'src/components/FileDisplay';
 
 import './style.scss';
 import classNames from 'classnames';
-import FileDisplayLink from '../../../components/FileDisplayLink';
+import FileDisplayLink from 'src/components/FileDisplayLink';
+import SelectField from 'src/components/Fields/SelectField';
 
 const Section = ({ id, data, isFirstSection, hasLinks }) => {
 
@@ -63,7 +64,7 @@ const Section = ({ id, data, isFirstSection, hasLinks }) => {
   else if (id.includes('ef')) {
     docType = 'etat-de-frais';
   }
-  console.log(data);
+  
   return (
     <section id={id} className={classNames("my-documents__files", {"my-documents__files--open": isFirstSection})}>
     {!hasLinks && (

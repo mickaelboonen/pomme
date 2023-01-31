@@ -95,6 +95,7 @@ const initialState = {
     }
   ],
   userOms: [],
+  dataToSelect: [],
   loader: false,
   refusal: '',
   adresses: [
@@ -109,6 +110,17 @@ const omFormSlice = createSlice({
     name: 'omForm',
     initialState,
     reducers: {
+      selectData: (state, action) => {
+        console.log(action.payload);
+
+        const status = action.payload === 'ec' ? 1 : 8;
+        state.dataToSelect = state.userOms.filter((om) => om.status === status);
+
+      },
+      displayOmStatus: (state, action) => {
+        const omToDisplay = state.userOms.find((om) => om.id === Number(action.payload));
+        state.currentOM = omToDisplay ? omToDisplay : {};
+      },
       saveOm: () => {},
       fetchOm: () => {},
       addNewOM: () => {},
@@ -314,6 +326,8 @@ export const {
   clearSideForm,
   validateSideForm,
   clearOMTarget,
+  selectData,
+  displayOmStatus,
 } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

@@ -6,13 +6,14 @@ import classNames from 'classnames';
 
 // Components
 import Section from './Section';
+import NewSection from './NewSection';
 import Tabs from 'src/components/Tabs';
 import PageTitle from 'src/components/PageTitle';
 
 import { currentEFs , currentELs, pastELs } from 'src/data/fakeData';
 
 import { toggleModal } from 'src/reducer/app';
-import { addNewOM, clearOMTarget } from 'src/reducer/omForm';
+import { addNewOM, clearOMTarget, selectData} from 'src/reducer/omForm';
 
 
 import './style.scss';
@@ -28,9 +29,14 @@ const MyDocuments = () => {
   const loaderData = useLoaderData();
   
 
-  const { currentOM, nextOMTarget, OMTabs, userOms } = useSelector((state) => state.omForm);
-  const { nextEFTarget, EFTabs } = useSelector((state) => state.efForm);
-  const { isModalOpen } = useSelector((state) => state.app);
+  const { omForm: { currentOM, nextOMTarget, OMTabs, userOms, dataToSelect },
+    efForm: { nextEFTarget, EFTabs },
+    app: { isModalOpen }
+  } = useSelector((state) => state);
+
+  useEffect(() => {
+    dispatch(selectData('ec'))
+  }, [userOms])
 
   useEffect(() => {
     if (nextOMTarget !== '') {
@@ -39,9 +45,6 @@ const MyDocuments = () => {
       navigate(nextOMTarget);
     }
   }, [nextOMTarget])
-
-  const currentOMs = userOms.filter((om) => om.status === 1);
-  const pastOMs = userOms.filter((om) => om.status === 8);
   
   const pageData = (path, user) => {
     let pageData = {};
@@ -62,13 +65,13 @@ const MyDocuments = () => {
 
   const { isOm, title, slug } = pageData(location.pathname, params.slug);
 
-  //-----------------------------------------------------------------------------------------------------------------------------------------------------
+  // TODO -----------------------------------------------------------------------------------------------------------------------------------------------------
   const currentEF = JSON.parse(localStorage.getItem('newEf'));
 
   if (currentEF !== null) {
     currentEFs.push(currentEF);
   }
-  //-----------------------------------------------------------------------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------------------------------------------------------------------------
   
 
   /**
@@ -78,6 +81,7 @@ const MyDocuments = () => {
    const displayWantedSection = (event) => {
     const id = isOm ? 'om' : 'ef';
 
+    dispatch(selectData(event.currentTarget.id))
     const wantedSection = document.querySelector(`#${event.currentTarget.id}-${id}`);
     const allSections = document.querySelectorAll('.my-documents__files');
 
@@ -95,6 +99,29 @@ const MyDocuments = () => {
     dispatch(toggleModal())
   }
 
+  const steps = [
+    {
+      name: 'mission',
+      status: 1,
+    },
+    {
+      name: 'transports',
+      status: 1,
+    },
+    {
+      name: 'hébergement',
+      status: 0,
+    },
+    {
+      name: 'avance',
+      status: 0,
+    },
+    {
+      name: 'signature',
+      status: 0,
+    },
+  ]
+
   return (
     <main className="my-documents">
       <PageTitle>{title}</PageTitle>
@@ -103,11 +130,12 @@ const MyDocuments = () => {
       </div>
       {isOm && <Tabs tabs={OMTabs} handler={displayWantedSection} />}
       {!isOm && <Tabs tabs={EFTabs} handler={displayWantedSection} />}
-      {isOm && <Section id={"ec-om"} data={currentOMs} isFirstSection />}
+      <NewSection data={dataToSelect} steps={steps} currentDoc={currentOM} />
+      {/* {isOm && <Section id={"ec-om"} data={currentOMs} isFirstSection />}
       {isOm && <Section id={"ok-om"} data={pastOMs} />}
       {!isOm && <Section id={"ec-ef"} data={currentEFs} isFirstSection />}
       {!isOm && <Section id={"as-ef"} data={currentELs} />}
-      {!isOm && <Section id={"ok-ef"} data={pastELs} />}
+      {!isOm && <Section id={"ok-ef"} data={pastELs} />} */}
       <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
       {isModalOpen && <Modal target={slug.replace(/-/g, ' ')} user={params.slug} />}
     </main>
