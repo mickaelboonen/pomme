@@ -35,8 +35,8 @@ const Section = ({ id, data, steps, currentDoc}) => {
           <div className='om-status__steps'>
             {steps.map((step) => (
               <div key={step.name} className={classNames("om-status__steps-step", {
-                "om-status__steps-step--validated" : step.status === 1,
-                "om-status__steps-step--not-validated" : step.status === 0,
+                "om-status__steps-step--validated" : step.status,
+                "om-status__steps-step--not-validated" : !step.status,
               })}>
                 {step.name}
               </div>

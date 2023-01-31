@@ -45,6 +45,7 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/fetchOMs':
       api.get("/api/om/" + action.payload,)
         .then((response) => {
+          console.log(response.data);
           store.dispatch(saveUserOms(response.data))
         })
         .catch((error) => {
