@@ -5,31 +5,41 @@
  * @returns object that is to be sent to the API
  */
 export const turnTransportsDataToDbFormat = (data) => {
-
+  
   const {
     omId,
     vehicle,
     publicTransports,
-    trainClass,
-    trainPayment,
-    planeClass,
-    planePayment,
-    vehicleAuthorizationFile,
-    dispensationForValidation,
-    dispensation,
-    vehicleAuthorizationFileForValidation,
-    taxiDispensation,
-    taxiDispensationForValidation
+    trainClass, trainPayment,
+    planeClass, planePayment,
+    vehicleAuthorizationFile, vehicleAuthorizationFileForValidation,
+    dispensation, dispensationForValidation,
+    taxiDispensation, taxiDispensationForValidation,
+    status
   } = data;
 
+  /**
+   * Though we can acces dispensations and authorizations through serialization,
+   * we still need vehicleAuthorization, taxiDispensation and transportDispensation
+   * in case the user do not need to make a new request (already has a file for it)
+   * 
+   */
   const dataToBeSubmitted = {
     omId: omId,
     vehicleId: vehicle,
+    vehicleAuthorization: null,
+    transportDispensation: null,
+    taxiDispensation: null,
+    publicTransports: publicTransports,
+    taxi: null,
+    parking: null,
+    ferry: null,
     transportType: [],
     transportClass: [],
     transportPayment: [],
-    publicTransports: publicTransports,
+    status: status,
   };
+
   
   if (data.others) {
     data.others.forEach((option) => {
@@ -39,11 +49,15 @@ export const turnTransportsDataToDbFormat = (data) => {
       else if (option === 'parking') {
         dataToBeSubmitted.parking = true;
       }
+      else if (option === 'ferry') {
+        dataToBeSubmitted.ferry = true;
+      }
     })
   }
   else {
     dataToBeSubmitted.parking = false;
     dataToBeSubmitted.taxi = false;
+    dataToBeSubmitted.ferry = false;
   }
 
   if (trainClass !== null) {
@@ -58,6 +72,8 @@ export const turnTransportsDataToDbFormat = (data) => {
     dataToBeSubmitted.transportPayment.push('plane-paid-by-' + planePayment);
   }
 
+  // VEHICLE AUTHORIZATION
+
   if (vehicleAuthorizationFileForValidation) {
     dataToBeSubmitted.vehicleAuthorization = "pending";
   }
@@ -67,6 +83,7 @@ export const turnTransportsDataToDbFormat = (data) => {
   else {
     dataToBeSubmitted.vehicleAuthorization = null;
   }
+  // TRANSPORTS DISPENSATION
 
   if (dispensationForValidation) {
     dataToBeSubmitted.transportDispensation = "pending";
@@ -77,6 +94,8 @@ export const turnTransportsDataToDbFormat = (data) => {
   else {
     dataToBeSubmitted.transportDispensation = null;
   }
+  
+  // TAXI DISPENSATION
 
   if (taxiDispensationForValidation) {
     dataToBeSubmitted.taxiDispensation = "pending";
@@ -91,6 +110,91 @@ export const turnTransportsDataToDbFormat = (data) => {
 
 }
 
+
+export const turnTransportsDataToAppFormat = (data) => {
+
+  console.log('----------------------------', data);
+  const dataForTheComponent =  {
+    trainClass: null,
+    trainPayment: null,
+    planeClass: null,
+    planePayment: null,
+    vehicle: data.vehicle ? data.vehicle.id : null,
+    publicTransports: data.publicTransports,
+    others:  [],
+    dispensations:  data.dispensations,
+    authorizations:  data.authorizations,
+    omId: data.om.id,
+    vehicleAuthorizationFile: null,
+    vehicleAuthorizationFileForValidation: false,
+    dispensation: null,
+    dispensationForValidation: false,
+    taxiDispensation: null,
+    taxiDispensationForValidation: false,
+  }
+
+  data.dispensations.forEach((dispensation) => {
+
+    if (dispensation && (dispensation.type.includes('train') || dispensation.type.includes('avion'))) {
+
+      dataForTheComponent.dispensationForValidation = true;
+    }
+    else if (dispensation && dispensation.type.includes('taxi')) {
+      if (dataForTheComponent.others.indexOf('taxi') === -1) {
+        dataForTheComponent.taxiDispensationForValidation = true;
+        dataForTheComponent.others.push('taxi');
+      }
+    }
+  });
+  
+
+  if (data.taxi) {
+    dataForTheComponent.others.push('taxi');
+  }
+  if (data.parking) {
+    dataForTheComponent.others.push('parking');
+  }
+  if (data.ferry) {
+    dataForTheComponent.others.push('ferry');
+  }
+  
+  data.transport_class.forEach((service) => {
+    if (service === 'first-class' || service === 'second-class') {
+      dataForTheComponent.trainClass = service;
+    }
+    else if (service === 'business-class' || service === 'eco-class') {
+      dataForTheComponent.planeClass = service;
+      
+    }
+  })
+  data.transport_payment.forEach((service) => {
+
+    if (service === 'train-paid-by-unimes-t' || service === 'train-paid-by-agent') {
+      dataForTheComponent.trainPayment = service.slice(14);
+    }
+    else if (service === 'plane-paid-by-unimes-t' || service === 'plane-paid-by-user') {
+      dataForTheComponent.planePayment = service.slice(14);
+      
+    }
+  })
+
+  if (data.vehicle_authorization === 'pending') {
+    dataForTheComponent.vehicleAuthorizationFileForValidation = true;
+  }
+  else if (data.vehicle_authorization !== null) {
+    dataForTheComponent.vehicleAuthorizationFile = data.vehicle_authorization;
+  }
+
+  if (data.transport_dispensation === 'pending') {
+    dataForTheComponent.dispensationForValidation = true;
+  }
+  else if (data.transport_dispensation !== null) {
+    dataForTheComponent.dispensation = data.transport_dispensation;
+  }
+
+  return dataForTheComponent;
+
+}
 /**
  * From the data we collected in the OM transports form, we adapt it to match the correct format for the database
  *  

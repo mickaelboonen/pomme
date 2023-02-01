@@ -56,7 +56,7 @@ const Transports = ({ step }) => {
   }, [apiMessage])
   
   const defaultValues = omForm.find((omStep) => omStep.step === 'transports').data;
-  
+
   const {
     register,
     setValue,
@@ -98,14 +98,14 @@ const Transports = ({ step }) => {
       
       // If there are no errors, we go on
       if (countErrors === 0) {
-        
+        data.status = 1;
         // Formats the data for the database
         const databaseData = turnTransportsDataToDbFormat(data);
         console.log('HERE : ', databaseData);
         // return;
 
         // If any file has been selected (for the train, plane or car), we upload it
-        if (typeof databaseData.transportDispensation !== 'string' || typeof databaseData.vehicleAuthorization !== 'string') {
+        if (databaseData.transportDispensation instanceof File || databaseData.vehicleAuthorization instanceof File || databaseData.taxiDispensation instanceof File ) {
           console.log('there is aa least one file');
           dispatch(uploadFile({data: databaseData, step: 'transports'}));
         }
