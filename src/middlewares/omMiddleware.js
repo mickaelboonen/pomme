@@ -146,7 +146,7 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/getMission':
       api.get("/api/om/mission/find/" + action.payload)
         .then((response) => {
-            store.dispatch(saveMission(response.data[0]))
+            store.dispatch(saveMission(response.data))
 
         })
         .catch((error) => {
@@ -158,9 +158,7 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/getTransports':
       api.get("/api/om/transports/find/" + action.payload)
         .then((response) => {
-          const data = JSON.parse(response.data);
-
-            store.dispatch(saveTransports(data[0]))
+          store.dispatch(saveTransports(response.data))
         })
         .catch((error) => {
           console.error('get signature', error);
@@ -171,7 +169,7 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/getAccomodations':
       api.get("/api/om/accomodations/find/" + action.payload)
         .then((response) => {
-            store.dispatch(saveAccomodations(response.data[0]))
+            store.dispatch(saveAccomodations(response.data))
 
         })
         .catch((error) => {
@@ -194,7 +192,7 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/getAdvance':
       api.get("/api/om/advance/find/" + action.payload)
         .then((response) => {
-            store.dispatch(saveAdvance(response.data[0]))
+            store.dispatch(saveAdvance(response.data))
 
         })
         .catch((error) => {

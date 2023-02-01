@@ -170,6 +170,7 @@ const omFormSlice = createSlice({
         state.userOms = action.payload;
       },
       saveMission: (state, action) => {
+        console.log(action.payload);
         state.omForm[0].data = action.payload;
         state.omForm[0].data.omId = action.payload.om.id;
         state.loader = false;

@@ -42,10 +42,12 @@ const Section = ({ id, data, steps, currentDoc}) => {
               </div>
             ))}
           </div>
-          <div className='om-status__message'>
-          <FormSectionTitle>Réserves ou commentaires du Gestionnaire</FormSectionTitle>
-            Attention, vous avez fait des erreurs sur tel champs et / ou tel champ
-          </div>
+          {currentDoc.comments !== '' && (
+            <div className='om-status__message'>
+              <FormSectionTitle>Réserves ou commentaires du Gestionnaire</FormSectionTitle>
+              {currentDoc.comments}
+            </div>
+          )}
         </div>
       )}
       {currentDoc.hasOwnProperty('id') && (
