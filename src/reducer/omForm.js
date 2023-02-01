@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { declareCamelCaseKeys } from '../selectors/keyObjectService';
 
 const initialState = {
   steps: [
@@ -170,11 +171,13 @@ const omFormSlice = createSlice({
         state.userOms = action.payload;
       },
       saveMission: (state, action) => {
-        console.log(action.payload);
-        state.omForm[0].data = action.payload;
+        
         state.omForm[0].data.omId = action.payload.om.id;
+
+        const formattedValues = declareCamelCaseKeys(action.payload);
+        state.omForm[0].data = formattedValues;
+        
         state.loader = false;
-        state.loaderType = '';
       },
       saveTransports: (state, action) => {
         

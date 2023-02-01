@@ -75,12 +75,14 @@ const omMiddleware = (store) => (next) => (action) => {
       }
       else if (step === 'mission') {
         data.missionPurposeFile.forEach((file) => {
-          const fileToUpload = {
-            omId: data.omId,
-            type: 'mission',
-            file: file,
+          if (file instanceof File) {
+            const fileToUpload = {
+              omId: data.omId,
+              type: 'mission',
+              file: file,
+            }
+            filesToUpload.push(fileToUpload);
           }
-          filesToUpload.push(fileToUpload);
         })
       }
       else if (step === 'authorization') {

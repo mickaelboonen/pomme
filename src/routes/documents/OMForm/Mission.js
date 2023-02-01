@@ -35,7 +35,7 @@ import RequestWithFile from '../../../components/Fields/RequestWithFile';
 import ScientificEvent from './ScientificEventFields';
 
 const Mission = ({ step, isEfForm }) => {
-    console.log('rendu');
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loader = useLoaderData();
@@ -51,7 +51,6 @@ const Mission = ({ step, isEfForm }) => {
   // TODO : problem with setApiResponse when savingAsItis
   useEffect(() => {
     if (apiMessage.status && apiMessage.status === 200) {
-      console.log('am i here ?');
       setTimeout(() => {
         dispatch(clearMessage());
       }, "4900")
@@ -65,6 +64,7 @@ const Mission = ({ step, isEfForm }) => {
   }, [apiMessage])
 
   const defaultValues = omForm.find((omStep) => omStep.step === 'mission').data;
+
   
   let fileName = '';
 
@@ -83,7 +83,7 @@ const Mission = ({ step, isEfForm }) => {
   const {
     register, handleSubmit, watch,
     setError, setValue, unregister,
-    formState:
+    trigger, formState:
     { errors }
   } = useForm({
     defaultValues: defaultValues,
@@ -121,10 +121,7 @@ const Mission = ({ step, isEfForm }) => {
         setError('modificationFiles', { type: 'custom', message: 'Merci de fournir la ou les pièces justifiant la modification.'})
         return;
       }
-
       // TODO : bien faire les verifs / validations pour l'EF 
-      
-
     }
     else {
 
@@ -152,13 +149,17 @@ const Mission = ({ step, isEfForm }) => {
         }
       }
       else {
-        if (!data.missionPurposeFile || typeof data.missionPurposeFile === 'string') {
+        data.status = 1;
+
+        const fileToAdd = data.missionPurposeFile.find((file) => file instanceof File)
+        
+        if (fileToAdd === undefined) {
           delete data.om;
           if (data.science && data.missionPurposeFileForValidation) {
             data.missionPurposeFile = 'pending';
           }
           delete data.missionPurposeFileForValidation;
-          dispatch(updateMission(data))
+          dispatch(updateMission(data));
         }
         else {
            dispatch(uploadFile({data: data, step: 'mission'}));
@@ -203,7 +204,7 @@ const Mission = ({ step, isEfForm }) => {
   const toggleScienceForm = (event) => {
     setIsMissionAScienceEvent(event.target.checked);
   }
-  console.log(errors);
+  
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section">
@@ -422,6 +423,7 @@ const Mission = ({ step, isEfForm }) => {
         url={loader}
         watch={watch}
         update={updateMission}
+        trigger={trigger}
       />
     </form>
     

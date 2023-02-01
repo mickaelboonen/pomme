@@ -102,23 +102,23 @@ const MyDocuments = () => {
   const steps = [
     {
       name: 'mission',
-      status: currentOM.hasOwnProperty('id') && currentOM.mission.status ? currentOM.mission.status : false
+      status: (currentOM.hasOwnProperty('mission') && currentOM.mission.status) ? currentOM.mission.status : false
     },
     {
       name: 'transports',
-      status: currentOM.hasOwnProperty('id') && currentOM.transports.status ? currentOM.transports.status : false
+      status: (currentOM.hasOwnProperty('transports') && currentOM.transports.status) ? currentOM.transports.status : false
     },
     {
       name: 'hébergement',
-      status: currentOM.hasOwnProperty('id') && currentOM.accomodations.status ? currentOM.accomodations.status : false
+      status: (currentOM.hasOwnProperty('accomodations') && currentOM.accomodations.status) ? currentOM.accomodations.status : false
     },
     {
       name: 'avance',
-      status: currentOM.hasOwnProperty('id') && currentOM.advance.status ? currentOM.advance.status : false
+      status: (currentOM.hasOwnProperty('advance') && currentOM.advance.status) ? currentOM.advance.status : false
     },
     {
       name: 'signature',
-      status: currentOM.hasOwnProperty('id') && currentOM.signature.status ? currentOM.signature.status : false
+      status: (currentOM.hasOwnProperty('signature') && currentOM.signature.status) ? currentOM.signature.status : false
     },
   ]
 

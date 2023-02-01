@@ -22,18 +22,27 @@ const Buttons = ({ trigger, step, url, id, watch, update, secondUpdate, userSign
   
   const handleClick = () => {
     const data = watch();
-    console.log(data);
-    trigger()
-    return;
+    
+    
+    for (const [key, value] of Object.entries(data)) {
+      if (key.includes('_')) {
+        delete data[key];
+      }
+    }
+
+    trigger();
     
     if (step === 1) { // --------------------------------------------------------------------------------
+      data.status = 0;
       if (data.missionPurposeFile && typeof data.missionPurposeFile !== 'string') {
+        console.log('here');
         dispatch(uploadFile({data: data, step: 'mission'}));
-        navigate(url.pathname + '?' + url.searchParams);
+        // navigate(url.pathname + '?' + url.searchParams);
       }
       else {
+        console.log('or here');
         dispatch(update(data));
-        navigate(url.pathname + '?' + url.searchParams);
+        // navigate(url.pathname + '?' + url.searchParams);
       }
     }
     else if (step === 2) { // --------------------------------------------------------------------------------
