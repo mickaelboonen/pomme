@@ -56,7 +56,7 @@ const Transports = ({ step }) => {
   }, [apiMessage])
   
   const defaultValues = omForm.find((omStep) => omStep.step === 'transports').data;
-
+  console.log(defaultValues);
   const {
     register,
     setValue,
@@ -119,7 +119,7 @@ const Transports = ({ step }) => {
 
   // State to manage components
   const [needsDerogation, setNeedsDerogation] = useState(false);
-  const [needsAuthorization, setNeedsAuthorization] = useState(!defaultValues.vehicle ? false : true);
+  const [needsAuthorization, setNeedsAuthorization] = useState(defaultValues.vehicle !== null && defaultValues.vehicle !== 1 ? true : false);
   const [needsTaxiDispensation, setNeedsTaxiDispensation] = useState(defaultValues.taxiDispensationForValidation);
 
   const vehiclePossibilities = [

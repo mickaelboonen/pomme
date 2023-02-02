@@ -182,7 +182,8 @@ const omFormSlice = createSlice({
       },
       saveTransports: (state, action) => {
         
-        const dataForTheComponent = turnTransportsDataToAppFormat(action.payload);
+        const dataForApp = declareCamelCaseKeys(action.payload);
+        const dataForTheComponent = turnTransportsDataToAppFormat(dataForApp);
         state.omForm[1].data = dataForTheComponent;
         state.loader = false;
       },

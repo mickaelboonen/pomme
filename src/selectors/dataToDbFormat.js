@@ -1,3 +1,5 @@
+import { declareCamelCaseKeys } from "./keyObjectService";
+
 /**
  * From the data we collected in the OM transports form, we adapt it to match the correct format for the database
  *  
@@ -112,8 +114,7 @@ export const turnTransportsDataToDbFormat = (data) => {
 
 
 export const turnTransportsDataToAppFormat = (data) => {
-
-  console.log('----------------------------', data);
+  
   const dataForTheComponent =  {
     trainClass: null,
     trainPayment: null,
@@ -148,9 +149,22 @@ export const turnTransportsDataToAppFormat = (data) => {
   });
   
 
-  if (data.taxi) {
-    dataForTheComponent.others.push('taxi');
+  if (data.authorizations.length > 0) {
+    dataForTheComponent.vehicleAuthorizationFileForValidation = true;
+
+    const { type } = data.authorizations[0];
+
+    if (type === 'personal-car') {
+      dataForTheComponent.vehicle = 0;
+    }
+    else if (type === 'company-car') {
+      dataForTheComponent.vehicle = 2;
+    }
+    else if (type === 'rent-car') {
+      dataForTheComponent.vehicle = 3;
+    }
   }
+  
   if (data.parking) {
     dataForTheComponent.others.push('parking');
   }
@@ -158,7 +172,7 @@ export const turnTransportsDataToAppFormat = (data) => {
     dataForTheComponent.others.push('ferry');
   }
   
-  data.transport_class.forEach((service) => {
+  data.transportClass.forEach((service) => {
     if (service === 'first-class' || service === 'second-class') {
       dataForTheComponent.trainClass = service;
     }
@@ -167,7 +181,7 @@ export const turnTransportsDataToAppFormat = (data) => {
       
     }
   })
-  data.transport_payment.forEach((service) => {
+  data.transportPayment.forEach((service) => {
 
     if (service === 'train-paid-by-unimes-t' || service === 'train-paid-by-agent') {
       dataForTheComponent.trainPayment = service.slice(14);
@@ -178,20 +192,20 @@ export const turnTransportsDataToAppFormat = (data) => {
     }
   })
 
-  if (data.vehicle_authorization === 'pending') {
+  if (data.vehicleAuthorization === 'pending') {
     dataForTheComponent.vehicleAuthorizationFileForValidation = true;
   }
-  else if (data.vehicle_authorization !== null) {
-    dataForTheComponent.vehicleAuthorizationFile = data.vehicle_authorization;
+  else if (data.vehicleAuthorization !== null) {
+    dataForTheComponent.vehicleAuthorizationFile = data.vehicleAuthorization;
   }
 
-  if (data.transport_dispensation === 'pending') {
+  if (data.transportDispensation === 'pending') {
     dataForTheComponent.dispensationForValidation = true;
   }
-  else if (data.transport_dispensation !== null) {
-    dataForTheComponent.dispensation = data.transport_dispensation;
+  else if (data.transportDispensation !== null) {
+    dataForTheComponent.dispensation = data.transportDispensation;
   }
-
+  
   return dataForTheComponent;
 
 }

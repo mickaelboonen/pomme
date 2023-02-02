@@ -52,15 +52,15 @@ const Section = ({ id, data, steps, currentDoc}) => {
       )}
       {currentDoc.hasOwnProperty('id') && (
         <div className="my-documents__files-buttons">
-          <Link to="/modifier-un-document/ordre-de-mission?etape=1&id=70">
+          <Link to={"/modifier-un-document/ordre-de-mission?etape=1&id=" + currentDoc.id}>
             Reprendre / Modifier
           </Link>
 
-          <Link to="/modifier-un-document/ordre-de-mission?etape=1&id=70">
+          <Link to={"/modifier-un-document/ordre-de-mission?etape=1&id=" + currentDoc.id}>
             Faire une demande de déplacement
           </Link>
 
-          <Link to="/modifier-un-document/ordre-de-mission?etape=1&id=70">
+          <Link to={"/modifier-un-document/ordre-de-mission?etape=1&id=" + currentDoc.id}>
             Prendre connaissance du refus et supprimer
           </Link>
 
