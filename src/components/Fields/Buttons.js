@@ -88,18 +88,14 @@ const Buttons = ({ trigger, step, url, id, watch, update, secondUpdate, userSign
     else if (step === 5) { // --------------------------------------------------------------------------------
       const formattedData = turnSignatureDataToDbFormat(data, userSignature);
 
-      if (formattedData.agentSignature && typeof formattedData.agentSignature !== 'string') {
-        dispatch(uploadFile({ data: formattedData, step: 'signature'}));
+      const infosFile = formattedData.files.find((file) => file instanceof File);
+      if (formattedData.agentSignature instanceof File || infosFile instanceof File) {
+        dispatch(uploadFile({ data: formattedData, step: 'more-and-signature'}));
       } 
       else {
         dispatch(update(formattedData));
       }
-      if (formattedData.files.length > 0 ) {
-        dispatch(uploadFile({ data: formattedData, step: 'more'}));
-      }
-      else {
-        dispatch(secondUpdate(formattedData));
-      }
+      
     }
   }
 

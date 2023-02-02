@@ -1,4 +1,4 @@
-import { updateTransports, updateAdvance, updateMore, updateMission, updateSignature } from 'src/reducer/omForm';
+import { updateTransports, updateAdvance, updateMoreAndSignature, updateMission, updateSignature } from 'src/reducer/omForm';
 import { fileApi } from './api';
 import { requestVehicleAuthorization } from '../reducer/vehicle';
 
@@ -54,25 +54,37 @@ const omMiddleware = (store) => (next) => (action) => {
           filesToUpload.push(rib);
         }
       }
-      else if (step === "signature") {
-        const signature = {
-          omId: data.omId,
-          type: 'signature',
-          file: data.agentSignature,
-        }
-        filesToUpload.push(signature);
-      }
-      else if (step === "more") {
-        console.log(data);
-        data.files.forEach((file) => {
-          const fileToUpload = {
+      else if (step === "more-and-signature") {
+        if (data.agentSignature instanceof File) {
+          const signature = {
             omId: data.omId,
-            type: 'more',
-            file: file,
+            type: 'signature',
+            file: data.agentSignature,
           }
-          filesToUpload.push(fileToUpload);
+          filesToUpload.push(signature);
+        }
+        data.files.forEach((file) => {
+          if (file instanceof File) {
+            const fileToUpload = {
+              omId: data.omId,
+              type: 'more',
+              file: file,
+            }
+            filesToUpload.push(fileToUpload);
+          }
         })
       }
+      // else if (step === "more") {
+      //   console.log(data);
+      //   data.files.forEach((file) => {
+      //     const fileToUpload = {
+      //       omId: data.omId,
+      //       type: 'more',
+      //       file: file,
+      //     }
+      //     filesToUpload.push(fileToUpload);
+      //   })
+      // }
       else if (step === 'mission') {
         data.missionPurposeFile.forEach((file) => {
           if (file instanceof File) {
@@ -181,9 +193,9 @@ const omMiddleware = (store) => (next) => (action) => {
             delete data.advance;
             store.dispatch(updateAdvance(data));
           }
-          else if (step === 'more') {
+          else if (step === 'more-and-signature') {
             console.log('before update : ', data);
-            store.dispatch(updateMore(data));
+            store.dispatch(updateMoreAndSignature(data));
           }
           else if (step === 'mission') {
             delete data.om;

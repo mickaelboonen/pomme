@@ -12,7 +12,7 @@ import TextareaField from 'src/components/Fields/TextareaField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import { useDispatch, useSelector } from 'react-redux';
 import { turnSignatureDataToDbFormat } from '../../../selectors/dataToDbFormat';
-import { updateMore, updateSignature, uploadFile } from '../../../reducer/omForm';
+import { updateMoreAndSignature, updateSignature, uploadFile } from '../../../reducer/omForm';
 import { clearMessage } from '../../../reducer/app';
 import ApiResponse from '../../../components/ApiResponse';
 import { getSavedFileName } from 'src/selectors/formDataGetters';
@@ -71,28 +71,31 @@ const Signature = ({ step }) => {
 
     if (data.savedSignature) {
 
-      dispatch(updateSignature(formattedData));
-      
-      if (data.otherFiles.length > 0) {
-        dispatch(uploadFile({ data: formattedData, step: 'more'})); 
-      }
+      const infosFile = formattedData.files.find((file) => file instanceof File);
+
+      formattedData.status = 1;
+      if (formattedData.agentSignature instanceof File || infosFile instanceof File) {
+        dispatch(uploadFile({ data: formattedData, step: 'more-and-signature'}));
+      } 
       else {
-        dispatch(updateMore(formattedData));
+        dispatch(updateMoreAndSignature(formattedData));
       }
     }
     else {
       
       if (data.signature.length === 0) {
         setError('signature', { type: 'custom', message: "Merci de signer votre ordre de mission." });
+        return;
       }
 
-      dispatch(uploadFile({ data: formattedData, step: 'signature'}));
+      formattedData.status = 1;
 
-      if (data.otherFiles.length > 0) {
-        dispatch(uploadFile({ data: formattedData, step: 'more'})); 
-      }
+      const infosFile = formattedData.files.find((file) => file instanceof File);
+      if (formattedData.agentSignature instanceof File || infosFile instanceof File) {
+        dispatch(uploadFile({ data: formattedData, step: 'more-and-signature'}));
+      } 
       else {
-        dispatch(updateMore(formattedData));
+        dispatch(updateMoreAndSignature(formattedData));
       }
     }
     // navigate('/nouveau-document/ordre-de-mission?etape=' + step++);
@@ -173,8 +176,7 @@ const Signature = ({ step }) => {
         id={omId}
         url={loader}
         watch={watch}
-        update={updateSignature}
-        secondUpdate={updateMore}
+        update={updateMoreAndSignature}
         userSignature={userSignature}
       />
     </form>

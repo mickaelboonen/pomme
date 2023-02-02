@@ -143,6 +143,18 @@ const omMiddleware = (store) => (next) => (action) => {
         });
       break;
     
+    case 'omForm/updateMoreAndSignature':
+      api.post("/api/om/more-and-signature/update",  action.payload)
+        .then((response) => {
+          console.log(response.data);
+            // store.dispatch(saveMoreAndSignature(response.data))
+        })
+        .catch((error) => {
+          console.error('get signature', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
+    
     case 'omForm/getMission':
       api.get("/api/om/mission/find/" + action.payload)
         .then((response) => {
@@ -178,16 +190,16 @@ const omMiddleware = (store) => (next) => (action) => {
         });
       break;
     
-    case 'omForm/getMore':
-      api.get("/api/om/more-and-signature/find/" + action.payload)
-        .then((response) => {
-            store.dispatch(saveMore(response.data))
-        })
-        .catch((error) => {
-          console.error('get signature', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
-        });
-      break;
+      case 'omForm/getMore':
+        api.get("/api/om/more-and-signature/find/" + action.payload)
+          .then((response) => {
+              store.dispatch(saveMore(response.data))
+          })
+          .catch((error) => {
+            console.error('get signature', error);
+            // store.dispatch(showTicketCreationResponse(error.response))
+          });
+        break;
     
     case 'omForm/getAdvance':
       api.get("/api/om/advance/find/" + action.payload)

@@ -150,7 +150,7 @@ const omFormSlice = createSlice({
       getMore: (state) => {
         state.loader = true;
       },
-      updateMore: () => {},
+      updateMoreAndSignature: () => {},
       updateOmName: () => {},
       updateAdvance: () => {},
       updateSignature: () => {},
@@ -250,7 +250,7 @@ export const {
   updateTransports,
   saveNewOm,
   updateAdvance,
-  updateMore,
+  updateMoreAndSignature,
   getMission,
   getTransports,
   getAdvance,
