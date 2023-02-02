@@ -71,15 +71,20 @@ const Avance = ({ step }) => {
   } = useForm({ defaultValues: defaultValues});
   
   const [total, otherExpensesAmount] = watch(['total', 'otherExpensesAmount']);
-  
+  // console.log(defaultValues.advance);
   const [isAdvanceRequested, setIsAdvanceRequested] = useState(defaultValues.advance);
 
   const onSubmit = (data) => {
     // If the user is requesting an advance
-    console.log(data);
+    console.log('PLOP : ', data);
     
     if (data.advance) {
  
+
+
+
+
+
       let errorCount = 0;
       if (!data.hotelQuotation || data.hotelQuotation.length === 0) {
         setError('hotelQuotation', { type: 'custom', message: "Merci de fournir le devis de l'hôtel." });
@@ -96,18 +101,26 @@ const Avance = ({ step }) => {
       else {
         clearErrors('rib');
       }
+      if (data.otherExpensesAmount > 0 && data.otherExpensesNames === '') {
+        console.log('error otherExpensesNames');
+        setError('otherExpensesNames', { type: 'custom', message: "Merci de justifier le montant des autres frais." });
+        errorCount++;
+      }
+      else {
+        clearErrors('otherExpensesNames');
+      }
 
       if (errorCount !== 0) {
         return;
       }
-
+      
       // We upload the hotel quotation first
       data.meals = maxMealsNumber;
       data.nights = Number(maxNightsNumber);
+      data.status = 1;
       const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);      
 
       console.log(dataToBeSubmitted);
-      // dispatch(uploadFile({data: dataToBeSubmitted, step: 'advance'}))
 
       if ( typeof dataToBeSubmitted.agentRib !== 'string' || typeof dataToBeSubmitted.hotelQuotation !== 'string') {
         console.log('AM I HERE ?');
@@ -122,9 +135,6 @@ const Avance = ({ step }) => {
       dispatch(updateAdvance(dataToBeSubmitted));
     }
   };
-
-  let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
-  refusal = "";
 
 
   const handleSwitch = (event) => {
@@ -141,14 +151,6 @@ const Avance = ({ step }) => {
       advanceInput.placeholder= "Limite de l'avance : " + advance + " euros."
     }
   }, [total]);
-
-  useEffect(() => {
-    if (Number(otherExpensesAmount) >= 0 && otherExpensesAmount !== '') {
-      register("otherExpensesNames", {
-        required: "Merci de justifier le montant des autres frais."
-      });
-    }
-  }, [otherExpensesAmount])
 
   const missionData = omForm[0].data;
 
@@ -277,11 +279,7 @@ const Avance = ({ step }) => {
           </div>
         </div>
       )} 
-      
-      {refusal !== '' && <RefusalMessage message={refusal} />}
       {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
-
-
       <Buttons
         step={step}
         id={omId}

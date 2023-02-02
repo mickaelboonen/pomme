@@ -218,29 +218,34 @@ export const turnTransportsDataToAppFormat = (data) => {
 export const turnAdvanceDataToDbFormat = (data) => {
 
   const {
-    omId,
-    advanceAmount,
-    hotelQuotation,
-    meals,
-    nights,
-    otherExpensesAmount,
-    otherExpensesNames,
-    rib,
-    total
+    omId, status,
+    meals, nights,
+    hotelQuotation, rib,
+    total, advanceAmount,
+    otherExpensesAmount, otherExpensesNames,
   } = data;
 
   const dataToBeSubmitted = {
     omId: omId,
-    advanceAmount: advanceAmount,
+    advanceAmount: advanceAmount === "" ? 0 : advanceAmount,
     totalAmount: total,
-    hotelQuotation: hotelQuotation,
+    hotelQuotation: null,
     nightsNumber: nights,
     mealsNumber: meals,
     otherExpensesAmount: otherExpensesAmount === "" ? 0 : otherExpensesAmount,
     otherExpensesJustification :otherExpensesNames === "" ? 0 : otherExpensesNames,
-    agentRib: rib
+    agentRib: null,
+    status: status,
 
   };
+
+
+  if (data.rib instanceof File || typeof data.rib === 'string') {
+    dataToBeSubmitted.agentRib = rib
+  }
+  if (data.hotelQuotation instanceof File || typeof data.hotelQuotation === 'string') {
+    dataToBeSubmitted.hotelQuotation = hotelQuotation
+  }
   
   return dataToBeSubmitted;
 }
@@ -293,5 +298,6 @@ export const turnAccomodationDataToDbFormat = (data) => {
     hotelPayment: data.hotelPayment,
     mealsPaidByAgent: data.mealsPaidByAgent,
     mealsInAdminRestaurants: data.mealsInAdminRestaurants,
+    status: data.status,
   };
 }

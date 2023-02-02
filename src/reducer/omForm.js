@@ -188,8 +188,12 @@ const omFormSlice = createSlice({
         state.loader = false;
       },
       saveAccomodations: (state, action) => {
-        state.omForm[2].data = action.payload;
+        
         state.omForm[2].data.omId = action.payload.om.id;
+
+        const dataForApp = declareCamelCaseKeys(action.payload);
+        state.omForm[2].data = dataForApp;
+        
         state.loader = false;
       },
       saveMore: (state, action) => {
@@ -209,16 +213,23 @@ const omFormSlice = createSlice({
         state.loader = false;
       },
       saveAdvance: (state, action) => {
+        const dataForApp = declareCamelCaseKeys(action.payload);
         const dataForTheComponent =  {
-          advance: action.payload.advanceAmount ? true : false,
-          omId: action.payload.om.id,
-          total: action.payload.totalAmount,
-          advanceAmount: action.payload.advanceAmount,
-          hotelQuotation: action.payload.hotelQuotation,
-          otherExpensesAmount: action.payload.otherExpensesAmount,
-          otherExpensesNames: action.payload.otherExpensesJustitication,
-          rib: action.payload.agentRib,
+          advance: false,
+          omId: dataForApp.om.id,
+          total: dataForApp.totalAmount,
+          advanceAmount: dataForApp.advanceAmount,
+          hotelQuotation: dataForApp.hotelQuotation,
+          otherExpensesAmount: dataForApp.otherExpensesAmount,
+          otherExpensesNames: dataForApp.otherExpensesJustitication,
+          rib: dataForApp.agentRib,
         }
+
+        if (dataForApp.advanceAmount > 0
+          || dataForApp.total > 0
+          || dataForApp.otherExpensesAmount > 0) {
+            dataForTheComponent.advance = true;
+          }
         console.log(dataForTheComponent);
         state.omForm[3].data = dataForTheComponent;
         state.loader = false;

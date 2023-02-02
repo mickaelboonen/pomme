@@ -7,7 +7,7 @@ import Avance from './Avance';
 import Mission from './Mission';
 import Signature from './Signature';
 import Transports from './Transports';
-import Hebergement from './Hebergement';
+import Accomodations from './Accomodations';
 import PageTitle from 'src/components/PageTitle';
 import ThreadAsTabs from 'src/components/ThreadAsTabs';
 
@@ -35,7 +35,7 @@ const OMForm = () => {
 
         {(step === 1 && !loader) && <Mission step={step} isEfForm={false} />}
         {(step === 2 && !loader) && <Transports step={step} />}
-        {(step === 3 && !loader) && <Hebergement step={step} />}
+        {(step === 3 && !loader) && <Accomodations step={step} />}
         {(step === 4 && !loader) && <Avance step={step} />}
         {(step === 5 && !loader) && <Signature step={step} />}
         {step !== 5 && <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>}

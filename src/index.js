@@ -163,13 +163,13 @@ const router = createBrowserRouter([
 
               // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
               if (step === '3') {
-                store.dispatch(getMission(id));
                 store.dispatch(getAccomodations(id));
+                store.dispatch(getMission(id));
                 
               }
               else if (step === '4') {
-                store.dispatch(getMission(id));
                 store.dispatch(getAdvance(id));
+                store.dispatch(getMission(id));
               }
               else if (step === '5') {
                 store.dispatch(getSignature('mboone01'));

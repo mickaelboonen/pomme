@@ -53,6 +53,7 @@ const Accomodations = ({ step }) => {
   
   const {
     register,
+    trigger,
     handleSubmit,
     watch,
     formState:
@@ -63,12 +64,10 @@ const Accomodations = ({ step }) => {
 
   const onSubmit = (data) => {
     console.log("------------------------------------------------------", data, "------------------------------------------------------");
-    // console.log(maxMealsNumber);
+
     const mealsErrorElement = document.getElementById('meals-error');
     const nightsErrorElement = document.getElementById('nights-error');
-    const totalMeals = Number(data.adminMealsNumber) + Number(data.outsideMealsNumber);
-
-    console.log(data.nightsNumber , maxNightsNumber, data.nightsNumber > maxNightsNumber);
+    const totalMeals = Number(data.mealsInAdminRestaurants) + Number(data.mealsPaidByAgent);
 
     if (totalMeals > maxMealsNumber) {
       mealsErrorElement.textContent = "Vous avez saisi plus de repas qu'autorisé. Vous avez le droit à : " + maxMealsNumber+ ' repas dans le cadre de votre mission.';
@@ -80,29 +79,25 @@ const Accomodations = ({ step }) => {
 
     }
     else {
-      
+      if (totalMeals < maxMealsNumber) {
+        const mealConfirmation = `Les repas sont remplis à titre déclaratif. Tout repas non saisi sera considéré comme repas gratuit, et donc non soumis à un remboursement de la part de l'établissement. Vous avez actuellement : ${maxMealsNumber - totalMeals} repas gratuits. Confirmez-vous votre saisie ?`;
+        if (!window.confirm(mealConfirmation)) {
+          return;
+        }
+      }
       nightsErrorElement.textContent = "";
-      nightsErrorElement.classList.remove('form__section-field-error--open')
       mealsErrorElement.textContent = "";
+      nightsErrorElement.classList.remove('form__section-field-error--open')
       mealsErrorElement.classList.remove('form__section-field-error--open')
+
       delete data.maxMealsNumber;
       
+      data.status = 1;
       const dataToBeSubmitted = turnAccomodationDataToDbFormat(data);
+      console.log(dataToBeSubmitted);
       dispatch(updateAccomodations(dataToBeSubmitted));
-
-
-      const nextStep = step + 1;
-      // navigate('/nouveau-document/ordre-de-mission?etape=' + nextStep + '&id=' + omId)
-
-    }
-    // TODO : Process Data
-    
-
-    
+    }    
   };
-
-  let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
-  refusal = "";
 
   const missionData = omForm[0].data;
 
@@ -113,7 +108,6 @@ const Accomodations = ({ step }) => {
 
   const handleHotelSwitch = (event) => {
     setIsHotelSelected(event.target.checked);
-
   };
 
   return (
@@ -158,6 +152,7 @@ const Accomodations = ({ step }) => {
       </div>
       <div className="form__section">
         <FormSectionTitle>Repas</FormSectionTitle>
+        <p>Merci de ne pas déclarer les repas gratuits ou non pris par l'agent.</p>
         <TextField
           id="outside-meals-number-field"
           formField="mealsPaidByAgent"
@@ -168,7 +163,7 @@ const Accomodations = ({ step }) => {
           label="Nombre de repas payés par l'agent"
           required="Merci de renseigner le nombre de repas prévus à la charge de l'agent"
           placeholder="Vous ne pouvez saisir plus de repas que le nombre calculé selon vos dates de missions."
-          error={errors.outsideMealsNumber}
+          error={errors.mealsPaidByAgent}
         />
         <TextField
           id="admin-meals-number-field"
@@ -177,17 +172,17 @@ const Accomodations = ({ step }) => {
           isNumber
           min="0"
           max={maxMealsNumber}
-          label="Nombre de repas en restaurant administratif"
+          label="Nombre de repas payés par l'agent en restaurant administratif"
           required="Merci de renseigner le nombre de repas en restaurant administratif"
           placeholder="Vous ne pouvez saisir plus de repas que le nombre calculé selon vos dates de missions."
-          error={errors.adminMealsNumber}
+          error={errors.mealsInAdminRestaurants
+          }
         />
         {/* <input id="max-meals-field" name="max-meals-field" type="hidden" value={maxMealsNumber} {...register('maxMealsNumber')} /> */}
       </div>
       { !isNaN(maxMealsNumber) && <p className="form__section-field-label form__section-field-label--infos">Vous avez le droit à un total de : <span style={{color: 'red', margin: '0 0.2rem'}}>{maxMealsNumber}</span> repas.</p>}
       <p id="meals-error" className="form__section-field-error"/>
       {maxNightsNumber < 0 && <p id="nights-error" className="form__section-field-error form__section-field-error--open">Les dates saisies pour la mission sont incorrectes. Merci de les corriger pour pouvoir procéder à cette étape.</p>}
-      {refusal !== '' && <RefusalMessage message={refusal} />}
       {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
 
       <Buttons
@@ -195,6 +190,7 @@ const Accomodations = ({ step }) => {
         id={omId}
         url={loader}
         watch={watch}
+        trigger={trigger}
         update={updateAccomodations}
       />
     </form>

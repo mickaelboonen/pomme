@@ -33,7 +33,7 @@ const Buttons = ({ trigger, step, url, id, watch, update, secondUpdate, userSign
       }
     }
 
-    trigger();
+    // trigger();
     
     if (step === 1) { // --------------------------------------------------------------------------------
 
@@ -71,14 +71,18 @@ const Buttons = ({ trigger, step, url, id, watch, update, secondUpdate, userSign
       dispatch(update(dataToBeSubmitted));
     }
     else if (step === 4) { // --------------------------------------------------------------------------------
-      const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);      
-      
+      console.log(data);
+      const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);   
+      console.log(dataToBeSubmitted);   
 
-      if ( dataToBeSubmitted.agentRib || dataToBeSubmitted.hotelQuotation ) {
+      console.log(typeof dataToBeSubmitted.hotelQuotation, dataToBeSubmitted.hotelQuotation);
+      
+      // return;
+      if ( dataToBeSubmitted.agentRib instanceof File || dataToBeSubmitted.hotelQuotation instanceof File ) {
         dispatch(uploadFile({data: dataToBeSubmitted, step: 'advance'}))
       }
       else {
-        dispatch(updateAdvance(dataToBeSubmitted));
+        dispatch(update(dataToBeSubmitted));
       }
     }
     else if (step === 5) { // --------------------------------------------------------------------------------
