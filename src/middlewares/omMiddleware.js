@@ -170,7 +170,8 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/getTransports':
       api.get("/api/om/transports/find/" + action.payload)
         .then((response) => {
-          store.dispatch(saveTransports(response.data))
+          console.log('MIDDLEWARE : ', response.data);
+          store.dispatch(saveTransports(response.data));
         })
         .catch((error) => {
           console.error('get signature', error);

@@ -4,10 +4,10 @@ import './style.scss';
 import SmallScreenMenu from './SmallScreenMenu';
 import DesktopHeader from './DesktopHeader';
 
-const Header = () => (
+const Header = ({ cas }) => (
   <header className="header-container">
-    <DesktopHeader />
-    <SmallScreenMenu />
+    <DesktopHeader cas={cas} />
+    <SmallScreenMenu cas={cas} />
   </header>
 );
 

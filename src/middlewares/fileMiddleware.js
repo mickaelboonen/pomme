@@ -139,7 +139,7 @@ const omMiddleware = (store) => (next) => (action) => {
 
           const { data } = action.payload;
 
-          if (step === "more") {
+          if (step === "more-and-signature") {
             data.files = [];
           }
           else if (step === 'mission') {
@@ -148,6 +148,9 @@ const omMiddleware = (store) => (next) => (action) => {
           else if (step === 'authorization') {
             data.externalSignature = [];
           }
+
+          // TODO : mettre les propriétés attendues pour l'update 
+
 
           // Retrieving the url for each file and assigning it to the right property
           response.data.forEach((file) => {

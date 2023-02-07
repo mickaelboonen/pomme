@@ -1,4 +1,4 @@
-import { saveSignature } from 'src/reducer/app';
+import { saveSignature, validateAuthentication } from 'src/reducer/app';
 import { api } from './api';
 import CasClient, { constant } from "react-cas-client";
 
@@ -6,7 +6,8 @@ import CasClient, { constant } from "react-cas-client";
 let casEndpoint = "cas.unimes.fr";
 let casOptions = { version: constant.CAS_VERSION_3_0,
   validation_proxy: true,
-  validation_proxy_path: '/cas_proxy' };
+  validation_proxy_path: '/cas_proxy',
+};
 
 let casClient = new CasClient(casEndpoint, casOptions);
 
@@ -19,9 +20,8 @@ const appMiddleware = (store) => (next) => (action) => {
     case 'app/getSignature':
       api.get("/api/perm-file/signature/" + action.payload)
         .then((response) => {
-          if (response.data.length > 0) {
-            store.dispatch(saveSignature(response.data[0]))
-          }
+          
+          store.dispatch(saveSignature(response.data))
         })
         .catch((error) => {
           console.error('get signature', error);
@@ -42,24 +42,17 @@ const appMiddleware = (store) => (next) => (action) => {
         });
       break;
     case 'app/authenticate':  
-
-    
-      // casClient
-      //   .auth() 
-      //     .then(successRes => {
-      //       console.log(successRes);
-      //     })
-      //     .catch(errorRes => {
-      //       console.log('error : ', errorRes);
-      //     });
-
-        // api.get('/api/authenticate')
-        //   .then(() => {
-        //       console.log(response.data);
-        //   })
-        //   .catch((error) => {
-        //     console.error('authenticate', error);
-        //   })
+      console.log('je veux m"authentifier.');
+      
+      casClient
+        .auth()
+            .then((response) => {
+              console.log(response);
+              store.dispatch(validateAuthentication(response))
+            })
+            .catch(response => {
+              console.log('error : ', response);
+            });
     break;
 
   

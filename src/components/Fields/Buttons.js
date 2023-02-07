@@ -37,7 +37,9 @@ const Buttons = ({ trigger, step, url, id, watch, update, secondUpdate, userSign
     
     if (step === 1) { // --------------------------------------------------------------------------------
 
-      if (data.missionPurposeFile && typeof data.missionPurposeFile !== 'string') {
+      const fileObject = data.missionPurposeFile.find((file) => file instanceof File);
+      console.log(fileObject);
+      if (fileObject) {
         dispatch(uploadFile({data: data, step: 'mission'}));
         navigate(url.pathname + '?' + url.searchParams);
       }

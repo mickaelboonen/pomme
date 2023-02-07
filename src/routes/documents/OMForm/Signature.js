@@ -66,9 +66,11 @@ const Signature = ({ step }) => {
     { errors },
   } = useForm({ defaultValues: defaultValues });
   
+    console.log(userSignature);
   const onSubmit = (data) => {
     const formattedData = turnSignatureDataToDbFormat(data, userSignature);
 
+    // return;
     if (data.savedSignature) {
 
       const infosFile = formattedData.files.find((file) => file instanceof File);
@@ -98,12 +100,9 @@ const Signature = ({ step }) => {
         dispatch(updateMoreAndSignature(formattedData));
       }
     }
-    // navigate('/nouveau-document/ordre-de-mission?etape=' + step++);
-
-    
   };
 
-  const [hasNoSignatureSaved, setHasNoSignatureSaved] = useState(true);
+  const [hasNoSignatureSaved, setHasNoSignatureSaved] = useState(defaultValues.savedSignature);
   const savedSignature = watch('savedSignature');
   
   useEffect(() => {

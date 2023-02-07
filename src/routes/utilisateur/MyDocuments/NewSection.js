@@ -18,6 +18,12 @@ const Section = ({ id, data, steps, currentDoc}) => {
     dispatch(displayOmStatus(event.target.value));
   }
 
+  let isDocFinished = false;
+  const unfinishedStep = steps.find((step) => !step.status)
+
+  if (!unfinishedStep) {
+    isDocFinished = true;
+  }
   return (
     <section id={id} className="my-documents__files">
       <SelectField
@@ -55,15 +61,21 @@ const Section = ({ id, data, steps, currentDoc}) => {
           <Link to={"/modifier-un-document/ordre-de-mission?etape=1&id=" + currentDoc.id}>
             Reprendre / Modifier
           </Link>
-
           <Link to={"/modifier-un-document/ordre-de-mission?etape=1&id=" + currentDoc.id}>
             Faire une demande de déplacement
           </Link>
-
           <Link to={"/modifier-un-document/ordre-de-mission?etape=1&id=" + currentDoc.id}>
             Prendre connaissance du refus et supprimer
           </Link>
-
+        </div>
+      )}
+      {currentDoc.hasOwnProperty('id') && (
+        <div className="my-documents__files-buttons">
+        {isDocFinished && (
+          <Link to={"#" + currentDoc.id}>
+            Soumettre l'Ordre de Mission
+          </Link>
+        )}
         </div>
       )}
     </section>

@@ -1,5 +1,3 @@
-import { declareCamelCaseKeys } from "./keyObjectService";
-
 /**
  * From the data we collected in the OM transports form, we adapt it to match the correct format for the database
  *  
@@ -170,6 +168,9 @@ export const turnTransportsDataToAppFormat = (data) => {
   }
   if (data.ferry) {
     dataForTheComponent.others.push('ferry');
+  }
+  if (data.taxi) {
+    dataForTheComponent.others.push('taxi');
   }
   
   data.transportClass.forEach((service) => {

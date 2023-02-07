@@ -29,22 +29,50 @@ import Preferences from "src/routes/utilisateur/MyAccount/Preferences";
 import DocValidationForm from "src/routes/gestionnaire/DocValidationForm";
 import TicketRequest from "src/routes/utilisateur/MyAccount/TicketRequest";
 import RefusalNotification from "src/routes/utilisateur/MyAccount/RefusalNotification";
+import CasClient, { constant } from "react-cas-client";
 
 
-import { getSignature, authenticate } from "src/reducer/app";
+import { getSignature, validateAuthentication } from "src/reducer/app";
 import { getVehicles, getVehicleDocuments } from "src/reducer/vehicle";
 import { fetchOMs, getMission, fetchOm, getTransports, getAccomodations, getAdvance, getMore  } from "src/reducer/omForm";
 
 
 
+
+let casEndpoint = "cas.unimes.fr";
+let casOptions = { version: constant.CAS_VERSION_3_0,
+  validation_proxy: true,
+  validation_proxy_path: '/cas_proxy' };
+
+let casClient = new CasClient(casEndpoint, casOptions);
+
+
+const loader = async ({ request, params }) => { 
+  const { app : { isAuthenticated }} = store.getState(state => state);
+      
+      console.log(isAuthenticated);
+      
+      if (!isAuthenticated) {
+      
+        casClient
+        .auth() 
+          .then((response) => {
+            console.log(response);
+            store.dispatch(validateAuthentication(response))
+          })
+          .catch(response => {
+            console.log('error cas : ', response);
+          });
+      }
+          
+}
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: <Layout cas={casClient} />,
     errorElement: <ErrorPage />,
-    loader: async ({ request }) => {
-      store.dispatch(authenticate());
-    }, 
+    loader: loader, 
     children: [
       {
         index: true,

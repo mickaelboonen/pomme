@@ -5,7 +5,7 @@ import './style.scss';
 import Header from './Header';
 import { Outlet } from 'react-router-dom';
 
-const Layout = () => {
+const Layout = ({ cas }) => {
   const theme = localStorage.getItem('theme');
   const colorTheme = localStorage.getItem('color-theme');
 
@@ -26,7 +26,7 @@ const Layout = () => {
   }, [])
   return (
     <div>
-      <Header />
+      <Header cas={cas} />
       <main id="main">
         <Outlet />
       </main>

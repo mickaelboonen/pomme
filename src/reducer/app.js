@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  user: 'mboone01',
+  user: '',
   userSignature: null,
   apiMessage: {},
   loader: true,
   isModalOpen: false,
+  isAuthenticated: false,
 };
 const omFormSlice = createSlice({
     name: 'app',
@@ -14,6 +15,10 @@ const omFormSlice = createSlice({
       authenticate: () => {},
       saveUser: () => {},
       getSignature: () => {},
+      validateAuthentication: (state, action) => {
+        state.isAuthenticated= true;
+        state.user = action.payload.user;
+      },
       saveSignature: (state, action) => {
         state.userSignature = action.payload.url;
       },
@@ -38,6 +43,7 @@ export const {
   getSignature,
   saveSignature,
   toggleModal,
+  validateAuthentication
 } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

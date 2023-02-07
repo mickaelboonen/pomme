@@ -8,10 +8,14 @@ import Preferences from './Preferences';
 import { toggleBurgerMenu, toggleNavList } from 'src/selectors/domManipulators';
 import BurgerIcon from './BurgerIcon';
 
-const DesktopHeader = () => {
+const DesktopHeader = ({ cas }) => {
 
   const userName = 'mboone01';
   const role = 'dev'
+  
+  const handleLogOut = () => {
+    cas.logout("/");
+  }
 
   return (
   <div className="header">
@@ -40,7 +44,7 @@ const DesktopHeader = () => {
             <li><Link to={`/utilisateur/${userName}/mes-états-de-frais`}>Mes États de Frais <span id="mes-efs"></span></Link></li>
             <li><Link to={`/utilisateur/${userName}/mes-documents`}>Mes Justificatifs</Link></li>
             <li><Link to={`/utilisateur/${userName}/mes-préférences`}>Mes Préférences</Link></li>
-            <li><a>Se déconnecter</a></li>
+            <li><a onClick={handleLogOut}>Se déconnecter</a></li>
           </ul>
         </div>
       </nav>

@@ -59,6 +59,7 @@ const vehicleSlice = createSlice({
             state.vehicles.push(vehicle)
           }
         });
+        state.loader = false;
       },
       saveVehicle: (state, action) => {
         // action.payload.forEach((vehicle) => state.vehicles.push(vehicle));

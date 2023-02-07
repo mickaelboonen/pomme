@@ -169,6 +169,7 @@ const omFormSlice = createSlice({
       },
       fetchOMs: () => {},
       saveUserOms: (state, action) => {
+        console.log(action.payload);
         state.userOms = action.payload;
       },
       saveMission: (state, action) => {
