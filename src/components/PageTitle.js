@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import './style.scss';
+import classNames from 'classnames';
 
 const PageTitle = ({ children, isHomePage }) => {
 

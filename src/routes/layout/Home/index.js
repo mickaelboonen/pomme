@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import Plus from '../../../assets/images/add.svg';
 import TitleH3 from '../../../components/TitleH3';
 import { PDFViewer } from '@react-pdf/renderer';
+import { IoMdAddCircle, FaSun, FaMoon } from "react-icons/io";
+import { RiLogoutBoxRFill } from "react-icons/ri";
 
 import './style.scss';
 import { Link } from 'react-router-dom';
@@ -18,19 +20,25 @@ const Home = () => {
         <div className="home__title-group"><div className="home__title-group-capital">P</div><div className="home__title-group-rest">réparer son </div></div>
         <div className="home__title-group"><div className="home__title-group-capital">O</div><div className="home__title-group-rest">rdre de </div></div>
         <div className="home__title-group"><div className="home__title-group-capital">M</div><div className="home__title-group-rest">ission </div></div>
+
       </div>
     <section className="home__new">
       <TitleH3>Nouveau document</TitleH3>
       <div className="home__new-buttons">
         <Link to="/nouveau-document/ordre-de-mission?etape=1">
           <div className="home__new-buttons-item">
-            <img src={Plus} alt="" />
+            <IoMdAddCircle
+              className='home__new-buttons-item-image'
+            />
             <p>Ordre de Mission</p>
           </div>
         </Link>
         <Link to="/nouveau-document/état-de-frais?etape=1">
           <div className="home__new-buttons-item">
-            <img src={Plus} alt="" />
+            <IoMdAddCircle
+              size="5rem"
+              className='home__new-buttons-item-image'
+            />
             <p>État de Frais</p>
           </div>
         </Link>
