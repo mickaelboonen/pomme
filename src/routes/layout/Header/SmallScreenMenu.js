@@ -1,53 +1,152 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link, useNavigate, useNavigation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { FaHome, FaSun, FaMoon } from "react-icons/fa";
+import { RiLogoutBoxRFill } from "react-icons/ri";
 
 import './style.scss';
-import Preferences from './Preferences';
 
-const SmallScreenMenu = ({ role = 'dev'}) => {
+const SmallScreenMenu = ({ cas, role = 'dev'}) => {
   const { app : { user }} = useSelector((state) => state);
-
+  
   const handleMouseDown = () => {
     const menu = document.querySelector('.small-screen-menu');
     menu.classList.remove('small-screen-menu--open');
   }
+
+  const dafcLinks = {
+    category: 'DAFC',
+    links: [
+      {
+        id: 'dafc-om',
+        url: '/dafc/ordres-de-mission',
+        label: 'Ordres de Mission'
+      },
+      {
+        id: 'dafc-ef',
+        url: '/dafc/états-de-frais',
+        label: 'États de frais'
+      },
+    ],
+  };
+
+  const gestLinks = {
+    category: 'GESTIONNAIRE',
+    links: [
+      {
+        id: 'gest-om',
+        url: `/gestionnaire/${role}/documents-a-signer`,
+        label: 'Ordres de Mission'
+      },
+      {
+        id: 'gest-ef',
+        url: `/gestionnaire/${role}/documents-a-signer`,
+        label: 'États de frais'
+      },
+    ],
+  };
+
+  const userLinks = {
+    category: 'MON COMPTE',
+    links: [
+      {
+        id: 'user-om',
+        url: `/utilisateur/${user}/mes-préférences`,
+        label: 'Mes ordres de Mission'
+      },
+      {
+        id: 'user-ef',
+        url: `/gestionnaire/${role}/documents-a-signer`,
+        label: 'Mes états de frais'
+      },
+      {
+        id: 'user-files',
+        url: `/utilisateur/${user}/mes-préférences`,
+        label: 'Mes fichiers récurrents'
+      },
+      {
+        id: 'user-pref',
+        url: `/gestionnaire/${role}/documents-a-signer`,
+        label: 'Mes préférences'
+      },
+    ],
+  };
+
+  const handleLogOut = () => {
+    cas.logout("/");
+  }
+
+  const savedTheme = localStorage.getItem('theme');
+  const [theme, setTheme] = useState(!savedTheme ? 'light' : savedTheme);
+
+  const handleToggleTheme = () => {
+    
+
+    if (theme === 'light') {
+      localStorage.setItem('theme', 'dark');
+      setTheme('dark');
+    }
+    else {
+      localStorage.removeItem('theme');
+      setTheme('light');
+    }
+
+    document.querySelector(':root').classList.toggle('dark');
+  }
+
+
   return (
     <nav className="small-screen-menu">
-      <Preferences isSkewed id="menu" />
-      {/* <li className="small-screen-menu__section-list-item" onMouseDown={handleMouseDown}> */}
-        <Link to={`/`}>Accueil</Link>
-      {/* </li> */}
+      <div className="small-screen-menu__section">
+        <ul className="small-screen-menu__section-icons">
+         <Link to="/">
+            <FaHome
+              onMouseDown={handleMouseDown}
+              className='small-screen-menu__section-icons-item'
+            />
+          </Link>
+          <RiLogoutBoxRFill
+            onClick={handleLogOut}
+            className='small-screen-menu__section-icons-item'
+          />
+          {theme === "dark" && (
+            <FaSun
+            onClick={handleToggleTheme}
+              className='small-screen-menu__section-icons-item small-screen-menu__section-icons-item--theme'
+            />
+          )}
+          {theme === "light" && (
+            <FaMoon
+              onClick={handleToggleTheme}
+              className='small-screen-menu__section-icons-item small-screen-menu__section-icons-item--theme'
+            />
+          )}
+        </ul>
+      </div>
+      <div className="small-screen-menu__section">
+        <h3  className="small-screen-menu__section-title">{userLinks.category}</h3>
+        <ul className="small-screen-menu__section-list">
+          {userLinks.links.map((li) => <Link to={li.url} key={li.id}><li className="small-screen-menu__section-list-item" onMouseDown={handleMouseDown}>{li.label} {/*<span id="mes-oms"></span>*/}</li></Link>)}
+        </ul>
+      </div>
+      {user === '' &&(
+        <div className="small-screen-menu__section">
+          <h3  className="small-screen-menu__section-title">{gestLinks.category}</h3>
+          <ul className="small-screen-menu__section-list">
+            {gestLinks.links.map((li) => <Link to={li.url} key={li.id}><li className="small-screen-menu__section-list-item" onMouseDown={handleMouseDown}>{li.label} {/*<span id="mes-oms"></span>*/}</li></Link>)}
+          </ul>
+        </div>
+      )}
+      {user === '' &&(
+        <div className="small-screen-menu__section">
+          <h3  className="small-screen-menu__section-title">{dafcLinks.category}</h3>
+          <ul className="small-screen-menu__section-list">
+            {dafcLinks.links.map((li) => <Link to={li.url} key={li.id}><li className="small-screen-menu__section-list-item" onMouseDown={handleMouseDown}>{li.label} {/*<span id="mes-oms"></span>*/}</li></Link>)}
 
-        {user === 'mboone01' &&(
-      <div className="small-screen-menu__section">
-        <h3  className="small-screen-menu__section-title">DAFC</h3>
-        <ul className="small-screen-menu__section-list">
-          <li className="small-screen-menu__section-list-item" onMouseDown={handleMouseDown}><Link to={`/dafc/ordres-de-mission`}>Ordres de Mission <span id="mes-oms"></span></Link></li>
-          <li className="small-screen-menu__section-list-item" onMouseDown={handleMouseDown}><Link to={`/dafc/états-de-frais`}>États de Frais <span id="mes-oms"></span></Link></li>
-        </ul>
-      </div>
-        )}
-        {user === 'mboone01' &&(
-      <div className="small-screen-menu__section">
-        <h3  className="small-screen-menu__section-title">A SIGNER</h3>
-        <ul className="small-screen-menu__section-list">
-          <li className="small-screen-menu__section-list-item" onMouseDown={handleMouseDown}><Link to={`/gestionnaire/${role}/documents-a-signer`}>Ordres de Mission <span id="mes-oms">1</span></Link></li>
-          <li className="small-screen-menu__section-list-item" onMouseDown={handleMouseDown}><Link to={`/gestionnaire/${role}/documents-a-signer`}>États de Frais <span id="mes-oms">1</span></Link></li>
-        </ul>
-      </div>
-        )}
-      <div className="small-screen-menu__section">
-        <h3  className="small-screen-menu__section-title">MON COMPTE</h3>
-        <ul className="small-screen-menu__section-list">
-          <li className="small-screen-menu__section-list-item" onMouseDown={handleMouseDown}><Link to={`/utilisateur/${user}/mes-ordres-de-mission`}>Mes Ordres de Mission {/*<span id="mes-oms">1</span>*/}</Link></li>
-          {user === 'mboone01' &&<li className="small-screen-menu__section-list-item" onMouseDown={handleMouseDown}><Link to={`/utilisateur/${user}/mes-états-de-frais`}>Mes États de Frais <span id="mes-efs"></span></Link></li>}
-          <li className="small-screen-menu__section-list-item" onMouseDown={handleMouseDown}><Link to={`/utilisateur/${user}/mes-documents`}>Mes Justificatifs</Link></li>
-          <li className="small-screen-menu__section-list-item" onMouseDown={handleMouseDown}><Link to={`/utilisateur/${user}/mes-préférences`}>Mes préférences</Link></li>
-          <li className="small-screen-menu__section-list-item" onMouseDown={handleMouseDown}><a>Se déconnecter</a></li>
-        </ul>
-      </div>
+          </ul>
+        </div>
+      )}
     </nav>
   );
 };

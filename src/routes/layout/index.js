@@ -10,15 +10,8 @@ const Layout = ({ cas }) => {
   const colorTheme = localStorage.getItem('color-theme');
 
   useEffect(() => {
-
-
-
     if (theme === 'dark') {
       document.querySelector(':root').classList.add('dark');
-      const headerButton = document.querySelector('#theme-switch-header');
-      const menuButton = document.querySelector('#theme-switch-menu');
-      headerButton.checked = true;
-      menuButton.checked = true;
     }
     if (colorTheme !== '') {
       document.documentElement.style = colorTheme;

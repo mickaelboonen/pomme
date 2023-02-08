@@ -3,7 +3,7 @@
 @use "sass:color";
 
 body {
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Rajdhani', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 * {
@@ -20,6 +20,8 @@ body {
   --lighterDarkestThemeColor: 116, 41, 70, 0.25;
   
   --header-height: 10vh;
+
+  --font-title: 'Lobster';
 }
 
 
