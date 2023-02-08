@@ -47,7 +47,6 @@
       font-size: 0.8em;
       color: var(--fourth-color);
       font-weight: bold;
-      // z-index: 0;
 
 
       &--open {
@@ -55,7 +54,6 @@
         font-style: italic;
         color: var(--first-color);
         background-color: var(--fifth-color);
-        box-shadow: 0px 0px 5px var(--dark-color);
       }
     }
   }
@@ -76,6 +74,11 @@
       margin: 1rem auto 2rem;
     }
   }
+}
+
+.form-container {
+  width: 100%;
+  // background-color: var(--background-page);
 }
 
 .form {
@@ -191,6 +194,16 @@
 
 
 @media (min-width: vars.$sm) {
+  
+.form-container {
+  width: 80%;
+  margin: auto;
+
+  &--vehicle {
+    width: 50%;
+  }
+}
+
   .form-page {
     background-color: #fff;
     &__thread {

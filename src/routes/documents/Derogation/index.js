@@ -64,8 +64,7 @@ const Derogation = () => {
     // navigate('/nouveau-document/ordre-de-mission?etape=2');
   };
   return (
-    <div className="form-page__container">
-      <div className="form-page__title">
+    <div className="form-container form-container--vehicle">
         <PageTitle>Demande de prise en charge d’une dépense par voie dérogatoire au GDM </PageTitle>
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
           <div className="form__section">
@@ -106,7 +105,6 @@ const Derogation = () => {
             </div>
           </div>
         </form>
-      </div>
     </div>
   );
 };

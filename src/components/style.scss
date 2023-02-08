@@ -33,6 +33,9 @@
 
 .page-title {
  @include vars.pageTitle;
+ font-weight: bold;
+ padding: 1rem;
+ margin-bottom: 0;
 }
 
 
@@ -138,6 +141,7 @@
   display: flex;
   border-radius: vars.$radius vars.$radius 0 0;
   overflow: hidden;
+  width: 100vw;
 
   &__item {
     width: 50%;
@@ -177,5 +181,12 @@
         box-shadow: 1px 1px 1px #1a1a1a;
         color: var(--first-color);
       }
+  }
+}
+
+@media (min-width: vars.$sm) {
+  .tabs {
+    width: 50%;
+
   }
 }

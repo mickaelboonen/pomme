@@ -4,9 +4,9 @@
 $test : #{var(--first-color)};
 
 .my-documents {
-  width:100%;
+  min-width:100vw;
   margin: auto;
-  height: 90vh;
+  min-height: 90vh;
   background-color: var(--lighter-first-color);
   padding-top: 1rem;
 
@@ -35,11 +35,10 @@ $test : #{var(--first-color)};
   }
 
   &__files {
-    // display: flex;
-    // display: none;
     padding: 1.5rem;
-    margin-bottom: 4rem;
-    min-height: 60vh;
+    min-height: 50vh;
+    height: fit-content;
+    overflow: hidden;
     background-color: var(--lighter-first-color);
     border-radius: 0 0 vars.$radius vars.$radius;
 
@@ -47,7 +46,7 @@ $test : #{var(--first-color)};
       display: flex;
       justify-content: center;
       // flex-wrap: wrap;
-      margin: 2rem;
+      margin: 1rem;
 
 
         & a {
@@ -56,6 +55,7 @@ $test : #{var(--first-color)};
         max-width: none;
         font-size: 0.9em;
         text-align: center;
+        @include vars.centeredFlex;
       }
 
       &--validation {
@@ -107,71 +107,6 @@ $test : #{var(--first-color)};
   }
 }
 
-
-@media (min-width: vars.$sm) {
-
-  .my-documents {
-    width: 80%;
-    background-color: #fff;
-    
-    &__button {
-      width: 100%;
-      text-align: center;
-
-      & a {
-        width: fit-content;
-        padding: 0.8rem 1.2rem;        
-      }
-    }
-
-    &__files {
-
-      &-container {
-        display: flex;
-        flex-flow: row wrap;
-        justify-content: space-between;
-  
-        &-item {
-          width: 40%;
-          display: flex;
-          margin-bottom: 1rem;
-
-          &--open {
-            width: 100%;
-  
-            .file-display {
-              width: 50%;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-@media (min-width: 1000px) {
-
-  .my-documents {
-    width: 50%;
-
-    &__files {
-
-      &-container {
-  
-        &-item {
-          width: fit-content;
-
-          &--open {  
-            .file-display {
-              width: 70%;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 .om-status {
   background-color: #fff;
   padding: 1.5rem;
@@ -183,16 +118,17 @@ $test : #{var(--first-color)};
     min-height: 3rem;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 2rem;
+    flex-wrap: wrap;
 
     &-step {
-      flex-grow: 1;
+      width: 48%;
       display: flex;
       align-items: center;
-      margin-right: 1rem;
       justify-content: center;
       border-radius: math.div(vars.$radius, 2);
       text-transform: uppercase;
+      min-height: 3rem;
+      margin-bottom: 1rem;
 
       &--validated {
         background-color: rgb(148, 250, 190);
@@ -248,5 +184,83 @@ $test : #{var(--first-color)};
 
   &__message {
 
+  }
+}
+
+
+@media (min-width: vars.$sm) {
+
+  .my-documents {
+    background-color: var(--background-page);
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    &__button {
+      width: 100%;
+      text-align: center;
+
+      & a {
+        width: fit-content;
+        padding: 0.8rem 1.2rem;        
+      }
+    }
+
+    &__files {
+      width: 50%;
+      &-container {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+  
+        &-item {
+          width: 40%;
+          display: flex;
+          margin-bottom: 1rem;
+
+          &--open {
+            width: 100%;
+  
+            .file-display {
+              width: 50%;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .om-status {
+    &__steps {
+      flex-wrap: nowrap;
+
+      &-step {
+        margin-right: 1rem;
+      }
+    }
+  }
+}
+
+@media (min-width: 1000px) {
+
+  .my-documents {
+    width: 50%;
+
+    &__files {
+
+      &-container {
+  
+        &-item {
+          width: fit-content;
+
+          &--open {  
+            .file-display {
+              width: 70%;
+            }
+          }
+        }
+      }
+    }
   }
 }

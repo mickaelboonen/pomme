@@ -98,10 +98,6 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
     document.querySelector(':root').classList.toggle('dark');
   }
 
-  userLinks.links.forEach((li) => {
-    console.log(li.url)
-  });
-
 
   return (
     <nav className="small-screen-menu">

@@ -212,11 +212,8 @@ const VehicleUseForm = () => {
   }
   
   return (
-    <div className="form-page__container">
-
-      <div className="form-page__title">
-        <PageTitle>Demande d'autorisation préalable d'utilisation d'un véhicule</PageTitle>
-      </div>
+    <div className="form-container form-container--vehicle">
+      <PageTitle>Demande d'autorisation préalable d'utilisation d'un véhicule</PageTitle>
       {loader && <div>Loading</div>}
       {!loader &&(
         <form className="form" onSubmit={handleSubmit(onSubmit)}>

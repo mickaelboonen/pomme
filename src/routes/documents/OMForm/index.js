@@ -24,24 +24,26 @@ const OMForm = () => {
   
 
   return (
-    <div className='form-container'>
+    <>
       <ThreadAsTabs step={step} tabs={steps} isOm urlData={loaderData} />
-      <div className="form-page__title">
-        <PageTitle>Création d'un Ordre de Mission</PageTitle>
-      </div>
-      <div className="form-page__container">
-        
-        {loader && <div>Loading</div>}
+      <div className='form-container'>
+        <div className="form-page__title">
+          <PageTitle>Création d'un Ordre de Mission</PageTitle>
+        </div>
+        <div className="form-page__container">
+          
+          {loader && <div>Loading</div>}
 
-        {(step === 1 && !loader) && <Mission step={step} isEfForm={false} />}
-        {(step === 2 && !loader) && <Transports step={step} />}
-        {(step === 3 && !loader) && <Accomodations step={step} />}
-        {(step === 4 && !loader) && <Avance step={step} />}
-        {(step === 5 && !loader) && <Signature step={step} />}
-        {step !== 5 && <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>}
-        {step === 5 && <button className="form-page__container-link" type='button'>Retour : Avance</button>}
+          {(step === 1 && !loader) && <Mission step={step} isEfForm={false} />}
+          {(step === 2 && !loader) && <Transports step={step} />}
+          {(step === 3 && !loader) && <Accomodations step={step} />}
+          {(step === 4 && !loader) && <Avance step={step} />}
+          {(step === 5 && !loader) && <Signature step={step} />}
+          {step !== 5 && <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>}
+          {step === 5 && <button className="form-page__container-link" type='button'>Retour : Avance</button>}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

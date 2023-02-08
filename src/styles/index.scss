@@ -4,6 +4,7 @@
 
 body {
   font-family: 'Rajdhani', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  background-color: var(--background-page);
 }
 
 * {
@@ -35,11 +36,13 @@ body {
   --fifth-color: rgba(var(--darkestThemeColor));
   --opposite-theme-color: #1a1a1a;
   --theme-color: #fff;
+  --text-shadow: rgba(var(--darkerThemeColor));
 
   --menu-color: rgba(var(--lightestThemeColor));
   --menu-title-color: rgba(var(--darkestThemeColor));
   --dark-color: rgba(var(--darkestThemeColor));
   --thread-background: rgba(var(--lighterThemeColor));
+  --background-page: #fff;
 }
 
 :root.dark {
@@ -51,10 +54,12 @@ body {
   --fifth-color: rgba(var(--lightestThemeColor));
   --opposite-theme-color: #fff;
   --theme-color: rgba(var(--darkestThemeColor));
+  --text-shadow: rgba(var(--lighterThemeColor));
 
   --menu-color: rgba(var(--darkestThemeColor));
   --dark-color: #1a1a1a;
   --menu-title-color: rgba(var(--lightestThemeColor));
   --thread-background: rgba(var(--darkerThemeColor));
+  --background-page: rgba(var(--lighterDarkestThemeColor));
 }
 
