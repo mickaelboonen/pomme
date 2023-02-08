@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FaHome, FaSun, FaMoon } from "react-icons/fa";
 import { RiLogoutBoxRFill } from "react-icons/ri";
@@ -9,11 +9,14 @@ import './style.scss';
 
 const SmallScreenMenu = ({ cas, role = 'dev'}) => {
   const { app : { user }} = useSelector((state) => state);
-  
-  const handleMouseDown = () => {
+
+  const location = useLocation();
+
+  useEffect(() => {
     const menu = document.querySelector('.small-screen-menu');
     menu.classList.remove('small-screen-menu--open');
-  }
+
+  }, [location.pathname])
 
   const dafcLinks = {
     category: 'DAFC',
@@ -52,22 +55,22 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
     links: [
       {
         id: 'user-om',
-        url: `/utilisateur/${user}/mes-préférences`,
+        url: `/utilisateur/${user}/mes-ordres-de-mission`,
         label: 'Mes ordres de Mission'
       },
-      {
-        id: 'user-ef',
-        url: `/gestionnaire/${role}/documents-a-signer`,
-        label: 'Mes états de frais'
-      },
+      // {
+      //   id: 'user-ef',
+      //   url: `/utilisateur/${role}/mes-états-de-frais`,
+      //   label: 'Mes états de frais'
+      // },
       {
         id: 'user-files',
-        url: `/utilisateur/${user}/mes-préférences`,
+        url: `/utilisateur/${user}/mes-documents`,
         label: 'Mes fichiers récurrents'
       },
       {
         id: 'user-pref',
-        url: `/gestionnaire/${role}/documents-a-signer`,
+        url: `/utilisateur/${user}/mes-préférences`,
         label: 'Mes préférences'
       },
     ],
@@ -95,6 +98,10 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
     document.querySelector(':root').classList.toggle('dark');
   }
 
+  userLinks.links.forEach((li) => {
+    console.log(li.url)
+  });
+
 
   return (
     <nav className="small-screen-menu">
@@ -102,7 +109,6 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
         <ul className="small-screen-menu__section-icons">
          <Link to="/">
             <FaHome
-              onMouseDown={handleMouseDown}
               className='small-screen-menu__section-icons-item'
             />
           </Link>
@@ -127,22 +133,28 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
       <div className="small-screen-menu__section">
         <h3  className="small-screen-menu__section-title">{userLinks.category}</h3>
         <ul className="small-screen-menu__section-list">
-          {userLinks.links.map((li) => <Link to={li.url} key={li.id}><li className="small-screen-menu__section-list-item" onMouseDown={handleMouseDown}>{li.label} {/*<span id="mes-oms"></span>*/}</li></Link>)}
+          {userLinks.links.map((li) => (
+            <Link to={li.url} key={li.id}>
+              <li className="small-screen-menu__section-list-item">
+                {li.label} {/*<span id="mes-oms"></span>*/}
+              </li>
+            </Link>
+          ))}
         </ul>
       </div>
-      {user === '' &&(
+      {user === 'mboone01' &&(
         <div className="small-screen-menu__section">
           <h3  className="small-screen-menu__section-title">{gestLinks.category}</h3>
           <ul className="small-screen-menu__section-list">
-            {gestLinks.links.map((li) => <Link to={li.url} key={li.id}><li className="small-screen-menu__section-list-item" onMouseDown={handleMouseDown}>{li.label} {/*<span id="mes-oms"></span>*/}</li></Link>)}
+            {gestLinks.links.map((li) => <Link to={li.url} key={li.id}><li className="small-screen-menu__section-list-item">{li.label} {/*<span id="mes-oms"></span>*/}</li></Link>)}
           </ul>
         </div>
       )}
-      {user === '' &&(
+      {user === 'mboone01' &&(
         <div className="small-screen-menu__section">
           <h3  className="small-screen-menu__section-title">{dafcLinks.category}</h3>
           <ul className="small-screen-menu__section-list">
-            {dafcLinks.links.map((li) => <Link to={li.url} key={li.id}><li className="small-screen-menu__section-list-item" onMouseDown={handleMouseDown}>{li.label} {/*<span id="mes-oms"></span>*/}</li></Link>)}
+            {dafcLinks.links.map((li) => <Link to={li.url} key={li.id}><li className="small-screen-menu__section-list-item">{li.label} {/*<span id="mes-oms"></span>*/}</li></Link>)}
 
           </ul>
         </div>

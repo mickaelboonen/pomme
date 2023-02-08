@@ -48,22 +48,22 @@ let casClient = new CasClient(casEndpoint, casOptions);
 
 
 const loader = async ({ request, params }) => { 
-  const { app : { isAuthenticated }} = store.getState(state => state);
+  // const { app : { isAuthenticated }} = store.getState(state => state);
       
-      console.log(isAuthenticated);
+  //     console.log(isAuthenticated);
       
-      if (!isAuthenticated) {
+  //     if (!isAuthenticated) {
       
-        casClient
-        .auth() 
-          .then((response) => {
-            console.log(response);
-            store.dispatch(validateAuthentication(response))
-          })
-          .catch(response => {
-            console.log('error cas : ', response);
-          });
-      }
+  //       casClient
+  //       .auth() 
+  //         .then((response) => {
+  //           console.log(response);
+  //           store.dispatch(validateAuthentication(response))
+  //         })
+  //         .catch(response => {
+  //           console.log('error cas : ', response);
+  //         });
+  //     }
           
 }
 

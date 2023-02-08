@@ -21,9 +21,8 @@ const DesktopHeader = ({ cas }) => {
   return (
   <div className="header">
       <div className="header__identity">
-        <Link to="/"><img className="header__identity-logo" src={Apple} alt="react logo" /></Link>   
-        <Link to="/"><h1 className="header__identity-title">POM</h1></Link>   
-        <p className="header__identity-user">Bonjour {'mboone01'}</p>
+        <Link to="/" className="header__identity-logo"><p>POM</p></Link>
+        <p className="header__identity-user">Bonjour {user}</p>
       </div>
       <BurgerIcon handler={toggleBurgerMenu} />
       <nav className="header__menu">
