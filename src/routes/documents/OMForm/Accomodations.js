@@ -146,13 +146,13 @@ const Accomodations = ({ step }) => {
             {errors.hotelPayment && <p className='form__section-field-error form__section-field-error--open'>{errors.hotelPayment.message}</p>}
           </div>
         )}
-        { (!isNaN(maxNightsNumber) && isHotelSelected) && <p className="form__section-field-label form__section-field-label--infos">Vous avez le droit à un total de : <span style={{color: 'red', margin: '0 0.2rem'}}>{maxNightsNumber}</span> nuits à l'hôtel.</p>}
+        { (!isNaN(maxNightsNumber) && isHotelSelected) && <p className="form__section-field-label form__section-field-label--infos">Vous avez le droit à un total de : <span>{maxNightsNumber}</span> nuits à l'hôtel.</p>}
         {maxNightsNumber < 0 && <p id="nights-error" className="form__section-field-error form__section-field-error--open">Les dates saisies pour la mission sont incorrectes. Merci de les corriger pour pouvoir procéder à cette étape.</p>}
         <p id="nights-error" className="form__section-field-error"/>
       </div>
       <div className="form__section">
         <FormSectionTitle>Repas</FormSectionTitle>
-        <p>Merci de ne pas déclarer les repas gratuits ou non pris par l'agent.</p>
+        <p className="form__section-field-label form__section-field-label--infos">Merci de ne pas déclarer les repas gratuits ou non pris par l'agent.</p>
         <TextField
           id="outside-meals-number-field"
           formField="mealsPaidByAgent"
@@ -180,7 +180,7 @@ const Accomodations = ({ step }) => {
         />
         {/* <input id="max-meals-field" name="max-meals-field" type="hidden" value={maxMealsNumber} {...register('maxMealsNumber')} /> */}
       </div>
-      { !isNaN(maxMealsNumber) && <p className="form__section-field-label form__section-field-label--infos">Vous avez le droit à un total de : <span style={{color: 'red', margin: '0 0.2rem'}}>{maxMealsNumber}</span> repas.</p>}
+      { !isNaN(maxMealsNumber) && <p className="form__section-field-label form__section-field-label--infos">Vous avez le droit à un total de : <span>{maxMealsNumber}</span> repas.</p>}
       <p id="meals-error" className="form__section-field-error"/>
       {maxNightsNumber < 0 && <p id="nights-error" className="form__section-field-error form__section-field-error--open">Les dates saisies pour la mission sont incorrectes. Merci de les corriger pour pouvoir procéder à cette étape.</p>}
       {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}

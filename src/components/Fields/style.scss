@@ -17,7 +17,7 @@
 
   &-half {
     // width: 49%;
-    margin-bottom: 1rem;
+    margin: 1rem auto;
 
     &--separator {
       border-bottom: 1px solid #1a1a1a;
@@ -26,6 +26,7 @@
     &-title {
       text-align: center;
       margin-bottom: 0.5rem;
+      font-weight: bold;
     }
 
     &:nth-of-type(2) {
@@ -61,7 +62,66 @@
           display: none;
       }
     }
+
   }
+    &-container{
+      &-reminder {
+        margin-top: 1rem;
+        text-align: center;
+        font-size: 0.8em;
+      }
+      &-title {
+        text-transform: uppercase;
+        text-align: center;
+        color: var(--second-color);
+        font-weight: bold;
+        font-size: 1.2em;
+        margin-bottom: 1rem;
+      }
+    
+      &-options {
+
+        &__separator {
+          margin: auto;
+          display: block;
+          margin: 0.5rem auto;
+          text-transform: uppercase;
+          text-align: center;
+          color: var(--second-color);
+          font-weight: bold;
+          font-size: 1.2em;
+        }
+        & .form__section-field {
+          display: flex;
+          margin-bottom: 0;
+          justify-content: center;
+          
+          &:last-child {
+            width: 15%;
+            margin-bottom: 0.3rem;
+          }
+        }
+
+        // & .form__section-field,
+        // & .form__section-container-button {
+        //   justify-content: center;
+        //   width: 30%;
+
+        //   & a {
+        //     border: 1px solid #1a1a1a;
+        //     width: 100%;
+        //     height: 2.5rem;
+        //     max-width: 100%;
+        //     margin: 0;
+
+        //     &:focus,
+        //     &:hover {
+        //       color: #fff;
+        //     }
+        //   }
+        // }
+      }
+    }
 
   &-field {
     display: flex;
@@ -150,13 +210,21 @@
       display: flex;
       align-items: center;
 
+
+
       &--infos {
         font-style: italic;
-        margin-top: 0.1rem
-      }
+        margin-top: 0.1rem;
+        font-size: 0.9em;
+        color: var(--second-color);
+        margin-bottom: 1rem;
 
-      & span {
-        font-variant-position: super;
+        & span {
+          color: var(--fourth-color);
+          margin: 0 0.2rem;
+          font-size: 1.2em;
+
+        }
       }
     }
 
@@ -227,6 +295,8 @@
     &-toggle {
       text-align: left;
       margin-bottom: 1rem;
+      // font-size: :em;
+      font-weight: bold;
     }
 
     &-textarea {
@@ -313,6 +383,7 @@
 
     &-half {
       width: 45%;
+      margin-top: 0;
 
       &--separator {
         border-bottom: 0;
@@ -332,6 +403,8 @@
         text-transform: uppercase;
         text-align: center;
         color: var(--second-color);
+        font-weight: bold;
+        font-size: 1.2em;
       }
     
       &-options {

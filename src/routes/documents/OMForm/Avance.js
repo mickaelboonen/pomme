@@ -263,7 +263,7 @@ const Avance = ({ step }) => {
               />
             </div>
           </div>
-          <p style={{marginBottom: '1rem'}}>Détail prévisionnel de la mission : énumérer les étapes du voyage (cf page suivante)</p>
+          <p className='form__section-field-label form__section-field-label--infos'>Détail prévisionnel de la mission : énumérer les étapes du voyage (cf page suivante)</p>
           <FormSectionTitle>Documents personnels</FormSectionTitle>
           <div className="form__section">
             <FileField

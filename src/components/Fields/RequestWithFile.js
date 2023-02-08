@@ -63,7 +63,6 @@ const RequestWithFile = ({
       clearErrors(id);
     }
   }, [fileField, fileFieldForValidation])
-
   
   return (
     <div className="form__section-container" id="upper-class-request">
