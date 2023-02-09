@@ -8,7 +8,7 @@ import Preferences from './Preferences';
 import { toggleBurgerMenu, toggleNavList } from 'src/selectors/domManipulators';
 import BurgerIcon from './BurgerIcon';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from 'src/reducers/app';
+import { logout } from 'src/reducer/app';
 
 const DesktopHeader = ({ cas }) => {
 

@@ -23,6 +23,8 @@ const Layout = ({ cas }) => {
     }
   }, [])
 
+  console.log(process.env.NODE_ENV);
+
   useEffect(() => {
     if (isAuthenticated === false) {
       console.log('i wanna log in with cas');
@@ -45,7 +47,7 @@ const Layout = ({ cas }) => {
           NOOOOOOOOO
         </main>
       )}
-      {!isAuthenticated && (
+      {true && (
         <main id="main">
           <Outlet />
         </main>

@@ -262,6 +262,8 @@ const router = createBrowserRouter([
             path: 'mes-ordres-de-mission',
             element: <MyDocuments />,
             loader: async ({ params, request }) => {
+                  const { app : { user }} = store.getState(state => state);    
+
                store.dispatch(fetchOMs(params.slug));
             }, 
           },

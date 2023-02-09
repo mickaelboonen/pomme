@@ -43,6 +43,7 @@ const omMiddleware = (store) => (next) => (action) => {
       break;
 
     case 'omForm/fetchOMs':
+      console.log(action.type + " : " + action.payload)
       api.get("/api/om/" + action.payload,)
         .then((response) => {
           console.log(response.data);
