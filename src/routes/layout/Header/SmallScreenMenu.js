@@ -1,9 +1,14 @@
-import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { FaHome, FaSun, FaMoon } from "react-icons/fa";
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+
+// Icons
 import { RiLogoutBoxRFill } from "react-icons/ri";
+import { FaHome, FaSun, FaMoon } from "react-icons/fa";
+
+// Selectors
+import { toggleBurgerMenu,  } from 'src/selectors/domManipulators';
 
 import './style.scss';
 
@@ -13,9 +18,7 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
   const location = useLocation();
 
   useEffect(() => {
-    const menu = document.querySelector('.small-screen-menu');
-    menu.classList.remove('small-screen-menu--open');
-
+    toggleBurgerMenu();
   }, [location.pathname])
 
   const dafcLinks = {

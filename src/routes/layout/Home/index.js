@@ -39,12 +39,12 @@ const Home = () => {
           />
           <p>Ordre de Mission</p>
         </div>
-        <div id="état-de-frais" className="home__new-buttons-item" onClick={handleClickOnNewOM}>
+        {/* <div id="état-de-frais" className="home__new-buttons-item" onClick={handleClickOnNewOM}>
           <IoMdAddCircle
             className='home__new-buttons-item-image'
           />
           <p>État de Frais</p>
-        </div>
+        </div> */}
       </div>
     </section>
     <section className="home__new" style={{height: '20rem'}}>
