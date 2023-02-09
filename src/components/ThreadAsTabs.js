@@ -15,11 +15,11 @@ const ThreadAsTabs = ({ step, tabs, isOm, urlData }) => {
   const handleClickOnTab = (event) => {
     const { id } = event.target;
 
-    if (window.innerWidth >= 600) {
-      if (window.confirm("Voulez-vous enregistrer les informations saisies ?")) {
+    // if (window.innerWidth >= 600) {
+    //   if (window.confirm("Voulez-vous enregistrer les informations saisies ?")) {
         navigate(pathname + '?etape=' + id + '&id=' + omId);
-      }
-    }
+    //   }
+    // }
   };
   return (
     <div className="form-page__thread">
@@ -30,7 +30,7 @@ const ThreadAsTabs = ({ step, tabs, isOm, urlData }) => {
           key={tab.id}
           id={tab.id}
           >
-            {tab.name} <span>- Étape {step} / 5</span>
+            {tab.name} <span>- Étape {step} / {tabs.length}</span>
         </div>
       ))}
     </div>

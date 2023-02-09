@@ -24,6 +24,10 @@ const initialState = {
       name: 'Signature',
       id: 5,
     },
+    {
+      name: 'Missionnaire',
+      id: 6,
+    },
   ],
   omForm : [
     {

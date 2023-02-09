@@ -47,7 +47,7 @@ const Layout = ({ cas }) => {
           NOOOOOOOOO
         </main>
       )}
-      {true && (
+      {!isAuthenticated && (
         <main id="main">
           <Outlet />
         </main>

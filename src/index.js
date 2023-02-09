@@ -46,17 +46,7 @@ let casOptions = { version: constant.CAS_VERSION_3_0,
   validation_proxy: true,
   validation_proxy_path: '/cas_proxy' };
 
-let casClient = new CasClient(casEndpoint, casOptions);
-
-
-// const loader = async ({ request, params }) => { 
-  
-//     const { app : { isAuthenticated }} = store.getState(state => state);    
-//     if (!isAuthenticated) {
-    
-
-//     }  
-// }
+const casClient = new CasClient(casEndpoint, casOptions);
 
 const router = createBrowserRouter([
   {
@@ -92,6 +82,7 @@ const router = createBrowserRouter([
               }
               else if (step === '1') {
                 store.dispatch(fetchOm(id))
+                store.dispatch(getMission(id));
               }
               return url;  
             },    
@@ -197,7 +188,7 @@ const router = createBrowserRouter([
                 // store.dispatch(getVehicles());
                 store.dispatch(getTransports(id));
               }
-              else if (step === '1') {
+              else if (step === '1' && step === '6') {
                 store.dispatch(fetchOm(id));
                 store.dispatch(getMission(id));
               }
