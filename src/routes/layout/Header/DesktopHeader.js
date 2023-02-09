@@ -7,14 +7,18 @@ import { Link } from 'react-router-dom';
 import Preferences from './Preferences';
 import { toggleBurgerMenu, toggleNavList } from 'src/selectors/domManipulators';
 import BurgerIcon from './BurgerIcon';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from 'src/reducers/app';
 
 const DesktopHeader = ({ cas }) => {
+
+  const dispatch = useDispatch();
 
   const role = 'dev'
   
   const { app : { user }} = useSelector((state) => state);
   const handleLogOut = () => {
+    dispatch(logout());
     cas.logout("/");
   }
 
