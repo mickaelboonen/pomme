@@ -157,6 +157,21 @@ export const toggleBurgerMenu = () => {
   menu.classList.toggle('small-screen-menu--open')
 };
 
+export const closeBurgerMenu = () => {
+
+  const firstBar = document.querySelector('#first-bar');
+  const secondBar = document.querySelector('#second-bar');
+  const secondBarChild = document.querySelector('#secondbis-bar');
+  const menu = document.querySelector('.small-screen-menu');
+  const thirdBar = document.querySelector('#third-bar');
+  firstBar.classList.remove('menu-bar--ext')
+  secondBar.classList.remove('menu-bar--int')
+  secondBarChild.classList.remove('menu-bar--int-bis')
+  thirdBar.classList.remove('menu-bar--ext')
+  
+  menu.classList.remove('small-screen-menu--open')
+};
+
 export const toggleNavList = (event) => {
   
   const el = event.currentTarget.querySelector('.header__menu-section-list');

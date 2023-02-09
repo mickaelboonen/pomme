@@ -8,7 +8,7 @@ import { RiLogoutBoxRFill } from "react-icons/ri";
 import { FaHome, FaSun, FaMoon } from "react-icons/fa";
 
 // Selectors
-import { toggleBurgerMenu,  } from 'src/selectors/domManipulators';
+import { closeBurgerMenu,  } from 'src/selectors/domManipulators';
 
 import './style.scss';
 
@@ -18,7 +18,11 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
   const location = useLocation();
 
   useEffect(() => {
-    toggleBurgerMenu();
+    const openMenu = document.querySelector('.small-screen-menu--open');
+    if (openMenu) {
+      closeBurgerMenu();
+    }
+    
   }, [location.pathname])
 
   const dafcLinks = {
