@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useForm } from "react-hook-form";
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -13,6 +14,13 @@ import { displayOmStatus } from 'src/reducer/omForm';
 const Section = ({ id, data, steps, currentDoc}) => {
   
   const dispatch = useDispatch();
+  const {
+    register,
+  } = useForm({
+    defaultValues: {
+      selectInput: currentDoc.hasOwnProperty('id') ? currentDoc.id : ''
+    },
+  });
 
   const handleChange = (event) => {
     dispatch(displayOmStatus(event.target.value));
@@ -28,9 +36,9 @@ const Section = ({ id, data, steps, currentDoc}) => {
     <section id={id} className="my-documents__files">
       <SelectField
         data={data}
-        register={() => {}}
+        register={register}
         handler={handleChange}
-        formField="select-input"
+        formField="selectInput"
         id="list"
         label={`Liste des Ordres de Missions`}
         blankValue="Aucun document sélectionné"

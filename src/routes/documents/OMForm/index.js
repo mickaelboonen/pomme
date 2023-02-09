@@ -39,8 +39,6 @@ const OMForm = () => {
           {(step === 3 && !loader) && <Accomodations step={step} />}
           {(step === 4 && !loader) && <Avance step={step} />}
           {(step === 5 && !loader) && <Signature step={step} />}
-          {step !== 5 && <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>}
-          {step === 5 && <button className="form-page__container-link" type='button'>Retour : Avance</button>}
         </div>
       </div>
     </>
