@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  user: process.env.NODE_ENV === 'developement' ? 'mboone01' : '',
+  user: process.env.NODE_ENV === 'development' ? 'mboone01' : '',
   userSignature: null,
   apiMessage: {},
   loader: true,
