@@ -3,9 +3,10 @@
 .modal {
   position: absolute;
   inset: 0 0 0 0;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &__background {
     position: absolute;
