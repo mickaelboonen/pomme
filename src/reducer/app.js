@@ -35,7 +35,13 @@ const omFormSlice = createSlice({
       toggleModal:(state) => {
         console.log('here');
         state.isModalOpen = !state.isModalOpen;
-      }
+      },
+      fetchUserData: () => {
+
+      },
+      saveUserData: () => {
+
+      },
     },
 });
 
@@ -48,7 +54,9 @@ export const {
   saveSignature,
   toggleModal,
   logout,
-  validateAuthentication
+  validateAuthentication,
+  fetchUserData,
+  saveUserData,
 } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

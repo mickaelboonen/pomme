@@ -40,7 +40,7 @@ const OMForm = () => {
           {(step === 3 && !loader) && <Accomodations step={step} />}
           {(step === 4 && !loader) && <Avance step={step} />}
           {(step === 5 && !loader) && <Signature step={step} />}
-          {(step === 6 && !loader) && <Identity step={step} />}
+          {(step === 6 && loader) && <Identity step={step} />}
         </div>
       </div>
     </>

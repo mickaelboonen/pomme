@@ -34,7 +34,8 @@ import RefusalNotification from "src/routes/utilisateur/MyAccount/RefusalNotific
 import CasClient, { constant } from "react-cas-client";
 
 
-import { getSignature } from "src/reducer/app";
+// import { getSignature } from "src/reducer/app";
+import { getSignature, fetchUserData } from "src/reducer/app";
 import { getVehicles, getVehicleDocuments } from "src/reducer/vehicle";
 import { fetchOMs, getMission, fetchOm, getTransports, getAccomodations, getAdvance, getMore  } from "src/reducer/omForm";
 
@@ -193,9 +194,12 @@ const router = createBrowserRouter([
                 // store.dispatch(getVehicles());
                 store.dispatch(getTransports(id));
               }
-              else if (step === '1' || step === '6') {
+              else if (step === '1') {
                 store.dispatch(fetchOm(id));
                 store.dispatch(getMission(id));
+              }
+              else if (step === '6') {
+                store.dispatch(fetchUserData({ id: id }));
               }
               
             return url;  

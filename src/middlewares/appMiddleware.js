@@ -17,6 +17,17 @@ api.defaults.headers['Content-Type'] = 'application/json';
 
 const appMiddleware = (store) => (next) => (action) => {
   switch (action.type) {
+    case 'app/fetchUserSignature':
+        api.get("/api/agent/get-data", action.payload)
+        .then((response) => {
+          
+          store.dispatch(saveSignature(response.data))
+        })
+        .catch((error) => {
+          console.error('get signature', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
     case 'app/getSignature':
       api.get("/api/perm-file/signature/" + action.payload)
         .then((response) => {

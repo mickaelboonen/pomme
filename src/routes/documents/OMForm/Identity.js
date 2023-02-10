@@ -18,6 +18,7 @@ import {  defineValidationRulesForMission } from 'src/selectors/formValidationsF
 // Reducer
 import { clearMessage } from 'src/reducer/app';
 import { updateMission } from 'src/reducer/omForm';
+import Address from '../../../components/Fields/Address';
 
 const Identity = ({ step, isEfForm }) => {
   
@@ -90,7 +91,7 @@ const Identity = ({ step, isEfForm }) => {
           <p className="form__section-field-label">Qualité : </p>
           <RadioInput id="Madame" formField="gender" label="Madame" register={register} />
           <RadioInput id="Monsieur" formField="gender" label="Monsieur" register={register} />
-          <RadioInput id="non-binary" formField="gender" label="Non Binaire" register={register} />
+          {/* <RadioInput id="non-binary" formField="gender" label="Non Binaire" register={register} /> */}
         </div>
         <div className='form__section form__section--documents' id="other-fields">
           <div className='form__section-half'>
@@ -119,12 +120,8 @@ const Identity = ({ step, isEfForm }) => {
       </div>
       <div className="form__section">
         <FormSectionTitle>Adresses du Missionnaire</FormSectionTitle>
-        <div className="form__section-container" id="upper-class-request">
-          Adresse perso
-        </div>
-        <div className="form__section-container" id="upper-class-request">
-          Adresse administrative
-        </div>
+        <Address addressType='familiale' />
+        <Address addressType='administrative' />
       </div>
       <div className="form__section">
         <FormSectionTitle>Personnel</FormSectionTitle>
