@@ -151,7 +151,7 @@ const omMiddleware = (store) => (next) => (action) => {
 
           // TODO : mettre les propriétés attendues pour l'update 
 
-
+          console.log(response)
           // Retrieving the url for each file and assigning it to the right property
           response.data.forEach((file) => {
             // console.log(file);

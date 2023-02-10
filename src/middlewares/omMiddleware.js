@@ -21,6 +21,7 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/addNewOM':
       api.post("/api/om/add", action.payload,)
         .then((response) => {
+          console.log('omForm/addNewOM : ', response.data, action.payload)
           const finalisedOM = action.payload;
           finalisedOM.id = response.data;
           store.dispatch(saveNewOm(finalisedOM))
@@ -56,7 +57,7 @@ const omMiddleware = (store) => (next) => (action) => {
       break;
 
     case 'omForm/updateOmName':
-      api.post("/api/om/rename/" + action.payload.id, action.payload)
+      api.post("/api/om/rename", action.payload)
         .then((response) => {
           store.dispatch(saveUserOms(response.data));
           store.dispatch(setApiResponse(response));

@@ -3,13 +3,17 @@ import PropTypes from 'prop-types';
 
 import './style.scss';
 import Header from './Header';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLoaderData } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { validateAuthentication } from "src/reducer/app";
 
 const Layout = ({ cas }) => {
   const theme = localStorage.getItem('theme');
   const colorTheme = localStorage.getItem('color-theme');
+
+  const devHost = '10.30.20.87:8080'
+  const { host } = useLoaderData();
+  // console.log()
 
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector(state => state.app);    
@@ -47,7 +51,7 @@ const Layout = ({ cas }) => {
           NOOOOOOOOO
         </main>
       )}
-      {!isAuthenticated && (
+      {(isAuthenticated || devHost === host) && (
         <main id="main">
           <Outlet />
         </main>

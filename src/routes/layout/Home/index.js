@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import TitleH3 from '../../../components/TitleH3';
@@ -10,10 +10,24 @@ import MyPDF from '../../../components/PDF';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'src/components/Modal';
 import { toggleModal } from 'src/reducer/app';
+import { clearOMTarget } from 'src/reducer/omForm';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   
-  const { app: { isModalOpen, user} } = useSelector((state) => state);
+  const navigate = useNavigate();
+  const { app: { isModalOpen, user},
+    omForm: { nextOMTarget},
+  } = useSelector((state) => state);
+
+  useEffect(() => {
+    if (nextOMTarget !== '') {
+      dispatch(toggleModal());
+      dispatch(clearOMTarget());
+      navigate(nextOMTarget);
+    }
+  }, [nextOMTarget])
+
   const dispatch = useDispatch();
 
   const [newTarget, setNewTarget] = useState('');

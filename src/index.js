@@ -52,6 +52,9 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout cas={casClient} />,
+    loader: async ({ request }) => {
+      return new URL(request.url);
+    },
     errorElement: <ErrorPage />,
     children: [
       {
@@ -170,6 +173,8 @@ const router = createBrowserRouter([
               const step = url.searchParams.get("etape");
               const id = url.searchParams.get("id");
 
+
+
               // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
               if (step === '3') {
                 store.dispatch(getAccomodations(id));
@@ -188,7 +193,7 @@ const router = createBrowserRouter([
                 // store.dispatch(getVehicles());
                 store.dispatch(getTransports(id));
               }
-              else if (step === '1' && step === '6') {
+              else if (step === '1' || step === '6') {
                 store.dispatch(fetchOm(id));
                 store.dispatch(getMission(id));
               }
