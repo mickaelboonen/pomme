@@ -186,6 +186,13 @@
 
 @media (min-width: vars.$sm) {
   .tabs {
+    width: 70%;
+
+  }
+}
+
+@media (min-width: 1000px) {
+  .tabs {
     width: 50%;
 
   }

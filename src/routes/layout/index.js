@@ -13,8 +13,8 @@ const Layout = ({ cas }) => {
 
   const devHost = '10.30.20.87:8080'
   const { host } = useLoaderData();
-  // console.log()
 
+  
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector(state => state.app);    
 

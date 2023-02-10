@@ -208,7 +208,34 @@ $test : #{var(--first-color)};
     }
 
     &__files {
+      width: 70%;
+    }
+  }
+
+
+}
+
+@media (min-width: 1000px) {
+
+  .my-documents {
+    width: 50%;
+
+    &__files {
       width: 50%;
+
+      &-container {
+  
+        &-item {
+          width: fit-content;
+
+          &--open {  
+            .file-display {
+              width: 70%;
+            }
+          }
+        }
+      }
+      
       &-container {
         display: flex;
         flex-flow: row wrap;
@@ -237,29 +264,6 @@ $test : #{var(--first-color)};
 
       &-step {
         margin-right: 1rem;
-      }
-    }
-  }
-}
-
-@media (min-width: 1000px) {
-
-  .my-documents {
-    width: 50%;
-
-    &__files {
-
-      &-container {
-  
-        &-item {
-          width: fit-content;
-
-          &--open {  
-            .file-display {
-              width: 70%;
-            }
-          }
-        }
       }
     }
   }
