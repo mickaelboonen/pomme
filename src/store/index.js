@@ -17,6 +17,7 @@ import omFormReducer from 'src/reducer/omForm';
 import efFormReducer from 'src/reducer/efForm';
 import appReducer from 'src/reducer/app';
 import vehicleReducer from 'src/reducer/vehicle';
+import otherDocsReducer from 'src/reducer/otherDocuments';
 
 // Middlewares
 import omMiddleware from '../middlewares/omMiddleware';
@@ -35,6 +36,7 @@ const reducers = combineReducers({
   omForm: omFormReducer,
   efForm: efFormReducer,
   vehicle: vehicleReducer,
+  docs: otherDocsReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers)

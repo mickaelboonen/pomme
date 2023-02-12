@@ -11,7 +11,8 @@ const Layout = ({ cas }) => {
   const theme = localStorage.getItem('theme');
   const colorTheme = localStorage.getItem('color-theme');
 
-  const devHost = '10.30.20.87:8080'
+  // const devHost = '10.30.20.87:8080'
+  const devHost = '192.168.1.53:8080'
   const { host } = useLoaderData();
 
   
@@ -29,19 +30,19 @@ const Layout = ({ cas }) => {
 
   console.log(process.env.NODE_ENV);
 
-  useEffect(() => {
-    if (isAuthenticated === false) {
-      console.log('i wanna log in with cas');
-      cas
-      .auth() 
-        .then((response) => {
-          dispatch(validateAuthentication(response))
-        })
-        .catch(response => {
-          console.log('ERREUR CAS : ', response);
-        });
-    }
-  }, [isAuthenticated])
+  // useEffect(() => {
+  //   if (isAuthenticated === false) {
+  //     console.log('i wanna log in with cas');
+  //     cas
+  //     .auth() 
+  //       .then((response) => {
+  //         dispatch(validateAuthentication(response))
+  //       })
+  //       .catch(response => {
+  //         console.log('ERREUR CAS : ', response);
+  //       });
+  //   }
+  // }, [isAuthenticated])
 
   return (
     <div>

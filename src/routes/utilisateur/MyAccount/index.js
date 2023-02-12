@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import classNames from 'classnames';
 
 import './style.scss';
 import PageTitle from 'src/components/PageTitle';
@@ -10,7 +12,18 @@ import SelectField from 'src/components/Fields/SelectField';
 import Logo from '../../../assets/images/pdf.svg';
 import { Link, useNavigate } from 'react-router-dom';
 
+
+import { FaCar, FaCreditCard, FaFilePdf, FaEdit,FaTrash,FaDownload,FaUpload, FaIdCard, FaPassport, FaSignature } from "react-icons/fa";
+import FileManager from './FileManager';
+import OneFileForm from '../../../components/OneFileForm';
+
 const MyAccount = () => {
+  
+
+  const { omForm: { currentOM, nextOMTarget, OMTabs, userOms, dataToSelect },
+    efForm: { nextEFTarget, EFTabs },
+    docs: { isModalOpen }
+  } = useSelector((state) => state);
   const navigate = useNavigate();
   const {
     register,
@@ -51,129 +64,98 @@ const MyAccount = () => {
   return (
   <main className="my-documents">
     <PageTitle>Pièces justificatives de {'mboone01'}</PageTitle>
-    <form className='form' onSubmit={handleSubmit(onSubmit)}>
-      <FormSectionTitle>Identité</FormSectionTitle>
-      <div className='form__section form__section--documents'>
-        <div className='form__section-half'>
-          <FileField
-            register={register}
-            formField="identity-card"
-            id="cni"
-            label="CNI"
-            placeholder="Votre carte d'identité"
-          />
-        </div>
-        <div className='form__section-half'>
-          <img src={Logo} alt="" />
-          <p>{'Nom du fichier'}</p>
+    <div className='form'>
+      <div className='form__section'>
+        <FormSectionTitle>Identité</FormSectionTitle>
 
-        </div>
+        <FileManager
+          icon={<FaIdCard
+            className='file-displayer__icon-container-icon'
+          />}
+          id="cni"
+          label="CNI"
+          filename=""
+          handler={null}
+        />
+        <FileManager
+          icon={<FaPassport
+            className='file-displayer__icon-container-icon'
+          />}
+          id="passport"
+          label="Passeport"
+          filename=""
+          handler={null}
+        />
+        <FileManager
+          icon={<FaSignature
+            className='file-displayer__icon-container-icon'
+          />}
+          id="signature"
+          label="Signature"
+          filename=""
+          handler={null}
+        />
+        <FileManager
+          icon={<FaCreditCard
+            className='file-displayer__icon-container-icon'
+          />}
+          id="rib"
+          label="RIB"
+          filename=""
+          handler={null}
+        />
       </div>
-      <div className='form__section form__section--documents'>
-        <div className='form__section-half'>
-          <FileField
-            register={register}
-            formField="passport"
-            id="passport"
-            label="Passeport"
-            placeholder="Votre passeport"
-          />
-        </div>
-        <div className='form__section-half'>
-          <img src={Logo} alt="" />
-          <p>{'Nom du fichier'}</p>
+      
+      <div className='form__section'>
+        <FormSectionTitle>Véhicules</FormSectionTitle>
 
-        </div>
-      </div>
-      <div className='form__section form__section--documents'>
-        <div className='form__section-half'>
-          <FileField
-            register={register}
-            formField="signature"
-            id="signature"
-            label="Votre signature personnelle"
-            placeholder="Votre signature personnelle"
-          />
-        </div>
-        <div className='form__section-half'>
-          <img src={Logo} alt="" />
-          <p>{'Nom du fichier'}</p>
-
-        </div>
-      </div>
-      <FormSectionTitle>Véhicules</FormSectionTitle>
-      <div className='form__section form__section--documents'>
-        <div className='form__section-half'>
-          <FileField
-            register={register}
-            formField="driving-license"
+        <FileManager
+          icon={<FaFilePdf
+            className='file-displayer__icon-container-icon'
+          />}
             id="driving-license"
-            label="Permis de conduire"
-            placeholder="Votre permis de conduire"
-          />
-        </div>
-        <div className='form__section-half'>
-          <img src={Logo} alt="" />
-          <p>{'Nom du fichier'}</p>
-
-        </div>
-      </div>
-      <div className='form__section form__section--documents'>
-        <div className='form__section-half'>
-          <FileField
-            register={register}
-            formField="registration"
-            id="car-registration-document"
-            label="Carte grise"
-            placeholder="Votre carte grise"
-          />
-        </div>
-        <div className='form__section-half'>
-          <img src={Logo} alt="" />
-          <p>{'Nom du fichier'}</p>
-
-        </div>
-      </div>
-      <div className='form__section form__section--documents'>
-        <div className='form__section-half'>
-          <FileField
-            register={register}
-            formField="insurance"
-            id="car-insurance"
-            label="Votre attestation d'assurance"
-            placeholder="Votre attestation d'assurance"
-          />
-        </div>
-        <div className='form__section-half'>
-          <img src={Logo} alt="" />
-          <p>{'Nom du fichier'}</p>
-
-        </div>
-      </div>
-      <div className='form__section form__section--documents'>
-        <div className='form__section-half'>
-          <SelectField
-            register={() => {}}
-            data={['1', '2', '3']}
-            blankValue="Aucun véhicule sélectionné"
-            formField="cars"
-            id="input-cars"
-            label="Vos véhicules enregistrés"
-            placeholder="Vos véhicules enregistrés"
-          />
-        </div>
-        <div className='form__section-half'>
-          <button type='button' onClick={handleClick} id="add">Add</button>
-          <button type='button' onClick={handleClick} id="edit">Edit</button>
-          <button type='button' onClick={handleClick} id="delete">Delete</button>
-        </div>
-      </div>
-      <div className='form__section-container-button'>
-        <button id="documents-validation">Valider les changements</button>
+          label="Permis de conduire"
+          filename=""
+          handler={null}
+        />
+        <FileManager
+          icon={<FaFilePdf
+            className='file-displayer__icon-container-icon'
+          />}
+          id="registration"
+          label="Carte grise"
+          filename=""
+          handler={null}
+        />
+        <FileManager
+          icon={<FaFilePdf
+            className='file-displayer__icon-container-icon'
+          />}
+          id="insurance"
+          label="Attestation d'assurance"
+          filename=""
+          handler={null}
+        />
       </div>
 
-    </form>
-    <button className="form-page__container-link" type='button'>Retour</button>
+      <div className='form__section'>
+        <FileManager
+          icon={<FaCar
+            className='file-displayer__icon-container-icon'
+          />}
+          id="cars"
+          label="Mes véhicules enregistrés"
+          filename=""
+          handler={null}
+          needsSelect
+          data={['1', '2', '3']}
+        />
+      </div>
+    </div>
+    <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
+      {isModalOpen && <OneFileForm />}
+      {isModalOpen && <p>LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</p>}
+      
   </main>
 );}
 

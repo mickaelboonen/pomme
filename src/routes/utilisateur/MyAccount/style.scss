@@ -101,3 +101,62 @@
   }
 }
 
+.file-displayer {
+  background-color: #fff;
+  border: 0.5px solid #000;
+  border-radius: 5px;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+
+  &__icon-container {
+    width: 3rem;
+    height: 3rem;
+    // padding: 0.2rem;:
+    background-color: var(--first-color);
+    @include vars.centeredFlex;
+    border-right: 0.5px solid #000;
+
+    &-icon {
+      color: var(--fifth-color);
+      font-size: 2em;
+    }
+  }
+
+  &__name {
+    padding-left: 1rem;
+    display: flex;
+    align-items: center;
+  }
+
+  &__select {
+    padding-left: 1rem;
+    border: 0;
+    width: calc(100% - 3rem);
+    display: flex;
+    align-items: center;
+  }
+}
+
+.file-manager {
+
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem auto 1rem;
+
+      &-button {
+        @include vars.button;
+        padding: 0.5rem;
+        flex-grow: 1;
+        margin-right: 0.5rem;
+        background-color: var(--first-color);
+        font-size: 1em;
+
+        &:last-of-type {
+           margin: 0;
+        }
+      }
+
+  }
+}

@@ -1,6 +1,7 @@
 import { updateTransports, updateAdvance, updateMoreAndSignature, updateMission, updateSignature } from 'src/reducer/omForm';
 import { fileApi } from './api';
 import { requestVehicleAuthorization } from '../reducer/vehicle';
+import { toggleDocModal } from '../reducer/otherDocuments';
 
 
 fileApi.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -220,6 +221,41 @@ const omMiddleware = (store) => (next) => (action) => {
           // TODO : error
         });
       break;
+    // TODO -------------------------------------------------------
+    case 'other-documents/addPermFile': {
+      const { type } = action.payload;
+
+      fileApi.post(`/api/perm-files/${type}/add`, action.payload)
+      .then((response) => {
+
+        console.log(response)
+
+        store.dispatch(toggleDocModal({ action: '', type: ''}));
+      })
+      .catch((error) => {
+        console.error('add perm files', error);
+        // TODO : error
+      });
+      break;
+    }
+
+    // TODO -------------------------------------------------------
+    case 'other-documents/editPermFile':{
+      const { type } = action.payload;
+
+      fileApi.post(`/api/perm-files/${type}/edit`, action.payload)
+        .then((response) => {
+
+          console.log(response)
+
+          store.dispatch(toggleDocModal({ action: '', type: ''}));
+        })
+        .catch((error) => {
+          console.error('add perm files', error);
+          // TODO : error
+        });
+        break;
+      }
 
     default:
   }
