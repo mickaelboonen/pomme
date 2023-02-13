@@ -16,8 +16,8 @@ const Error = () => {
       document.querySelector(':root').classList.add('dark');
       const headerButton = document.querySelector('#theme-switch-header');
       const menuButton = document.querySelector('#theme-switch-menu');
-      headerButton.checked = true;
-      menuButton.checked = true;
+      // headerButton.checked = true;
+      // menuButton.checked = true;
     }
     if (colorTheme !== '') {
       document.documentElement.style = colorTheme;

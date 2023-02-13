@@ -16,7 +16,10 @@ const DateField = ({
   handler,
 }) => {
   const handleChange = (event) => {
-    handler(event.target.value);
+    if (handler) {
+      handler(event.target.value);
+    }
+    
   };
 
   return (

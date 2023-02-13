@@ -29,7 +29,7 @@ const Identity = ({ step, isEfForm }) => {
   const areWeUpdatingData = loader.pathname.includes('modifier');
   
 
-  const { app: { apiMessage },
+  const { app: { apiMessage, agent },
     omForm: { currentOM, omForm, refusal, adresses },
   } = useSelector((state) => state);
   
@@ -48,14 +48,13 @@ const Identity = ({ step, isEfForm }) => {
     }
   }, [apiMessage])
 
-  const defaultValues = omForm.find((omStep) => omStep.step === 'mission').data;
-
+  console.log(agent);
     const {
     register, handleSubmit, watch,
     trigger, formState:
     { errors }
   } = useForm({
-    defaultValues: defaultValues,
+    defaultValues: agent
   });
   
 
@@ -64,14 +63,14 @@ const Identity = ({ step, isEfForm }) => {
 
   };
 
-  console.log('rendu')
+  console.log(errors)
   const errorMessages = defineValidationRulesForMission(isEfForm, false);
 
 
   // TODO : rendre le champ tjrs visible obligatoire
   // Rajouter un champ adresse normée si adresse différente
   
-  const [employer, setEmployer] = useState('');
+  const [employer, setEmployer] = useState(agent.employer);
   const [isCivil, setIsCivil] = useState('');
 
   const toggleWorker = (event) => {
@@ -89,8 +88,9 @@ const Identity = ({ step, isEfForm }) => {
         <FormSectionTitle>Missionnaire</FormSectionTitle>
         <div className="form__section form__section--split">
           <p className="form__section-field-label">Qualité : </p>
-          <RadioInput id="Madame" formField="gender" label="Madame" register={register} />
-          <RadioInput id="Monsieur" formField="gender" label="Monsieur" register={register} />
+          <RadioInput id="Mme" formField="gender" label="Madame" register={register} />
+          <RadioInput id="M." formField="gender" label="Monsieur" register={register} />
+          <RadioInput id="Mlle" formField="gender" label="Mademoiselle" register={register} />
           {/* <RadioInput id="non-binary" formField="gender" label="Non Binaire" register={register} /> */}
         </div>
         <div className='form__section form__section--documents' id="other-fields">
@@ -98,30 +98,39 @@ const Identity = ({ step, isEfForm }) => {
             <TextField
               id="firstname"
               disabled
-              formField="missionPurpose"
+              formField="firstname"
               label="Prénom"
               register={register}
-              error={errors.missionPurpose}
-              required={errorMessages.missionPurpose}
+              error={errors.firstname}
+              required={errorMessages.firstname}
             /> 
           </div>
           <div className='form__section-half'>
             <TextField
               id="lastname"
               disabled
-              formField="missionPurpose"
+              formField="lastname"
               label="Nom de famille"
               register={register}
-              error={errors.missionPurpose}
-              required={errorMessages.missionPurpose}
+              error={errors.lastname}
+              required={errorMessages.lastname}
             />
           </div>
         </div>
       </div>
       <div className="form__section">
         <FormSectionTitle>Adresses du Missionnaire</FormSectionTitle>
-        <Address addressType='familiale' />
-        <Address addressType='administrative' />
+        <Address
+          addressType='familiale'
+          register={register}
+          errors={errors}
+        />
+        <Address
+          addressType='administrative'
+          errors={errors}
+          register={register}
+          suffixe='Pro'
+        />
       </div>
       <div className="form__section">
         <FormSectionTitle>Personnel</FormSectionTitle>
@@ -148,66 +157,66 @@ const Identity = ({ step, isEfForm }) => {
             </div>
           </div>
           {employer === 'unimes' && (
-            <div className="form__section__half">
+            <div className="form__section__half" style={{width: '70%'}}>
               
               <TextField
                 id="category"
                 disabled
-                formField="missionPurpose"
+                formField="unimesCategory"
                 label="Catégorie"
                 register={register}
-                error={errors.missionPurpose}
-                required={errorMessages.missionPurpose}
+                error={errors.unimesCategory}
+                required={errorMessages.unimesCategory}
               /> 
               <TextField
                 id="status"
                 disabled
-                formField="missionPurpose"
+                formField="unimesStatus"
                 label="Statut"
                 register={register}
-                error={errors.missionPurpose}
-                required={errorMessages.missionPurpose}
+                error={errors.unimesStatus}
+                required={errorMessages.unimesStatus}
               /> 
               <TextField
                 id="department"
                 disabled
-                formField="missionPurpose"
+                formField="unimesDepartment"
                 label="Service / département"
                 register={register}
-                error={errors.missionPurpose}
-                required={errorMessages.missionPurpose}
+                error={errors.unimesDepartment}
+                required={errorMessages.unimesDepartment}
               /> 
             </div>
           )}
           {employer === 'external' && (
-            <div className="form__section__half" style={{minWidth: '50%'}}>
+            <div className="form__section__half" style={{width: '50%'}}>
               <div className="form__section-field">
                 <p className="form__section-field-label">Fonctionnaire</p>
                   <RadioInput
                     register={register}
-                    formField="abroadCosts"
+                    formField="civilWorker"
                     id="isCivil"
                     label="Oui"
-                    required={errorMessages.abroadCosts}
+                    required={errorMessages.civilWorker}
                     handler={toggleIsCivil}
                   />
                   <RadioInput
                     register={register}
-                    formField="abroadCosts"
+                    formField="civilWorker"
                     id="isNotCivil"
                     label="Non"
-                    required={errorMessages.abroadCosts}
+                    required={errorMessages.civilWorker}
                     handler={toggleIsCivil}
                   />
               </div>
               {isCivil === 'isNotCivil' && (
                 <TextField
                   id="other"
-                  formField="missionPurpose"
+                  formField="externalWorker"
                   label="Autre (à préciser)"
                   register={register}
-                  error={errors.missionPurpose}
-                  required={errorMessages.missionPurpose}
+                  error={errors.externalWorker}
+                  required={errorMessages.externalWorker}
                 /> 
               )}
             </div>

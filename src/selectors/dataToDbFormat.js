@@ -302,3 +302,35 @@ export const turnAccomodationDataToDbFormat = (data) => {
     status: data.status,
   };
 }
+
+
+
+export const agentDataToAppFormat = (data) => {
+
+  const { agent, personalAddress, professionalAddress } = data;
+
+  const formattedValues = {
+    bis:personalAddress.bisTer,
+    bisPro:professionalAddress.bisTer,
+    city:personalAddress.ville,
+    cityPro:professionalAddress.ville,
+    employer:'unimes',
+    firstname:agent.prenom,
+    gender:agent.cCivilite,
+    lastname:agent.nomAffichage,
+    postCode:personalAddress.codePostal,
+    postCodePro:professionalAddress.codePostal,
+    streetName:personalAddress.nomVoie,
+    streetNamePro:professionalAddress.nomVoie,
+    streetNumber:personalAddress.noVoie,
+    streetNumberPro:professionalAddress.noVoie,
+    streetType:personalAddress.cVoie,
+    streetTypePro:professionalAddress.cVoie,
+    unimesCategory:agent.categorie,
+    unimesStatus:agent.title,
+    unimesDepartment: agent.llStructure,
+  }
+
+
+  return formattedValues;
+}

@@ -12,7 +12,7 @@ export const getAccomodationsDefault = (path) => {
 }
 
 export const getSavedFileName = (urlFile) => {
-  const file = urlFile.split('/');
+  const file = urlFile.split('\\');
   const  filename = file[file.length - 1];
 
   

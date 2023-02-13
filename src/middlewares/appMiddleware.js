@@ -1,6 +1,8 @@
-import { saveSignature, validateAuthentication } from 'src/reducer/app';
+import { saveSignature, validateAuthentication, saveUserData } from 'src/reducer/app';
+
 import { api } from './api';
 import CasClient, { constant } from "react-cas-client";
+import { setLoader } from '../reducer/omForm';
 
 
 let casEndpoint = "cas.unimes.fr";
@@ -13,6 +15,7 @@ let casClient = new CasClient(casEndpoint, casOptions);
 
 
 api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
+api.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 api.defaults.headers['Content-Type'] = 'application/json';
 
 const appMiddleware = (store) => (next) => (action) => {
@@ -64,6 +67,23 @@ const appMiddleware = (store) => (next) => (action) => {
             .catch(response => {
               console.log('error : ', response);
             });
+    break;
+  case 'app/fetchUserData':  
+    console.log('je veux m"authentifier.');
+    
+    api.post("/api/agent/get-data", action.payload)
+      .then((response) => {
+        // if (response.data.length > 0) {
+          console.log(response.data);
+
+          store.dispatch(saveUserData(response.data));
+          store.dispatch(setLoader(false));
+        // }
+      })
+      .catch((error) => {
+        console.error('get signature', error);
+        // store.dispatch(showTicketCreationResponse(error.response))
+      });
     break;
 
   

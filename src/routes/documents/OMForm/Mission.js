@@ -101,7 +101,7 @@ const Mission = ({ step, isEfForm }) => {
     }
 
   }
-
+  console.log(errors.comeback)
   const onSubmit = (data) => {
     console.log(data);
 
@@ -133,25 +133,36 @@ const Mission = ({ step, isEfForm }) => {
       const departure = new Date(data.departure);
       const comeback = new Date(data.comeback);
 
-      const diffDays = comeback.getDate() - departure.getDate();
+      const diffDays = Number(comeback.getDate()) - Number(departure.getDate());
+      
+      let errorCount = 0;
 
       if (diffDays < 0) {
-        setError('comeback', {type: 'custom', message: 'La date de retour ne peut précéder la date de départ.'})
+        setError('comeback', {type: 'custom', message: 'La date de retour ne peut précéder la date de départ.'});
+        errorCount++;
       }
       else if (diffDays === 0) {
-        const diffHours = comeback.getHours() - departure.getHours();
+
+        const diffHours = Number(comeback.getHours()) - Number(departure.getHours());
 
         if (diffHours < 0) {
           setError('comeback', {type: 'custom', message: "L'heure de retour ne peut précéder l'heure de départ."})
+          errorCount++;
         }
         else if (diffHours === 0) {
           setError('comeback', {type: 'custom', message: 'Merci de renseigner une heure de retour valide.'})
+          errorCount++;
         }
       }
-      else {
+
+
+
+      if (errorCount === 0) {
         data.status = 1;
 
         const fileToAdd = data.missionPurposeFile.find((file) => file instanceof File)
+
+        console.log('here : ', fileToAdd);
         
         if (fileToAdd === undefined) {
           delete data.om;

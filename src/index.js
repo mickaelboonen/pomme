@@ -174,6 +174,7 @@ const router = createBrowserRouter([
               const step = url.searchParams.get("etape");
               const id = url.searchParams.get("id");
 
+              const { app : { user }} = store.getState((state) => state)
 
 
               // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
@@ -187,7 +188,7 @@ const router = createBrowserRouter([
                 store.dispatch(getMission(id));
               }
               else if (step === '5') {
-                store.dispatch(getSignature('mboone01'));
+                store.dispatch(getSignature(user));
                 store.dispatch(getMore(id));
               }
               else if (step === '2') {
@@ -199,7 +200,8 @@ const router = createBrowserRouter([
                 store.dispatch(getMission(id));
               }
               else if (step === '6') {
-                store.dispatch(fetchUserData({ id: id }));
+                console.log('here');
+                store.dispatch(fetchUserData({ id: user }));
               }
               
             return url;  

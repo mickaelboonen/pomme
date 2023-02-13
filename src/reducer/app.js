@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { agentDataToAppFormat } from '../selectors/dataToDbFormat';
 
 const initialState = {
   user: 'mboone01',
@@ -7,6 +8,7 @@ const initialState = {
   loader: true,
   isModalOpen: false,
   isAuthenticated: false,
+  agent: {},
 };
 const omFormSlice = createSlice({
     name: 'app',
@@ -39,8 +41,14 @@ const omFormSlice = createSlice({
       fetchUserData: () => {
 
       },
-      saveUserData: () => {
+      saveUserData: (state, action) => {
+        console.log('REDUCER : ',action.payload);
 
+        const data = agentDataToAppFormat(action.payload);
+        
+        state.agent = data;
+        state.loader = false;
+        
       },
     },
 });

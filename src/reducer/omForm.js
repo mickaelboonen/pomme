@@ -202,8 +202,6 @@ const omFormSlice = createSlice({
         state.loader = false;
       },
       saveMore: (state, action) => {
-        console.log('-------------------------');
-        console.log(action.payload);
         const { signature, more } = action.payload;
         const dataForTheComponent =  {
             savedSignature: signature.agentSignature ? true : false,
@@ -212,8 +210,6 @@ const omFormSlice = createSlice({
             otherInfos: more.informations,
             otherFiles: more.files,
         }
-        console.log(dataForTheComponent);
-        console.log('-------------------------');
         state.omForm[4].data = dataForTheComponent;
         state.loader = false;
       },
@@ -239,10 +235,14 @@ const omFormSlice = createSlice({
         state.omForm[3].data = dataForTheComponent;
         state.loader = false;
       },
+      setLoader: (state, action) => {
+        state.loader = action.payload;
+      }
     },
 });
 
 export const {
+  setLoader,
   fetchOm,
   saveOm,
   updateOmName,
