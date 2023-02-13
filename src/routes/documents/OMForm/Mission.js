@@ -9,6 +9,7 @@ import './style.scss';
 
 // Components
 import EfMission from '../EfForm/Mission';
+import Address from 'src/components/Fields/Address';
 import Buttons from 'src/components/Fields/Buttons';
 import ApiResponse from 'src/components/ApiResponse';
 import SwitchButton from 'src/components/SwitchButton';
@@ -384,6 +385,11 @@ const Mission = ({ step, isEfForm }) => {
           register={register}
           required={errorMessages.missionAdress}
           error={errors.missionAdress}
+        />
+        <Address
+          addressType="de la mission"
+          register={register}
+          errors={errors}
         />
         <TextFieldWithIcon
           disabled={isEfForm && isMissionFormDisabled}

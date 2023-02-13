@@ -59,8 +59,9 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/updateOmName':
       api.post("/api/om/rename", action.payload)
         .then((response) => {
-          store.dispatch(saveUserOms(response.data));
-          store.dispatch(setApiResponse(response));
+          console.log(response);
+          // store.dispatch(saveUserOms(response.data));
+          // store.dispatch(setApiResponse(response));
         })
         .catch((error) => {
           console.error('add new om', error);
