@@ -6,13 +6,13 @@ export const getAccomodationsDefault = (path) => {
   if (loader.pathname.includes('modifier')) {
     const accomodationsData = omForm.find((omStep) => omStep.step === 'accomodations');
 
-    defaultValues = accomodationsData.data;
+    defaultValues = accomodationsData.data; 
   }
   return data;
 }
 
 export const getSavedFileName = (urlFile) => {
-  const file = urlFile.split('\\');
+  const file = urlFile.split('/');
   const  filename = file[file.length - 1];
 
   

@@ -166,7 +166,7 @@ const omFormSlice = createSlice({
       },
       saveNewOm: (state, action) => {
         state.currentOM = action.payload;
-        state.nextOMTarget = `/nouveau-document/ordre-de-mission?etape=1&id=${action.payload.id}`;
+        state.nextOMTarget = `/modifier-un-document/ordre-de-mission?etape=1&id=${action.payload.id}`;
       },
       clearOMTarget: (state) => {
         state.nextOMTarget = '';
@@ -177,17 +177,16 @@ const omFormSlice = createSlice({
         state.userOms = action.payload;
       },
       saveMission: (state, action) => {
-        
         state.omForm[0].data.omId = action.payload.om.id;
 
         const formattedValues = declareCamelCaseKeys(action.payload);
-        formattedValues.streetNumber = formattedValues.address.streetNumber;
-        formattedValues.bis = formattedValues.address.bis;
-        formattedValues.streetType = formattedValues.address.streetType;
-        formattedValues.streetName = formattedValues.address.streetName;
-        formattedValues.postCode = formattedValues.address.postCode;
-        formattedValues.city = formattedValues.address.city;
-        formattedValues.addressId = formattedValues.address.id;
+        formattedValues.streetNumber = formattedValues.address ? formattedValues.address.streetNumber : null;
+        formattedValues.bis = formattedValues.address ? formattedValues.address.bis : null;
+        formattedValues.streetType = formattedValues.address ? formattedValues.address.streetType : null;
+        formattedValues.streetName = formattedValues.address ? formattedValues.address.streetName : null;
+        formattedValues.postCode = formattedValues.address ? formattedValues.address.postCode : null;
+        formattedValues.city = formattedValues.address ? formattedValues.address.city : null;
+        formattedValues.addressId = formattedValues.address ? formattedValues.address.id : null;
         delete formattedValues.address;
 
         state.omForm[0].data = formattedValues;

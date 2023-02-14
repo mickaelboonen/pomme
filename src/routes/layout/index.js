@@ -30,19 +30,19 @@ const Layout = ({ cas }) => {
 
   console.log(process.env.NODE_ENV);
 
-  // useEffect(() => {
-  //   if (isAuthenticated === false) {
-  //     console.log('i wanna log in with cas');
-  //     cas
-  //     .auth() 
-  //       .then((response) => {
-  //         dispatch(validateAuthentication(response))
-  //       })
-  //       .catch(response => {
-  //         console.log('ERREUR CAS : ', response);
-  //       });
-  //   }
-  // }, [isAuthenticated])
+  useEffect(() => {
+    if (isAuthenticated === false) {
+      console.log('i wanna log in with cas');
+      cas
+      .auth() 
+        .then((response) => {
+          dispatch(validateAuthentication(response))
+        })
+        .catch(response => {
+          console.log('ERREUR CAS : ', response);
+        });
+    }
+  }, [isAuthenticated])
 
   return (
     <div>

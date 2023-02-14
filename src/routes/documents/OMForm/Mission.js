@@ -122,8 +122,7 @@ const Mission = ({ step, isEfForm }) => {
     delete data.streetName;
     delete data.postCode;
     delete data.city;
-    console.log(data);
-    return;
+    
 
     if (data.science) {
       if ((!data.missionPurposeFile || data.missionPurposeFile.length === 0) && !data.missionPurposeFileForValidation) {

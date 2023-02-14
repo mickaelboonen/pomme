@@ -44,7 +44,7 @@ const Signature = ({ step }) => {
   }, [apiMessage]);
   
   const defaultValues = omForm.find((omStep) => omStep.step === 'signature').data;
-
+  
   let fileNames= '';
   if (defaultValues.otherFiles.length === 1) {
     fileNames = getSavedFileName(defaultValues.otherFiles[0]);
@@ -55,8 +55,9 @@ const Signature = ({ step }) => {
     })
   }
 
+  console.log('HERE : ', defaultValues);
   let signatureFilename = '';
-  if (defaultValues.signature.length > 1) {
+  if (defaultValues.signature && defaultValues.signature.length > 1) {
     signatureFilename = getSavedFileName(defaultValues.signature);
   }
   

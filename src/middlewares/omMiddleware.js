@@ -151,6 +151,7 @@ const omMiddleware = (store) => (next) => (action) => {
         .then((response) => {
           console.log(response.data);
             // store.dispatch(saveMoreAndSignature(response.data))
+          store.dispatch(setApiResponse(response));
         })
         .catch((error) => {
           console.error('get signature', error);

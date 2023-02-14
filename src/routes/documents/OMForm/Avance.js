@@ -79,11 +79,6 @@ const Avance = ({ step }) => {
     console.log('PLOP : ', data);
     
     if (data.advance) {
- 
-
-
-
-
 
       let errorCount = 0;
       if (!data.hotelQuotation || data.hotelQuotation.length === 0) {
@@ -131,6 +126,9 @@ const Avance = ({ step }) => {
       }
     }
     else {
+      
+      data.status = 1;
+      
       const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);
       dispatch(updateAdvance(dataToBeSubmitted));
     }
