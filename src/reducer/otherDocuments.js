@@ -21,6 +21,9 @@ const otherDocsSlice = createSlice({
       editPermFile: () => {
 
       },
+      findPermFilesByAgent: () => {
+
+      },
     },
 });
 
@@ -28,6 +31,7 @@ export const {
   toggleDocModal,
   addPermFile,
   editPermFile,
+  findPermFilesByAgent,
 } = otherDocsSlice.actions;
 
 export default otherDocsSlice.reducer;

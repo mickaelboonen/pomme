@@ -49,12 +49,13 @@ const OneFileForm = () => {
   }
   
   const onSubmit = (data) => {
+    console.log(data);
     if (data.file instanceof File) {
       if (action === "add") {
         dispatch(addPermFile({data: data, type: type, user: user}));
       }
       else if (action === 'edit') {
-        dispatch(editPermFile({data, type: type, user: user}));
+        dispatch(editPermFile({data: data, type: type, user: user, id: 12}));
       }
     }
     else {

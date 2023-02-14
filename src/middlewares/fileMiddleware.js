@@ -1,5 +1,5 @@
 import { updateTransports, updateAdvance, updateMoreAndSignature, updateMission, updateSignature } from 'src/reducer/omForm';
-import { fileApi } from './api';
+import { fileApi, api } from './api';
 import { requestVehicleAuthorization } from '../reducer/vehicle';
 import { toggleDocModal } from '../reducer/otherDocuments';
 
@@ -224,8 +224,8 @@ const omMiddleware = (store) => (next) => (action) => {
     // TODO -------------------------------------------------------
     case 'other-documents/addPermFile': {
       const { type } = action.payload;
-
-      fileApi.post(`/api/perm-files/${type}/add`, action.payload)
+      console.log('ACTION : other-documents/addPermFile, DATA : ', action.payload);
+      fileApi.post(`/api/file/perm/add/${type}`, action.payload)
       .then((response) => {
 
         console.log(response)
@@ -241,9 +241,9 @@ const omMiddleware = (store) => (next) => (action) => {
 
     // TODO -------------------------------------------------------
     case 'other-documents/editPermFile':{
-      const { type } = action.payload;
+      const { id } = action.payload;
 
-      fileApi.post(`/api/perm-files/${type}/edit`, action.payload)
+      fileApi.post(`/api/file/perm/update/${id}`, action.payload)
         .then((response) => {
 
           console.log(response)
@@ -256,6 +256,21 @@ const omMiddleware = (store) => (next) => (action) => {
         });
         break;
       }
+    case 'other-documents/findPermFilesByAgent':
+      
+      api.get(`/api/files/perm/${action.payload.agent}`)
+      .then((response) => {
+
+        console.log(response)
+
+        // store.dispatch(toggleDocModal({ action: '', type: ''}));
+      })
+      .catch((error) => {
+        console.error('add perm files', error);
+        // TODO : error
+      });
+      break;
+        break;
 
     default:
   }
