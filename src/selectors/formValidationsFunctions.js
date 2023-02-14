@@ -161,7 +161,6 @@ export const defineValidationRulesForMission = (isEfForm, isFormModified, isScie
     comeback: null,
     comebackPlace: null,
     region: null,
-    missionAdress: null,
     workAdress: null,
     country: null,
     abroadCosts: null,
@@ -177,8 +176,12 @@ export const defineValidationRulesForMission = (isEfForm, isFormModified, isScie
       errorMessages.comeback = "Veuillez renseigner le jour et l'heure du retour.";
       errorMessages.comebackPlace = "Veuillez renseigner le lieu d'arrivée lors de votre retour de mission.";
       errorMessages.region = "Merci de sélectionner l'option qui correspond.";
-      errorMessages.missionAdress = "Merci de renseigner l'adresse de la mission.";
       errorMessages.workAdress = "Merci de renseigner l'adresse de votre résidence administrative.";
+      errorMessages.streetNumber = "Merci de renseigner le numéro de voie.";
+      errorMessages.streetType = "Merci de renseigner le type de voie.";
+      errorMessages.streetName = "Merci de renseigner le nom de la voie (sans le type).";
+      errorMessages.postCode = "Merci de renseigner le code postal.";
+      errorMessages.city = "Merci de renseigner la ville ù a lieu la mission.";
     }
   }
   else {
@@ -188,8 +191,12 @@ export const defineValidationRulesForMission = (isEfForm, isFormModified, isScie
     errorMessages.comeback = "Veuillez renseigner le jour et l'heure du retour.";
     errorMessages.comebackPlace = "Veuillez renseigner le lieu d'arrivée lors de votre retour de mission.";
     errorMessages.region = "Merci de sélectionner l'option qui correspond.";
-    errorMessages.missionAdress = "Merci de renseigner l'adresse de la mission.";
     errorMessages.workAdress = "Merci de renseigner l'adresse de votre résidence administrative.";
+    errorMessages.streetNumber = "Merci de renseigner le numéro de voie.";
+    errorMessages.streetType = "Merci de renseigner le type de voie.";
+    errorMessages.streetName = "Merci de renseigner le nom de la voie (sans le type).";
+    errorMessages.postCode = "Merci de renseigner le code postal.";
+    errorMessages.city = "Merci de renseigner la ville ù a lieu la mission.";
   }
 
   return errorMessages;

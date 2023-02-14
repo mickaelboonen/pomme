@@ -140,19 +140,19 @@ const omFormSlice = createSlice({
         state.isSideFormInDB = true;
       },
       getMission: (state) => {
-        state.loader = true
+        state.omLoader = true
       },
       getTransports: (state) => {
-        state.loader = true},
+        state.omLoader = true},
       getAccomodations: (state) => {
-        state.loader = true},
+        state.omLoader = true},
       getAdvance: (state) => {
-        state.loader = true},
+        state.omLoader = true},
       getSignature: (state) => {
-        state.loader = true
+        state.omLoader = true
       },
       getMore: (state) => {
-        state.loader = true;
+        state.omLoader = true;
       },
       updateMoreAndSignature: () => {},
       updateOmName: () => {},
@@ -181,16 +181,25 @@ const omFormSlice = createSlice({
         state.omForm[0].data.omId = action.payload.om.id;
 
         const formattedValues = declareCamelCaseKeys(action.payload);
+        formattedValues.streetNumber = formattedValues.address.streetNumber;
+        formattedValues.bis = formattedValues.address.bis;
+        formattedValues.streetType = formattedValues.address.streetType;
+        formattedValues.streetName = formattedValues.address.streetName;
+        formattedValues.postCode = formattedValues.address.postCode;
+        formattedValues.city = formattedValues.address.city;
+        formattedValues.addressId = formattedValues.address.id;
+        delete formattedValues.address;
+
         state.omForm[0].data = formattedValues;
         
-        state.loader = false;
+        state.omLoader = false;
       },
       saveTransports: (state, action) => {
         
         const dataForApp = declareCamelCaseKeys(action.payload);
         const dataForTheComponent = turnTransportsDataToAppFormat(dataForApp);
         state.omForm[1].data = dataForTheComponent;
-        state.loader = false;
+        state.omLoader = false;
       },
       saveAccomodations: (state, action) => {
         
@@ -199,7 +208,7 @@ const omFormSlice = createSlice({
         const dataForApp = declareCamelCaseKeys(action.payload);
         state.omForm[2].data = dataForApp;
         
-        state.loader = false;
+        state.omLoader = false;
       },
       saveMore: (state, action) => {
         const { signature, more } = action.payload;
@@ -211,7 +220,7 @@ const omFormSlice = createSlice({
             otherFiles: more.files,
         }
         state.omForm[4].data = dataForTheComponent;
-        state.loader = false;
+        state.omLoader = false;
       },
       saveAdvance: (state, action) => {
         const dataForApp = declareCamelCaseKeys(action.payload);
@@ -233,10 +242,10 @@ const omFormSlice = createSlice({
           }
         console.log(dataForTheComponent);
         state.omForm[3].data = dataForTheComponent;
-        state.loader = false;
+        state.omLoader = false;
       },
       setLoader: (state, action) => {
-        state.loader = action.payload;
+        state.omLoader = action.payload;
       }
     },
 });

@@ -178,7 +178,16 @@ const router = createBrowserRouter([
 
 
               // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
-              if (step === '3') {
+            
+              if (step === '1') {
+                store.dispatch(fetchOm(id));
+                store.dispatch(getMission(id));
+              }
+              else if (step === '2') {
+                // store.dispatch(getVehicles());
+                store.dispatch(getTransports(id));
+              }
+              else if (step === '3') {
                 store.dispatch(getAccomodations(id));
                 store.dispatch(getMission(id));
                 
@@ -191,17 +200,9 @@ const router = createBrowserRouter([
                 store.dispatch(getSignature(user));
                 store.dispatch(getMore(id));
               }
-              else if (step === '2') {
-                // store.dispatch(getVehicles());
-                store.dispatch(getTransports(id));
-              }
-              else if (step === '1') {
-                store.dispatch(fetchOm(id));
-                store.dispatch(getMission(id));
-              }
               else if (step === '6') {
                 console.log('here');
-                store.dispatch(fetchUserData({ id: 'nathalie' }));
+                store.dispatch(fetchUserData({ id: user}));
               }
               
             return url;  

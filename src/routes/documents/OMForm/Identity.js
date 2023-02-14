@@ -88,9 +88,9 @@ const Identity = ({ step, isEfForm }) => {
         <FormSectionTitle>Missionnaire</FormSectionTitle>
         <div className="form__section form__section--split">
           <p className="form__section-field-label">Qualité : </p>
-          <RadioInput id="Mme" formField="gender" label="Madame" register={register} />
-          <RadioInput id="M." formField="gender" label="Monsieur" register={register} />
-          <RadioInput id="Mlle" formField="gender" label="Mademoiselle" register={register} />
+          <RadioInput disabled id="Mme" formField="gender" label="Madame" register={register} />
+          <RadioInput disabled id="M." formField="gender" label="Monsieur" register={register} />
+          <RadioInput disabled id="Mlle" formField="gender" label="Mademoiselle" register={register} />
           {/* <RadioInput id="non-binary" formField="gender" label="Non Binaire" register={register} /> */}
         </div>
         <div className='form__section form__section--documents' id="other-fields">
@@ -124,12 +124,14 @@ const Identity = ({ step, isEfForm }) => {
           addressType='familiale'
           register={register}
           errors={errors}
+          disabled={true}
         />
         <Address
           addressType='administrative'
           errors={errors}
           register={register}
           suffixe='Pro'
+          disabled={true}
         />
       </div>
       <div className="form__section">
@@ -140,6 +142,7 @@ const Identity = ({ step, isEfForm }) => {
               <p className="form__section-field-label">Personnel</p>
                 <RadioInput
                   register={register}
+                  disabled
                   formField="employer"
                   id="unimes"
                   label="Unîmes"
@@ -148,6 +151,7 @@ const Identity = ({ step, isEfForm }) => {
                 />
                 <RadioInput
                   register={register}
+                  disabled
                   formField="employer"
                   id="external"
                   label="Extérieur"

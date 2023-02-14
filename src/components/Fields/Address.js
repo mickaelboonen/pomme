@@ -1,26 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useForm } from "react-hook-form";
-import { useLoaderData, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-import HelpImg from 'src/assets/images/help.svg';
+
 import TextField from 'src/components/Fields/TextField';
 import SelectField from 'src/components/Fields/SelectField';
-import TitleH3 from 'src/components/TitleH3';
+import HiddenField from 'src/components/Fields/HiddenField';
 
 import './style.scss';
-import classNames from 'classnames';
-import Help from '../Help';
 
 const Address = ({
   addressType,
-  data=[],
+  
   register,
   errors,
+  disabled,
+  errorMessages,
   suffixe
 }) => {  
 
-  const bisArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',]
+  const bisArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
   
   const streetType = [
     {
@@ -97,23 +93,26 @@ const Address = ({
   return (
     <>
       <label className="form__section-field-label">{'Addresse ' + addressType}</label>
-
+      <HiddenField
+        register={register}
+        id="addressId"
+        value=""
+      />
       <div className="address">
-        {/* <TitleH3>{`Adresse ${addressType}`}</TitleH3> */}
         <div className="address__section">
           <TextField
             id="street-number-field"
-            // disabled
             isNumber
             min="0"
             formField={"streetNumber" + suffixe}
             label="N° de voie"
             register={register}
             error={errors.streetNumber}
-            // required={errorMessages.missionPurpose}
+            required={errorMessages.streetNumber}
           />
           <SelectField
             register={register}
+            disabled={disabled}
             blankValue=""
             data={bisArray}
             id="bis-field"
@@ -123,43 +122,46 @@ const Address = ({
           />
           <SelectField
             register={register}
+            disabled={disabled}
             blankValue=""
             data={streetType}
             id="street-type-field"
             formField={"streetType" + suffixe}
             label="Type de voie"
             error={errors.streetType}
+            required={errorMessages.streetType}
           />
         </div>
         <div className="address__section">
           <TextField
             id="street-name-field"
-            // disabled
+            disabled={disabled}
             formField={"streetName" + suffixe}
             label="Nom de la rue"
             register={register}
             error={errors.streetName}
-            // required={errorMessages.missionPurpose}
+            required={errorMessages.streetName}
           />
         </div>
         <div className="address__section">
           <TextField
             id="postcode-field"
-            // disabled
+            disabled={disabled}
             formField={"postCode" + suffixe}
             label="Code postal"
             register={register}
             error={errors.postCode}
-            // required={errorMessages.missionPurpose}
+            required={errorMessages.postCode}
+            isNumber
           />
           <TextField
             id="city-field"
-            // disabled
+            disabled={disabled}
             formField={"city" + suffixe}
             label="Ville"
             register={register}
             error={errors.city}
-            // required={errorMessages.missionPurpose}
+            required={errorMessages.city}
           />
         </div>
       </div>
@@ -173,6 +175,15 @@ Address.propTypes = {
 
 Address.defaultProps = {
   suffixe: '',
+  disabled: false,
+  errorMessages: {
+    streetName: null,
+    streetNumber: null,
+    streetType: null,
+    postCode: null,
+    city: null,
+    bis: null,
+  },
 };
 
 export default Address;

@@ -102,9 +102,28 @@ const Mission = ({ step, isEfForm }) => {
     }
 
   }
-  console.log(errors.comeback)
+  
   const onSubmit = (data) => {
     console.log(data);
+    data.missionAddress = {
+      id: data.addressId,
+      streetNumber: data.streetNumber,
+      bis: data.bis,
+      streetType: data.streetType,
+      streetName: data.streetName,
+      postCode: data.postCode,
+      city: data.city,
+    }
+
+    delete data.addressId;
+    delete data.streetNumber;
+    delete data.bis;
+    delete data.streetType;
+    delete data.streetName;
+    delete data.postCode;
+    delete data.city;
+    console.log(data);
+    return;
 
     if (data.science) {
       if ((!data.missionPurposeFile || data.missionPurposeFile.length === 0) && !data.missionPurposeFileForValidation) {
@@ -331,21 +350,28 @@ const Mission = ({ step, isEfForm }) => {
             </div>
           </div>
         </div>
-        <SelectField
-          // isHidden
-          disabled={isEfForm && isMissionFormDisabled}
-          data={adresses}
-          register={register}
-          error={errors.workAdress}
-          formField="workAdress"
-          id="work-address-select"
-          label="Adresse administrative"
-          blankValue={"Veuillez sélectionner l'adresse administrative qui vous correspond"}
-          required={errorMessages.workAdress}
-        />
       </div>
       <div className='form__section'>
         <FormSectionTitle>Lieu de la mission</FormSectionTitle>
+
+        {/* <TextFieldWithIcon
+          disabled={isEfForm && isMissionFormDisabled}
+          isHidden={false}
+          id="missionAdress"
+          name="Adresse de la mission"
+          icon={Pin}
+          register={register}
+          required={errorMessages.missionAdress}
+          error={errors.missionAdress}
+        /> */}
+        <Address
+          disabled={isEfForm && isMissionFormDisabled}
+          addressType="de la mission"
+          register={register}
+          errors={errors}
+          errorMessages={errorMessages}
+          // data={defaultValues.address}
+        />
         <div className="form__section form__section--split">
           <RadioInput
             disabled={isEfForm && isMissionFormDisabled}
@@ -376,21 +402,6 @@ const Mission = ({ step, isEfForm }) => {
           />
         </div>
         {errors.region && <p className="form__section-field-error form__section-field-error--open">{errors.region.message}</p>}
-        <TextFieldWithIcon
-          disabled={isEfForm && isMissionFormDisabled}
-          isHidden={false}
-          id="missionAdress"
-          name="Adresse de la mission"
-          icon={Pin}
-          register={register}
-          required={errorMessages.missionAdress}
-          error={errors.missionAdress}
-        />
-        {/* <Address
-          addressType="de la mission"
-          register={register}
-          errors={errors}
-        /> */}
         <TextFieldWithIcon
           disabled={isEfForm && isMissionFormDisabled}
           isHidden={true}
