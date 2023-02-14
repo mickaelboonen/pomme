@@ -8,6 +8,7 @@
  */
 export const declareCamelCaseKeys = (data) => {
   const formattedValues = {};
+  console.log(data);
   for (const [key, value] of Object.entries(data)) {
 
     if (key.includes('_')) {

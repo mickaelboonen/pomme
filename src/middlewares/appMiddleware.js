@@ -34,8 +34,9 @@ const appMiddleware = (store) => (next) => (action) => {
     case 'app/getSignature':
       api.get("/api/perm-file/signature/" + action.payload)
         .then((response) => {
-          
-          store.dispatch(saveSignature(response.data))
+            if (response.data) {
+              store.dispatch(saveSignature(response.data))
+            }
         })
         .catch((error) => {
           console.error('get signature', error);

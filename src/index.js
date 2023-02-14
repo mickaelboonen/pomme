@@ -201,7 +201,7 @@ const router = createBrowserRouter([
               }
               else if (step === '6') {
                 console.log('here');
-                store.dispatch(fetchUserData({ id: user }));
+                store.dispatch(fetchUserData({ id: 'nathalie' }));
               }
               
             return url;  

@@ -56,7 +56,7 @@ const Transports = ({ step }) => {
   }, [apiMessage])
   
   const defaultValues = omForm.find((omStep) => omStep.step === 'transports').data;
-  console.log(defaultValues);
+  
   const {
     register,
     setValue,
@@ -89,9 +89,8 @@ const Transports = ({ step }) => {
         countErrors++;
       }
       
-
       // If taxi has been selected but no file was given nor dispensation requested
-      if (data.others.indexOf('taxi') >= 0 && (!data.taxiDispensationForValidation || (!data.taxiDispensation || data.taxiDispensation.length === 0))) {
+      if (data.others.indexOf('taxi') >= 0 && (!data.taxiDispensationForValidation && (!data.taxiDispensation || data.taxiDispensation.length === 0))) {
         setError('taxiDispensation', { type: 'custom', message: "Merci de fournir la demande de dérogation signée par le Président ou d'en faire la demande." });
         countErrors++;
       }

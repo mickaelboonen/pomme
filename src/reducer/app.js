@@ -5,7 +5,7 @@ const initialState = {
   user: 'mboone01',
   userSignature: null,
   apiMessage: {},
-  loader: true,
+  appLoader: true,
   isModalOpen: false,
   isAuthenticated: false,
   agent: {},
@@ -38,8 +38,8 @@ const omFormSlice = createSlice({
         console.log('here');
         state.isModalOpen = !state.isModalOpen;
       },
-      fetchUserData: () => {
-
+      fetchUserData: (state) => {
+        state.appLoader = true;
       },
       saveUserData: (state, action) => {
         console.log('REDUCER : ',action.payload);
@@ -47,7 +47,7 @@ const omFormSlice = createSlice({
         const data = agentDataToAppFormat(action.payload);
         
         state.agent = data;
-        state.loader = false;
+        state.appLoader = false;
         
       },
     },

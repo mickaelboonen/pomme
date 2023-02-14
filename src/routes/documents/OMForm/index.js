@@ -15,7 +15,9 @@ import ThreadAsTabs from 'src/components/ThreadAsTabs';
 import './style.scss';
 
 const OMForm = () => {  
-  const { steps, loader } = useSelector((state) => state.omForm);
+  const { omForm :{ steps, omLoader},
+    app: { appLoader},
+  } = useSelector((state) => state);
   
 
   const loaderData = useLoaderData();
@@ -32,14 +34,14 @@ const OMForm = () => {
         </div>
         <div className="form-page__container">
           
-          {loader && <div>Loading</div>}
+          {(omLoader || appLoader) && <div>Loading</div>}
 
-          {(step === 1 && !loader) && <Mission step={step} isEfForm={false} />}
-          {(step === 2 && !loader) && <Transports step={step} />}
-          {(step === 3 && !loader) && <Accomodations step={step} />}
-          {(step === 4 && !loader) && <Avance step={step} />}
-          {(step === 5 && !loader) && <Signature step={step} />}
-          {(step === 6 && !loader) && <Identity step={step} />}
+          {(step === 1 && !omLoader) && <Mission step={step} isEfForm={false} />}
+          {(step === 2 && !omLoader) && <Transports step={step} />}
+          {(step === 3 && !omLoader) && <Accomodations step={step} />}
+          {(step === 4 && !omLoader) && <Avance step={step} />}
+          {(step === 5 && !omLoader) && <Signature step={step} />}
+          {(step === 6 && !appLoader) && <Identity step={step} />}
         </div>
       </div>
     </>

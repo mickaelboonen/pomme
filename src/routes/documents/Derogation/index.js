@@ -50,7 +50,7 @@ const Derogation = () => {
   useEffect(() => {
     if (isSideFormInDB) {
       dispatch(clearSideForm());
-      navigate('/modifier-un-document/ordre-de-mission?etape=2&id=63');
+      navigate('/modifier-un-document/ordre-de-mission?etape=2&id=' + omId);
     }
   }, [isSideFormInDB])
 

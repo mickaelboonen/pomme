@@ -173,7 +173,7 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/getTransports':
       api.get("/api/om/transports/find/" + action.payload)
         .then((response) => {
-          console.log('MIDDLEWARE : ', response.data);
+          console.log('MIDDLEWARE : ', response);
           store.dispatch(saveTransports(response.data));
         })
         .catch((error) => {
@@ -197,6 +197,7 @@ const omMiddleware = (store) => (next) => (action) => {
       case 'omForm/getMore':
         api.get("/api/om/more-and-signature/find/" + action.payload)
           .then((response) => {
+            console.log(response.data);
               store.dispatch(saveMore(response.data))
           })
           .catch((error) => {

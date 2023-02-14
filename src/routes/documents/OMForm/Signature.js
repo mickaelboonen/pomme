@@ -46,7 +46,6 @@ const Signature = ({ step }) => {
   const defaultValues = omForm.find((omStep) => omStep.step === 'signature').data;
 
   let fileNames= '';
-  
   if (defaultValues.otherFiles.length === 1) {
     fileNames = getSavedFileName(defaultValues.otherFiles[0]);
   }
@@ -56,6 +55,11 @@ const Signature = ({ step }) => {
     })
   }
 
+  let signatureFilename = '';
+  if (defaultValues.signature.length > 1) {
+    signatureFilename = getSavedFileName(defaultValues.signature);
+  }
+  
   const {
     register,
     handleSubmit,
@@ -102,7 +106,7 @@ const Signature = ({ step }) => {
     }
   };
 
-  const [hasNoSignatureSaved, setHasNoSignatureSaved] = useState(defaultValues.savedSignature);
+  const [hasNoSignatureSaved, setHasNoSignatureSaved] = useState(userSignature === '' ? true : false);
   const savedSignature = watch('savedSignature');
   
   useEffect(() => {
@@ -122,21 +126,20 @@ const Signature = ({ step }) => {
     }
   }, [userSignature])
 
-  let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
-  refusal = "";
-
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section">
         <FormSectionTitle>Signature</FormSectionTitle>
-        <div className="form__section-field" id="abroad-field">
-          <CheckboxInput
-            register={register}
-            formField="savedSignature"
-            id="saved-signature-field"
-            label="Utiliser la signature enregistrée dans mon profil"
-          />
-        </div>
+        {userSignature && (
+          <div className="form__section-field">
+            <CheckboxInput
+              register={register}
+              formField="savedSignature"
+              id="saved-signature-field"
+              label="Utiliser la signature enregistrée dans mon profil"
+            />
+          </div>
+        )}
         {hasNoSignatureSaved && (
           <FileField 
             setValue={setValue}
@@ -144,6 +147,7 @@ const Signature = ({ step }) => {
             formField="signature"
             id="signature"
             error={errors.signature}
+            fileName={signatureFilename}
           />
         )}
         <HiddenField id="omId" value={omId} register={register} />
@@ -167,7 +171,6 @@ const Signature = ({ step }) => {
           fileName={fileNames}
         />
       </div>
-      {refusal !== '' && <RefusalMessage message={refusal} />}
       {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
 
       <Buttons

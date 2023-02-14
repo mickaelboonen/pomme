@@ -102,7 +102,7 @@ const initialState = {
   ],
   userOms: [],
   dataToSelect: [],
-  loader: false,
+  omLoader: false,
   refusal: '',
   adresses: [
     'adresse Vauban', 
@@ -204,8 +204,8 @@ const omFormSlice = createSlice({
       saveMore: (state, action) => {
         const { signature, more } = action.payload;
         const dataForTheComponent =  {
-            savedSignature: signature.agentSignature ? true : false,
-            signature: signature.agentSignature ,
+            savedSignature: false,
+            signature: signature.agent_signature ,
             omId: signature.om.id,
             otherInfos: more.informations,
             otherFiles: more.files,
