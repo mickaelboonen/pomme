@@ -1,7 +1,8 @@
 import { updateTransports, updateAdvance, updateMoreAndSignature, updateMission, updateSignature } from 'src/reducer/omForm';
 import { fileApi, api } from './api';
-import { requestVehicleAuthorization } from '../reducer/vehicle';
-import { toggleDocModal } from '../reducer/otherDocuments';
+import { requestVehicleAuthorization, saveVehicles } from '../reducer/vehicle';
+import { toggleDocModal, saveAllPermDocs } from '../reducer/otherDocuments';
+import { setApiResponse } from '../reducer/app';
 
 
 fileApi.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -224,13 +225,10 @@ const omMiddleware = (store) => (next) => (action) => {
     // TODO -------------------------------------------------------
     case 'other-documents/addPermFile': {
       const { type } = action.payload;
-      console.log('ACTION : other-documents/addPermFile, DATA : ', action.payload);
       fileApi.post(`/api/file/perm/add/${type}`, action.payload)
       .then((response) => {
 
-        console.log(response)
-
-        store.dispatch(toggleDocModal({ action: '', type: ''}));
+        store.dispatch(toggleDocModal({ action: '', type: '', data: response.data}));
       })
       .catch((error) => {
         console.error('add perm files', error);
@@ -238,7 +236,16 @@ const omMiddleware = (store) => (next) => (action) => {
       });
       break;
     }
-
+    case 'other-documents/deletePermFile':
+      fileApi.delete(`/api/file/perm/delete/${action.payload.id}`)
+      .then((response) => {
+        store.dispatch(setApiResponse({data: response.data, status: 200}));
+      })
+      .catch((error) => {
+        console.error('delete perm files', error);
+        // TODO : error
+      });
+      break;
     // TODO -------------------------------------------------------
     case 'other-documents/editPermFile':{
       const { id } = action.payload;
@@ -260,10 +267,7 @@ const omMiddleware = (store) => (next) => (action) => {
       
       api.get(`/api/files/perm/${action.payload.agent}`)
       .then((response) => {
-
-        console.log(response)
-
-        // store.dispatch(toggleDocModal({ action: '', type: ''}));
+        store.dispatch(saveAllPermDocs(response.data));
       })
       .catch((error) => {
         console.error('add perm files', error);

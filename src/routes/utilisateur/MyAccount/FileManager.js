@@ -7,9 +7,11 @@ import { FaDownload, FaUpload, FaTrash, FaEdit } from "react-icons/fa";
 import './style.scss';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { toggleDocModal } from 'src/reducer/otherDocuments';
+import { toggleDocModal, deletePermFile } from 'src/reducer/otherDocuments';
+import { getSavedFileName } from '../../../selectors/formDataGetters';
+import { displayVehicle, deleteVehicle  } from '../../../reducer/vehicle';
 
-const FileManager = ({ icon, filename, label, id, needsSelect, data }) => {
+const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -21,29 +23,28 @@ const FileManager = ({ icon, filename, label, id, needsSelect, data }) => {
   };
 
   const handleUplaod = (event) => {
-    console.log('handleUplaod')
-    console.log(event.currentTarget.dataset.id)
     const { id } = event.currentTarget.dataset;
 
     if (id === 'cars') {
+      navigate(`/utilisateur/${user}/mes-documents/ajouter-un-véhicule` )
 
     }
     else {
       
-      dispatch(toggleDocModal({ action: 'add', type: label}));
+      dispatch(toggleDocModal({ action: 'add', type: id}));
     }
   };
 
   const handleEdit = (event) => {
-    console.log('handleEdit')
-    console.log(event.currentTarget.dataset.id)
     const { id } = event.currentTarget.dataset;
     if (id === 'cars') {
       
       const { value } = document.querySelector('select');
       
       if (!isNaN(value)) {
-        navigate('/utilisateur/mboone01/mes-documents/modifier-un-véhicule/' + value)
+        console.log(value);
+        dispatch(displayVehicle(value))
+        navigate(`/utilisateur/${user}/mes-documents/modifier-un-véhicule/` + value)
       }
       else {
         window.alert("Veuillez sélectionner un véhiculer à modifier.")
@@ -51,13 +52,12 @@ const FileManager = ({ icon, filename, label, id, needsSelect, data }) => {
     }
     else {
       
-      dispatch(toggleDocModal({ action: 'edit', type: label}));
+      dispatch(toggleDocModal({ action: 'edit', type: id}));
     }
   };
 
   const handleDelete = (event) => {
-    console.log('handleDelete')
-    console.log(event.currentTarget.dataset.id)
+    
     const { id } = event.currentTarget.dataset;
 
     if (window.confirm("Voulez-vous supprimer ce document ?")) {
@@ -68,13 +68,26 @@ const FileManager = ({ icon, filename, label, id, needsSelect, data }) => {
         
         if (!isNaN(value)) {
           // TODO
+          dispatch(deleteVehicle(value));
         }
         else {
           window.alert("Veuillez sélectionner un véhiculer à supprimer.")
         }
       }
+      else {
+        console.log(file);
+        if (file === undefined) {
+          window.alert("Il n'y a pas de document à supprimer.");
+        }
+        else {
+          dispatch(deletePermFile(file));
+        }
+      }
     }
   };
+
+  const filename = file ? file.name : '';
+
   return (
   <div className='file-manager'>
     <div className='file-manager__file'>
@@ -94,7 +107,7 @@ const FileManager = ({ icon, filename, label, id, needsSelect, data }) => {
           {needsSelect && (
             <select className='file-displayer__select'>
               <option>Aucun véhicule sélectionné</option>
-              {data.map((car) => <option key={car}>{car}</option>)}
+              {data.map((car) => <option key={car.id} value={car.id}>{car.name}</option>)}
             </select>
           )}
         </div>

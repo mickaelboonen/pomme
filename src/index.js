@@ -26,7 +26,6 @@ import MyDocuments from "src/routes/utilisateur/MyDocuments";
 import DocRefusalForm from "src/routes/gestionnaire/DocRefusal";
 import VehicleUseForm from "src/routes/documents/VehicleUseForm";
 import AddVehicle from "src/routes/utilisateur/MyAccount/AddVehicle";
-import EditVehicle from "src/routes/utilisateur/MyAccount/EditVehicle";
 import Preferences from "src/routes/utilisateur/MyAccount/Preferences";
 import DocValidationForm from "src/routes/gestionnaire/DocValidationForm";
 import TicketRequest from "src/routes/utilisateur/MyAccount/TicketRequest";
@@ -287,9 +286,9 @@ const router = createBrowserRouter([
                 element: <MyAccount />,
                 loader: async ({ request }) => {
                   const url = new URL(request.url);
-                  const agent = url.searchParams.get("slug");
                   
                   store.dispatch(findPermFilesByAgent({agent: url.pathname.split('/')[2]}))
+                  store.dispatch(getVehicles({agent: url.pathname.split('/')[2]}));
                 }
               },
               {
@@ -298,7 +297,7 @@ const router = createBrowserRouter([
               },
               {
                 path: 'modifier-un-véhicule/:id',
-                element: <EditVehicle />
+                element: <AddVehicle />
               },
               {
                 path: 'ajouter-un-v%C3%A9hicule',
@@ -306,7 +305,7 @@ const router = createBrowserRouter([
               },
               {
                 path: 'modifier-un-v%C3%A9hicule/:id',
-                element: <EditVehicle />
+                element: <AddVehicle />
               },
               {
                 path: 'refus-de-mission',

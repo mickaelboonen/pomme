@@ -1,69 +1,55 @@
-import React, { useEffect } from 'react';
-import { useForm } from "react-hook-form";
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  FaCar,
+  FaCreditCard,
+  FaFilePdf,
+  FaIdCard,
+  FaPassport,
+  FaSignature
+} from "react-icons/fa";
 
 import './style.scss';
+
+// Components
+import FileManager from './FileManager';
+import OneFileForm from 'src/components/OneFileForm';
+import ApiResponse from 'src/components/ApiResponse';
 import PageTitle from 'src/components/PageTitle';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import FileField from 'src/components/Fields/FileField';
-import SelectField from 'src/components/Fields/SelectField';
-import Logo from '../../../assets/images/pdf.svg';
-import { Link, useNavigate } from 'react-router-dom';
 
-
-import { FaCar, FaCreditCard, FaFilePdf, FaEdit,FaTrash,FaDownload,FaUpload, FaIdCard, FaPassport, FaSignature } from "react-icons/fa";
-import FileManager from './FileManager';
-import OneFileForm from '../../../components/OneFileForm';
+// Actions
+import { clearMessage } from 'src/reducer/app';
 
 const MyAccount = () => {
   
+  const dispatch = useDispatch();
 
-  const { omForm: { currentOM, nextOMTarget, OMTabs, userOms, dataToSelect },
-    efForm: { nextEFTarget, EFTabs },
-    docs: { isModalOpen }
+  const {docs: { isModalOpen, agentDocs },
+    app: { user, apiMessage },
+    vehicle: { vehicles },
   } = useSelector((state) => state);
-  const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState:
-    { errors },
-  } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-  const userName = 'mboone01';
 
-  const handleClick = (event) => {
-    const { id } = event.target;
-    const selectedVehicle = document.querySelector('#input-cars').value;
-
-    if (id === "add") {
-      
-      navigate(`/utilisateur/${userName}/mes-documents/ajouter-un-véhicule`);
-      return;
-    }
-    if (selectedVehicle !== "") {
-      
-      if (id === "edit") {
-        navigate(`/utilisateur/${userName}/mes-documents/modifier-un-véhicule/${selectedVehicle}`);
-      }
-      else if (id === "delete") {
-        
-      }
-    }
-    else {
-      window.alert(`Vous n'avez pas sélectionner de véhicule à ${id}`);
-    }
+  const docs = {
+    cni: agentDocs.find((doc) => doc.type === 'cni'),
+    passport: agentDocs.find((doc) => doc.type === 'passport'),
+    signature: agentDocs.find((doc) => doc.type === 'signature'),
+    rib: agentDocs.find((doc) => doc.type === 'rib'),
+    drivingLicense: agentDocs.find((doc) => doc.type === 'driving-license'),
+    insurance: agentDocs.find((doc) => doc.type === 'insurance'),
+    registration: agentDocs.find((doc) => doc.type === 'registration'),
   }
+  
+  useEffect(() => {
+    dispatch(clearMessage())
+  }, []);
   
   return (
   <main className="my-documents">
-    <PageTitle>Pièces justificatives de {'mboone01'}</PageTitle>
+    <PageTitle>Pièces justificatives de {user}</PageTitle>
     <div className='form'>
       <div className='form__section'>
         <FormSectionTitle>Identité</FormSectionTitle>
@@ -74,7 +60,7 @@ const MyAccount = () => {
           />}
           id="cni"
           label="CNI"
-          filename=""
+          file={docs.cni}
           handler={null}
         />
         <FileManager
@@ -83,7 +69,7 @@ const MyAccount = () => {
           />}
           id="passport"
           label="Passeport"
-          filename=""
+          file={docs.passport}
           handler={null}
         />
         <FileManager
@@ -92,7 +78,7 @@ const MyAccount = () => {
           />}
           id="signature"
           label="Signature"
-          filename=""
+          file={docs.signature}
           handler={null}
         />
         <FileManager
@@ -101,7 +87,7 @@ const MyAccount = () => {
           />}
           id="rib"
           label="RIB"
-          filename=""
+          file={docs.rib}
           handler={null}
         />
       </div>
@@ -115,7 +101,7 @@ const MyAccount = () => {
           />}
             id="driving-license"
           label="Permis de conduire"
-          filename=""
+          file={docs.drivingLicense}
           handler={null}
         />
         <FileManager
@@ -124,7 +110,7 @@ const MyAccount = () => {
           />}
           id="registration"
           label="Carte grise"
-          filename=""
+          file={docs.registration}
           handler={null}
         />
         <FileManager
@@ -133,7 +119,7 @@ const MyAccount = () => {
           />}
           id="insurance"
           label="Attestation d'assurance"
-          filename=""
+          file={docs.insurance}
           handler={null}
         />
       </div>
@@ -147,15 +133,16 @@ const MyAccount = () => {
           label="Mes véhicules enregistrés"
           filename=""
           handler={null}
+          user={user}
           needsSelect
-          data={['1', '2', '3']}
+          data={vehicles}
         />
       </div>
+      {apiMessage.data && <ApiResponse response={apiMessage} updateForm={true} />}
+
     </div>
     <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
-      {isModalOpen && <OneFileForm />}
-      {isModalOpen && <p>LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</p>}
-      
+    {isModalOpen && <OneFileForm />}
   </main>
 );}
 

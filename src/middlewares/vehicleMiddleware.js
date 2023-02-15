@@ -3,6 +3,7 @@ import { uploadFile, validateSideForm } from 'src/reducer/omForm';
 
 import { api } from './api';
 import { setMessage } from '../reducer/vehicle';
+import { setApiResponse } from '../reducer/app';
 
 
 api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -16,6 +17,7 @@ const vehicleMiddleware = (store) => (next) => (action) => {
       api.post("/api/vehicle/add/" + user, action.payload)
         .then((response) => {
 
+          console.log('HERE : ', response)
           const newDataFormat = {
             omId: Number(response.data.omId),
             vehicle_id: Number(response.data.selectedVehicle),
@@ -38,17 +40,48 @@ const vehicleMiddleware = (store) => (next) => (action) => {
             console.log('there is aaa least one file', newDataFormat);
             store.dispatch(uploadFile({data: newDataFormat, step: 'authorization', docType: 'authorization'}));
           }
+          else if (!response.data.omId) {
+
+            const message = "Votre véhicule a bien été enregistré.";
+            response.data = message;
+            store.dispatch(setApiResponse(response));
+          }
           else {
             console.log('there are no files sad', newDataFormat);
             store.dispatch(requestVehicleAuthorization(newDataFormat));
           }
         })
         .catch((error) => {
-          console.error('get signature', error);
+          console.error('add vehicle', error);
+        });
+      break;
+    
+    case 'vehicle/updateVehicle':
+      console.log(action.payload);
+      api.post("/api/vehicle/update/" + action.payload.id, action.payload)
+        .then((response) => {
+          console.log(response.data);
+          store.dispatch(setApiResponse({data: response.data, status: 200}));
+
+        })
+      .catch((error) => {
+        console.error('update vehicle', error);
+      });
+      break;
+    case 'vehicle/deleteVehicle':
+        console.log(action.payload);
+        api.delete("/api/vehicle/delete/" + action.payload)
+          .then((response) => {
+            console.log(response.data);
+            store.dispatch(setApiResponse({data: response.data, status: 200}));
+
+          })
+        .catch((error) => {
+          console.error('update vehicle', error);
         });
       break;
     case 'vehicle/getVehicles':
-      api.get("/api/vehicles/" + user)
+      api.get("/api/vehicles/" + action.payload.agent)
         .then((response) => {
           store.dispatch(saveVehicles(response.data))
         })

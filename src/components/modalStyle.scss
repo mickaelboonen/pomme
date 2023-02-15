@@ -1,7 +1,7 @@
 @use 'src/styles/vars';
 
 .modal {
-  position: absolute;
+  position: fixed;
   inset: 0 0 0 0;
   padding: 0.5rem;
   display: flex;
@@ -9,7 +9,7 @@
   justify-content: center;
 
   &__background {
-    position: absolute;
+    position: fixed;
     inset: 0;
     display: none;
     background-color: #1a1a1a71;
@@ -38,14 +38,14 @@
 
 @media (min-width: vars.$sm) {
   .modal {
-    position: absolute;
+    position: fixed;
     inset: 0 0 0 0;
     display: flex;
     // padding-top: 17rem;
     justify-content: center;
   
     &__background {
-      position: absolute;
+      position: fixed;
       inset: 0;
       display: none;
       background-color: #1a1a1a71;

@@ -102,7 +102,13 @@ const vehicleSlice = createSlice({
       },
       clearMessage: (state) => {
         state.message = null;
-      }
+      },
+      updateVehicle: () => {
+
+      },
+      deleteVehicle: () => {
+
+      },
     },
 });
 
@@ -118,7 +124,9 @@ export const {
   stayOnAuthorizationForm,
   resetPdfNeed,
   setMessage,
-  clearMessage
+  clearMessage,
+  updateVehicle,
+  deleteVehicle,
 } = vehicleSlice.actions;
 
 export default vehicleSlice.reducer;

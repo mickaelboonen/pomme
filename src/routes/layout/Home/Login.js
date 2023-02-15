@@ -1,23 +1,44 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import './style.scss';
 import HomepageTitle from './HomepageTitle';
 import { validateAuthentication } from "src/reducer/app";
+import { useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 const Login = ( cas ) => {
 
+  const dispatch = useDispatch();
+
   const handleLogin = () => {
-    console.log(cas.cas);
+    
     cas.cas
       .auth() 
         .then((response) => {
+          console.log("am i here");
           dispatch(validateAuthentication(response))
         })
         .catch(response => {
           console.log('ERREUR CAS : ', response);
         });
   }
+  const location = useLocation();
+  useEffect(() => {
+    console.log('dans le use effect : ', location)
+
+    if (location.search.includes('status=inprocess')) {
+      cas.cas
+      .auth() 
+        .then((response) => {
+          console.log("am i here");
+          dispatch(validateAuthentication(response))
+        })
+        .catch(response => {
+          console.log('ERREUR CAS : ', response);
+        });
+    }
+  }, []);
   return (
   <div className='home'>
     <HomepageTitle />

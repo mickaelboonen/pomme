@@ -4,6 +4,17 @@
     margin: 1rem auto 2rem;
 }
 
+#submit-vehicle {
+  & button {
+    margin-bottom: 0.5rem;
+  }
+}
+#goback-vehicle {
+  & button {
+    margin-top: 0.5rem;
+  }
+}
+
 .theme {
   border-radius: vars.$radius;
   height: fit-content;

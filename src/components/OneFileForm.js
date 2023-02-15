@@ -73,7 +73,7 @@ const OneFileForm = () => {
               register={register}
               formField="file"
               id="lol"
-              fileName="lola"
+              fileName=""
               label="Sélectionner un fichier à télécharger"
               setValue={setValue}
               error={errors.file}

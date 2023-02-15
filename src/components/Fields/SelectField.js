@@ -21,6 +21,7 @@ const SelectField = ({
   const handleChange = (event) => {
     handler(event);
   }
+  console.log('DATA : ', data);
   return (
   <div className={classNames("form__section-field", { "form__section-field--hidden": isHidden })} id={formField}>
     <label className="form__section-field-label" htmlFor={id}>{label}</label>
