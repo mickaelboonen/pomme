@@ -12,13 +12,15 @@ import Modal from 'src/components/Modal';
 import { toggleModal } from 'src/reducer/app';
 import { clearOMTarget } from 'src/reducer/omForm';
 import { useNavigate } from 'react-router-dom';
+import HomepageTitle from './HomepageTitle';
 
 const Home = () => {
   
   const navigate = useNavigate();
-  const { app: { isModalOpen, user},
+  const { app: { isModalOpen, user, isAuthenticated},
     omForm: { nextOMTarget},
   } = useSelector((state) => state);
+
 
   useEffect(() => {
     if (nextOMTarget !== '') {
@@ -38,13 +40,8 @@ const Home = () => {
 
   return (
     <div className="home">
-      <div className="home__title" >
-        <div className="home__title-group"><div className="home__title-group-capital">P</div><div className="home__title-group-rest">réparer son </div></div>
-        <div className="home__title-group"><div className="home__title-group-capital">O</div><div className="home__title-group-rest">rdre de </div></div>
-        <div className="home__title-group"><div className="home__title-group-capital">M</div><div className="home__title-group-rest">ission </div></div>
-
-      </div>
-    <section className="home__new">
+      <HomepageTitle />
+      <section className="home__new">
       <TitleH3>Nouveau document</TitleH3>
       <div className="home__new-buttons">
         <div id="ordre-de-mission" className="home__new-buttons-item" onClick={handleClickOnNewOM}>
@@ -60,15 +57,14 @@ const Home = () => {
           <p>État de Frais</p>
         </div> */}
       </div>
-    </section>
-    <section className="home__new" style={{height: '20rem'}}>
-      {/* <PDFViewer>
-        <MyPDF data={omForm[0].data} />
-      </PDFViewer> */}
-    </section>
-    <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
-    {isModalOpen && <Modal target={newTarget.replace(/-/g, ' ')} user={user} />}
-
+      </section>
+      <section className="home__new" style={{height: '20rem'}}>
+        {/* <PDFViewer>
+          <MyPDF data={omForm[0].data} />
+        </PDFViewer> */}
+      </section>
+      <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
+      {isModalOpen && <Modal target={newTarget.replace(/-/g, ' ')} user={user} />}
 
     </div>
   );
