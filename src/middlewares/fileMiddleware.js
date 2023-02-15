@@ -249,7 +249,7 @@ const omMiddleware = (store) => (next) => (action) => {
     // TODO -------------------------------------------------------
     case 'other-documents/editPermFile':{
       const { id } = action.payload;
-
+      console.log(action.payload);
       fileApi.post(`/api/file/perm/update/${id}`, action.payload)
         .then((response) => {
 

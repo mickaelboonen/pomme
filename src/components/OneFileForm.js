@@ -19,9 +19,11 @@ import './style.scss';
 
 const OneFileForm = () => {
   
-  const { docs: { action, type },
+  const { docs: { action, type, agentDocs},
     app: { user },
   } = useSelector((state) => state)
+
+  const docToUpdate = agentDocs.find((doc) => doc.type === type);
 
   const dispatch = useDispatch();
   const {
@@ -49,13 +51,13 @@ const OneFileForm = () => {
   }
   
   const onSubmit = (data) => {
-    console.log(data);
+    console.log(data, action);
     if (data.file instanceof File) {
       if (action === "add") {
         dispatch(addPermFile({data: data, type: type, user: user}));
       }
       else if (action === 'edit') {
-        dispatch(editPermFile({data: data, type: type, user: user, id: 12}));
+        dispatch(editPermFile({data: data, type: type, user: user, id: docToUpdate.id}));
       }
     }
     else {
@@ -73,7 +75,7 @@ const OneFileForm = () => {
               register={register}
               formField="file"
               id="lol"
-              fileName=""
+              fileName={docToUpdate.name}
               label="Sélectionner un fichier à télécharger"
               setValue={setValue}
               error={errors.file}
