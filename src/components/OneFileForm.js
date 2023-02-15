@@ -75,7 +75,7 @@ const OneFileForm = () => {
               register={register}
               formField="file"
               id="lol"
-              fileName={docToUpdate.name}
+              fileName={docToUpdate ? docToUpdate.name : ''}
               label="Sélectionner un fichier à télécharger"
               setValue={setValue}
               error={errors.file}

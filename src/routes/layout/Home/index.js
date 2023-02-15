@@ -18,7 +18,7 @@ const Home = () => {
   
   const navigate = useNavigate();
   const { app: { isModalOpen, user, isAuthenticated},
-    omForm: { nextOMTarget},
+    omForm: { nextOMTarget, omForm},
   } = useSelector((state) => state);
 
 
@@ -59,9 +59,9 @@ const Home = () => {
       </div>
       </section>
       <section className="home__new" style={{height: '20rem'}}>
-        {/* <PDFViewer>
+        <PDFViewer>
           <MyPDF data={omForm[0].data} />
-        </PDFViewer> */}
+        </PDFViewer>
       </section>
       <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
       {isModalOpen && <Modal target={newTarget.replace(/-/g, ' ')} user={user} />}
