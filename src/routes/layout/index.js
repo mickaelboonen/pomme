@@ -12,8 +12,11 @@ const Layout = ({ cas }) => {
   const theme = localStorage.getItem('theme');
   const colorTheme = localStorage.getItem('color-theme');
 
-  // const devHost = '10.30.20.87:8080'
-  const devHost = '192.168.56.1:8080'
+  const x = process.env;
+  console.log(x);
+  const devHost = process.env.DEV_HOST + ':8080';
+  console.log(devHost);
+  // const devHost = '192.168.56.1:8080'
   const { host } = useLoaderData();
 
   const { isAuthenticated } = useSelector(state => state.app);    

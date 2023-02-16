@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Map from 'src/assets/images/map.svg';
-import Pin from 'src/assets/images/pin.svg';
 
 import './style.scss';
 
@@ -18,7 +17,6 @@ import FileField from 'src/components/Fields/FileField';
 import TextField from 'src/components/Fields/TextField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import HiddenField from 'src/components/Fields/HiddenField';
-import SelectField from 'src/components/Fields/SelectField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import RefusalMessage from 'src/components/Fields/RefusalMessage';
 import TextFieldWithIcon from 'src/components/Fields/TextFieldWithIcon';
@@ -32,7 +30,6 @@ import { getSavedFileName } from 'src/selectors/formDataGetters';
 import { clearMessage } from 'src/reducer/app';
 import { enableMissionFormFields } from 'src/reducer/efForm';
 import { uploadFile, updateOmName, updateMission } from 'src/reducer/omForm';
-import RequestWithFile from '../../../components/Fields/RequestWithFile';
 import ScientificEvent from './ScientificEventFields';
 
 const Mission = ({ step, isEfForm }) => {
@@ -44,7 +41,7 @@ const Mission = ({ step, isEfForm }) => {
   const areWeUpdatingData = loader.pathname.includes('modifier');
   
 
-  const { app: { apiMessage },
+  const { app: { apiMessage, user },
     omForm: { currentOM, omForm, refusal, adresses },
     efForm: { isMissionFormDisabled }
   } = useSelector((state) => state);
@@ -196,10 +193,10 @@ const Mission = ({ step, isEfForm }) => {
         }
        
         const dateForFile = `${departure.getDate()}-${departure.getMonth() + 1}-${departure.getFullYear()}`;
-        const currentOmName = currentOM.name.split('_');
-        
-        if (currentOmName[2] !== dateForFile) {
-          dispatch(updateOmName({omId: data.omId, name: dateForFile}));
+        const newOmName = `OM_${data.missionAddress.city.toUpperCase()}_${dateForFile}_${user.toUpperCase()}`;
+        console.log(currentOM.name,  newOmName, currentOM.name !== newOmName);
+        if (currentOM.name !== newOmName) {
+          dispatch(updateOmName({omId: data.omId, date: dateForFile, place: data.missionAddress.city}));
         }
       }
     }
@@ -352,24 +349,12 @@ const Mission = ({ step, isEfForm }) => {
       </div>
       <div className='form__section'>
         <FormSectionTitle>Lieu de la mission</FormSectionTitle>
-
-        {/* <TextFieldWithIcon
-          disabled={isEfForm && isMissionFormDisabled}
-          isHidden={false}
-          id="missionAdress"
-          name="Adresse de la mission"
-          icon={Pin}
-          register={register}
-          required={errorMessages.missionAdress}
-          error={errors.missionAdress}
-        /> */}
         <Address
           disabled={isEfForm && isMissionFormDisabled}
           addressType="de la mission"
           register={register}
           errors={errors}
           errorMessages={errorMessages}
-          // data={defaultValues.address}
         />
         <div className="form__section form__section--split">
           <RadioInput

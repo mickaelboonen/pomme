@@ -102,6 +102,7 @@ const Address = ({
         <div className="address__section">
           <TextField
             id="street-number-field"
+            disabled={disabled}
             isNumber
             min="0"
             formField={"streetNumber" + suffixe}

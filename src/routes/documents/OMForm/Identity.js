@@ -90,7 +90,7 @@ const Identity = ({ step, isEfForm }) => {
           <p className="form__section-field-label">Qualité : </p>
           <RadioInput disabled id="Mme" formField="gender" label="Madame" register={register} />
           <RadioInput disabled id="M." formField="gender" label="Monsieur" register={register} />
-          <RadioInput disabled id="Mlle" formField="gender" label="Mademoiselle" register={register} />
+          {/* <RadioInput disabled id="Mlle" formField="gender" label="Mademoiselle" register={register} /> */}
           {/* <RadioInput id="non-binary" formField="gender" label="Non Binaire" register={register} /> */}
         </div>
         <div className='form__section form__section--documents' id="other-fields">
@@ -228,14 +228,14 @@ const Identity = ({ step, isEfForm }) => {
         </div>
       </div>
       {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
-      <Buttons
+      {/* <Buttons
         step={step}
         id={omId}
         url={loader}
         watch={watch}
         update={updateMission}
         trigger={trigger}
-      />
+      /> */}
     </form>
     
   );

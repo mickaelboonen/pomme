@@ -37,6 +37,25 @@ const Buttons = ({ trigger, step, url, id, watch, update, secondUpdate, userSign
     
     if (step === 1) { // --------------------------------------------------------------------------------
 
+      data.missionAddress = {
+        id: data.addressId,
+        streetNumber: data.streetNumber,
+        bis: data.bis,
+        streetType: data.streetType,
+        streetName: data.streetName,
+        postCode: data.postCode,
+        city: data.city,
+      }
+  
+      delete data.addressId;
+      delete data.streetNumber;
+      delete data.bis;
+      delete data.streetType;
+      delete data.streetName;
+      delete data.postCode;
+      delete data.city;
+      delete data.missionAdress;
+
       const fileObject = data.missionPurposeFile.find((file) => file instanceof File);
       console.log(fileObject);
       if (fileObject) {

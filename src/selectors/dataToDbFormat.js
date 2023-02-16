@@ -316,7 +316,7 @@ export const agentDataToAppFormat = (data) => {
     cityPro:professionalAddress.ville,
     employer:'unimes',
     firstname:agent.prenom,
-    gender:agent.cCivilite,
+    gender:agent.cCivilite === 'Mlle' ? 'Mme' : agent.cCivilite,
     lastname:agent.nomAffichage,
     postCode:personalAddress.codePostal,
     postCodePro:professionalAddress.codePostal,

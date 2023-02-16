@@ -37,7 +37,7 @@ const Modal = ({ target, user }) => {
 
     if (target === 'ordre de mission') {
       const newOM = {
-        name: `OM_${user}_`,
+        name: `OM_NULL_NULL_${user.toUpperCase()}`,
         status: 1,
         url: 'path',
         missioner: user,
@@ -50,7 +50,7 @@ const Modal = ({ target, user }) => {
     }
     else if (target === 'état de frais') {
       const newEF = {
-        name: `EF_${user}_`,
+        name: `EF_NULL_NULL_${user.toUpperCase()}`,
         status: 1,
         url: 'path',
         missioner: user,
