@@ -72,7 +72,7 @@ const Avance = ({ step }) => {
     { errors },
   } = useForm({ defaultValues: defaultValues});
   
-  const [total, otherExpensesAmount] = watch(['total', 'otherExpensesAmount']);
+  const [total] = watch(['total']);
   // console.log(defaultValues.advance);
   const [isAdvanceRequested, setIsAdvanceRequested] = useState(defaultValues.advance);
 
@@ -122,9 +122,8 @@ const Avance = ({ step }) => {
       data.meals = maxMealsNumber;
       data.nights = Number(maxNightsNumber);
       data.status = 1;
-      const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);      
-
-
+      const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);    
+      
       if ( dataToBeSubmitted.agentRib instanceof File || dataToBeSubmitted.hotelQuotation instanceof File) {
 
         dispatch(uploadFile({data: dataToBeSubmitted, step: 'advance'}))

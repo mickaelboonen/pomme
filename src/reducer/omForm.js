@@ -223,6 +223,7 @@ const omFormSlice = createSlice({
       },
       saveAdvance: (state, action) => {
         const dataForApp = declareCamelCaseKeys(action.payload);
+        console.log("Save Advance data : ", dataForApp);
         const dataForTheComponent =  {
           advance: false,
           savedRib: false,
@@ -240,7 +241,7 @@ const omFormSlice = createSlice({
           || dataForApp.otherExpensesAmount > 0) {
             dataForTheComponent.advance = true;
           }
-        console.log(dataForTheComponent);
+          
         state.omForm[3].data = dataForTheComponent;
         state.omLoader = false;
       },
