@@ -213,10 +213,10 @@ export const handlePartialDayMeals = (missionStep, hour, mealNumber) => {
 
     if (missionStep === 'departure') {
       
-      if (hour > 21) {
+      if (hour >= 21) {
         return mealNumber;
       }
-      else if (hour > 14) {
+      else if (hour >= 14) {
         mealNumber += 1;
       }
       else {
@@ -224,15 +224,15 @@ export const handlePartialDayMeals = (missionStep, hour, mealNumber) => {
       }
     }
     else {
-      if (hour > 21) {
-        return mealNumber;
-      }
-      else if (hour > 14) {
-        mealNumber += 1;
-      }
-      else if (hour > 11) {
+      if (hour >= 21) {
         mealNumber += 2;
       }
+      else if (hour >= 14) {
+        mealNumber += 1;
+      }
+      // else if (hour > 11) {
+      //   mealNumber += 2;
+      // }
 
     }
     return mealNumber;
@@ -248,10 +248,6 @@ export const getMaxMealsAndNights = (data, forNights = false) => {
     const lastDay = comeback.getDate();
 
     const isSameMonth = depart.getMonth() === comeback.getMonth();
-    console.log(isSameMonth);
-
-      const timeToDepart = depart.getHours();
-      const timeToLeave = comeback.getHours();
 
     if (isSameMonth) {
 
@@ -279,8 +275,13 @@ export const getMaxMealsAndNights = (data, forNights = false) => {
 
     }
 
+    const timeToDepart = depart.getHours();
+    const timeToLeave = comeback.getHours();
+    console.log(maxMealNumber);
     maxMealNumber = handlePartialDayMeals('departure', timeToDepart, maxMealNumber);
+    console.log(maxMealNumber);
     maxMealNumber = handlePartialDayMeals('return', timeToLeave, maxMealNumber);
+    console.log(maxMealNumber);
 
     return maxMealNumber;
 }
