@@ -139,14 +139,16 @@ const Avance = ({ step }) => {
     setIsAdvanceRequested(event.target.checked);
   };
   
+  const [advance, setAdvance] = useState(defaultValues.advanceAmount ? defaultValues.advanceAmount : 0)
 
   useEffect(() => {
 
     if (total) {
-      const advanceInput = document.getElementById('advance-amount');
+      // const advanceInput = document.getElementById('advance-amount');
       const advance = (total * 75) / 100;
-      advanceInput.max = advance;
-      advanceInput.placeholder= "Limite de l'avance : " + advance + " euros."
+      setAdvance(advance);
+      // advanceInput.max = advance;
+      // advanceInput.placeholder= "Limite de l'avance : " + advance + " euros."
     }
   }, [total]);
 
@@ -189,6 +191,8 @@ const Avance = ({ step }) => {
             <div className='form__section-half'>
               <TextField
                 id="advance-amount"
+                disabled
+                value={advance}
                 formField="advanceAmount"
                 register={register}
                 isNumber

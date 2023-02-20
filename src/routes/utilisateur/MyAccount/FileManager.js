@@ -115,7 +115,7 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
 
     </div>
     <div className='file-manager__buttons'>
-      {!needsSelect && (
+      {(!needsSelect && true === false) && (
         <button
           className='file-manager__buttons-button'
           onClick={handleDownload}

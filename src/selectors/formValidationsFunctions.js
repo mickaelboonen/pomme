@@ -281,11 +281,8 @@ export const getMaxMealsAndNights = (data, forNights = false) => {
 
     const timeToDepart = depart.getHours();
     const timeToLeave = comeback.getHours();
-    console.log(maxMealNumber);
     maxMealNumber = handlePartialDayMeals('departure', timeToDepart, maxMealNumber);
-    console.log(maxMealNumber);
     maxMealNumber = handlePartialDayMeals('return', timeToLeave, maxMealNumber);
-    console.log(maxMealNumber);
 
     return maxMealNumber;
 }
