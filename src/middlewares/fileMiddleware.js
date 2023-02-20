@@ -101,7 +101,7 @@ const omMiddleware = (store) => (next) => (action) => {
       }
       else if (step === 'authorization') {
 
-        if (data.externalSignature && typeof data.externalSignature !== 'string') {
+        if (data.externalSignature instanceof File) {
           const signature = {
             omId: data.omId,
             type: 'externalSignature',

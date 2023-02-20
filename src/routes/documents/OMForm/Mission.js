@@ -154,8 +154,11 @@ const Mission = ({ step, isEfForm }) => {
       let errorCount = 0;
 
       if (diffDays < 0) {
-        setError('comeback', {type: 'custom', message: 'La date de retour ne peut précéder la date de départ.'});
-        errorCount++;
+        if (comeback.getMonth() <= departure.getMonth()) {
+          setError('comeback', {type: 'custom', message: 'La date de retour ne peut précéder la date de départ.'});
+          errorCount++;
+        }
+        return;
       }
       else if (diffDays === 0) {
 
