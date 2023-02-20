@@ -219,6 +219,10 @@ export const handlePartialDayMeals = (missionStep, hour, mealNumber) => {
       else if (hour >= 14) {
         mealNumber += 1;
       }
+      
+      else if (hour > 11) {
+        mealNumber += 1;
+      }
       else {
         mealNumber += 2;
       }
