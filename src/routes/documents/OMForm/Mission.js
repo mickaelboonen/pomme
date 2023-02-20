@@ -158,7 +158,6 @@ const Mission = ({ step, isEfForm }) => {
           setError('comeback', {type: 'custom', message: 'La date de retour ne peut précéder la date de départ.'});
           errorCount++;
         }
-        return;
       }
       else if (diffDays === 0) {
 

@@ -247,15 +247,38 @@ export const getMaxMealsAndNights = (data, forNights = false) => {
     const firstDay = depart.getDate();
     const lastDay = comeback.getDate();
 
-    if (forNights) {
-      return lastDay - firstDay;
+    const isSameMonth = depart.getMonth() === comeback.getMonth();
+    console.log(isSameMonth);
+
+      const timeToDepart = depart.getHours();
+      const timeToLeave = comeback.getHours();
+
+    if (isSameMonth) {
+
+      if (forNights) {
+        return lastDay - firstDay;
+      }
+      
+      const fullDays = lastDay - firstDay - 1;
+      maxMealNumber += (fullDays * 2);
+
     }
-    
-    const timeToDepart = depart.getHours();
-    const timeToLeave = comeback.getHours();
-    const fullDays = lastDay - firstDay - 1;
-    maxMealNumber += (fullDays * 2);
-    
+    else {
+      const diffInTime = comeback.getTime() - depart.getTime();
+      let diffInDays = ( diffInTime / (1000 * 3600 * 24) );
+
+        if (forNights) {
+          return diffInDays;
+        }
+        
+      // We do so in order to get only the full days
+      diffInDays -= 1;
+        
+      // To calculate the no. of days between two dates
+      maxMealNumber += (diffInDays * 2);
+
+    }
+
     maxMealNumber = handlePartialDayMeals('departure', timeToDepart, maxMealNumber);
     maxMealNumber = handlePartialDayMeals('return', timeToLeave, maxMealNumber);
 
