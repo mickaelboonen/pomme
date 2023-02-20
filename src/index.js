@@ -78,13 +78,14 @@ const router = createBrowserRouter([
               const url = new URL(request.url);
               const step = url.searchParams.get("etape");
               const id = url.searchParams.get("id");
+              const { app: {user} } = store.getState()
 
               // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
               if (step === '3' || step === '4') {
                 store.dispatch(getMission(id));
               }
               else if (step === '5') {
-                store.dispatch(getSignature('mboone01'));
+                store.dispatch(getSignature(user));
               }
               else if (step === '2') {
                 // store.dispatch(getVehicles());
@@ -102,8 +103,9 @@ const router = createBrowserRouter([
             loader: async ({ request }) => {
               const url = new URL(request.url);
               const carId = url.searchParams.get('vehicle');
-              store.dispatch(getVehicles());
-              store.dispatch(getVehicleDocuments('mboone01'));
+              const { app: {user} } = store.getState()
+              store.dispatch(getVehicles({agent: user}));
+              store.dispatch(getVehicleDocuments(user));
               return url;  
             },    
           },
@@ -112,9 +114,10 @@ const router = createBrowserRouter([
             element: <VehicleUseForm />,
             loader: async ({ request }) => {
               const url = new URL(request.url);
+              const { app: {user} } = store.getState()
               const carId = url.searchParams.get('vehicle');
-              store.dispatch(getVehicles());
-              store.dispatch(getVehicleDocuments('mboone01'));
+              store.dispatch(getVehicles({agent: user}));
+              store.dispatch(getVehicleDocuments(user));
               return url;  
             },       
           },
