@@ -41,6 +41,7 @@ import { fetchOMs, getMission, fetchOm, getTransports, getAccomodations, getAdva
 
 
 import { persistor } from 'src/store';
+import TestPDF from "./routes/test/TestPDF";
 
 let casEndpoint = "cas.unimes.fr";
 let casOptions = { version: constant.CAS_VERSION_3_0,
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />
+      },
+      {
+        path: 'test/pdf',
+        element: <TestPDF />
       },
       // new document forms
       {

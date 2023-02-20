@@ -45,6 +45,11 @@ const DesktopHeader = ({ cas }) => {
             <div className="header__menu-section" id="a-signer">GESTIONNAIRE</div>
           </Link>
         )}
+        {user === 'mboone01' &&(
+          <Link to={`/test/pdf`}>
+            <div className="header__menu-section" id="a-signer">TEST PDF</div>
+          </Link>
+        )}
         <div className="header__menu-section" id="mon-compte" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
           <p>MON COMPTE</p>
           <ul className="header__menu-section-list">
