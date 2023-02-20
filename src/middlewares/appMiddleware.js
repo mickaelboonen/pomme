@@ -1,4 +1,4 @@
-import { saveSignature, validateAuthentication, saveUserData } from 'src/reducer/app';
+import { saveSignature, validateAuthentication, saveUserData, saveDocument } from 'src/reducer/app';
 
 import { api } from './api';
 import CasClient, { constant } from "react-cas-client";
@@ -36,6 +36,19 @@ const appMiddleware = (store) => (next) => (action) => {
         .then((response) => {
             if (response.data) {
               store.dispatch(saveSignature(response.data))
+            }
+        })
+        .catch((error) => {
+          console.error('get signature', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
+    case 'app/getDocument':
+      api.get(`/api/perm-file/${action.payload.type}/${action.payload.id}`)
+        .then((response) => {
+          console.log(response.data);
+            if (response.data) {
+              store.dispatch(saveDocument(response.data));
             }
         })
         .catch((error) => {

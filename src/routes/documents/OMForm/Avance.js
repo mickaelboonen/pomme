@@ -9,6 +9,8 @@ import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import RefusalMessage from 'src/components/Fields/RefusalMessage';
 import Buttons from 'src/components/Fields/Buttons';
+import CheckboxInput from 'src/components/Fields/CheckboxInput';
+
 import SwitchButton from 'src/components/SwitchButton';
 import TextField from 'src/components/Fields/TextField';
 import FileField from 'src/components/Fields/FileField';
@@ -35,7 +37,7 @@ const Avance = ({ step }) => {
   const areWeUpdatingData = loader.pathname.includes('modifier');
   
 
-  const { app: { apiMessage },
+  const { app: { apiMessage, agentDocuments },
     omForm: { omForm },
   } = useSelector((state) => state);
   
@@ -89,15 +91,15 @@ const Avance = ({ step }) => {
         clearErrors('hotelQuotation');
       }
       
-      if (!data.rib || data.rib.length === 0) {
+      if (!data.rib instanceof File && !data.savedRib) {
         setError('rib', { type: 'custom', message: "Veuillez fournir votre RIB." });
         errorCount++;
       }
       else {
         clearErrors('rib');
       }
+
       if (data.otherExpensesAmount > 0 && data.otherExpensesNames === '') {
-        console.log('error otherExpensesNames');
         setError('otherExpensesNames', { type: 'custom', message: "Merci de justifier le montant des autres frais." });
         errorCount++;
       }
@@ -108,6 +110,13 @@ const Avance = ({ step }) => {
       if (errorCount !== 0) {
         return;
       }
+
+      data.advanceAmount = Number(document.querySelector('#advance-amount').value);
+
+
+      if (data.savedRib) {
+        data.rib = agentDocuments.rib;
+      }
       
       // We upload the hotel quotation first
       data.meals = maxMealsNumber;
@@ -115,10 +124,9 @@ const Avance = ({ step }) => {
       data.status = 1;
       const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);      
 
-      console.log(dataToBeSubmitted);
 
-      if ( typeof dataToBeSubmitted.agentRib !== 'string' || typeof dataToBeSubmitted.hotelQuotation !== 'string') {
-        console.log('AM I HERE ?');
+      if ( dataToBeSubmitted.agentRib instanceof File || dataToBeSubmitted.hotelQuotation instanceof File) {
+
         dispatch(uploadFile({data: dataToBeSubmitted, step: 'advance'}))
       }
       else {
@@ -151,6 +159,28 @@ const Avance = ({ step }) => {
       // advanceInput.placeholder= "Limite de l'avance : " + advance + " euros."
     }
   }, [total]);
+
+  const [hasNoRibSaved, setHasNoRibSaved] = useState(agentDocuments.rib === '' ? true : false);
+  const savedRib = watch('savedRib');
+
+  useEffect(() => {
+    
+
+    if (!savedRib) {
+      setHasNoRibSaved(true);
+    }
+    else {
+      setHasNoRibSaved(false);
+    }
+  }, [savedRib])
+
+  useEffect(() => {
+    if (agentDocuments.rib) {
+      setHasNoRibSaved(false);
+      setValue("savedRib", true);
+    }
+  }, [agentDocuments.rib])
+
 
   const missionData = omForm[0].data;
 
@@ -198,7 +228,7 @@ const Avance = ({ step }) => {
                 isNumber
                 min="0"
                 label="Montant de l'avance"
-                required="Veuillez renseigner le montant de l'avance souhaitée."
+                // required="Veuillez renseigner le montant de l'avance souhaitée."
                 error={errors.advanceAmount}
               />
             </div>
@@ -266,9 +296,10 @@ const Avance = ({ step }) => {
             </div>
           </div>
           <p className='form__section-field-label form__section-field-label--infos'>Détail prévisionnel de la mission : énumérer les étapes du voyage (cf page suivante)</p>
-          <FormSectionTitle>Documents personnels</FormSectionTitle>
+
           <div className="form__section">
-            <FileField
+            <FormSectionTitle>Documents personnels</FormSectionTitle>
+            {/* <FileField
               setValue={setValue}
               register={register}
               formField="rib"
@@ -277,7 +308,28 @@ const Avance = ({ step }) => {
               fileName={ribFileName}
               error={errors.rib}
               // required="Veuillez fournir votre RIB."            
-            />
+            /> */}
+            {agentDocuments.rib && (
+              <div className="form__section-field">
+                <CheckboxInput
+                  register={register}
+                  formField="savedRib"
+                  id="saved-rib-field"
+                  label="Utiliser le RIB enregistré dans mon profil"
+                />
+              </div>
+            )}
+            {hasNoRibSaved && (
+              <FileField
+                setValue={setValue}
+                register={register}
+                formField="rib"
+                id="rib-file-field"
+                label="RIB"
+                fileName={ribFileName}
+                error={errors.rib}
+              />
+            )}
           </div>
         </div>
       )} 

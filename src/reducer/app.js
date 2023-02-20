@@ -3,6 +3,7 @@ import { agentDataToAppFormat } from '../selectors/dataToDbFormat';
 
 const defaultUser = process.env.NODE_ENV === 'development' ? process.env.DEFAULT_USER : '';
 console.log(defaultUser, ' : defaultUser');
+
 const initialState = {
   user: defaultUser,
   userSignature: null,
@@ -11,6 +12,9 @@ const initialState = {
   isModalOpen: false,
   isAuthenticated: false,
   agent: {},
+  agentDocuments:{
+    rib: false,
+  },
 };
 const omFormSlice = createSlice({
     name: 'app',
@@ -45,13 +49,17 @@ const omFormSlice = createSlice({
         state.appLoader = true;
       },
       saveUserData: (state, action) => {
-        console.log('REDUCER : ',action.payload);
-
         const data = agentDataToAppFormat(action.payload);
         
         state.agent = data;
         state.appLoader = false;
         
+      },
+      getDocument: () => {
+
+      },
+      saveDocument: (state, action) => {
+        state.agentDocuments[action.payload.type] = action.payload.url;
       },
     },
 });
@@ -68,6 +76,8 @@ export const {
   validateAuthentication,
   fetchUserData,
   saveUserData,
+  getDocument,
+  saveDocument,
 } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

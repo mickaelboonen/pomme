@@ -225,6 +225,7 @@ const omFormSlice = createSlice({
         const dataForApp = declareCamelCaseKeys(action.payload);
         const dataForTheComponent =  {
           advance: false,
+          savedRib: false,
           omId: dataForApp.om.id,
           total: dataForApp.totalAmount,
           advanceAmount: dataForApp.advanceAmount,
