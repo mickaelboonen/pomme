@@ -17,8 +17,8 @@ import HomepageTitle from './HomepageTitle';
 const Home = () => {
   
   const navigate = useNavigate();
-  const { app: { isModalOpen, user, isAuthenticated},
-    omForm: { nextOMTarget, omForm},
+  const { app: { isModalOpen, user, isAuthenticated, agent},
+    omForm: { nextOMTarget, omForm, currentOM},
   } = useSelector((state) => state);
 
 
@@ -58,9 +58,9 @@ const Home = () => {
         </div> */}
       </div>
       </section>
-      <section className="home__new" style={{height: '20rem'}}>
-        <PDFViewer>
-          <MyPDF data={omForm[0].data} />
+      <section className="home__new" style={{height: '40rem'}}>
+        <PDFViewer width="100%" height="100%">
+          <MyPDF data={omForm} agent={agent} om={currentOM} />
         </PDFViewer>
       </section>
       <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
