@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { PDFDownloadLink, BlobProvider, Page } from '@react-pdf/renderer';
 
 import './style.scss';
 
 // Components
-import Buttons from 'src/components/Fields/Buttons';
+
 import ApiResponse from 'src/components/ApiResponse';
 import TextField from 'src/components/Fields/TextField';
 import RadioInput from 'src/components/Fields/RadioInput';
+import FileField from 'src/components/Fields/FileField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
+import Address from '../../../components/Fields/Address';
+import MyPDF from 'src/components/PDF';
 
 // Selectors 
 import {  defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
 
 // Reducer
 import { clearMessage } from 'src/reducer/app';
-import { updateMission } from 'src/reducer/omForm';
-import Address from '../../../components/Fields/Address';
+import { uploadFile, saveOmPdf } from 'src/reducer/omForm';
+
 
 const Identity = ({ step, isEfForm }) => {
   
@@ -47,11 +51,10 @@ const Identity = ({ step, isEfForm }) => {
       }, "5000")
     }
   }, [apiMessage])
-
-  console.log(agent);
+  
     const {
-    register, handleSubmit, watch,
-    trigger, formState:
+    register, handleSubmit, watch, setValue,
+    trigger, getValues, formState:
     { errors }
   } = useForm({
     defaultValues: agent
@@ -60,10 +63,8 @@ const Identity = ({ step, isEfForm }) => {
 
   const onSubmit = (data) => {
     console.log(data);
-
   };
-
-  console.log(errors)
+  
   const errorMessages = defineValidationRulesForMission(isEfForm, false);
 
 
@@ -78,10 +79,21 @@ const Identity = ({ step, isEfForm }) => {
   }
 
   const toggleIsCivil = (event) => {
-    console.log(event.target.value)
     setIsCivil(event.target.id);
   }
+
+  ///-------------------------------------------------------------------------------------------------------------------------------------------------------
   
+  const { vehicle: { vehicleTypes },
+} = useSelector((state) => state);
+  const generatePDF = () => {
+    const a = getValues('om');
+    
+    dispatch(uploadFile({ data: {omId: omId , file: a}, step: 'om'}))
+  }
+  
+  
+  ///-------------------------------------------------------------------------------------------------------------------------------------------------------
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section">
@@ -228,14 +240,30 @@ const Identity = ({ step, isEfForm }) => {
         </div>
       </div>
       {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
-      {/* <Buttons
-        step={step}
-        id={omId}
-        url={loader}
-        watch={watch}
-        update={updateMission}
-        trigger={trigger}
-      /> */}
+      <div className="form__section">
+        <div className="form__section-field-buttons">
+          <button type='button' onClick={generatePDF}>lol</button>
+          {/* <PDFDownloadLink document={<MyPDF data={omForm} agent={agent} om={currentOM} vehicleTypes={vehicleTypes} />} fileName="somename.pdf">
+            {({ blob, url, loading, error }) =>
+              loading ? 'Loading document...' : 'Download now!'
+            }
+          </PDFDownloadLink> */}
+          <BlobProvider document={<MyPDF data={omForm} agent={agent} om={currentOM} vehicleTypes={vehicleTypes} />}>
+            {({ blob, url, loading, error }) => {
+
+              const file = new File([blob], 'name', {type: 'mime'});
+              
+              setValue('om', file);
+              
+              return (
+                <>
+                  <button type='button' files={file} onClick={generatePDF}>HERE</button>
+                </>
+                );
+            }}
+          </BlobProvider>
+        </div>
+      </div>
     </form>
     
   );

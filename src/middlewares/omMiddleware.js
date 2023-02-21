@@ -219,17 +219,29 @@ const omMiddleware = (store) => (next) => (action) => {
         });
       break;
     
-    case 'omForm/createDerogation':
-      console.log('here');
-      api.post("/api/om/derogation/create", action.payload)
-        .then((response) => {
-            store.dispatch(validateSideForm(response.data));
-        })
-        .catch((error) => {
-          console.error('get signature', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
-        });
-      break;
+      case 'omForm/createDerogation':
+        console.log('here');
+        api.post("/api/om/derogation/create", action.payload)
+          .then((response) => {
+              store.dispatch(validateSideForm(response.data));
+          })
+          .catch((error) => {
+            console.error('get signature', error);
+            // store.dispatch(showTicketCreationResponse(error.response))
+          });
+        break;
+      case 'omForm/updateOm':
+        console.log('here');
+        api.post("/api/om/update", action.payload)
+          .then((response) => {
+            console.log(response)
+              // store.dispatch(validateSideForm(response.data));
+          })
+          .catch((error) => {
+            console.error('get signature', error);
+            // store.dispatch(showTicketCreationResponse(error.response))
+          });
+        break;
     
   
     default:

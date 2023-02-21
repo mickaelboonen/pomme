@@ -88,6 +88,7 @@ const initialState = {
       data: {},
     }, 
   ],
+  omPdf: "null",
   currentOM: {},
   nextOMTarget: '',
   OMTabs: [
@@ -128,6 +129,9 @@ const omFormSlice = createSlice({
         state.currentOM = omToDisplay ? omToDisplay : {};
       },
       saveOm: () => {},
+      saveOmPdf: (state, action) => {
+        state.omPdf= action.payload
+      },
       fetchOm: () => {},
       addNewOM: () => {},
       fetchOMs: () => {},
@@ -155,6 +159,7 @@ const omFormSlice = createSlice({
         state.omLoader = true;
       },
       updateMoreAndSignature: () => {},
+      updateOm: () => {},
       updateOmName: () => {},
       updateAdvance: () => {},
       updateSignature: () => {},
@@ -283,6 +288,8 @@ export const {
   clearOMTarget,
   selectData,
   displayOmStatus,
+  saveOmPdf,
+  updateOm,
 } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

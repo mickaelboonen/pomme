@@ -1,4 +1,4 @@
-import { updateTransports, updateAdvance, updateMoreAndSignature, updateMission, updateSignature } from 'src/reducer/omForm';
+import { updateOm, updateTransports, updateAdvance, updateMoreAndSignature, updateMission, updateSignature } from 'src/reducer/omForm';
 import { fileApi, api } from './api';
 import { requestVehicleAuthorization, saveVehicles } from '../reducer/vehicle';
 import { toggleDocModal, saveAllPermDocs } from '../reducer/otherDocuments';
@@ -13,6 +13,7 @@ const omMiddleware = (store) => (next) => (action) => {
   switch (action.type) {
     case 'omForm/uploadFile':
       const filesToUpload = [];
+      console.log('IN THE MIDDLEWARE', action.payload);
 
       const { data, step, docType } = action.payload;
       console.log('DATA IN THE FILEMIDDLEWARE : ', data);
@@ -76,17 +77,15 @@ const omMiddleware = (store) => (next) => (action) => {
           }
         })
       }
-      // else if (step === "more") {
-      //   console.log(data);
-      //   data.files.forEach((file) => {
-      //     const fileToUpload = {
-      //       omId: data.omId,
-      //       type: 'more',
-      //       file: file,
-      //     }
-      //     filesToUpload.push(fileToUpload);
-      //   })
-      // }
+      else if (step === "om") {
+        console.log(data);
+        const fileToUpload = {
+          omId: data.omId,
+          type: 'om',
+          file: data.file,
+        }
+        filesToUpload.push(fileToUpload);
+      }
       else if (step === 'mission') {
         data.missionPurposeFile.forEach((file) => {
           if (file instanceof File) {
@@ -133,7 +132,7 @@ const omMiddleware = (store) => (next) => (action) => {
         }
       }
       console.log('filesToUpload - ', filesToUpload);
-      
+      // return;
       const type = docType ? docType : 'om';
       // TODO : See if POST method is the right one ? Methods that can add files (post) and delete them (delete)
       fileApi.post(`/api/files/${type}/${step}`, filesToUpload)
@@ -187,6 +186,9 @@ const omMiddleware = (store) => (next) => (action) => {
             else if (file.type === 'registration') {
               data.registration_document = file.file.url;
             }
+            else if (file.type === 'om') {
+              data.url = file.file.url;
+            }
           })
           
           // Now updates the transports values in the database
@@ -214,6 +216,10 @@ const omMiddleware = (store) => (next) => (action) => {
           else if (step === 'authorization') {
             console.log('before update : ', data);
             store.dispatch(requestVehicleAuthorization(data));
+          }
+          else if (step === 'om') {
+            console.log('before update : ', data);
+            store.dispatch(updateOm(data));
           }
           
         })
