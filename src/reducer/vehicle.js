@@ -3,6 +3,24 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   vehicles: [],
   unimesVehicles: [],
+  vehicleTypes: [
+    {
+      id: 0,
+      name: 'Véhicule personnel, de prêt'
+    },
+    {
+      id: 1,
+      name: 'Covoiturage (passager)'
+    },
+    {
+      id: 2,
+      name: 'Véhicule de service'
+    },
+    {
+      id: 3,
+      name: 'Véhicule de location'
+    },
+  ],
   documents: [],
   currentVehicle: {},
   formDefaultValues: {

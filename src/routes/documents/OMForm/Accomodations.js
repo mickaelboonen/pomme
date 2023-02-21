@@ -64,7 +64,7 @@ const Accomodations = ({ step }) => {
 
   const onSubmit = (data) => {
     console.log("------------------------------------------------------", data, "------------------------------------------------------");
-
+    // return;
     const mealsErrorElement = document.getElementById('meals-error');
     const nightsErrorElement = document.getElementById('nights-error');
     const totalMeals = Number(data.mealsInAdminRestaurants) + Number(data.mealsPaidByAgent);
@@ -95,6 +95,7 @@ const Accomodations = ({ step }) => {
       data.status = 1;
       const dataToBeSubmitted = turnAccomodationDataToDbFormat(data);
       console.log(dataToBeSubmitted);
+      
       dispatch(updateAccomodations(dataToBeSubmitted));
     }    
   };

@@ -18,6 +18,7 @@ const TestPDF = () =>   {
   const navigate = useNavigate();
   const { app: { isModalOpen, user, isAuthenticated, agent},
     omForm: { nextOMTarget, omForm, currentOM},
+    vehicle: { vehicleTypes },
   } = useSelector((state) => state);
 
 
@@ -39,7 +40,7 @@ const TestPDF = () =>   {
       <HomepageTitle />
       <section className="home__new" style={{height: '40rem'}}>
         <PDFViewer width="100%" height="100%">
-          <MyPDF data={omForm} agent={agent} om={currentOM} />
+          <MyPDF data={omForm} agent={agent} om={currentOM} vehicleTypes={vehicleTypes} />
         </PDFViewer>
       </section>
       <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
