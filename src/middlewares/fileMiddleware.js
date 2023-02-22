@@ -1,7 +1,7 @@
 import { updateOm, updateTransports, updateAdvance, updateMoreAndSignature, updateMission, updateSignature } from 'src/reducer/omForm';
 import { fileApi, api } from './api';
 import { requestVehicleAuthorization, saveVehicles } from '../reducer/vehicle';
-import { toggleDocModal, saveAllPermDocs } from '../reducer/otherDocuments';
+import { toggleDocModal, saveAllPermDocs, saveAgentSignatureForPdf} from '../reducer/otherDocuments';
 import { setApiResponse } from '../reducer/app';
 
 
@@ -282,6 +282,19 @@ const omMiddleware = (store) => (next) => (action) => {
       break;
         break;
 
+    case 'other-documents/fetchAgentSignatureForPdf':
+      console.log(action.payload);
+      fileApi.post('/api/agent/signature', action.payload)
+        .then((response) => {
+          console.log('RIGHT HERE RIGHT NOW : ', response);
+          response.uri = response.data;
+          store.dispatch(saveAgentSignatureForPdf(response));
+        })
+        .catch((error) => {
+          console.error('error fetchAgentSignatureForPdf', error);
+          // TODO : error
+        });
+      break;
     default:
   }
   next(action);

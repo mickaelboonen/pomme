@@ -21,6 +21,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Radjhani',
     marginTop: 20,
   },
+  signature: {
+    // maxWidth: 100,
+    // height: 100,
+  },
   firstSection: {
     padding: 10,
   },
@@ -99,17 +103,29 @@ const styles = StyleSheet.create({
   }
 });
 
-const MyPDF = ({ data, agent, om, vehicleTypes}) => {
+const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
   
-  const [mission, transports, accomodation, advance, signature] = data;
-  console.log(signature.data);
-  const dep = new Date(mission.data.departure);
-  const ret = new Date(mission.data.comeback);
+  // console.log(data);
+  const {mission, transports, accomodations, advance, signature, more} = data;
   
-
-  const chosenVehicleType = vehicleTypes.find((type) => type.id === transports.data.vehicle );
-  const maxMealsNumber = getMaxMealsAndNights(mission.data);
-  const freeMeals = maxMealsNumber - (accomodation.data.mealsPaidByAgent + accomodation.data.mealsInAdminRestaurants);
+  const dep = new Date(mission.departure);
+  const ret = new Date(mission.comeback);
+  
+  // Transports
+  const chosenVehicleType = vehicleTypes.find((type) => type.id === transports.vehicle );
+  const otherMeansofTransports = [];
+  if (transports.taxi) {
+    otherMeansofTransports.push('taxi');
+  }
+  if (transports.ferry) {
+    otherMeansofTransports.push('ferry');
+  }
+  if (transports.parking) {
+    otherMeansofTransports.push('parking');
+  }
+  
+  const maxMealsNumber = getMaxMealsAndNights(mission);
+  const freeMeals = maxMealsNumber - (accomodations.meals_paid_by_agent + accomodations.meals_in_admin_restaurants);
 
   
 
@@ -125,15 +141,15 @@ const MyPDF = ({ data, agent, om, vehicleTypes}) => {
         <Text style={styles.header.title}>ORDRE DE MISSION</Text>
       </View>
       <View style={[styles.section, {marginTop: '20'}]}>
-        <Text>Ordre de Mission : {om.is_ponctual ? 'PONCTUEL' : 'PERMANENT'}</Text>
-        {om.expenses && (
+        <Text>Ordre de Mission : {data.is_ponctual ? 'PONCTUEL' : 'PERMANENT'}</Text>
+        {data.expenses && (
           <Text>Avec frais pris en charge par Unîmes, à transmettre au service financier après visa du service supportant la dépense.</Text>
         )}
-        {!om.expenses && (
+        {!data.expenses && (
           <Text>Sans frais, notamment pris en charge par un organisme extérieur, à transmettre à la DRH.</Text>
         )}
       </View>
-      <View style={styles.section}>
+      <View style={styles.section} wrap={false}>
           <Text style={styles.section.title}>SERVICE OU DÉPARTEMENT</Text>
           <View style={{display: 'flex', width: '100%', flexDirection: 'row', borderBottom: '1px solid #1a1a1a', borderRight: '1px solid #1a1a1a'}}>
             {gestArray.map((cat) => (
@@ -154,7 +170,7 @@ const MyPDF = ({ data, agent, om, vehicleTypes}) => {
 
       </View>
       <View style={styles.section}>
-        <Text style={styles.section.title}>MISSIONNAIRE</Text>
+        <Text style={styles.section.title} wrap={false}>MISSIONNAIRE</Text>
         <Text style={styles.section.text}>Qualité : {agent.gender} {agent.lastname.toUpperCase()} {agent.firstname}</Text>
         <Text style={styles.section.text}>Statut : {agent.unimesStatus} de catégorie {agent.unimesCategory}</Text>
         <Text style={styles.section.text}>Service / Département : {agent.unimesDepartment}</Text>
@@ -165,91 +181,93 @@ const MyPDF = ({ data, agent, om, vehicleTypes}) => {
         </View>
       </View>
       <View style={styles.section}>
-        <Text style={styles.section.title}>MISSION</Text>
-        <Text style={styles.section.text}>Motif de la mission : {mission.data.missionPurpose}</Text>
-        <Text style={styles.section.text}>Adresse de la mission : {mission.data.streetNumber} {mission.data.bis} {mission.data.streetType} {mission.data.streetName} {mission.data.postCode} {mission.data.city}</Text>
-        {mission.data.region === 'dom-tom' && (
-          <Text>Mission dans les DOM-TOM avec un forfait {mission.data.abroadCosts === "per-diem" ? 'per diem' : 'frais réels'}</Text>
+        <Text style={styles.section.title} wrap={false}>MISSION</Text>
+        <Text style={styles.section.text}>Motif de la mission : {mission.mission_purpose}</Text>
+        <Text style={styles.section.text}>Adresse de la mission : {mission.address.streetNumber} {mission.address.bis} {mission.address.streetType} {mission.address.streetName} {mission.address.postCode} {mission.address.city}</Text>
+        {mission.region === 'dom-tom' && (
+          <Text>Mission dans les DOM-TOM avec un forfait {mission.abroad_costs === "per-diem" ? 'per diem' : 'frais réels'}</Text>
         )}
-        {mission.data.region === 'étranger' && (
+        {mission.region === 'étranger' && (
           <>
-            <Text>Mission dans le pays : {mission.data.country.toUpperCase()}, avec un forfait {mission.data.abroadCosts === "per-diem" ? 'per diem' : 'frais réels'}</Text>
+            <Text>Mission dans le pays : {mission.country.toUpperCase()}, avec un forfait {mission.abroad_costs === "per-diem" ? 'per diem' : 'frais réels'}</Text>
             <Text>Le Compte rendu est à fournir au retour de la mission si financement RI.</Text>
           </>
         )}
         <Text style={styles.section.subtitle}>Modalités de la mission</Text>
         <View style={styles.flexSection}>
-          <View style={styles.halfSection} borderRight='1px solid red'>
+          <View style={styles.halfSection}>
             <Text style={{textAlign:"center", padding: '4'}}>Début de mission</Text>
             <Text style={styles.section.text}>Date et heure : {dep.toLocaleString()}</Text>
-            <Text style={styles.section.text}>Lieu de départ : {mission.data.departurePlace.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}</Text>
+            <Text style={styles.section.text}>Lieu de départ : {mission.departure_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}</Text>
           </View>
           <View style={styles.separator} />
           <View style={styles.halfSection}>
             <Text style={{textAlign:"center", padding: '4'}}>Fin de mission</Text>
             <Text style={styles.section.text}>Date et heure : {ret.toLocaleString()}</Text>
-            <Text style={styles.section.text}>Lieu d'arrivée : {mission.data.comebackPlace.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}</Text>
+            <Text style={styles.section.text}>Lieu d'arrivée : {mission.comeback_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}</Text>
           </View>
         </View>
       </View>
       <View style={styles.section}>
-        <Text style={styles.section.title}>TRANSPORTS</Text>
-        <Text style={styles.section.text}>Modalités de déplacement pour la mission : {!isNaN(transports.data.vehicle) ? 'Voiture - ' : ''}{transports.data.trainClass ? 'Train - ' : ''}{transports.data.planeClass ? 'Avion' : ''}</Text>
+        <Text style={styles.section.title} wrap={false}>TRANSPORTS</Text>
+        <Text style={styles.section.text}>Modalités de déplacement pour la mission : {!isNaN(transports.vehicle) ? 'Voiture - ' : ''}{transports.train_class ? 'Train - ' : ''}{transports.planeClass ? 'Avion' : ''}</Text>
         <Text style={styles.section.text} />
-        {transports.data.trainClass && (
-          <Text style={styles.section.text}>Train : Voyage en {transports.data.trainClass === 'second-class' ? 'deuxième classe' : 'première classe'}, {transports.data.trainPayment === 'agent' ? "avancé par l'agent." : 'payé par Unîmes.'}</Text>
+        {transports.train_class && (
+          <Text style={styles.section.text}>Train : Voyage en {transports.train_class === 'second-class' ? 'deuxième classe' : 'première classe'}, {transports.train_payment === 'agent' ? "avancé par l'agent." : 'payé par Unîmes.'}</Text>
         )}
-        {transports.data.planeClass && (
-          <Text style={styles.section.text}>Avion : Voyage en {transports.data.planeClass === 'business-class' ? 'classe affaire' : 'classe éco'}, {transports.data.trainPayment === 'user' ? "avancé par l'agent." : 'payé par Unîmes.'}</Text>
+        {transports.plane_class && (
+          <Text style={styles.section.text}>Avion : Voyage en {transports.plane_class === 'business-class' ? 'classe affaire' : 'classe éco'}, {transports.train_payment === 'user' ? "avancé par l'agent." : 'payé par Unîmes.'}</Text>
         )}
-        {!isNaN(transports.data.vehicle) && (
+        {(transports.vehicle >= 0 && transports.vehicle !== null) && (
           <>
-            <Text style={styles.section.text}>Vehicule : {chosenVehicleType.name}{transports.data.vehicle === 0 ? `, immatriculé ${transports.data.authorizations[0].vehicle.license_plate}` : '.'}</Text>
-            {transports.data.vehicle === 0 && <Text style={styles.section.notabene}>Remboursement Forfait SNCF 2ème classe.</Text>}
+            <Text style={styles.section.text}>Vehicule : {chosenVehicleType.name}{transports.vehicle === 0 ? `, immatriculé ${transports.authorizations[0].vehicle.license_plate}` : '.'}</Text>
+            {transports.vehicle === 0 && <Text style={styles.section.notabene}>Remboursement Forfait SNCF 2ème classe.</Text>}
           </>
         )}
         <Text style={styles.section.text} />
-        <Text style={styles.section.text}>Utilisation de transports en commun : {transports.data.publicTransports ? 'Oui.' : 'Non.'}</Text>
-        <Text style={styles.section.text}>Autres moyens de transports / commodités : {transports.data.others.map((other) => other + ' - ')}</Text>
+        <Text style={styles.section.text}>Utilisation de transports en commun : {transports.publicTransports ? 'Oui.' : 'Non.'}</Text>
+        <Text style={styles.section.text}>Autres moyens de transports / commodités : {otherMeansofTransports.map((other) => other + ' - ')}</Text>
       </View>
       <View style={styles.section} wrap={false}>
-        <Text style={styles.section.title}>HÉBERGEMENT ET REPAS</Text>
-        {accomodation.data.hotel && (
-          <Text style={styles.section.text}>Hotel : {accomodation.data.nightsNumber} nuits, {accomodation.data.hotelPayment === 'unimes' ? 'payé par Unîmes.' : "avancé par l'agent."}</Text>
+        <Text style={styles.section.title} wrap={false}>HÉBERGEMENT ET REPAS</Text>
+        {accomodations.hotel && (
+          <Text style={styles.section.text}>Hotel : {accomodations.nights_nmber} nuits, {accomodations.hotel_payment === 'unimes' ? 'payé par Unîmes.' : "avancé par l'agent."}</Text>
         )}
-        {!accomodation.data.hotel && (
+        {!accomodations.hotel && (
           <Text style={styles.section.text}>Pas d'hotel pour la durée de la mission.</Text>
         )}
         <Text>Repas :</Text>
-        <Text style={{textIndent: '10'}}>{freeMeals} repas gratuits</Text>
-        <Text style={{textIndent: '10'}}>{accomodation.data.mealsInAdminRestaurants} repas en restaurant administratif</Text>
-        <Text style={{textIndent: '10'}}>{accomodation.data.mealsPaidByAgent} repas autres</Text>
+        <Text style={{textIndent: '10'}}>- {freeMeals} repas gratuit{freeMeals > 1 ? 's' : '' }</Text>
+        <Text style={{textIndent: '10'}}>- {accomodations.meals_in_admin_restaurants} repas en restaurant administratif</Text>
+        <Text style={{textIndent: '10'}}>- {accomodations.meals_paid_by_agent} repas autres</Text>
       </View>
       <View style={styles.section}>
-        <Text style={styles.section.title}>AVANCE</Text>
-        <Text style={styles.section.text}>Demande d'avance : {advance.data.advanceAmount > 0 ? advance.data.advanceAmount + '€' : 'Non.'}</Text>
+        <Text style={styles.section.title} wrap={false}>AVANCE</Text>
+        <Text style={styles.section.text}>Demande d'avance : {advance.advance_amount > 0 ? advance.advance_amount + '€' : 'Non.'}</Text>
       </View>
-      {signature.data.otherInfos.length > 0 && (
+      {(more.informations && more.informations.length > 0) && (
         <View style={styles.section}>
           <Text style={styles.section.title}>AUTRES</Text>
-          <Text style={styles.section.text}>{signature.data.otherInfos}</Text>
+          <Text style={styles.section.text}>{signature.informations}</Text>
         </View>
       )}
       <View style={styles.section}>
-        <Text style={styles.section.title}>SIGNATURE</Text>
+        <Text style={styles.section.title} wrap={false}>SIGNATURE</Text>
         <View style={[{ display: 'flex', flexDirection: 'row'}]}>
           <View style={{border: '1px solid #1a1a1a', width: '33%', height: 150, padding: 5}}>
-            <Text style={{fontSize: 10}}>Nîmes, le {'DATE'}</Text>
+            <Text style={{fontSize: 10}}>Nîmes, le {new Date().toLocaleDateString()}</Text>
             <Text style={{fontSize: 10}}>Signature de l'agent</Text>
-            {/* <Image debug src={"https://pom.unimes.fr/back/.." +signature.data.signature} /> */}
+            <Image source={agentSignature} style={styles.signature} />
+            {/* <img src={agentSignature}></img> */}
+            {/* <Image debug src={"https://pom.unimes.fr/back/.." +signature.signature} /> */}
           </View>
           <View style={{border: '1px solid #1a1a1a', width: '33%', height: 150, padding: 5}}>
-            <Text style={{fontSize: 10}}>Nîmes, le {'DATE'}</Text>
+            <Text style={{fontSize: 10}}>Nîmes, le {''}</Text>
             <Text style={{fontSize: 10}}>Signature du directeur de département ou du chef de service</Text>
-            {/* <Image debug src={"http://10.30.20.87:8000" +signature.data.signature} /> */}
+            {/* <Image debug src={"http://10.30.20.87:8000" +signature.signature} /> */}
           </View>
           <View style={{border: '1px solid #1a1a1a', width: '33%', height: 150, padding: 5}}>
-            <Text style={{fontSize: 10}}>Nîmes, le {'DATE'}</Text>
+            <Text style={{fontSize: 10}}>Nîmes, le {''}</Text>
             <Text style={{fontSize: 10}}>Signature de l'ordonnateur (Président ou DGS)</Text>
             {/* <Image debug src={''} /> */}
           </View>

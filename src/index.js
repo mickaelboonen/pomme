@@ -35,9 +35,9 @@ import CasClient, { constant } from "react-cas-client";
 
 // import { getSignature } from "src/reducer/app";
 import { getSignature, fetchUserData, getDocument } from "src/reducer/app";
-import { findPermFilesByAgent } from "src/reducer/otherDocuments";
+import { findPermFilesByAgent, fetchAgentSignatureForPdf } from "src/reducer/otherDocuments";
 import { getVehicles, getVehicleDocuments } from "src/reducer/vehicle";
-import { fetchOMs, getMission, fetchOm, getTransports, getAccomodations, getAdvance, getMore  } from "src/reducer/omForm";
+import { fetchOMs, getMission, fetchOm, getTransports, getAccomodations, getAdvance, getMore, setLoader  } from "src/reducer/omForm";
 
 
 import { persistor } from 'src/store';
@@ -71,32 +71,62 @@ const router = createBrowserRouter([
       {
         path: 'nouveau-document/',
         children: [
-          {
-            path: 'ordre-de-mission',
-            element: <OMForm />    ,
-            loader: async ({ request }) => {
-              const url = new URL(request.url);
-              const step = url.searchParams.get("etape");
-              const id = url.searchParams.get("id");
-              const { app: {user} } = store.getState()
+          // {
+          //   path: 'ordre-de-mission',
+          //   element: <OMForm />    ,
+          //   loader: async ({ request }) => {
+          //     const url = new URL(request.url);
+          //     const step = url.searchParams.get("etape");
+          //     const id = url.searchParams.get("id");
+          //     const { app: {user} } = store.getState()
 
-              // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
-              if (step === '3' || step === '4') {
-                store.dispatch(getMission(id));
-              }
-              else if (step === '5') {
-                store.dispatch(getSignature(user));
-              }
-              else if (step === '2') {
-                // store.dispatch(getVehicles());
-              }
-              else if (step === '1') {
-                store.dispatch(fetchOm(id))
-                store.dispatch(getMission(id));
-              }
-              return url;  
-            },    
-          },
+          //     // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
+          //     if (step === '3' || step === '4') {
+          //       store.dispatch(getMission(id));
+          //     }
+          //     else if (step === '5') {
+          //       store.dispatch(getSignature(user));
+          //     }
+          //     else if (step === '2') {
+          //       // store.dispatch(getVehicles());
+          //     }
+          //     else if (step === '1') {
+          //       store.dispatch(fetchOm(id))
+          //       store.dispatch(getMission(id));
+          //     }
+          //     return url;  
+          //   },    
+          // },
+          // {
+          //   path: 'état-de-frais',
+          //   element: <EfForm />,
+          //   loader: async ({ request }) => {
+          //     const url = new URL(request.url);
+          //     const omId = url.searchParams.get("id");
+          //     const step = url.searchParams.get("etape");
+
+          //     // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
+          //     if (step === '2') {
+          //       const omMission = localStorage.getItem('mission');
+          //       return JSON.parse(omMission);
+          //     }
+          //   },    
+          // },
+          // {
+          //   path: '%C3%A9tat-de-frais',
+          //   element: <EfForm />,
+          //   loader: async ({ request }) => {
+          //     const url = new URL(request.url);
+          //     const omId = url.searchParams.get("id");
+          //     const step = url.searchParams.get("etape");
+
+          //     // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
+          //     if (step === '2') {
+          //       const omMission = localStorage.getItem('mission');
+          //       return JSON.parse(omMission);
+          //     }
+          //   },  
+          // },
           {
             path: 'autorisation-de-véhicule',
             element: <VehicleUseForm />,
@@ -120,36 +150,6 @@ const router = createBrowserRouter([
               store.dispatch(getVehicleDocuments(user));
               return url;  
             },       
-          },
-          {
-            path: 'état-de-frais',
-            element: <EfForm />,
-            loader: async ({ request }) => {
-              const url = new URL(request.url);
-              const omId = url.searchParams.get("id");
-              const step = url.searchParams.get("etape");
-
-              // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
-              if (step === '2') {
-                const omMission = localStorage.getItem('mission');
-                return JSON.parse(omMission);
-              }
-            },    
-          },
-          {
-            path: '%C3%A9tat-de-frais',
-            element: <EfForm />,
-            loader: async ({ request }) => {
-              const url = new URL(request.url);
-              const omId = url.searchParams.get("id");
-              const step = url.searchParams.get("etape");
-
-              // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
-              if (step === '2') {
-                const omMission = localStorage.getItem('mission');
-                return JSON.parse(omMission);
-              }
-            },  
           },
           {
             path: 'demande-de-dérogation',
@@ -211,6 +211,9 @@ const router = createBrowserRouter([
               }
               else if (step === '6') {
                 console.log('here');
+                store.dispatch(setLoader(true));
+                store.dispatch(fetchAgentSignatureForPdf({ agent: user, omId: id}));
+                store.dispatch(fetchOm(id));
                 store.dispatch(fetchUserData({ id: user}));
               }
               

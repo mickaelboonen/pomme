@@ -128,11 +128,13 @@ const omFormSlice = createSlice({
         const omToDisplay = state.userOms.find((om) => om.id === Number(action.payload));
         state.currentOM = omToDisplay ? omToDisplay : {};
       },
-      saveOm: () => {},
+      // saveOm: () => {},
       saveOmPdf: (state, action) => {
         state.omPdf= action.payload
       },
-      fetchOm: () => {},
+      fetchOm: (state) => {
+        state.omLoader = true
+      },
       addNewOM: () => {},
       fetchOMs: () => {},
       uploadFile: () => {},
@@ -168,6 +170,7 @@ const omFormSlice = createSlice({
       updateMission: () => {},
       saveOm: (state, action) => {
         state.currentOM = action.payload;
+        state.omLoader = false;
       },
       saveNewOm: (state, action) => {
         state.currentOM = action.payload;

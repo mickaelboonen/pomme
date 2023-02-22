@@ -243,7 +243,7 @@ export const handlePartialDayMeals = (missionStep, hour, mealNumber) => {
 }
 
 export const getMaxMealsAndNights = (data, forNights = false) => {
-
+  
     let maxMealNumber = 0;
     const depart = new Date(data.departure);
     const comeback = new Date(data.comeback);

@@ -5,6 +5,7 @@ const initialState = {
   action: '',
   type: '',
   agentDocs: [],
+  agentSignature: null,
 };
 const otherDocsSlice = createSlice({
     name: 'other-documents',
@@ -34,6 +35,12 @@ const otherDocsSlice = createSlice({
       deletePermFile: () => {
 
       },
+      fetchAgentSignatureForPdf: () => {
+
+      },
+      saveAgentSignatureForPdf: (state, action) => {
+        state.agentSignature = action.payload;
+      },
     },
 });
 
@@ -44,6 +51,8 @@ export const {
   editPermFile,
   findPermFilesByAgent,
   deletePermFile,
+  fetchAgentSignatureForPdf,
+  saveAgentSignatureForPdf,
 } = otherDocsSlice.actions;
 
 export default otherDocsSlice.reducer;

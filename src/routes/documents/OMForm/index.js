@@ -25,6 +25,7 @@ const OMForm = () => {
   const step = Number(loaderData.searchParams.get('etape'));
   const id = Number(loaderData.searchParams.get('id'));
 
+  console.log('IN IDENTITY : ', step === 6, appLoader, omLoader, (step === 6 && !appLoader && !omLoader));
   return (
     <>
       <ThreadAsTabs step={step} tabs={steps} isOm urlData={loaderData} />
@@ -35,13 +36,12 @@ const OMForm = () => {
         <div className="form-page__container">
           
           {(omLoader || appLoader) && <div>Loading</div>}
-
           {(step === 1 && !omLoader) && <Mission step={step} isEfForm={false} />}
           {(step === 2 && !omLoader) && <Transports step={step} />}
           {(step === 3 && !omLoader) && <Accomodations step={step} />}
           {(step === 4 && !omLoader) && <Avance step={step} />}
           {(step === 5 && !omLoader) && <Signature step={step} />}
-          {(step === 6 && !appLoader) && <Identity step={step} />}
+          {(step === 6 && !appLoader && !omLoader) && <Identity step={step} />}
         </div>
       </div>
     </>

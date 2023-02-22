@@ -46,6 +46,7 @@ const Signature = ({ step }) => {
   const defaultValues = omForm.find((omStep) => omStep.step === 'signature').data;
   
   let fileNames= '';
+  
   if (defaultValues.otherFiles.length === 1) {
     fileNames = getSavedFileName(defaultValues.otherFiles[0]);
   }

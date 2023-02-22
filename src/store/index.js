@@ -55,8 +55,20 @@ const store = configureStore({
     [omMiddleware, fileMiddleware, appMiddleware, vehicleMiddleware]
     // middlewareEnhancer,
 })
+const store2 = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+  getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(omMiddleware, fileMiddleware, appMiddleware, vehicleMiddleware)
+    // [omMiddleware, fileMiddleware, appMiddleware, vehicleMiddleware]
+    // middlewareEnhancer,
+})
+// console.log(store, store2);
 
-export const persistor = persistStore(store)
+export const persistor = persistStore(store2)
 
 // export const store = configureStore({
 //   reducer: {

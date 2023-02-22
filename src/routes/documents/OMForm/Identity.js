@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { PDFViewer } from '@react-pdf/renderer';
 import { PDFDownloadLink, BlobProvider, Page } from '@react-pdf/renderer';
 
 import './style.scss';
@@ -34,7 +35,8 @@ const Identity = ({ step, isEfForm }) => {
   
 
   const { app: { apiMessage, agent },
-    omForm: { currentOM, omForm, refusal, adresses },
+  omForm: { currentOM, omForm, refusal, adresses },
+  docs: { agentSignature },
   } = useSelector((state) => state);
   
   // TODO : problem with setApiResponse when savingAsItis
@@ -91,7 +93,6 @@ const Identity = ({ step, isEfForm }) => {
     
     dispatch(uploadFile({ data: {omId: omId , file: a}, step: 'om'}))
   }
-  
   
   ///-------------------------------------------------------------------------------------------------------------------------------------------------------
   return (
@@ -239,22 +240,20 @@ const Identity = ({ step, isEfForm }) => {
           )}
         </div>
       </div>
+      {/* <img src={agentSignature}></img> */}
       {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
       <div className="form__section">
         <div className="form__section-field-buttons">
-          <button type='button' onClick={generatePDF}>lol</button>
-          {/* <PDFDownloadLink document={<MyPDF data={omForm} agent={agent} om={currentOM} vehicleTypes={vehicleTypes} />} fileName="somename.pdf">
-            {({ blob, url, loading, error }) =>
-              loading ? 'Loading document...' : 'Download now!'
-            }
-          </PDFDownloadLink> */}
-          <BlobProvider document={<MyPDF data={omForm} agent={agent} om={currentOM} vehicleTypes={vehicleTypes} />}>
+          <PDFDownloadLink document={<MyPDF data={currentOM} agent={agent} om={currentOM} vehicleTypes={vehicleTypes} />} fileName="somename.pdf">
+            {({ blob, url, loading, error }) => loading ? 'Loading document...' : 'Download now!'            }
+          </PDFDownloadLink>
+          <BlobProvider document={<MyPDF agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />}>
             {({ blob, url, loading, error }) => {
 
               const file = new File([blob], 'name', {type: 'mime'});
               
               setValue('om', file);
-              
+                
               return (
                 <>
                   <button type='button' files={file} onClick={generatePDF}>HERE</button>
@@ -263,6 +262,10 @@ const Identity = ({ step, isEfForm }) => {
             }}
           </BlobProvider>
         </div>
+        
+        <PDFViewer width="100%" height="100%">
+          <MyPDF agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />
+        </PDFViewer>
       </div>
     </form>
     
