@@ -45,21 +45,6 @@ const Mission = ({ step, isEfForm }) => {
     omForm: { currentOM, omForm, refusal, adresses },
     efForm: { isMissionFormDisabled }
   } = useSelector((state) => state);
-  
-  // TODO : problem with setApiResponse when savingAsItis
-  useEffect(() => {
-    if (apiMessage.status && apiMessage.status === 200) {
-      setTimeout(() => {
-        dispatch(clearMessage());
-      }, "4900")
-      setTimeout(() => {
-        if (areWeUpdatingData) {
-          const nextStep = step + 1;
-          navigate(loader.pathname + '?etape=' + nextStep + '&id=' + omId);
-        }
-      }, "5000")
-    }
-  }, [apiMessage])
 
   const defaultValues = omForm.find((omStep) => omStep.step === 'mission').data;
 

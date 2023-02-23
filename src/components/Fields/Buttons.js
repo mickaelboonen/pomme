@@ -55,16 +55,21 @@ const Buttons = ({ trigger, step, url, id, watch, update, secondUpdate, userSign
       delete data.postCode;
       delete data.city;
       delete data.missionAdress;
+      
 
-      const fileObject = data.missionPurposeFile.find((file) => file instanceof File);
+      let fileObject = null;
+
+      if (data.missionPurposeFile) {
+        fileObject = data.missionPurposeFile.find((file) => file instanceof File);
+      }
       console.log(fileObject);
       if (fileObject) {
         dispatch(uploadFile({data: data, step: 'mission'}));
-        navigate(url.pathname + '?' + url.searchParams);
+        // navigate(url.pathname + '?' + url.searchParams);
       }
       else {
         dispatch(update(data));
-        navigate(url.pathname + '?' + url.searchParams);
+        // navigate(url.pathname + '?' + url.searchParams);
       }
     }
     else if (step === 2) { // --------------------------------------------------------------------------------

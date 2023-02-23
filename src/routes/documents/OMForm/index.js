@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { useLoaderData, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Avance from './Avance';
 import Mission from './Mission';
@@ -12,11 +12,15 @@ import Accomodations from './Accomodations';
 import PageTitle from 'src/components/PageTitle';
 import ThreadAsTabs from 'src/components/ThreadAsTabs';
 
+import { clearMessage } from 'src/reducer/app';
+
 import './style.scss';
 
 const OMForm = () => {  
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { omForm :{ steps, omLoader},
-    app: { appLoader},
+    app: { appLoader, apiMessage },
   } = useSelector((state) => state);
   
 
@@ -25,7 +29,19 @@ const OMForm = () => {
   const step = Number(loaderData.searchParams.get('etape'));
   const id = Number(loaderData.searchParams.get('id'));
 
-  console.log('IN IDENTITY : ', step === 6, appLoader, omLoader, (step === 6 && !appLoader && !omLoader));
+  useEffect(() => {
+    if (apiMessage.status && apiMessage.status === 200) {
+      setTimeout(() => {
+
+        dispatch(clearMessage());
+      }, "950")
+      setTimeout(() => {
+        const nextStep = step + 1;
+        navigate(loaderData.pathname + '?etape=' + nextStep + '&id=' + id);
+      }, "1000")
+    }
+  }, [apiMessage]);
+
   return (
     <>
       <ThreadAsTabs step={step} tabs={steps} isOm urlData={loaderData} />

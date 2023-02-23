@@ -13,16 +13,14 @@ import TextField from 'src/components/Fields/TextField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import RefusalMessage from 'src/components/Fields/RefusalMessage';
-import { turnAccomodationDataToDbFormat } from '../../../selectors/dataToDbFormat';
-import { updateAccomodations } from '../../../reducer/omForm';
-import { clearMessage } from '../../../reducer/app';
-import { getMaxMealsAndNights } from '../../../selectors/formValidationsFunctions';
+import { turnAccomodationDataToDbFormat } from 'src/selectors/dataToDbFormat';
+import { updateAccomodations } from 'src/reducer/omForm';
+import { getMaxMealsAndNights } from 'src/selectors/formValidationsFunctions';
 
 
 const Accomodations = ({ step }) => {
   
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
   const loader = useLoaderData();
   const omId = loader.searchParams.get('id');
@@ -32,20 +30,6 @@ const Accomodations = ({ step }) => {
   const { app: { apiMessage },
     omForm: { omForm },
   } = useSelector((state) => state);
-  
-  useEffect(() => {
-    if (apiMessage.status && apiMessage.status === 200) {
-      setTimeout(() => {
-        dispatch(clearMessage());
-      }, "4900")
-      setTimeout(() => {
-        if (areWeUpdatingData) {
-          const nextStep = step + 1;
-          navigate(loader.pathname + '?etape=' + nextStep + '&id=' + omId);
-        }
-      }, "5000")
-    }
-  }, [apiMessage])
 
   const accomodationsData = omForm.find((omStep) => omStep.step === 'accomodations');
 

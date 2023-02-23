@@ -40,20 +40,7 @@ const Avance = ({ step }) => {
   const { app: { apiMessage, agentDocuments },
     omForm: { omForm },
   } = useSelector((state) => state);
-  
-  useEffect(() => {
-    if (apiMessage.status && apiMessage.status === 200) {
-      setTimeout(() => {
-        dispatch(clearMessage());
-      }, "4500")
-      setTimeout(() => {
-        if (areWeUpdatingData) {
-          const nextStep = step + 1;
-          navigate(loader.pathname + '?etape=' + nextStep + '&id=' + omId);
-        }
-      }, "5000")
-    }
-  }, [apiMessage])
+
   
   const defaultValues = omForm.find((omStep) => omStep.step === 'advance').data;
   

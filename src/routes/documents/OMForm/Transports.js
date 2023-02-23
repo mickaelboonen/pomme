@@ -41,19 +41,6 @@ const Transports = ({ step }) => {
 
   // TODO 
   let permanentOm = true;
-  useEffect(() => {
-    if (apiMessage.status && apiMessage.status === 200) {
-      setTimeout(() => {
-        dispatch(clearMessage());
-      }, "4900");
-      setTimeout(() => {
-        if (areWeUpdatingData) {
-          const nextStep = step + 1;
-          navigate(loader.pathname + '?etape=' + nextStep + '&id=' + omId);
-        }
-      }, "5000")
-    }
-  }, [apiMessage])
   
   const defaultValues = omForm.find((omStep) => omStep.step === 'transports').data;
   
