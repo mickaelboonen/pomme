@@ -151,6 +151,7 @@
     background-color: var(--third-color);
     color: #1a1a1a;
     @include vars.centeredFlex;
+    text-align: center;
 
     &:nth-of-type(1) {
       border-radius: vars.$radius 0 0 0;
@@ -174,6 +175,7 @@
       background-color: var(--first-color);
       color: var(--fifth-color);
       box-shadow: 1px 1px 5px var(--second-color);
+      font-weight: bold;
 
     }
     &--open &-notification {

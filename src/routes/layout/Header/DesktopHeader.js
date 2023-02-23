@@ -31,7 +31,7 @@ const DesktopHeader = ({ cas }) => {
       <BurgerIcon handler={toggleBurgerMenu} />
       <nav className="header__menu">
         <Preferences />
-        {user === 'mboone01' &&(
+        {/* {user === 'mboone01' &&(
           <div className="header__menu-section" id="dafc" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
             <p>DAFC</p>
             <ul className="header__menu-section-list">
@@ -44,12 +44,12 @@ const DesktopHeader = ({ cas }) => {
           <Link to={`/gestionnaire/${role}/documents-a-signer`}>
             <div className="header__menu-section" id="a-signer">GESTIONNAIRE</div>
           </Link>
-        )}
-        {user === 'mboone01' &&(
+        )} */}
+        {/* {user === 'mboone01' &&(
           <Link to={`/test/pdf`}>
             <div className="header__menu-section" id="a-signer">TEST PDF</div>
           </Link>
-        )}
+        )} */}
         <div className="header__menu-section" id="mon-compte" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
           <p>MON COMPTE</p>
           <ul className="header__menu-section-list">

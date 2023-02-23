@@ -34,9 +34,9 @@ const MyDocuments = () => {
     app: { isModalOpen }
   } = useSelector((state) => state);
 
-  useEffect(() => {
-    dispatch(selectData('ec'))
-  }, [userOms])
+  // useEffect(() => {
+  //   dispatch(selectData('ec'))
+  // }, [userOms])
 
   useEffect(() => {
     if (nextOMTarget !== '') {

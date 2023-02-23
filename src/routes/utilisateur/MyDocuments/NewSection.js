@@ -10,6 +10,7 @@ import SelectField from 'src/components/Fields/SelectField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 
 import { displayOmStatus } from 'src/reducer/omForm';
+import DocButtons from './DocButtons';
 
 const Section = ({ id, data, steps, currentDoc}) => {
   
@@ -32,6 +33,8 @@ const Section = ({ id, data, steps, currentDoc}) => {
   if (!unfinishedStep) {
     isDocFinished = true;
   }
+
+  console.log('CURRENT DOC PLEASE : ', currentDoc);
   return (
     <section id={id} className="my-documents__files">
       <SelectField
@@ -65,26 +68,7 @@ const Section = ({ id, data, steps, currentDoc}) => {
         </div>
       )}
       {currentDoc.hasOwnProperty('id') && (
-        <div className="my-documents__files-buttons">
-          <Link to={"/modifier-un-document/ordre-de-mission?etape=1&id=" + currentDoc.id}>
-            Reprendre / Modifier
-          </Link>
-          <Link to={"/modifier-un-document/ordre-de-mission?etape=1&id=" + currentDoc.id}>
-            Faire une demande de déplacement
-          </Link>
-          <Link to={"/modifier-un-document/ordre-de-mission?etape=1&id=" + currentDoc.id}>
-            Prendre connaissance du refus et supprimer
-          </Link>
-        </div>
-      )}
-      {currentDoc.hasOwnProperty('id') && (
-        <div className="my-documents__files-buttons">
-        {isDocFinished && (
-          <Link to={"#" + currentDoc.id}>
-            Soumettre l'Ordre de Mission
-          </Link>
-        )}
-        </div>
+        <DocButtons {...currentDoc} isDocFinished={isDocFinished} />
       )}
     </section>
   );

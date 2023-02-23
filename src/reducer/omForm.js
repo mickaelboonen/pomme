@@ -97,6 +97,10 @@ const initialState = {
       name: 'En cours',
     },
     {
+      id: 'sub',
+      name: 'En attente de validation',
+    },
+    {
       id: 'ok',
       name: 'Validés',
     }
@@ -118,11 +122,22 @@ const omFormSlice = createSlice({
     initialState,
     reducers: {
       selectData: (state, action) => {
-        console.log(action.payload);
+        console.log("SELECT DATA ERDUCER :", action.payload);
 
-        const status = action.payload === 'ec' ? 1 : 8;
+        let status = 1;
+        if (action.payload === 'ec') {
+          status = 1;
+        }
+        else if (action.payload === 'sub') {
+          status = 2;
+          
+        }
+        else if (action.payload === 'ok') {
+          status = 8;
+        }
+        
         state.dataToSelect = state.userOms.filter((om) => om.status === status);
-
+        state.currentOM = {};
       },
       displayOmStatus: (state, action) => {
         const omToDisplay = state.userOms.find((om) => om.id === Number(action.payload));
@@ -181,8 +196,8 @@ const omFormSlice = createSlice({
       },
       fetchOMs: () => {},
       saveUserOms: (state, action) => {
-        console.log(action.payload);
         state.userOms = action.payload;
+        state.dataToSelect = state.userOms.filter((om) => om.status === 1);
       },
       saveMission: (state, action) => {
         state.omForm[0].data.omId = action.payload.om.id;

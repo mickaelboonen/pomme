@@ -63,10 +63,10 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />
       },
-      {
-        path: 'test/pdf',
-        element: <TestPDF />
-      },
+      // {
+      //   path: 'test/pdf',
+      //   element: <TestPDF />
+      // },
       // new document forms
       {
         path: 'nouveau-document/',
@@ -277,9 +277,11 @@ const router = createBrowserRouter([
             path: 'mes-ordres-de-mission',
             element: <MyDocuments />,
             loader: async ({ params, request }) => {
-                  const { app : { user }} = store.getState(state => state);    
+              const { app : { user }} = store.getState(state => state);
+                  
+              store.dispatch(fetchUserData({ id: user}));
+              store.dispatch(fetchOMs(params.slug));
 
-               store.dispatch(fetchOMs(params.slug));
             }, 
           },
           {
