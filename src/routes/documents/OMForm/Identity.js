@@ -97,14 +97,17 @@ const Identity = ({ step, isEfForm }) => {
   ///-------------------------------------------------------------------------------------------------------------------------------------------------------
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
-      <div className="form__section">
+      
+        
+      <PDFViewer width="100%" height="100vh">
+          <MyPDF agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />
+        </PDFViewer>
+      {/* <div className="form__section">
         <FormSectionTitle>Missionnaire</FormSectionTitle>
         <div className="form__section form__section--split">
           <p className="form__section-field-label">Qualité : </p>
           <RadioInput disabled id="Mme" formField="gender" label="Madame" register={register} />
           <RadioInput disabled id="M." formField="gender" label="Monsieur" register={register} />
-          {/* <RadioInput disabled id="Mlle" formField="gender" label="Mademoiselle" register={register} /> */}
-          {/* <RadioInput id="non-binary" formField="gender" label="Non Binaire" register={register} /> */}
         </div>
         <div className='form__section form__section--documents' id="other-fields">
           <div className='form__section-half'>
@@ -240,7 +243,6 @@ const Identity = ({ step, isEfForm }) => {
           )}
         </div>
       </div>
-      {/* <img src={agentSignature}></img> */}
       {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
       <div className="form__section">
         <div className="form__section-field-buttons">
@@ -262,11 +264,7 @@ const Identity = ({ step, isEfForm }) => {
             }}
           </BlobProvider>
         </div>
-        
-        <PDFViewer width="100%" height="100%">
-          <MyPDF agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />
-        </PDFViewer>
-      </div>
+      </div> */}
     </form>
     
   );

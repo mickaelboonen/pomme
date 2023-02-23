@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     fontSize:10,
     fontFamily: 'Radjhani',
     marginTop: 20,
+    marginBottom: 20,
   },
   signature: {
     // maxWidth: 100,
@@ -112,7 +113,40 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
   const ret = new Date(mission.comeback);
   
   // Transports
-  const chosenVehicleType = vehicleTypes.find((type) => type.id === transports.vehicle );
+  let chosenVehicleType = null;
+
+
+  if (transports.authorizations.length > 0) {
+    
+    const { type } = transports.authorizations[0];
+
+    if (type === 'personal-car') {
+      chosenVehicleType = vehicleTypes.find((v) => v.id === 0);
+    }
+    else if (type === 'company-car') {
+      chosenVehicleType = vehicleTypes.find((v) => v.id === 2);
+    }
+    else if (type === 'rent-car') {
+      chosenVehicleType = vehicleTypes.find((v) => v.id === 3);
+    }
+  }
+
+  let planeData = {};
+  let trainData = {}; 
+  if (transports.transport_type.length > 0) {
+    transports.transport_type.forEach((type) => {
+      if (type === "train") {
+        trainData.class = transports.transport_class.find((trainClass) => trainClass.includes('second') || trainClass.includes('first') )
+        trainData.payment = transports.transport_payment.find((trainPayment) => trainPayment.includes('train') )
+      }
+      if (type === "plane") {
+        planeData.class = transports.transport_class.find((trainClass) => trainClass.includes('business') || trainClass.includes('eco') )
+        planeData.payment = transports.transport_payment.find((trainPayment) => trainPayment.includes('plane') )
+      }
+    })
+  }
+
+  
   const otherMeansofTransports = [];
   if (transports.taxi) {
     otherMeansofTransports.push('taxi');
@@ -123,11 +157,13 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
   if (transports.parking) {
     otherMeansofTransports.push('parking');
   }
+
+
   
   const maxMealsNumber = getMaxMealsAndNights(mission);
   const freeMeals = maxMealsNumber - (accomodations.meals_paid_by_agent + accomodations.meals_in_admin_restaurants);
 
-  
+  console.log('HERE : ', accomodations);
 
   const gestArray = ['%', 'UB', 'CR', 'Code Nacres', 'Code LOLF', 'Code Analytique'];
   return (
@@ -210,28 +246,30 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
       </View>
       <View style={styles.section}>
         <Text style={styles.section.title} wrap={false}>TRANSPORTS</Text>
-        <Text style={styles.section.text}>Modalités de déplacement pour la mission : {!isNaN(transports.vehicle) ? 'Voiture - ' : ''}{transports.train_class ? 'Train - ' : ''}{transports.planeClass ? 'Avion' : ''}</Text>
+        <Text style={styles.section.text}>Modalités de déplacement pour la mission : {!isNaN(transports.vehicle) ? 'Voiture - ' : ''}{transports.transport_type.map((t) => t + ' - ')}{transports.planeClass ? 'Avion' : ''}</Text>
         <Text style={styles.section.text} />
-        {transports.train_class && (
-          <Text style={styles.section.text}>Train : Voyage en {transports.train_class === 'second-class' ? 'deuxième classe' : 'première classe'}, {transports.train_payment === 'agent' ? "avancé par l'agent." : 'payé par Unîmes.'}</Text>
+        <Text style={styles.section.text} />
+        {trainData.hasOwnProperty('class') && (
+          <Text>Train : Voyage en {trainData.class === 'second-class' ? 'deuxième classe' : 'première classe'}, {trainData.payment.includes('agent') ? "avancé par l'agent." : 'payé par Unîmes.'}</Text>
         )}
-        {transports.plane_class && (
-          <Text style={styles.section.text}>Avion : Voyage en {transports.plane_class === 'business-class' ? 'classe affaire' : 'classe éco'}, {transports.train_payment === 'user' ? "avancé par l'agent." : 'payé par Unîmes.'}</Text>
+        {planeData.hasOwnProperty('class') && (
+          <Text>Avion : Voyage en {planeData.class === 'business-class' ? 'classe affaire' : 'classe éco'}, {planeData.payment.includes('user') ? "avancé par l'agent." : 'payé par Unîmes.'}</Text>
         )}
-        {(transports.vehicle >= 0 && transports.vehicle !== null) && (
+        {transports.chosenVehicleType !== null && (
           <>
-            <Text style={styles.section.text}>Vehicule : {chosenVehicleType.name}{transports.vehicle === 0 ? `, immatriculé ${transports.authorizations[0].vehicle.license_plate}` : '.'}</Text>
-            {transports.vehicle === 0 && <Text style={styles.section.notabene}>Remboursement Forfait SNCF 2ème classe.</Text>}
+            <Text>Vehicule : {chosenVehicleType.name}{!chosenVehicleType.name.includes('Covoiturage') ? `, immatriculé ${transports.authorizations[0].vehicle.license_plate}` : '.'}</Text>
+            {transports.vehicle === 0 && <Text>Remboursement Forfait SNCF 2ème classe.</Text>}
           </>
         )}
         <Text style={styles.section.text} />
-        <Text style={styles.section.text}>Utilisation de transports en commun : {transports.publicTransports ? 'Oui.' : 'Non.'}</Text>
+        <Text style={styles.section.text} />
+        <Text>Utilisation de transports en commun : {transports.publicTransports ? 'Oui.' : 'Non.'}</Text>
         <Text style={styles.section.text}>Autres moyens de transports / commodités : {otherMeansofTransports.map((other) => other + ' - ')}</Text>
       </View>
       <View style={styles.section} wrap={false}>
         <Text style={styles.section.title} wrap={false}>HÉBERGEMENT ET REPAS</Text>
         {accomodations.hotel && (
-          <Text style={styles.section.text}>Hotel : {accomodations.nights_nmber} nuits, {accomodations.hotel_payment === 'unimes' ? 'payé par Unîmes.' : "avancé par l'agent."}</Text>
+          <Text style={styles.section.text}>Hotel : {accomodations.nights_number} nuits, {accomodations.hotel_payment === 'unimes' ? 'payé par Unîmes.' : "avancé par l'agent."}</Text>
         )}
         {!accomodations.hotel && (
           <Text style={styles.section.text}>Pas d'hotel pour la durée de la mission.</Text>

@@ -286,7 +286,6 @@ const omMiddleware = (store) => (next) => (action) => {
       console.log(action.payload);
       fileApi.post('/api/agent/signature', action.payload)
         .then((response) => {
-          console.log('RIGHT HERE RIGHT NOW : ', response);
           response.uri = response.data;
           store.dispatch(saveAgentSignatureForPdf(response));
         })
