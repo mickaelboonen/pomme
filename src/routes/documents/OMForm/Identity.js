@@ -38,6 +38,8 @@ const Identity = ({ step, isEfForm }) => {
   omForm: { currentOM, omForm, refusal, adresses },
   docs: { agentSignature },
   } = useSelector((state) => state);
+
+  console.log('currentOM : ', currentOM);
   
   // TODO : problem with setApiResponse when savingAsItis
   useEffect(() => {
@@ -89,20 +91,22 @@ const Identity = ({ step, isEfForm }) => {
   const { vehicle: { vehicleTypes },
 } = useSelector((state) => state);
   const generatePDF = () => {
-    const a = getValues('om');
+    console.log("AM HEEEEEEEEERE");
+    const file = getValues('om');
     
-    dispatch(uploadFile({ data: {omId: omId , file: a}, step: 'om'}))
+    dispatch(uploadFile({ data: {omId: omId , file: file}, step: 'om'}))
   }
   
   ///-------------------------------------------------------------------------------------------------------------------------------------------------------
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       
-        
-      <PDFViewer width="100%" height="100vh">
-          <MyPDF agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />
-        </PDFViewer>
-      {/* <div className="form__section">
+        {/* <div style={{width:"100%", height:"100vh"}}>
+          <PDFViewer>
+            <MyPDF agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />
+          </PDFViewer>
+        </div> */}
+      <div className="form__section">
         <FormSectionTitle>Missionnaire</FormSectionTitle>
         <div className="form__section form__section--split">
           <p className="form__section-field-label">Qualité : </p>
@@ -246,25 +250,27 @@ const Identity = ({ step, isEfForm }) => {
       {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
       <div className="form__section">
         <div className="form__section-field-buttons">
-          <PDFDownloadLink document={<MyPDF data={currentOM} agent={agent} om={currentOM} vehicleTypes={vehicleTypes} />} fileName="somename.pdf">
-            {({ blob, url, loading, error }) => loading ? 'Loading document...' : 'Download now!'            }
-          </PDFDownloadLink>
+          {/* <PDFDownloadLink document={<MyPDF data={currentOM} agent={agent} om={currentOM} vehicleTypes={vehicleTypes} />} fileName={currentOM.name + ".pdf"}>
+            {({ blob, url, loading, error }) => {
+              
+              return loading ? 'Loading document...' : 'Download now!'}            }
+          </PDFDownloadLink> */}
           <BlobProvider document={<MyPDF agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />}>
             {({ blob, url, loading, error }) => {
 
-              const file = new File([blob], 'name', {type: 'mime'});
+              const file = new File([blob], currentOM.name, {type: 'pdf'});
+              const fileUrl = URL.createObjectURL(file);
               
               setValue('om', file);
-                
               return (
-                <>
-                  <button type='button' files={file} onClick={generatePDF}>HERE</button>
-                </>
-                );
+                <a href={fileUrl} download={currentOM.name + '.pdf'} style={{textAlign: 'center'}}>
+                  <button type='button' files={file} onClick={generatePDF}>Valider les données et télécharger l'Ordre de Mission</button>
+                </a>
+              );
             }}
           </BlobProvider>
         </div>
-      </div> */}
+      </div>
     </form>
     
   );
