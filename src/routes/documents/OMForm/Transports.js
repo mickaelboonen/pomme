@@ -43,7 +43,7 @@ const Transports = ({ step }) => {
   let permanentOm = true;
   
   const defaultValues = omForm.find((omStep) => omStep.step === 'transports').data;
-  console.log(defaultValues);
+  
   const {
     register,
     setValue,
@@ -87,12 +87,11 @@ const Transports = ({ step }) => {
         data.status = 1;
         // Formats the data for the database
         const databaseData = turnTransportsDataToDbFormat(data);
-        console.log('HERE : ', databaseData);
         // return;
 
         // If any file has been selected (for the train, plane or car), we upload it
         if (databaseData.transportDispensation instanceof File || databaseData.vehicleAuthorization instanceof File || databaseData.taxiDispensation instanceof File ) {
-          console.log('there is aa least one file');
+          
           dispatch(uploadFile({data: databaseData, step: 'transports'}));
         }
         // Else we directly update the transports entity

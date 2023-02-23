@@ -10,7 +10,7 @@ const FileMenu = ({ status, id}) => {
   if (status === 10) {
     validated = true;
   }
-  console.log(id);
+  
   //TODO : changer le lien
   return (
     <div className="file-menu">

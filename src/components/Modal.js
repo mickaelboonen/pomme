@@ -33,7 +33,7 @@ const Modal = ({ target, user }) => {
 
   const onSubmit = (data) => {
     // If the user is requesting an advance
-    console.log(data, '-----------------------', target);
+    
 
     if (target === 'ordre de mission') {
       const newOM = {

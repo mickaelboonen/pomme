@@ -57,7 +57,6 @@ const Hebergement = ({ step }) => {
   }, []);
 
   const showHelp = (event) => {
-    console.log(event.target.id);
 
     const { id } = event.target;
 

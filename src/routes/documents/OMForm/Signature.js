@@ -1,24 +1,27 @@
-import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
-import { useLoaderData, useNavigate, useSearchParams } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './style.scss';
-import FormSectionTitle from 'src/components/FormSectionTitle';
-import RefusalMessage from 'src/components/Fields/RefusalMessage';
+
+// Components
 import Buttons from 'src/components/Fields/Buttons';
-import CheckboxInput from 'src/components/Fields/CheckboxInput';
+import ApiResponse from 'src/components/ApiResponse';
 import FileField from 'src/components/Fields/FileField';
-import TextareaField from 'src/components/Fields/TextareaField';
 import HiddenField from 'src/components/Fields/HiddenField';
-import { useDispatch, useSelector } from 'react-redux';
-import { turnSignatureDataToDbFormat } from '../../../selectors/dataToDbFormat';
-import { updateMoreAndSignature, updateSignature, uploadFile } from '../../../reducer/omForm';
-import { clearMessage } from '../../../reducer/app';
-import ApiResponse from '../../../components/ApiResponse';
+import FormSectionTitle from 'src/components/FormSectionTitle';
+import CheckboxInput from 'src/components/Fields/CheckboxInput';
+import TextareaField from 'src/components/Fields/TextareaField';
+
+// ACTIONS
+import { updateMoreAndSignature, uploadFile } from 'src/reducer/omForm';
+
+// Selectors
+import { turnSignatureDataToDbFormat } from 'src/selectors/dataToDbFormat';
 import { getSavedFileName } from 'src/selectors/formDataGetters';
 
 const Signature = ({ step }) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const loader = useLoaderData();
   const omId = loader.searchParams.get('id');
@@ -41,8 +44,7 @@ const Signature = ({ step }) => {
       fileNames += getSavedFileName(file) + ' - ';
     })
   }
-
-  console.log('HERE : ', defaultValues);
+  
   let signatureFilename = '';
   if (defaultValues.signature && defaultValues.signature.length > 1) {
     signatureFilename = getSavedFileName(defaultValues.signature);
@@ -58,7 +60,6 @@ const Signature = ({ step }) => {
     { errors },
   } = useForm({ defaultValues: defaultValues });
   
-    console.log(userSignature);
   const onSubmit = (data) => {
     const formattedData = turnSignatureDataToDbFormat(data, userSignature);
 

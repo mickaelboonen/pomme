@@ -94,8 +94,6 @@ const styles = StyleSheet.create({
     },
     title: {
       width: '50%',
-      // height: '100%',
-      // color: 'red',
       fontWeight: 'bold',
       fontSize: 30,
       textAlign: 'center'
@@ -106,7 +104,6 @@ const styles = StyleSheet.create({
 
 const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
   
-  // console.log(data);
   const {mission, transports, accomodations, advance, signature, more} = data;
   
   const dep = new Date(mission.departure);
@@ -162,9 +159,7 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
   
   const maxMealsNumber = getMaxMealsAndNights(mission);
   const freeMeals = maxMealsNumber - (accomodations.meals_paid_by_agent + accomodations.meals_in_admin_restaurants);
-
-  console.log('HERE : ', accomodations);
-
+  
   const gestArray = ['%', 'UB', 'CR', 'Code Nacres', 'Code LOLF', 'Code Analytique'];
   return (
   <Document>

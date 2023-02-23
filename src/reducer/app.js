@@ -24,7 +24,7 @@ const omFormSlice = createSlice({
       saveUser: () => {},
       getSignature: () => {},
       validateAuthentication: (state, action) => {
-        console.log('i want to validate');
+        
         state.isAuthenticated= true;
         state.user = action.payload.user;
       },
@@ -42,7 +42,7 @@ const omFormSlice = createSlice({
         state.apiMessage = {};
       },
       toggleModal:(state) => {
-        console.log('here');
+        
         state.isModalOpen = !state.isModalOpen;
       },
       fetchUserData: (state) => {

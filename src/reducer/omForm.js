@@ -122,7 +122,6 @@ const omFormSlice = createSlice({
     initialState,
     reducers: {
       selectData: (state, action) => {
-        console.log("SELECT DATA ERDUCER :", action.payload);
 
         let status = 1;
         if (action.payload === 'ec') {
@@ -246,7 +245,6 @@ const omFormSlice = createSlice({
       },
       saveAdvance: (state, action) => {
         const dataForApp = declareCamelCaseKeys(action.payload);
-        console.log("Save Advance data : ", dataForApp);
         const dataForTheComponent =  {
           advance: false,
           savedRib: false,

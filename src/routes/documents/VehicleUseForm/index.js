@@ -42,7 +42,6 @@ const VehicleUseForm = () => {
   useEffect(() => {
     if (isSideFormInDB) {
       dispatch(clearSideForm());
-      console.log('needsPdf : ', needsPdf);
 
       if (!needsPdf) {
         dispatch(clearMessage());
@@ -125,16 +124,12 @@ const VehicleUseForm = () => {
       setError('carInsuranceFile', {type: 'custom', message : "Merci de fournir l'attestation d'assurance du véhicule."})
       countErrors++;
     }
-
-    console.log(errors, countErrors);
     
     if (countErrors === 0) {
 
       if (data.externalSignature) {
         dispatch(stayOnAuthorizationForm())
       }
-
-      console.log('ALL GOOD');
 
       if (!data.selectedVehicle || data.selectedVehicle === '0') {
         
@@ -155,8 +150,7 @@ const VehicleUseForm = () => {
 
           dispatch(uploadFile({data: newDataFormat, step: 'authorization', docType: 'authorization'}));
         }
-        else {          
-          console.log('no files, lets go');
+        else {
 
           dispatch(requestVehicleAuthorization(newDataFormat));
         }

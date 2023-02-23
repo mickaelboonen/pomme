@@ -163,9 +163,7 @@ const Mission = ({ step, isEfForm }) => {
       if (errorCount === 0) {
         data.status = 1;
 
-        const fileToAdd = data.missionPurposeFile.find((file) => file instanceof File)
-
-        console.log('here : ', fileToAdd);
+        const fileToAdd = data.missionPurposeFile.find((file) => file instanceof File);
         
         if (fileToAdd === undefined) {
           delete data.om;
@@ -181,7 +179,7 @@ const Mission = ({ step, isEfForm }) => {
        
         const dateForFile = `${departure.getDate()}-${departure.getMonth() + 1}-${departure.getFullYear()}`;
         const newOmName = `OM_${data.missionAddress.city.toUpperCase()}_${dateForFile}_${user.toUpperCase()}`;
-        console.log(currentOM.name,  newOmName, currentOM.name !== newOmName);
+        
         if (currentOM.name !== newOmName) {
           dispatch(updateOmName({omId: data.omId, date: dateForFile, place: data.missionAddress.city}));
         }

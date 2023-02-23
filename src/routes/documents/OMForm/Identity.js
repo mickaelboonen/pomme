@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
-import { Link, useLoaderData, useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { PDFViewer } from '@react-pdf/renderer';
-import { PDFDownloadLink, BlobProvider, Page } from '@react-pdf/renderer';
+import { BlobProvider } from '@react-pdf/renderer';
 
 import './style.scss';
 
@@ -12,9 +11,8 @@ import './style.scss';
 import ApiResponse from 'src/components/ApiResponse';
 import TextField from 'src/components/Fields/TextField';
 import RadioInput from 'src/components/Fields/RadioInput';
-import FileField from 'src/components/Fields/FileField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import Address from '../../../components/Fields/Address';
+import Address from 'src/components/Fields/Address';
 import MyPDF from 'src/components/PDF';
 
 // Selectors 
@@ -35,11 +33,11 @@ const Identity = ({ step, isEfForm }) => {
   
 
   const { app: { apiMessage, agent },
-  omForm: { currentOM, omForm, refusal, adresses },
-  docs: { agentSignature },
+    omForm: { currentOM },
+    docs: { agentSignature },
+    vehicle: { vehicleTypes },
   } = useSelector((state) => state);
 
-  console.log('currentOM : ', currentOM);
   
   // TODO : problem with setApiResponse when savingAsItis
   useEffect(() => {
@@ -85,19 +83,12 @@ const Identity = ({ step, isEfForm }) => {
   const toggleIsCivil = (event) => {
     setIsCivil(event.target.id);
   }
-
-  ///-------------------------------------------------------------------------------------------------------------------------------------------------------
   
-  const { vehicle: { vehicleTypes },
-} = useSelector((state) => state);
   const generatePDF = () => {
-    console.log("AM HEEEEEEEEERE");
     const file = getValues('om');
-    
     dispatch(uploadFile({ data: {omId: omId , file: file}, step: 'om'}))
   }
   
-  ///-------------------------------------------------------------------------------------------------------------------------------------------------------
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       
@@ -250,11 +241,6 @@ const Identity = ({ step, isEfForm }) => {
       {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
       <div className="form__section">
         <div className="form__section-field-buttons">
-          {/* <PDFDownloadLink document={<MyPDF data={currentOM} agent={agent} om={currentOM} vehicleTypes={vehicleTypes} />} fileName={currentOM.name + ".pdf"}>
-            {({ blob, url, loading, error }) => {
-              
-              return loading ? 'Loading document...' : 'Download now!'}            }
-          </PDFDownloadLink> */}
           <BlobProvider document={<MyPDF agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />}>
             {({ blob, url, loading, error }) => {
 

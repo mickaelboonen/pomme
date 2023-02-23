@@ -19,7 +19,6 @@ const Preferences = () => {
 
   let currentTheme = localStorage.getItem('color-theme-name');
   const themeInput = watch('theme');
-  console.log(themeInput);
 
   useEffect(() => {
     currentTheme = localStorage.getItem('color-theme-name');

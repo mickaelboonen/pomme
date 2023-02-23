@@ -60,7 +60,7 @@ const Avance = ({ step }) => {
   } = useForm({ defaultValues: defaultValues});
   
   const [total] = watch(['total']);
-  // console.log(defaultValues.advance);
+  
   const [isAdvanceRequested, setIsAdvanceRequested] = useState(defaultValues.advance);
 
   const onSubmit = (data) => {

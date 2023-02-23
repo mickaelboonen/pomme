@@ -30,7 +30,6 @@ const AddVehicle = () => {
     defaultValues = currentVehicle;
   }
 
-  console.log(defaultValues);
   const {
     register,
     handleSubmit,
@@ -53,7 +52,7 @@ const AddVehicle = () => {
   };
 
   const handleGoBack = () =>  {
-    console.log(apiMessage);
+    
     if (apiMessage.hasOwnProperty('data')) {
       dispatch(clearMessage());
     }
@@ -63,8 +62,7 @@ const AddVehicle = () => {
     
     navigate(`/utilisateur/${user}/mes-documents`);
   }
-
-  console.log(apiMessage);
+  
   return (
   <main className="form-page__container">
     <div className="form-page__title">

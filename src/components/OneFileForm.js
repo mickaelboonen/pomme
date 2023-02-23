@@ -51,7 +51,7 @@ const OneFileForm = () => {
   }
   
   const onSubmit = (data) => {
-    console.log(data, action);
+    
     if (data.file instanceof File) {
       if (action === "add") {
         dispatch(addPermFile({data: data, type: type, user: user}));

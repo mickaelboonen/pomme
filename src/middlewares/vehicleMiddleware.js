@@ -16,8 +16,7 @@ const vehicleMiddleware = (store) => (next) => (action) => {
     case 'vehicle/createVehicle':
       api.post("/api/vehicle/add/" + user, action.payload)
         .then((response) => {
-
-          console.log('HERE : ', response)
+          
           const newDataFormat = {
             omId: Number(response.data.omId),
             vehicle_id: Number(response.data.selectedVehicle),
@@ -29,15 +28,15 @@ const vehicleMiddleware = (store) => (next) => (action) => {
           }
 
           if (newDataFormat.registration_document instanceof File) {
-            console.log('there is a least one file : ', newDataFormat);
+            
             store.dispatch(uploadFile({data: newDataFormat, step: 'authorization', docType: 'authorization'}));
           }
           else if (newDataFormat.insurance instanceof File) {
-            console.log('there is aa least one file', newDataFormat);
+            
             store.dispatch(uploadFile({data: newDataFormat, step: 'authorization', docType: 'authorization'}));
           }
           else if (newDataFormat.signature instanceof File) {
-            console.log('there is aaa least one file', newDataFormat);
+            
             store.dispatch(uploadFile({data: newDataFormat, step: 'authorization', docType: 'authorization'}));
           }
           else if (!response.data.omId) {
@@ -47,7 +46,7 @@ const vehicleMiddleware = (store) => (next) => (action) => {
             store.dispatch(setApiResponse(response));
           }
           else {
-            console.log('there are no files sad', newDataFormat);
+            
             store.dispatch(requestVehicleAuthorization(newDataFormat));
           }
         })
@@ -57,10 +56,9 @@ const vehicleMiddleware = (store) => (next) => (action) => {
       break;
     
     case 'vehicle/updateVehicle':
-      console.log(action.payload);
       api.post("/api/vehicle/update/" + action.payload.id, action.payload)
         .then((response) => {
-          console.log(response.data);
+           
           store.dispatch(setApiResponse({data: response.data, status: 200}));
 
         })
@@ -69,10 +67,9 @@ const vehicleMiddleware = (store) => (next) => (action) => {
       });
       break;
     case 'vehicle/deleteVehicle':
-        console.log(action.payload);
         api.delete("/api/vehicle/delete/" + action.payload)
           .then((response) => {
-            console.log(response.data);
+             
             store.dispatch(setApiResponse({data: response.data, status: 200}));
 
           })
@@ -103,7 +100,7 @@ const vehicleMiddleware = (store) => (next) => (action) => {
     case 'vehicle/requestVehicleAuthorization':
       api.post("/api/vehicle/authorization/add", action.payload)
         .then((response) => {
-          console.log(response.data);
+           
           store.dispatch(validateSideForm());
           store.dispatch(setMessage(response));
         })

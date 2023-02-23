@@ -54,6 +54,11 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
         url: `/gestionnaire/${role}/documents-a-signer`,
         label: 'États de frais'
       },
+      {
+        id: 'gest-pref',
+        url: `/gestionnaire/${user}/mes-préférences`,
+        label: 'Mes préférences'
+      },
     ],
   };
 

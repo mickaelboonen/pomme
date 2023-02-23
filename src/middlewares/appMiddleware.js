@@ -46,7 +46,7 @@ const appMiddleware = (store) => (next) => (action) => {
     case 'app/getDocument':
       api.get(`/api/perm-file/${action.payload.type}/${action.payload.id}`)
         .then((response) => {
-          console.log(response.data);
+           
             if (response.data) {
               store.dispatch(saveDocument(response.data));
             }
@@ -60,7 +60,7 @@ const appMiddleware = (store) => (next) => (action) => {
       api.get("/api/om/mission/" + action.payload)
         .then((response) => {
           // if (response.data.length > 0) {
-            console.log(response.data);
+             
             // store.dispatch(saveSignature(response.data[0]))
           // }
         })
@@ -70,25 +70,20 @@ const appMiddleware = (store) => (next) => (action) => {
         });
       break;
     case 'app/authenticate':  
-      console.log('je veux m"authentifier.');
-      
       casClient
         .auth()
             .then((response) => {
-              console.log(response);
               store.dispatch(validateAuthentication(response))
             })
             .catch(response => {
               console.log('error : ', response);
             });
     break;
-  case 'app/fetchUserData':  
-    console.log('je veux m"authentifier.');
-    
+  case 'app/fetchUserData':      
     api.post("/api/agent/get-data", action.payload)
       .then((response) => {
         // if (response.data.length > 0) {
-          console.log(response.data);
+           
 
           store.dispatch(saveUserData(response.data));
         // }

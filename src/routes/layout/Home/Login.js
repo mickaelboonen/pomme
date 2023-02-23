@@ -10,28 +10,24 @@ import { useLocation } from 'react-router-dom';
 const Login = ( cas ) => {
 
   const dispatch = useDispatch();
+  const location = useLocation();
 
-  const handleLogin = () => {
-    
+  const handleLogin = () => {  
     cas.cas
       .auth() 
         .then((response) => {
-          console.log("am i here");
           dispatch(validateAuthentication(response))
         })
         .catch(response => {
           console.log('ERREUR CAS : ', response);
         });
   }
-  const location = useLocation();
-  useEffect(() => {
-    console.log('dans le use effect : ', location)
 
+  useEffect(() => {
     if (location.search.includes('status=inprocess')) {
       cas.cas
       .auth() 
         .then((response) => {
-          console.log("am i here");
           dispatch(validateAuthentication(response))
         })
         .catch(response => {

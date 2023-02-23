@@ -8,7 +8,6 @@ import './style.scss';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { toggleDocModal, deletePermFile } from 'src/reducer/otherDocuments';
-import { getSavedFileName } from '../../../selectors/formDataGetters';
 import { displayVehicle, deleteVehicle  } from '../../../reducer/vehicle';
 
 const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) => {
@@ -17,8 +16,6 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
   const dispatch = useDispatch();
 
   const handleDownload = (event) => {
-    console.log('handleDownload')
-
     const { id } = event.currentTarget.dataset;
   };
 
@@ -42,7 +39,6 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
       const { value } = document.querySelector('select');
       
       if (!isNaN(value)) {
-        console.log(value);
         dispatch(displayVehicle(value))
         navigate(`/utilisateur/${user}/mes-documents/modifier-un-véhicule/` + value)
       }
@@ -75,7 +71,6 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
         }
       }
       else {
-        console.log(file);
         if (file === undefined) {
           window.alert("Il n'y a pas de document à supprimer.");
         }

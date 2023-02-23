@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import './style.scss';
@@ -33,8 +32,7 @@ const Section = ({ id, data, steps, currentDoc}) => {
   if (!unfinishedStep) {
     isDocFinished = true;
   }
-
-  console.log('CURRENT DOC PLEASE : ', currentDoc);
+  
   return (
     <section id={id} className="my-documents__files">
       <SelectField

@@ -11,12 +11,11 @@ const Layout = ({ cas }) => {
   
   const theme = localStorage.getItem('theme');
   const colorTheme = localStorage.getItem('color-theme');
-
-  const x = process.env;
-  console.log(x);
+    
   const devHost = process.env.DEV_HOST + ':8080';
-  console.log(devHost);
-  // const devHost = '192.168.56.1:8080'
+  console.log("HOST = ", devHost);
+  console.log("ENV = ", process.env.NODE_ENV);
+  
   const { host } = useLoaderData();
 
   const { isAuthenticated } = useSelector(state => state.app);    
@@ -30,7 +29,6 @@ const Layout = ({ cas }) => {
     }
   }, [])
 
-  console.log("ENV = ", process.env.NODE_ENV);
 
   return (
     <div>

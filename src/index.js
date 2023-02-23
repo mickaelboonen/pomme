@@ -210,7 +210,6 @@ const router = createBrowserRouter([
                 store.dispatch(getMore(id));
               }
               else if (step === '6') {
-                console.log('here');
                 store.dispatch(setLoader(true));
                 store.dispatch(fetchAgentSignatureForPdf({ agent: user, omId: id}));
                 store.dispatch(fetchOm(id));

@@ -78,7 +78,6 @@ const omMiddleware = (store) => (next) => (action) => {
         })
       }
       else if (step === "om") {
-        console.log(data);
         const fileToUpload = {
           omId: data.omId,
           type: 'om',
@@ -155,7 +154,7 @@ const omMiddleware = (store) => (next) => (action) => {
           console.log(response)
           // Retrieving the url for each file and assigning it to the right property
           response.data.forEach((file) => {
-            // console.log(file);
+            
             if (file.type === 'transport-dispensation') {
               data.transportDispensation = file.file.url;
             }
@@ -193,11 +192,12 @@ const omMiddleware = (store) => (next) => (action) => {
           
           // Now updates the transports values in the database
           if (step === 'transports') {
-            console.log('middleware here');
+            console.log('before update : ', data);
             store.dispatch(updateTransports(data));
           }
           else if (step === 'advance') {
             delete data.advance;
+            console.log('before update : ', data);
             store.dispatch(updateAdvance(data));
           }
           else if (step === 'more-and-signature') {
@@ -255,12 +255,9 @@ const omMiddleware = (store) => (next) => (action) => {
     // TODO -------------------------------------------------------
     case 'other-documents/editPermFile':{
       const { id } = action.payload;
-      console.log(action.payload);
+      
       fileApi.post(`/api/file/perm/update/${id}`, action.payload)
         .then((response) => {
-
-          console.log(response)
-
           store.dispatch(toggleDocModal({ action: '', type: ''}));
         })
         .catch((error) => {
@@ -283,7 +280,6 @@ const omMiddleware = (store) => (next) => (action) => {
         break;
 
     case 'other-documents/fetchAgentSignatureForPdf':
-      console.log(action.payload);
       fileApi.post('/api/agent/signature', action.payload)
         .then((response) => {
           response.uri = response.data;

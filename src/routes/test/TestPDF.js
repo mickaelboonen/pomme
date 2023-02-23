@@ -21,8 +21,6 @@ const TestPDF = () =>   {
     vehicle: { vehicleTypes },
   } = useSelector((state) => state);
 
-  console.log(window)
-
   useEffect(() => {
     if (nextOMTarget !== '') {
       dispatch(toggleModal());

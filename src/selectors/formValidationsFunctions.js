@@ -133,9 +133,9 @@ export const handleRegionFields = (region, register, unregister) => {
  */
 export const handleValidationErrorsManually = (element, content, toAdd = false) => {
 
-  console.log(element, content);
-    element.textContent = content;
+  element.textContent = content;
   const classToManipulate = "form__section-field-error--open";
+
   if (toAdd) {
     element.classList.add(classToManipulate);
   }

@@ -62,7 +62,7 @@ const Buttons = ({ trigger, step, url, id, watch, update, secondUpdate, userSign
       if (data.missionPurposeFile) {
         fileObject = data.missionPurposeFile.find((file) => file instanceof File);
       }
-      console.log(fileObject);
+      
       if (fileObject) {
         dispatch(uploadFile({data: data, step: 'mission'}));
         // navigate(url.pathname + '?' + url.searchParams);
@@ -87,7 +87,7 @@ const Buttons = ({ trigger, step, url, id, watch, update, secondUpdate, userSign
         dispatch(uploadFile({data: databaseData, step: 'transports'}));
       } 
       else {
-        // console.log(databaseData);
+        
         dispatch(update(databaseData));
       }
     }
@@ -97,13 +97,9 @@ const Buttons = ({ trigger, step, url, id, watch, update, secondUpdate, userSign
       dispatch(update(dataToBeSubmitted));
     }
     else if (step === 4) { // --------------------------------------------------------------------------------
-      console.log(data);
-      const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);   
-      console.log(dataToBeSubmitted);   
-
-      console.log(typeof dataToBeSubmitted.hotelQuotation, dataToBeSubmitted.hotelQuotation);
       
-      // return;
+      const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);
+      
       if ( dataToBeSubmitted.agentRib instanceof File || dataToBeSubmitted.hotelQuotation instanceof File ) {
         dispatch(uploadFile({data: dataToBeSubmitted, step: 'advance'}))
       }

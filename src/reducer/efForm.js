@@ -141,10 +141,9 @@ const omFormSlice = createSlice({
         state.isMissionFormDisabled = !action.payload;
       },
       toggleHelp: (state, action) => {
-
-        console.log(action.payload.id, state);
+        
         const currentHelpState = JSON.parse(JSON.stringify(state.currentHelp));
-        console.log(currentHelpState);
+        
         if (action.payload.id === currentHelpState.id ) {
 
           state.currentHelp = {};

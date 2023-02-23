@@ -21,7 +21,6 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/addNewOM':
       api.post("/api/om/add", action.payload,)
         .then((response) => {
-          console.log('omForm/addNewOM : ', response.data, action.payload)
           const finalisedOM = action.payload;
           finalisedOM.id = response.data;
           store.dispatch(saveNewOm(finalisedOM))
@@ -34,7 +33,7 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/fetchOm':
       api.get("/api/om/find/" + action.payload)
         .then((response) => {
-          console.log(response);
+          
           store.dispatch(saveOm(response.data))
         })
         .catch((error) => {
@@ -44,10 +43,9 @@ const omMiddleware = (store) => (next) => (action) => {
       break;
 
     case 'omForm/fetchOMs':
-      console.log(action.type + " : " + action.payload)
       api.get("/api/om/" + action.payload,)
         .then((response) => {
-          console.log(response.data);
+           
           store.dispatch(saveUserOms(response.data))
         })
         .catch((error) => {
@@ -59,7 +57,6 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/updateOmName':
       api.post("/api/om/rename", action.payload)
         .then((response) => {
-          console.log(response);
           // store.dispatch(saveUserOms(response.data));
           // store.dispatch(setApiResponse(response));
         })
@@ -73,7 +70,6 @@ const omMiddleware = (store) => (next) => (action) => {
       delete action.payload.om;
       api.post("/api/om/mission/update" , action.payload,)
         .then((response) => {
-          console.log(response);
           store.dispatch(setApiResponse(response));
         })
         .catch((error) => {
@@ -86,7 +82,6 @@ const omMiddleware = (store) => (next) => (action) => {
       // TODO : See if POST method is the right one ? Should be PATCH / PUT but not working
       api.post("/api/om/transports/update" , action.payload)
         .then((response) => {
-          console.log(response);
           store.dispatch(setApiResponse(response));
         })
         .catch((error) => {
@@ -99,7 +94,6 @@ const omMiddleware = (store) => (next) => (action) => {
       // TODO : See if POST method is the right one ? Should be PATCH / PUT but not working
       api.post("/api/om/advance/update" , action.payload)
         .then((response) => {
-          console.log(response);
           store.dispatch(setApiResponse(response));
         })
         .catch((error) => {
@@ -112,7 +106,6 @@ const omMiddleware = (store) => (next) => (action) => {
         // TODO : See if POST method is the right one ? Should be PATCH / PUT but not working
         api.post("/api/om/more/update" , action.payload)
           .then((response) => {
-            console.log("SUCCESS MORE : ", response);
             store.dispatch(setApiResponse(response));
           })
           .catch((error) => {
@@ -134,10 +127,8 @@ const omMiddleware = (store) => (next) => (action) => {
       break;
 
     case 'omForm/updateAccomodations':
-      console.log('omForm/updateAccomodations', action.payload);
       api.post("/api/om/accomodations/update" , action.payload,)
         .then((response) => {
-          console.log(response);
           store.dispatch(setApiResponse(response));
         })
         .catch((error) => {
@@ -149,7 +140,7 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/updateMoreAndSignature':
       api.post("/api/om/more-and-signature/update",  action.payload)
         .then((response) => {
-          console.log(response.data);
+           
             // store.dispatch(saveMoreAndSignature(response.data))
           store.dispatch(setApiResponse(response));
         })
@@ -174,7 +165,6 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/getTransports':
       api.get("/api/om/transports/find/" + action.payload)
         .then((response) => {
-          console.log('MIDDLEWARE : ', response);
           store.dispatch(saveTransports(response.data));
         })
         .catch((error) => {
@@ -198,7 +188,7 @@ const omMiddleware = (store) => (next) => (action) => {
       case 'omForm/getMore':
         api.get("/api/om/more-and-signature/find/" + action.payload)
           .then((response) => {
-            console.log(response.data);
+             
               store.dispatch(saveMore(response.data))
           })
           .catch((error) => {
@@ -220,7 +210,6 @@ const omMiddleware = (store) => (next) => (action) => {
       break;
     
       case 'omForm/createDerogation':
-        console.log('here');
         api.post("/api/om/derogation/create", action.payload)
           .then((response) => {
               store.dispatch(validateSideForm(response.data));
@@ -231,10 +220,9 @@ const omMiddleware = (store) => (next) => (action) => {
           });
         break;
       case 'omForm/updateOm':
-        console.log('here');
         api.post("/api/om/update", action.payload)
           .then((response) => {
-            console.log(response)
+            // TODO 
               // store.dispatch(validateSideForm(response.data));
           })
           .catch((error) => {
