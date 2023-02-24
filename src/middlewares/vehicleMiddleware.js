@@ -1,4 +1,4 @@
-import { saveVehicles, saveVehicleDocuments, requestVehicleAuthorization } from 'src/reducer/vehicle';
+import { saveVehicles, saveVehicleDocuments, requestVehicleAuthorization, saveAuthorization } from 'src/reducer/vehicle';
 import { uploadFile, validateSideForm } from 'src/reducer/omForm';
 
 import { api } from './api';
@@ -100,9 +100,10 @@ const vehicleMiddleware = (store) => (next) => (action) => {
     case 'vehicle/requestVehicleAuthorization':
       api.post("/api/vehicle/authorization/add", action.payload)
         .then((response) => {
-           
+          console.log('RESPONSE HERE : ', response);
           store.dispatch(validateSideForm());
-          store.dispatch(setMessage(response));
+          store.dispatch(saveAuthorization(response.data.authorization));
+          store.dispatch(setMessage({data: response.data.message, status: 200}));
         })
         .catch((error) => {
           console.error('vehicle/requestVehicleAuthorization', error);

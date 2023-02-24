@@ -91,12 +91,12 @@ const Identity = ({ step, isEfForm }) => {
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
-      
+{/*       
         <div style={{width:"100%", height:"100vh"}}>
           <PDFViewer>
             <MyPDF agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />
           </PDFViewer>
-        </div>
+        </div> */}
       <div className="form__section">
         <FormSectionTitle>Missionnaire</FormSectionTitle>
         <div className="form__section form__section--split">

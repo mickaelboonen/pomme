@@ -3,6 +3,7 @@ import classNames from "classnames";
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLoaderData } from 'react-router-dom';
+import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
 
 import './style.scss';
 
@@ -23,6 +24,7 @@ import FileOrSavedFile from 'src/components/Fields/FileOrSavedFile';
 // Actions
 import { clearSideForm, uploadFile } from 'src/reducer/omForm';
 import { displayVehicle, createVehicle, requestVehicleAuthorization, stayOnAuthorizationForm, clearMessage, resetPdfNeed } from 'src/reducer/vehicle';
+import CarAuthorizationPdf from "../../../components/PDF/CarAuthorizationPdf";
 
 
 const VehicleUseForm = () => {
@@ -33,9 +35,10 @@ const VehicleUseForm = () => {
   const omId = url.searchParams.get('omId');
 
   let { 
-    // app: { vehicles, formDefaultValues, unimesVehicles, loader },
+    app: { agent  },
+    docs: { agentSignature },
     omForm: { isSideFormInDB },
-    vehicle: { message, needsPdf , vehicles, formDefaultValues, unimesVehicles, loader },
+    vehicle: { savedAuthorization, message, needsPdf ,vehicleTypes, vehicles, formDefaultValues, unimesVehicles, loader },
   } = useSelector((state) => state);
 
 
@@ -75,13 +78,14 @@ const VehicleUseForm = () => {
   const [vehiclesList, setVehiclesList] = useState([]);
 
   const [
+    reasons,
     carType,
     externalSignature,
     savedRegistration,
     savedInsurance,
     carRegistrationFile,
     carInsuranceFile
-  ] = watch(['carType', 'externalSignature', 'savedRegistration', 'savedInsurance', 'carRegistrationFile', 'carInsuranceFile']);
+  ] = watch(['reasons', 'carType', 'externalSignature', 'savedRegistration', 'savedInsurance', 'carRegistrationFile', 'carInsuranceFile']);
 
   useEffect(() => {
     if (formDefaultValues.savedInsurance) {
@@ -128,7 +132,7 @@ const VehicleUseForm = () => {
     if (countErrors === 0) {
 
       if (data.externalSignature) {
-        dispatch(stayOnAuthorizationForm())
+        dispatch(stayOnAuthorizationForm({reasons: data.reasons}))
       }
 
       if (!data.selectedVehicle || data.selectedVehicle === '0') {
@@ -169,7 +173,7 @@ const VehicleUseForm = () => {
     }
   }, [carRegistrationFile, carInsuranceFile])
 
-  const reasons = [
+  const staticReasons = [
     {
       id: "time",
       label: "Gain de temps",
@@ -201,8 +205,7 @@ const VehicleUseForm = () => {
 
   const generatePdf = () => {
     dispatch(resetPdfNeed());
-    // TODO : PDF
-    console.log('I want the PDF of the Auth');
+    navigate('/modifier-un-document/ordre-de-mission?etape=2&id='+ omId);
   }
   
   return (
@@ -216,7 +219,6 @@ const VehicleUseForm = () => {
             <label className="form__section-field-label" htmlFor="departure-place">Type de véhicule</label>
 
             <div className="form__section  form__section--split">
-              {/* <label className="form__section-field-label" htmlFor="departure-place">Type de véhicule</label> */}
               <RadioInput
                 id="personal-car"
                 formField="carType"
@@ -254,7 +256,7 @@ const VehicleUseForm = () => {
             <FormSectionTitle>Raison</FormSectionTitle>
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Raison(s) justifiant l'utilisation d'un véhicule</label>
-              {reasons.map((reason) => (
+              {staticReasons.map((reason) => (
                 <CheckboxInput
                   key={reason.id}
                   id={reason.id}
@@ -332,17 +334,28 @@ const VehicleUseForm = () => {
             {externalSignature && (
               <div className="form__section-field" id="external-signature-button">
                 <div className="form__section-field-button">
-                  <ButtonElement 
-                    type="submit"
-                    label="Enregistrer la demande"
-                  />
-                  
-                  {needsPdf && (
+                  {(!savedAuthorization.hasOwnProperty('reasons')) && (
                     <ButtonElement 
-                      type="button"
-                      label="Générer le PDF de la demande"
-                      onClick={generatePdf}
+                      type="submit"
+                      label="Enregistrer la demande"
                     />
+                  )}
+                  {(needsPdf && savedAuthorization.hasOwnProperty('reasons')) && (
+                    <BlobProvider document={<CarAuthorizationPdf reasons={staticReasons} agentSignature={agentSignature} agent={agent} data={savedAuthorization} vehicleTypes={vehicleTypes}/>}>
+                      {({ blob, url, loading, error }) => {
+          
+                        const file = new File([blob], new Date().toLocaleDateString() + '-demande-d-autorisation-de-véhicule', {type: 'pdf'});
+                        const fileUrl = URL.createObjectURL(file);
+                        
+                        return (
+                          <a href={fileUrl} download={new Date().toLocaleDateString() + '-demande-d-autorisation-de-véhicule.pdf'} style={{textAlign: 'center'}}>
+                            <button onClick={generatePdf} type="button">
+                              Générer le PDF de la demande
+                            </button>
+                          </a>
+                        );
+                      }}
+                    </BlobProvider>
                   )}
                 </div>
                 {needsPdf && <p className="form__section-field-label form__section-field-label--car-form">Veuillez télécharger le PDF de la demande et le faire signer aux personnes extérieures concernées</p>}
@@ -353,7 +366,7 @@ const VehicleUseForm = () => {
                     </p>
                   </div>
                 )}
-                {needsPdf && <a href="">Retourner au formulaire de l'ordre de mission</a>}
+                {needsPdf && <a href={'/modifier-un-document/ordre-de-mission?etape=2&id='+ omId}>Retourner au formulaire de l'ordre de mission</a>}
               </div>
             )} 
             {!externalSignature && (
@@ -366,10 +379,11 @@ const VehicleUseForm = () => {
                 </div>
               </div>
             )}
-            
           </div>
         </form>
+      
       )}
+
       </div>
     );
   };

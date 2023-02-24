@@ -43,6 +43,7 @@ const initialState = {
   loader: true,
   needsPdf: false,
   message: null,
+  savedAuthorization: {},
 };
 const vehicleSlice = createSlice({
     name: 'vehicle',
@@ -110,12 +111,35 @@ const vehicleSlice = createSlice({
       },
       stayOnAuthorizationForm: (state, action) => {
         state.needsPdf = true;
-        state.successMessage = action.payload;
+        state.savedReasons = action.payload.reasons;
       },
       resetPdfNeed: (state) => {
         state.needsPdf = false;
+        state.savedAuthorization= {};
+        state.message= null,
+        state.formDefaultValues= {
+          carType: null,
+          selectedVehicle: null,
+          carBrand: null,
+          carRegistration: null,
+          carRating: null,
+          carInsurance: null,
+          policeNumber: null,
+          reasons: [],
+          otherReason: null,
+          savedRegistration: false,
+          carRegistrationFile: null,
+          savedRegistration: false,
+          carInsuranceFile: null,
+          signature: null,
+          externalSignature: null
+        };
       },
       setMessage: (state, action) => {
+        delete action.payload.headers;
+        delete action.payload.config;
+        delete action.payload.statusText;
+        delete action.payload.request;
         state.message = action.payload;
       },
       clearMessage: (state) => {
@@ -127,6 +151,9 @@ const vehicleSlice = createSlice({
       deleteVehicle: () => {
 
       },
+      saveAuthorization: (state, action) => {
+        state.savedAuthorization = action.payload;
+      }
     },
 });
 
@@ -145,6 +172,7 @@ export const {
   clearMessage,
   updateVehicle,
   deleteVehicle,
+  saveAuthorization,
 } = vehicleSlice.actions;
 
 export default vehicleSlice.reducer;
