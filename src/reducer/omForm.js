@@ -197,6 +197,7 @@ const omFormSlice = createSlice({
       saveUserOms: (state, action) => {
         state.userOms = action.payload;
         state.dataToSelect = state.userOms.filter((om) => om.status === 1);
+        state.omLoader = false;
       },
       saveMission: (state, action) => {
         state.omForm[0].data.omId = action.payload.om.id;

@@ -106,11 +106,12 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
   
   const {mission, transports, accomodations, advance, signature, more} = data;
   
+  console.log("DATA FOR PDF : ", data);
   const dep = new Date(mission.departure);
   const ret = new Date(mission.comeback);
   
   // Transports
-  let chosenVehicleType = null;
+  let chosenVehicleType = {};
 
 
   if (transports.authorizations.length > 0) {

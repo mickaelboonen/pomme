@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { persistor } from "src/store";
 
 // Icons
 import { RiLogoutBoxRFill } from "react-icons/ri";
@@ -90,6 +91,7 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
 
   const handleLogOut = () => {
     cas.logout("/");
+    persistor.purge();
   }
 
   const savedTheme = localStorage.getItem('theme');

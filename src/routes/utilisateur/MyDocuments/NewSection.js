@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
 import classNames from 'classnames';
@@ -8,10 +8,10 @@ import './style.scss';
 import SelectField from 'src/components/Fields/SelectField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 
-import { displayOmStatus } from 'src/reducer/omForm';
+import { displayOmStatus, saveOm } from 'src/reducer/omForm';
 import DocButtons from './DocButtons';
 
-const Section = ({ id, data, steps, currentDoc}) => {
+const Section = ({ id, data, steps, currentDoc, loader}) => {
   
   const dispatch = useDispatch();
   const {
@@ -35,6 +35,8 @@ const Section = ({ id, data, steps, currentDoc}) => {
   
   return (
     <section id={id} className="my-documents__files">
+    { loader && <div>Loading</div>}
+    { !loader && (
       <SelectField
         data={data}
         register={register}
@@ -44,6 +46,7 @@ const Section = ({ id, data, steps, currentDoc}) => {
         label={`Liste des Ordres de Missions`}
         blankValue="Aucun document sélectionné"
       />
+    )}
       {currentDoc.hasOwnProperty('id') && (
         <div className='om-status'>
           <FormSectionTitle>Statut des différentes étapes</FormSectionTitle>

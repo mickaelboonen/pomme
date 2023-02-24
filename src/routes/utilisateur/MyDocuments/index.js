@@ -29,7 +29,7 @@ const MyDocuments = () => {
   const loaderData = useLoaderData();
   
 
-  const { omForm: { currentOM, nextOMTarget, OMTabs, userOms, dataToSelect },
+  const { omForm: { currentOM, nextOMTarget, OMTabs, userOms, dataToSelect, omLoader },
     efForm: { nextEFTarget, EFTabs },
     app: { isModalOpen }
   } = useSelector((state) => state);
@@ -130,7 +130,7 @@ const MyDocuments = () => {
       </div>
       {isOm && <Tabs tabs={OMTabs} handler={displayWantedSection} />}
       {!isOm && <Tabs tabs={EFTabs} handler={displayWantedSection} />}
-      <NewSection data={dataToSelect} steps={steps} currentDoc={currentOM} />
+      <NewSection data={dataToSelect} steps={steps} currentDoc={currentOM} loader={omLoader} />
       {/* {isOm && <Section id={"ec-om"} data={currentOMs} isFirstSection />}
       {isOm && <Section id={"ok-om"} data={pastOMs} />}
       {!isOm && <Section id={"ec-ef"} data={currentEFs} isFirstSection />}

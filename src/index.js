@@ -277,6 +277,7 @@ const router = createBrowserRouter([
             element: <MyDocuments />,
             loader: async ({ params, request }) => {
               const { app : { user }} = store.getState(state => state);
+              store.dispatch(setLoader(true));
                   
               store.dispatch(fetchUserData({ id: user}));
               store.dispatch(fetchOMs(params.slug));
