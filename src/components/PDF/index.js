@@ -242,7 +242,7 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
       </View>
       <View style={styles.section}>
         <Text style={styles.section.title} wrap={false}>TRANSPORTS</Text>
-        <Text style={styles.section.text}>Modalités de déplacement pour la mission : {!isNaN(transports.vehicle) ? 'Voiture - ' : ''}{transports.transport_type.map((t) => t + ' - ')}{transports.planeClass ? 'Avion' : ''}</Text>
+        <Text style={styles.section.text}>Modalités de déplacement pour la mission : {chosenVehicleType.hasOwnProperty('name') ? 'Voiture - ' : ''}{transports.transport_type.map((t) => t + ' - ')}{transports.planeClass ? 'Avion' : ''}</Text>
         <Text style={styles.section.text} />
         <Text style={styles.section.text} />
         {trainData.hasOwnProperty('class') && (
@@ -251,7 +251,7 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
         {planeData.hasOwnProperty('class') && (
           <Text>Avion : Voyage en {planeData.class === 'business-class' ? 'classe affaire' : 'classe éco'}, {planeData.payment.includes('user') ? "avancé par l'agent." : 'payé par Unîmes.'}</Text>
         )}
-        {transports.chosenVehicleType !== null && (
+        {chosenVehicleType.hasOwnProperty('name') && (
           <>
             <Text>Vehicule : {chosenVehicleType.name}{!chosenVehicleType.name.includes('Covoiturage') ? `, immatriculé ${transports.authorizations[0].vehicle.license_plate}` : '.'}</Text>
             {transports.vehicle === 0 && <Text>Remboursement Forfait SNCF 2ème classe.</Text>}

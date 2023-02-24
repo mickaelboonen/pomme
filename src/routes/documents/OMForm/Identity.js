@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { BlobProvider } from '@react-pdf/renderer';
+import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
 
 import './style.scss';
 
@@ -92,11 +92,11 @@ const Identity = ({ step, isEfForm }) => {
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       
-        {/* <div style={{width:"100%", height:"100vh"}}>
+        <div style={{width:"100%", height:"100vh"}}>
           <PDFViewer>
             <MyPDF agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />
           </PDFViewer>
-        </div> */}
+        </div>
       <div className="form__section">
         <FormSectionTitle>Missionnaire</FormSectionTitle>
         <div className="form__section form__section--split">

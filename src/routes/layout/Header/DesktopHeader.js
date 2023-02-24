@@ -1,14 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Apple from 'src/assets/images/apple.png';
+import { persistor } from 'src/store';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './style.scss';
-import { Link } from 'react-router-dom';
+
+// Components
 import Preferences from './Preferences';
-import { toggleBurgerMenu, toggleNavList } from 'src/selectors/domManipulators';
 import BurgerIcon from './BurgerIcon';
-import { useDispatch, useSelector } from 'react-redux';
+
+// Actions and selectors
 import { logout } from 'src/reducer/app';
+import { toggleBurgerMenu, toggleNavList } from 'src/selectors/domManipulators';
 
 const DesktopHeader = ({ cas }) => {
 
@@ -19,6 +23,7 @@ const DesktopHeader = ({ cas }) => {
   const { app : { user }} = useSelector((state) => state);
   const handleLogOut = () => {
     dispatch(logout());
+    persistor.purge();
     cas.logout("/");
   }
 

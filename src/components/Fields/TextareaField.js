@@ -5,7 +5,6 @@ import './style.scss';
 import classNames from 'classnames';
 
 const TextareaField = ({ id, label, formField, register, placeholder, isHidden, rows, required, error }) => {
-  s
   return (
   <div id={id} className={classNames("form__section-field", {"form__section-field--hidden": isHidden})}>
     <label className="form__section-field-label" htmlFor={id}>{label}</label>
