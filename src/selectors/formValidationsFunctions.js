@@ -161,42 +161,43 @@ export const defineValidationRulesForMission = (isEfForm, isFormModified, isScie
     comeback: null,
     comebackPlace: null,
     region: null,
-    workAdress: null,
     country: null,
     abroadCosts: null,
     budget: null,
     presentation: null,
+    streetNumber: null,
+    streetType: null,
+    streetName: null,
+    postCode: null,
+    city: null,
+    visa: null,
+    visaPayment: null,
+    sciencePayment: null,
+  }
+
+  let requiredErrorMessages = {
+    missionPurpose: 'Merci de rensigner le motif de la mission.',
+    departure: "Veuillez renseigner le jour et l'heure de départ.",
+    departurePlace: "Veuillez renseigner le lieu de départ lors de votre départ en mission.",
+    comeback: "Veuillez renseigner le jour et l'heure du retour.",
+    comebackPlace: "Veuillez renseigner le lieu d'arrivée lors de votre retour de mission.",
+    region: "Merci de sélectionner l'option qui correspond.",
+    streetNumber: "Merci de renseigner le numéro de voie.",
+    streetType: "Merci de renseigner le type de voie.",
+    streetName: "Merci de renseigner le nom de la voie (sans le type).",
+    postCode: "Merci de renseigner le code postal.",
+    city: "Merci de renseigner la ville où a lieu la mission.",
+    visa: 'Veuillez renseigner le champ.',
+    visaPayment: "Veuillez renseigner le champ.",
   }
 
   if (isEfForm) {
     if (isFormModified) {
-      errorMessages.missionPurpose = 'Merci de rensigner le motif de la mission.';
-      errorMessages.departure = "Veuillez renseigner le jour et l'heure de départ.";
-      errorMessages.departurePlace = "Veuillez renseigner le lieu de départ lors de votre départ en mission.";
-      errorMessages.comeback = "Veuillez renseigner le jour et l'heure du retour.";
-      errorMessages.comebackPlace = "Veuillez renseigner le lieu d'arrivée lors de votre retour de mission.";
-      errorMessages.region = "Merci de sélectionner l'option qui correspond.";
-      errorMessages.workAdress = "Merci de renseigner l'adresse de votre résidence administrative.";
-      errorMessages.streetNumber = "Merci de renseigner le numéro de voie.";
-      errorMessages.streetType = "Merci de renseigner le type de voie.";
-      errorMessages.streetName = "Merci de renseigner le nom de la voie (sans le type).";
-      errorMessages.postCode = "Merci de renseigner le code postal.";
-      errorMessages.city = "Merci de renseigner la ville ù a lieu la mission.";
+      errorMessages = requiredErrorMessages;
     }
   }
   else {
-    errorMessages.missionPurpose = 'Merci de rensigner le motif de la mission.';
-    errorMessages.departure = "Veuillez renseigner le jour et l'heure de départ.";
-    errorMessages.departurePlace = "Veuillez renseigner le lieu de départ lors de votre départ en mission.";
-    errorMessages.comeback = "Veuillez renseigner le jour et l'heure du retour.";
-    errorMessages.comebackPlace = "Veuillez renseigner le lieu d'arrivée lors de votre retour de mission.";
-    errorMessages.region = "Merci de sélectionner l'option qui correspond.";
-    errorMessages.workAdress = "Merci de renseigner l'adresse de votre résidence administrative.";
-    errorMessages.streetNumber = "Merci de renseigner le numéro de voie.";
-    errorMessages.streetType = "Merci de renseigner le type de voie.";
-    errorMessages.streetName = "Merci de renseigner le nom de la voie (sans le type).";
-    errorMessages.postCode = "Merci de renseigner le code postal.";
-    errorMessages.city = "Merci de renseigner la ville ù a lieu la mission.";
+    errorMessages = requiredErrorMessages;
   }
 
   return errorMessages;

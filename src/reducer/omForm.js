@@ -201,6 +201,7 @@ const omFormSlice = createSlice({
       },
       saveMission: (state, action) => {
         state.omForm[0].data.omId = action.payload.om.id;
+        console.log('ACTION : ', action.payload);
 
         const formattedValues = declareCamelCaseKeys(action.payload);
         formattedValues.streetNumber = formattedValues.address ? formattedValues.address.streetNumber : null;
@@ -212,6 +213,7 @@ const omFormSlice = createSlice({
         formattedValues.addressId = formattedValues.address ? formattedValues.address.id : null;
         delete formattedValues.address;
 
+        console.log('FORMATTED : ', formattedValues);
         state.omForm[0].data = formattedValues;
         
         state.omLoader = false;

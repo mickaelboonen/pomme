@@ -11,6 +11,7 @@ import EfMission from '../EfForm/Mission';
 import Address from 'src/components/Fields/Address';
 import Buttons from 'src/components/Fields/Buttons';
 import ApiResponse from 'src/components/ApiResponse';
+import ScientificEvent from './ScientificEventFields';
 import SwitchButton from 'src/components/SwitchButton';
 import DateField from 'src/components/Fields/DateField';
 import FileField from 'src/components/Fields/FileField';
@@ -27,10 +28,8 @@ import { handleRegionFields, defineValidationRulesForMission } from 'src/selecto
 import { getSavedFileName } from 'src/selectors/formDataGetters';
 
 // Reducer
-import { clearMessage } from 'src/reducer/app';
 import { enableMissionFormFields } from 'src/reducer/efForm';
 import { uploadFile, updateOmName, updateMission } from 'src/reducer/omForm';
-import ScientificEvent from './ScientificEventFields';
 
 const Mission = ({ step, isEfForm }) => {
   
@@ -63,13 +62,17 @@ const Mission = ({ step, isEfForm }) => {
   }
 
 
+  console.log('DEFAUTL VALUES : ', defaultValues);
   const {
     register, handleSubmit, watch,
     setError, setValue, unregister,
     trigger, formState:
     { errors }
   } = useForm({
-    defaultValues: defaultValues,
+    defaultValues: {
+      ...defaultValues,
+      visa: defaultValues.visa ? 'visa-yes' : 'visa-no',
+    },
   });
   
   if (areWeUpdatingData) {
@@ -190,19 +193,29 @@ const Mission = ({ step, isEfForm }) => {
   const errorMessages = defineValidationRulesForMission(isEfForm, modificationSwitch);
 
   const [region , modificationSwitch] = watch(['region',  'modificationSwitch' ]);
-
-  // TODO : rendre le champ tjrs visible obligatoire
-  // Rajouter un champ adresse normée si adresse différente
-  
+    
   const [isMissionAScienceEvent, setIsMissionAScienceEvent] = useState(defaultValues.science);
+  const [isVisaNeeded, setIsVisaNeeded] = useState(defaultValues.visa);
+
+  const handleVisa = (event) => {
+    const { id } = event.target;
+
+    console.log(id);
+    if (id === "visa-yes") {
+      setIsVisaNeeded(true);
+    }
+    else {
+      setIsVisaNeeded(false);
+    }
+  }
 
   useEffect(() => {
     handleRegionFields(region, register, unregister);
   }, [unregister, region]);
 
 
-  const handleRegionClick = () => {
-    displayRegionFieldsInFormMission();
+  const handleRegionClick = (event) => {
+    // displayRegionFieldsInFormMission();
   };
   
   const toggleDisabledFields = (event) => {
@@ -217,6 +230,7 @@ const Mission = ({ step, isEfForm }) => {
     setIsMissionAScienceEvent(event.target.checked);
   }
   
+  console.log(region);
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section">
@@ -239,18 +253,18 @@ const Mission = ({ step, isEfForm }) => {
           label="Est-ce que c'est un événement scientifique ?"
         />
         {!isMissionAScienceEvent && (
-          <FileField
-            disabled={isEfForm && isMissionFormDisabled}
-            setValue={setValue}
-            multiple
-            id="mission-goal"
-            formField="missionPurposeFile"
-            fileName={fileName}
-            register={register}
-            error={errors.missionPurposeFile}
-            pieces="Joindre impérativement convocation, mail ou tout autre document en attestant"
-          />
-        )}
+            <FileField
+              disabled={isEfForm && isMissionFormDisabled}
+              setValue={setValue}
+              multiple
+              id="mission-goal"
+              formField="missionPurposeFile"
+              fileName={fileName}
+              register={register}
+              error={errors.missionPurposeFile}
+              pieces="Joindre impérativement convocation, mail ou tout autre document en attestant"
+            />
+          )}
         {isMissionAScienceEvent && (
           <ScientificEvent
             errors={errors}
@@ -371,34 +385,54 @@ const Mission = ({ step, isEfForm }) => {
           />
         </div>
         {errors.region && <p className="form__section-field-error form__section-field-error--open">{errors.region.message}</p>}
-        <TextFieldWithIcon
-          disabled={isEfForm && isMissionFormDisabled}
-          isHidden={true}
-          id="country"
-          name="Pays de la mission"
-          icon={Map}
-          register={register}
-          error={errors.country}
-          required={errorMessages.country}
-        />
-        <div className="form__section-field form__section-field--hidden" id="abroad-field">
-          <p className="form__section-field-label">(*) Préciser : </p>
-          <RadioInput
-            register={register}
-            formField="abroadCosts"
-            id="per-diem"
-            label="Per diem"
-            required={errorMessages.abroadCosts}
-          />
-          <RadioInput
-            register={register}
-            formField="abroadCosts"
-            id="frais-reels"
-            label="Frais réels"
-            required={errorMessages.abroadCosts}
-          />
-        {errors.abroadCosts && <p className="form__section-field-error form__section-field-error--open">{errors.abroadCosts.message}</p>}
-        </div>
+
+        {region === 'étranger' && (
+          <>
+            <TextFieldWithIcon
+              disabled={isEfForm && isMissionFormDisabled}
+              id="country"
+              name="Pays de la mission"
+              icon={Map}
+              register={register}
+              error={errors.country}
+              required={errorMessages.country}
+            />
+            <div className="form__section-field">
+              <label className="form__section-field-label" htmlFor="departure-place">Visa</label>
+              <RadioInput handler={handleVisa} id="visa-yes" formField="visa" label="Oui" register={register} required={errorMessages.visa} />
+              <RadioInput handler={handleVisa} id="visa-no" formField="visa" label="Non" register={register} required={errorMessages.visa} />
+            </div>
+            {errors.visa && <p className="form__section-field-error form__section-field-error--open">{errors.visa.message}</p>}
+            {isVisaNeeded && (
+              <div className="form__section-field">
+                <label className="form__section-field-label" htmlFor="departure-place">Prise en charge du visa</label>
+                <RadioInput id="unimes" formField="visaPayment" label="Réglé par Unîmes" register={register} required={errorMessages.visaPayment} />
+                <RadioInput id="user" formField="visaPayment" label="Avancé par l'agent" register={register} required={errorMessages.visaPayment} />
+              </div>
+            )}
+            {errors.visaPayment && <p className="form__section-field-error form__section-field-error--open">{errors.visaPayment.message}</p>}
+          </>
+        )}
+        {(region === 'dom-tom' || region === 'étranger')  && (
+          <div className="form__section-field" id="abroad-field">
+            <p className="form__section-field-label">(*) Préciser : </p>
+            <RadioInput
+              register={register}
+              formField="abroadCosts"
+              id="per-diem"
+              label="Per diem"
+              required={errorMessages.abroadCosts}
+            />
+            <RadioInput
+              register={register}
+              formField="abroadCosts"
+              id="frais-reels"
+              label="Frais réels"
+              required={errorMessages.abroadCosts}
+            />
+          {errors.abroadCosts && <p className="form__section-field-error form__section-field-error--open">{errors.abroadCosts.message}</p>}
+          </div>
+        )}
         <div className="form__section-field form__section-field--hidden" id="abroad-report">
           <p className="form__section-field-label">(**) Compte rendu à fournir au retour de la mission sur financement RI</p>
         </div>

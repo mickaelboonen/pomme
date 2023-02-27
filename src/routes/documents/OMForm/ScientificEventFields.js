@@ -4,12 +4,20 @@ import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import TextField from 'src/components/Fields/TextField';
 import FileField from 'src/components/Fields/FileField';
+import RadioInput from 'src/components/Fields/RadioInput';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
 
 const ScientificEvent = ({ setValue, register, errors, filename}) => {
      return (
     <div className="form__section">
       <FormSectionTitle>Événement scientifique</FormSectionTitle>
+      <div className="form__section-field">
+        <label className="form__section-field-label" htmlFor="departure-place">Prise en charge de l'événement scientifique (Inscription colloque, séminaire, conférence)</label>
+        <RadioInput id="unimes-science" formField="sciencePayment" label="Réglé par Unîmes" register={register} required='Veuillez renseigner le champ.' />
+        <RadioInput id="user-science" formField="sciencePayment" label="Avancé par l'agent" register={register} required='Veuillez renseigner le champ.' />
+      </div>
+      {errors.sciencePayment && <p className="form__section-field-error form__section-field-error--open">{errors.sciencePayment.message}</p>}
+
       <div className="form__section-field">
         <p className="form__section-field-label">Type de présentation</p>
         <CheckboxInput
