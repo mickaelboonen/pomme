@@ -91,13 +91,13 @@ const styles = StyleSheet.create({
 const CarAuthorizationPdf = ({ data, vehicleTypes, agent, agentSignature, reasons}) => {
   let chosenVehicleType = {};
 
-  if (data.carType === 'personal-car') {
+  if (data.type === 'personal-car') {
     chosenVehicleType = vehicleTypes.find((v) => v.id === 0);
   }
-  else if (data.carType === 'company-car') {
+  else if (data.type === 'company-car') {
     chosenVehicleType = vehicleTypes.find((v) => v.id === 2);
   }
-  else if (data.carType === 'rent-car') {
+  else if (data.type === 'rent-car') {
     chosenVehicleType = vehicleTypes.find((v) => v.id === 3);
   }
 
@@ -107,7 +107,7 @@ const CarAuthorizationPdf = ({ data, vehicleTypes, agent, agentSignature, reason
       reasonsAsString += reason.label + ' - ';
     }
   })
-    
+
   return (
   <Document>
     <Page size="A4" style={styles.page}>

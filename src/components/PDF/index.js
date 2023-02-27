@@ -181,7 +181,7 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
           <Text>Sans frais, notamment pris en charge par un organisme extérieur, à transmettre à la DRH.</Text>
         )}
       </View>
-      <View style={styles.section} wrap={false}>
+      {/* <View style={styles.section} wrap={false}>
           <Text style={styles.section.title}>SERVICE OU DÉPARTEMENT</Text>
           <View style={{display: 'flex', width: '100%', flexDirection: 'row', borderBottom: '1px solid #1a1a1a', borderRight: '1px solid #1a1a1a'}}>
             {gestArray.map((cat) => (
@@ -200,7 +200,7 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
 
           </View>
 
-      </View>
+      </View> */}
       <View style={styles.section}>
         <Text style={styles.section.title} wrap={false}>MISSIONNAIRE</Text>
         <Text style={styles.section.text}>Qualité : {agent.gender} {agent.lastname.toUpperCase()} {agent.firstname}</Text>
