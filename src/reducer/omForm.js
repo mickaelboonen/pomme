@@ -39,7 +39,6 @@ const initialState = {
         departure: null,
         departurePlace: null,
         workAdress: null,
-        missionAdress: null,
         missionPurpose: null,
         missionPurposeFile: null,
         region: null,

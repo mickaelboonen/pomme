@@ -54,7 +54,6 @@ const Buttons = ({ trigger, step, url, id, watch, update, secondUpdate, userSign
       delete data.streetName;
       delete data.postCode;
       delete data.city;
-      delete data.missionAdress;
       
 
       let fileObject = null;
