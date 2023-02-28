@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+// import { ColorRing } from 'react-loader-spinner';
 
 import Avance from './Avance';
 import Mission from './Mission';
@@ -15,6 +16,7 @@ import ThreadAsTabs from 'src/components/ThreadAsTabs';
 import { clearMessage } from 'src/reducer/app';
 
 import './style.scss';
+import Loader from '../../../components/loader';
 
 const OMForm = () => {  
   const navigate = useNavigate();
@@ -51,7 +53,9 @@ const OMForm = () => {
         </div>
         <div className="form-page__container">
           
-          {(omLoader || appLoader) && <div>Loading</div>}
+          {(omLoader || appLoader) && (
+            <Loader />
+          )}
           {(step === 1 && !omLoader) && <Mission step={step} isEfForm={false} />}
           {(step === 2 && !omLoader) && <Transports step={step} />}
           {(step === 3 && !omLoader) && <Accomodations step={step} />}

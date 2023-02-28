@@ -199,3 +199,28 @@
 
   }
 }
+@keyframes rotate {
+  
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loader {
+  width: 4rem;
+  height: 4rem;
+  position: relative;
+  border-radius: 50%; /*1*/
+  border: 5px solid transparent; /*2*/
+  background: linear-gradient(to right, var(--first-color), var(--second-color), var(--third-color), var(--fourth-color), var(--fifth-color), var(--fourth-color), var(--third-color), var(--second-color), var(--first-color)) border-box; /*3*/
+  //   background: linear-gradient(to right, var(--first-color), var(--second-color), var(--third-color), var(--fourth-color), var(--fifth-color)) border-box; /*3*/
+  -webkit-mask: /*4*/
+     linear-gradient(#fff 0 0) padding-box, 
+     linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; /*5'*/
+          mask-composite: exclude; /*5*/
+  animation: rotate 0.8s linear infinite;
+}
