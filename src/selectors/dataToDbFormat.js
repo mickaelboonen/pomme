@@ -264,7 +264,8 @@ export const turnSignatureDataToDbFormat = (data, signatureUrl) => {
     savedSignature,
     otherInfos,
     otherFiles,
-    signature
+    signature,
+    status,
   } = data;
 
   const dataToBeSubmitted = {
@@ -272,6 +273,7 @@ export const turnSignatureDataToDbFormat = (data, signatureUrl) => {
     organizerSignature: null,
     files: otherFiles,
     informations: otherInfos,
+    status: status,
   };
 
   if (savedSignature) {
@@ -297,8 +299,8 @@ export const turnAccomodationDataToDbFormat = (data) => {
     hotel: data.hotel,
     nightsNumber: data.nightsNumber,
     hotelPayment: data.hotelPayment,
-    mealsPaidByAgent: data.mealsPaidByAgent,
-    mealsInAdminRestaurants: data.mealsInAdminRestaurants,
+    mealsPaidByAgent: data.mealsPaidByAgent === "" ? 0 : data.mealsPaidByAgent,
+    mealsInAdminRestaurants: data.mealsInAdminRestaurants === "" ? 0 : data.mealsInAdminRestaurants,
     status: data.status,
   };
 }

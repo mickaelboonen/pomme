@@ -19,7 +19,6 @@ import MyPDF from 'src/components/PDF';
 import {  defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
 
 // Reducer
-import { clearMessage } from 'src/reducer/app';
 import { uploadFile, saveOmPdf } from 'src/reducer/omForm';
 
 
@@ -38,34 +37,19 @@ const Identity = ({ step, isEfForm }) => {
     vehicle: { vehicleTypes },
   } = useSelector((state) => state);
 
+
+  // TODO : Verifi statut OM. 
+  // TODO : Si statut pas bon, on redirige ailleurs pour pas se retrouver avec une erreur. 
   
-  // TODO : problem with setApiResponse when savingAsItis
-  useEffect(() => {
-    if (apiMessage.status && apiMessage.status === 200) {
-      setTimeout(() => {
-        dispatch(clearMessage());
-      }, "4900")
-      setTimeout(() => {
-        if (areWeUpdatingData) {
-          const nextStep = step + 1;
-          navigate(loader.pathname + '?etape=' + nextStep + '&id=' + omId);
-        }
-      }, "5000")
-    }
-  }, [apiMessage])
-  
-    const {
-    register, handleSubmit, watch, setValue,
-    trigger, getValues, formState:
-    { errors }
-  } = useForm({
-    defaultValues: agent
-  });
+  const {
+    register, setValue,
+    getValues, formState: { errors }
+  } = useForm({ defaultValues: agent });
   
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  // const onSubmit = (data) => {
+  //   console.log(data);
+  // };
   
   const errorMessages = defineValidationRulesForMission(isEfForm, false);
 
@@ -90,7 +74,7 @@ const Identity = ({ step, isEfForm }) => {
   }
   
   return (
-    <form className="form" onSubmit={handleSubmit(onSubmit)}>
+    <form className="form">
 {/*       
         <div style={{width:"100%", height:"100vh"}}>
           <PDFViewer>
