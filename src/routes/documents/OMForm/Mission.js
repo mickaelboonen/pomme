@@ -17,14 +17,14 @@ import DateField from 'src/components/Fields/DateField';
 import FileField from 'src/components/Fields/FileField';
 import TextField from 'src/components/Fields/TextField';
 import RadioInput from 'src/components/Fields/RadioInput';
-import SelectField from 'src/components/Fields/SelectField';
+// import SelectField from 'src/components/Fields/SelectField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import RefusalMessage from 'src/components/Fields/RefusalMessage';
-import TextFieldWithIcon from 'src/components/Fields/TextFieldWithIcon';
+// import TextFieldWithIcon from 'src/components/Fields/TextFieldWithIcon';
 
 // Selectors 
-import { displayRegionFieldsInFormMission } from 'src/selectors/domManipulators';
+// import { displayRegionFieldsInFormMission } from 'src/selectors/domManipulators';
 import { handleRegionFields, defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
 import { getSavedFileName } from 'src/selectors/formDataGetters';
 

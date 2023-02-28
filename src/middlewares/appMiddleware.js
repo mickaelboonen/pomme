@@ -9,6 +9,7 @@ import {
 import { api } from './api';
 import CasClient, { constant } from "react-cas-client";
 import { setLoader } from '../reducer/omForm';
+import { fetchUserData } from '../reducer/app';
 
 
 let casEndpoint = "cas.unimes.fr";
@@ -97,6 +98,13 @@ const appMiddleware = (store) => (next) => (action) => {
         .catch((error) => {
           console.error('get signature', error);
           // store.dispatch(showTicketCreationResponse(error.response))
+
+          // TODO : Temporary solution to fetch user Data after the first fail
+          // Since the Hydrate only happens after fetchUserData is called, meaning the payload for the action above === { id = ""}
+          if (error.response.data.detail === "Call to a member function getPersId() on null") {
+            const { app : { user }} = store.getState((state) => state)
+            store.dispatch(fetchUserData({id: user}))
+          }
         });
       break;
     case 'app/fetchCountries':      

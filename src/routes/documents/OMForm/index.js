@@ -16,7 +16,7 @@ import ThreadAsTabs from 'src/components/ThreadAsTabs';
 import { clearMessage } from 'src/reducer/app';
 
 import './style.scss';
-import Loader from '../../../components/loader';
+import LoaderCircle from '../../../components/LoaderCircle';
 
 const OMForm = () => {  
   const navigate = useNavigate();
@@ -54,7 +54,7 @@ const OMForm = () => {
         <div className="form-page__container">
           
           {(omLoader || appLoader) && (
-            <Loader />
+            <LoaderCircle />
           )}
           {(step === 1 && !omLoader) && <Mission step={step} isEfForm={false} />}
           {(step === 2 && !omLoader) && <Transports step={step} />}

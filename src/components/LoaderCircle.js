@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 
 import './style.scss';
 
-const Loader = ({ width}) => (
+const LoaderCircle = ({ width}) => (
   <div className='loader' style={{width: width, height: width}} />
 );
 
-Loader.defaultProps = {
+LoaderCircle.defaultProps = {
   width: '4rem'
 };
 
-export default Loader;
+export default LoaderCircle;

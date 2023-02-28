@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import './style.scss';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { uploadFile } from 'src/reducer/omForm';
 import {
   turnTransportsDataToDbFormat,
@@ -12,10 +12,11 @@ import {
   turnSignatureDataToDbFormat
 } from 'src/selectors/dataToDbFormat';
 
-const Buttons = ({ trigger, step, url, id, watch, update, secondUpdate, userSignature}) => {
+const Buttons = ({ trigger, step, url, id, watch, update, userSignature}) => {
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.app);
 
   const nextStep = step + 1;
   const backStep = step - 1;
@@ -64,11 +65,9 @@ const Buttons = ({ trigger, step, url, id, watch, update, secondUpdate, userSign
       
       if (fileObject) {
         dispatch(uploadFile({data: data, step: 'mission'}));
-        // navigate(url.pathname + '?' + url.searchParams);
       }
       else {
         dispatch(update(data));
-        // navigate(url.pathname + '?' + url.searchParams);
       }
     }
     else if (step === 2) { // --------------------------------------------------------------------------------
@@ -119,14 +118,24 @@ const Buttons = ({ trigger, step, url, id, watch, update, secondUpdate, userSign
       
     }
   }
+  const handleClickOnNav = (event) => {
+    const { id } = event.target;
+    
+    if (event.target.querySelector('a').href.includes(user)) {
+      navigate(`/utilisateur/${user}/mes-ordres-de-mission`)
+    }else {
+      navigate('?etape=' + (id === 'back' ? step - 1 : step + 1) + '&id=' + id);
+    }
+    
+  }
 
   return (
     <div className="form__section">
       <div className="form__section-field-buttons">
-        <button type='button'><Link to={url.pathname + '?etape=' + backStep + '&id=' + id}>PRÉCÉDENT</Link></button>
+        <button type='button' id='back' onClick={handleClickOnNav}><Link to={step === 1 ? `/utilisateur/${user}/mes-ordres-de-mission` : url.pathname + '?etape=' + backStep + '&id=' + id}>PRÉCÉDENT</Link></button>
         <button type="button" id="previous-button" onClick={handleClick}>Enregistrer en l'état</button>
         <button type="submit">Valider les données</button>
-        <button type='button'><Link to={url.pathname + '?etape=' + nextStep + '&id=' + id}>SUIVANT</Link></button>
+        <button type='button' id='next' onClick={handleClickOnNav}><Link to={url.pathname + '?etape=' + nextStep + '&id=' + id}>SUIVANT</Link></button>
       </div>
     </div>
   );

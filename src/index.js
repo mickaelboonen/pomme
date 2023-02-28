@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import store from 'src/store';
 import DAFC from "src/routes/dafc";
+import LoaderCircle from 'src/components/LoaderCircle';
 import Layout from 'src/routes/layout';
 import ErrorPage from 'src/routes/error';
 import Home from 'src/routes/layout/Home';
@@ -391,7 +392,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate loading={<LoaderCircle />} persistor={persistor}>
         <RouterProvider router={router} />
       </PersistGate>
     </Provider>

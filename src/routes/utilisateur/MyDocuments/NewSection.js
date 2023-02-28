@@ -10,6 +10,7 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 
 import { displayOmStatus, saveOm } from 'src/reducer/omForm';
 import DocButtons from './DocButtons';
+import LoaderCircle from '../../../components/LoaderCircle';
 
 const Section = ({ id, data, steps, currentDoc, loader}) => {
   
@@ -35,7 +36,7 @@ const Section = ({ id, data, steps, currentDoc, loader}) => {
   
   return (
     <section id={id} className="my-documents__files">
-    { loader && <div>Loading</div>}
+    { loader && <LoaderCircle />}
     { !loader && (
       <SelectField
         data={data}

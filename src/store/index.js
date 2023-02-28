@@ -1,4 +1,5 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import {
   persistStore,
   persistReducer,
@@ -28,6 +29,7 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage,
+  stateReconciler: autoMergeLevel2 // ADDED
 }
 
 const reducers = combineReducers({
@@ -38,22 +40,8 @@ const reducers = combineReducers({
   docs: otherDocsReducer,
 })
 
-const persistedReducer = persistReducer(persistConfig, reducers)
+const persistedReducer = persistReducer(persistConfig, reducers);
 
-// const middlewares = [omMiddleware, fileMiddleware, appMiddleware, vehicleMiddleware]
-// const middlewareEnhancer = applyMiddleware(...middlewares)
-
-// const store = configureStore({
-//   reducer: persistedReducer,
-//   middleware: (getDefaultMiddleware) =>
-//     // getDefaultMiddleware({
-//     //   serializableCheck: {
-//     //     ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-//     //   },
-//     // })
-//     [omMiddleware, fileMiddleware, appMiddleware, vehicleMiddleware]
-//     // middlewareEnhancer,
-// })
 const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>

@@ -25,6 +25,7 @@ import FileOrSavedFile from 'src/components/Fields/FileOrSavedFile';
 import { clearSideForm, uploadFile } from 'src/reducer/omForm';
 import { displayVehicle, createVehicle, requestVehicleAuthorization, stayOnAuthorizationForm, clearMessage, resetPdfNeed } from 'src/reducer/vehicle';
 import CarAuthorizationPdf from "../../../components/PDF/CarAuthorizationPdf";
+import LoaderCircle from "../../../components/LoaderCircle";
 
 
 const VehicleUseForm = () => {
@@ -211,7 +212,7 @@ const VehicleUseForm = () => {
   return (
     <div className="form-container form-container--vehicle">
       <PageTitle>Demande d'autorisation préalable d'utilisation d'un véhicule</PageTitle>
-      {loader && <div>Loading</div>}
+      {loader && <LoaderCircle />}
       {!loader &&(
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
           <div className="form__section">
