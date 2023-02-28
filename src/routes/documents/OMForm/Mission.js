@@ -17,6 +17,7 @@ import DateField from 'src/components/Fields/DateField';
 import FileField from 'src/components/Fields/FileField';
 import TextField from 'src/components/Fields/TextField';
 import RadioInput from 'src/components/Fields/RadioInput';
+import SelectField from 'src/components/Fields/SelectField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import RefusalMessage from 'src/components/Fields/RefusalMessage';
@@ -40,13 +41,12 @@ const Mission = ({ step, isEfForm }) => {
   const areWeUpdatingData = loader.pathname.includes('modifier');
   
 
-  const { app: { apiMessage, user },
+  const { app: { apiMessage, user, countries},
     omForm: { currentOM, omForm, refusal, adresses },
     efForm: { isMissionFormDisabled }
   } = useSelector((state) => state);
 
   const defaultValues = omForm.find((omStep) => omStep.step === 'mission').data;
-
   
   let fileName = '';
 
@@ -60,9 +60,7 @@ const Mission = ({ step, isEfForm }) => {
       }
     })
   }
-
-
-  console.log('DEFAUTL VALUES : ', defaultValues);
+  
   const {
     register, handleSubmit, watch,
     setError, setValue, unregister,
@@ -230,7 +228,7 @@ const Mission = ({ step, isEfForm }) => {
     setIsMissionAScienceEvent(event.target.checked);
   }
   
-  console.log(region);
+  const frenchRegions = countries.filter((country) => country.nationality === 'Français' || country.nationality === 'FRANCAIS(E)');
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section">
@@ -362,7 +360,6 @@ const Mission = ({ step, isEfForm }) => {
             formField="region"
             label="France Métropolitaine"
             register={register}
-            handler={handleRegionClick}
             required={errorMessages.region}
           />
           <RadioInput
@@ -371,7 +368,6 @@ const Mission = ({ step, isEfForm }) => {
             formField="region"
             label="DOM / TOM (*)"
             register={register}
-            handler={handleRegionClick}
             required={errorMessages.region}
           />
           <RadioInput
@@ -380,7 +376,6 @@ const Mission = ({ step, isEfForm }) => {
             formField="region"
             label="Étranger (*)(**)"
             register={register}
-            handler={handleRegionClick}
             required={errorMessages.region}
           />
         </div>
@@ -388,15 +383,27 @@ const Mission = ({ step, isEfForm }) => {
 
         {region === 'étranger' && (
           <>
-            <TextFieldWithIcon
-              disabled={isEfForm && isMissionFormDisabled}
-              id="country"
-              name="Pays de la mission"
-              icon={Map}
-              register={register}
-              error={errors.country}
-              required={errorMessages.country}
-            />
+          {/* Not using the SelectField component because it doesn't handle optgroups */}
+            <div className="form__section-field" id="country-field">
+              <label className="form__section-field-label" htmlFor="country">Pays de la Mission</label>
+              <select
+                id="country"
+                className="form__section-field-input"
+                {...register("country", {
+                  required: errorMessages.country
+                })}
+                disabled={isEfForm && isMissionFormDisabled}
+              >
+                <optgroup label="France et ses DOM-TOM">
+                  {frenchRegions.map((country) => <option key={country.code + '-fr'} value={country.code}>{country.name}</option>)}
+                  <option value="" />
+                </optgroup>
+                <optgroup label="Tous les pays">
+                  {countries.map((country) => <option key={country.code + '-all'} value={country.code}>{country.name}</option>)}
+                </optgroup>
+              </select>
+              {errors.country && <p className={classNames("form__section-field-error", { "form__section-field-error--open": error?.message.length > 0 })}>{errors.country.message}</p>}
+            </div>
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Visa</label>
               <RadioInput handler={handleVisa} id="visa-yes" formField="visa" label="Oui" register={register} required={errorMessages.visa} />

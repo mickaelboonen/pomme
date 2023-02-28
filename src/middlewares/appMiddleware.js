@@ -1,4 +1,10 @@
-import { saveSignature, validateAuthentication, saveUserData, saveDocument } from 'src/reducer/app';
+import {
+  saveSignature,
+  validateAuthentication,
+  saveUserData,
+  saveDocument,
+  saveCountries
+} from 'src/reducer/app';
 
 import { api } from './api';
 import CasClient, { constant } from "react-cas-client";
@@ -79,21 +85,30 @@ const appMiddleware = (store) => (next) => (action) => {
               console.log('error : ', response);
             });
     break;
-  case 'app/fetchUserData':      
-    api.post("/api/agent/get-data", action.payload)
-      .then((response) => {
-        // if (response.data.length > 0) {
-           
+    case 'app/fetchUserData':      
+      api.post("/api/agent/get-data", action.payload)
+        .then((response) => {
+          // if (response.data.length > 0) {
+            
 
-          store.dispatch(saveUserData(response.data));
-        // }
-      })
-      .catch((error) => {
-        console.error('get signature', error);
-        // store.dispatch(showTicketCreationResponse(error.response))
-      });
-    break;
-
+            store.dispatch(saveUserData(response.data));
+          // }
+        })
+        .catch((error) => {
+          console.error('get signature', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
+    case 'app/fetchCountries':      
+      api.get("/api/countries/list")
+        .then((response) => {
+            store.dispatch(saveCountries(response.data));
+        })
+        .catch((error) => {
+          console.error('get countries', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
   
     default:
   }

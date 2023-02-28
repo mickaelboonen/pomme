@@ -15,6 +15,7 @@ const initialState = {
   agentDocuments:{
     rib: false,
   },
+  countries: [],
 };
 const omFormSlice = createSlice({
     name: 'app',
@@ -55,11 +56,13 @@ const omFormSlice = createSlice({
         state.appLoader = false;
         
       },
-      getDocument: () => {
-
-      },
+      getDocument: () => {},
       saveDocument: (state, action) => {
         state.agentDocuments[action.payload.type] = action.payload.url;
+      },
+      fetchCountries: () => {},
+      saveCountries: (state, action) => {
+        state.countries = action.payload;
       },
     },
 });
@@ -78,6 +81,8 @@ export const {
   saveUserData,
   getDocument,
   saveDocument,
+  fetchCountries,
+  saveCountries
 } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

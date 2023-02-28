@@ -34,7 +34,7 @@ import CasClient, { constant } from "react-cas-client";
 
 
 // import { getSignature } from "src/reducer/app";
-import { getSignature, fetchUserData, getDocument } from "src/reducer/app";
+import { getSignature, fetchUserData, getDocument, fetchCountries } from "src/reducer/app";
 import { findPermFilesByAgent, fetchAgentSignatureForPdf } from "src/reducer/otherDocuments";
 import { getVehicles, getVehicleDocuments } from "src/reducer/vehicle";
 import { fetchOMs, getMission, fetchOm, getTransports, getAccomodations, getAdvance, getMore, setLoader  } from "src/reducer/omForm";
@@ -138,6 +138,7 @@ const router = createBrowserRouter([
             
               if (step === '1') {
                 store.dispatch(fetchOm(id));
+                store.dispatch(fetchCountries());
                 store.dispatch(getMission(id));
               }
               else if (step === '2') {
