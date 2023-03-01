@@ -192,7 +192,9 @@ const omFormSlice = createSlice({
       clearOMTarget: (state) => {
         state.nextOMTarget = '';
       },
-      fetchOMs: () => {},
+      fetchOMs: (state) => {
+        state.currentOM = {};
+      },
       saveUserOms: (state, action) => {
         state.userOms = action.payload;
         state.dataToSelect = state.userOms.filter((om) => om.status === 1);

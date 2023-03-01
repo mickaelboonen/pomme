@@ -21,10 +21,57 @@ import LoaderCircle from '../../../components/LoaderCircle';
 const OMForm = () => {  
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { omForm :{ steps, omLoader},
+  const { omForm :{ steps, omLoader, currentOM},
     app: { appLoader, apiMessage },
   } = useSelector((state) => state);
   
+  // If we are in the Identity step for the OM, supposedly the OM is finished
+  // We check that and redirect the user if the OM is not finished
+  
+
+  const checkIfDocIsFinished = () => {
+    let docState = {};
+
+    if (step ===6) {
+      const omStepsWithStatus = [
+        {
+          name: 'mission',
+          status: (currentOM.hasOwnProperty('mission') && currentOM.mission.status) ? currentOM.mission.status : false
+        },
+        {
+          name: 'transports',
+          status: (currentOM.hasOwnProperty('transports') && currentOM.transports.status) ? currentOM.transports.status : false
+        },
+        {
+          name: 'hébergement',
+          status: (currentOM.hasOwnProperty('accomodations') && currentOM.accomodations.status) ? currentOM.accomodations.status : false
+        },
+        {
+          name: 'avance',
+          status: (currentOM.hasOwnProperty('advance') && currentOM.advance.status) ? currentOM.advance.status : false
+        },
+        {
+          name: 'signature',
+          status: (currentOM.hasOwnProperty('signature') && currentOM.signature.status) ? currentOM.signature.status : false
+        },
+      ]
+      
+      const unfinishedStep = omStepsWithStatus.find((step) => !step.status);
+
+      if (!unfinishedStep) {
+        docState.isFinished = true
+      }
+      else {
+        docState = unfinishedStep;
+      }
+    }
+
+    return docState;
+  }
+
+  const docState = checkIfDocIsFinished();
+  console.log("ETAT DE TOUTES LES ETAPES : ", docState);
+  console.log("YA isFinished ? : ",docState.hasOwnProperty('isFinished'));
 
   const loaderData = useLoaderData();
   
@@ -44,6 +91,7 @@ const OMForm = () => {
     }
   }, [apiMessage]);
 
+  // console.log("JE SUIS DANS LINDEX : ", currentOM);
   return (
     <>
       <ThreadAsTabs step={step} tabs={steps} isOm urlData={loaderData} />
@@ -61,7 +109,8 @@ const OMForm = () => {
           {(step === 3 && !omLoader) && <Accomodations step={step} />}
           {(step === 4 && !omLoader) && <Avance step={step} />}
           {(step === 5 && !omLoader) && <Signature step={step} />}
-          {(step === 6 && !appLoader && !omLoader) && <Identity step={step} />}
+          {(step === 6 && !appLoader && !omLoader && docState.hasOwnProperty('isFinished')) && <Identity step={step} />}
+          {(step === 6 && !appLoader && !omLoader && !docState.hasOwnProperty('isFinished')) && <div>Pouet</div>}
         </div>
       </div>
     </>

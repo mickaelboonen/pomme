@@ -50,6 +50,7 @@ const Section = ({ id, data, steps, currentDoc, loader}) => {
     )}
       {currentDoc.hasOwnProperty('id') && (
         <div className='om-status'>
+          <FormSectionTitle>Documents en rapport avec la mission</FormSectionTitle>
           <FormSectionTitle>Statut des différentes étapes</FormSectionTitle>
           <div className='om-status__steps'>
             {steps.map((step) => (
