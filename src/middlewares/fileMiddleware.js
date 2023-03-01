@@ -219,6 +219,7 @@ const omMiddleware = (store) => (next) => (action) => {
           }
           else if (step === 'om') {
             console.log('before update : ', data);
+            delete data.file;
             store.dispatch(updateOm(data));
           }
           

@@ -1,61 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import { useLoaderData, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
 
 import './style.scss';
 
 // Components
-
+import MyPDF from 'src/components/PDF';
+import Address from 'src/components/Fields/Address';
 import ApiResponse from 'src/components/ApiResponse';
 import TextField from 'src/components/Fields/TextField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import Address from 'src/components/Fields/Address';
-import MyPDF from 'src/components/PDF';
 
-// Selectors 
+// Selectors & actions
 import {  defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
-
-// Reducer
-import { uploadFile, saveOmPdf } from 'src/reducer/omForm';
+import { uploadFile } from 'src/reducer/omForm';
 
 
-const Identity = ({ step, isEfForm }) => {
+const Identity = ({ isEfForm }) => {
   
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const loader = useLoaderData();
   const omId = loader.searchParams.get('id');
   const areWeUpdatingData = loader.pathname.includes('modifier');
   
-
-  const { app: { apiMessage, agent },
+  const { app: { apiMessage, agent, user},
     omForm: { currentOM },
     docs: { agentSignature },
     vehicle: { vehicleTypes },
   } = useSelector((state) => state);
-
-
-  // TODO : Verifi statut OM. 
-  // TODO : Si statut pas bon, on redirige ailleurs pour pas se retrouver avec une erreur. 
   
-  const {
-    register, setValue,
-    getValues, formState: { errors }
-  } = useForm({ defaultValues: agent });
-  
-
-  // const onSubmit = (data) => {
-  //   console.log(data);
-  // };
-  
+  const { register, setValue, getValues, formState: { errors } } = useForm({ defaultValues: agent });
   const errorMessages = defineValidationRulesForMission(isEfForm, false);
-
-
-  // TODO : rendre le champ tjrs visible obligatoire
-  // Rajouter un champ adresse normée si adresse différente
   
   const [employer, setEmployer] = useState(agent.employer);
   const [isCivil, setIsCivil] = useState('');
@@ -96,8 +74,6 @@ const Identity = ({ step, isEfForm }) => {
               formField="firstname"
               label="Prénom"
               register={register}
-              error={errors.firstname}
-              required={errorMessages.firstname}
             /> 
           </div>
           <div className='form__section-half'>
@@ -107,8 +83,6 @@ const Identity = ({ step, isEfForm }) => {
               formField="lastname"
               label="Nom de famille"
               register={register}
-              error={errors.lastname}
-              required={errorMessages.lastname}
             />
           </div>
         </div>
@@ -118,15 +92,13 @@ const Identity = ({ step, isEfForm }) => {
         <Address
           addressType='familiale'
           register={register}
-          errors={errors}
-          disabled={true}
+          disabled
         />
         <Address
           addressType='administrative'
-          errors={errors}
           register={register}
           suffixe='Pro'
-          disabled={true}
+          disabled
         />
       </div>
       <div className="form__section">
@@ -141,7 +113,6 @@ const Identity = ({ step, isEfForm }) => {
                   formField="employer"
                   id="unimes"
                   label="Unîmes"
-                  required={errorMessages.unimes}
                   handler={toggleWorker}
                 />
                 <RadioInput
@@ -150,7 +121,6 @@ const Identity = ({ step, isEfForm }) => {
                   formField="employer"
                   id="external"
                   label="Extérieur"
-                  required={errorMessages.unimes}
                   handler={toggleWorker}
                 />
             </div>
@@ -164,8 +134,6 @@ const Identity = ({ step, isEfForm }) => {
                 formField="unimesCategory"
                 label="Catégorie"
                 register={register}
-                error={errors.unimesCategory}
-                required={errorMessages.unimesCategory}
               /> 
               <TextField
                 id="status"
@@ -173,8 +141,6 @@ const Identity = ({ step, isEfForm }) => {
                 formField="unimesStatus"
                 label="Statut"
                 register={register}
-                error={errors.unimesStatus}
-                required={errorMessages.unimesStatus}
               /> 
               <TextField
                 id="department"
@@ -182,8 +148,6 @@ const Identity = ({ step, isEfForm }) => {
                 formField="unimesDepartment"
                 label="Service / département"
                 register={register}
-                error={errors.unimesDepartment}
-                required={errorMessages.unimesDepartment}
               /> 
             </div>
           )}
@@ -226,7 +190,7 @@ const Identity = ({ step, isEfForm }) => {
       <div className="form__section">
         <div className="form__section-field-buttons">
           <BlobProvider document={<MyPDF agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />}>
-            {({ blob, url, loading, error }) => {
+            {({ blob }) => {
 
               const file = new File([blob], currentOM.name, {type: 'pdf'});
               const fileUrl = URL.createObjectURL(file);
@@ -240,6 +204,7 @@ const Identity = ({ step, isEfForm }) => {
             }}
           </BlobProvider>
         </div>
+        <Link to={"/utilisateur/" + user + "/mes-ordres-de-mission"} style={{display: 'block', marginBottom: '2rem', textAlign: 'center'}}>Retour au menu des Ordres de Mission</Link>
       </div>
     </form>
     

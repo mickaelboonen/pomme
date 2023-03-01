@@ -177,6 +177,7 @@ Address.propTypes = {
 Address.defaultProps = {
   suffixe: '',
   disabled: false,
+  errors: {},
   errorMessages: {
     streetName: null,
     streetNumber: null,

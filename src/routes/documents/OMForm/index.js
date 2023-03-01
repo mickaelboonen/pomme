@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-// import { ColorRing } from 'react-loader-spinner';
 
 import Avance from './Avance';
 import Mission from './Mission';
@@ -24,39 +23,46 @@ const OMForm = () => {
   const { omForm :{ steps, omLoader, currentOM},
     app: { appLoader, apiMessage },
   } = useSelector((state) => state);
+
+  const loaderData = useLoaderData();
+  const step = Number(loaderData.searchParams.get('etape'));
+  const id = Number(loaderData.searchParams.get('id'));
   
   // If we are in the Identity step for the OM, supposedly the OM is finished
   // We check that and redirect the user if the OM is not finished
-  
-
-  const checkIfDocIsFinished = () => {
+  const checkIfDocIsFinished = (step) => {
     let docState = {};
 
     if (step ===6) {
       const omStepsWithStatus = [
         {
           name: 'mission',
+          step: 1,
           status: (currentOM.hasOwnProperty('mission') && currentOM.mission.status) ? currentOM.mission.status : false
         },
         {
           name: 'transports',
+          step: 2,
           status: (currentOM.hasOwnProperty('transports') && currentOM.transports.status) ? currentOM.transports.status : false
         },
         {
           name: 'hébergement',
+          step: 3,
           status: (currentOM.hasOwnProperty('accomodations') && currentOM.accomodations.status) ? currentOM.accomodations.status : false
         },
         {
           name: 'avance',
+          step: 4,
           status: (currentOM.hasOwnProperty('advance') && currentOM.advance.status) ? currentOM.advance.status : false
         },
         {
           name: 'signature',
+          step: 5,
           status: (currentOM.hasOwnProperty('signature') && currentOM.signature.status) ? currentOM.signature.status : false
         },
-      ]
+      ];
       
-      const unfinishedStep = omStepsWithStatus.find((step) => !step.status);
+      const unfinishedStep = omStepsWithStatus.filter((step) => !step.status);
 
       if (!unfinishedStep) {
         docState.isFinished = true
@@ -69,14 +75,7 @@ const OMForm = () => {
     return docState;
   }
 
-  const docState = checkIfDocIsFinished();
-  console.log("ETAT DE TOUTES LES ETAPES : ", docState);
-  console.log("YA isFinished ? : ",docState.hasOwnProperty('isFinished'));
-
-  const loaderData = useLoaderData();
-  
-  const step = Number(loaderData.searchParams.get('etape'));
-  const id = Number(loaderData.searchParams.get('id'));
+  const docState = checkIfDocIsFinished(step);
 
   useEffect(() => {
     if (apiMessage.status && apiMessage.status === 200) {
@@ -90,8 +89,7 @@ const OMForm = () => {
       }, "1000")
     }
   }, [apiMessage]);
-
-  // console.log("JE SUIS DANS LINDEX : ", currentOM);
+  
   return (
     <>
       <ThreadAsTabs step={step} tabs={steps} isOm urlData={loaderData} />
@@ -109,8 +107,20 @@ const OMForm = () => {
           {(step === 3 && !omLoader) && <Accomodations step={step} />}
           {(step === 4 && !omLoader) && <Avance step={step} />}
           {(step === 5 && !omLoader) && <Signature step={step} />}
-          {(step === 6 && !appLoader && !omLoader && docState.hasOwnProperty('isFinished')) && <Identity step={step} />}
-          {(step === 6 && !appLoader && !omLoader && !docState.hasOwnProperty('isFinished')) && <div>Pouet</div>}
+          {(step === 6 && !appLoader && !omLoader && docState.length === 0) && <Identity step={step} />}
+          {(step === 6 && !appLoader && !omLoader && docState.length > 0) && (
+            <div className='form'>
+                <p className='form__text'>Merci de terminer les étapes précédentes pour accéder à cette étape.</p>
+                <p className='form__text'>Il vous reste à valider :</p>
+                <p className='form__text'>{docState.map((missingStep) => {
+                  if (docState.indexOf(missingStep) === docState.length -1 ) {
+                    return <Link key={missingStep.step} to={loaderData.pathname + "?etape=" + missingStep.step + "&id=" + id}>{missingStep.name.toUpperCase()}</Link>;
+                  }
+                  return <Link key={missingStep.step} to={loaderData.pathname + "?etape=" + missingStep.step + "&id=" + id}>{missingStep.name.toUpperCase() + ' - '}</Link>;
+                  })}
+                </p>
+            </div>
+          )}
         </div>
       </div>
     </>
