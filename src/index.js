@@ -39,6 +39,7 @@ import { getSignature, fetchUserData, getDocument, fetchCountries } from "src/re
 import { findPermFilesByAgent, fetchAgentSignatureForPdf } from "src/reducer/otherDocuments";
 import { getVehicles, getVehicleDocuments } from "src/reducer/vehicle";
 import { fetchOMs, getMission, fetchOm, getTransports, getAccomodations, getAdvance, getMore, setLoader  } from "src/reducer/omForm";
+import { fetchEfs } from "src/reducer/ef";
 
 
 import { persistor } from 'src/store';
@@ -188,9 +189,10 @@ const router = createBrowserRouter([
 
               // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
               if (step === '2') {
-                const omMission = localStorage.getItem('mission');
-                return JSON.parse(omMission);
+                
               }
+
+              return url;
             },    
           },
           {
@@ -203,9 +205,9 @@ const router = createBrowserRouter([
 
               // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
               if (step === '2') {
-                const omMission = localStorage.getItem('mission');
-                return JSON.parse(omMission);
               }
+
+              return url;
             },  
           },
           {
@@ -237,11 +239,29 @@ const router = createBrowserRouter([
           },
           {
             path: 'mes-%C3%A9tats-de-frais',
-            element: <MyDocuments />
+            element: <MyDocuments />,
+            loader: async ({ params, request }) => {
+              const { app : { user }} = store.getState(state => state);
+              store.dispatch(setLoader(true));
+                  
+              store.dispatch(fetchUserData({ id: user}));
+              store.dispatch(fetchOMs(user));
+              store.dispatch(fetchEfs(user));
+
+            }, 
           },
           {
             path: 'mes-états-de-frais',
-            element: <MyDocuments />
+            element: <MyDocuments />,
+            loader: async ({ params, request }) => {
+              const { app : { user }} = store.getState(state => state);
+              store.dispatch(setLoader(true));
+                  
+              store.dispatch(fetchUserData({ id: user}));
+              store.dispatch(fetchOMs(user));
+              store.dispatch(fetchEfs(user));
+
+            }, 
           },
           {
             path: 'mes-documents/',

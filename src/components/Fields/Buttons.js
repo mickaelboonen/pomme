@@ -129,6 +129,8 @@ const Buttons = ({ trigger, step, url, id, watch, update, userSignature}) => {
     
   }
 
+  console.log(url);
+
   return (
     <div className="form__section">
       <div className="form__section-field-buttons">

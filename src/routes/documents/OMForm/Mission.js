@@ -29,7 +29,7 @@ import { handleRegionFields, defineValidationRulesForMission } from 'src/selecto
 import { getSavedFileName } from 'src/selectors/formDataGetters';
 
 // Reducer
-import { enableMissionFormFields } from 'src/reducer/efForm';
+import { enableMissionFormFields } from 'src/reducer/ef';
 import { uploadFile, updateOmName, updateMission } from 'src/reducer/omForm';
 
 const Mission = ({ step, isEfForm }) => {
@@ -37,6 +37,7 @@ const Mission = ({ step, isEfForm }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loader = useLoaderData();
+  
   const omId = loader.searchParams.get('id');
   const areWeUpdatingData = loader.pathname.includes('modifier');
   

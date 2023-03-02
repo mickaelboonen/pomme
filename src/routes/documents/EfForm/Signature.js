@@ -112,7 +112,7 @@ const Signature = ({ step }) => {
         />
       </div>
       {refusal !== '' && <RefusalMessage message={refusal} />}
-      <Buttons step={step} />
+      {/* <Buttons step={step} /> */}
     </form>
     
   );

@@ -8,11 +8,12 @@ import './style.scss';
 import SelectField from 'src/components/Fields/SelectField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 
-import { displayOmStatus, saveOm } from 'src/reducer/omForm';
+import { displayOmStatus } from 'src/reducer/omForm';
+import { displayEfStatus } from 'src/reducer/ef';
 import DocButtons from './DocButtons';
 import LoaderCircle from '../../../components/LoaderCircle';
 
-const Section = ({ id, data, steps, currentDoc, loader}) => {
+const Section = ({ id, data, steps, currentDoc, loader, isOm}) => {
   
   const dispatch = useDispatch();
   const {
@@ -24,7 +25,13 @@ const Section = ({ id, data, steps, currentDoc, loader}) => {
   });
 
   const handleChange = (event) => {
-    dispatch(displayOmStatus(event.target.value));
+    if (isOm) {
+      dispatch(displayOmStatus(event.target.value));
+    }
+    else {
+      dispatch(displayEfStatus(event.target.value));
+    }
+    
   }
 
   let isDocFinished = false;
@@ -50,7 +57,6 @@ const Section = ({ id, data, steps, currentDoc, loader}) => {
     )}
       {currentDoc.hasOwnProperty('id') && (
         <div className='om-status'>
-          <FormSectionTitle>Documents en rapport avec la mission</FormSectionTitle>
           <FormSectionTitle>Statut des différentes étapes</FormSectionTitle>
           <div className='om-status__steps'>
             {steps.map((step) => (
@@ -71,7 +77,7 @@ const Section = ({ id, data, steps, currentDoc, loader}) => {
         </div>
       )}
       {currentDoc.hasOwnProperty('id') && (
-        <DocButtons {...currentDoc} isDocFinished={isDocFinished} />
+        <DocButtons isOm={isOm} {...currentDoc} isDocFinished={isDocFinished} />
       )}
     </section>
   );
@@ -79,6 +85,10 @@ const Section = ({ id, data, steps, currentDoc, loader}) => {
 
 Section.propTypes = {
 
+};
+
+Section.defaultProps = {
+  isOm: false,
 };
 
 export default Section;

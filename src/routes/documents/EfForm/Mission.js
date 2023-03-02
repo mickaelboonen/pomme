@@ -29,7 +29,7 @@ const EfMission = ({ register, errors, setValue, handler, unregister, modificati
         formField="modificationSwitch"
         isInForm
         register={register}
-        label="Déclarer des modification de mission :"
+        label="Déclarer des modifications de mission :"
       />
       {modificationSwitch && (
         <TextareaField

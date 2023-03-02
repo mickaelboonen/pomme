@@ -4,7 +4,7 @@ import { efHelp } from '../data/efHelp';
 const initialState = {
     isMissionFormDisabled: true,
     refusalMessage: '',
-    nextEFarget: '',
+    nextEfTarget: '',
     transportsFields: [
     {
       formField: 'plane',
@@ -115,12 +115,48 @@ const initialState = {
         name: 'Validés',
       }
     ],
+    userEfs: [],
+    efLoader: true,
+    efPerSelectedStatus: [],
+    currentEf: {}
 
 };
 const omFormSlice = createSlice({
-    name: 'efForm',
+    name: 'ef',
     initialState,
     reducers: {
+      addNewEf: () => {},
+      saveNewEf: (state, action) => {
+
+      },
+      fetchEfs: () => {},
+      saveEfs: (state, action) => {
+        state.userEfs = action.payload;
+        state.efPerSelectedStatus = state.userEfs.filter((ef) => ef.status === 1);
+        state.efLoader = false;
+      },
+      selectEfData: (state, action) => {
+
+        let status = 1;
+        if (action.payload === 'ec') {
+          status = 1;
+        }
+        else if (action.payload === 'as') {
+          status = 2;
+          
+        }
+        else if (action.payload === 'ok') {
+          status = 8;
+        }
+        
+        state.efPerSelectedStatus = state.userEfs.filter((ef) => ef.status === status);
+        state.currentEf = {};
+      },
+      
+      displayEfStatus: (state, action) => {
+        const efToDisplay = state.userEfs.find((ef) => ef.id === Number(action.payload));
+        state.currentEf = efToDisplay ? efToDisplay : {};
+      },
       saveMissionFormData: (state, action) => {
         
         let currentIndex;
@@ -155,6 +191,16 @@ const omFormSlice = createSlice({
     },
 });
 
-export const { saveMissionFormData, enableMissionFormFields, toggleHelp } = omFormSlice.actions;
+export const {
+  fetchEfs,
+  saveEfs,
+  addNewEf,
+  saveNewEf,
+  selectEfData,
+  displayEfStatus,
+  saveMissionFormData,
+  enableMissionFormFields,
+  toggleHelp
+} = omFormSlice.actions;
 
 export default omFormSlice.reducer;

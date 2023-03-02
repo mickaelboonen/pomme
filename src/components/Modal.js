@@ -7,37 +7,44 @@ import './modalStyle.scss';
 
 // Components 
 import SwitchButton from 'src/components/SwitchButton';
+import SelectField from 'src/components/Fields/SelectField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import ButtonElement from 'src/components/Fields/ButtonElement';
 
 // Actions
 import { toggleModal } from '../reducer/app';
 import { addNewOM } from 'src/reducer/omForm';
+import { addNewEf } from 'src/reducer/ef';
 
-const Modal = ({ target, user }) => {
+const Modal = ({ target, user, userOms }) => {
 
   const dispatch = useDispatch();
-  const {
-    register,
-    handleSubmit,
-  } = useForm({ 
-    defaultValues: {
+  let isOm = false;
+  let defaultValues = {};
+
+  if (target === 'ordre de mission' ) {
+    isOm = true;
+    defaultValues = {
       duration: true,
       withExpenses: true,
     }
-  });
+  }
+  const {
+    register,  handleSubmit, formState: { errors },
+  } = useForm({ defaultValues: defaultValues });
 
   const close = () => {
     dispatch(toggleModal());
   }
 
   const onSubmit = (data) => {
+    console.log(data);
     // If the user is requesting an advance
     
 
-    if (target === 'ordre de mission') {
+    if (isOm) {
       const newOM = {
-        name: `OM_NULL_NULL_${user.toUpperCase()}`,
+        name: `OM___${user.toUpperCase()}`,
         status: 1,
         url: 'path',
         missioner: user,
@@ -48,16 +55,17 @@ const Modal = ({ target, user }) => {
       
       dispatch(addNewOM(newOM)); 
     }
-    else if (target === 'état de frais') {
+    else {
       const newEF = {
-        name: `EF_NULL_NULL_${user.toUpperCase()}`,
+        name: `EF___${user.toUpperCase()}`,
         status: 1,
         url: 'path',
         missioner: user,
         comments: '',
+        omId: data.om
       }
-      
-      // dispatch(addNewEF(newEF)); 
+      console.log(newEF);
+      dispatch(addNewEf(newEF)); 
     }
   }
 
@@ -66,20 +74,37 @@ const Modal = ({ target, user }) => {
         <form className="modal__form" onSubmit={handleSubmit(onSubmit)}>
           <div className="form__section">
             <FormSectionTitle>Créer un nouvel {target} ?</FormSectionTitle>
-            <div className="form__section-field">
-              <SwitchButton
-                register={register}
-                isInForm
-                formField='duration'
-                label="Ponctuel :"
-              />
-              <SwitchButton
-                register={register}
-                isInForm
-                formField='withExpenses'
-                label="Avec Frais :"
-              />
-            </div>
+            { target === 'ordre de mission' && (
+              <div className="form__section-field">
+                <SwitchButton
+                  register={register}
+                  isInForm
+                  formField='duration'
+                  label="Ponctuel :"
+                />
+                <SwitchButton
+                  register={register}
+                  isInForm
+                  formField='withExpenses'
+                  label="Avec Frais :"
+                />
+              </div>
+            )}
+            { target === 'état de frais' && (
+              <div className="form__section-field">
+                <SelectField
+                  data={userOms}
+                  register={register}
+                  formField="om"
+                  handler={() => {}}
+                  id="work-address-select"
+                  label="Sélectionner l'OM dont vous voulez faire l'état de frais"
+                  blankValue="Liste des OMs disponibles pour un remboursement"
+                  required="Merci de sélectionner l'Ordre de Mission"
+                  error={errors.omList}
+                />
+              </div>
+            )}
           </div>
           <div className="form__section-field-buttons" id="modal-button">
             <ButtonElement

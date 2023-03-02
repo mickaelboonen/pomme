@@ -5,15 +5,13 @@ import { useLoaderData, useLocation, useNavigate, useParams } from 'react-router
 import classNames from 'classnames';
 
 // Components
-import Section from './Section';
 import NewSection from './NewSection';
 import Tabs from 'src/components/Tabs';
 import PageTitle from 'src/components/PageTitle';
 
-import { currentEFs , currentELs, pastELs } from 'src/data/fakeData';
-
 import { toggleModal } from 'src/reducer/app';
-import { addNewOM, clearOMTarget, selectData} from 'src/reducer/omForm';
+import { addNewOM, clearOMTarget, selectOmData} from 'src/reducer/omForm';
+import { selectEfData } from 'src/reducer/ef';
 
 
 import './style.scss';
@@ -30,14 +28,10 @@ const MyDocuments = () => {
   
 
   const { omForm: { currentOM, nextOMTarget, OMTabs, userOms, dataToSelect, omLoader },
-    efForm: { nextEFTarget, EFTabs },
+    ef: { nextEfTarget, currentEf, efPerSelectedStatus, efLoader, EFTabs },
     app: { isModalOpen }
   } = useSelector((state) => state);
-
-  // useEffect(() => {
-  //   dispatch(selectData('ec'))
-  // }, [userOms])
-
+  
   useEffect(() => {
     if (nextOMTarget !== '') {
       dispatch(toggleModal());
@@ -64,14 +58,7 @@ const MyDocuments = () => {
   }
 
   const { isOm, title, slug } = pageData(location.pathname, params.slug);
-
-  // TODO -----------------------------------------------------------------------------------------------------------------------------------------------------
-  const currentEF = JSON.parse(localStorage.getItem('newEf'));
-
-  if (currentEF !== null) {
-    currentEFs.push(currentEF);
-  }
-  // -----------------------------------------------------------------------------------------------------------------------------------------------------
+  
   
 
   /**
@@ -79,20 +66,13 @@ const MyDocuments = () => {
    * @param object event 
    */
    const displayWantedSection = (event) => {
-    const id = isOm ? 'om' : 'ef';
 
-    dispatch(selectData(event.currentTarget.id))
-    const wantedSection = document.querySelector(`#${event.currentTarget.id}-${id}`);
-    const allSections = document.querySelectorAll('.my-documents__files');
-
-    allSections.forEach((currentSection) => {
-      if (currentSection === wantedSection) {
-        wantedSection.classList.add('my-documents__files--open');
-      }
-      else {
-        currentSection.classList.remove('my-documents__files--open');
-      }
-    })
+    if (isOm) {
+      dispatch(selectOmData(event.currentTarget.id));
+    }
+    else {
+      dispatch(selectEfData(event.currentTarget.id));
+    }
   }
 
   const handleClickOnNewOM = () => {
@@ -130,14 +110,10 @@ const MyDocuments = () => {
       </div>
       {isOm && <Tabs tabs={OMTabs} handler={displayWantedSection} />}
       {!isOm && <Tabs tabs={EFTabs} handler={displayWantedSection} />}
-      <NewSection data={dataToSelect} steps={steps} currentDoc={currentOM} loader={omLoader} />
-      {/* {isOm && <Section id={"ec-om"} data={currentOMs} isFirstSection />}
-      {isOm && <Section id={"ok-om"} data={pastOMs} />}
-      {!isOm && <Section id={"ec-ef"} data={currentEFs} isFirstSection />}
-      {!isOm && <Section id={"as-ef"} data={currentELs} />}
-      {!isOm && <Section id={"ok-ef"} data={pastELs} />} */}
+      {isOm && <NewSection data={dataToSelect} steps={steps} currentDoc={currentOM} loader={omLoader} isOm />}
+      {!isOm && <NewSection data={efPerSelectedStatus} steps={steps} currentDoc={currentEf} loader={efLoader} />}
       <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
-      {isModalOpen && <Modal target={slug.replace(/-/g, ' ')} user={params.slug} />}
+      {isModalOpen && <Modal target={slug.replace(/-/g, ' ')} user={params.slug} userOms={userOms}/>}
     </main>
   );
 };

@@ -14,13 +14,14 @@ import storage from 'redux-persist/lib/storage'
 
 // Reducers
 import omFormReducer from 'src/reducer/omForm';
-import efFormReducer from 'src/reducer/efForm';
+import efReducer from 'src/reducer/ef';
 import appReducer from 'src/reducer/app';
 import vehicleReducer from 'src/reducer/vehicle';
 import otherDocsReducer from 'src/reducer/otherDocuments';
 
 // Middlewares
 import omMiddleware from '../middlewares/omMiddleware';
+import efMiddleware from '../middlewares/efMiddleware';
 import fileMiddleware from '../middlewares/fileMiddleware';
 import appMiddleware from '../middlewares/appMiddleware';
 import vehicleMiddleware from '../middlewares/vehicleMiddleware';
@@ -35,7 +36,7 @@ const persistConfig = {
 const reducers = combineReducers({
   app: appReducer,
   omForm: omFormReducer,
-  efForm: efFormReducer,
+  ef: efReducer,
   vehicle: vehicleReducer,
   docs: otherDocsReducer,
 })
@@ -49,7 +50,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(omMiddleware, fileMiddleware, appMiddleware, vehicleMiddleware)
+    }).concat(omMiddleware, efMiddleware, fileMiddleware, appMiddleware, vehicleMiddleware)
 })
 
 export const persistor = persistStore(store)

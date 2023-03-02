@@ -4,34 +4,54 @@ import { Link } from 'react-router-dom';
 
 import './style.scss';
 
-const DocButtons = ({ id, status,name, file,  isDocFinished}) => {
+const DocButtons = ({ id, status,name, file,  isDocFinished, isOm}) => {
   const downloadFileStatusArray = [2, 8];
-  const buttons = [
-    {
-      name: 'modify',
-      link: "/modifier-un-document/ordre-de-mission?etape=1&id=" + id,
-      label: 'Reprendre / Modifier',
-      status: [1],
-    },
-    {
-      name: 'submit',
-      link: "/modifier-un-document/ordre-de-mission?etape=6&id=" + id,
-      label: "Soumettre l'ordre de mission",
-      status: [1],
-    },
-    {
-      name: 'transport-request',
-      link: "#",
-      label: 'Faire une demande de déplacement',
-      status: [8],
-    },
-    {
-      name: 'delete',
-      link: "#",
-      label: 'Prendre connaissance du refus et supprimer',
-      status: [0],
-    },
-  ]
+  let buttons = [];
+
+  if (isOm) {
+    buttons = [
+      {
+        name: 'modify',
+        link: "/modifier-un-document/ordre-de-mission?etape=1&id=" + id,
+        label: 'Reprendre / Modifier',
+        status: [1],
+      },
+      {
+        name: 'submit',
+        link: "/modifier-un-document/ordre-de-mission?etape=6&id=" + id,
+        label: "Soumettre l'ordre de mission",
+        status: [1],
+      },
+      {
+        name: 'transport-request',
+        link: "#",
+        label: 'Faire une demande de déplacement',
+        status: [8],
+      },
+      {
+        name: 'delete',
+        link: "#",
+        label: 'Prendre connaissance du refus et supprimer',
+        status: [0],
+      },
+    ];
+  }
+  else {
+    buttons = [
+      {
+        name: 'modify',
+        link: "/modifier-un-document/état-de-frais?etape=1&id=" + id,
+        label: 'Reprendre / Modifier',
+        status: [1],
+      },
+      {
+        name: 'submit',
+        link: "/modifier-un-document/état-de-frais?etape=6&id=" + id,
+        label: "Soumettre l'ordre de mission",
+        status: [1],
+      },
+    ];
+  };
   
   return (
     <div className="my-documents__files-buttons">

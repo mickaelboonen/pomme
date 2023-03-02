@@ -13,7 +13,7 @@ import FileField from 'src/components/Fields/FileField';
 import { applyRegisterFromHebergementData } from 'src/selectors/formValidationsFunctions';
 
 import { efHelp } from 'src/data/efHelp';
-import { toggleHelp } from '../../../reducer/efForm';
+import { toggleHelp } from 'src/reducer/ef';
 
 const Hebergement = ({ step }) => {
   const dispatch = useDispatch();
@@ -122,7 +122,7 @@ const Hebergement = ({ step }) => {
         ))}
       </div>
       {refusalMessage !== '' && <RefusalMessage message={refusalMessage} />}
-      <Buttons step={step} />
+      {/* <Buttons step={step} /> */}
     </form>
     
   );

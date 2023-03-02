@@ -202,7 +202,7 @@ const Transports = ({ step }) => {
         </div>
       </div>
       {refusalMessage !== '' && <RefusalMessage message={refusalMessage} />}
-      <Buttons step={step} />
+      {/* <Buttons step={step} /> */}
     </form>
     
   );

@@ -120,7 +120,7 @@ const omFormSlice = createSlice({
     name: 'omForm',
     initialState,
     reducers: {
-      selectData: (state, action) => {
+      selectOmData: (state, action) => {
 
         let status = 1;
         if (action.payload === 'ec') {
@@ -304,7 +304,7 @@ export const {
   clearSideForm,
   validateSideForm,
   clearOMTarget,
-  selectData,
+  selectOmData,
   displayOmStatus,
   saveOmPdf,
   updateOm,
