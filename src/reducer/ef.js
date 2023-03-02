@@ -125,6 +125,9 @@ const omFormSlice = createSlice({
     name: 'ef',
     initialState,
     reducers: {
+      setEfLoader: (state, action) => {
+        state.efLoader = action.payload;
+      },
       addNewEf: () => {},
       saveNewEf: (state, action) => {
 
@@ -157,6 +160,7 @@ const omFormSlice = createSlice({
         const efToDisplay = state.userEfs.find((ef) => ef.id === Number(action.payload));
         state.currentEf = efToDisplay ? efToDisplay : {};
       },
+      updateEfMission: () => {},
       saveMissionFormData: (state, action) => {
         
         let currentIndex;
@@ -192,12 +196,14 @@ const omFormSlice = createSlice({
 });
 
 export const {
+  setEfLoader,
   fetchEfs,
   saveEfs,
   addNewEf,
   saveNewEf,
   selectEfData,
   displayEfStatus,
+  updateEfMission,
   saveMissionFormData,
   enableMissionFormFields,
   toggleHelp

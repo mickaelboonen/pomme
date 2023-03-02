@@ -29,7 +29,7 @@ import { handleRegionFields, defineValidationRulesForMission } from 'src/selecto
 import { getSavedFileName } from 'src/selectors/formDataGetters';
 
 // Reducer
-import { enableMissionFormFields } from 'src/reducer/ef';
+import { enableMissionFormFields, updateEfMission } from 'src/reducer/ef';
 import { uploadFile, updateOmName, updateMission } from 'src/reducer/omForm';
 
 const Mission = ({ step, isEfForm }) => {
@@ -38,13 +38,13 @@ const Mission = ({ step, isEfForm }) => {
   const dispatch = useDispatch();
   const loader = useLoaderData();
   
-  const omId = loader.searchParams.get('id');
+  const docId = loader.searchParams.get('id');
   const areWeUpdatingData = loader.pathname.includes('modifier');
   
 
   const { app: { apiMessage, user, countries},
     omForm: { currentOM, omForm, refusal, adresses },
-    efForm: { isMissionFormDisabled }
+    ef: { isMissionFormDisabled }
   } = useSelector((state) => state);
 
   const defaultValues = omForm.find((omStep) => omStep.step === 'mission').data;
@@ -86,6 +86,7 @@ const Mission = ({ step, isEfForm }) => {
     }
 
   }
+
   
   const onSubmit = (data) => {
     console.log(data);
@@ -107,7 +108,6 @@ const Mission = ({ step, isEfForm }) => {
     delete data.postCode;
     delete data.city;
     
-
     if (data.science) {
       if ((!data.missionPurposeFile || data.missionPurposeFile.length === 0) && !data.missionPurposeFileForValidation) {
         setError('missionPurposeFile', { type: 'custom', message: 'Merci de fournir le justificatif de la mission.'})
@@ -119,12 +119,31 @@ const Mission = ({ step, isEfForm }) => {
       return;
     }
     if (isEfForm) {
-
-      if (data.modification && data.modificationFiles.length === 0) {
-        setError('modificationFiles', { type: 'custom', message: 'Merci de fournir la ou les pièces justifiant la modification.'})
-        return;
+      if (!data.modificationSwitch) {
+        
+        // TODO : Update ef_mission to validated, doesn't rewrite all the data, we'll get it from the OM - so the user can't cheat
+        dispatch(updateEfMission({ docId: docId, status: 2, isModified: false}))
       }
-      // TODO : bien faire les verifs / validations pour l'EF 
+      else {
+        
+        if (!data.modificationFiles || data.modificationFiles.length === 0) {
+          setError('modificationFiles', { type: 'custom', message: 'Merci de fournir la ou les pièces justifiant la modification.'})
+          return;
+        }
+        data.status = 2;
+
+        if (data.modificationFiles.length > 0) {
+          dispatch(uploadFile({data: data, step: 'mission', docType: 'ef'}));
+        }
+        else {
+          dispatch(updateEfMission(data))
+        }
+        
+        // Todo 
+      }
+
+
+
     }
     else {
 
@@ -159,14 +178,11 @@ const Mission = ({ step, isEfForm }) => {
           errorCount++;
         }
       }
-
-
-
       if (errorCount === 0) {
         data.status = 1;
 
         const fileToAdd = data.missionPurposeFile.find((file) => file instanceof File);
-        
+
         if (fileToAdd === undefined) {
           delete data.om;
           if (data.science && data.missionPurposeFileForValidation) {
@@ -183,7 +199,7 @@ const Mission = ({ step, isEfForm }) => {
         const newOmName = `OM_${data.missionAddress.city.toUpperCase()}_${dateForFile}_${user.toUpperCase()}`;
         
         if (currentOM.name !== newOmName) {
-          dispatch(updateOmName({omId: data.omId, date: dateForFile, place: data.missionAddress.city}));
+          dispatch(updateOmName({docId: data.docId, date: dateForFile, place: data.missionAddress.city}));
         }
       }
     }
@@ -198,8 +214,7 @@ const Mission = ({ step, isEfForm }) => {
 
   const handleVisa = (event) => {
     const { id } = event.target;
-
-    console.log(id);
+    
     if (id === "visa-yes") {
       setIsVisaNeeded(true);
     }
@@ -211,11 +226,6 @@ const Mission = ({ step, isEfForm }) => {
   useEffect(() => {
     handleRegionFields(region, register, unregister);
   }, [unregister, region]);
-
-
-  const handleRegionClick = (event) => {
-    // displayRegionFieldsInFormMission();
-  };
   
   const toggleDisabledFields = (event) => {
     dispatch(enableMissionFormFields(event.currentTarget.checked));
@@ -247,13 +257,14 @@ const Mission = ({ step, isEfForm }) => {
         <SwitchButton
           register={register}
           handler={toggleScienceForm}
+          disabled={isEfForm && isMissionFormDisabled}
           isInForm
           formField="science"
           label="Est-ce que c'est un événement scientifique ?"
         />
         {!isMissionAScienceEvent && (
             <FileField
-              disabled={isEfForm && isMissionFormDisabled}
+              disabled={isEfForm}
               setValue={setValue}
               multiple
               id="mission-goal"
@@ -266,13 +277,15 @@ const Mission = ({ step, isEfForm }) => {
           )}
         {isMissionAScienceEvent && (
           <ScientificEvent
+            isEfForm={isEfForm}
+            isMissionFormDisabled={isMissionFormDisabled}
             errors={errors}
             setValue={setValue}
             register={register}
             filename={fileName}
           />
         )}
-        <HiddenField id="omId" value={omId} register={register} />
+        <HiddenField id="docId" value={docId} register={register} />
       </div>
       <div className="form__section">
         <FormSectionTitle>Départ et retour</FormSectionTitle>
@@ -407,15 +420,15 @@ const Mission = ({ step, isEfForm }) => {
             </div>
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Visa</label>
-              <RadioInput handler={handleVisa} id="visa-yes" formField="visa" label="Oui" register={register} required={errorMessages.visa} />
-              <RadioInput handler={handleVisa} id="visa-no" formField="visa" label="Non" register={register} required={errorMessages.visa} />
+              <RadioInput disabled={isEfForm && isMissionFormDisabled} handler={handleVisa} id="visa-yes" formField="visa" label="Oui" register={register} required={errorMessages.visa} />
+              <RadioInput disabled={isEfForm && isMissionFormDisabled} handler={handleVisa} id="visa-no" formField="visa" label="Non" register={register} required={errorMessages.visa} />
             </div>
             {errors.visa && <p className="form__section-field-error form__section-field-error--open">{errors.visa.message}</p>}
             {isVisaNeeded && (
               <div className="form__section-field">
                 <label className="form__section-field-label" htmlFor="departure-place">Prise en charge du visa</label>
-                <RadioInput id="unimes" formField="visaPayment" label="Réglé par Unîmes" register={register} required={errorMessages.visaPayment} />
-                <RadioInput id="user" formField="visaPayment" label="Avancé par l'agent" register={register} required={errorMessages.visaPayment} />
+                <RadioInput disabled={isEfForm && isMissionFormDisabled} id="unimes" formField="visaPayment" label="Réglé par Unîmes" register={register} required={errorMessages.visaPayment} />
+                <RadioInput disabled={isEfForm && isMissionFormDisabled} id="user" formField="visaPayment" label="Avancé par l'agent" register={register} required={errorMessages.visaPayment} />
               </div>
             )}
             {errors.visaPayment && <p className="form__section-field-error form__section-field-error--open">{errors.visaPayment.message}</p>}
@@ -425,6 +438,7 @@ const Mission = ({ step, isEfForm }) => {
           <div className="form__section-field" id="abroad-field">
             <p className="form__section-field-label">(*) Préciser : </p>
             <RadioInput
+              disabled={isEfForm && isMissionFormDisabled}
               register={register}
               formField="abroadCosts"
               id="per-diem"
@@ -432,6 +446,7 @@ const Mission = ({ step, isEfForm }) => {
               required={errorMessages.abroadCosts}
             />
             <RadioInput
+              disabled={isEfForm && isMissionFormDisabled}
               register={register}
               formField="abroadCosts"
               id="frais-reels"
@@ -458,7 +473,7 @@ const Mission = ({ step, isEfForm }) => {
       {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
       <Buttons
         step={step}
-        id={omId}
+        id={docId}
         url={loader}
         watch={watch}
         update={updateMission}

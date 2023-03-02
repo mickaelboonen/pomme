@@ -7,20 +7,11 @@ import FileField from 'src/components/Fields/FileField';
 import SwitchButton from 'src/components/SwitchButton';
 import TextareaField from 'src/components/Fields/TextareaField';
 
-const EfMission = ({ register, errors, setValue, handler, unregister, modificationSwitch }) => {
+const EfMission = ({ register, errors, setValue, handler, modificationSwitch }) => {
 
   const handleSwitch = (event) => {
     handler(event);
   }
-
-  // useEffect(() => {
-  //   if (!modificationSwitch || modificationSwitch === undefined) {
-  //     unregister('missionGoalFile');
-
-
-  //   }
-  // }, [modificationSwitch])
-
   return (
     <div className="form__section">
       <FormSectionTitle>Modifications</FormSectionTitle>

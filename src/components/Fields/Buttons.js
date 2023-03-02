@@ -125,11 +125,8 @@ const Buttons = ({ trigger, step, url, id, watch, update, userSignature}) => {
       navigate(`/utilisateur/${user}/mes-ordres-de-mission`)
     }else {
       navigate('?etape=' + (id === 'back' ? step - 1 : step + 1) + '&id=' + id);
-    }
-    
+    } 
   }
-
-  console.log(url);
 
   return (
     <div className="form__section">

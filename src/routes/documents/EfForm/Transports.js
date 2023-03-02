@@ -6,7 +6,6 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import RefusalMessage from 'src/components/Fields/RefusalMessage';
 import Buttons from 'src/components/Fields/Buttons';
 import FileField from 'src/components/Fields/FileField';
 import SwitchButton from 'src/components/SwitchButton';
@@ -21,7 +20,7 @@ const Transports = ({ step }) => {
   const [searchParams] = useSearchParams();
 
   const omId = searchParams.get('id');
-  const { refusalMessage, transportsFields } = useSelector((state) => state.efForm)
+  const { transportsFields } = useSelector((state) => state.ef)
   const navigate = useNavigate();
   const {
     register,
@@ -103,7 +102,7 @@ const Transports = ({ step }) => {
   }
 
   useEffect(() => {
-    applyRegisterFromData(omTransports, register);
+    // applyRegisterFromData(omTransports, register);
 
     validationArray.forEach((field) => {
       if (Number(field.value) > 0) {
@@ -201,7 +200,6 @@ const Transports = ({ step }) => {
           </div>
         </div>
       </div>
-      {refusalMessage !== '' && <RefusalMessage message={refusalMessage} />}
       {/* <Buttons step={step} /> */}
     </form>
     

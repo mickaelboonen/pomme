@@ -29,7 +29,7 @@ const TextField = ({
     helpFunction(event);
   }
 
-  const { currentHelp } = useSelector((state) => state.efForm);
+  const { currentHelp } = useSelector((state) => state.ef);
 
   return (
     <div className={classNames("form__section-field", { "form__section-field--hidden": isHidden })} id={formField}>

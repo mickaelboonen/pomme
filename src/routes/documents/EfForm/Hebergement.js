@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import RefusalMessage from 'src/components/Fields/RefusalMessage';
+// import RefusalMessage from 'src/components/Fields/RefusalMessage';
 import Buttons from 'src/components/Fields/Buttons';
 import TextField from 'src/components/Fields/TextField';
 import FileField from 'src/components/Fields/FileField';
@@ -37,13 +37,13 @@ const Hebergement = ({ step }) => {
     localStorage.setItem('hebergementEf', JSON.stringify(data));
     navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId)
   };
-  const { refusalMessage, mealFields } = useSelector((state) => state.efForm)
+  const { mealFields } = useSelector((state) => state.ef)
   
   const omHebergement = JSON.parse(localStorage.getItem('hebergement'));
   const hotel = watch('hotel');
 
   useEffect(() => {
-    applyRegisterFromHebergementData(omHebergement, register);
+    // applyRegisterFromHebergementData(omHebergement, register);
 
     if (Number(hotel) > 0) {
       register('hotelFiles', {
@@ -121,7 +121,6 @@ const Hebergement = ({ step }) => {
           />
         ))}
       </div>
-      {refusalMessage !== '' && <RefusalMessage message={refusalMessage} />}
       {/* <Buttons step={step} /> */}
     </form>
     

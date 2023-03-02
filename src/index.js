@@ -39,7 +39,7 @@ import { getSignature, fetchUserData, getDocument, fetchCountries } from "src/re
 import { findPermFilesByAgent, fetchAgentSignatureForPdf } from "src/reducer/otherDocuments";
 import { getVehicles, getVehicleDocuments } from "src/reducer/vehicle";
 import { fetchOMs, getMission, fetchOm, getTransports, getAccomodations, getAdvance, getMore, setLoader  } from "src/reducer/omForm";
-import { fetchEfs } from "src/reducer/ef";
+import { fetchEfs, setEfLoader } from "src/reducer/ef";
 
 
 import { persistor } from 'src/store';
@@ -184,12 +184,15 @@ const router = createBrowserRouter([
             element: <EfForm />,
             loader: async ({ request }) => {
               const url = new URL(request.url);
-              const omId = url.searchParams.get("id");
+              const om = url.searchParams.get("om");
               const step = url.searchParams.get("etape");
 
-              // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
-              if (step === '2') {
-                
+
+              if (step === '1') {
+                // store.dispatch(fetchOm(id));
+                store.dispatch(setEfLoader(true));
+                store.dispatch(fetchCountries());
+                store.dispatch(getMission(om));
               }
 
               return url;
@@ -200,11 +203,14 @@ const router = createBrowserRouter([
             element: <EfForm />,
             loader: async ({ request }) => {
               const url = new URL(request.url);
-              const omId = url.searchParams.get("id");
+              const om = url.searchParams.get("om");
               const step = url.searchParams.get("etape");
 
-              // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
-              if (step === '2') {
+
+              if (step === '1') {
+                // store.dispatch(fetchOm(id));
+                store.dispatch(fetchCountries());
+                store.dispatch(getMission(om));
               }
 
               return url;

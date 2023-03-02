@@ -33,6 +33,18 @@ const efMiddleware = (store) => (next) => (action) => {
         // store.dispatch(showTicketCreationResponse(error.response))
       });
     break;
+  case 'ef/updateEfMission':
+    console.log(action.type, action.payload);
+    api.post("/api/ef/mission/update", action.payload)
+      .then((response) => {
+        console.log("RESPONSE IS : ",response);
+        // store.dispatch(saveEfs(response.data))
+      })
+      .catch((error) => {
+        console.error('update EF mission', error);
+        // store.dispatch(showTicketCreationResponse(error.response))
+      });
+    break;
 
     default:
   }
