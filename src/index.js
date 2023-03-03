@@ -194,6 +194,9 @@ const router = createBrowserRouter([
                 store.dispatch(fetchCountries());
                 store.dispatch(getMission(om));
               }
+              else if (step === '2') {
+                store.dispatch(getTransports(om));
+              }
 
               return url;
             },    
@@ -211,6 +214,9 @@ const router = createBrowserRouter([
                 // store.dispatch(fetchOm(id));
                 store.dispatch(fetchCountries());
                 store.dispatch(getMission(om));
+              }
+              else if (step === '2') {
+                store.dispatch(getTransports(om));
               }
 
               return url;

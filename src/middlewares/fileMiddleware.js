@@ -3,7 +3,8 @@ import { fileApi, api } from './api';
 import { requestVehicleAuthorization } from '../reducer/vehicle';
 import { toggleDocModal, saveAllPermDocs, saveAgentSignatureForPdf} from '../reducer/otherDocuments';
 import { setApiResponse } from 'src/reducer/app';
-import { updateEfMission } from 'src/reducer/ef';
+import { updateEfMission, updateEfTransports } from 'src/reducer/ef';
+import { handleEfTransportsFilesUploadPayload } from 'src/selectors/fileFunctions';
 
 
 fileApi.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -14,10 +15,10 @@ const omMiddleware = (store) => (next) => (action) => {
   switch (action.type) {
     case 'omForm/uploadFile':
       const filesToUpload = [];
-      console.log('IN THE MIDDLEWARE', action.payload);
+      // console.log('IN THE MIDDLEWARE', action.payload);
 
       const { data, step, docType } = action.payload;
-      console.log('DATA IN THE FILEMIDDLEWARE : ', data);
+      // console.log('DATA IN THE FILEMIDDLEWARE : ', data);
       
       const type = docType ? docType : 'om';
       if (type === 'om') {
@@ -137,7 +138,7 @@ const omMiddleware = (store) => (next) => (action) => {
 
       }
       else if (type === 'ef') {
-        console.log("je suis dans les files de l'EF");
+        
         if (step === "mission") {
           data.modificationFiles.forEach((file) => {
             if (file instanceof File) {
@@ -150,6 +151,10 @@ const omMiddleware = (store) => (next) => (action) => {
             }
           })
         }
+        else if (step === 'transports') {
+          const files = handleEfTransportsFilesUploadPayload(data);
+          files.forEach((file) => filesToUpload.push(file));
+        }
       }
       console.log('filesToUpload - ', filesToUpload);
       
@@ -159,7 +164,7 @@ const omMiddleware = (store) => (next) => (action) => {
         .then((response) => {
 
           const { data } = action.payload;
-          console.log(response)
+          console.log(`/api/files/${type}/${step} RESPONSE IS : `, response)
 
           if (type === 'om') {
 
@@ -248,11 +253,25 @@ const omMiddleware = (store) => (next) => (action) => {
             if (step === 'mission') {
               data.modificationFiles = [];
             }
+            if (step === 'transports') {
+              data.trainFiles = [];
+              data.taxiFiles = [];
+              data.planeFiles = [];
+              data.rentCarFiles = [];
+              data.fuelFiles = [];
+              data.tollFiles = [];
+              data.parkingFiles = [];
+              data.ferryFiles = [];
+              data.publicTransportsFiles = [];
+            }
 
             response.data.forEach((file) => {
-              console.log("----------------------------------------------------", file, file.file.url);
+              
               if (file.type === 'mission') {
                 data.modificationFiles.push(file.file.url);
+              }
+              else if (file.type === 'transports') {
+                data[file.name].push(file.file.url);
               }
             })
 
@@ -260,6 +279,10 @@ const omMiddleware = (store) => (next) => (action) => {
             if (step === 'mission') {
               console.log('before update : ', data);
               store.dispatch(updateEfMission(data));
+            }
+            else if (step === 'transports') {
+              console.log('before update : ', data);
+              store.dispatch(updateEfTransports(data));
             }
           }
 

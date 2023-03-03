@@ -7,19 +7,21 @@ import { useNavigate } from 'react-router-dom';
 
 const ThreadAsTabs = ({ step, tabs, isOm, urlData }) => {
   
-
-  const omId = urlData.searchParams.get('id');
+  const docId = urlData.searchParams.get('id');
   const { pathname } = urlData;
   const navigate = useNavigate();
 
   const handleClickOnTab = (event) => {
     const { id } = event.target;
 
-    // if (window.innerWidth >= 600) {
-    //   if (window.confirm("Voulez-vous enregistrer les informations saisies ?")) {
-        navigate(pathname + '?etape=' + id + '&id=' + omId);
-    //   }
-    // }
+    if (isOm) {
+      navigate(pathname + '?etape=' + id + '&id=' + docId);
+    }
+    else {
+      navigate(pathname + '?etape=' + id + '&id=' + docId + '&om=' + urlData.searchParams.get('om'));
+    }
+      
+
   };
   return (
     <div className="form-page__thread">
@@ -29,8 +31,8 @@ const ThreadAsTabs = ({ step, tabs, isOm, urlData }) => {
           onClick={handleClickOnTab}
           key={tab.id}
           id={tab.id}
-          >
-            {tab.name} <span>- Étape {step} / {tabs.length}</span>
+        >
+          {tab.name} <span>- Étape {step} / {tabs.length}</span>
         </div>
       ))}
     </div>

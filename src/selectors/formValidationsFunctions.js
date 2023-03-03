@@ -23,30 +23,33 @@
    */
  export const applyRegisterFromData = (omTransports, register) => {
 
-  const { trainPayment, planePayment, publicTransports, others, vehicle } = omTransports;
+  const { authorizations, trainPayment, planePayment, publicTransports, others, vehicle } = omTransports;
 
-    if (trainPayment === "user-train" ) {
+  const amountRequiredMessage = 'Veuillez saisir le montant payé pour ce transport.';
+  const fileRequiredMessage = 'Veuillez fournir le justificatif de paiement.';
+  
+    if (trainPayment === "agent" ) {
       register('train', {
-        required: 'Veuillez saisir le montant payé pour ce transport.'
+        required: amountRequiredMessage,
       })
       register('trainFiles', {
-        required: 'Veuillez fournir le justificatif de paiement.'
+        required:fileRequiredMessage,
       })
     }
-    if (planePayment === "user-plane") {
+    if (planePayment === "user") {
       register('plane', {
-        required: 'Veuillez saisir le montant payé pour ce transport.'
+        required: amountRequiredMessage,
       })
       register('planeFiles', {
-        required: 'Veuillez fournir le justificatif de paiement.'
+        required: fileRequiredMessage,
       })
     }
     if (publicTransports) {
       register('publicTransports', {
-        required: 'Veuillez saisir le montant payé pour ce transport.'
+        required: amountRequiredMessage,
       })
       register('publicTransportsFiles', {
-        required: 'Veuillez fournir le justificatif de paiement.'
+        required: fileRequiredMessage,
       })
     }
     if (others !== false) {
@@ -55,6 +58,14 @@
           required: 'Veuillez saisir le montant payé pour ce transport.'
         })
         register('taxiFiles', {
+          required: 'Veuillez fournir le justificatif de paiement.'
+        })
+      }
+      if (others.indexOf('ferry') != -1) {
+        register('ferry', {
+          required: 'Veuillez saisir le montant payé pour ce transport.'
+        })
+        register('ferryFiles', {
           required: 'Veuillez fournir le justificatif de paiement.'
         })
       }
@@ -68,15 +79,90 @@
         })
       }
     }
-    if (vehicle === "Véhicule personnel, de prêt") {
-      register('fuel', {
-        required: 'Veuillez saisir le montant payé pour ce transport.'
-      })
-      register('fuelFiles', {
-        required: 'Veuillez fournir le justificatif de paiement.'
-      })
+    if (authorizations.length > 0) {
+      const { type } = authorizations[0];
+      if (type === 'personal-car') {
+        register('horsepower', {
+          required: amountRequiredMessage,
+        })
+        register('km', {
+          required: amountRequiredMessage,
+        })
+      }
+      else if (type === 'company-car') {
+        register('fuel', {
+          required: amountRequiredMessage,
+        })
+        register('fuelFiles', {
+          required: fileRequiredMessage,
+        })
+      }
+      else if (type === 'rent-car') {
+        register('rentCar', {
+          required: amountRequiredMessage,
+        })
+        register('rentCarFiles', {
+          required: fileRequiredMessage,
+        })
+        register('fuel', {
+          required: amountRequiredMessage,
+        })
+        register('fuelFiles', {
+          required: fileRequiredMessage,
+        })
+      }
     }
 }
+
+  export const filterEfTransportsFields = (fields, data) => {
+    const { planeClass, trainClass, authorizations, publicTransports, others } = data;
+    const fieldsToBeDisplayed = [];
+    
+    if (planeClass) {
+      const currentField = fields.find((field) => field.formField === 'plane');
+      fieldsToBeDisplayed.push(currentField)
+    }
+    if (trainClass) {
+      const currentField = fields.find((field) => field.formField === 'train');
+      fieldsToBeDisplayed.push(currentField)
+    }
+    if (publicTransports) {
+      const currentField = fields.find((field) => field.formField === 'publicTransports');
+      fieldsToBeDisplayed.push(currentField)
+    }
+    if (authorizations.length > 0) {
+      const { type } = authorizations[0];
+      if (type === 'company-car') {
+
+        const currentField = fields.find((field) => field.formField === 'fuel');
+        fieldsToBeDisplayed.push(currentField)
+        
+      }
+      else if (type === 'rent-car') {
+
+        const currentField = fields.find((field) => field.formField === 'rentCar');
+        fieldsToBeDisplayed.push(currentField)
+        
+      }
+      
+      let currentField = fields.find((field) => field.formField === 'toll');
+      fieldsToBeDisplayed.push(currentField)
+      
+      currentField = fields.find((field) => field.formField === 'parking');
+      fieldsToBeDisplayed.push(currentField)
+    }
+    if (others.length > 0) {
+      others.forEach((other) => { 
+        if (other !== 'parking') {
+          const currentField = fields.find((field) => field.formField === other);
+          fieldsToBeDisplayed.push(currentField);
+        }
+      })
+    }
+
+    return fieldsToBeDisplayed;
+  } 
+
   /**
    * Registers or unregisters the list of work adresses in the OM Form - mission step
    * 

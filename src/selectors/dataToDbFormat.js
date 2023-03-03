@@ -169,9 +169,9 @@ export const turnTransportsDataToAppFormat = (data) => {
   if (data.ferry) {
     dataForTheComponent.others.push('ferry');
   }
-  if (data.taxi) {
-    dataForTheComponent.others.push('taxi');
-  }
+  // if (data.taxi) {
+  //   dataForTheComponent.others.push('taxi');
+  // }
   
   data.transportClass.forEach((service) => {
     if (service === 'first-class' || service === 'second-class') {
