@@ -111,11 +111,13 @@
   margin-top: 0.5rem;
   border-radius: vars.$radius;
   font-style: italic;
+  width: calc(100% - 1rem - 24px);
 
   &__title {
-    color: var(--first-color);
+    color: rgba(var(--darkestThemeColor));
     text-transform: uppercase;
     text-decoration: underline;
+    font-weight: bold;
   }
 
   &__message {
@@ -125,7 +127,7 @@
   }
 
   &__link {
-    color: var(--third-color);
+    color: var(--fifth-color);
     text-decoration: underline;
   }
 

@@ -7,10 +7,11 @@ import {
   saveAccomodations,
   saveAdvance,
   saveMore,
+  validateSideForm,
 } from 'src/reducer/omForm';
 import { setApiResponse } from 'src/reducer/app';
+import { setEfLoader } from 'src/reducer/ef';
 import { api } from './api';
-import { validateSideForm } from '../reducer/omForm';
 
 
 api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -153,7 +154,8 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/getMission':
       api.get("/api/om/mission/find/" + action.payload)
         .then((response) => {
-            store.dispatch(saveMission(response.data))
+            store.dispatch(saveMission(response.data));
+            store.dispatch(setEfLoader(false));
 
         })
         .catch((error) => {
@@ -166,6 +168,7 @@ const omMiddleware = (store) => (next) => (action) => {
       api.get("/api/om/transports/find/" + action.payload)
         .then((response) => {
           store.dispatch(saveTransports(response.data));
+          store.dispatch(setEfLoader(false));
         })
         .catch((error) => {
           console.error('get signature', error);
@@ -176,7 +179,9 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/getAccomodations':
       api.get("/api/om/accomodations/find/" + action.payload)
         .then((response) => {
-            store.dispatch(saveAccomodations(response.data))
+          console.log(response.data);
+            store.dispatch(saveAccomodations(response.data));
+            store.dispatch(setEfLoader(false));
 
         })
         .catch((error) => {

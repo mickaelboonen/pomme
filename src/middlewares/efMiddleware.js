@@ -22,7 +22,6 @@ const efMiddleware = (store) => (next) => (action) => {
       });
     break;
   case 'ef/fetchEfs':
-    console.log("IM HERE");
     api.get("/api/ef/" + action.payload)
       .then((response) => {
         console.log(response);
@@ -42,6 +41,30 @@ const efMiddleware = (store) => (next) => (action) => {
       })
       .catch((error) => {
         console.error('update EF mission', error);
+        // store.dispatch(showTicketCreationResponse(error.response))
+      });
+    break;
+  case 'ef/updateEfTransports':
+    console.log(action.type, action.payload);
+    api.post("/api/ef/transports/update", action.payload)
+      .then((response) => {
+        console.log("RESPONSE IS : ",response);
+        // store.dispatch(saveEfs(response.data))
+      })
+      .catch((error) => {
+        console.error('update EF transports', error);
+        // store.dispatch(showTicketCreationResponse(error.response))
+      });
+    break;
+  case 'ef/updateEfAccomodations':
+    console.log(action.type, action.payload);
+    api.post("/api/ef/accomodations/update", action.payload)
+      .then((response) => {
+        console.log("RESPONSE IS : ",response);
+        // store.dispatch(saveEfs(response.data))
+      })
+      .catch((error) => {
+        console.error('update EF transports', error);
         // store.dispatch(showTicketCreationResponse(error.response))
       });
     break;

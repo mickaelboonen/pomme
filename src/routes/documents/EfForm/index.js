@@ -1,23 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
+import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 
 import './style.scss';
-import Mission from 'src/routes/documents/OMForm/Mission';
-import PageTitle from 'src/components/PageTitle';
+
+// Components 
+import Steps from './Steps';
+import Signature from './Signature';
 import Transports from './Transports';
 import Hebergement from './Hebergement';
-import Signature from './Signature';
-import OmSelection from './OmSelection';
-import Steps from './Steps';
+import PageTitle from 'src/components/PageTitle';
 import ThreadAsTabs from 'src/components/ThreadAsTabs';
-import { useLoaderData, useNavigate, Link } from 'react-router-dom';
-import { useSearchParams } from 'react-router-dom';
-import Help from 'src/components/Help';
+import LoaderCircle from 'src/components/LoaderCircle';
+import Mission from 'src/routes/documents/OMForm/Mission';
 
 const EfForm = () => {      
 
   const loaderData = useLoaderData();
   const step = Number(loaderData.searchParams.get('etape'));
+  const { efLoader } = useSelector((state) => state.ef);
   
   const steps = [
     {
@@ -48,13 +51,13 @@ const EfForm = () => {
       <div className='form-root__container'>
         <div className="form-page__container">
           {/* {step === 1 && <OmSelection step={step} />} */}
-          {step === 1 && <Mission step={step} isEfForm />}
-          {step === 2 && <Transports step={step} />}
-          {step === 3 && <Hebergement step={step} />}
-          {step === 4 && <Steps step={step} />}
-          {step === 5 && <Signature step={step} />}
-          {/* {step !== 6 && <button className="form-page__container-link" type='button'>Enregistrer en l'état et revenir plus tard</button>}
-          {step === 6 && <button className="form-page__container-link" type='button'>Retour : Avance</button>} */}
+          {efLoader && <LoaderCircle /> }
+          {(step === 1&& !efLoader) && <Mission step={step} isEfForm />}
+          {(step === 2&& !efLoader) && <Transports step={step} />}
+          {(step === 3&& !efLoader) && <Hebergement step={step} />}
+          {/* {(step === 3) && <Hebergement step={step} />} */}
+          {(step === 4&& !efLoader) && <Steps step={step} />}
+          {(step === 5&& !efLoader) && <Signature step={step} />}
         </div>
       </div>
     </div>

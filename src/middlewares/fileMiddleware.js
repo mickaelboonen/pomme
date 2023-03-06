@@ -4,7 +4,8 @@ import { requestVehicleAuthorization } from '../reducer/vehicle';
 import { toggleDocModal, saveAllPermDocs, saveAgentSignatureForPdf} from '../reducer/otherDocuments';
 import { setApiResponse } from 'src/reducer/app';
 import { updateEfMission, updateEfTransports } from 'src/reducer/ef';
-import { handleEfTransportsFilesUploadPayload } from 'src/selectors/fileFunctions';
+import { handleEfFilesUploadPayload } from 'src/selectors/fileFunctions';
+import { updateEfAccomodations } from '../reducer/ef';
 
 
 fileApi.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -18,7 +19,7 @@ const omMiddleware = (store) => (next) => (action) => {
       // console.log('IN THE MIDDLEWARE', action.payload);
 
       const { data, step, docType } = action.payload;
-      // console.log('DATA IN THE FILEMIDDLEWARE : ', data);
+      console.log('DATA IN THE FILEMIDDLEWARE : ', data);
       
       const type = docType ? docType : 'om';
       if (type === 'om') {
@@ -152,7 +153,12 @@ const omMiddleware = (store) => (next) => (action) => {
           })
         }
         else if (step === 'transports') {
-          const files = handleEfTransportsFilesUploadPayload(data);
+          const files = handleEfFilesUploadPayload(data, 'transports');
+          files.forEach((file) => filesToUpload.push(file));
+        }
+        else if (step === 'accomodations') {
+          console.log("AM HERE");
+          const files = handleEfFilesUploadPayload(data, 'accomodations');
           files.forEach((file) => filesToUpload.push(file));
         }
       }
@@ -253,7 +259,7 @@ const omMiddleware = (store) => (next) => (action) => {
             if (step === 'mission') {
               data.modificationFiles = [];
             }
-            if (step === 'transports') {
+            else if (step === 'transports') {
               data.trainFiles = [];
               data.taxiFiles = [];
               data.planeFiles = [];
@@ -264,6 +270,11 @@ const omMiddleware = (store) => (next) => (action) => {
               data.ferryFiles = [];
               data.publicTransportsFiles = [];
             }
+            else if (step === 'accomodations') {
+              data.hotelFiles = [];
+              data.eventFiles = [];
+            }
+            
 
             response.data.forEach((file) => {
               
@@ -271,6 +282,9 @@ const omMiddleware = (store) => (next) => (action) => {
                 data.modificationFiles.push(file.file.url);
               }
               else if (file.type === 'transports') {
+                data[file.name].push(file.file.url);
+              }
+              else if (file.type === 'accomodations') {
                 data[file.name].push(file.file.url);
               }
             })
@@ -282,7 +296,15 @@ const omMiddleware = (store) => (next) => (action) => {
             }
             else if (step === 'transports') {
               console.log('before update : ', data);
+              data.docId = data.efId;
+              delete data.efId;
               store.dispatch(updateEfTransports(data));
+            }
+            else if (step === 'accomodations') {
+              console.log('before update : ', data);
+              data.docId = data.efId;
+              delete data.efId;
+              store.dispatch(updateEfAccomodations(data));
             }
           }
 

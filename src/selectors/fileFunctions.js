@@ -1,4 +1,4 @@
-export const handleEfTransportsFilesUploadPayload = (data) => {
+export const handleEfFilesUploadPayload = (data, type) => {
 
   const propertiesArray = Object.entries(data);
   const files = [];
@@ -6,11 +6,12 @@ export const handleEfTransportsFilesUploadPayload = (data) => {
   propertiesArray.forEach((property) => {
     const name = property[0];
     const value = property[1];
+    
     if (name.includes('Files')) {
-      value.forEach((currentFile) => {
+      Array.from(value).forEach((currentFile) => {
         const file = {
           efId: data.efId,
-          type: 'transports',
+          type: type,
           file: currentFile,
           name: name,
         }

@@ -186,16 +186,20 @@ const router = createBrowserRouter([
               const url = new URL(request.url);
               const om = url.searchParams.get("om");
               const step = url.searchParams.get("etape");
+              
+              store.dispatch(setEfLoader(true));
 
 
               if (step === '1') {
-                // store.dispatch(fetchOm(id));
-                store.dispatch(setEfLoader(true));
                 store.dispatch(fetchCountries());
                 store.dispatch(getMission(om));
               }
               else if (step === '2') {
                 store.dispatch(getTransports(om));
+              }
+              else if (step === '3') {
+                store.dispatch(getMission(om));
+                store.dispatch(getAccomodations(om));
               }
 
               return url;
@@ -209,6 +213,8 @@ const router = createBrowserRouter([
               const om = url.searchParams.get("om");
               const step = url.searchParams.get("etape");
 
+              store.dispatch(setEfLoader(true));
+
 
               if (step === '1') {
                 // store.dispatch(fetchOm(id));
@@ -217,6 +223,10 @@ const router = createBrowserRouter([
               }
               else if (step === '2') {
                 store.dispatch(getTransports(om));
+              }
+              else if (step === '3') {
+                store.dispatch(getMission(om));
+                store.dispatch(getAccomodations(om));
               }
 
               return url;

@@ -180,6 +180,7 @@ const omFormSlice = createSlice({
       },
       updateEfMission: () => {},
       updateEfTransports: () => {},
+      updateEfAccomodations: () => {},
       saveMissionFormData: (state, action) => {
         
         let currentIndex;
@@ -224,6 +225,7 @@ export const {
   displayEfStatus,
   updateEfMission,
   updateEfTransports,
+  updateEfAccomodations,
   saveMissionFormData,
   enableMissionFormFields,
   toggleHelp
