@@ -34,11 +34,11 @@ const persistConfig = {
 }
 
 const reducers = combineReducers({
+  ef: efReducer,
   app: appReducer,
   omForm: omFormReducer,
-  ef: efReducer,
-  vehicle: vehicleReducer,
   docs: otherDocsReducer,
+  vehicle: vehicleReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers);

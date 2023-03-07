@@ -201,6 +201,9 @@ const router = createBrowserRouter([
                 store.dispatch(getMission(om));
                 store.dispatch(getAccomodations(om));
               }
+              else if (step === '4') {
+                store.dispatch(getMission(om));
+              }
 
               return url;
             },    
@@ -227,6 +230,9 @@ const router = createBrowserRouter([
               else if (step === '3') {
                 store.dispatch(getMission(om));
                 store.dispatch(getAccomodations(om));
+              }
+              else if (step === '4') {
+                store.dispatch(getMission(om));
               }
 
               return url;

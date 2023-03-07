@@ -1,58 +1,112 @@
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
-import { useNavigate } from 'react-router-dom';
+import { IoMdAddCircle } from "react-icons/io";
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useLoaderData } from 'react-router-dom';
 
-import AddButton from '../../../assets/images/add.svg';
 
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import RefusalMessage from 'src/components/Fields/RefusalMessage';
+
 import Buttons from 'src/components/Fields/Buttons';
+import TextField from 'src/components/Fields/TextField';
+import ButtonElement from 'src/components/Fields/ButtonElement';
 import Step from './Step';
 
 const Steps = ({ step }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const loader = useLoaderData();
+  const efId = loader.searchParams.get('id');
+
+  // const {    omForm: {omForm}
+  // } = useSelector((state) => state);
+    
+
   const {
-    register,
-    handleSubmit,
-    watch,
-    formState:
-    { errors },
+    register, handleSubmit, watch,
+    setValue,  setError, trigger,
+    formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
     console.log(data);
-    const nextStep = step + 1;
-    // navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId)
+    console.log("stepsToDisplay : ", stepsToDisplay);
+
+    const entities = stepsToDisplay.map((stepIndex) => {
+      const step = {};
+      step.city= data['city' + stepIndex];
+      step.arrivalDate = data['arrivalDate' + stepIndex];
+      step.departureDate = data['departureDate' + stepIndex];
+      step.amBeginning = data['amBeginning' + stepIndex];
+      step.pmBeginning = data['pmBeginning' + stepIndex];
+      step.amEnd = data['amEnd' + stepIndex];
+      step.pmEnd = data['pmEnd' + stepIndex];
+      
+      return step;
+    })
+
+    console.log(entities);
   };
+  
+  const [stepsToDisplay, setStepsToDisplay] = useState([]);
 
-  let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
-  refusal = "";
-
-  const [stepNumber, setStepNumber] = useState(1);
-  const [steps, setSteps] = useState([<Step register={register} /> ]);
-
-  const addNewStep = () => {
-    const arr = steps;
-    arr.push(<Step register={register} />)
-    setSteps(arr);
-    setStepNumber(stepNumber + 1);
+  const createSteps = () => {
+    const days = watch('numberDays');
+    if (days === '') {
+      setError('numberDays', {type: 'custom', message: "Veuillez remplir le nombre de jour de vacations de votre mission."})
+    }
+    else {
+      const stepsArray = [];
+      for (let iteration = 1; iteration <= days; iteration++) {
+        stepsArray.push(iteration);
+      }
+      setStepsToDisplay(stepsArray);
+    }
   }
-
+  
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
-      <div className="form__section">
+      <div className="form__section ">
         <FormSectionTitle>Étapes</FormSectionTitle>
-        {steps.map((currentStep) => <Step register={register} stepNumber={stepNumber} />)}
-        {/* <Step register={register} /> */}
+        <TextField
+          register={register}
+          id="days"
+          formField="numberDays"
+          isNumber
+          label="Combien de jours de vacations souhaites-vous enregistrer ?"
+          error={errors.numberDays}
+          required="Veuillez remplir le nombre de jour de vacations de votre mission."
+        />
+        <div className='form__section-field-buttons'>
+          <ButtonElement
+            handler={createSteps}
+            label="Créer les étapes"
+            type='button'
+          />
+        </div>
 
+        <div className='steps'>
+          {stepsToDisplay.map((currentStep) => (
+            <Step
+              step={currentStep}
+              register={register}
+              stepNumber={currentStep}
+              key={currentStep}
+              errors={errors}
+            />
+          ))}
+        </div>
+      </div>
 
-      </div>
-      <div>
-        <img src={AddButton} alt="" onClick={addNewStep}/>
-      </div>
-      {refusal !== '' && <RefusalMessage message={refusal} />}
-      <Buttons step={step} />
+      <Buttons
+        step={step}
+        id={efId}
+        url={loader}
+        watch={watch}
+        trigger={trigger}
+      />
     </form>
     
   );

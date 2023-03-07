@@ -55,7 +55,7 @@ const EfForm = () => {
           {(step === 1&& !efLoader) && <Mission step={step} isEfForm />}
           {(step === 2&& !efLoader) && <Transports step={step} />}
           {(step === 3&& !efLoader) && <Hebergement step={step} />}
-          {/* {(step === 3) && <Hebergement step={step} />} */}
+          {/* {(step === 4) && <Steps step={step} />} */}
           {(step === 4&& !efLoader) && <Steps step={step} />}
           {(step === 5&& !efLoader) && <Signature step={step} />}
         </div>
