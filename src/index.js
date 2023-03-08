@@ -39,7 +39,7 @@ import { getSignature, fetchUserData, getDocument, fetchCountries } from "src/re
 import { findPermFilesByAgent, fetchAgentSignatureForPdf } from "src/reducer/otherDocuments";
 import { getVehicles, getVehicleDocuments } from "src/reducer/vehicle";
 import { fetchOMs, getMission, fetchOm, getTransports, getAccomodations, getAdvance, getMore, setLoader  } from "src/reducer/omForm";
-import { fetchEfs, setEfLoader } from "src/reducer/ef";
+import { fetchEfs, setEfLoader, fetchEf } from "src/reducer/ef";
 
 
 import { persistor } from 'src/store';
@@ -185,6 +185,7 @@ const router = createBrowserRouter([
             loader: async ({ request }) => {
               const url = new URL(request.url);
               const om = url.searchParams.get("om");
+              const id = url.searchParams.get("id");
               const step = url.searchParams.get("etape");
               
               store.dispatch(setEfLoader(true));
@@ -202,7 +203,8 @@ const router = createBrowserRouter([
                 store.dispatch(getAccomodations(om));
               }
               else if (step === '4') {
-                store.dispatch(getMission(om));
+                // store.dispatch(getMission(om));
+                store.dispatch(fetchEf(id));
               }
 
               return url;
@@ -214,9 +216,11 @@ const router = createBrowserRouter([
             loader: async ({ request }) => {
               const url = new URL(request.url);
               const om = url.searchParams.get("om");
+              const id = url.searchParams.get("id");
               const step = url.searchParams.get("etape");
 
               store.dispatch(setEfLoader(true));
+              store.dispatch(fetchEf(id));
 
 
               if (step === '1') {
@@ -232,7 +236,8 @@ const router = createBrowserRouter([
                 store.dispatch(getAccomodations(om));
               }
               else if (step === '4') {
-                store.dispatch(getMission(om));
+                // store.dispatch(getMission(om));
+                // store.dispatch(fetchEf(id));
               }
 
               return url;

@@ -16,7 +16,7 @@ import { toggleModal } from '../reducer/app';
 import { addNewOM } from 'src/reducer/omForm';
 import { addNewEf } from 'src/reducer/ef';
 
-const Modal = ({ target, user, userOms }) => {
+const Modal = ({ target, user, userOms, agent}) => {
 
   const dispatch = useDispatch();
   let isOm = false;
@@ -27,6 +27,11 @@ const Modal = ({ target, user, userOms }) => {
     defaultValues = {
       duration: true,
       withExpenses: true,
+    }
+  }
+  else {
+    defaultValues = {
+      isTeaching: agent.unimesStatus === "VACATAIRE",
     }
   }
   const {
@@ -62,7 +67,9 @@ const Modal = ({ target, user, userOms }) => {
         url: 'path',
         missioner: user,
         comments: '',
-        omId: data.om
+        omId: data.om,
+        is_teaching: data.isTeaching,
+        has_steps: data.hasSteps,
       }
       console.log(newEF);
       dispatch(addNewEf(newEF)); 
@@ -91,19 +98,35 @@ const Modal = ({ target, user, userOms }) => {
               </div>
             )}
             { target === 'état de frais' && (
-              <div className="form__section-field">
-                <SelectField
-                  data={userOms}
-                  register={register}
-                  formField="om"
-                  handler={() => {}}
-                  id="work-address-select"
-                  label="Sélectionner l'OM dont vous voulez faire l'état de frais"
-                  blankValue="Liste des OMs disponibles pour un remboursement"
-                  required="Merci de sélectionner l'Ordre de Mission"
-                  error={errors.omList}
-                />
-              </div>
+              <>
+                <div className="form__section-field">
+                  <SelectField
+                    data={userOms}
+                    register={register}
+                    formField="om"
+                    handler={() => {}}
+                    id="work-address-select"
+                    label="Sélectionner l'OM dont vous voulez faire l'état de frais"
+                    blankValue="Liste des OMs disponibles pour un remboursement"
+                    required="Merci de sélectionner l'Ordre de Mission"
+                    error={errors.omList}
+                  />
+                </div>
+                <div className="form__section-field">
+                  <SwitchButton
+                    register={register}
+                    isInForm
+                    formField='isTeaching'
+                    label="Etait-ce une mission de vacation ?"
+                  />
+                  <SwitchButton
+                    register={register}
+                    isInForm
+                    formField='hasSteps'
+                    label="Était-ce une mission avec plusieurs étapes ?"
+                  />
+                </div>
+              </>
             )}
           </div>
           <div className="form__section-field-buttons" id="modal-button">

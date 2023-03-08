@@ -334,6 +334,16 @@
       margin: 0.5rem 0;
 
       }
+
+      & p {
+         display: flex;
+         justify-content: space-evenly;
+         flex-wrap: wrap;
+        & span { 
+          font-weight: bold;
+          margin-right: 0.2rem
+        }
+      }
     }
   }
 

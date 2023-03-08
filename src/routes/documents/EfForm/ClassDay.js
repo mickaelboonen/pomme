@@ -9,7 +9,7 @@ import SwitchButton from 'src/components/SwitchButton';
 
 import { RxDoubleArrowDown, RxDoubleArrowUp} from "react-icons/rx";
 
-const Step = ({ register, stepNumber, errors, setError, isVacataire }) => {
+const ClassDay = ({ register, stepNumber, errors, setError, isVacataire }) => {
   
   const stepTitle = isVacataire ? "Jour" : "Étape";
   const toggleStep = (event) => {
@@ -53,17 +53,16 @@ const Step = ({ register, stepNumber, errors, setError, isVacataire }) => {
       <div className='step__title step__title--down' onClick={toggleStep} id={"step-down-" + stepNumber}>
         <div><RxDoubleArrowDown /></div>
         
-        <h4>{stepTitle} {stepNumber}</h4>
+        <h4>Jour {stepNumber}</h4>
         <div><RxDoubleArrowDown /></div>
       </div>
       <div className='step__title step__title--up' onClick={toggleStep} id={"step-up-" + stepNumber}>
         <div><RxDoubleArrowUp /></div>
-        <h4>{stepTitle} {stepNumber}</h4>
+        <h4>Jour {stepNumber}</h4>
         <div><RxDoubleArrowUp /></div>
       </div>
       <div className='step__container'>
         <p className='step__container-date-place-title'>Date et Lieu</p>
-        {isVacataire && (
           <div className='step__container-fields'>
             <div className='step__container-fields-half'>
               <DateField 
@@ -89,48 +88,6 @@ const Step = ({ register, stepNumber, errors, setError, isVacataire }) => {
               />
             </div>
           </div>
-        )}
-        {!isVacataire && (
-          <>
-            <div className='step__container-fields'>
-              <DateField 
-                register={register}
-                id="departure-date-field"
-                label="Date"
-                type="date"
-                formField={"date" + stepNumber}
-                required="Veuillez renseigner la date."
-                error={errors["date" + stepNumber]}
-              />
-            </div>
-            <div className='step__container-fields'>
-              <div className='step__container-fields-half'>
-              <SelectField
-                  register={register}
-                  // blankValue
-                  data={['1' ,'2', '3', '4']}
-                  id="a"
-                  formField={"city" + stepNumber}
-                  label="Commune de départ :"
-                  required="Veuillez renseigner la commune."
-                  error={errors["city" + stepNumber]}
-                />
-              </div>
-              <div className='step__container-fields-half'>
-                <SelectField
-                  register={register}
-                  // blankValue
-                  data={['1' ,'2', '3', '4']}
-                  id="a"
-                  formField={"city" + stepNumber}
-                  label="Commune d'arrivée :"
-                  required="Veuillez renseigner la commune."
-                  error={errors["city" + stepNumber]}
-                />
-              </div>
-            </div>
-          </>
-        )}
         <div className='step__container-fields'>
           <div className='step__container-fields-half'>
             <DateField 
@@ -179,7 +136,6 @@ const Step = ({ register, stepNumber, errors, setError, isVacataire }) => {
             />
           </div>
         </div>
-        {isVacataire && (
           <div className='step__container-classes'>
             <p className='step__container-classes-title'>Cours</p>
             <table className='classes'>
@@ -240,7 +196,6 @@ const Step = ({ register, stepNumber, errors, setError, isVacataire }) => {
               </tbody>
             </table>
           </div>
-        )}
         <div>
           <SwitchButton
             register={() => {}}
@@ -256,8 +211,8 @@ const Step = ({ register, stepNumber, errors, setError, isVacataire }) => {
   );
 }
 
-Step.propTypes = {
+ClassDay.propTypes = {
 
 };
 
-export default Step;
+export default ClassDay;

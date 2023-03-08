@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
@@ -19,10 +19,24 @@ import Mission from 'src/routes/documents/OMForm/Mission';
 const EfForm = () => {      
 
   const loaderData = useLoaderData();
+  const navigate = useNavigate();
+
   const step = Number(loaderData.searchParams.get('etape'));
-  const { efLoader } = useSelector((state) => state.ef);
+  const { efLoader, currentEf: { has_steps, is_teaching } } = useSelector((state) => state.ef);
+
+  useEffect(() => {
+    if (step === 4 && !has_steps && !is_teaching) {
+      const stepIndex = loaderData.search.indexOf(4);
+      let redirectUrl = loaderData.pathname;
+      redirectUrl+= loaderData.search.slice(0, 7) + 5 + loaderData.search.slice(stepIndex + 1);
+
+      navigate(redirectUrl)
+    }
+  }, [ ])
+
   
-  const steps = [
+  // console.log("SEE ME HERE : ", currentEf);
+  let tabs = [
     {
       name: 'Mission',
       id: 1,
@@ -44,9 +58,13 @@ const EfForm = () => {
       id: 5,
     },
   ];
+
+  if (!has_steps && !is_teaching) {
+    tabs = tabs.filter((tab) => tab.id !== 4);
+  }
   return (
     <div className='form-root'>
-      <ThreadAsTabs step={step} tabs={steps} urlData={loaderData} />
+      <ThreadAsTabs step={step} tabs={tabs} urlData={loaderData} />
       <PageTitle>Création d'un État de frais</PageTitle>
       <div className='form-root__container'>
         <div className="form-page__container">
@@ -55,8 +73,9 @@ const EfForm = () => {
           {(step === 1&& !efLoader) && <Mission step={step} isEfForm />}
           {(step === 2&& !efLoader) && <Transports step={step} />}
           {(step === 3&& !efLoader) && <Hebergement step={step} />}
-          {/* {(step === 4) && <Steps step={step} />} */}
-          {(step === 4&& !efLoader) && <Steps step={step} />}
+          {((step === 4 && !efLoader) &&  (has_steps || is_teaching))  && <Steps step={step} />}
+          {((step === 4 && !efLoader) &&  (!has_steps && !is_teaching))  && (
+          <div>Plop</div>)}
           {(step === 5&& !efLoader) && <Signature step={step} />}
         </div>
       </div>

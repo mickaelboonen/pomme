@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom';
 
 import './style.scss';
 
-const DocButtons = ({ id, status,name, file,  isDocFinished, isOm}) => {
+const DocButtons = ({ id, status, name, om, file,  isDocFinished, isOm}) => {
   const downloadFileStatusArray = [2, 8];
   let buttons = [];
-
+  
   if (isOm) {
     buttons = [
       {
@@ -40,13 +40,13 @@ const DocButtons = ({ id, status,name, file,  isDocFinished, isOm}) => {
     buttons = [
       {
         name: 'modify',
-        link: "/modifier-un-document/état-de-frais?etape=1&id=" + id,
+        link: "/modifier-un-document/état-de-frais?etape=1&id=" + id + '&om=' + om.id,
         label: 'Reprendre / Modifier',
         status: [1],
       },
       {
         name: 'submit',
-        link: "/modifier-un-document/état-de-frais?etape=6&id=" + id,
+        link: "/modifier-un-document/état-de-frais?etape=6&id=" + id + '&om=' + om.id,
         label: "Soumettre l'ordre de mission",
         status: [1],
       },

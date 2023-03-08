@@ -211,6 +211,12 @@ const omFormSlice = createSlice({
           state.currentHelp = action.payload;
         }
         
+      },
+      fetchEf: () => {
+
+      },
+      saveEf: (state, action) => {
+        state.currentEf = action.payload
       }
     },
 });
@@ -228,7 +234,9 @@ export const {
   updateEfAccomodations,
   saveMissionFormData,
   enableMissionFormFields,
-  toggleHelp
+  toggleHelp,
+  fetchEf, 
+  saveEf,
 } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

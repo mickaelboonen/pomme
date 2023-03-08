@@ -64,6 +64,9 @@ const omFormSlice = createSlice({
       saveCountries: (state, action) => {
         state.countries = action.payload;
       },
+      addSteps: () => {
+
+      },
     },
 });
 
@@ -82,7 +85,8 @@ export const {
   getDocument,
   saveDocument,
   fetchCountries,
-  saveCountries
+  saveCountries,
+  addSteps,
 } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

@@ -58,6 +58,10 @@
     margin-bottom: 1rem;
     font-weight: bold;
     transition: 0.3s;
+
+    & div {
+      display: none;
+    }
     
 
     &:hover {
@@ -158,6 +162,10 @@
       font-size: 1.2em;
       // color: var(--third-color);
       margin-bottom: 1rem;
+
+      & div {
+        display: block;
+      }
     }
 
     &__container {

@@ -20,9 +20,10 @@ const ThreadAsTabs = ({ step, tabs, isOm, urlData }) => {
     else {
       navigate(pathname + '?etape=' + id + '&id=' + docId + '&om=' + urlData.searchParams.get('om'));
     }
-      
-
   };
+
+  const tabWidth = 100 / tabs.length;
+  console.log(tabs);
   return (
     <div className="form-page__thread">
       {tabs.map((tab) => (
@@ -31,6 +32,7 @@ const ThreadAsTabs = ({ step, tabs, isOm, urlData }) => {
           onClick={handleClickOnTab}
           key={tab.id}
           id={tab.id}
+          style={{width: tabWidth + '%'}}
         >
           {tab.name} <span>- Étape {step} / {tabs.length}</span>
         </div>

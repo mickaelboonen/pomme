@@ -1,6 +1,6 @@
 import { setApiResponse } from 'src/reducer/app';
 import { api } from './api';
-import { saveNewEf, saveEfs } from '../reducer/ef';
+import { saveNewEf, saveEfs, saveEf, setEfLoader } from '../reducer/ef';
 
 
 api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -67,6 +67,25 @@ const efMiddleware = (store) => (next) => (action) => {
         console.error('update EF transports', error);
         // store.dispatch(showTicketCreationResponse(error.response))
       });
+    break;
+  case 'ef/fetchEf': 
+    const { ef: { currentEf } } = store.getState()
+
+    if (currentEf.id === Number(action.payload)) {
+      store.dispatch(setEfLoader(false));
+    }
+    else {
+      api.get("/api/ef/find/" + action.payload)
+      .then((response) => {
+        console.log("RESPONSE IS : ",response);
+        store.dispatch(saveEf(response.data))
+      })
+      .catch((error) => {
+        console.error('update EF transports', error);
+        // store.dispatch(showTicketCreationResponse(error.response))
+      });
+    }
+    
     break;
 
     default:

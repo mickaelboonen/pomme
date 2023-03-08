@@ -29,7 +29,7 @@ const MyDocuments = () => {
 
   const { omForm: { currentOM, nextOMTarget, OMTabs, userOms, dataToSelect, omLoader },
     ef: { nextEfTarget, currentEf, efPerSelectedStatus, efLoader, EFTabs },
-    app: { isModalOpen }
+    app: { isModalOpen, agent}
   } = useSelector((state) => state);
   
   useEffect(() => {
@@ -113,7 +113,7 @@ const MyDocuments = () => {
       {isOm && <NewSection data={dataToSelect} steps={steps} currentDoc={currentOM} loader={omLoader} isOm />}
       {!isOm && <NewSection data={efPerSelectedStatus} steps={steps} currentDoc={currentEf} loader={efLoader} />}
       <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
-      {isModalOpen && <Modal target={slug.replace(/-/g, ' ')} user={params.slug} userOms={userOms}/>}
+      {isModalOpen && <Modal target={slug.replace(/-/g, ' ')} user={params.slug} userOms={userOms} agent={agent} />}
     </main>
   );
 };

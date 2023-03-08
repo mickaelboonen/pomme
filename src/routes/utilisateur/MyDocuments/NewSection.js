@@ -40,6 +40,7 @@ const Section = ({ id, data, steps, currentDoc, loader, isOm}) => {
   if (!unfinishedStep) {
     isDocFinished = true;
   }
+  console.log(currentDoc);
   
   return (
     <section id={id} className="my-documents__files">

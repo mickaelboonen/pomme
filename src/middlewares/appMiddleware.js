@@ -117,6 +117,18 @@ const appMiddleware = (store) => (next) => (action) => {
           // store.dispatch(showTicketCreationResponse(error.response))
         });
       break;
+    case 'app/addSteps':      
+    console.log('app/addSteps PAYLOAD : ', action.payload);
+      api.post("/api/stage/add", action.payload)
+        .then((response) => {
+            // store.dispatch(saveCountries(response.data));
+            console.log("API STAGE ADD RESPONSE IS : ", response.data);
+        })
+        .catch((error) => {
+          console.error('get countries', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
   
     default:
   }
