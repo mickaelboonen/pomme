@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { efHelp } from '../data/efHelp';
 
+import { declareCamelCaseKeys } from '../selectors/keyObjectService';
+
 const initialState = {
     isMissionFormDisabled: true,
     refusalMessage: '',
@@ -216,8 +218,16 @@ const omFormSlice = createSlice({
 
       },
       saveEf: (state, action) => {
-        state.currentEf = action.payload
-      }
+        const ef = action.payload;
+        
+        const stages = [];
+        ef.stages.forEach((stage) => {
+          stages.push(declareCamelCaseKeys(stage));
+        })
+        ef.stages = stages;
+        
+        state.currentEf = ef;
+      },
     },
 });
 

@@ -23,7 +23,7 @@ const ThreadAsTabs = ({ step, tabs, isOm, urlData }) => {
   };
 
   const tabWidth = 100 / tabs.length;
-  console.log(tabs);
+  
   return (
     <div className="form-page__thread">
       {tabs.map((tab) => (

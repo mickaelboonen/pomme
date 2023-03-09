@@ -189,6 +189,7 @@ const router = createBrowserRouter([
               const step = url.searchParams.get("etape");
               
               store.dispatch(setEfLoader(true));
+              store.dispatch(fetchEf(id));
 
 
               if (step === '1') {
@@ -203,8 +204,7 @@ const router = createBrowserRouter([
                 store.dispatch(getAccomodations(om));
               }
               else if (step === '4') {
-                // store.dispatch(getMission(om));
-                store.dispatch(fetchEf(id));
+                
               }
 
               return url;
@@ -236,8 +236,6 @@ const router = createBrowserRouter([
                 store.dispatch(getAccomodations(om));
               }
               else if (step === '4') {
-                // store.dispatch(getMission(om));
-                // store.dispatch(fetchEf(id));
               }
 
               return url;

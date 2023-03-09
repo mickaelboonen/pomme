@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { IoMdAddCircle } from "react-icons/io";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLoaderData } from 'react-router-dom';
 
+var object = require('lodash/fp/object');
 
 import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
@@ -15,7 +16,7 @@ import ButtonElement from 'src/components/Fields/ButtonElement';
 import Step from './Step';
 import ClassDay from './ClassDay';
 
-import { addSteps } from 'src/reducer/app';
+import { addSteps, handleSteps } from 'src/reducer/app';
 
 const Steps = ({ step }) => {
   const navigate = useNavigate();
@@ -26,39 +27,96 @@ const Steps = ({ step }) => {
   const { app: {agent : { unimesStatus }},
     ef: { currentEf }
   } = useSelector((state) => state);
-
-  console.log(currentEf.is_teaching);
+  
   // const isVacataire = unimesStatus === "VACATAIRE";
   const isVacataire = currentEf.is_teaching;
+  
+  const { stages } = currentEf;
+
+  const [stepsToDisplay, setStepsToDisplay] = useState([]);
+
+  let defaultValues = {};
+  
+  if (stages.length > 0 ) {
+    stages.forEach((stage) => {
+      const keys = object.keys(stage);
+
+      keys.forEach((key) => {
+
+        if (key.includes('Hour')) {
+          const date = new Date(stage[key]);
+          
+          const hours = date.getHours().toString().length === 1 ? '0' + date.getHours() : date.getHours();
+          const minutes = date.getMinutes() === 0 ? '00' : date.getMinutes();
+          
+          defaultValues[key + (stages.indexOf(stage) + 1)] = `${hours}:${minutes}`;
+        }
+        else if ((key ==='departure' || key === 'arrival') && stage[key]) {
+          const date = new Date(stage[key]);
+          
+          const day = date.getDate().toString().length === 1 ? '0' + date.getDate() : date.getDate();
+          const month = date.getMonth().toString().length === 1 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
+          const year = date.getFullYear();
+          
+          defaultValues[key + (stages.indexOf(stage) + 1)] = `${year}-${month}-${day}`;
+        }
+        else {
+          defaultValues[key + (stages.indexOf(stage) + 1)] = stage[key];
+        }
+        
+      })
+
+
+    })
+  }
+
+  useEffect(() => {
+    if (stages.length > 0 ) {
+      const steps = stages.map((stage) => stages.indexOf(stage) + 1);
+      setStepsToDisplay(steps);
+    }
+  }, [])
     
   const {
     register, handleSubmit, watch,
     setValue,  setError, trigger,
     formState: { errors },
-  } = useForm();
+  } = useForm({ defaultValues: defaultValues});
 
   const onSubmit = (data) => {
-    console.log(data);
-    console.log("stepsToDisplay : ", stepsToDisplay);
+    console.log("DATA DU SUBMIT : ",data);
+
 
     const entities = stepsToDisplay.map((stepIndex) => {
       const step = {};
-      step.city= data['city' + stepIndex];
-      step.arrivalDate = data['arrivalDate' + stepIndex];
-      step.departureDate = data['departureDate' + stepIndex];
-      step.amBeginning = data['amBeginning' + stepIndex];
-      step.pmBeginning = data['pmBeginning' + stepIndex];
-      step.amEnd = data['amEnd' + stepIndex];
-      step.pmEnd = data['pmEnd' + stepIndex];
+      step.id = data['id' + stepIndex]
+      step.amCourseBeginning = data['amCourseBeginning' + stepIndex];
+      step.amCourseEnding = data['amCourseEnding' + stepIndex];
+      step.pmCourseBeginning = data['pmCourseBeginning' + stepIndex];
+      step.pmCourseEnding = data['pmCourseEnding' + stepIndex];
+      step.departurePlace = data['departurePlace' + stepIndex];
+      step.arrivalPlace = data['arrivalPlace' + stepIndex];
+      step.departure = data['departure' + stepIndex];
+      step.arrival = data['arrival' + stepIndex];
+      step.departureHour = data['departureHour' + stepIndex];
+      step.arrivalHour = data['arrivalHour' + stepIndex];
+      step.workDepartureHour = data['workDepartureHour' + stepIndex];
+      step.homeArrivalHour = data['homeArrivalHour' + stepIndex];
       
       return step;
     })
-
+    
     console.log(entities);
-    dispatch(addSteps({data: entities, type: 'ef', docId: efId}))
+
+    if (stages.length === 0) {
+      dispatch(addSteps({data: entities, type: 'ef', docId: efId}))
+    }
+    else {
+      
+      dispatch(handleSteps({data: entities, type: 'ef', docId: efId}))
+    }
+    
   };
-  
-  const [stepsToDisplay, setStepsToDisplay] = useState([]);
 
   const createSteps = () => {
     const days = watch('numberDays');
@@ -113,7 +171,7 @@ const Steps = ({ step }) => {
             type='button'
           />
         </div>
-        {isVacataire && (
+        {!isVacataire && (
           <div className='steps'>
             {stepsToDisplay.map((currentStep) => (
               <Step
@@ -128,7 +186,7 @@ const Steps = ({ step }) => {
             ))}
           </div>
         )}
-        {!isVacataire && (
+        {isVacataire && (
           <div className='steps'>
             {stepsToDisplay.map((currentStep) => (
               <ClassDay

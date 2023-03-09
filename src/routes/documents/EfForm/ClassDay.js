@@ -70,9 +70,9 @@ const ClassDay = ({ register, stepNumber, errors, setError, isVacataire }) => {
                 id="departure-date-field"
                 label="Date"
                 type="date"
-                formField={"date" + stepNumber}
+                formField={"departure" + stepNumber}
                 required="Veuillez renseigner la date."
-                error={errors["date" + stepNumber]}
+                error={errors["departure" + stepNumber]}
               />
             </div>
             <div className='step__container-fields-half'>
@@ -81,10 +81,10 @@ const ClassDay = ({ register, stepNumber, errors, setError, isVacataire }) => {
                 // blankValue
                 data={['1' ,'2', '3', '4']}
                 id="a"
-                formField={"city" + stepNumber}
+                formField={"departurePlace" + stepNumber}
                 label="Commune de résidence :"
                 required="Veuillez renseigner la commune."
-                error={errors["city" + stepNumber]}
+                error={errors["departurePlace" + stepNumber]}
               />
             </div>
           </div>
@@ -95,9 +95,9 @@ const ClassDay = ({ register, stepNumber, errors, setError, isVacataire }) => {
               id="arrival-date-field"
               label="Heure départ du domicile"
               type="time"
-              formField={"homeDeparture" + stepNumber}
+              formField={"departureHour" + stepNumber}
               required="Veuillez renseigner l'heure de départ du domicile."
-              error={errors["homeDeparture" + stepNumber]}
+              error={errors["departure" + stepNumber]}
             />
           </div>
           <div className='step__container-fields-half'>
@@ -106,9 +106,9 @@ const ClassDay = ({ register, stepNumber, errors, setError, isVacataire }) => {
               id="arrival-date-field"
               label="Heure arrivée sur Nîmes"
               type="time"
-              formField={"workArrival" + stepNumber}
+              formField={"arrivalHour" + stepNumber}
               required="Veuillez renseigner l'heure d'arrivée sur le lieu de travail."
-              error={errors["workArrival" + stepNumber]}
+              error={errors["arrival" + stepNumber]}
             />
           </div>
         </div>
@@ -119,9 +119,9 @@ const ClassDay = ({ register, stepNumber, errors, setError, isVacataire }) => {
               id="arrival-date-field"
               label="Heure départ du lieu de travail"
               type="time"
-              formField={"workDeparture" + stepNumber}
+              formField={"workDepartureHour" + stepNumber}
               required="Veuillez renseigner l'heure de départ du lieu de travail."
-              error={errors["workDeparture" + stepNumber]}
+              error={errors["workDepartureHour" + stepNumber]}
             />
           </div>
           <div className='step__container-fields-half'>
@@ -130,9 +130,9 @@ const ClassDay = ({ register, stepNumber, errors, setError, isVacataire }) => {
               id="arrival-date-field"
               label="Heure arrivée au domicile"
               type="time"
-              formField={"homeArrival" + stepNumber}
+              formField={"homeArrivalHour" + stepNumber}
               required="Veuillez renseigner l'heure d'arrivée au domicile."
-              error={errors["homeArrival" + stepNumber]}
+              error={errors["homeArrivalHour" + stepNumber]}
             />
           </div>
         </div>
@@ -156,7 +156,7 @@ const ClassDay = ({ register, stepNumber, errors, setError, isVacataire }) => {
                       type="time"
                       min="7:00"
                       max="12:00"
-                      formField={'amBeginning' + stepNumber}
+                      formField={'amCourseBeginning' + stepNumber}
                     />
                   </td>
                   <td>
@@ -166,7 +166,7 @@ const ClassDay = ({ register, stepNumber, errors, setError, isVacataire }) => {
                       type="time"
                       min="7:00"
                       max="12:00"
-                      formField={'amEnd' + stepNumber}
+                      formField={'amCourseEnding' + stepNumber}
                     />
                   </td>
                 </tr>
@@ -179,7 +179,7 @@ const ClassDay = ({ register, stepNumber, errors, setError, isVacataire }) => {
                       type="time"
                       min="12:00"
                       max="21:00"
-                      formField={'pmBeginning' + stepNumber}
+                      formField={'pmCourseBeginning' + stepNumber}
                     />
                   </td>
                   <td>
@@ -189,7 +189,7 @@ const ClassDay = ({ register, stepNumber, errors, setError, isVacataire }) => {
                       type="time"
                       min="12:00"
                       max="21:00"
-                      formField={'pmEnd' + stepNumber}
+                      formField={'pmCourseEnding' + stepNumber}
                     />
                   </td>
                 </tr>

@@ -5,13 +5,13 @@ import './style.scss';
 import SelectField from 'src/components/Fields/SelectField';
 import DateField from 'src/components/Fields/DateField';
 import TextField from 'src/components/Fields/TextField';
+import HiddenField from 'src/components/Fields/HiddenField';
 import SwitchButton from 'src/components/SwitchButton';
 
 import { RxDoubleArrowDown, RxDoubleArrowUp} from "react-icons/rx";
 
-const Step = ({ register, stepNumber, errors, setError, isVacataire }) => {
+const Step = ({ register, stepNumber, errors, setError }) => {
   
-  const stepTitle = isVacataire ? "Jour" : "Étape";
   const toggleStep = (event) => {
 
     const isStepOpen = event.currentTarget.classList.value.includes('up');
@@ -47,111 +47,54 @@ const Step = ({ register, stepNumber, errors, setError, isVacataire }) => {
 
     }
   }
+  
 
   return (
     <div className='step' id={"step-" + stepNumber}>
       <div className='step__title step__title--down' onClick={toggleStep} id={"step-down-" + stepNumber}>
         <div><RxDoubleArrowDown /></div>
         
-        <h4>{stepTitle} {stepNumber}</h4>
+        <h4>Étape {stepNumber}</h4>
         <div><RxDoubleArrowDown /></div>
       </div>
       <div className='step__title step__title--up' onClick={toggleStep} id={"step-up-" + stepNumber}>
         <div><RxDoubleArrowUp /></div>
-        <h4>{stepTitle} {stepNumber}</h4>
+        <h4>Étape {stepNumber}</h4>
         <div><RxDoubleArrowUp /></div>
       </div>
       <div className='step__container'>
+        <HiddenField id={"step-id"} register={register} value={0} />
         <p className='step__container-date-place-title'>Date et Lieu</p>
-        {isVacataire && (
-          <div className='step__container-fields'>
-            <div className='step__container-fields-half'>
-              <DateField 
-                register={register}
-                id="departure-date-field"
-                label="Date"
-                type="date"
-                formField={"date" + stepNumber}
-                required="Veuillez renseigner la date."
-                error={errors["date" + stepNumber]}
-              />
-            </div>
-            <div className='step__container-fields-half'>
-              <SelectField
-                register={register}
-                // blankValue
-                data={['1' ,'2', '3', '4']}
-                id="a"
-                formField={"city" + stepNumber}
-                label="Commune de résidence :"
-                required="Veuillez renseigner la commune."
-                error={errors["city" + stepNumber]}
-              />
-            </div>
-          </div>
-        )}
-        {!isVacataire && (
-          <>
-            <div className='step__container-fields'>
-              <DateField 
-                register={register}
-                id="departure-date-field"
-                label="Date"
-                type="date"
-                formField={"date" + stepNumber}
-                required="Veuillez renseigner la date."
-                error={errors["date" + stepNumber]}
-              />
-            </div>
-            <div className='step__container-fields'>
-              <div className='step__container-fields-half'>
-              <SelectField
-                  register={register}
-                  // blankValue
-                  data={['1' ,'2', '3', '4']}
-                  id="a"
-                  formField={"city" + stepNumber}
-                  label="Commune de départ :"
-                  required="Veuillez renseigner la commune."
-                  error={errors["city" + stepNumber]}
-                />
-              </div>
-              <div className='step__container-fields-half'>
-                <SelectField
-                  register={register}
-                  // blankValue
-                  data={['1' ,'2', '3', '4']}
-                  id="a"
-                  formField={"city" + stepNumber}
-                  label="Commune d'arrivée :"
-                  required="Veuillez renseigner la commune."
-                  error={errors["city" + stepNumber]}
-                />
-              </div>
-            </div>
-          </>
-        )}
+        <div className='step__container-fields'>
+          <DateField 
+            register={register}
+            id="departure-date-field"
+            label="Date"
+            type="date"
+            formField={"departure" + stepNumber}
+            required="Veuillez renseigner la date."
+            error={errors["departure" + stepNumber]}
+          />
+        </div>
         <div className='step__container-fields'>
           <div className='step__container-fields-half'>
-            <DateField 
+            <TextField
               register={register}
-              id="arrival-date-field"
-              label="Heure départ du domicile"
-              type="time"
-              formField={"homeDeparture" + stepNumber}
-              required="Veuillez renseigner l'heure de départ du domicile."
-              error={errors["homeDeparture" + stepNumber]}
+              id="a"
+              formField={"departurePlace" + stepNumber}
+              label="Commune de départ :"
+              required="Veuillez renseigner la commune."
+              error={errors["departurePlace" + stepNumber]}
             />
           </div>
           <div className='step__container-fields-half'>
-            <DateField 
+            <TextField
               register={register}
-              id="arrival-date-field"
-              label="Heure arrivée sur Nîmes"
-              type="time"
-              formField={"workArrival" + stepNumber}
-              required="Veuillez renseigner l'heure d'arrivée sur le lieu de travail."
-              error={errors["workArrival" + stepNumber]}
+              id="a"
+              formField={"arrivalPlace" + stepNumber}
+              label="Commune d'arrivée :"
+              required="Veuillez renseigner la commune."
+              error={errors["arrivalPlace" + stepNumber]}
             />
           </div>
         </div>
@@ -160,11 +103,35 @@ const Step = ({ register, stepNumber, errors, setError, isVacataire }) => {
             <DateField 
               register={register}
               id="arrival-date-field"
+              label="Heure départ du domicile"
+              type="time"
+              formField={"departureHour" + stepNumber}
+              required="Veuillez renseigner l'heure de départ du domicile."
+              error={errors["departureHour" + stepNumber]}
+            />
+          </div>
+          <div className='step__container-fields-half'>
+            <DateField 
+              register={register}
+              id="arrival-date-field"
+              label="Heure arrivée à l'étape"
+              type="time"
+              formField={"arrivalHour" + stepNumber}
+              required="Veuillez renseigner l'heure d'arrivée à l'étape"
+              error={errors["arrivalHour" + stepNumber]}
+            />
+          </div>
+        </div>
+        {/* <div className='step__container-fields'>
+          <div className='step__container-fields-half'>
+            <DateField 
+              register={register}
+              id="arrival-date-field"
               label="Heure départ du lieu de travail"
               type="time"
-              formField={"workDeparture" + stepNumber}
+              formField={"workDepartureHour" + stepNumber}
               required="Veuillez renseigner l'heure de départ du lieu de travail."
-              error={errors["workDeparture" + stepNumber]}
+              error={errors["workDepartureHour" + stepNumber]}
             />
           </div>
           <div className='step__container-fields-half'>
@@ -173,13 +140,13 @@ const Step = ({ register, stepNumber, errors, setError, isVacataire }) => {
               id="arrival-date-field"
               label="Heure arrivée au domicile"
               type="time"
-              formField={"homeArrival" + stepNumber}
+              formField={"homeArrivalHour" + stepNumber}
               required="Veuillez renseigner l'heure d'arrivée au domicile."
-              error={errors["homeArrival" + stepNumber]}
+              error={errors["homeArrivalHour" + stepNumber]}
             />
           </div>
-        </div>
-        {isVacataire && (
+        </div> */}
+        {/* {isVacataire && (
           <div className='step__container-classes'>
             <p className='step__container-classes-title'>Cours</p>
             <table className='classes'>
@@ -200,7 +167,7 @@ const Step = ({ register, stepNumber, errors, setError, isVacataire }) => {
                       type="time"
                       min="7:00"
                       max="12:00"
-                      formField={'amBeginning' + stepNumber}
+                      formField={'amCourseBeginning' + stepNumber}
                     />
                   </td>
                   <td>
@@ -210,7 +177,7 @@ const Step = ({ register, stepNumber, errors, setError, isVacataire }) => {
                       type="time"
                       min="7:00"
                       max="12:00"
-                      formField={'amEnd' + stepNumber}
+                      formField={'amCourseEnding' + stepNumber}
                     />
                   </td>
                 </tr>
@@ -223,7 +190,7 @@ const Step = ({ register, stepNumber, errors, setError, isVacataire }) => {
                       type="time"
                       min="12:00"
                       max="21:00"
-                      formField={'pmBeginning' + stepNumber}
+                      formField={'pmCourseBeginning' + stepNumber}
                     />
                   </td>
                   <td>
@@ -233,14 +200,14 @@ const Step = ({ register, stepNumber, errors, setError, isVacataire }) => {
                       type="time"
                       min="12:00"
                       max="21:00"
-                      formField={'pmEnd' + stepNumber}
+                      formField={'pmCourseEnding' + stepNumber}
                     />
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
-        )}
+        )} */}
         <div>
           <SwitchButton
             register={() => {}}
