@@ -1,21 +1,21 @@
 import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useLoaderData } from 'react-router-dom';
 
 import './style.scss';
-import FormSectionTitle from 'src/components/FormSectionTitle';
-import RefusalMessage from 'src/components/Fields/RefusalMessage';
 import Buttons from 'src/components/Fields/Buttons';
-import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import FileField from 'src/components/Fields/FileField';
-import TextareaField from 'src/components/Fields/TextareaField';
 import HiddenField from 'src/components/Fields/HiddenField';
+import FormSectionTitle from 'src/components/FormSectionTitle';
+import CheckboxInput from 'src/components/Fields/CheckboxInput';
 
 const Signature = ({ step }) => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const dispatch = useDispatch();
+  const loader = useLoaderData();
+  const efId = loader.searchParams.get('id');
 
-  const omId = searchParams.get('id');
   const {
     register,
     unregister,
@@ -69,13 +69,11 @@ const Signature = ({ step }) => {
 
   }, [savedSignature])
 
-  let refusal = "Vous avez fait des erreurs au niveau de l'hébergement et des transports. Merci de corriger.";
-  refusal = "";
 
 
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
-<div className="form__section">
+      <div className="form__section">
         <FormSectionTitle>Signature</FormSectionTitle>
         <div className="form__section-field" id="abroad-field">
           <CheckboxInput
@@ -92,27 +90,14 @@ const Signature = ({ step }) => {
           id="signature"
           error={errors.signature}
         />
-        <HiddenField id="omId" value={omId} register={register} />
+        <HiddenField id="omId" value={efId} register={register} />
       </div>
-      <div className="form__section">
-        <FormSectionTitle>Autres</FormSectionTitle>
-        <TextareaField 
-          register={register}
-          formField="other-infos"
-          id="other"
-          label="Autres renseignements utiles"
-          placeholder="Tout renseignements utiles, des cas articuliers non pris en charge par le formulaire"
-        />
-        <FileField 
-          register={register}
-          formField="other-files"
-          id="other"
-          pieces=""
-          multiple
-        />
-      </div>
-      {refusal !== '' && <RefusalMessage message={refusal} />}
-      {/* <Buttons step={step} /> */}
+      <Buttons
+        step={step}
+        id={efId}
+        url={loader}
+        watch={watch}
+      />
     </form>
     
   );

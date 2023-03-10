@@ -13,10 +13,11 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 import Buttons from 'src/components/Fields/Buttons';
 import TextField from 'src/components/Fields/TextField';
 import ButtonElement from 'src/components/Fields/ButtonElement';
+import SwitchButton from 'src/components/SwitchButton';
 import Step from './Step';
 import ClassDay from './ClassDay';
 
-import { addSteps, handleSteps } from 'src/reducer/app';
+import { addSteps, handleSteps, deleteStep } from 'src/reducer/app';
 
 const Steps = ({ step }) => {
   const navigate = useNavigate();
@@ -149,7 +150,33 @@ const Steps = ({ step }) => {
       errorArray.push(dayNumber)
     }
   })
-  
+
+  const deleteOneStep = (id) => {
+    dispatch(deleteStep(id))
+  }
+
+  const toggleAllSteps = (event) => {
+
+    const button = event.target;
+    const allStepsElements = document.querySelectorAll('.step');
+
+    if (button.textContent.includes('Agrandir')) {
+      
+      button.textContent = "Réduire toutes les étapes"
+      Array.from(allStepsElements).forEach((step) => {
+        step.classList.add('step--open');
+        step.querySelector('.step__container').classList.add('step__container--open')
+      })
+    }
+    else {
+      button.textContent = "Agrandir toutes les étapes"
+      Array.from(allStepsElements).forEach((step) => {
+        step.classList.remove('step--open');
+        step.querySelector('.step__container').classList.remove('step__container--open')
+
+      })
+    }
+  }  
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
@@ -171,17 +198,28 @@ const Steps = ({ step }) => {
             type='button'
           />
         </div>
+        {stepsToDisplay.length > 0 && (
+          <div className='form__section-field-buttons'>
+            <ButtonElement
+              register={register}
+              type="button"
+              id="toggle-steps-button"
+              label="Agrandir toutes les étapes"
+              handler={toggleAllSteps}
+            />
+          </div>
+        )}
         {!isVacataire && (
-          <div className='steps'>
+          <div className='form__section-field-steps'>
+
             {stepsToDisplay.map((currentStep) => (
               <Step
-                step={currentStep}
+                step={stages[currentStep - 1]}
                 register={register}
-                setError={setError}
                 stepNumber={currentStep}
                 key={currentStep}
                 errors={errors}
-                isVacataire={isVacataire}
+                deleteStep={deleteOneStep}
               />
             ))}
           </div>
@@ -190,12 +228,12 @@ const Steps = ({ step }) => {
           <div className='steps'>
             {stepsToDisplay.map((currentStep) => (
               <ClassDay
-                step={currentStep}
+                step={stages[currentStep - 1]}
                 register={register}
-                setError={setError}
                 stepNumber={currentStep}
                 key={currentStep}
                 errors={errors}
+                deleteStep={deleteOneStep}
               />
             ))}
           </div>

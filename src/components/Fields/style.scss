@@ -133,6 +133,12 @@
       display: flex;
     }
 
+    &-steps {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
     &-pre-input{
       width: 3rem;
       border: 0.5px solid rgb(153, 150, 150);

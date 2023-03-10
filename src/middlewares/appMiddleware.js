@@ -10,6 +10,7 @@ import { api } from './api';
 import CasClient, { constant } from "react-cas-client";
 import { setLoader } from '../reducer/omForm';
 import { fetchUserData } from '../reducer/app';
+import { saveEf } from 'src/reducer/ef';
 
 
 let casEndpoint = "cas.unimes.fr";
@@ -133,6 +134,17 @@ const appMiddleware = (store) => (next) => (action) => {
         .then((response) => {
             // store.dispatch(saveCountries(response.data));
             console.log("API STAGE ADD RESPONSE IS : ", response.data);
+        })
+        .catch((error) => {
+          console.error('add stages error', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+        });
+      break;
+    case 'app/deleteStep':      
+      api.delete("/api/stage/delete/" + action.payload)
+        .then((response) => {
+            console.log("API STAGE DELETE RESPONSE IS : ", response.data);
+            store.dispatch(saveEf(response.data));
         })
         .catch((error) => {
           console.error('add stages error', error);

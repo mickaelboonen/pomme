@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { FaTrash } from 'react-icons/fa';
+
 import './style.scss';
 import SelectField from 'src/components/Fields/SelectField';
 import DateField from 'src/components/Fields/DateField';
@@ -10,8 +12,8 @@ import SwitchButton from 'src/components/SwitchButton';
 
 import { RxDoubleArrowDown, RxDoubleArrowUp} from "react-icons/rx";
 
-const Step = ({ register, stepNumber, errors, setError }) => {
-  
+const Step = ({ register, stepNumber, errors, step, deleteStep }) => {
+
   const toggleStep = (event) => {
 
     const isStepOpen = event.currentTarget.classList.value.includes('up');
@@ -48,7 +50,11 @@ const Step = ({ register, stepNumber, errors, setError }) => {
     }
   }
   
-
+  const handleDeleteStep = () => {
+    if (window.confirm(`Confirmez-vous la suppression de l'étape ${stepNumber} ?`)) {
+      deleteStep(step.id);
+    }
+  }
   return (
     <div className='step' id={"step-" + stepNumber}>
       <div className='step__title step__title--down' onClick={toggleStep} id={"step-down-" + stepNumber}>
@@ -215,6 +221,10 @@ const Step = ({ register, stepNumber, errors, setError }) => {
             label="Marquer cette étape comme faite ?"
             handler={validateStep}
           />
+        </div>
+        <div className='step__container-fields step__container-fields--delete'>
+          <FaTrash onClick={handleDeleteStep} />
+          <p onClick={handleDeleteStep}>Supprimer cette étape</p>
         </div>
       </div>
 

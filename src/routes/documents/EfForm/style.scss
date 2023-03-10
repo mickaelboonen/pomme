@@ -5,6 +5,10 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  
+  &--open {
+    display: flex;
+  }
 }
 
 .step {
@@ -88,6 +92,14 @@
           margin-right: 1rem;
         }
 
+      }
+
+      &--delete {
+        justify-content: center;
+
+        & p {
+          margin-left: 1rem
+        }
       }
     }
 

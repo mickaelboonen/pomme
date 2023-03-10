@@ -70,6 +70,9 @@ const omFormSlice = createSlice({
       handleSteps: () => {
 
       },
+      deleteStep: () => {
+
+      },
     },
 });
 
@@ -91,6 +94,7 @@ export const {
   saveCountries,
   addSteps,
   handleSteps,
+  deleteStep,
 } = omFormSlice.actions;
 
 export default omFormSlice.reducer;
