@@ -147,16 +147,7 @@ const appMiddleware = (store) => (next) => (action) => {
             store.dispatch(saveEf(response.data));
         })
         .catch((error) => {
-          delete error.response.config;
-          delete error.response.request;
-          delete error.response.headers;
-          const newError = {
-            response: error.response,
-            message: error.message,
-          }
-          console.error('-------------------------------------------', newError);
-          store.dispatch(setApiResponse(newError))
-          // store.dispatch(showTicketCreationResponse(error.response))
+          store.dispatch(setApiResponse(error))
         });
       break;
   

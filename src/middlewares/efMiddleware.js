@@ -18,7 +18,7 @@ const efMiddleware = (store) => (next) => (action) => {
       })
       .catch((error) => {
         console.error('add new om', error);
-        // store.dispatch(showTicketCreationResponse(error.response))
+          store.dispatch(setApiResponse(error))
       });
     break;
   case 'ef/fetchEfs':
@@ -36,36 +36,33 @@ const efMiddleware = (store) => (next) => (action) => {
     console.log(action.type, action.payload);
     api.post("/api/ef/mission/update", action.payload)
       .then((response) => {
-        console.log("RESPONSE IS : ",response);
-        // store.dispatch(saveEfs(response.data))
+        store.dispatch(setApiResponse({data: response.data, status: 200}));
       })
       .catch((error) => {
         console.error('update EF mission', error);
-        // store.dispatch(showTicketCreationResponse(error.response))
+        store.dispatch(setApiResponse(error))
       });
     break;
   case 'ef/updateEfTransports':
     console.log(action.type, action.payload);
     api.post("/api/ef/transports/update", action.payload)
       .then((response) => {
-        console.log("RESPONSE IS : ",response);
-        // store.dispatch(saveEfs(response.data))
+        store.dispatch(setApiResponse({data: response.data, status: 200}));
       })
       .catch((error) => {
         console.error('update EF transports', error);
-        // store.dispatch(showTicketCreationResponse(error.response))
+        store.dispatch(setApiResponse(error))
       });
     break;
   case 'ef/updateEfAccomodations':
     console.log(action.type, action.payload);
     api.post("/api/ef/accomodations/update", action.payload)
       .then((response) => {
-        console.log("RESPONSE IS : ",response);
-        // store.dispatch(saveEfs(response.data))
+        store.dispatch(setApiResponse({data: response.data, status: 200}));
       })
       .catch((error) => {
         console.error('update EF transports', error);
-        // store.dispatch(showTicketCreationResponse(error.response))
+        store.dispatch(setApiResponse(error))
       });
     break;
   case 'ef/fetchEf': 
@@ -77,7 +74,6 @@ const efMiddleware = (store) => (next) => (action) => {
     else {
       api.get("/api/ef/find/" + action.payload)
       .then((response) => {
-        console.log("RESPONSE IS : ",response);
         store.dispatch(saveEf(response.data))
       })
       .catch((error) => {

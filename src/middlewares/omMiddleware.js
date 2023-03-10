@@ -28,7 +28,7 @@ const omMiddleware = (store) => (next) => (action) => {
         })
         .catch((error) => {
           console.error('add new om', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          store.dispatch(setApiResponse(error))
         });
       break;
     case 'omForm/fetchOm':
@@ -39,7 +39,7 @@ const omMiddleware = (store) => (next) => (action) => {
         })
         .catch((error) => {
           console.error('fetch om', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          store.dispatch(setApiResponse(error))
         });
       break;
 
@@ -51,7 +51,7 @@ const omMiddleware = (store) => (next) => (action) => {
         })
         .catch((error) => {
           console.error('add new om', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          store.dispatch(setApiResponse(error))
         });
       break;
 
@@ -63,7 +63,7 @@ const omMiddleware = (store) => (next) => (action) => {
         })
         .catch((error) => {
           console.error('add new om', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          store.dispatch(setApiResponse(error))
         });
       break;
 
@@ -75,7 +75,7 @@ const omMiddleware = (store) => (next) => (action) => {
         })
         .catch((error) => {
           console.error('update new om', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          store.dispatch(setApiResponse(error))
         });
       break;
 
@@ -87,7 +87,7 @@ const omMiddleware = (store) => (next) => (action) => {
         })
         .catch((error) => {
           console.error('update new om', error);
-          // TODO : error message
+          store.dispatch(setApiResponse(error))
         });
       break;
 
@@ -99,7 +99,7 @@ const omMiddleware = (store) => (next) => (action) => {
         })
         .catch((error) => {
           console.error('update advance', error);
-          // TODO : error message
+          store.dispatch(setApiResponse(error))
         });
       break;
 
@@ -111,7 +111,7 @@ const omMiddleware = (store) => (next) => (action) => {
           })
           .catch((error) => {
             console.error('update more', error);
-            // TODO : error message
+            store.dispatch(setApiResponse(error))
           });
       break;
 
@@ -123,7 +123,7 @@ const omMiddleware = (store) => (next) => (action) => {
           })
           .catch((error) => {
             console.error('update more', error);
-            // TODO : error message
+            store.dispatch(setApiResponse(error))
           });
       break;
 
@@ -134,7 +134,7 @@ const omMiddleware = (store) => (next) => (action) => {
         })
         .catch((error) => {
           console.error('update accomodations', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          store.dispatch(setApiResponse(error))
         });
       break;
     
@@ -146,8 +146,8 @@ const omMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse({data: response.data, status: 200}));
         })
         .catch((error) => {
-          console.error('get signature', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          console.error('updateMoreAndSignature', error);
+          store.dispatch(setApiResponse(error))
         });
       break;
     
@@ -160,7 +160,7 @@ const omMiddleware = (store) => (next) => (action) => {
         })
         .catch((error) => {
           console.error('get signature', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          store.dispatch(setApiResponse(error))
         });
       break;
     
@@ -171,8 +171,8 @@ const omMiddleware = (store) => (next) => (action) => {
           store.dispatch(setEfLoader(false));
         })
         .catch((error) => {
-          console.error('get signature', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          console.error('get transports', error);
+          store.dispatch(setApiResponse(error))
         });
       break;
     
@@ -185,8 +185,8 @@ const omMiddleware = (store) => (next) => (action) => {
 
         })
         .catch((error) => {
-          console.error('get signature', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          console.error('get accomodations', error);
+          store.dispatch(setApiResponse(error))
         });
       break;
     
@@ -197,8 +197,8 @@ const omMiddleware = (store) => (next) => (action) => {
               store.dispatch(saveMore(response.data))
           })
           .catch((error) => {
-            console.error('get signature', error);
-            // store.dispatch(showTicketCreationResponse(error.response))
+            console.error('get more and signature', error);
+            store.dispatch(setApiResponse(error))
           });
         break;
     
@@ -209,8 +209,8 @@ const omMiddleware = (store) => (next) => (action) => {
 
         })
         .catch((error) => {
-          console.error('get signature', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          console.error('get advance', error);
+          store.dispatch(setApiResponse(error))
         });
       break;
     
@@ -220,8 +220,8 @@ const omMiddleware = (store) => (next) => (action) => {
               store.dispatch(validateSideForm(response.data));
           })
           .catch((error) => {
-            console.error('get signature', error);
-            // store.dispatch(showTicketCreationResponse(error.response))
+            console.error('create derogation', error);
+            store.dispatch(setApiResponse(error))
           });
         break;
       case 'omForm/updateOm':
@@ -231,8 +231,8 @@ const omMiddleware = (store) => (next) => (action) => {
               // store.dispatch(validateSideForm(response.data));
           })
           .catch((error) => {
-            console.error('get signature', error);
-            // store.dispatch(showTicketCreationResponse(error.response))
+            console.error('update om', error);
+            store.dispatch(setApiResponse(error))
           });
         break;
     

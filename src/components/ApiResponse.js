@@ -27,7 +27,7 @@ const ApiResponse = ({ response, updateForm }) => {
         <p className="api-response__error-more" onClick={handleClick}>Plus d'informations sur l'erreur ...</p>
         <div className="api-response__error-trace">
           {response.response.data.trace.map((step) => (
-            <p>Fonction <span>{step.function}</span> de la classe <span>{step.short_class}</span>, à la ligne <span>{step.line}</span>.</p>
+            <p key={response.response.data.trace.indexOf(step)}>Fonction <span>{step.function}</span> de la classe <span>{step.short_class}</span>, à la ligne <span>{step.line}</span>.</p>
           ))}
         </div>
       </div>

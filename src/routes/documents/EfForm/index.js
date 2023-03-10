@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 
@@ -15,14 +15,18 @@ import PageTitle from 'src/components/PageTitle';
 import ThreadAsTabs from 'src/components/ThreadAsTabs';
 import LoaderCircle from 'src/components/LoaderCircle';
 import Mission from 'src/routes/documents/OMForm/Mission';
+import { clearMessage } from 'src/reducer/app';
 
 const EfForm = () => {      
 
   const loaderData = useLoaderData();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const step = Number(loaderData.searchParams.get('etape'));
-  const { efLoader, currentEf: { has_steps, is_teaching } } = useSelector((state) => state.ef);
+  const { ef: { efLoader, currentEf: { has_steps, is_teaching }},
+    app: { apiMessage },
+  } = useSelector((state) => state);
 
   useEffect(() => {
     if (step === 4 && !has_steps && !is_teaching) {
@@ -32,7 +36,13 @@ const EfForm = () => {
 
       navigate(redirectUrl)
     }
-  }, [ ])
+  }, [])
+
+  useEffect(() => {
+    if (apiMessage.hasOwnProperty('response')) {
+      dispatch(clearMessage());
+    }
+  }, [step])
 
   
   // console.log("SEE ME HERE : ", currentEf);
@@ -74,8 +84,8 @@ const EfForm = () => {
           {(step === 2&& !efLoader) && <Transports step={step} />}
           {(step === 3&& !efLoader) && <Hebergement step={step} />}
           {((step === 4 && !efLoader) &&  (has_steps || is_teaching))  && <Steps step={step} />}
-          {((step === 4 && !efLoader) &&  (!has_steps && !is_teaching))  && (
-          <div>Plop</div>)}
+          {/* {((step === 4 && !efLoader) &&  (!has_steps && !is_teaching))  && (
+          <div>Plop</div>)} */}
           {(step === 5&& !efLoader) && <Signature step={step} />}
         </div>
       </div>
