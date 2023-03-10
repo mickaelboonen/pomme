@@ -226,3 +226,68 @@
           mask-composite: exclude; /*5*/
   animation: rotate 0.8s linear infinite;
 }
+
+.api-response {
+  margin: 1rem auto;
+
+  &__error {
+    border-radius: 10px;
+    margin: auto;
+    padding: 1rem;
+    width: 80%;
+    background-color: #fa9494;
+    border: 1px solid #750d0d;
+    // color: #750d0d;
+    color: #000;
+
+    &-title {
+      font-weight: bold;
+      text-align: center;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    
+    &-details {
+      margin-top: 1rem;
+      // cursor: pointer;
+
+      &__link {
+        font-weight: bold;
+        font-style: italic;
+        text-decoration: underline;
+      }
+    }
+    
+    &-more {
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+
+    &-trace {
+      display: none;
+
+      &--open {
+        display: block;
+        border-top: 1px solid #750d0d;
+        padding: 1rem 1rem 0;
+      }
+
+      & p {
+        margin-bottom: 0.5rem;
+
+        & span {
+          font-weight: bold;
+        }
+      }
+     
+    }
+  }
+
+  &__success {
+    border-radius: 10px;
+    margin: auto;
+    padding: 1rem;
+    width: 80%;
+
+  }
+}

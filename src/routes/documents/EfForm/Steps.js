@@ -14,10 +14,12 @@ import Buttons from 'src/components/Fields/Buttons';
 import TextField from 'src/components/Fields/TextField';
 import ButtonElement from 'src/components/Fields/ButtonElement';
 import SwitchButton from 'src/components/SwitchButton';
+import ApiResponse from 'src/components/ApiResponse';
 import Step from './Step';
 import ClassDay from './ClassDay';
 
 import { addSteps, handleSteps, deleteStep } from 'src/reducer/app';
+import { api } from '../../../middlewares/api';
 
 const Steps = ({ step }) => {
   const navigate = useNavigate();
@@ -25,9 +27,11 @@ const Steps = ({ step }) => {
   const loader = useLoaderData();
   const efId = loader.searchParams.get('id');
 
-  const { app: {agent : { unimesStatus }},
+  const { app: {agent : { unimesStatus }, apiMessage},
     ef: { currentEf }
   } = useSelector((state) => state);
+
+  console.log(apiMessage);
   
   // const isVacataire = unimesStatus === "VACATAIRE";
   const isVacataire = currentEf.is_teaching;
@@ -249,6 +253,8 @@ const Steps = ({ step }) => {
           </div>
         )}
       </div>
+      {apiMessage && <ApiResponse response={apiMessage} updateForm={true} />}
+
       <Buttons
         step={step}
         id={efId}

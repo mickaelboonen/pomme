@@ -9,7 +9,7 @@ import {
 import { api } from './api';
 import CasClient, { constant } from "react-cas-client";
 import { setLoader } from '../reducer/omForm';
-import { fetchUserData } from '../reducer/app';
+import { fetchUserData, setApiResponse } from '../reducer/app';
 import { saveEf } from 'src/reducer/ef';
 
 
@@ -141,13 +141,21 @@ const appMiddleware = (store) => (next) => (action) => {
         });
       break;
     case 'app/deleteStep':      
-      api.delete("/api/stage/delete/" + action.payload)
+      api.delete("/api/stage/delete/" + 11)
         .then((response) => {
             console.log("API STAGE DELETE RESPONSE IS : ", response.data);
             store.dispatch(saveEf(response.data));
         })
         .catch((error) => {
-          console.error('add stages error', error);
+          delete error.response.config;
+          delete error.response.request;
+          delete error.response.headers;
+          const newError = {
+            response: error.response,
+            message: error.message,
+          }
+          console.error('-------------------------------------------', newError);
+          store.dispatch(setApiResponse(newError))
           // store.dispatch(showTicketCreationResponse(error.response))
         });
       break;
