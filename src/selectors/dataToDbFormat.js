@@ -293,14 +293,14 @@ export const turnSignatureDataToDbFormat = (data, signatureUrl) => {
  * @returns object that is to be sent to the API
  */
 export const turnAccomodationDataToDbFormat = (data) => {
-    
+  
   return {
-    omId: data.omId,
+    omId: Number(data.omId),
     hotel: data.hotel,
-    nightsNumber: data.nightsNumber,
+    nightsNumber: data.nightsNumber === "" || !data.nightsNumber ? 0 : data.nightsNumber,
     hotelPayment: data.hotelPayment,
-    mealsPaidByAgent: data.mealsPaidByAgent === "" ? 0 : data.mealsPaidByAgent,
-    mealsInAdminRestaurants: data.mealsInAdminRestaurants === "" ? 0 : data.mealsInAdminRestaurants,
+    mealsPaidByAgent: data.mealsPaidByAgent === "" ? 0 : Number(data.mealsPaidByAgent),
+    mealsInAdminRestaurants: data.mealsInAdminRestaurants === "" ? 0 : Number(data.mealsInAdminRestaurants),
     status: data.status,
   };
 }
