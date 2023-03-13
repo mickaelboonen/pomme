@@ -177,7 +177,7 @@ const omFormSlice = createSlice({
       },
       
       displayEfStatus: (state, action) => {
-        const efToDisplay = state.userEfs.find((ef) => ef.id === Number(action.payload));
+        const efToDisplay = action.payload.data.find((ef) => ef.id === Number(action.payload.ef));
         state.currentEf = efToDisplay ? efToDisplay : {};
       },
       updateEfMission: () => {},

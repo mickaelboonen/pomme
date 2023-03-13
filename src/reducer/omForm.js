@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import { turnTransportsDataToAppFormat } from '../selectors/dataToDbFormat';
 import { declareCamelCaseKeys } from '../selectors/keyObjectService';
 
+import store from 'src/store';
+
 const initialState = {
   steps: [
     {
@@ -134,12 +136,13 @@ const omFormSlice = createSlice({
           status = 8;
         }
         
-        state.dataToSelect = state.userOms.filter((om) => om.status === status);
+        state.dataToSelect = action.payload.filter((om) => om.status === status);
         state.currentOM = {};
       },
       displayOmStatus: (state, action) => {
-        const omToDisplay = state.userOms.find((om) => om.id === Number(action.payload));
+        const omToDisplay = action.payload.data.find((om) => om.id === Number(action.payload.om));
         state.currentOM = omToDisplay ? omToDisplay : {};
+
       },
       // saveOm: () => {},
       saveOmPdf: (state, action) => {

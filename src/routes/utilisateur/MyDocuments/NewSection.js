@@ -10,6 +10,7 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 
 import { displayOmStatus } from 'src/reducer/omForm';
 import { displayEfStatus } from 'src/reducer/ef';
+import { showDocStatus } from 'src/reducer/agent';
 import DocButtons from './DocButtons';
 import LoaderCircle from '../../../components/LoaderCircle';
 
@@ -25,13 +26,7 @@ const Section = ({ id, data, steps, currentDoc, loader, isOm}) => {
   });
 
   const handleChange = (event) => {
-    if (isOm) {
-      dispatch(displayOmStatus(event.target.value));
-    }
-    else {
-      dispatch(displayEfStatus(event.target.value));
-    }
-    
+    dispatch(showDocStatus({doc: event.target.value, type: isOm ? 'oms' : 'efs'}));   
   }
 
   let isDocFinished = false;

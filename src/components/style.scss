@@ -143,6 +143,7 @@
   display: flex;
   border-radius: vars.$radius vars.$radius 0 0;
   overflow: hidden;
+  cursor: pointer;
   width: 100vw;
 
   &__item {

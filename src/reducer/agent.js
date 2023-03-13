@@ -9,11 +9,13 @@ const initialState = {
   userSignature: null,
   oms: [],
   efs: [],
+  documentsList: [],
   isAuthenticated: false,
   agent: {},
-  agentDocuments:{
-    rib: false,
-  },
+  // agentDocuments:{
+  //   rib: false,
+  // },
+  currentDoc: {},
 };
 
 const agentSlice = createSlice({
@@ -34,15 +36,37 @@ const agentSlice = createSlice({
       fetchEfs: () => {},
       saveOMs: (state, action) => {
         state.oms = action.payload;
-        state.dataToSelect = state.userOms.filter((om) => om.status === 1);
-        // state.omLoader = false;
       },
       saveEfs: (state, action) => {
         state.efs = action.payload;
-        state.efPerSelectedStatus = state.userEfs.filter((ef) => ef.status === 1);
-        // state.efLoader = false;
       },
       fetchUserData: () => {},
+      selectDocumentsList: (state, action) => {
+
+        const { target, id } = action.payload;
+
+        let status = 1;
+        if (target === 'ec') {
+          status = 1;
+        }
+        else if (target === 'as') {
+          status = 2;
+        }
+        else if (target === 'sub') {
+          status = 2;
+        }
+        else if (target === 'ok') {
+          status = 8;
+        }
+
+        state.documentsList = state[id].filter((doc) => doc.status === status);
+        state.currentDoc = {};
+      },
+      showDocStatus: (state, action) => {
+        const doc = state[action.payload.type].find((doc) => doc.id === Number(action.payload.doc));
+        state.currentDoc = doc ? doc : {};
+
+      }
     },
 });
 
@@ -52,7 +76,10 @@ export const {
   fetchOMs,
   fetchEfs,
   saveOMs,
-  saveEfs, fetchUserData,
+  saveEfs,
+  fetchUserData,
+  selectDocumentsList,
+  showDocStatus,
 } = agentSlice.actions;
 
 export default agentSlice.reducer;

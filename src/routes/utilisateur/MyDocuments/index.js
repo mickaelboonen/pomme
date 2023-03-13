@@ -13,6 +13,8 @@ import { toggleModal } from 'src/reducer/app';
 import { addNewOM, clearOMTarget, selectOmData} from 'src/reducer/omForm';
 import { selectEfData } from 'src/reducer/ef';
 
+import { selectDocumentsList } from 'src/reducer/agent';
+
 
 import './style.scss';
 import Modal from '../../../components/Modal';
@@ -24,13 +26,13 @@ const MyDocuments = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const params = useParams();
-  const loaderData = useLoaderData();
+  
   
 
-  const { omForm: { currentOM, nextOMTarget, OMTabs, userOms, dataToSelect, omLoader },
-    ef: { nextEfTarget, currentEf, efPerSelectedStatus, efLoader, EFTabs },
+  const { omForm: { currentOM, nextOMTarget, OMTabs, userOms, omLoader },
+    ef: { nextEfTarget, currentEf, efLoader, EFTabs },
     app: { isModalOpen },
-    agent: { agent, user }
+    agent: { agent, user, documentsList, efs, currentDoc }
   } = useSelector((state) => state);
   
   useEffect(() => {
@@ -40,6 +42,10 @@ const MyDocuments = () => {
       navigate(nextOMTarget);
     }
   }, [nextOMTarget])
+
+  useEffect(() => {
+    dispatch(selectDocumentsList({id: location.pathname.includes('ordres') ? 'oms' : 'efs', target: 'ec'}))
+  }, [location])
   
   const pageData = (path, user) => {
     let pageData = {};
@@ -67,13 +73,7 @@ const MyDocuments = () => {
    * @param object event 
    */
    const displayWantedSection = (event) => {
-
-    if (isOm) {
-      dispatch(selectOmData(event.currentTarget.id));
-    }
-    else {
-      dispatch(selectEfData(event.currentTarget.id));
-    }
+    dispatch(selectDocumentsList({id: location.pathname.includes('ordres') ? 'oms' : 'efs', target: event.currentTarget.id}))
   }
 
   const handleClickOnNewOM = () => {
@@ -83,25 +83,27 @@ const MyDocuments = () => {
   const steps = [
     {
       name: 'mission',
-      status: (currentOM.hasOwnProperty('mission') && currentOM.mission.status) ? currentOM.mission.status : false
+      status: (currentDoc.hasOwnProperty('mission') && currentDoc.mission.status) ? currentDoc.mission.status : false
     },
     {
       name: 'transports',
-      status: (currentOM.hasOwnProperty('transports') && currentOM.transports.status) ? currentOM.transports.status : false
+      status: (currentDoc.hasOwnProperty('transports') && currentDoc.transports.status) ? currentDoc.transports.status : false
     },
     {
       name: 'hébergement',
-      status: (currentOM.hasOwnProperty('accomodations') && currentOM.accomodations.status) ? currentOM.accomodations.status : false
+      status: (currentDoc.hasOwnProperty('accomodations') && currentDoc.accomodations.status) ? currentDoc.accomodations.status : false
     },
     {
       name: 'avance',
-      status: (currentOM.hasOwnProperty('advance') && currentOM.advance.status) ? currentOM.advance.status : false
+      status: (currentDoc.hasOwnProperty('advance') && currentDoc.advance.status) ? currentDoc.advance.status : false
     },
     {
       name: 'signature',
-      status: (currentOM.hasOwnProperty('signature') && currentOM.signature.status) ? currentOM.signature.status : false
+      status: (currentDoc.hasOwnProperty('signature') && currentDoc.signature.status) ? currentDoc.signature.status : false
     },
   ]
+
+  console.log(steps);
 
   return (
     <main className="my-documents">
@@ -111,8 +113,8 @@ const MyDocuments = () => {
       </div>
       {isOm && <Tabs tabs={OMTabs} handler={displayWantedSection} />}
       {!isOm && <Tabs tabs={EFTabs} handler={displayWantedSection} />}
-      {isOm && <NewSection data={dataToSelect} steps={steps} currentDoc={currentOM} loader={omLoader} isOm />}
-      {!isOm && <NewSection data={efPerSelectedStatus} steps={steps} currentDoc={currentEf} loader={efLoader} />}
+      {isOm && <NewSection data={documentsList} steps={steps} currentDoc={currentDoc} isOm />}
+      {!isOm && <NewSection data={documentsList} steps={steps} currentDoc={currentDoc} />}
       <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
       {isModalOpen && <Modal target={slug.replace(/-/g, ' ')} user={params.slug} userOms={userOms} agent={agent} />}
     </main>

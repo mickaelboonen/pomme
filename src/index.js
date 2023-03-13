@@ -10,7 +10,6 @@ import {
 } from "react-router-dom";
 import store from 'src/store';
 import DAFC from "src/routes/dafc";
-import LoaderCircle from 'src/components/LoaderCircle';
 import Layout from 'src/routes/layout';
 import ErrorPage from 'src/routes/error';
 import Home from 'src/routes/layout/Home';
@@ -19,6 +18,7 @@ import OMForm from "src/routes/documents/OMForm";
 import EfForm from "src/routes/documents/EfForm";
 import EfControl from "src/routes/dafc/EfControl";
 import Gestionnaires from "src/routes/gestionnaire";
+import LoaderCircle from 'src/components/LoaderCircle';
 import EfValidation from "src/routes/dafc/EfValidation";
 import Derogation from "src/routes/documents/Derogation";
 import MyAccount from "src/routes/utilisateur/MyAccount";
@@ -272,41 +272,15 @@ const router = createBrowserRouter([
         children: [
           {
             path: 'mes-ordres-de-mission',
-            element: <MyDocuments />,
-            loader: async ({ params, request }) => {
-              const { agent : { user }} = store.getState(state => state);
-              store.dispatch(setLoader(true));
-                  
-              store.dispatch(fetchUserData({ id: user}));
-              store.dispatch(fetchOMs(params.slug));
-
-            }, 
+            element: <MyDocuments />
           },
           {
             path: 'mes-%C3%A9tats-de-frais',
-            element: <MyDocuments />,
-            loader: async ({ params, request }) => {
-              const { agent : { user }} = store.getState(state => state);
-              store.dispatch(setLoader(true));
-                  
-              store.dispatch(fetchUserData({ id: user}));
-              store.dispatch(fetchOMs(user));
-              store.dispatch(fetchEfs(user));
-
-            }, 
+            element: <MyDocuments />
           },
           {
             path: 'mes-états-de-frais',
-            element: <MyDocuments />,
-            loader: async ({ params, request }) => {
-              const { agent : { user }} = store.getState(state => state);
-              store.dispatch(setLoader(true));
-                  
-              store.dispatch(fetchUserData({ id: user}));
-              store.dispatch(fetchOMs(user));
-              store.dispatch(fetchEfs(user));
-
-            }, 
+            element: <MyDocuments />
           },
           {
             path: 'mes-documents/',
