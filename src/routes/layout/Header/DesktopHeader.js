@@ -18,9 +18,9 @@ const DesktopHeader = ({ cas }) => {
 
   const dispatch = useDispatch();
 
-  const role = 'dev'
+  const role = 'dev';
   
-  const { app : { user }} = useSelector((state) => state);
+  const { agent : { user, agent }} = useSelector((state) => state);
   const handleLogOut = () => {
     dispatch(logout());
     persistor.purge();
@@ -31,7 +31,7 @@ const DesktopHeader = ({ cas }) => {
   <div className="header">
       <div className="header__identity">
         <Link to="/" className="header__identity-logo"><p>POM</p></Link>
-        <p className="header__identity-user">Bonjour {user}</p>
+        <p className="header__identity-user">Bonjour {agent.firstname}</p>
       </div>
       <BurgerIcon handler={toggleBurgerMenu} />
       <nav className="header__menu">
@@ -59,7 +59,7 @@ const DesktopHeader = ({ cas }) => {
           <p>MON COMPTE</p>
           <ul className="header__menu-section-list">
             <li><Link to={`/utilisateur/${user}/mes-ordres-de-mission`}>Mes Ordres de Mission {/*<span id="mes-oms">1</span>*/}</Link></li>
-            {user === 'mboone01' &&<li><Link to={`/utilisateur/${user}/mes-états-de-frais`}>Mes États de Frais <span id="mes-efs"></span></Link></li>}
+            {(user === 'mboone01' || user === 'nathalie') &&<li><Link to={`/utilisateur/${user}/mes-états-de-frais`}>Mes États de Frais <span id="mes-efs"></span></Link></li>}
             <li><Link to={`/utilisateur/${user}/mes-documents`}>Mes Justificatifs</Link></li>
             <li><Link to={`/utilisateur/${user}/mes-préférences`}>Mes Préférences</Link></li>
             <li><a onClick={handleLogOut}>Se déconnecter</a></li>

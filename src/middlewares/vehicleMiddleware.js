@@ -11,7 +11,7 @@ api.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 api.defaults.headers['Content-Type'] = 'application/json';
 
 const vehicleMiddleware = (store) => (next) => (action) => {
-  const { app : { user } } = store.getState();
+  const { agent : { user } } = store.getState();
   switch (action.type) {
     case 'vehicle/createVehicle':
       api.post("/api/vehicle/add/" + user, action.payload)

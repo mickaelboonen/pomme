@@ -29,7 +29,8 @@ const MyDocuments = () => {
 
   const { omForm: { currentOM, nextOMTarget, OMTabs, userOms, dataToSelect, omLoader },
     ef: { nextEfTarget, currentEf, efPerSelectedStatus, efLoader, EFTabs },
-    app: { isModalOpen, agent}
+    app: { isModalOpen },
+    agent: { agent, user }
   } = useSelector((state) => state);
   
   useEffect(() => {
@@ -57,7 +58,7 @@ const MyDocuments = () => {
     return pageData;
   }
 
-  const { isOm, title, slug } = pageData(location.pathname, params.slug);
+  const { isOm, title, slug } = pageData(location.pathname, user);
   
   
 

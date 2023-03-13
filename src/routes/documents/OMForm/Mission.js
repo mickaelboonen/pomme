@@ -42,7 +42,8 @@ const Mission = ({ step, isEfForm }) => {
   const areWeUpdatingData = loader.pathname.includes('modifier');
   
 
-  const { app: { apiMessage, user, countries},
+  const { app: { apiMessage, countries},
+    agent: { user},
     omForm: { currentOM, omForm, refusal, adresses },
     ef: { isMissionFormDisabled }
   } = useSelector((state) => state);

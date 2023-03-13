@@ -26,7 +26,8 @@ const Identity = ({ isEfForm }) => {
   const omId = loader.searchParams.get('id');
   const areWeUpdatingData = loader.pathname.includes('modifier');
   
-  const { app: { apiMessage, agent, user},
+  const { app: { apiMessage },
+    agent: { agent, user},
     omForm: { currentOM },
     docs: { agentSignature },
     vehicle: { vehicleTypes },

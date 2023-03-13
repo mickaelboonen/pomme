@@ -16,7 +16,8 @@ import './style.scss';
 
 const TestPDF = () =>   {
   const navigate = useNavigate();
-  const { app: { isModalOpen, user, isAuthenticated, agent},
+  const { app: { isModalOpen },
+    agent: { user, isAuthenticated, agent},
     omForm: { nextOMTarget, omForm, currentOM},
     vehicle: { vehicleTypes },
   } = useSelector((state) => state);

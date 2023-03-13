@@ -35,11 +35,12 @@ import CasClient, { constant } from "react-cas-client";
 
 
 // import { getSignature } from "src/reducer/app";
-import { getSignature, fetchUserData, getDocument, fetchCountries } from "src/reducer/app";
+import { getSignature, getDocument, fetchCountries } from "src/reducer/app";
 import { findPermFilesByAgent, fetchAgentSignatureForPdf } from "src/reducer/otherDocuments";
 import { getVehicles, getVehicleDocuments } from "src/reducer/vehicle";
-import { fetchOMs, getMission, fetchOm, getTransports, getAccomodations, getAdvance, getMore, setLoader  } from "src/reducer/omForm";
-import { fetchEfs, setEfLoader, fetchEf } from "src/reducer/ef";
+import { getMission, fetchOm, getTransports, getAccomodations, getAdvance, getMore, setLoader  } from "src/reducer/omForm";
+import { fetchOMs, fetchEfs, fetchUserData } from "src/reducer/agent";
+import { setEfLoader, fetchEf } from "src/reducer/ef";
 
 
 import { persistor } from 'src/store';
@@ -57,13 +58,26 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout cas={casClient} />,
     loader: async ({ request }) => {
+
       return new URL(request.url);
     },
     errorElement: <ErrorPage />,
     children: [
       {
         index: true,
-        element: <Home />
+        element: <Home />,
+        loader: async ({ request }) => {
+
+          const url = new URL(request.url);
+          const { agent: {user} } = store.getState()
+          const id = url.searchParams.get("id");
+          
+          store.dispatch(fetchUserData({ id: user}));
+          store.dispatch(fetchOMs(user));
+          store.dispatch(fetchEfs(user));
+    
+          return new URL(request.url);
+        },
       },
       // {
       //   path: 'test/pdf',
@@ -133,7 +147,7 @@ const router = createBrowserRouter([
               const step = url.searchParams.get("etape");
               const id = url.searchParams.get("id");
 
-              const { app : { user }} = store.getState((state) => state)
+              const { agent : { user }} = store.getState((state) => state)
 
 
               // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
@@ -260,7 +274,7 @@ const router = createBrowserRouter([
             path: 'mes-ordres-de-mission',
             element: <MyDocuments />,
             loader: async ({ params, request }) => {
-              const { app : { user }} = store.getState(state => state);
+              const { agent : { user }} = store.getState(state => state);
               store.dispatch(setLoader(true));
                   
               store.dispatch(fetchUserData({ id: user}));
@@ -272,7 +286,7 @@ const router = createBrowserRouter([
             path: 'mes-%C3%A9tats-de-frais',
             element: <MyDocuments />,
             loader: async ({ params, request }) => {
-              const { app : { user }} = store.getState(state => state);
+              const { agent : { user }} = store.getState(state => state);
               store.dispatch(setLoader(true));
                   
               store.dispatch(fetchUserData({ id: user}));
@@ -285,7 +299,7 @@ const router = createBrowserRouter([
             path: 'mes-états-de-frais',
             element: <MyDocuments />,
             loader: async ({ params, request }) => {
-              const { app : { user }} = store.getState(state => state);
+              const { agent : { user }} = store.getState(state => state);
               store.dispatch(setLoader(true));
                   
               store.dispatch(fetchUserData({ id: user}));

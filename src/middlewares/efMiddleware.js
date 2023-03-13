@@ -1,6 +1,7 @@
 import { setApiResponse } from 'src/reducer/app';
 import { api } from './api';
-import { saveNewEf, saveEfs, saveEf, setEfLoader } from '../reducer/ef';
+import { saveNewEf, saveEf, setEfLoader } from 'src/reducer/ef';
+import { saveEfs } from 'src/reducer/agent';
 
 
 api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -21,7 +22,7 @@ const efMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse(error))
       });
     break;
-  case 'ef/fetchEfs':
+  case 'agent/fetchEfs':
     api.get("/api/ef/" + action.payload)
       .then((response) => {
         console.log(response);

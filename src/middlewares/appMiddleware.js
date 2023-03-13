@@ -1,10 +1,12 @@
 import {
   saveSignature,
-  validateAuthentication,
-  saveUserData,
   saveDocument,
   saveCountries
 } from 'src/reducer/app';
+import {
+  validateAuthentication,
+  saveUserData,
+} from 'src/reducer/agent';
 
 import { api } from './api';
 import CasClient, { constant } from "react-cas-client";
@@ -77,7 +79,7 @@ const appMiddleware = (store) => (next) => (action) => {
           // store.dispatch(showTicketCreationResponse(error.response))
         });
       break;
-    case 'app/authenticate':  
+    case 'agent/authenticate':  
       casClient
         .auth()
             .then((response) => {
@@ -87,7 +89,7 @@ const appMiddleware = (store) => (next) => (action) => {
               console.log('error : ', response);
             });
     break;
-    case 'app/fetchUserData':      
+    case 'agent/fetchUserData':      
       api.post("/api/agent/get-data", action.payload)
         .then((response) => {
           // if (response.data.length > 0) {
@@ -103,7 +105,7 @@ const appMiddleware = (store) => (next) => (action) => {
           // TODO : Temporary solution to fetch user Data after the first fail
           // Since the Hydrate only happens after fetchUserData is called, meaning the payload for the action above === { id = ""}
           if (error.response.data.detail === "Call to a member function getPersId() on null") {
-            const { app : { user }} = store.getState((state) => state)
+            const { agent : { user }} = store.getState((state) => state)
             store.dispatch(fetchUserData({id: user}))
           }
         });

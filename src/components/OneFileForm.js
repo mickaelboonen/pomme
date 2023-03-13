@@ -20,7 +20,7 @@ import './style.scss';
 const OneFileForm = () => {
   
   const { docs: { action, type, agentDocs},
-    app: { user },
+    agent: { user },
   } = useSelector((state) => state)
 
   const docToUpdate = agentDocs.find((doc) => doc.type === type);

@@ -14,7 +14,7 @@ import { closeBurgerMenu,  } from 'src/selectors/domManipulators';
 import './style.scss';
 
 const SmallScreenMenu = ({ cas, role = 'dev'}) => {
-  const { app : { user }} = useSelector((state) => state);
+  const { agent : { user }} = useSelector((state) => state);
 
   const location = useLocation();
 

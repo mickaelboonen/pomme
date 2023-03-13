@@ -13,9 +13,10 @@ import {
 import storage from 'redux-persist/lib/storage'
 
 // Reducers
-import omFormReducer from 'src/reducer/omForm';
 import efReducer from 'src/reducer/ef';
 import appReducer from 'src/reducer/app';
+import agentReducer from 'src/reducer/agent';
+import omFormReducer from 'src/reducer/omForm';
 import vehicleReducer from 'src/reducer/vehicle';
 import otherDocsReducer from 'src/reducer/otherDocuments';
 
@@ -30,12 +31,16 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage,
+  whitelist: ['agent', 'app'],
+  blacklist: ['docs', 'omForm', 'ef'],
   stateReconciler: autoMergeLevel2 // ADDED
 }
 
+console.log(persistConfig);
 const reducers = combineReducers({
   ef: efReducer,
   app: appReducer,
+  agent: agentReducer,
   omForm: omFormReducer,
   docs: otherDocsReducer,
   vehicle: vehicleReducer,

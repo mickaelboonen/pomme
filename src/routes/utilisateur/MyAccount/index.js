@@ -28,7 +28,8 @@ const MyAccount = () => {
   const dispatch = useDispatch();
 
   const {docs: { isModalOpen, agentDocs },
-    app: { user, apiMessage },
+  app: { apiMessage },
+  agent: { user },
     vehicle: { vehicles },
   } = useSelector((state) => state);
 

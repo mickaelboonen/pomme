@@ -17,7 +17,8 @@ import HomepageTitle from './HomepageTitle';
 const Home = () => {
   
   const navigate = useNavigate();
-  const { app: { isModalOpen, user, isAuthenticated, agent},
+  const { app: { isModalOpen},
+    agent: { user, agent, isAuthenticated},
     omForm: { nextOMTarget, omForm, currentOM},
   } = useSelector((state) => state);
 
@@ -33,9 +34,15 @@ const Home = () => {
   const dispatch = useDispatch();
 
   const [newTarget, setNewTarget] = useState('');
-  const handleClickOnNewOM = (event) => {
-    dispatch(toggleModal())
-    setNewTarget(event.currentTarget.id)
+  
+  const handleClickOnNewDoc = (event) => {
+    dispatch(toggleModal());
+    setNewTarget(event.currentTarget.id);
+  }
+
+  const handleClickOnNewEf = () => {
+    navigate(`/utilisateur/${user}]/mes-états-de-frais`);
+    // dispatch(toggleModal());
   }
 
   return (
@@ -44,18 +51,18 @@ const Home = () => {
       <section className="home__new">
       <TitleH3>Nouveau document</TitleH3>
       <div className="home__new-buttons">
-        <div id="ordre-de-mission" className="home__new-buttons-item" onClick={handleClickOnNewOM}>
+        <div id="ordre-de-mission" className="home__new-buttons-item" onClick={handleClickOnNewDoc}>
           <IoMdAddCircle
             className='home__new-buttons-item-image'
           />
           <p>Ordre de Mission</p>
         </div>
-        {/* <div id="état-de-frais" className="home__new-buttons-item" onClick={handleClickOnNewOM}>
+        <div id="état-de-frais" className="home__new-buttons-item" onClick={handleClickOnNewEf}>
           <IoMdAddCircle
             className='home__new-buttons-item-image'
           />
           <p>État de Frais</p>
-        </div> */}
+        </div>
       </div>
       </section>
       {/* <section className="home__new" style={{height: '40rem'}}>

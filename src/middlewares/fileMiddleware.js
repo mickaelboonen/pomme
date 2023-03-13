@@ -12,7 +12,7 @@ fileApi.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 fileApi.defaults.headers['Content-Type'] = 'multipart/form-data';
 
 const omMiddleware = (store) => (next) => (action) => {
-  const { app: { user }} = store.getState()
+  const { agent: { user }} = store.getState()
   switch (action.type) {
     case 'omForm/uploadFile':
       const filesToUpload = [];
