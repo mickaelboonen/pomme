@@ -268,7 +268,6 @@ export const defineValidationRulesForMission = (isEfForm, isFormModified, isScie
     comeback: "Veuillez renseigner le jour et l'heure du retour.",
     comebackPlace: "Veuillez renseigner le lieu d'arrivée lors de votre retour de mission.",
     region: "Merci de sélectionner l'option qui correspond.",
-    streetNumber: "Merci de renseigner le numéro de voie.",
     streetType: "Merci de renseigner le type de voie.",
     streetName: "Merci de renseigner le nom de la voie (sans le type).",
     postCode: "Merci de renseigner le code postal.",
