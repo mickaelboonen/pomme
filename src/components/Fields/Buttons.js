@@ -118,13 +118,11 @@ const Buttons = ({ trigger, step, url, id, watch, update, userSignature}) => {
       
     }
   }
-  const handleClickOnNav = (event) => {
-    const { id } = event.target;
-    
+  const handleClickOnNav = (event) => {    
     if (event.target.querySelector('a').href.includes(user)) {
       navigate(`/utilisateur/${user}/mes-ordres-de-mission`)
     }else {
-      navigate('?etape=' + (id === 'back' ? step - 1 : step + 1) + '&id=' + id);
+      navigate('?etape=' + (event.target.id === 'back' ? step - 1 : step + 1) + '&id=' + id);
     } 
   }
 
