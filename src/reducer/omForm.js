@@ -186,7 +186,7 @@ const omFormSlice = createSlice({
       updateMission: () => {},
       saveOm: (state, action) => {
         state.currentOM = action.payload;
-        state.omLoader = false;
+        // state.omLoader = false;
       },
       saveNewOm: (state, action) => {
         state.currentOM = action.payload;
@@ -204,6 +204,7 @@ const omFormSlice = createSlice({
         state.omLoader = false;
       },
       saveMission: (state, action) => {
+        console.log(action.payload);
         state.omForm[0].data.omId = action.payload.om.id;
 
         const formattedValues = declareCamelCaseKeys(action.payload);

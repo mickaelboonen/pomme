@@ -7,6 +7,7 @@ import {
   saveAccomodations,
   saveAdvance,
   saveMore,
+  setLoader,
   validateSideForm,
 } from 'src/reducer/omForm';
 import { saveOMs } from 'src/reducer/agent';
@@ -33,10 +34,13 @@ const omMiddleware = (store) => (next) => (action) => {
         });
       break;
     case 'omForm/fetchOm':
-      api.get("/api/om/find/" + action.payload)
+      api.get("/api/om/find/" + action.payload.id)
         .then((response) => {
           
           store.dispatch(saveOm(response.data))
+          if (action.payload.handleLoader) {
+            store.dispatch(setLoader(false));
+          }
         })
         .catch((error) => {
           console.error('fetch om', error);
@@ -154,11 +158,14 @@ const omMiddleware = (store) => (next) => (action) => {
       break;
     
     case 'omForm/getMission':
-      api.get("/api/om/mission/find/" + action.payload)
+      console.log(action.payload);
+      api.get("/api/om/mission/find/" + action.payload.id)
         .then((response) => {
-            store.dispatch(saveMission(response.data));
-            store.dispatch(setEfLoader(false));
+          store.dispatch(saveMission(response.data));
 
+          if (action.payload.handleEfLoader) {
+            store.dispatch(setEfLoader(false));
+          }
         })
         .catch((error) => {
           console.error('get signature', error);

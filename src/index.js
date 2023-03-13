@@ -147,15 +147,15 @@ const router = createBrowserRouter([
               const step = url.searchParams.get("etape");
               const id = url.searchParams.get("id");
 
-              const { agent : { user }} = store.getState((state) => state)
+              const { agent : { user, agent }} = store.getState((state) => state)
 
 
               // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
             
               if (step === '1') {
-                store.dispatch(fetchOm(id));
+                store.dispatch(fetchOm({id: id, handleLoader: false,}));
                 store.dispatch(fetchCountries());
-                store.dispatch(getMission(id));
+                store.dispatch(getMission({id: id, handleEfLoader: false }));
               }
               else if (step === '2') {
                 // store.dispatch(getVehicles());
@@ -163,23 +163,29 @@ const router = createBrowserRouter([
               }
               else if (step === '3') {
                 store.dispatch(getAccomodations(id));
-                store.dispatch(getMission(id));
+                store.dispatch(getMission({id: id, handleEfLoader: false }));
                 
               }
               else if (step === '4') {
                 store.dispatch(getDocument({id: user, type: 'rib'}));
                 store.dispatch(getAdvance(id));
-                store.dispatch(getMission(id));
+                store.dispatch(getMission({id: id, handleEfLoader: false }));
               }
               else if (step === '5') {
                 store.dispatch(getSignature(user));
                 store.dispatch(getMore(id));
               }
               else if (step === '6') {
-                store.dispatch(setLoader(true));
+                
                 store.dispatch(fetchAgentSignatureForPdf({ agent: user, omId: id}));
-                store.dispatch(fetchOm(id));
-                store.dispatch(fetchUserData({ id: user}));
+                store.dispatch(fetchOm({id: id, handleLoader: true,}));
+                if (!agent.hasOwnProperty('lastname') === '45') {
+                  console.log("AMIHERE AGENT = ", agent);
+                  store.dispatch(fetchUserData({ id: user}));
+                }
+
+
+                // store.dispatch(fetchUserData({ id: user}));
               }
               
             return url;  
@@ -208,13 +214,13 @@ const router = createBrowserRouter([
 
               if (step === '1') {
                 store.dispatch(fetchCountries());
-                store.dispatch(getMission(om));
+                store.dispatch(getMission({id: om, handleEfLoader: true }));
               }
               else if (step === '2') {
                 store.dispatch(getTransports(om));
               }
               else if (step === '3') {
-                store.dispatch(getMission(om));
+                store.dispatch(getMission({id: om, handleEfLoader: true }));
                 store.dispatch(getAccomodations(om));
               }
               else if (step === '4') {

@@ -96,6 +96,7 @@ const appMiddleware = (store) => (next) => (action) => {
             
 
             store.dispatch(saveUserData(response.data));
+            store.dispatch(setLoader(false));
           // }
         })
         .catch((error) => {

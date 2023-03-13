@@ -8,7 +8,7 @@ const initialState = {
   // user: defaultUser,
   userSignature: null,
   apiMessage: {},
-  appLoader: true,
+  appLoader: false,
   isModalOpen: false,
   isAuthenticated: false,
   // agent: {},
@@ -57,13 +57,13 @@ const omFormSlice = createSlice({
         state.isModalOpen = !state.isModalOpen;
       },
       fetchUserData: (state) => {
-        state.appLoader = true;
+        // state.appLoader = true;
       },
       saveUserData: (state, action) => {
         const data = agentDataToAppFormat(action.payload);
         
         state.agent = data;
-        state.appLoader = false;
+        // state.appLoader = false;
         
       },
       getDocument: () => {},

@@ -30,7 +30,7 @@ const agentSlice = createSlice({
         const data = agentDataToAppFormat(action.payload);
         
         state.agent = data;
-        state.appLoader = false;
+        // state.appLoader = false;
       },
       fetchOMs: () => {},
       fetchEfs: () => {},

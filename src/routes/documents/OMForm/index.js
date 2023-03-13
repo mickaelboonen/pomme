@@ -90,6 +90,7 @@ const OMForm = () => {
     }
   }, [apiMessage]);
   
+  console.log("loader = ", docState);
   return (
     <>
       <ThreadAsTabs step={step} tabs={steps} isOm urlData={loaderData} />
@@ -99,7 +100,8 @@ const OMForm = () => {
         </div>
         <div className="form-page__container">
           
-          {(omLoader || appLoader) && (
+        {/* {(omLoader || appLoader) && ( */}
+          {omLoader && (
             <LoaderCircle />
           )}
           {(step === 1 && !omLoader) && <Mission step={step} isEfForm={false} />}
@@ -107,8 +109,22 @@ const OMForm = () => {
           {(step === 3 && !omLoader) && <Accomodations step={step} />}
           {(step === 4 && !omLoader) && <Avance step={step} />}
           {(step === 5 && !omLoader) && <Signature step={step} />}
-          {(step === 6 && !appLoader && !omLoader && docState.length === 0) && <Identity step={step} />}
+          {/* {(step === 6 && !appLoader && !omLoader && docState.length === 0) && <Identity step={step} />}
           {(step === 6 && !appLoader && !omLoader && docState.length > 0) && (
+            <div className='form'>
+                <p className='form__text'>Merci de terminer les étapes précédentes pour accéder à cette étape.</p>
+                <p className='form__text'>Il vous reste à valider :</p>
+                <p className='form__text'>{docState.map((missingStep) => {
+                  if (docState.indexOf(missingStep) === docState.length -1 ) {
+                    return <Link key={missingStep.step} to={loaderData.pathname + "?etape=" + missingStep.step + "&id=" + id}>{missingStep.name.toUpperCase()}</Link>;
+                  }
+                  return <Link key={missingStep.step} to={loaderData.pathname + "?etape=" + missingStep.step + "&id=" + id}>{missingStep.name.toUpperCase() + ' - '}</Link>;
+                  })}
+                </p>
+            </div>
+          )} */}
+          {(step === 6 && !omLoader && docState.length === 0) && <Identity step={step} />}
+          {(step === 6 && !omLoader && docState.length > 0) && (
             <div className='form'>
                 <p className='form__text'>Merci de terminer les étapes précédentes pour accéder à cette étape.</p>
                 <p className='form__text'>Il vous reste à valider :</p>

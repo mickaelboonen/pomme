@@ -51,6 +51,8 @@ const Identity = ({ isEfForm }) => {
     const file = getValues('om');
     dispatch(uploadFile({ data: {omId: omId , file: file}, step: 'om'}))
   }
+
+  console.log(agent);
   
   return (
     <form className="form">

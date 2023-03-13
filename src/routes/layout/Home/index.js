@@ -49,27 +49,24 @@ const Home = () => {
     <div className="home">
       <HomepageTitle />
       <section className="home__new">
-      <TitleH3>Nouveau document</TitleH3>
-      <div className="home__new-buttons">
-        <div id="ordre-de-mission" className="home__new-buttons-item" onClick={handleClickOnNewDoc}>
-          <IoMdAddCircle
-            className='home__new-buttons-item-image'
-          />
-          <p>Ordre de Mission</p>
+        <TitleH3>Nouveau document</TitleH3>
+        <div className="home__new-buttons">
+          <div id="ordre-de-mission" className="home__new-buttons-item" onClick={handleClickOnNewDoc}>
+            <IoMdAddCircle
+              className='home__new-buttons-item-image'
+            />
+            <p>Ordre de Mission</p>
+          </div>
+          {user === 'mboone01' || user === 'nathalie' && (
+            <div id="état-de-frais" className="home__new-buttons-item" onClick={handleClickOnNewEf}>
+              <IoMdAddCircle
+                className='home__new-buttons-item-image'
+              />
+              <p>État de Frais</p>
+            </div>
+          )}
         </div>
-        <div id="état-de-frais" className="home__new-buttons-item" onClick={handleClickOnNewEf}>
-          <IoMdAddCircle
-            className='home__new-buttons-item-image'
-          />
-          <p>État de Frais</p>
-        </div>
-      </div>
       </section>
-      {/* <section className="home__new" style={{height: '40rem'}}>
-        <PDFViewer width="100%" height="100%">
-          <MyPDF data={omForm} agent={agent} om={currentOM} />
-        </PDFViewer>
-      </section> */}
       <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
       {isModalOpen && <Modal target={newTarget.replace(/-/g, ' ')} user={user} />}
 
