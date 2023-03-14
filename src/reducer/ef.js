@@ -219,9 +219,9 @@ const omFormSlice = createSlice({
       },
       saveEf: (state, action) => {
         const ef = action.payload;
-        
+        console.log("EF = ", ef, "A.P = ", action.payload);
         const stages = [];
-        ef.stages.forEach((stage) => {
+        action.payload.stages.forEach((stage) => {
           stages.push(declareCamelCaseKeys(stage));
         })
         ef.stages = stages;

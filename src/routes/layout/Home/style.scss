@@ -55,6 +55,11 @@
       display: flex;
       justify-content: space-around;
 
+      & svg, & p {
+        cursor: pointer;
+      }
+      
+
       &-item {
         color: #1a1a1a;
         @include vars.centeredFlex;

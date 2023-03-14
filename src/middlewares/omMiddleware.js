@@ -190,7 +190,7 @@ const omMiddleware = (store) => (next) => (action) => {
         .then((response) => {
           console.log(response.data);
             store.dispatch(saveAccomodations(response.data));
-            store.dispatch(setEfLoader(false));
+            // store.dispatch(setEfLoader(false));
 
         })
         .catch((error) => {

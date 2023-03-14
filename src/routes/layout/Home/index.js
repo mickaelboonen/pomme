@@ -44,6 +44,8 @@ const Home = () => {
     // dispatch(toggleModal());
   }
 
+  console.log(user);
+
   return (
     <div className="home">
       <HomepageTitle />

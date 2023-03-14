@@ -45,7 +45,6 @@ const efMiddleware = (store) => (next) => (action) => {
       });
     break;
   case 'ef/updateEfTransports':
-    console.log(action.type, action.payload);
     api.post("/api/ef/transports/update", action.payload)
       .then((response) => {
         store.dispatch(setApiResponse({data: response.data, status: 200}));
@@ -66,22 +65,19 @@ const efMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse(error))
       });
     break;
-  case 'ef/fetchEf': 
-    const { ef: { currentEf } } = store.getState()
-
-    if (currentEf.id === Number(action.payload)) {
-      store.dispatch(setEfLoader(false));
-    }
-    else {
-      api.get("/api/ef/find/" + action.payload)
+  case 'ef/fetchEf':
+    api.get("/api/ef/find/" + action.payload.id)
       .then((response) => {
         store.dispatch(saveEf(response.data))
+
+        if (action.payload.step === '4') {
+          store.dispatch(setEfLoader(false));
+        }
       })
       .catch((error) => {
-        console.error('update EF transports', error);
+        console.error('fetchEf', error);
         // store.dispatch(showTicketCreationResponse(error.response))
       });
-    }
     
     break;
 

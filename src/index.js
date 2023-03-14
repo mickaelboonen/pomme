@@ -240,7 +240,7 @@ const router = createBrowserRouter([
               const step = url.searchParams.get("etape");
               
               store.dispatch(setEfLoader(true));
-              store.dispatch(fetchEf(id));
+              store.dispatch(fetchEf({id: id, step: step}));
 
 
               if (step === '1') {
@@ -251,8 +251,8 @@ const router = createBrowserRouter([
                 store.dispatch(getTransports(om));
               }
               else if (step === '3') {
-                store.dispatch(getMission({id: om, handleEfLoader: true }));
                 store.dispatch(getAccomodations(om));
+                store.dispatch(getMission({id: om, handleEfLoader: true }));
               }
               else if (step === '4') {
                 
@@ -271,19 +271,19 @@ const router = createBrowserRouter([
               const step = url.searchParams.get("etape");
 
               store.dispatch(setEfLoader(true));
-              store.dispatch(fetchEf(id));
+              store.dispatch(fetchEf({id: id, step: step}));
 
 
               if (step === '1') {
                 // store.dispatch(fetchOm(id));
                 store.dispatch(fetchCountries());
-                store.dispatch(getMission(om));
+                store.dispatch(getMission({id: om, handleEfLoader: true }));
               }
               else if (step === '2') {
                 store.dispatch(getTransports(om));
               }
               else if (step === '3') {
-                store.dispatch(getMission(om));
+                store.dispatch(getMission({id: om, handleEfLoader: true }));
                 store.dispatch(getAccomodations(om));
               }
               else if (step === '4') {

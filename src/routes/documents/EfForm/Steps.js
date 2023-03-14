@@ -27,7 +27,8 @@ const Steps = ({ step }) => {
   const loader = useLoaderData();
   const efId = loader.searchParams.get('id');
 
-  const { app: {agent : { unimesStatus }, apiMessage},
+  const { app: { apiMessage },
+    agent: {agent : { unimesStatus }},
     ef: { currentEf }
   } = useSelector((state) => state);
 
