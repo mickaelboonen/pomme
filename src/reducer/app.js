@@ -24,11 +24,11 @@ const omFormSlice = createSlice({
       authenticate: () => {},
       saveUser: () => {},
       getSignature: () => {},
-      validateAuthentication: (state, action) => {
+      // validateAuthentication: (state, action) => {
         
-        state.isAuthenticated= true;
-        state.user = action.payload.user;
-      },
+      //   state.isAuthenticated= true;
+      //   state.user = action.payload.user;
+      // },
       logout: (state) => {
         state.isAuthenticated= false;
         state.user = '';
@@ -95,7 +95,7 @@ export const {
   saveSignature,
   toggleModal,
   logout,
-  validateAuthentication,
+  // validateAuthentication,
   fetchUserData,
   saveUserData,
   getDocument,

@@ -21,8 +21,7 @@ const Home = () => {
     agent: { user, agent, isAuthenticated},
     omForm: { nextOMTarget, omForm, currentOM},
   } = useSelector((state) => state);
-
-
+  
   useEffect(() => {
     if (nextOMTarget !== '') {
       dispatch(toggleModal());
@@ -57,7 +56,7 @@ const Home = () => {
             />
             <p>Ordre de Mission</p>
           </div>
-          {user === 'mboone01' || user === 'nathalie' && (
+          {(user === 'mboone01' || user === 'nathalie') && (
             <div id="état-de-frais" className="home__new-buttons-item" onClick={handleClickOnNewEf}>
               <IoMdAddCircle
                 className='home__new-buttons-item-image'

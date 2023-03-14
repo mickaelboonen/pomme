@@ -34,9 +34,8 @@ const persistConfig = {
   whitelist: ['agent', 'app'],
   blacklist: ['docs', 'omForm', 'ef'],
   stateReconciler: autoMergeLevel2 // ADDED
-}
+};
 
-console.log(persistConfig);
 const reducers = combineReducers({
   ef: efReducer,
   app: appReducer,

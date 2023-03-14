@@ -5,21 +5,13 @@ import { Outlet, useLoaderData } from 'react-router-dom';
 
 import './style.scss';
 import Header from './Header';
-import Login from './Home/Login';
+import Login from './Login';
 
 const Layout = ({ cas }) => {
   
   const theme = localStorage.getItem('theme');
   const colorTheme = localStorage.getItem('color-theme');
-    
-  const devHost = process.env.DEV_HOST + ':8080';
-  console.log("HOST = ", devHost);
-  console.log("ENV = ", process.env.NODE_ENV);
   
-  const { host } = useLoaderData();
-
-  const { isAuthenticated } = useSelector(state => state.app);    
-
   useEffect(() => {
     if (theme === 'dark') {
       document.querySelector(':root').classList.add('dark');
@@ -28,20 +20,14 @@ const Layout = ({ cas }) => {
       document.documentElement.style = colorTheme;
     }
   }, [])
-
-
+  
   return (
-    <div>
+    <>
       <Header cas={cas} />
-      {(!isAuthenticated && devHost !== host) && (
-        <Login cas={cas} />
-      )}
-      {(isAuthenticated || devHost === host) && (
-        <main id="main">
-          <Outlet />
-        </main>
-      )}
-    </div>
+      <main id="main">
+        <Outlet />
+      </main>
+    </>
   );
 };
 

@@ -26,12 +26,12 @@ const DesktopHeader = ({ cas }) => {
     persistor.purge();
     cas.logout("/");
   }
-
+  
   return (
   <div className="header">
       <div className="header__identity">
         <Link to="/" className="header__identity-logo"><p>POM</p></Link>
-        <p className="header__identity-user">Bonjour {agent.firstname}</p>
+        {agent.firstname && <p className="header__identity-user">Bonjour {agent.firstname}</p>}
       </div>
       <BurgerIcon handler={toggleBurgerMenu} />
       <nav className="header__menu">

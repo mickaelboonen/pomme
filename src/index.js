@@ -3,13 +3,12 @@ import ReactDOM from "react-dom/client";
 import { Provider } from 'react-redux';
 
 import { PersistGate } from 'redux-persist/integration/react'
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Route,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider, redirect } from "react-router-dom";
 import store from 'src/store';
+
+
 import DAFC from "src/routes/dafc";
+import Login from "src/routes/layout/Login";
 import Layout from 'src/routes/layout';
 import ErrorPage from 'src/routes/error';
 import Home from 'src/routes/layout/Home';
@@ -49,7 +48,8 @@ import TestPDF from "./routes/test/TestPDF";
 let casEndpoint = "cas.unimes.fr";
 let casOptions = { version: constant.CAS_VERSION_3_0,
   validation_proxy: true,
-  validation_proxy_path: '/cas_proxy' };
+  validation_proxy_path: '/cas_proxy'
+};
 
 const casClient = new CasClient(casEndpoint, casOptions);
 
@@ -57,8 +57,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout cas={casClient} />,
-    loader: async ({ request }) => {
-
+    loader: async ({ request }) =>  {
       return new URL(request.url);
     },
     errorElement: <ErrorPage />,
@@ -69,21 +68,53 @@ const router = createBrowserRouter([
         loader: async ({ request }) => {
 
           const url = new URL(request.url);
-          const { agent: {user} } = store.getState()
-          const id = url.searchParams.get("id");
+          const { agent: { user,isAuthenticated } } = store.getState()
+
+          const devHost = process.env.DEV_HOST + ':8080';
+          console.log("HOST = ", devHost);
+          console.log("ENV = ", process.env.NODE_ENV);
           
-          store.dispatch(fetchUserData({ id: user}));
-          store.dispatch(fetchOMs(user));
-          store.dispatch(fetchEfs(user));
+          if (isAuthenticated) {
+            store.dispatch(fetchUserData({ id: user}));
+            store.dispatch(fetchOMs(user));
+            store.dispatch(fetchEfs(user));
+          }
+          else {
+
+            if (devHost !== url.host) {
+
+              if (url.search.includes('status=in_process')) {
+                return redirect('/se-connecter?' + url.search);
+              }
+              else {
+                return redirect('/se-connecter');
+              }
+            }
+            else {
+              // Dev environment
+              store.dispatch(fetchUserData({ id: user}));
+              store.dispatch(fetchOMs(user));
+              store.dispatch(fetchEfs(user));
+            }
+            
+            
+          }
     
           return new URL(request.url);
         },
       },
-      // {
-      //   path: 'test/pdf',
-      //   element: <TestPDF />
-      // },
-      // new document forms
+      {
+        path: 'se-connecter',
+        element: <Login cas={casClient} />,
+        loader: async ({ request }) =>  {
+
+          const url = new URL(request.url);
+          console.log(url);
+          console.log("rendu");
+          return new URL(request.url);
+        },
+      },
+      // new documents forms
       {
         path: 'nouveau-document/',
         children: [
