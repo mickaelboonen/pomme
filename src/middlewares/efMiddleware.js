@@ -37,7 +37,7 @@ const efMiddleware = (store) => (next) => (action) => {
     console.log(action.type, action.payload);
     api.post("/api/ef/mission/update", action.payload)
       .then((response) => {
-        store.dispatch(setApiResponse({data: response.data, status: 200}));
+        store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })
       .catch((error) => {
         console.error('update EF mission', error);
@@ -47,7 +47,7 @@ const efMiddleware = (store) => (next) => (action) => {
   case 'ef/updateEfTransports':
     api.post("/api/ef/transports/update", action.payload)
       .then((response) => {
-        store.dispatch(setApiResponse({data: response.data, status: 200}));
+        store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })
       .catch((error) => {
         console.error('update EF transports', error);
@@ -58,7 +58,7 @@ const efMiddleware = (store) => (next) => (action) => {
     console.log(action.type, action.payload);
     api.post("/api/ef/accomodations/update", action.payload)
       .then((response) => {
-        store.dispatch(setApiResponse({data: response.data, status: 200}));
+        store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })
       .catch((error) => {
         console.error('update EF transports', error);

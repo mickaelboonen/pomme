@@ -319,8 +319,7 @@ const Avance = ({ step }) => {
           </div>
         </div>
       )} 
-      {apiMessage.data || apiMessage.response && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
-      <Buttons
+      {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />}      <Buttons
         step={step}
         id={omId}
         url={loader}

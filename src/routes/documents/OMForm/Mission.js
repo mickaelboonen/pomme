@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import Map from 'src/assets/images/map.svg';
 
 import './style.scss';
 
@@ -17,14 +16,10 @@ import DateField from 'src/components/Fields/DateField';
 import FileField from 'src/components/Fields/FileField';
 import TextField from 'src/components/Fields/TextField';
 import RadioInput from 'src/components/Fields/RadioInput';
-// import SelectField from 'src/components/Fields/SelectField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import RefusalMessage from 'src/components/Fields/RefusalMessage';
-// import TextFieldWithIcon from 'src/components/Fields/TextFieldWithIcon';
 
 // Selectors 
-// import { displayRegionFieldsInFormMission } from 'src/selectors/domManipulators';
 import { handleRegionFields, defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
 import { getSavedFileName } from 'src/selectors/formDataGetters';
 
@@ -470,8 +465,7 @@ const Mission = ({ step, isEfForm }) => {
           modificationSwitch={modificationSwitch}
         />
       )}
-      {refusal !== '' && <RefusalMessage message={refusal} />}
-      {apiMessage.data || apiMessage.response && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
+      {apiMessage.data || apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />}
       <Buttons
         step={step}
         id={docId}

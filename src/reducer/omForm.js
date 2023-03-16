@@ -8,26 +8,32 @@ const initialState = {
   steps: [
     {
       name: 'Mission',
+      property: 'mission',
       id: 1,
     },
     {
       name: 'Transports',
+      property: 'transports',
       id: 2,
     },
     {
-      name: 'Hébergements',
+      name: 'Hébergement',
+      property: 'accomodations',
       id: 3,
     },
     {
       name: 'Avance',
+      property: 'advance',
       id: 4,
     },
     {
       name: 'Signature',
+      property: 'signature',
       id: 5,
     },
     {
       name: 'Missionnaire',
+      property: 'missioner',
       id: 6,
     },
   ],
@@ -83,11 +89,11 @@ const initialState = {
       step: 'signature',
       data: {},
     }, 
-    {
-      id: 6,
-      step: 'more',
-      data: {},
-    }, 
+    // {
+    //   id: 6,
+    //   step: 'more',
+    //   data: {},
+    // }, 
   ],
   omPdf: "null",
   currentOM: {},

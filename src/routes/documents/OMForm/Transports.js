@@ -337,7 +337,7 @@ const Transports = ({ step }) => {
         <HiddenField id="omId" value={omId} register={register} />
       </div>
       {errors.transports && <p className="form__section-field-error form__section-field-error--open">{errors.transports.message}</p>}
-      {apiMessage.data || apiMessage.response && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
+      {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />}
       <Buttons
         step={step}
         id={omId}

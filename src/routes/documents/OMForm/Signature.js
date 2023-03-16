@@ -160,8 +160,7 @@ const Signature = ({ step }) => {
           fileName={fileNames}
         />
       </div>
-      {apiMessage.data || apiMessage.response && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
-
+      {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />}
       <Buttons
         step={step}
         id={omId}

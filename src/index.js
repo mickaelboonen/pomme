@@ -178,8 +178,7 @@ const router = createBrowserRouter([
               const step = url.searchParams.get("etape");
               const id = url.searchParams.get("id");
 
-              const { agent : { user, agent }} = store.getState((state) => state)
-
+              const { agent : { user, agent } } = store.getState((state) => state);
 
               // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
             
@@ -210,8 +209,7 @@ const router = createBrowserRouter([
                 
                 store.dispatch(fetchAgentSignatureForPdf({ agent: user, omId: id}));
                 store.dispatch(fetchOm({id: id, handleLoader: true,}));
-                if (!agent.hasOwnProperty('lastname') === '45') {
-                  console.log("AMIHERE AGENT = ", agent);
+                if (!agent.hasOwnProperty('lastname')) {
                   store.dispatch(fetchUserData({ id: user}));
                 }
 

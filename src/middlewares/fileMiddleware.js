@@ -333,7 +333,7 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'other-documents/deletePermFile':
       fileApi.delete(`/api/file/perm/delete/${action.payload.id}`)
       .then((response) => {
-        store.dispatch(setApiResponse({data: response.data, status: 200}));
+        store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })
       .catch((error) => {
         console.error('delete perm files', error);

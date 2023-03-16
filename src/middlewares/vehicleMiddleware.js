@@ -59,7 +59,7 @@ const vehicleMiddleware = (store) => (next) => (action) => {
       api.post("/api/vehicle/update/" + action.payload.id, action.payload)
         .then((response) => {
            
-          store.dispatch(setApiResponse({data: response.data, status: 200}));
+          store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
 
         })
       .catch((error) => {
@@ -70,7 +70,7 @@ const vehicleMiddleware = (store) => (next) => (action) => {
         api.delete("/api/vehicle/delete/" + action.payload)
           .then((response) => {
              
-            store.dispatch(setApiResponse({data: response.data, status: 200}));
+            store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
 
           })
         .catch((error) => {

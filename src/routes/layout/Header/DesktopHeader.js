@@ -22,6 +22,7 @@ const DesktopHeader = ({ cas }) => {
   
   const { agent : { user, agent }} = useSelector((state) => state);
   const handleLogOut = () => {
+    localStorage.removeItem('persist:root');
     dispatch(logout());
     persistor.purge();
     cas.logout("/");

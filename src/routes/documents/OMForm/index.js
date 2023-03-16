@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { useLoaderData, useNavigate, Link } from 'react-router-dom';
+import { useLoaderData, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Avance from './Avance';
@@ -19,14 +19,29 @@ import LoaderCircle from '../../../components/LoaderCircle';
 
 const OMForm = () => {  
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
-  const { omForm :{ steps, omLoader, currentOM},
+  const loaderData = useLoaderData();
+
+  const { omForm :{ omForm, steps, omLoader, currentOM},
     app: { appLoader, apiMessage },
   } = useSelector((state) => state);
 
-  const loaderData = useLoaderData();
+  useEffect(() => {
+    if (apiMessage.response) {
+      dispatch(clearMessage());
+    }
+  }, [location.search])
+
+
   const step = Number(loaderData.searchParams.get('etape'));
   const id = Number(loaderData.searchParams.get('id'));
+  // const whereAreWe = steps.find((s) => s.id === Number(step));
+  // console.log(whereAreWe, currentOM);
+
+  //   const isStepOkay = currentOM[whereAreWe];
+  // console.log(isStepOkay);
+  
   
   // If we are in the Identity step for the OM, supposedly the OM is finished
   // We check that and redirect the user if the OM is not finished
@@ -77,8 +92,13 @@ const OMForm = () => {
 
   const docState = checkIfDocIsFinished(step);
 
+  // const defaultValues = omForm.find((omStep) => omStep.id === Number(step)).data;
+  // console.log(defaultValues);
+
+
+
   useEffect(() => {
-    if (apiMessage.status && apiMessage.status === 200) {
+    if (apiMessage.response && apiMessage.response.status === 200) {
       setTimeout(() => {
 
         dispatch(clearMessage());
@@ -90,7 +110,6 @@ const OMForm = () => {
     }
   }, [apiMessage]);
   
-  console.log("loader = ", docState);
   return (
     <>
       <ThreadAsTabs step={step} tabs={steps} isOm urlData={loaderData} />
@@ -100,29 +119,12 @@ const OMForm = () => {
         </div>
         <div className="form-page__container">
           
-        {/* {(omLoader || appLoader) && ( */}
-          {omLoader && (
-            <LoaderCircle />
-          )}
+          {omLoader && <LoaderCircle />}
           {(step === 1 && !omLoader) && <Mission step={step} isEfForm={false} />}
           {(step === 2 && !omLoader) && <Transports step={step} />}
           {(step === 3 && !omLoader) && <Accomodations step={step} />}
           {(step === 4 && !omLoader) && <Avance step={step} />}
           {(step === 5 && !omLoader) && <Signature step={step} />}
-          {/* {(step === 6 && !appLoader && !omLoader && docState.length === 0) && <Identity step={step} />}
-          {(step === 6 && !appLoader && !omLoader && docState.length > 0) && (
-            <div className='form'>
-                <p className='form__text'>Merci de terminer les étapes précédentes pour accéder à cette étape.</p>
-                <p className='form__text'>Il vous reste à valider :</p>
-                <p className='form__text'>{docState.map((missingStep) => {
-                  if (docState.indexOf(missingStep) === docState.length -1 ) {
-                    return <Link key={missingStep.step} to={loaderData.pathname + "?etape=" + missingStep.step + "&id=" + id}>{missingStep.name.toUpperCase()}</Link>;
-                  }
-                  return <Link key={missingStep.step} to={loaderData.pathname + "?etape=" + missingStep.step + "&id=" + id}>{missingStep.name.toUpperCase() + ' - '}</Link>;
-                  })}
-                </p>
-            </div>
-          )} */}
           {(step === 6 && !omLoader && docState.length === 0) && <Identity step={step} />}
           {(step === 6 && !omLoader && docState.length > 0) && (
             <div className='form'>

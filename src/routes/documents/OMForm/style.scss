@@ -49,7 +49,7 @@
       font-weight: bold;
 
 
-      &--open {
+      &--open, &:hover {
         @include vars.centeredFlex;
         font-style: italic;
         color: var(--first-color);

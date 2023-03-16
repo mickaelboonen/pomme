@@ -77,10 +77,11 @@ const omMiddleware = (store) => (next) => (action) => {
       delete action.payload.om;
       api.post("/api/om/mission/update" , action.payload,)
         .then((response) => {
-          store.dispatch(setApiResponse({data: response.data, status: 200}));
+          store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         })
         .catch((error) => {
-          console.error('update new om', error);
+          console.log('update new om', error);
+          console.log('------------------------------------------------------------------------------------------------');
           store.dispatch(setApiResponse(error))
         });
       break;
@@ -89,7 +90,7 @@ const omMiddleware = (store) => (next) => (action) => {
       // TODO : See if POST method is the right one ? Should be PATCH / PUT but not working
       api.post("/api/om/transports/update" , action.payload)
         .then((response) => {
-          store.dispatch(setApiResponse({data: response.data, status: 200}));
+          store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         })
         .catch((error) => {
           console.error('update new om', error);
@@ -101,7 +102,7 @@ const omMiddleware = (store) => (next) => (action) => {
       // TODO : See if POST method is the right one ? Should be PATCH / PUT but not working
       api.post("/api/om/advance/update" , action.payload)
         .then((response) => {
-          store.dispatch(setApiResponse({data: response.data, status: 200}));
+          store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         })
         .catch((error) => {
           console.error('update advance', error);
@@ -113,7 +114,7 @@ const omMiddleware = (store) => (next) => (action) => {
         // TODO : See if POST method is the right one ? Should be PATCH / PUT but not working
         api.post("/api/om/more/update" , action.payload)
           .then((response) => {
-            store.dispatch(setApiResponse({data: response.data, status: 200}));
+            store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
           })
           .catch((error) => {
             console.error('update more', error);
@@ -125,7 +126,7 @@ const omMiddleware = (store) => (next) => (action) => {
         // TODO : See if POST method is the right one ? Should be PATCH / PUT but not working
         api.post("/api/om/signature/update" , action.payload)
           .then((response) => {
-            store.dispatch(setApiResponse({data: response.data, status: 200}));
+            store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
           })
           .catch((error) => {
             console.error('update more', error);
@@ -136,7 +137,7 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/updateAccomodations':
       api.post("/api/om/accomodations/update" , action.payload,)
         .then((response) => {
-          store.dispatch(setApiResponse({data: response.data, status: 200}));
+          store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         })
         .catch((error) => {
           console.error('update accomodations', error);
@@ -149,7 +150,7 @@ const omMiddleware = (store) => (next) => (action) => {
         .then((response) => {
            
             // store.dispatch(saveMoreAndSignature(response.data))
-          store.dispatch(setApiResponse({data: response.data, status: 200}));
+          store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         })
         .catch((error) => {
           console.error('updateMoreAndSignature', error);

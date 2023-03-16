@@ -37,12 +37,17 @@ const omFormSlice = createSlice({
         state.userSignature = action.payload.url;
       },
       setApiResponse: (state, action) => {
-
+        
         if (action.payload.name === 'AxiosError') {
           const newError = {
-            response: action.payload.response,
+            response: {
+              data: action.payload.response.data,
+              status: action.payload.response.status,
+              statusText:action.payload.response.statusText, 
+            },
             message: action.payload.message,
           }
+          
           state.apiMessage = newError;
         }
         else {
