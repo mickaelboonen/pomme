@@ -15,7 +15,7 @@ import ThreadAsTabs from 'src/components/ThreadAsTabs';
 import { clearMessage } from 'src/reducer/app';
 
 import './style.scss';
-import LoaderCircle from '../../../components/LoaderCircle';
+import LoaderCircle from 'src/components/LoaderCircle';
 
 const OMForm = () => {  
   const navigate = useNavigate();
@@ -36,12 +36,6 @@ const OMForm = () => {
 
   const step = Number(loaderData.searchParams.get('etape'));
   const id = Number(loaderData.searchParams.get('id'));
-  // const whereAreWe = steps.find((s) => s.id === Number(step));
-  // console.log(whereAreWe, currentOM);
-
-  //   const isStepOkay = currentOM[whereAreWe];
-  // console.log(isStepOkay);
-  
   
   // If we are in the Identity step for the OM, supposedly the OM is finished
   // We check that and redirect the user if the OM is not finished
@@ -91,11 +85,6 @@ const OMForm = () => {
   }
 
   const docState = checkIfDocIsFinished(step);
-
-  // const defaultValues = omForm.find((omStep) => omStep.id === Number(step)).data;
-  // console.log(defaultValues);
-
-
 
   useEffect(() => {
     if (apiMessage.response && apiMessage.response.status === 200) {

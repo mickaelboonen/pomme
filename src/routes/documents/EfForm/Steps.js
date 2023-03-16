@@ -254,7 +254,7 @@ const Steps = ({ step }) => {
           </div>
         )}
       </div>
-      {apiMessage.hasOwnProperty('response') && <ApiResponse response={apiMessage} updateForm={true} />}
+      {apiMessage.hasOwnProperty('response') && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
 
       <Buttons
         step={step}

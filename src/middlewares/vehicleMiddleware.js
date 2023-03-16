@@ -43,7 +43,7 @@ const vehicleMiddleware = (store) => (next) => (action) => {
 
             const message = "Votre véhicule a bien été enregistré.";
             response.data = message;
-            store.dispatch(setApiResponse(response));
+            store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
           }
           else {
             

@@ -53,7 +53,7 @@ const AddVehicle = () => {
 
   const handleGoBack = () =>  {
     
-    if (apiMessage.hasOwnProperty('data')) {
+    if (apiMessage.hasOwnProperty('response')) {
       dispatch(clearMessage());
     }
     if (areWeUpdating) {
@@ -62,7 +62,7 @@ const AddVehicle = () => {
     
     navigate(`/utilisateur/${user}/mes-documents`);
   }
-  
+  console.log(apiMessage, apiMessage.response);
   return (
   <main className="form-page__container">
     <div className="form-page__title">
@@ -113,7 +113,7 @@ const AddVehicle = () => {
           error={errors.police}
           required="Merci de renseigner le numéro de police du véhicule."
         />
-                {apiMessage.data && <ApiResponse response={apiMessage} updateForm={true} />}
+        {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
 
         <div className="form__section-field-button" id="submit-vehicle">
           <ButtonElement

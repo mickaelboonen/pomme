@@ -189,7 +189,7 @@ const Identity = ({ isEfForm }) => {
           )}
         </div>
       </div>
-      {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
+      {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />}
       <div className="form__section">
         <div className="form__section-field-buttons">
           <BlobProvider document={<MyPDF agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />}>
