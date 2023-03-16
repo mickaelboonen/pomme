@@ -319,7 +319,7 @@ const Avance = ({ step }) => {
           </div>
         </div>
       )} 
-      {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
+      {apiMessage.data || apiMessage.response && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
       <Buttons
         step={step}
         id={omId}

@@ -471,7 +471,7 @@ const Mission = ({ step, isEfForm }) => {
         />
       )}
       {refusal !== '' && <RefusalMessage message={refusal} />}
-      {apiMessage.data && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
+      {apiMessage.data || apiMessage.response && <ApiResponse response={apiMessage} updateForm={areWeUpdatingData} />}
       <Buttons
         step={step}
         id={docId}
