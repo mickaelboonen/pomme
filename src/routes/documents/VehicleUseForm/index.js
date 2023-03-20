@@ -10,6 +10,7 @@ import './style.scss';
 // Components
 import VehicleData from './VehicleData';
 import PageTitle from 'src/components/PageTitle';
+import ApiResponse from 'src/components/ApiResponse';
 import SwitchButton from 'src/components/SwitchButton';
 import TextField from 'src/components/Fields/TextField';
 import FileField from 'src/components/Fields/FileField';
@@ -36,7 +37,8 @@ const VehicleUseForm = () => {
   const omId = url.searchParams.get('omId');
 
   let { 
-    app: { agent  },
+    app : { apiMessage },
+    agent : { agent },
     docs: { agentSignature },
     omForm: { isSideFormInDB },
     vehicle: { savedAuthorization, message, needsPdf ,vehicleTypes, vehicles, formDefaultValues, unimesVehicles, loader },
@@ -370,6 +372,8 @@ const VehicleUseForm = () => {
                 {needsPdf && <a href={'/modifier-un-document/ordre-de-mission?etape=2&id='+ omId}>Retourner au formulaire de l'ordre de mission</a>}
               </div>
             )} 
+            {apiMessage.response && <ApiResponse apiResponse={apiMessage} />}
+
             {!externalSignature && (
               <div className="form__section-field">
                 <div className="form__section-field-button">

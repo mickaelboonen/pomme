@@ -103,7 +103,35 @@ const omMiddleware = (store) => (next) => (action) => {
             }
           })
         }
-        else if (step === 'authorization') {
+
+      }
+      else if (type === 'ef') {
+        
+        if (step === "mission") {
+          data.modificationFiles.forEach((file) => {
+            if (file instanceof File) {
+              const fileToUpload = {
+                efId: data.docId,
+                type: 'mission',
+                file: file,
+              }
+              filesToUpload.push(fileToUpload);
+            }
+          })
+        }
+        else if (step === 'transports') {
+          const files = handleEfFilesUploadPayload(data, 'transports');
+          files.forEach((file) => filesToUpload.push(file));
+        }
+        else if (step === 'accomodations') {
+          console.log("AM HERE");
+          const files = handleEfFilesUploadPayload(data, 'accomodations');
+          files.forEach((file) => filesToUpload.push(file));
+        }
+      }
+      else if (type === 'authorization') {
+
+        if (step === 'authorization') {
 
           if (data.externalSignature instanceof File) {
             const signature = {
@@ -136,31 +164,6 @@ const omMiddleware = (store) => (next) => (action) => {
               filesToUpload.push(insurance);
           }
         }
-
-      }
-      else if (type === 'ef') {
-        
-        if (step === "mission") {
-          data.modificationFiles.forEach((file) => {
-            if (file instanceof File) {
-              const fileToUpload = {
-                efId: data.docId,
-                type: 'mission',
-                file: file,
-              }
-              filesToUpload.push(fileToUpload);
-            }
-          })
-        }
-        else if (step === 'transports') {
-          const files = handleEfFilesUploadPayload(data, 'transports');
-          files.forEach((file) => filesToUpload.push(file));
-        }
-        else if (step === 'accomodations') {
-          console.log("AM HERE");
-          const files = handleEfFilesUploadPayload(data, 'accomodations');
-          files.forEach((file) => filesToUpload.push(file));
-        }
       }
       console.log('filesToUpload - ', filesToUpload);
       
@@ -179,9 +182,6 @@ const omMiddleware = (store) => (next) => (action) => {
             }
             else if (step === 'mission') {
               data.missionPurposeFile = [];
-            }
-            else if (step === 'authorization') {
-              data.externalSignature = [];
             }
             
             // Retrieving the url for each file and assigning it to the right property
@@ -245,10 +245,6 @@ const omMiddleware = (store) => (next) => (action) => {
               console.log('before update : ', data);
               store.dispatch(updateSignature(data));
             }
-            else if (step === 'authorization') {
-              console.log('before update : ', data);
-              store.dispatch(requestVehicleAuthorization(data));
-            }
             else if (step === 'om') {
               console.log('before update : ', data);
               delete data.file;
@@ -307,9 +303,24 @@ const omMiddleware = (store) => (next) => (action) => {
               store.dispatch(updateEfAccomodations(data));
             }
           }
+          else if (type === 'authorization') {
+            data.externalSignature = [];
 
-
-          
+            response.data.forEach((file) => {
+              
+               if (file.type === 'externalSignature') {
+                data.externalSignature.push(file.file.url);
+              }
+              else if (file.type === 'insurance') {
+                data.insurance = file.file.url;
+              }
+              else if (file.type === 'registration') {
+                data.registration_document = file.file.url;
+              }
+            })
+            
+            store.dispatch(requestVehicleAuthorization(data));
+          }
         })
         .catch((error) => {
           console.error('addfiles', error);

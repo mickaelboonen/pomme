@@ -210,7 +210,7 @@
   margin: auto;
 
   &--vehicle {
-    width: 50%;
+    // width: 50%;
   }
 }
 
@@ -290,6 +290,15 @@
 
     &-step {
       font-size: 1em;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  
+  .form-container {
+    &--vehicle {
+      width: 60%;
     }
   }
 

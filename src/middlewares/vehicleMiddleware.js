@@ -52,6 +52,7 @@ const vehicleMiddleware = (store) => (next) => (action) => {
         })
         .catch((error) => {
           console.error('add vehicle', error);
+          store.dispatch(setApiResponse(error));
         });
       break;
     
