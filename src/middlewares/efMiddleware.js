@@ -80,6 +80,19 @@ const efMiddleware = (store) => (next) => (action) => {
       });
     
     break;
+  case 'ef/getEfAccomodations':
+    api.get("/api/ef/accomodations/find/" + action.payload)
+      .then((response) => {
+        console.log(response.data);
+          store.dispatch(saveEfAccomodations(response.data));
+          // store.dispatch(setEfLoader(false));
+
+      })
+      .catch((error) => {
+        console.error('get ef accomodations', error);
+        store.dispatch(setApiResponse(error))
+      });
+    break;
 
     default:
   }

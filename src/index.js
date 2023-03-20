@@ -39,7 +39,7 @@ import { findPermFilesByAgent, fetchAgentSignatureForPdf } from "src/reducer/oth
 import { getVehicles, getVehicleDocuments } from "src/reducer/vehicle";
 import { getMission, fetchOm, getTransports, getAccomodations, getAdvance, getMore, setLoader  } from "src/reducer/omForm";
 import { fetchOMs, fetchEfs, fetchUserData } from "src/reducer/agent";
-import { setEfLoader, fetchEf } from "src/reducer/ef";
+import { setEfLoader, fetchEf, getEfAccomodations } from "src/reducer/ef";
 
 
 import { persistor } from 'src/store';
@@ -250,7 +250,7 @@ const router = createBrowserRouter([
                 store.dispatch(getTransports(om));
               }
               else if (step === '3') {
-                store.dispatch(getAccomodations(om));
+                store.dispatch(getEfAccomodations(id));
                 store.dispatch(getMission({id: om, handleEfLoader: true }));
               }
               else if (step === '4') {
@@ -282,8 +282,8 @@ const router = createBrowserRouter([
                 store.dispatch(getTransports(om));
               }
               else if (step === '3') {
+                store.dispatch(getEfAccomodations(id));
                 store.dispatch(getMission({id: om, handleEfLoader: true }));
-                store.dispatch(getAccomodations(om));
               }
               else if (step === '4') {
               }

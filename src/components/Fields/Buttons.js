@@ -9,10 +9,12 @@ import {
   turnTransportsDataToDbFormat,
   turnAccomodationDataToDbFormat,
   turnAdvanceDataToDbFormat,
-  turnSignatureDataToDbFormat
+  turnSignatureDataToDbFormat,
+  efAccomodationsToDbFormat
 } from 'src/selectors/dataToDbFormat';
+import { efAccommodationSaveAs } from '../../selectors/formSubmitHandlers';
 
-const Buttons = ({ trigger, step, url, id, watch, update, userSignature}) => {
+const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,7 +22,7 @@ const Buttons = ({ trigger, step, url, id, watch, update, userSignature}) => {
 
   const nextStep = step + 1;
   const backStep = step - 1;
-  
+  console.log(step);
   const handleClick = () => {
     const data = watch();
 
@@ -90,6 +92,17 @@ const Buttons = ({ trigger, step, url, id, watch, update, userSignature}) => {
       }
     }
     else if (step === 3) { // --------------------------------------------------------------------------------
+
+      if (type === "ef") {
+        const dataToBeSubmitted = efAccomodationsToDbFormat(data);
+        if ( data.eventFiles.length > 0 || data.hotelFiles.length > 0 ) {
+          dispatch(uploadFile({data: dataToBeSubmitted, step: 'accomodations', docType: 'ef'}));
+        }
+        else {
+          dispatch(update(dataToBeSubmitted));
+        }
+      }
+      return;
       data.omId = id;
       const dataToBeSubmitted = turnAccomodationDataToDbFormat(data);
       dispatch(update(dataToBeSubmitted));

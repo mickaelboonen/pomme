@@ -9,6 +9,7 @@ import TextField from 'src/components/Fields/TextField';
 import FileField from 'src/components/Fields/FileField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
+import ApiResponse from 'src/components/ApiResponse';
 
 // Selectors & actions
 import { getMaxMealsAndNights } from 'src/selectors/formValidationsFunctions';
@@ -25,7 +26,8 @@ const Hebergement = ({ step }) => {
   const efId = loader.searchParams.get('id');
   
   const { ef: { },
-    omForm: { omForm }
+    omForm: { omForm },
+    app: { apiMessage }
   } = useSelector((state) => state);
 
   const { data } = omForm[2];
@@ -241,15 +243,15 @@ const Hebergement = ({ step }) => {
         </div>
         <p className="form__section-field-label" style={{marginTop: '-1.5rem', marginLeft: '1rem', fontStyle: 'italic'}}>(*) Compte rendu à adresser obligatoirement au service de la recherche</p>
         
-        <HiddenField id="efId" register={register} value={efId} />
-
+        <HiddenField id="docId" register={register} value={efId} />
+        {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
         <Buttons
           step={step}
           id={efId}
           url={loader}
           watch={watch}
-          // update={updateTransports}
-          trigger={trigger}
+          type="ef"
+          update={updateEfAccomodations}
         />
     </form>
     

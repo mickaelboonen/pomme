@@ -336,3 +336,23 @@ export const agentDataToAppFormat = (data) => {
 
   return formattedValues;
 }
+
+export const efAccomodationsToDbFormat = (data) => {
+
+  const formattedValues = {
+    docId: data.docId,
+    status: data.status,
+    hotel: isNaN(Number(data.hotel)) ? 0 : Number(data.hotel),
+    hotelFiles: data.hotelFiles,
+    mealsPaidByAgentInFrance: isNaN(Number(data.mealsPaidByAgentInFrance)) ? 0 : Number(data.mealsPaidByAgentInFrance),
+    mealsPaidByAgentOverseas: isNaN(Number(data.mealsPaidByAgentOverseas)) ? 0 : Number(data.mealsPaidByAgentOverseas),
+    freeMeals: isNaN(Number(data.freeMeals)) ? 0 : Number(data.freeMeals),
+    mealsInAdminRestaurants: isNaN(Number(data.mealsInAdminRestaurants)) ? 0 : Number(data.mealsInAdminRestaurants),
+    event: isNaN(Number(data.event)) ? 0 : Number(data.event),
+    eventFiles: data.eventFiles,
+  }
+
+  console.log(formattedValues);
+
+  return formattedValues;
+}
