@@ -379,6 +379,7 @@ const omMiddleware = (store) => (next) => (action) => {
         break;
 
     case 'other-documents/fetchAgentSignatureForPdf':
+      console.log(action.payload);
       fileApi.post('/api/agent/signature', action.payload)
         .then((response) => {
           store.dispatch(saveAgentSignatureForPdf(response.data));

@@ -123,11 +123,11 @@ const router = createBrowserRouter([
             element: <VehicleUseForm />,
             loader: async ({ request }) => {
               const url = new URL(request.url);
-              const { app: {user} } = store.getState()
+              const { agent: { user } } = store.getState()
               const id = url.searchParams.get("id");
               
               store.dispatch(fetchAgentSignatureForPdf({ agent: user, omId: id}));
-              store.dispatch(fetchUserData({ id: user}));
+              // store.dispatch(fetchUserData({ id: user}));
               store.dispatch(getVehicles({agent: user}));
               store.dispatch(getVehicleDocuments(user));
               return url;  
@@ -138,10 +138,11 @@ const router = createBrowserRouter([
             element: <VehicleUseForm />,
             loader: async ({ request }) => {
               const url = new URL(request.url);
-              const { app: {user} } = store.getState();
+              const { agent : {user} } = store.getState();
               const id = url.searchParams.get("id");
+
               store.dispatch(fetchAgentSignatureForPdf({ agent: user, omId: id}));
-              store.dispatch(fetchUserData({ id: user}));
+              // store.dispatch(fetchUserData({ id: user}));
               store.dispatch(getVehicles({agent: user}));
               store.dispatch(getVehicleDocuments(user));
               return url;  
