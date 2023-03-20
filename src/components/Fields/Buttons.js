@@ -134,18 +134,15 @@ const Buttons = ({ trigger, step, url, id, watch, update, userSignature}) => {
   
   return (
     <div className="form__section">
-    <div className="form__section-field-buttons">
-      {/* <button type='button' id='back' onClick={handleClickOnNav}><Link to={step === 1 ? `/utilisateur/${user}/mes-ordres-de-mission` : url.pathname + setNewSearch(url, backStep)}>{'<'}</Link></button> */}
-      <button type="button" id="previous-button" onClick={handleClick}>Enregistrer la saisie en cours</button>
-      <button type="submit">Valider la saisie définitive</button>
-      {/* <button type='button' id='next' onClick={handleClickOnNav}><Link to={url.pathname + setNewSearch(url, nextStep)}>{'>'}</Link></button> */}
-    </div>
       <div className="form__section-field-buttons">
-        <button type='button' id='back' onClick={handleClickOnNav}><Link to={step === 1 ? `/utilisateur/${user}/mes-ordres-de-mission` : url.pathname + setNewSearch(url, backStep)}>{'<<'}</Link></button>
-        {/* <button type="button" id="previous-button" onClick={handleClick}>Enregistrer en l'état</button>
-        <button type="submit">Valider les données</button> */}
-        {/* <p>Pensez à enregistrer ou valider les données avant de changer de page</p> */}
-        <button type='button' id='next' onClick={handleClickOnNav} style={{marginRight: 0}}><Link to={url.pathname + setNewSearch(url, nextStep)}>{'>>'}</Link></button>
+        <div className="form__section-field-buttons__row">
+          <button type="button" id="previous-button" onClick={handleClick}>Enregistrer la saisie en cours</button>
+          <button type="submit">Valider la saisie définitive</button>
+        </div>
+        <div className="form__section-field-buttons__row">
+          <button type='button' id='back' onClick={handleClickOnNav}><Link to={step === 1 ? `/utilisateur/${user}/mes-ordres-de-mission` : url.pathname + setNewSearch(url, backStep)}>{'<<'}</Link></button>
+          <button type='button' id='next' onClick={handleClickOnNav} style={{marginRight: 0}}><Link to={url.pathname + setNewSearch(url, nextStep)}>{'>>'}</Link></button>
+        </div>
       </div>
     </div>
   );

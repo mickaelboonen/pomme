@@ -275,15 +275,32 @@
     }
 
     &-buttons {
-      display: flex;
-      justify-content: center;
+      // display: flex;
+      // justify-content: center;
       margin: 2rem;
 
-
-        & button {
+      & button {
         @include vars.button;
+        max-width: 180px;
+
+        &:last-of-type {
+          margin-right: 0;
+        }
 
       }
+
+      &__row {
+        display: flex;
+        justify-content: center;
+
+        &:first-of-type {
+          margin-bottom: 0.5rem;
+        }
+        // &:last-child {
+        //   margin-right: 0;
+        // }
+      }
+
 
       &--validation {
         flex-direction: column;
