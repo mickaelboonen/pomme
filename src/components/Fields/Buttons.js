@@ -119,15 +119,6 @@ const Buttons = ({ trigger, step, url, id, watch, update, userSignature}) => {
     }
   }
 
-  const handleClickOnNav = (event) => {    
-    if (event.target.querySelector('a').href.includes(user)) {
-      navigate(`/utilisateur/${user}/mes-ordres-de-mission`)
-    }else {
-      // navigate('?etape=' + (event.target.id === 'back' ? step - 1 : step + 1) + '&id=' + id);
-      navigate(setNewSearch(url, event.target.id === 'back' ? step - 1 : step + 1));
-    } 
-  }
-
   const setNewSearch = (url, step) => {
     return '?etape=' + step + url.search.slice(8);
   }
@@ -140,8 +131,8 @@ const Buttons = ({ trigger, step, url, id, watch, update, userSignature}) => {
           <button type="submit">Valider la saisie définitive</button>
         </div>
         <div className="form__section-field-buttons__row">
-          <button type='button' id='back' onClick={handleClickOnNav}><Link to={step === 1 ? `/utilisateur/${user}/mes-ordres-de-mission` : url.pathname + setNewSearch(url, backStep)}>{'<<'}</Link></button>
-          <button type='button' id='next' onClick={handleClickOnNav} style={{marginRight: 0}}><Link to={url.pathname + setNewSearch(url, nextStep)}>{'>>'}</Link></button>
+          <Link to={step === 1 ? `/utilisateur/${user}/mes-ordres-de-mission` : url.pathname + setNewSearch(url, backStep)}>{'<<'}</Link>
+          <Link to={url.pathname + setNewSearch(url, nextStep)}>{'>>'}</Link>
         </div>
       </div>
     </div>

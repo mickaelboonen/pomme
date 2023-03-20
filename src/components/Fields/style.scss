@@ -331,9 +331,16 @@
         &:first-of-type {
           margin-bottom: 0.5rem;
         }
-        // &:last-child {
-        //   margin-right: 0;
-        // }
+        
+        & a {
+          @include vars.button;
+          max-width: 180px;
+  
+          &:last-of-type {
+            margin-right: 0;
+          }
+  
+        }
       }
 
 
