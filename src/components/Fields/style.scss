@@ -78,6 +78,20 @@
         font-size: 1.2em;
         margin-bottom: 1rem;
       }
+      &-text {
+
+        & span {
+         text-transform: uppercase;
+         color: var(--second-color);
+         font-weight: bold;
+         margin-right: 0.5rem;
+        // font-size: 1.2em;:
+        }
+      }
+      &-list {
+        margin: 01rem 2rem;
+        // margin-left: 2rem;
+      }
     
       &-options {
 
