@@ -7,6 +7,7 @@ import './style.scss';
 const DocButtons = ({ id, status, name, om, file,  isDocFinished, isOm}) => {
   const downloadFileStatusArray = [2, 8];
   let buttons = [];
+  console.log(id);
   
   if (isOm) {
     buttons = [
@@ -40,13 +41,13 @@ const DocButtons = ({ id, status, name, om, file,  isDocFinished, isOm}) => {
     buttons = [
       {
         name: 'modify',
-        link: "/modifier-un-document/état-de-frais?etape=1&id=" + id + '&om=' + om.id,
+        link: `/modifier-un-document/état-de-frais?etape=1&id=${id}&om=${om ? om.id : null}`,
         label: 'Reprendre / Modifier',
         status: [1],
       },
       {
         name: 'submit',
-        link: "/modifier-un-document/état-de-frais?etape=6&id=" + id + '&om=' + om.id,
+        link: `/modifier-un-document/état-de-frais?etape=6&id=${id}&om=${om ? om.id : null}`,
         label: "Soumettre l'ordre de mission",
         status: [1],
       },

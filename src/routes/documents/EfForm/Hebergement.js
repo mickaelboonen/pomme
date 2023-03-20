@@ -136,7 +136,7 @@ const Hebergement = ({ step }) => {
             formField="hotelFiles"
             id="hotel-files-field"
             multiple
-            label="Facture(s) nominatie(s) acquittée(s)"
+            label="Facture.s nominative.s acquittée.s"
             placeholder=""
             error={errors.hotelFiles}
           />
