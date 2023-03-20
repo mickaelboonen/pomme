@@ -65,6 +65,11 @@
 
   }
     &-container{
+
+      // &:#meal-rules {
+      //   background-color: #f0f;
+      // }
+
       &-reminder {
         margin-top: 1rem;
         text-align: center;
@@ -78,18 +83,34 @@
         font-size: 1.2em;
         margin-bottom: 1rem;
       }
+      &-separator {
+        width: 80%;
+        margin: auto;
+        border-bottom: 1px solid #000;
+      }
       &-text {
+        margin-top: 1rem;
+        text-align: justify;
+        font-size: 0.8em;
+
+        &__span {
+         margin-right: 0.5rem;
+        }
 
         & span {
          text-transform: uppercase;
          color: var(--second-color);
          font-weight: bold;
-         margin-right: 0.5rem;
-        // font-size: 1.2em;:
+        }
+
+        &--infos {
+          font-style: italic;
         }
       }
       &-list {
-        margin: 01rem 2rem;
+        margin: 0.5rem 2rem;
+        font-size: 0.8em;
+        font-weight: bold;
         // margin-left: 2rem;
       }
     
