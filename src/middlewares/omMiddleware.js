@@ -12,7 +12,7 @@ import {
 } from 'src/reducer/omForm';
 import { saveOMs } from 'src/reducer/agent';
 import { setApiResponse } from 'src/reducer/app';
-import { setEfLoader } from 'src/reducer/ef';
+import { setEfLoader, fetchEf } from 'src/reducer/ef';
 import { api } from './api';
 
 
@@ -40,6 +40,13 @@ const omMiddleware = (store) => (next) => (action) => {
           store.dispatch(saveOm(response.data))
           if (action.payload.handleLoader) {
             store.dispatch(setLoader(false));
+          }
+          if (action.payload.handleEfLoader) {
+            store.dispatch(setEfLoader(false));
+          }
+
+          if (action.payload.workflow === 'ef') {
+            store.dispatch(fetchEf(action.payload.data));
           }
         })
         .catch((error) => {

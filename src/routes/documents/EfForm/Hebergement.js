@@ -18,6 +18,10 @@ import { efHelp } from 'src/data/efHelp';
 import { toggleHelp, updateEfAccomodations } from 'src/reducer/ef';
 import { uploadFile } from 'src/reducer/omForm';
 
+// Selectors
+import { declareCamelCaseKeys } from '../../../selectors/keyObjectService';
+import { getSavedFileName } from '../../../selectors/formDataGetters';
+
 const Hebergement = ({ step }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,14 +29,41 @@ const Hebergement = ({ step }) => {
   const loader = useLoaderData();
   const efId = loader.searchParams.get('id');
   
-  const { ef: { currentEf: { accomodations, mission }},
-    omForm: { omForm },
+  const { ef: { currentEf: { accomodations }},
+    omForm: { currentOM },
     app: { apiMessage }
   } = useSelector((state) => state);
   
-  const { data } = omForm[2];
-  const missionData = omForm[0].data;
+  let defaultValues = null;
+  if (accomodations !== undefined) {
+    defaultValues = declareCamelCaseKeys(accomodations);
+  }
 
+  // FILENAMES ----------------------------------------------------
+  let hotelFileNames= '';
+  
+  if (defaultValues.hotelFiles.length === 1) {
+    hotelFileNames = getSavedFileName(defaultValues.hotelFiles[0]);
+  }
+  else if (defaultValues.hotelFiles.length > 1) {
+    defaultValues.hotelFiles.forEach((file) => {
+      hotelFileNames += getSavedFileName(file) + ' - ';
+    })
+  }
+
+  let eventFilesNames= '';
+  
+  if (defaultValues.eventFiles.length === 1) {
+    eventFilesNames = getSavedFileName(defaultValues.eventFiles[0]);
+  }
+  else if (defaultValues.eventFiles.length > 1) {
+    defaultValues.eventFiles.forEach((file) => {
+      eventFilesNames += getSavedFileName(file) + ' - ';
+    })
+  }
+
+  // ---------------------------------------------------------------
+  
   const {
     register,
     handleSubmit,
@@ -42,7 +73,7 @@ const Hebergement = ({ step }) => {
     setError,
     formState:
     { errors },
-  } = useForm({ defaultValues: accomodations });
+  } = useForm({ defaultValues: defaultValues });
 
   const onSubmit = (data) => {
     console.log(data);
@@ -59,7 +90,7 @@ const Hebergement = ({ step }) => {
     } 
 
     const totalMealsAgent = getTotalMealsAgent(data);
-    const maxMealsNumber = getMaxMealsAndNights(missionData); 
+    const maxMealsNumber = getMaxMealsAndNights(mission); 
     const mealsErrorElement = document.getElementById('meals-error');
 
     if (totalMealsAgent > maxMealsNumber) {
@@ -98,7 +129,8 @@ const Hebergement = ({ step }) => {
     return total;
   }
 
-  const maxMealsNumber = getMaxMealsAndNights(missionData);
+  // console.log(currentOM.mission);
+  const maxMealsNumber = getMaxMealsAndNights(currentOM.mission);
 
   useEffect(() => {
     trigger();
@@ -137,8 +169,8 @@ const Hebergement = ({ step }) => {
             id="hotel-files-field"
             multiple
             label="Facture.s nominative.s acquittée.s"
-            placeholder=""
             error={errors.hotelFiles}
+            fileName={hotelFileNames}
           />
         </div>
       </div>
@@ -151,12 +183,12 @@ const Hebergement = ({ step }) => {
           isNumber
           min="0"
           label="Repas pris dans un restaurant administratif ou assimilé"
-          placeholder={"Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné " + data.mealsInAdminRestaurants + " repas."}
+          placeholder={"Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné " + currentOM.accomodations.mealsInAdminRestaurants + " repas."}
           hasHelp
           helpFunction={showHelp}
         />
         
-        {missionData.region === "métropole" && (
+        {currentOM.mission.region === "métropole" && (
           <TextField
             id="paid-by-agent-in-France-field"
             formField="mealsPaidByAgentInFrance"
@@ -170,7 +202,7 @@ const Hebergement = ({ step }) => {
           />
         )}
         
-        {missionData.region === "métropole" && (
+        {currentOM.mission.region === "métropole" && (
           <TextField
             id="free-field"
             formField="freeMeals"
@@ -181,14 +213,14 @@ const Hebergement = ({ step }) => {
             placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné ${maxMealsNumber - data.mealsInAdminRestaurants - data.mealsPaidByAgent} repas gratuits.`}
           />
         )}
-        {missionData.region !== "métropole" && (
+        {currentOM.mission.region !== "métropole" && (
           <TextField
             id='paid-by-agent-overseas-field'
             formField="mealsPaidByAgentOverseas"
             register={register}
             isNumber
             min="0"
-            placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez ${data.mealsPaidByAgent} repas.`}
+            placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez ${currentOM.accomodations.mealsPaidByAgent} repas.`}
             label="Repas à titre onéreux à l'étranger"
             hasHelp
             helpFunction={showHelp}
@@ -196,10 +228,8 @@ const Hebergement = ({ step }) => {
         )}
         {!isNaN(maxMealsNumber) && <p className="form__section-field-label form__section-field-label--infos">Vous avez le droit à un total de : <span>{maxMealsNumber}</span> repas.</p>}
 
-        {missionData.region !== "métropole" && (
-          <>
-          <p className='form__section-field-label form__section-field-label--infos'>Forfait de Remboursement choisi : <span>{missionData.abroadCosts.replace('-', ' ')}</span>.</p>
-          </>
+        {currentOM.mission.region !== "métropole" && (
+          <p className='form__section-field-label form__section-field-label--infos'>Forfait de Remboursement choisi : <span>{currentOM.mission.abroad_costs.replace('-', ' ')}</span>.</p>
         )}
         <p id="meals-error" className="form__section-field-error" />
       </div>        
@@ -226,6 +256,7 @@ const Hebergement = ({ step }) => {
               id="event-files"
               multiple
               label="Facture nominative acquittée et programme"
+              fileName={eventFilesNames}
             />
           </div>
         </div>

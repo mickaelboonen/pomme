@@ -12,7 +12,10 @@ export const getAccomodationsDefault = (path) => {
 }
 
 export const getSavedFileName = (urlFile) => {
-  const file = urlFile.split('/');
+
+  const spliter = process.env.NODE_ENV === 'development' ? '\\' : '/';
+
+  const file = urlFile.split(spliter);
   const  filename = file[file.length - 1];
 
   

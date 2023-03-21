@@ -239,8 +239,8 @@ const router = createBrowserRouter([
               const step = url.searchParams.get("etape");
               
               store.dispatch(setEfLoader(true));
+              store.dispatch(fetchOm({id: om, handleEfLoader: false,}));
               store.dispatch(fetchEf({id: id, step: step}));
-
 
               if (step === '1') {
                 store.dispatch(fetchCountries());
@@ -250,7 +250,7 @@ const router = createBrowserRouter([
                 store.dispatch(getTransports(om));
               }
               else if (step === '3') {
-                store.dispatch(getEfAccomodations(id));
+                // store.dispatch(getEfAccomodations(id));
                 // store.dispatch(getMission({id: om, handleEfLoader: true }));
               }
               else if (step === '4') {
@@ -270,7 +270,8 @@ const router = createBrowserRouter([
               const step = url.searchParams.get("etape");
 
               store.dispatch(setEfLoader(true));
-              store.dispatch(fetchEf({id: id, step: step}));
+              store.dispatch(fetchOm({id: om, workflow: 'ef', data: {id: id, step: step}}));
+              // store.dispatch(fetchEf({id: id, step: step}));
 
 
               if (step === '1') {
@@ -282,8 +283,8 @@ const router = createBrowserRouter([
                 store.dispatch(getTransports(om));
               }
               else if (step === '3') {
-                store.dispatch(getEfAccomodations(id));
-                store.dispatch(getMission({id: om, handleEfLoader: true }));
+                // store.dispatch(getEfAccomodations(id));
+                // store.dispatch(getMission({id: om, handleEfLoader: true }));
               }
               else if (step === '4') {
               }
