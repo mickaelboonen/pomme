@@ -176,6 +176,22 @@ const Hebergement = ({ step }) => {
       </div>
       <FormSectionTitle>Repas</FormSectionTitle>
       <div className="form__section-field" id="meals">
+        <div className='form__section-container' id="meals-rules">
+          <h4 className="form__section-container-title">Règle de déclaration des repas</h4>
+          <p className="form__section-container-text"><span className='form__section-container-text__span'>NON VACATAIRE :</span>Pour pouvoir bénéficier d’un remboursement de ses frais de repas et d’hébergement, le voyageur doit être en déplacement sur les créneaux complets suivants :</p>
+          <ul className="form__section-container-list">
+            <li>Pour le midi : entre 12h00 et 14h00</li>
+            <li>Pour le soir : entre 19h00 et 21h00</li>
+          </ul>
+          { !isNaN(maxMealsNumber) && <p className="form__section-container-text">D'après les dates fournies à l'étape <span>MISSION</span>, vous pouvez demander jusqu'à : <span>{maxMealsNumber}</span> repas.</p>}
+          <div />
+          <p className="form__section-container-text"><span className='form__section-container-text__span'>VACATAIRE :</span>Les frais de repas ne pourront être pris en compte que pour les intervenants dispensant des cours le matin et l’après-midi d’une même journée. La prise en charge est alors faite au tarif « passager » en vigueur du CROUS.</p>
+          <p className="form__section-container-text form__section-container-text--infos"><span className='form__section-container-text__span'>NOTA BENE :</span> Merci de ne pas déclarer les repas gratuits ou non pris par l'agent.</p>
+
+          {currentOM.mission.region !== "métropole" && (
+          <p className='form__section-container-text'><span>MISSION A L'ÉTRANGER : </span>Forfait de Remboursement choisi : <span>{currentOM.mission.abroad_costs.replace('-', ' ')}</span>.</p>
+        )}
+        </div>
         <TextField
           id="admin-restaurant-field"
           formField="mealsInAdminRestaurants"
@@ -226,11 +242,11 @@ const Hebergement = ({ step }) => {
             helpFunction={showHelp}
           />
         )}
-        {!isNaN(maxMealsNumber) && <p className="form__section-field-label form__section-field-label--infos">Vous avez le droit à un total de : <span>{maxMealsNumber}</span> repas.</p>}
+        {/* {!isNaN(maxMealsNumber) && <p className="form__section-field-label form__section-field-label--infos">Vous avez le droit à un total de : <span>{maxMealsNumber}</span> repas.</p>} */}
 
-        {currentOM.mission.region !== "métropole" && (
+        {/* {currentOM.mission.region !== "métropole" && (
           <p className='form__section-field-label form__section-field-label--infos'>Forfait de Remboursement choisi : <span>{currentOM.mission.abroad_costs.replace('-', ' ')}</span>.</p>
-        )}
+        )} */}
         <p id="meals-error" className="form__section-field-error" />
       </div>        
         <FormSectionTitle>Frais d'inscription</FormSectionTitle>
