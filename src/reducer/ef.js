@@ -88,14 +88,14 @@ const initialState = {
         filelabel:'Ticket',
         index: 111,
       },
-      {
-        formField: 'research',
-        id: 'research-field',
-        max: '',
-        label: "Frais d'inscription à un colloque ou réunion / séminaire scientifique (*)",
-        filelabel:'Facture nominative acquittée et programme',
-        index: 12,
-      },
+      // {
+      //   formField: 'research',
+      //   id: 'research-field',
+      //   max: '',
+      //   label: "Frais d'inscription à un colloque ou réunion / séminaire scientifique (*)",
+      //   filelabel:'Facture nominative acquittée et programme',
+      //   index: 12,
+      // },
     ],
     mealFields: [
       {
@@ -138,10 +138,10 @@ const initialState = {
     userEfs: [],
     efLoader: true,
     efPerSelectedStatus: [],
-    currentEf: {}
+    currentEf: {},
 
 };
-const omFormSlice = createSlice({
+const efSlice = createSlice({
     name: 'ef',
     initialState,
     reducers: {
@@ -220,7 +220,6 @@ const omFormSlice = createSlice({
       },
       saveEf: (state, action) => {
         const ef = action.payload;
-        console.log("EF = ", ef, "A.P = ", action.payload);
         const stages = [];
         action.payload.stages.forEach((stage) => {
           stages.push(declareCamelCaseKeys(stage));
@@ -228,6 +227,12 @@ const omFormSlice = createSlice({
         ef.stages = stages;
         
         state.currentEf = ef;
+      },
+      saveEfAccomodations: (state, action) => {
+
+        const data = declareCamelCaseKeys(action.payload);
+        console.log(data);
+        state.currentEf.accomodations = data;
       },
     },
 });
@@ -249,6 +254,7 @@ export const {
   fetchEf, 
   saveEf,
   getEfAccomodations,
-} = omFormSlice.actions;
+  saveEfAccomodations,
+} = efSlice.actions;
 
-export default omFormSlice.reducer;
+export default efSlice.reducer;

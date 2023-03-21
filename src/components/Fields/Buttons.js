@@ -22,7 +22,7 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
 
   const nextStep = step + 1;
   const backStep = step - 1;
-  console.log(step);
+  
   const handleClick = () => {
     const data = watch();
 

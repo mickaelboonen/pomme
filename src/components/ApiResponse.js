@@ -18,8 +18,6 @@ const ApiResponse = ({ apiResponse, updateForm }) => {
     const traceElement = document.querySelector('.api-response__error-trace');
     traceElement.classList.toggle('api-response__error-trace--open')
   };
-
-  console.log('RESPONSE IN THE COMPONENT = ', response);
   
  return (
   <div className='api-response'>

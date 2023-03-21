@@ -1,6 +1,6 @@
 import { setApiResponse } from 'src/reducer/app';
 import { api } from './api';
-import { saveNewEf, saveEf, setEfLoader } from 'src/reducer/ef';
+import { saveNewEf, saveEf, setEfLoader, saveEfAccomodations } from 'src/reducer/ef';
 import { saveEfs } from 'src/reducer/agent';
 
 
@@ -83,7 +83,6 @@ const efMiddleware = (store) => (next) => (action) => {
   case 'ef/getEfAccomodations':
     api.get("/api/ef/accomodations/find/" + action.payload)
       .then((response) => {
-        console.log(response.data);
           store.dispatch(saveEfAccomodations(response.data));
           // store.dispatch(setEfLoader(false));
 

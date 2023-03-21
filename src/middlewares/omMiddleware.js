@@ -159,7 +159,6 @@ const omMiddleware = (store) => (next) => (action) => {
       break;
     
     case 'omForm/getMission':
-      console.log(action.payload);
       api.get("/api/om/mission/find/" + action.payload.id)
         .then((response) => {
           store.dispatch(saveMission(response.data));

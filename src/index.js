@@ -251,7 +251,7 @@ const router = createBrowserRouter([
               }
               else if (step === '3') {
                 store.dispatch(getEfAccomodations(id));
-                store.dispatch(getMission({id: om, handleEfLoader: true }));
+                // store.dispatch(getMission({id: om, handleEfLoader: true }));
               }
               else if (step === '4') {
                 

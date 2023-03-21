@@ -25,11 +25,11 @@ const Hebergement = ({ step }) => {
   const loader = useLoaderData();
   const efId = loader.searchParams.get('id');
   
-  const { ef: { },
+  const { ef: { currentEf: { accomodations, mission }},
     omForm: { omForm },
     app: { apiMessage }
   } = useSelector((state) => state);
-
+  
   const { data } = omForm[2];
   const missionData = omForm[0].data;
 
@@ -42,7 +42,7 @@ const Hebergement = ({ step }) => {
     setError,
     formState:
     { errors },
-  } = useForm();
+  } = useForm({ defaultValues: accomodations });
 
   const onSubmit = (data) => {
     console.log(data);
@@ -71,8 +71,6 @@ const Hebergement = ({ step }) => {
       mealsErrorElement.classList.remove('form__section-field-error--open');
       mealsErrorElement.textContent = ""
     }
-    
-    console.log(errorsCount);
 
     if (errorsCount !== 0) {
       return;
@@ -144,75 +142,66 @@ const Hebergement = ({ step }) => {
           />
         </div>
       </div>
-      {/* <TextField 
-        isNumber
-        min='0'
-        id="free-accomodation-field"
-        formField="free-accomodation"
-        register={register}
-        label="Hébergement à titre gratuit"
-        placeholder="Nombre de nuits"
-      /> */}
       <FormSectionTitle>Repas</FormSectionTitle>
       <div className="form__section-field" id="meals">
+        <TextField
+          id="admin-restaurant-field"
+          formField="mealsInAdminRestaurants"
+          register={register}
+          isNumber
+          min="0"
+          label="Repas pris dans un restaurant administratif ou assimilé"
+          placeholder={"Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné " + data.mealsInAdminRestaurants + " repas."}
+          hasHelp
+          helpFunction={showHelp}
+        />
+        
+        {missionData.region === "métropole" && (
           <TextField
-            id="admin-restaurant-field"
-            formField="mealsInAdminRestaurants"
+            id="paid-by-agent-in-France-field"
+            formField="mealsPaidByAgentInFrance"
             register={register}
             isNumber
             min="0"
-            label="Repas pris dans un restaurant administratif ou assimilé"
-            placeholder={"Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné " + data.mealsInAdminRestaurants + " repas."}
+            placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné ${data.mealsPaidByAgent} repas.`}
+            label='Repas à titre onéreux en France'
             hasHelp
             helpFunction={showHelp}
           />
-         
-          {missionData.region === "métropole" && (
-            <TextField
-              id="paid-by-agent-in-France-field"
-              formField="mealsPaidByAgentInFrance"
-              register={register}
-              isNumber
-              min="0"
-              placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné ${data.mealsPaidByAgent} repas.`}
-              label='Repas à titre onéreux en France'
-              hasHelp
-              helpFunction={showHelp}
-            />
-          )}
-          
-          {missionData.region === "métropole" && (
-            <TextField
-              id="free-field"
-              formField="freeMeals"
-              register={register}
-              isNumber
-              min="0"
-              label="Repas à titre gratuit"
-              placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné ${maxMealsNumber - data.mealsInAdminRestaurants - data.mealsPaidByAgent} repas gratuits.`}
-            />
-          )}
-          {missionData.region !== "métropole" && (
-            <TextField
-              id='paid-by-agent-overseas-field'
-              formField="mealsPaidByAgentOverseas"
-              register={register}
-              isNumber
-              min="0"
-              placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez ${data.mealsPaidByAgent} repas.`}
-              label="Repas à titre onéreux à l'étranger"
-              hasHelp
-              helpFunction={showHelp}
-            />
-          )}
-          {!isNaN(maxMealsNumber) && <p className="form__section-field-label form__section-field-label--infos">Vous avez le droit à un total de : <span>{maxMealsNumber}</span> repas.</p>}
+        )}
+        
+        {missionData.region === "métropole" && (
+          <TextField
+            id="free-field"
+            formField="freeMeals"
+            register={register}
+            isNumber
+            min="0"
+            label="Repas à titre gratuit"
+            placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné ${maxMealsNumber - data.mealsInAdminRestaurants - data.mealsPaidByAgent} repas gratuits.`}
+          />
+        )}
+        {missionData.region !== "métropole" && (
+          <TextField
+            id='paid-by-agent-overseas-field'
+            formField="mealsPaidByAgentOverseas"
+            register={register}
+            isNumber
+            min="0"
+            placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez ${data.mealsPaidByAgent} repas.`}
+            label="Repas à titre onéreux à l'étranger"
+            hasHelp
+            helpFunction={showHelp}
+          />
+        )}
+        {!isNaN(maxMealsNumber) && <p className="form__section-field-label form__section-field-label--infos">Vous avez le droit à un total de : <span>{maxMealsNumber}</span> repas.</p>}
 
-          {missionData.region !== "métropole" && (
-            <>
-            <p className='form__section-field-label form__section-field-label--infos'>Forfait de Remboursement choisi : <span>{missionData.abroadCosts.replace('-', ' ')}</span>.</p>
-            </>
-          )}
-          <p id="meals-error" className="form__section-field-error" />
+        {missionData.region !== "métropole" && (
+          <>
+          <p className='form__section-field-label form__section-field-label--infos'>Forfait de Remboursement choisi : <span>{missionData.abroadCosts.replace('-', ' ')}</span>.</p>
+          </>
+        )}
+        <p id="meals-error" className="form__section-field-error" />
       </div>        
         <FormSectionTitle>Frais d'inscription</FormSectionTitle>
       <div className='form__section form__section--documents'>
@@ -237,12 +226,12 @@ const Hebergement = ({ step }) => {
               id="event-files"
               multiple
               label="Facture nominative acquittée et programme"
-              error={errors.eventFiles}
             />
           </div>
         </div>
         <p className="form__section-field-label" style={{marginTop: '-1.5rem', marginLeft: '1rem', fontStyle: 'italic'}}>(*) Compte rendu à adresser obligatoirement au service de la recherche</p>
         
+        {errors.eventFiles && <p className="form__section-field-error form__section-field-error--open">{errors.eventFiles.message}</p>}
         <HiddenField id="docId" register={register} value={efId} />
         {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
         <Buttons

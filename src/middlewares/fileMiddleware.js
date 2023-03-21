@@ -298,7 +298,6 @@ const omMiddleware = (store) => (next) => (action) => {
             }
             else if (step === 'accomodations') {
               console.log('before update : ', data);
-              data.docId = data.efId;
               delete data.efId;
               store.dispatch(updateEfAccomodations(data));
             }
