@@ -21,7 +21,9 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 
 // Selectors 
 import { handleRegionFields, defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
-import { getSavedFileName } from 'src/selectors/formDataGetters';
+import { getSavedFileName, turnAddressToFields } from 'src/selectors/formDataGetters';
+import { declareCamelCaseKeys } from 'src/selectors/keyObjectService';
+import { turnFieldsToAddressEntity } from 'src/selectors/formDataGetters';
 
 // Reducer
 import { enableMissionFormFields, updateEfMission } from 'src/reducer/ef';
@@ -40,11 +42,50 @@ const Mission = ({ step, isEfForm }) => {
   const { app: { apiMessage, countries},
     agent: { user},
     omForm: { currentOM, omForm, refusal, adresses },
-    ef: { isMissionFormDisabled }
+    ef: { isMissionFormDisabled, currentEf }
   } = useSelector((state) => state);
 
-  const defaultValues = omForm.find((omStep) => omStep.step === 'mission').data;
+  // Defining default values -----------------------------------------------------
+  let defaultValues = null;
+  let modificationsFilenames = '';
+
+  // If we're on the état de frais page
+  if (isEfForm) {
+    // whe check if modifications to the mission have already been made
+    if (currentEf.mission.modifications) {
+      
+      defaultValues =  declareCamelCaseKeys(currentEf.mission);
+      // Since we're not retrieving address data from the ef mission, we feed on the current OM address
+      defaultValues.address = currentOM.mission.address;
+      defaultValues =  turnAddressToFields(defaultValues);
+            
+      defaultValues.modificationSwitch = true;
+
+      // Defining the modifications files names 
+      if (defaultValues.modificationFiles.length > 0) {
+        defaultValues.modificationFiles.forEach((file) => {
+    
+          modificationsFilenames += getSavedFileName(file);
+    
+          if (defaultValues.modificationFiles.length > 1) {
+            modificationsFilenames += ' - ';
+          }
+        })
+      }
+    }
+    else {
+      defaultValues =  declareCamelCaseKeys(currentOM.mission);
+      defaultValues =  turnAddressToFields(defaultValues);
+    }
+    // defaultValues =  declareCamelCaseKeys(currentOM.mission);
+    // defaultValues =  turnAddressToFields(defaultValues);
+  }
+  // else, default values are from the om mission entity
+  else {
+    defaultValues = omForm.find((omStep) => omStep.step === 'mission').data;
+  }
   
+  // Defining file names to display them in the browser -------------------------
   let fileName = '';
 
   if (defaultValues.missionPurposeFile) {
@@ -57,12 +98,10 @@ const Mission = ({ step, isEfForm }) => {
       }
     })
   }
-  
+
   const {
     register, handleSubmit, watch,
-    setError, setValue, unregister,
-    trigger, formState:
-    { errors }
+    setError, setValue, formState: { errors }
   } = useForm({
     defaultValues: {
       ...defaultValues,
@@ -85,24 +124,9 @@ const Mission = ({ step, isEfForm }) => {
 
   
   const onSubmit = (data) => {
+    
     console.log(data);
-    data.missionAddress = {
-      id: data.addressId,
-      streetNumber: data.streetNumber,
-      bis: data.bis,
-      streetType: data.streetType,
-      streetName: data.streetName,
-      postCode: data.postCode,
-      city: data.city,
-    }
-
-    delete data.addressId;
-    delete data.streetNumber;
-    delete data.bis;
-    delete data.streetType;
-    delete data.streetName;
-    delete data.postCode;
-    delete data.city;
+    data = turnFieldsToAddressEntity(data);
     
     if (data.science) {
       if ((!data.missionPurposeFile || data.missionPurposeFile.length === 0) && !data.missionPurposeFileForValidation) {
@@ -126,7 +150,7 @@ const Mission = ({ step, isEfForm }) => {
           setError('modificationFiles', { type: 'custom', message: 'Merci de fournir la ou les pièces justifiant la modification.'})
           return;
         }
-        data.status = 2;
+        data.status = 1;
 
         if (data.modificationFiles.length > 0) {
           dispatch(uploadFile({data: data, step: 'mission', docType: 'ef'}));
@@ -134,12 +158,7 @@ const Mission = ({ step, isEfForm }) => {
         else {
           dispatch(updateEfMission(data))
         }
-        
-        // Todo 
       }
-
-
-
     }
     else {
 
@@ -219,9 +238,9 @@ const Mission = ({ step, isEfForm }) => {
     }
   }
 
-  useEffect(() => {
-    handleRegionFields(region, register, unregister);
-  }, [unregister, region]);
+  // useEffect(() => {
+  //   handleRegionFields(region, register, unregister);
+  // }, [unregister, region]);
   
   const toggleDisabledFields = (event) => {
     dispatch(enableMissionFormFields(event.currentTarget.checked));
@@ -463,6 +482,7 @@ const Mission = ({ step, isEfForm }) => {
           errors={errors}
           handler={toggleDisabledFields}
           modificationSwitch={modificationSwitch}
+          filenames={modificationsFilenames}
         />
       )}
       {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />}
@@ -471,8 +491,8 @@ const Mission = ({ step, isEfForm }) => {
         id={docId}
         url={loader}
         watch={watch}
-        update={updateMission}
-        trigger={trigger}
+        update={isEfForm ? updateEfMission : updateMission}
+        type={isEfForm ? "ef" : "om"}
       />
     </form>
     

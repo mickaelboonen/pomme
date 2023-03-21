@@ -70,9 +70,9 @@ const efMiddleware = (store) => (next) => (action) => {
       .then((response) => {
         store.dispatch(saveEf(response.data))
 
-        if (action.payload.step === '4' || action.payload.step === '3') {
+        // if (action.payload.step === '4' || action.payload.step === '3') {
           store.dispatch(setEfLoader(false));
-        }
+        // }
       })
       .catch((error) => {
         console.error('fetchEf', error);

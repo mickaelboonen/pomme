@@ -28,3 +28,39 @@ export const getSavedFileName = (urlFile) => {
   
   return finalName;
 }
+
+export const turnAddressToFields = (data) => {
+  data.addressId = data.address.id;
+  data.streetNumber = data.address.streetNumber;
+  data.bis = data.address.bis;
+  data.streetType = data.address.streetType;
+  data.streetName = data.address.streetName;
+  data.postCode = data.address.postCode;
+  data.city = data.address.city;
+
+  delete data.address;
+
+  return data;
+}
+
+export const turnFieldsToAddressEntity = (data) => {
+  data.missionAddress = {
+    id: data.addressId,
+    streetNumber: data.streetNumber,
+    bis: data.bis,
+    streetType: data.streetType,
+    streetName: data.streetName,
+    postCode: data.postCode,
+    city: data.city,
+  }
+
+  delete data.addressId;
+  delete data.streetNumber;
+  delete data.bis;
+  delete data.streetType;
+  delete data.streetName;
+  delete data.postCode;
+  delete data.city;
+
+  return data;
+}

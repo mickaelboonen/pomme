@@ -46,7 +46,6 @@ const initialState = {
         abroadCosts: null,
         departure: null,
         departurePlace: null,
-        workAdress: null,
         missionPurpose: null,
         missionPurposeFile: null,
         region: null,

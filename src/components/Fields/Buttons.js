@@ -13,6 +13,7 @@ import {
   efAccomodationsToDbFormat
 } from 'src/selectors/dataToDbFormat';
 import { efAccommodationSaveAs } from '../../selectors/formSubmitHandlers';
+import { turnFieldsToAddressEntity } from '../../selectors/formDataGetters';
 
 const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
   
@@ -40,36 +41,45 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
     
     if (step === 1) { // --------------------------------------------------------------------------------
 
-      data.missionAddress = {
-        id: data.addressId,
-        streetNumber: data.streetNumber,
-        bis: data.bis,
-        streetType: data.streetType,
-        streetName: data.streetName,
-        postCode: data.postCode,
-        city: data.city,
-      }
+      if (type === 'ef') {
+        
+        if (data.modificationSwitch) {
+
+          const dataToBeSubmitted = turnFieldsToAddressEntity(data);
+          
+          let fileObject = null;
   
-      delete data.addressId;
-      delete data.streetNumber;
-      delete data.bis;
-      delete data.streetType;
-      delete data.streetName;
-      delete data.postCode;
-      delete data.city;
-      
-
-      let fileObject = null;
-
-      if (data.missionPurposeFile) {
-        fileObject = data.missionPurposeFile.find((file) => file instanceof File);
-      }
-      
-      if (fileObject) {
-        dispatch(uploadFile({data: data, step: 'mission'}));
+          if (dataToBeSubmitted.missionPurposeFile) {
+            fileObject = dataToBeSubmitted.missionPurposeFile.find((file) => file instanceof File);
+          }
+          
+          if (fileObject) {
+            dispatch(uploadFile({data: dataToBeSubmitted, step: 'mission', docType: 'ef'}));
+          }
+          else {
+            dispatch(update(dataToBeSubmitted));
+          }
+        }
+        else {
+          dispatch(update({ docId: data.docId, status: data.status, isModified: false}));
+        }
       }
       else {
-        dispatch(update(data));
+
+        const dataToBeSubmitted = turnFieldsToAddressEntity(data);        
+
+        let fileObject = null;
+
+        if (dataToBeSubmitted.missionPurposeFile) {
+          fileObject = dataToBeSubmitted.missionPurposeFile.find((file) => file instanceof File);
+        }
+        
+        if (fileObject) {
+          dispatch(uploadFile({data: dataToBeSubmitted, step: 'mission', docType: 'ef'}));
+        }
+        else {
+          dispatch(update(dataToBeSubmitted));
+        }
       }
     }
     else if (step === 2) { // --------------------------------------------------------------------------------
@@ -102,10 +112,11 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
           dispatch(update(dataToBeSubmitted));
         }
       }
-      return;
-      data.omId = id;
-      const dataToBeSubmitted = turnAccomodationDataToDbFormat(data);
-      dispatch(update(dataToBeSubmitted));
+      else {
+        data.omId = id;
+        const dataToBeSubmitted = turnAccomodationDataToDbFormat(data);
+        dispatch(update(dataToBeSubmitted));
+      }
     }
     else if (step === 4) { // --------------------------------------------------------------------------------
       

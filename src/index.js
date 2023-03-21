@@ -239,22 +239,13 @@ const router = createBrowserRouter([
               const step = url.searchParams.get("etape");
               
               store.dispatch(setEfLoader(true));
-              store.dispatch(fetchOm({id: om, handleEfLoader: false,}));
-              store.dispatch(fetchEf({id: id, step: step}));
+              store.dispatch(fetchOm({id: om, workflow: 'ef', data: {id: id, step: step}}));
 
               if (step === '1') {
                 store.dispatch(fetchCountries());
-                store.dispatch(getMission({id: om, handleEfLoader: true }));
               }
               else if (step === '2') {
                 store.dispatch(getTransports(om));
-              }
-              else if (step === '3') {
-                // store.dispatch(getEfAccomodations(id));
-                // store.dispatch(getMission({id: om, handleEfLoader: true }));
-              }
-              else if (step === '4') {
-                
               }
 
               return url;
@@ -271,22 +262,12 @@ const router = createBrowserRouter([
 
               store.dispatch(setEfLoader(true));
               store.dispatch(fetchOm({id: om, workflow: 'ef', data: {id: id, step: step}}));
-              // store.dispatch(fetchEf({id: id, step: step}));
-
 
               if (step === '1') {
-                // store.dispatch(fetchOm(id));
                 store.dispatch(fetchCountries());
-                store.dispatch(getMission({id: om, handleEfLoader: true }));
               }
               else if (step === '2') {
                 store.dispatch(getTransports(om));
-              }
-              else if (step === '3') {
-                // store.dispatch(getEfAccomodations(id));
-                // store.dispatch(getMission({id: om, handleEfLoader: true }));
-              }
-              else if (step === '4') {
               }
 
               return url;

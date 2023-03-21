@@ -111,7 +111,7 @@ const omMiddleware = (store) => (next) => (action) => {
           data.modificationFiles.forEach((file) => {
             if (file instanceof File) {
               const fileToUpload = {
-                efId: data.docId,
+                docId: data.docId,
                 type: 'mission',
                 file: file,
               }
