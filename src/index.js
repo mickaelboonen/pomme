@@ -245,7 +245,7 @@ const router = createBrowserRouter([
                 store.dispatch(fetchCountries());
               }
               else if (step === '2') {
-                store.dispatch(getTransports(om));
+                // store.dispatch(getTransports(om));
               }
 
               return url;
@@ -267,7 +267,7 @@ const router = createBrowserRouter([
                 store.dispatch(fetchCountries());
               }
               else if (step === '2') {
-                store.dispatch(getTransports(om));
+                // store.dispatch(getTransports(om));
               }
 
               return url;

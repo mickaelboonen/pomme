@@ -288,12 +288,13 @@ const omMiddleware = (store) => (next) => (action) => {
             // Now updates the transports values in the database
             if (step === 'mission') {
               console.log('before update : ', data);
+              data.docId = data.efId;
               store.dispatch(updateEfMission(data));
             }
             else if (step === 'transports') {
               console.log('before update : ', data);
-              data.docId = data.efId;
-              delete data.efId;
+              // data.docId = data.efId;
+              // delete data.efId;
               store.dispatch(updateEfTransports(data));
             }
             else if (step === 'accomodations') {

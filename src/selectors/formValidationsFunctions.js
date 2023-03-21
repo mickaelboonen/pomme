@@ -115,48 +115,49 @@
 }
 
   export const filterEfTransportsFields = (fields, data) => {
-    const { planeClass, trainClass, authorizations, publicTransports, others } = data;
+
+    const {
+      authorizations,
+      taxi,
+      ferry,
+      transport_class,
+      public_transports,
+    } = data;
+
     const fieldsToBeDisplayed = [];
     
-    if (planeClass) {
-      const currentField = fields.find((field) => field.formField === 'plane');
-      fieldsToBeDisplayed.push(currentField)
-    }
-    if (trainClass) {
-      const currentField = fields.find((field) => field.formField === 'train');
-      fieldsToBeDisplayed.push(currentField)
-    }
-    if (publicTransports) {
-      const currentField = fields.find((field) => field.formField === 'publicTransports');
-      fieldsToBeDisplayed.push(currentField)
-    }
     if (authorizations.length > 0) {
       const { type } = authorizations[0];
       if (type === 'company-car') {
-
-        const currentField = fields.find((field) => field.formField === 'fuel');
-        fieldsToBeDisplayed.push(currentField)
-        
+        fieldsToBeDisplayed.push(fields.find((field) => field.formField === 'fuel'));
       }
       else if (type === 'rent-car') {
-
-        const currentField = fields.find((field) => field.formField === 'rentCar');
-        fieldsToBeDisplayed.push(currentField)
-        
+        fieldsToBeDisplayed.push(fields.find((field) => field.formField === 'rentCar'));
       }
       
-      let currentField = fields.find((field) => field.formField === 'toll');
-      fieldsToBeDisplayed.push(currentField)
-      
-      currentField = fields.find((field) => field.formField === 'parking');
-      fieldsToBeDisplayed.push(currentField)
+      fieldsToBeDisplayed.push(fields.find((field) => field.formField === 'toll'));
+      fieldsToBeDisplayed.push(fields.find((field) => field.formField === 'parking'));
     }
-    if (others.length > 0) {
-      others.forEach((other) => { 
-        if (other !== 'parking') {
-          const currentField = fields.find((field) => field.formField === other);
-          fieldsToBeDisplayed.push(currentField);
+    
+    if (taxi) {
+      fieldsToBeDisplayed.push(fields.find((field) => field.formField === 'taxi'))
+    }
+    
+    if (ferry) {
+      fieldsToBeDisplayed.push(fields.find((field) => field.formField === 'ferry'))
+    }
+
+    if (public_transports) {
+      fieldsToBeDisplayed.push(fields.find((field) => field.formField === 'publicTransports'))
+    }
+
+    if (transport_class.length > 0) {
+      transport_class.forEach((transport) => {
+        if ((transport.includes('second') || transport.includes('second')) && fieldsToBeDisplayed.indexOf(fields[1]) === -1) {
+          fieldsToBeDisplayed.push(fields.find((field) => field.formField === 'train'))
         }
+        else if ((transport.includes('business') || transport.includes('eco')) && fieldsToBeDisplayed.indexOf(fields[0]) === -1)
+          fieldsToBeDisplayed.push(fields.find((field) => field.formField === 'plane'))
       })
     }
 

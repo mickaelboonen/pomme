@@ -28,4 +28,14 @@ export const declareCamelCaseKeys = (data) => {
   }
   return formattedValues;
 }
-        
+
+export const setEfTranportsFilenames = (data) => {
+
+  console.log(data);
+
+  const allEntries = Object.entries(data);
+  const filesEntries = allEntries.filter((entry) => entry[0].includes('Files') && entry[1].length > 0);
+  console.log(filesEntries);
+
+  return data;
+}

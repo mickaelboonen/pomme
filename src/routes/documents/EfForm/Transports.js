@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLoaderData } from 'react-router-dom';
 
 import './style.scss';
+import ApiResponse from 'src/components/ApiResponse';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import Buttons from 'src/components/Fields/Buttons';
 import FileField from 'src/components/Fields/FileField';
@@ -16,6 +17,7 @@ import HiddenField from 'src/components/Fields/HiddenField';
 import { equalizeFields } from 'src/selectors/domManipulators';
 import { filterEfTransportsFields } from 'src/selectors/formValidationsFunctions';
 import { uploadFile } from 'src/reducer/omForm'
+import { declareCamelCaseKeys, setEfTranportsFilenames } from '../../../selectors/keyObjectService';
 
 const Transports = ({ step }) => {
   
@@ -24,16 +26,23 @@ const Transports = ({ step }) => {
   const loader = useLoaderData();
   const efId = loader.searchParams.get('id');
 
-  const { ef: { transportsFields },
-    omForm: { omForm },
+  const { ef: { transportsFields, currentEf: { transports} },
+    omForm: { omForm, currentOM },
+    app: { apiMessage }
   } = useSelector((state) => state);
   
+  let defaultValues = null;
+  if (transports !== undefined) {
+    defaultValues = declareCamelCaseKeys(transports);
+  }
+
+  defaultValues = setEfTranportsFilenames(defaultValues);
 
   const {
     register, handleSubmit, watch,
     setValue,  setError, trigger,
     formState: { errors },
-  } = useForm();
+  } = useForm({ defaultValues: defaultValues});
   
   const onSubmit = (data) => {    
     delete data.fields;
@@ -48,7 +57,7 @@ const Transports = ({ step }) => {
     // Handling the paired up properties ( property + propertyFiles)
     propertiesArray.forEach((property) => {
 
-      const propertiesToIgnore = ['efId', 'personalCar', 'km', 'horsepower', 'fields', 'otherSwitch'];
+      const propertiesToIgnore = ['docId', 'personalCar', 'km', 'horsepower', 'fields', 'otherSwitch'];
 
       if (!property[0].includes('Files') && property[1] !== '' && propertiesToIgnore.indexOf(property[0]) === -1) {
         const filesProperty = property[0] + 'Files';
@@ -90,8 +99,9 @@ const Transports = ({ step }) => {
     }
 
     dataWithoutEmptyFields.status = 1;
-    dataWithoutEmptyFields.efId = data.efId;
-    
+    dataWithoutEmptyFields.docId = data.docId;
+    console.log(dataWithoutEmptyFields);
+        
     dispatch(uploadFile({data: dataWithoutEmptyFields, step: 'transports', docType: 'ef'}))
 
   };
@@ -108,18 +118,18 @@ const Transports = ({ step }) => {
       setFieldsToBeDisplayed(transportsFields);
     }
     else {
-      setFieldsToBeDisplayed(filterEfTransportsFields(transportsFields, omForm[1].data));
+      setFieldsToBeDisplayed(filterEfTransportsFields(transportsFields, currentOM.transports));
     }
   }
   
-  const [fieldsToBeDisplayed, setFieldsToBeDisplayed] = useState(filterEfTransportsFields(transportsFields, omForm[1].data))
-  const hasUsedPersonalCar = omForm[1].data.authorizations.length > 0 &&  omForm[1].data.authorizations[0].type === 'personal-car' ? true : false;
+  const [fieldsToBeDisplayed, setFieldsToBeDisplayed] = useState(filterEfTransportsFields(transportsFields, currentOM.transports))
+  const hasUsedPersonalCar = currentOM.transports.authorizations.length > 0 &&  currentOM.transports.authorizations[0].type === 'personal-car' ? true : false;
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section" style={{display: 'flex', flexDirection: 'column'}}>
         <FormSectionTitle>Frais de transports</FormSectionTitle>
-        <HiddenField id="efId" register={register} value={efId} />
+        <HiddenField id="docId" register={register} value={efId} />
         <SwitchButton
           formField="fields"
           isInForm
@@ -240,6 +250,7 @@ const Transports = ({ step }) => {
           </div>
         )}
       </div>
+      {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
       <Buttons
         step={step}
         id={efId}
