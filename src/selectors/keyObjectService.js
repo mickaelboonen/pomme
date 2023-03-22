@@ -1,4 +1,4 @@
-
+import { getSavedFileName } from 'src/selectors/formDataGetters';
 /**
  * Since serialization, Symfony sends back data with snake_case keys
  * We transform them here into camelCase keys
@@ -31,11 +31,27 @@ export const declareCamelCaseKeys = (data) => {
 
 export const setEfTranportsFilenames = (data) => {
 
-  console.log(data);
-
   const allEntries = Object.entries(data);
   const filesEntries = allEntries.filter((entry) => entry[0].includes('Files') && entry[1].length > 0);
-  console.log(filesEntries);
 
-  return data;
+  const filenamesObject = {};
+
+  filesEntries.forEach((file) => {
+
+    let filenames= '';
+
+  
+    if (file[1].length === 1) {
+      filenames = getSavedFileName(file[1][0]);
+    }
+    else if (file[1].length > 1) {
+      file[1].forEach((urlFile) => {
+        filenames += getSavedFileName(urlFile) + ' - ';
+      })
+    }
+
+    filenamesObject[file[0]] = filenames;
+  })
+
+  return filenamesObject;
 }

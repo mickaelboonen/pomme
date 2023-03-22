@@ -9,13 +9,15 @@ export const handleEfFilesUploadPayload = (data, type) => {
     
     if (name.includes('Files')) {
       Array.from(value).forEach((currentFile) => {
-        const file = {
-          docId: data.docId,
-          type: type,
-          file: currentFile,
-          name: name,
+        if (currentFile instanceof File) {
+          const file = {
+            docId: data.docId,
+            type: type,
+            file: currentFile,
+            name: name,
+          }
+          files.push(file);
         }
-        files.push(file);
       })
       
     }

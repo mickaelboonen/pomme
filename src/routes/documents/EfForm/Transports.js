@@ -16,8 +16,9 @@ import HiddenField from 'src/components/Fields/HiddenField';
 // Selectors  && actions
 import { equalizeFields } from 'src/selectors/domManipulators';
 import { filterEfTransportsFields } from 'src/selectors/formValidationsFunctions';
-import { uploadFile } from 'src/reducer/omForm'
-import { declareCamelCaseKeys, setEfTranportsFilenames } from '../../../selectors/keyObjectService';
+import { uploadFile } from 'src/reducer/omForm';
+import { updateEfTransports } from 'src/reducer/ef';
+import { declareCamelCaseKeys, setEfTranportsFilenames } from 'src/selectors/keyObjectService';
 
 const Transports = ({ step }) => {
   
@@ -36,7 +37,7 @@ const Transports = ({ step }) => {
     defaultValues = declareCamelCaseKeys(transports);
   }
 
-  defaultValues = setEfTranportsFilenames(defaultValues);
+  const filenames = setEfTranportsFilenames(defaultValues);
 
   const {
     register, handleSubmit, watch,
@@ -50,6 +51,7 @@ const Transports = ({ step }) => {
 
     const propertiesArray = Object.entries(data);
 
+    console.log(data);
     let errors = 0;
 
     const dataWithoutEmptyFields = {};
@@ -57,9 +59,9 @@ const Transports = ({ step }) => {
     // Handling the paired up properties ( property + propertyFiles)
     propertiesArray.forEach((property) => {
 
-      const propertiesToIgnore = ['docId', 'personalCar', 'km', 'horsepower', 'fields', 'otherSwitch'];
+      const propertiesToIgnore = ['id', 'status', 'docId', 'personalCar', 'km', 'horsepower', 'fields', 'otherSwitch'];
 
-      if (!property[0].includes('Files') && property[1] !== '' && propertiesToIgnore.indexOf(property[0]) === -1) {
+      if (!property[0].includes('Files') && (property[1] !== '' && property[1]) && propertiesToIgnore.indexOf(property[0]) === -1) {
         const filesProperty = property[0] + 'Files';
         
         if (data[filesProperty].length < 1) {
@@ -101,6 +103,7 @@ const Transports = ({ step }) => {
     dataWithoutEmptyFields.status = 1;
     dataWithoutEmptyFields.docId = data.docId;
     console.log(dataWithoutEmptyFields);
+    
         
     dispatch(uploadFile({data: dataWithoutEmptyFields, step: 'transports', docType: 'ef'}))
 
@@ -161,6 +164,7 @@ const Transports = ({ step }) => {
                 label={field.filelabel}
                 placeholder=""
                 error={errors[`${field.formField}Files`]}
+                fileName={filenames[`${field.formField}Files`]}
               />
             </div>
           </div>
@@ -256,8 +260,8 @@ const Transports = ({ step }) => {
         id={efId}
         url={loader}
         watch={watch}
-        // update={updateTransports}
-        trigger={trigger}
+        update={updateEfTransports}
+        type={"ef"}
       />
     </form>
     

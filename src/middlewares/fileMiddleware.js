@@ -173,7 +173,8 @@ const omMiddleware = (store) => (next) => (action) => {
         .then((response) => {
 
           const { data } = action.payload;
-          console.log(`/api/files/${type}/${step} RESPONSE IS : `, response)
+          console.log("--------------------------------------------------------------------------------------");
+          console.log(`/api/files/${type}/${step} RESPONSE IS : `, response.data)
 
           if (type === 'om') {
 
@@ -256,19 +257,20 @@ const omMiddleware = (store) => (next) => (action) => {
               data.modificationFiles = [];
             }
             else if (step === 'transports') {
-              data.trainFiles = [];
-              data.taxiFiles = [];
-              data.planeFiles = [];
-              data.rentCarFiles = [];
-              data.fuelFiles = [];
-              data.tollFiles = [];
-              data.parkingFiles = [];
-              data.ferryFiles = [];
-              data.publicTransportsFiles = [];
+              console.log(data);
+              // data.trainFiles = [];
+              // data.taxiFiles = [];
+              // data.planeFiles = [];
+              // data.rentCarFiles = [];
+              // data.fuelFiles = [];
+              // data.tollFiles = [];
+              // data.parkingFiles = [];
+              // data.ferryFiles = [];
+              // data.publicTransportsFiles = [];
             }
             else if (step === 'accomodations') {
-              data.hotelFiles = [];
-              data.eventFiles = [];
+              // data.hotelFiles = [];
+              // data.eventFiles = [];
             }
             
 
@@ -278,9 +280,11 @@ const omMiddleware = (store) => (next) => (action) => {
                 data.modificationFiles.push(file.file.url);
               }
               else if (file.type === 'transports') {
+                data[file.name] = data[file.name].filter((url) => !url instanceof File)
                 data[file.name].push(file.file.url);
               }
               else if (file.type === 'accomodations') {
+                data[file.name] = data[file.name].filter((url) => !url instanceof File)
                 data[file.name].push(file.file.url);
               }
             })

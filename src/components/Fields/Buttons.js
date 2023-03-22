@@ -12,7 +12,6 @@ import {
   turnSignatureDataToDbFormat,
   efAccomodationsToDbFormat
 } from 'src/selectors/dataToDbFormat';
-import { efAccommodationSaveAs } from '../../selectors/formSubmitHandlers';
 import { turnFieldsToAddressEntity } from '../../selectors/formDataGetters';
 
 const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
@@ -84,22 +83,38 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
     }
     else if (step === 2) { // --------------------------------------------------------------------------------
       
-      const databaseData = turnTransportsDataToDbFormat(data);
+      if (type === 'ef') {
+        delete data.fields;
+        delete data.otherSwitch;
 
-      // return;
+        const filesArray = Object.entries(data).filter((entry) => entry[0].includes('Files'));
 
-      !databaseData.vehicleId ? databaseData.vehicleId = "" : databaseData.vehicleId;
+        const firstFoundFile = filesArray.find((property) => property[1].find((value) => value instanceof File));
 
-      if (databaseData.transportDispensation && typeof databaseData.transportDispensation !== 'string') {
-        dispatch(uploadFile({data: databaseData, step: 'transports'}));
-      } 
-      else if (databaseData.vehicleAuthorization && typeof databaseData.vehicleAuthorization !== 'string') {
-        dispatch(uploadFile({data: databaseData, step: 'transports'}));
-      } 
-      else {
-        
-        dispatch(update(databaseData));
+        if (firstFoundFile === undefined) {
+          dispatch(update(data));
+        }
+        else {
+          dispatch(uploadFile({data: data, step: 'transports', docType: 'ef'}))
+        }
       }
+      else {
+        const databaseData = turnTransportsDataToDbFormat(data);
+
+        !databaseData.vehicleId ? databaseData.vehicleId = "" : databaseData.vehicleId;
+
+        if (databaseData.transportDispensation && typeof databaseData.transportDispensation !== 'string') {
+          dispatch(uploadFile({data: databaseData, step: 'transports'}));
+        } 
+        else if (databaseData.vehicleAuthorization && typeof databaseData.vehicleAuthorization !== 'string') {
+          dispatch(uploadFile({data: databaseData, step: 'transports'}));
+        } 
+        else {
+          
+          dispatch(update(databaseData));
+        }
+      }
+
     }
     else if (step === 3) { // --------------------------------------------------------------------------------
 
