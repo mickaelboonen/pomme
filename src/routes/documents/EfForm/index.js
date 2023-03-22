@@ -24,6 +24,9 @@ const EfForm = () => {
   const dispatch = useDispatch();
 
   const step = Number(loaderData.searchParams.get('etape'));
+  const id = Number(loaderData.searchParams.get('id'));
+  const om = Number(loaderData.searchParams.get('om'));
+
   const { ef: { efLoader, currentEf: { has_steps, is_teaching }},
     app: { apiMessage },
   } = useSelector((state) => state);
@@ -37,6 +40,20 @@ const EfForm = () => {
       navigate(redirectUrl)
     }
   }, [])
+
+  
+  useEffect(() => {
+    if (apiMessage.response && apiMessage.response.status === 200) {
+      setTimeout(() => {
+
+        dispatch(clearMessage());
+      }, "950")
+      setTimeout(() => {
+        const nextStep = step + 1;
+        navigate(loaderData.pathname + '?etape=' + nextStep + '&id=' + id + '&om=' + om);
+      }, "1000")
+    }
+  }, [apiMessage]);
 
   useEffect(() => {
     if (apiMessage.hasOwnProperty('response')) {

@@ -104,8 +104,20 @@ const Transports = ({ step }) => {
     dataWithoutEmptyFields.docId = data.docId;
     console.log(dataWithoutEmptyFields);
     
+
+
+    const filesArray = Object.entries(dataWithoutEmptyFields).filter((entry) => entry[0].includes('Files'));
+    const firstFoundFile = filesArray.find((property) => property[1].find((value) => value instanceof File));
+
+    if (firstFoundFile === undefined) {
+      dispatch(updateEfTransports(dataWithoutEmptyFields));
+    }
+    else {
+      dispatch(uploadFile({data: dataWithoutEmptyFields, step: 'transports', docType: 'ef'}))
+    }
+
         
-    dispatch(uploadFile({data: dataWithoutEmptyFields, step: 'transports', docType: 'ef'}))
+    // dispatch(uploadFile({data: dataWithoutEmptyFields, step: 'transports', docType: 'ef'}))
 
   };
   

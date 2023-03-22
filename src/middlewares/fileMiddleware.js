@@ -328,6 +328,7 @@ const omMiddleware = (store) => (next) => (action) => {
         })
         .catch((error) => {
           console.error('addfiles', error);
+          store.dispatch(setApiResponse(error));
           // TODO : error
         });
       break;
