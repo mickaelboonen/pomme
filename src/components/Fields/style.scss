@@ -527,11 +527,12 @@
 }
 
 .address {
-  background-color: #ffffff40;
-  border: 1px solid rgb(153, 150, 150);
-  padding: 1rem 1rem 0.5rem;
+  // background-color: #ffffff40;
+  // border: 1px solid rgb(153, 150, 150);
+  // padding: 1rem 1rem 0.5rem;
   border-radius: 5px;
-  margin-bottom: 1rem;
+  // margin-bottom: 1rem;
+  display: none;
 
   &__section {
     display: flex;
@@ -545,4 +546,18 @@
       margin-right: 0;
     }
   }
+
+  &--open {
+    display: block;
+  }
+}
+
+.addresses {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.step {
+  width: 40%;
 }

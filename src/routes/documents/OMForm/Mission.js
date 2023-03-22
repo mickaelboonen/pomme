@@ -8,6 +8,7 @@ import './style.scss';
 // Components
 import EfMission from '../EfForm/Mission';
 import Address from 'src/components/Fields/Address';
+import Address2 from 'src/components/Fields/Address2';
 import Buttons from 'src/components/Fields/Buttons';
 import ApiResponse from 'src/components/ApiResponse';
 import ScientificEvent from './ScientificEventFields';
@@ -15,6 +16,7 @@ import SwitchButton from 'src/components/SwitchButton';
 import DateField from 'src/components/Fields/DateField';
 import FileField from 'src/components/Fields/FileField';
 import TextField from 'src/components/Fields/TextField';
+import ButtonElement from 'src/components/Fields/ButtonElement';
 import RadioInput from 'src/components/Fields/RadioInput';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
@@ -28,6 +30,7 @@ import { turnFieldsToAddressEntity } from 'src/selectors/formDataGetters';
 // Reducer
 import { enableMissionFormFields, updateEfMission } from 'src/reducer/ef';
 import { uploadFile, updateOmName, updateMission } from 'src/reducer/omForm';
+import { createIndexedObject } from '../../../selectors/keyObjectService';
 
 const Mission = ({ step, isEfForm }) => {
   
@@ -75,7 +78,8 @@ const Mission = ({ step, isEfForm }) => {
     }
     else {
       defaultValues =  declareCamelCaseKeys(currentOM.mission);
-      defaultValues =  turnAddressToFields(defaultValues);
+      // TODO ; check si ok en dessous
+      // defaultValues =  turnAddressToFields(defaultValues);
     }
     // defaultValues =  declareCamelCaseKeys(currentOM.mission);
     // defaultValues =  turnAddressToFields(defaultValues);
@@ -98,7 +102,12 @@ const Mission = ({ step, isEfForm }) => {
       }
     })
   }
-
+// console.log(defaultValues.addresses);
+  // for(let i = 1; i <= defaultValues.addresses.length; i++) {
+    defaultValues = createIndexedObject(defaultValues);
+  // }
+  
+console.log(" HERE : ", defaultValues);
   const {
     register, handleSubmit, watch,
     setError, setValue, formState: { errors }
@@ -109,7 +118,7 @@ const Mission = ({ step, isEfForm }) => {
     },
   });
   
-  if (areWeUpdatingData) {
+  // if (areWeUpdatingData) {
     if (defaultValues.departure) {
       setValue('departure', defaultValues.departure.slice(0, 16));
     }
@@ -120,12 +129,13 @@ const Mission = ({ step, isEfForm }) => {
       setValue('missionPurposeFileForValidation', true);
     }
 
-  }
+  // }
 
   
   const onSubmit = (data) => {
     
     console.log(data);
+    return;
     data = turnFieldsToAddressEntity(data);
     
     if (data.science) {
@@ -223,9 +233,10 @@ const Mission = ({ step, isEfForm }) => {
   const errorMessages = defineValidationRulesForMission(isEfForm, modificationSwitch);
 
   const [region , modificationSwitch] = watch(['region',  'modificationSwitch' ]);
-    
+  
   const [isMissionAScienceEvent, setIsMissionAScienceEvent] = useState(defaultValues.science);
   const [isVisaNeeded, setIsVisaNeeded] = useState(defaultValues.visa);
+  const [addressNumber, setAddressNumber] = useState(defaultValues.visa);
 
   const handleVisa = (event) => {
     const { id } = event.target;
@@ -237,10 +248,7 @@ const Mission = ({ step, isEfForm }) => {
       setIsVisaNeeded(false);
     }
   }
-
-  // useEffect(() => {
-  //   handleRegionFields(region, register, unregister);
-  // }, [unregister, region]);
+  
   
   const toggleDisabledFields = (event) => {
     dispatch(enableMissionFormFields(event.currentTarget.checked));
@@ -252,6 +260,11 @@ const Mission = ({ step, isEfForm }) => {
 
   const toggleScienceForm = (event) => {
     setIsMissionAScienceEvent(event.target.checked);
+  }
+
+  const addNewAddress = () => {
+    const addressesElement = document.getElementById('addresses');
+    console.log(addressesElement);
   }
   
   const frenchRegions = countries.filter((country) => country.nationality === 'Français' || country.nationality === 'FRANCAIS(E)');
@@ -302,7 +315,6 @@ const Mission = ({ step, isEfForm }) => {
         )}
         <HiddenField id="docId" value={docId} register={register} />
       </div>
-      <div className="form__section">
         <FormSectionTitle>Départ et retour</FormSectionTitle>
         <div className="form__section form__section--split">
           <div className="form__section-half">
@@ -372,16 +384,26 @@ const Mission = ({ step, isEfForm }) => {
             </div>
           </div>
         </div>
-      </div>
-      <div className='form__section'>
         <FormSectionTitle>Lieu de la mission</FormSectionTitle>
-        <Address
-          disabled={isEfForm && isMissionFormDisabled}
-          addressType="de la mission"
-          register={register}
-          errors={errors}
-          errorMessages={errorMessages}
-        />
+        <div className='form__section' id="addresses">
+            <Address2
+              data={defaultValues.addresses}
+              disabled={isEfForm && isMissionFormDisabled}
+              addressType="de la mission"
+              register={register}
+              errors={errors}
+              errorMessages={errorMessages}
+            />
+        </div>
+        <div className='form__section'>
+          <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
+            <ButtonElement
+              type="button"
+              label="Ajouter une adresse"
+              handler={addNewAddress}
+            />
+          </div>
+        </div>
         <div className="form__section form__section--split">
           <RadioInput
             disabled={isEfForm && isMissionFormDisabled}
@@ -474,7 +496,6 @@ const Mission = ({ step, isEfForm }) => {
         <div className="form__section-field form__section-field--hidden" id="abroad-report">
           <p className="form__section-field-label">(**) Compte rendu à fournir au retour de la mission sur financement RI</p>
         </div>
-      </div>
       {isEfForm && (
         <EfMission
           setValue={setValue}

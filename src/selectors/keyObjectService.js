@@ -55,3 +55,28 @@ export const setEfTranportsFilenames = (data) => {
 
   return filenamesObject;
 }
+
+export const createIndexedObject = (data) => {
+
+  // console.log(index);
+  const { addresses } = data;
+  
+  const newAddresses = { ...data};
+
+  for(let i = 1; i <= data.addresses.length; i++) {
+    const x = Object.entries(addresses[i - 1]);
+    // console.log(x);
+
+    x.forEach((property) => {
+      if (property[0] === 'id') {
+        newAddresses['addressId' + i] = property[1];
+      }
+      else {
+        newAddresses[property[0] + i] = property[1]; 
+      }
+    })
+  }
+  // console.log(newAddresses);
+  // console.log("-------------------------------------------------------------------------------");
+  return newAddresses;
+}
