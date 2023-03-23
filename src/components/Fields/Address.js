@@ -6,6 +6,7 @@ import HiddenField from 'src/components/Fields/HiddenField';
 import { RxDoubleArrowDown, RxDoubleArrowUp} from "react-icons/rx";
 import { FaTrash } from 'react-icons/fa';
 
+import { bisArray, streetType } from 'src/data/addressData';
 
 import './style.scss';
 import classNames from 'classnames';
@@ -16,10 +17,11 @@ const Address = ({
   disabled,
   errorMessages,
   suffixe,
-  bisArray,
-  streetType,
+  // bisArray,
+  // streetType,
   stepNumber,
   deleteAddress,
+  title,
 }) => {  
  
   const toggleStep = (event) => {
@@ -52,17 +54,90 @@ const Address = ({
     }
   }
   
+  //   const bisArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+  
+  // const streetType = [
+  //   {
+  //     id: 'R',
+  //     name: "Rue",
+  //   },
+  //   {
+  //     id: 'CIT',
+  //     name: "Cité",
+  //   },
+  //   {
+  //     id: 'AV',
+  //     name: "Avenue",
+  //   },
+  //   {
+  //     id: 'CHE',
+  //     name: "Chemin",
+  //   },
+  //   {
+  //     id: 'BD',
+  //     name: "Boulevard",
+  //   },
+  //   {
+  //     id: 'IMP',
+  //     name: "Impasse",
+  //   },
+  //   {
+  //     id: 'ALL',
+  //     name: "Allée",
+  //   },
+  //   {
+  //     id: 'QUA',
+  //     name: "Quartier",
+  //   },
+  //   {
+  //     id: 'LOT',
+  //     name: "Lot",
+  //   },
+  //   {
+  //     id: 'PL',
+  //     name: "Place",
+  //   },
+  //   {
+  //     id: 'PAS',
+  //     name: "Passage",
+  //   },
+  //   {
+  //     id: 'RTE',
+  //     name: "Route",
+  //   },
+  //   {
+  //     id: 'DOM',
+  //     name: "Domaine",
+  //   },
+  //   {
+  //     id: 'RES',
+  //     name: "Résidence",
+  //   },
+  //   {
+  //     id: 'HAM',
+  //     name: "Hameau",
+  //   },
+  //   {
+  //     id: 'QU',
+  //     name: "Quai",
+  //   },
+  //   {
+  //     id: 'SQ',
+  //     name: "Square",
+  //   },
+  // ];
+
   return (
     <div className={classNames('step', {'step--open': stepNumber === 1})} id={"step-" + stepNumber}>
       <div className='step__title step__title--down' onClick={toggleStep} id={"step-down-" + stepNumber}>
         <div><RxDoubleArrowDown /></div>
         
-        <h4>Adresse n° {stepNumber}</h4>
+        <h4>{title}</h4>
         <div><RxDoubleArrowDown /></div>
       </div>
       <div className='step__title step__title--up' onClick={toggleStep} id={"step-up-" + stepNumber}>
         <div><RxDoubleArrowUp /></div>
-        <h4>Adresse n° {stepNumber}</h4>
+        <h4>{title}</h4>
         <div><RxDoubleArrowUp /></div>
       </div>
       {/* <label className="form__section-field-label">{'Adresse ' + addressType}</label> */}
@@ -137,7 +212,7 @@ const Address = ({
             error={errors['city' + stepNumber]}
           />
         </div>
-        {stepNumber !== 1 && (
+        {stepNumber > 1 && (
           <div className='address__section step__container-fields step__container-fields--delete'>
             <FaTrash onClick={handleClickOnDelete} />
             <p onClick={handleClickOnDelete}>Supprimer cette étape</p>

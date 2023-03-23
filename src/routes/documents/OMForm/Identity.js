@@ -17,6 +17,7 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 // Selectors & actions
 import {  defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
 import { uploadFile } from 'src/reducer/omForm';
+import { turnFieldsToAddressEntity } from '../../../selectors/formDataGetters';
 
 
 const Identity = ({ isEfForm }) => {
@@ -33,7 +34,7 @@ const Identity = ({ isEfForm }) => {
     vehicle: { vehicleTypes },
   } = useSelector((state) => state);
   
-  const { register, setValue, getValues, formState: { errors } } = useForm({ defaultValues: agent });
+  const { register, setValue, getValues, watch, formState: { errors } } = useForm({ defaultValues: agent });
   const errorMessages = defineValidationRulesForMission(isEfForm, false);
   
   const [employer, setEmployer] = useState(agent.employer);
@@ -56,12 +57,13 @@ const Identity = ({ isEfForm }) => {
   
   return (
     <form className="form">
-{/*       
-        <div style={{width:"100%", height:"100vh"}}>
+            
+        {/* <div style={{width:"100%", height:"100vh"}}>
           <PDFViewer>
             <MyPDF agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />
           </PDFViewer>
-        </div> */}
+        </div>  */}
+     
       <div className="form__section">
         <FormSectionTitle>Missionnaire</FormSectionTitle>
         <div className="form__section form__section--split">
@@ -93,15 +95,16 @@ const Identity = ({ isEfForm }) => {
       <div className="form__section">
         <FormSectionTitle>Adresses du Missionnaire</FormSectionTitle>
         <Address
-          addressType='familiale'
           register={register}
           disabled
+          title="Adresse familiale"
+          stepNumber=''
         />
         <Address
-          addressType='administrative'
+          title="Adresse administrative"
           register={register}
-          suffixe='Pro'
           disabled
+          stepNumber='Pro'
         />
       </div>
       <div className="form__section">
@@ -191,7 +194,7 @@ const Identity = ({ isEfForm }) => {
       </div>
       {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />}
       <div className="form__section">
-        <div className="form__section-field-buttons">
+        <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
           <BlobProvider document={<MyPDF agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />}>
             {({ blob }) => {
 

@@ -118,17 +118,16 @@ const Address2 = ({ watch, data, register, errors, disabled, errorMessages, disp
       <div className='addresses'>
         {addressNumberArray.map((step) => (
           <Address
-          key={step}
-          disabled={disabled}
-          addressType="de la mission"
-          register={register}
-          errors={errors}
-          errorMessages={errorMessages}
-          bisArray={bisArray}
-          streetType={streetType}
-          stepNumber={step}
-          deleteAddress={handleDeleteAddress}
-        />
+            key={step}
+            disabled={disabled}
+            addressType="de la mission"
+            register={register}
+            errors={errors}
+            errorMessages={errorMessages}
+            stepNumber={step}
+            deleteAddress={handleDeleteAddress}
+            title={`Adresse n° ${stepNumber}`}
+          />
         ))}
       </div>
       <div className="form__section-field-buttons" style={{marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>

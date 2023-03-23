@@ -6,6 +6,8 @@ import { Font, Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/
 import Logo from 'src/assets/images/logo.png'
 import RadjhaniFont from 'src/assets/fonts/Rajdhani-Medium.ttf';
 
+import { streetType } from 'src/data/addressData';
+
 // Selectors
 import { getMaxMealsAndNights } from 'src/selectors/formValidationsFunctions';
 
@@ -161,6 +163,8 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
   const freeMeals = maxMealsNumber - (accomodations.meals_paid_by_agent + accomodations.meals_in_admin_restaurants);
   
   const gestArray = ['%', 'UB', 'CR', 'Code Nacres', 'Code LOLF', 'Code Analytique'];
+
+  console.log(mission.addresses);
   return (
   <Document>
     <Page size="A4" style={styles.page}>
@@ -214,7 +218,12 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
       <View style={styles.section}>
         <Text style={styles.section.title} wrap={false}>MISSION</Text>
         <Text style={styles.section.text}>Motif de la mission : {mission.mission_purpose}</Text>
-        <Text style={styles.section.text}>Adresse de la mission : {mission.address.streetNumber} {mission.address.bis} {mission.address.streetType} {mission.address.streetName} {mission.address.postCode} {mission.address.city}</Text>
+
+        {mission.addresses.map((address) => (
+          <Text style={styles.section.text} key={address.streetName}>
+            Adresse n° {mission.addresses.indexOf(address) + 1} de la mission : {address.streetNumber} {address.bis} {streetType.find((type) => address.streetType === type.id).name} {address.streetName} {address.postCode} {address.city}
+          </Text>
+        ))}
         {mission.region === 'dom-tom' && (
           <Text>Mission dans les DOM-TOM avec un forfait {mission.abroad_costs === "per-diem" ? 'per diem' : 'frais réels'}</Text>
         )}
@@ -274,14 +283,14 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
         <Text style={{textIndent: '10'}}>- {accomodations.meals_in_admin_restaurants} repas en restaurant administratif</Text>
         <Text style={{textIndent: '10'}}>- {accomodations.meals_paid_by_agent} repas autres</Text>
       </View>
-      <View style={styles.section}>
+      <View style={styles.section} wrap={false}>
         <Text style={styles.section.title} wrap={false}>AVANCE</Text>
         <Text style={styles.section.text}>Demande d'avance : {advance.advance_amount > 0 ? advance.advance_amount + '€' : 'Non.'}</Text>
       </View>
       {(more.informations && more.informations.length > 0) && (
-        <View style={styles.section}>
+        <View style={styles.section} wrap={false}>
           <Text style={styles.section.title}>AUTRES</Text>
-          <Text style={styles.section.text}>{signature.informations}</Text>
+          <Text style={styles.section.text}>{more.informations}</Text>
         </View>
       )}
       <View style={styles.section}>
