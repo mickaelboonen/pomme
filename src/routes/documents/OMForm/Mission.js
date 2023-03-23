@@ -132,11 +132,7 @@ console.log(" HERE : ", defaultValues);
   
   const onSubmit = (data) => {
     
-    console.log(data);
     data = turnFieldsToAddressEntity(data);
-    console.log(data);
-    console.log('--------------------------------------------------------------------------');
-    return;
     
     if (data.science) {
       if ((!data.missionPurposeFile || data.missionPurposeFile.length === 0) && !data.missionPurposeFileForValidation) {
@@ -220,6 +216,7 @@ console.log(" HERE : ", defaultValues);
            dispatch(uploadFile({data: data, step: 'mission'}));
         }
        
+        // TODO : change update name since no more city property
         const dateForFile = `${departure.getDate()}-${departure.getMonth() + 1}-${departure.getFullYear()}`;
         const newOmName = `OM_${data.missionAddress.city.toUpperCase()}_${dateForFile}_${user.toUpperCase()}`;
         
@@ -393,18 +390,11 @@ console.log(" HERE : ", defaultValues);
               addressType="de la mission"
               register={register}
               errors={errors}
+              watch={watch}
+              dispatch={dispatch}
               errorMessages={errorMessages}
             />
         </div>
-        {/* <div className='form__section'>
-          <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
-            <ButtonElement
-              type="button"
-              label="Ajouter une adresse"
-              handler={addNewAddress}
-            />
-          </div>
-        </div> */}
         <div className="form__section form__section--split">
           <RadioInput
             disabled={isEfForm && isMissionFormDisabled}

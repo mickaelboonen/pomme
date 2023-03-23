@@ -70,6 +70,7 @@ export const turnFieldsToAddressEntity = (data) => {
     delete data['streetName' + i];
     delete data['postCode' + i];
     delete data['city' + i];
+    delete data['countryCode' + i];
   }
 
   data.addresses = addresses;

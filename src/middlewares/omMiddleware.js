@@ -88,7 +88,6 @@ const omMiddleware = (store) => (next) => (action) => {
         })
         .catch((error) => {
           console.log('update new om', error);
-          console.log('------------------------------------------------------------------------------------------------');
           store.dispatch(setApiResponse(error))
         });
       break;
@@ -248,6 +247,19 @@ const omMiddleware = (store) => (next) => (action) => {
           })
           .catch((error) => {
             console.error('update om', error);
+            store.dispatch(setApiResponse(error))
+          });
+        break;
+      case 'omForm/deleteAddress':
+        api.delete("/api/address/delete/" + action.payload)
+          .then((response) => {
+            store.dispatch(setApiResponse({message: response.data, response: { status: 202}}));
+            // store.dispatch(saveMission(response.data))
+            // TODO 
+              // store.dispatch(validateSideForm(response.data));
+          })
+          .catch((error) => {
+            console.error('delete mission address', error);
             store.dispatch(setApiResponse(error))
           });
         break;

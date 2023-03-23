@@ -1,22 +1,13 @@
-import React, { useEffect, useState } from 'react';
-
-import TextField from 'src/components/Fields/TextField';
-import Address from 'src/components/Fields/Address';
-import ButtonElement from 'src/components/Fields/ButtonElement';
-import HiddenField from 'src/components/Fields/HiddenField';
-
+import React, { useState } from 'react';
 
 import './style.scss';
 
-const Address2 = ({
-  addressType,
-  data,
-  register,
-  errors,
-  disabled,
-  errorMessages,
-  suffixe
-}) => {  
+import Address from 'src/components/Fields/Address';
+import ButtonElement from 'src/components/Fields/ButtonElement';
+
+import { deleteAddress } from 'src/reducer/omForm';
+
+const Address2 = ({ watch, data, register, errors, disabled, errorMessages, dispatch }) => {  
 
   const bisArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
   
@@ -101,26 +92,29 @@ const Address2 = ({
 
   const [addressNumberArray, setAddressesNumber] = useState(numberAddressesArray);
 
-  
-
   const addNewAddress = () => {
-    // const addressesElement = document.getElementById('addresses');
     const newArray = [...addressNumberArray];
     newArray.push(addressNumberArray.length + 1);
     setAddressesNumber(newArray)
-    console.log(newArray);
   }
 
   const handleDeleteAddress = (id) => {
-    let newArray = [...addressNumberArray];
+    
+    const addressId = watch(`addressId${id}`);
 
-    newArray = addressNumberArray.filter((number) => number !== id);
-
+    if (addressId !== "") {
+      dispatch(deleteAddress(addressId));
+    }
+    
+    const newArray = addressNumberArray.filter((number) => number !== id);
     setAddressesNumber(newArray);
+    
   }
 
   return (
     <>
+      <p className='form__section-message form__section-message--infos'>Dans le cas où votre OM comporterait plusieurs destinations, merci de les rajouter en cliquant sur le bouton <span>AJOUTER UNE MISSION</span>.</p>
+      <p className='form__section-message form__section-message--infos'><span>ATTENTION :</span> Merci de préciser dans les Observations, à l'étape Signature, les jours qui ne seront pas soumis à un rembrousement (jours "off" entre plusieurs missions, extension de mission pour raison personnelle, etc...)</p>
       <div className='addresses'>
         {addressNumberArray.map((step) => (
           <Address
@@ -137,8 +131,7 @@ const Address2 = ({
         />
         ))}
       </div>
-      <div className="form__section-field-buttons" style={{marginTop: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-        <label className="form__section-field-label">Plusieurs missions dans un seul OM ?</label>
+      <div className="form__section-field-buttons" style={{marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
         <ButtonElement
           type="button"
           label="Ajouter une mission"
@@ -151,20 +144,6 @@ const Address2 = ({
 
 Address2.propTypes = {
 
-};
-
-Address2.defaultProps = {
-  suffixe: '',
-  disabled: false,
-  errors: {},
-  errorMessages: {
-    streetName: null,
-    streetNumber: null,
-    streetType: null,
-    postCode: null,
-    city: null,
-    bis: null,
-  },
 };
 
 export default Address2;

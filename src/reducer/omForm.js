@@ -268,7 +268,8 @@ const omFormSlice = createSlice({
       },
       setLoader: (state, action) => {
         state.omLoader = action.payload;
-      }
+      },
+      deleteAddress: () => {}
     },
 });
 
@@ -306,6 +307,7 @@ export const {
   displayOmStatus,
   saveOmPdf,
   updateOm,
+  deleteAddress,
 } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

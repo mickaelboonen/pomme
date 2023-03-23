@@ -111,8 +111,6 @@ const Steps = ({ step }) => {
       
       return step;
     })
-    
-    console.log(entities);
 
     if (stages.length === 0) {
       dispatch(addSteps({data: entities, type: 'ef', docId: efId}))

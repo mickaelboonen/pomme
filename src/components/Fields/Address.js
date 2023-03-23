@@ -46,7 +46,10 @@ const Address = ({
   }
 
   const handleClickOnDelete = () => {
-    deleteAddress(stepNumber)
+    
+    if (window.confirm(`Confirmez-vous la suppression de l'adresse n° ${stepNumber} ?`)) {
+      deleteAddress(stepNumber)
+    }
   }
   
   return (

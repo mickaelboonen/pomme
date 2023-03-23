@@ -21,7 +21,7 @@ const ApiResponse = ({ apiResponse, updateForm }) => {
   
  return (
   <div className='api-response'>
-    {(response.status && response.status !== 200) && (
+    {(response.status && response.status !== 200 && response.status !== 202) && (
       <div className="api-response__error">
         <h5 className="api-response__error-title">{response.statusText} - {response.status}</h5>
         <p className="api-response__error-details">{response.data.detail} </p>
@@ -34,7 +34,7 @@ const ApiResponse = ({ apiResponse, updateForm }) => {
         </div>
       </div>
     )}
-    {response.status === 200 && (
+    {(response.status === 200 || response.status === 202) && (
       <p className="form__section-message form__section-message--success">
         {message} <br />
         {!updateForm && <span style={{fontStyle: 'italic'}}>Vous allez être redirigé dans quelques instants.</span>}
