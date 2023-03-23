@@ -26,11 +26,11 @@ const initialState = {
   formDefaultValues: {
     carType: null,
     selectedVehicle: null,
-    carBrand: null,
-    carRegistration: null,
-    carRating: null,
-    carInsurance: null,
-    policeNumber: null,
+    make: null,
+    licensePlate: null,
+    rating: null,
+    insurance: null,
+    police: null,
     reasons: [],
     otherReason: null,
     savedRegistration: false,
@@ -96,11 +96,11 @@ const vehicleSlice = createSlice({
         
         state.formDefaultValues.carType= isUnimeVehicle ? 'company-car': 'personal-car';
         state.formDefaultValues.selectedVehicle= vehicleToShow ? vehicleToShow.id : '';
-        state.formDefaultValues.carBrand= vehicleToShow ? vehicleToShow.make : '';
-        state.formDefaultValues.carRegistration= vehicleToShow ? vehicleToShow.licensePlate : '';
-        state.formDefaultValues.carRating= vehicleToShow ? vehicleToShow.rating : '';
-        state.formDefaultValues.carInsurance= vehicleToShow ? vehicleToShow.insurance : '';
-        state.formDefaultValues.policeNumber= vehicleToShow ? vehicleToShow.police : '';
+        state.formDefaultValues.make= vehicleToShow ? vehicleToShow.make : '';
+        state.formDefaultValues.licensePlate= vehicleToShow ? vehicleToShow.licensePlate : '';
+        state.formDefaultValues.rating= vehicleToShow ? vehicleToShow.rating : '';
+        state.formDefaultValues.insurance= vehicleToShow ? vehicleToShow.insurance : '';
+        state.formDefaultValues.police= vehicleToShow ? vehicleToShow.police : '';
         state.currentVehicle = vehicleToShow;
         
         state.currentVehicle = vehicleToShow ? vehicleToShow : {};

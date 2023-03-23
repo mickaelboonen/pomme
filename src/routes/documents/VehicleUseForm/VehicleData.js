@@ -16,7 +16,7 @@ const VehicleData = ({ register, errors }) => {
         formField="make"
         register={register}
         required='Merci de renseigner la marque de la voiture.'
-        error={errors.carBrand}
+        error={errors.make}
       />
       <TextField
         id="car-registration"
@@ -24,7 +24,7 @@ const VehicleData = ({ register, errors }) => {
         formField="licensePlate"
         register={register}
         required="Merci de renseigner la plaque d'immatriculation de la voiture."
-        error={errors.carRegistration}
+        error={errors.licensePlate}
       />
     </div>
     <div className="form__section  form__section--split">
@@ -36,7 +36,7 @@ const VehicleData = ({ register, errors }) => {
         isNumber
         min="0"
         required='Merci de renseigner la puissance fiscale de la voiture.'
-        error={errors.carRating}
+        error={errors.rating}
       />
       <TextField
         id="car-insurance"
@@ -44,7 +44,7 @@ const VehicleData = ({ register, errors }) => {
         formField="insurance"
         register={register}
         required="Merci de renseigner la compagnie assurant la voiture."
-        error={errors.carInsurance}
+        error={errors.insurance}
       />
     </div>
     <div className="form__section  form__section--split">
@@ -54,7 +54,7 @@ const VehicleData = ({ register, errors }) => {
         formField="police"
         register={register}
         required="Merci de renseigner le numéro de police."
-        error={errors.policeNumber}
+        error={errors.police}
       />
     </div>
   </div>
