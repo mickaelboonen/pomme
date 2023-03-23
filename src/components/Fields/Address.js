@@ -4,6 +4,8 @@ import TextField from 'src/components/Fields/TextField';
 import SelectField from 'src/components/Fields/SelectField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import { RxDoubleArrowDown, RxDoubleArrowUp} from "react-icons/rx";
+import { FaTrash } from 'react-icons/fa';
+
 
 import './style.scss';
 import classNames from 'classnames';
@@ -17,7 +19,7 @@ const Address = ({
   bisArray,
   streetType,
   stepNumber,
-  data
+  deleteAddress,
 }) => {  
  
   const toggleStep = (event) => {
@@ -42,6 +44,10 @@ const Address = ({
       stepElement.classList.add('address--open')
     }   
   }
+
+  const handleClickOnDelete = () => {
+    deleteAddress(stepNumber)
+  }
   
   return (
     <div className={classNames('step', {'step--open': stepNumber === 1})} id={"step-" + stepNumber}>
@@ -59,7 +65,7 @@ const Address = ({
       {/* <label className="form__section-field-label">{'Adresse ' + addressType}</label> */}
       <HiddenField
         register={register}
-        id="addressId"
+        id={"addressId" + stepNumber}
         value=""
       />
       <div className={classNames('address', {'address--open': stepNumber === 1})}>
@@ -128,7 +134,14 @@ const Address = ({
             error={errors['city' + stepNumber]}
           />
         </div>
+        {stepNumber !== 1 && (
+          <div className='address__section step__container-fields step__container-fields--delete'>
+            <FaTrash onClick={handleClickOnDelete} />
+            <p onClick={handleClickOnDelete}>Supprimer cette étape</p>
+          </div>
+        )}
       </div>
+
     </div>
   );
 };

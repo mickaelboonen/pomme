@@ -44,23 +44,35 @@ export const turnAddressToFields = (data) => {
 }
 
 export const turnFieldsToAddressEntity = (data) => {
-  data.missionAddress = {
-    id: data.addressId,
-    streetNumber: data.streetNumber,
-    bis: data.bis,
-    streetType: data.streetType,
-    streetName: data.streetName,
-    postCode: data.postCode,
-    city: data.city,
+
+  const dataArray = Object.entries(data);
+  const addressIdsArray = dataArray.filter((property) => property[0].includes('addressId'));
+
+  const addressesNumber = addressIdsArray.length;
+  const addresses = [];
+
+  for (let i = 1; i <= addressesNumber; i++) {
+    const missionAddress = {
+      id: data['addressId' + i],
+      streetNumber: data['streetNumber' + i],
+      bis: data['bis' + i],
+      streetType: data['streetType' + i],
+      streetName: data['streetName' + i],
+      postCode: data['postCode' + i],
+      city: data['city' + i],
+    }
+    addresses.push(missionAddress);
+
+    delete data['addressId' + i];
+    delete data['streetNumber' + i];
+    delete data['bis' + i];
+    delete data['streetType' + i];
+    delete data['streetName' + i];
+    delete data['postCode' + i];
+    delete data['city' + i];
   }
 
-  delete data.addressId;
-  delete data.streetNumber;
-  delete data.bis;
-  delete data.streetType;
-  delete data.streetName;
-  delete data.postCode;
-  delete data.city;
+  data.addresses = addresses;
 
   return data;
 }

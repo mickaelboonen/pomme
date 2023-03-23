@@ -62,7 +62,7 @@ export const createIndexedObject = (data) => {
   const { addresses } = data;
   
   const newAddresses = { ...data};
-
+console.log(data.addressess);
   for(let i = 1; i <= data.addresses.length; i++) {
     const x = Object.entries(addresses[i - 1]);
     // console.log(x);

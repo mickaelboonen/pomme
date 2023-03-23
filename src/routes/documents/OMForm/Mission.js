@@ -102,10 +102,8 @@ const Mission = ({ step, isEfForm }) => {
       }
     })
   }
-// console.log(defaultValues.addresses);
-  // for(let i = 1; i <= defaultValues.addresses.length; i++) {
-    defaultValues = createIndexedObject(defaultValues);
-  // }
+  
+defaultValues = createIndexedObject(defaultValues);
   
 console.log(" HERE : ", defaultValues);
   const {
@@ -135,8 +133,10 @@ console.log(" HERE : ", defaultValues);
   const onSubmit = (data) => {
     
     console.log(data);
-    return;
     data = turnFieldsToAddressEntity(data);
+    console.log(data);
+    console.log('--------------------------------------------------------------------------');
+    return;
     
     if (data.science) {
       if ((!data.missionPurposeFile || data.missionPurposeFile.length === 0) && !data.missionPurposeFileForValidation) {
@@ -236,7 +236,7 @@ console.log(" HERE : ", defaultValues);
   
   const [isMissionAScienceEvent, setIsMissionAScienceEvent] = useState(defaultValues.science);
   const [isVisaNeeded, setIsVisaNeeded] = useState(defaultValues.visa);
-  const [addressNumber, setAddressNumber] = useState(defaultValues.visa);
+  const [addressNumberArray, setAddressNumberArray] = useState(defaultValues.visa);
 
   const handleVisa = (event) => {
     const { id } = event.target;
@@ -264,6 +264,7 @@ console.log(" HERE : ", defaultValues);
 
   const addNewAddress = () => {
     const addressesElement = document.getElementById('addresses');
+    setAddressNumberArray(addressNumberArray.length + 1)
     console.log(addressesElement);
   }
   
@@ -395,7 +396,7 @@ console.log(" HERE : ", defaultValues);
               errorMessages={errorMessages}
             />
         </div>
-        <div className='form__section'>
+        {/* <div className='form__section'>
           <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
             <ButtonElement
               type="button"
@@ -403,7 +404,7 @@ console.log(" HERE : ", defaultValues);
               handler={addNewAddress}
             />
           </div>
-        </div>
+        </div> */}
         <div className="form__section form__section--split">
           <RadioInput
             disabled={isEfForm && isMissionFormDisabled}

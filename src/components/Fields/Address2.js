@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import TextField from 'src/components/Fields/TextField';
 import Address from 'src/components/Fields/Address';
-import SelectField from 'src/components/Fields/SelectField';
+import ButtonElement from 'src/components/Fields/ButtonElement';
 import HiddenField from 'src/components/Fields/HiddenField';
 
 
@@ -99,26 +99,53 @@ const Address2 = ({
     numberAddressesArray.push(1);
   }
 
-  const [addressesNumber, setAddressesNumber] = useState(numberAddressesArray);
+  const [addressNumberArray, setAddressesNumber] = useState(numberAddressesArray);
 
   
+
+  const addNewAddress = () => {
+    // const addressesElement = document.getElementById('addresses');
+    const newArray = [...addressNumberArray];
+    newArray.push(addressNumberArray.length + 1);
+    setAddressesNumber(newArray)
+    console.log(newArray);
+  }
+
+  const handleDeleteAddress = (id) => {
+    let newArray = [...addressNumberArray];
+
+    newArray = addressNumberArray.filter((number) => number !== id);
+
+    setAddressesNumber(newArray);
+  }
+
   return (
-    <div className='addresses'>
-      {addressesNumber.map((step) => (
-        <Address
-        key={step}
-        data={data[step -1]}
-        disabled={disabled}
-        addressType="de la mission"
-        register={register}
-        errors={errors}
-        errorMessages={errorMessages}
-        bisArray={bisArray}
-        streetType={streetType}
-        stepNumber={step}
-      />
-      ))}
-    </div>
+    <>
+      <div className='addresses'>
+        {addressNumberArray.map((step) => (
+          <Address
+          key={step}
+          disabled={disabled}
+          addressType="de la mission"
+          register={register}
+          errors={errors}
+          errorMessages={errorMessages}
+          bisArray={bisArray}
+          streetType={streetType}
+          stepNumber={step}
+          deleteAddress={handleDeleteAddress}
+        />
+        ))}
+      </div>
+      <div className="form__section-field-buttons" style={{marginTop: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+        <label className="form__section-field-label">Plusieurs missions dans un seul OM ?</label>
+        <ButtonElement
+          type="button"
+          label="Ajouter une mission"
+          handler={addNewAddress}
+        />
+      </div>
+    </>
   );
 };
 

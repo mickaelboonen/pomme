@@ -210,19 +210,8 @@ const omFormSlice = createSlice({
       },
       saveMission: (state, action) => {
         
-        state.omForm[0].data.omId = action.payload.om.id;
-
-        const formattedValues = declareCamelCaseKeys(action.payload);
-        formattedValues.streetNumber = formattedValues.address ? formattedValues.address.streetNumber : null;
-        formattedValues.bis = formattedValues.address ? formattedValues.address.bis : null;
-        formattedValues.streetType = formattedValues.address ? formattedValues.address.streetType : null;
-        formattedValues.streetName = formattedValues.address ? formattedValues.address.streetName : null;
-        formattedValues.postCode = formattedValues.address ? formattedValues.address.postCode : null;
-        formattedValues.city = formattedValues.address ? formattedValues.address.city : null;
-        formattedValues.addressId = formattedValues.address ? formattedValues.address.id : null;
-        delete formattedValues.address;
-        
-        state.omForm[0].data = formattedValues;
+        state.omForm[0].data.omId = action.payload.om.id;        
+        state.omForm[0].data = declareCamelCaseKeys(action.payload);
         
         state.omLoader = false;
       },
