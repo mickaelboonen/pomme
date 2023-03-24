@@ -8,7 +8,7 @@ const ButtonElement = ({ type, label, handler, isLink, link}) => {
   let Button = null;
 
   if (isLink) {
-    Button = <Link to={link}className="button" type={type}>{label}</Link>;
+    Button = <Link to={link} className="button" type={type}>{label}</Link>;
   }
   else {
     Button = <button className="button" type={type} onClick={handler}>{label}</button>;

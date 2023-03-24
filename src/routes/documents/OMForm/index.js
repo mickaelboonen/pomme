@@ -11,6 +11,7 @@ import Transports from './Transports';
 import Accomodations from './Accomodations';
 import PageTitle from 'src/components/PageTitle';
 import ThreadAsTabs from 'src/components/ThreadAsTabs';
+import ButtonElement from 'src/components/Fields/ButtonElement';
 
 import { clearMessage } from 'src/reducer/app';
 
@@ -25,6 +26,7 @@ const OMForm = () => {
 
   const { omForm :{ omForm, steps, omLoader, currentOM},
     app: { appLoader, apiMessage },
+    agent: { user },
   } = useSelector((state) => state);
 
   console.log(currentOM);
@@ -113,7 +115,7 @@ const OMForm = () => {
         <div className="form-page__title">
           <PageTitle>Création d'un Ordre de Mission</PageTitle>
         </div>
-        {currentOM.status !== 2 && (
+        {currentOM.status === 1  && (
           <div className="form-page__container">
             
             {omLoader && <LoaderCircle />}
@@ -141,7 +143,15 @@ const OMForm = () => {
         {currentOM.status === 2 && (
           <div className="form-page__container">
             <div className='form'>
-                <p className='form__text' style={{marginBottom: '2rem'}}>Vous ne pouvez plus modifier cet OM. Si vous pensez avoir fait une erreur, veuillez vous rapprocher de votre Gestionnaire. </p>
+              <p className='form__text'>Vous ne pouvez plus modifier cet OM. Si vous pensez avoir fait une erreur, veuillez vous rapprocher de votre Gestionnaire. </p>
+              <div className='form__section-container-button' style={{textAlign: 'center', width: 'fit-content', margin: 'auto'}}>
+              <ButtonElement
+                type
+                label="Retourner au menu des Ordres de Mission"
+                isLink
+                link={`/utilisateur/${user}/mes-ordres-de-mission`}
+              />
+              </div>
             </div>
           </div>
         )}
