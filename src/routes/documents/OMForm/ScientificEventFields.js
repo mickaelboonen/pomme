@@ -28,6 +28,14 @@ const ScientificEvent = ({ setValue, register, errors, filename, isEfForm, isMis
           register={register}
           required={isEfForm && isMissionFormDisabled ? null : "Veuillez renseigner le champ."}
         />
+        <RadioInput
+          disabled={isEfForm && isMissionFormDisabled}
+          id="free-science"
+          formField="sciencePayment"
+          label="Pris en charge par un autre organisme"
+          register={register}
+          required={isEfForm && isMissionFormDisabled ? null : "Veuillez renseigner le champ."}
+        />
       </div>
       {errors.sciencePayment && <p className="form__section-field-error form__section-field-error--open">{errors.sciencePayment.message}</p>}
 

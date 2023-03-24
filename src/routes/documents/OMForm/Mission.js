@@ -7,7 +7,6 @@ import './style.scss';
 
 // Components
 import EfMission from '../EfForm/Mission';
-import Address from 'src/components/Fields/Address';
 import Address2 from 'src/components/Fields/Address2';
 import Buttons from 'src/components/Fields/Buttons';
 import ApiResponse from 'src/components/ApiResponse';
@@ -16,25 +15,22 @@ import SwitchButton from 'src/components/SwitchButton';
 import DateField from 'src/components/Fields/DateField';
 import FileField from 'src/components/Fields/FileField';
 import TextField from 'src/components/Fields/TextField';
-import TextareaField from 'src/components/Fields/TextareaField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 
 // Selectors 
-import { handleRegionFields, defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
+import { defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
 import { getSavedFileName, turnAddressToFields } from 'src/selectors/formDataGetters';
-import { declareCamelCaseKeys } from 'src/selectors/keyObjectService';
+import { declareCamelCaseKeys, addAllAddressesFields } from 'src/selectors/keyObjectService';
 import { turnFieldsToAddressEntity } from 'src/selectors/formDataGetters';
 
 // Reducer
 import { enableMissionFormFields, updateEfMission } from 'src/reducer/ef';
 import { uploadFile, updateOmName, updateMission } from 'src/reducer/omForm';
-import { createIndexedObject } from '../../../selectors/keyObjectService';
 
 const Mission = ({ step, isEfForm }) => {
   
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const loader = useLoaderData();
   
@@ -44,7 +40,7 @@ const Mission = ({ step, isEfForm }) => {
 
   const { app: { apiMessage, countries},
     agent: { user},
-    omForm: { currentOM, omForm, refusal, adresses },
+    omForm: { currentOM, omForm },
     ef: { isMissionFormDisabled, currentEf }
   } = useSelector((state) => state);
 
@@ -103,7 +99,7 @@ const Mission = ({ step, isEfForm }) => {
     })
   }
   
-  defaultValues = createIndexedObject(defaultValues);
+  defaultValues = addAllAddressesFields(defaultValues);
 
   const {
     register, handleSubmit, watch,
@@ -253,12 +249,6 @@ const Mission = ({ step, isEfForm }) => {
 
   const toggleScienceForm = (event) => {
     setIsMissionAScienceEvent(event.target.checked);
-  }
-
-  const addNewAddress = () => {
-    const addressesElement = document.getElementById('addresses');
-    setAddressNumberArray(addressNumberArray.length + 1)
-    console.log(addressesElement);
   }
   
   const frenchRegions = countries.filter((country) => country.nationality === 'Français' || country.nationality === 'FRANCAIS(E)');

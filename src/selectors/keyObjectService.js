@@ -56,7 +56,7 @@ export const setEfTranportsFilenames = (data) => {
   return filenamesObject;
 }
 
-export const createIndexedObject = (data) => {
+export const addAllAddressesFields = (data) => {
 
   // console.log(index);
   const { addresses } = data;
