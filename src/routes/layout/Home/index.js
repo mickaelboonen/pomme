@@ -1,25 +1,27 @@
-import React, { useState, useEffect } from 'react';
+
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import TitleH3 from '../../../components/TitleH3';
-import { PDFViewer } from '@react-pdf/renderer';
-import { IoMdAddCircle, FaSun, FaMoon } from "react-icons/io";
+import { IoMdAddCircle } from "react-icons/io";
+import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './style.scss';
-import MyPDF from '../../../components/PDF';
-import { useDispatch, useSelector } from 'react-redux';
+
+import HomepageTitle from './HomepageTitle';
 import Modal from 'src/components/Modal';
+import TitleH3 from 'src/components/TitleH3';
+
+
 import { toggleModal } from 'src/reducer/app';
 import { clearOMTarget } from 'src/reducer/omForm';
-import { useNavigate } from 'react-router-dom';
-import HomepageTitle from './HomepageTitle';
 
 const Home = () => {
   
   const navigate = useNavigate();
   const { app: { isModalOpen},
-    agent: { user, agent, isAuthenticated},
-    omForm: { nextOMTarget, omForm, currentOM},
+    agent: { user },
+    omForm: { nextOMTarget },
   } = useSelector((state) => state);
   
   useEffect(() => {

@@ -5,12 +5,17 @@ import { Outlet, useLoaderData } from 'react-router-dom';
 
 import './style.scss';
 import Header from './Header';
-import Login from './Login';
+import Maintenance from './Maintenance';
 
 const Layout = ({ cas }) => {
   
   const theme = localStorage.getItem('theme');
   const colorTheme = localStorage.getItem('color-theme');
+
+  const { user } = useSelector((state) => state.agent);
+
+  console.log(process.env.IS_MAINTENANCE);
+  const isMaintenance = process.env.IS_MAINTENANCE;
   
   useEffect(() => {
     if (theme === 'dark') {
@@ -24,9 +29,16 @@ const Layout = ({ cas }) => {
   return (
     <>
       <Header cas={cas} />
-      <main id="main">
-        <Outlet />
-      </main>
+      {(!isMaintenance || user === 'mboone01') && (
+        <main id="main">
+          <Outlet />
+        </main>
+      )}
+      {(isMaintenance && user !=='mboone01') &&(
+        <main id="main">
+          <Maintenance />
+        </main>
+      )}
     </>
   );
 };
