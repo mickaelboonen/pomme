@@ -61,6 +61,8 @@ const Signature = ({ step }) => {
   } = useForm({ defaultValues: defaultValues });
   
   const onSubmit = (data) => {
+    console.log(data);
+    console.log("-------------------------------------------------");
     const formattedData = turnSignatureDataToDbFormat(data, userSignature);
 
     // return;
@@ -139,7 +141,7 @@ const Signature = ({ step }) => {
             fileName={signatureFilename}
           />
         )}
-        <HiddenField id="omId" value={omId} register={register} />
+        <HiddenField id="docId" value={omId} register={register} />
       </div>
 
       <div className="form__section">

@@ -94,7 +94,13 @@ const OMForm = () => {
       }, "950")
       setTimeout(() => {
         const nextStep = step + 1;
-        navigate(loaderData.pathname + '?etape=' + nextStep + '&id=' + id);
+        if (next === 7) {
+          navigate('/');
+        }
+        else {
+          navigate(loaderData.pathname + '?etape=' + nextStep + '&id=' + id);
+        }
+        
       }, "1000")
     }
   }, [apiMessage]);

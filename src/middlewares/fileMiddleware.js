@@ -65,8 +65,9 @@ const omMiddleware = (store) => (next) => (action) => {
         }
         else if (step === "more-and-signature") {
           if (data.agentSignature instanceof File) {
+            console.log(data);
             const signature = {
-              omId: data.docId,
+              docId: data.docId,
               type: 'signature',
               file: data.agentSignature,
             }
@@ -84,8 +85,9 @@ const omMiddleware = (store) => (next) => (action) => {
           })
         }
         else if (step === "om") {
+          console.log(data);
           const fileToUpload = {
-            omId: data.docId,
+            docId: data.docId,
             type: 'om',
             file: data.file,
           }

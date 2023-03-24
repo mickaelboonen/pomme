@@ -50,7 +50,7 @@ const Identity = ({ isEfForm }) => {
   
   const generatePDF = () => {
     const file = getValues('om');
-    dispatch(uploadFile({ data: {omId: omId , file: file}, step: 'om'}))
+    dispatch(uploadFile({ data: {docId: omId , file: file}, step: 'om'}))
   }
 
   console.log(agent);

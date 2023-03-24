@@ -260,7 +260,7 @@ export const turnAdvanceDataToDbFormat = (data) => {
 export const turnSignatureDataToDbFormat = (data, signatureUrl) => {
 
   const {
-    omId,
+    docId,
     savedSignature,
     otherInfos,
     otherFiles,
@@ -269,7 +269,7 @@ export const turnSignatureDataToDbFormat = (data, signatureUrl) => {
   } = data;
 
   const dataToBeSubmitted = {
-    omId: omId,
+    docId: docId,
     organizerSignature: null,
     files: otherFiles,
     informations: otherInfos,

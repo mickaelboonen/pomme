@@ -242,8 +242,7 @@ const omMiddleware = (store) => (next) => (action) => {
       case 'omForm/updateOm':
         api.post("/api/om/update", action.payload)
           .then((response) => {
-            // TODO 
-              // store.dispatch(validateSideForm(response.data));
+            store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
           })
           .catch((error) => {
             console.error('update om', error);
