@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { turnTransportsDataToAppFormat } from '../selectors/dataToDbFormat';
 import { declareCamelCaseKeys } from '../selectors/keyObjectService';
 
-import store from 'src/store';
 
 const initialState = {
   steps: [

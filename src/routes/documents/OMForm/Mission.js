@@ -16,7 +16,7 @@ import SwitchButton from 'src/components/SwitchButton';
 import DateField from 'src/components/Fields/DateField';
 import FileField from 'src/components/Fields/FileField';
 import TextField from 'src/components/Fields/TextField';
-import ButtonElement from 'src/components/Fields/ButtonElement';
+import TextareaField from 'src/components/Fields/TextareaField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
@@ -103,9 +103,8 @@ const Mission = ({ step, isEfForm }) => {
     })
   }
   
-defaultValues = createIndexedObject(defaultValues);
-  
-console.log(" HERE : ", defaultValues);
+  defaultValues = createIndexedObject(defaultValues);
+
   const {
     register, handleSubmit, watch,
     setError, setValue, formState: { errors }
@@ -116,19 +115,15 @@ console.log(" HERE : ", defaultValues);
     },
   });
   
-  // if (areWeUpdatingData) {
-    if (defaultValues.departure) {
-      setValue('departure', defaultValues.departure.slice(0, 16));
-    }
-    if (defaultValues.comeback) {
-      setValue('comeback', defaultValues.comeback.slice(0, 16));
-    }
-    if (defaultValues.science && defaultValues.missionPurposeFile === 'pending') {
-      setValue('missionPurposeFileForValidation', true);
-    }
-
-  // }
-
+  if (defaultValues.departure) {
+    setValue('departure', defaultValues.departure.slice(0, 16));
+  }
+  if (defaultValues.comeback) {
+    setValue('comeback', defaultValues.comeback.slice(0, 16));
+  }
+  if (defaultValues.science && defaultValues.missionPurposeFile === 'pending') {
+    setValue('missionPurposeFileForValidation', true);
+  }
   
   const onSubmit = (data) => {
     
@@ -144,6 +139,7 @@ console.log(" HERE : ", defaultValues);
       setError('missionPurposeFile', { type: 'custom', message: 'Merci de fournir le justificatif de la mission.'})
       return;
     }
+
     if (isEfForm) {
       if (!data.modificationSwitch) {
         
@@ -384,16 +380,16 @@ console.log(" HERE : ", defaultValues);
         </div>
         <FormSectionTitle>Lieu de la mission</FormSectionTitle>
         <div className='form__section' id="addresses">
-            <Address2
-              data={defaultValues.addresses}
-              disabled={isEfForm && isMissionFormDisabled}
-              addressType="de la mission"
-              register={register}
-              errors={errors}
-              watch={watch}
-              dispatch={dispatch}
-              errorMessages={errorMessages}
-            />
+          <Address2
+            data={defaultValues.addresses}
+            disabled={isEfForm && isMissionFormDisabled}
+            addressType="de la mission"
+            register={register}
+            errors={errors}
+            watch={watch}
+            dispatch={dispatch}
+            errorMessages={errorMessages}
+          />
         </div>
         <div className="form__section form__section--split">
           <RadioInput

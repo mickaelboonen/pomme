@@ -213,7 +213,7 @@ const Address = ({
           />
         </div>
         {stepNumber > 1 && (
-          <div className='address__section step__container-fields step__container-fields--delete'>
+          <div className='address__section address__section--delete'>
             <FaTrash onClick={handleClickOnDelete} />
             <p onClick={handleClickOnDelete}>Supprimer cette étape</p>
           </div>
