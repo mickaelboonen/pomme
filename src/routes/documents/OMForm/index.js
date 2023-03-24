@@ -27,6 +27,7 @@ const OMForm = () => {
     app: { appLoader, apiMessage },
   } = useSelector((state) => state);
 
+  console.log(currentOM);
   useEffect(() => {
     if (apiMessage.response) {
       dispatch(clearMessage());
@@ -112,29 +113,38 @@ const OMForm = () => {
         <div className="form-page__title">
           <PageTitle>Création d'un Ordre de Mission</PageTitle>
         </div>
-        <div className="form-page__container">
-          
-          {omLoader && <LoaderCircle />}
-          {(step === 1 && !omLoader) && <Mission step={step} isEfForm={false} />}
-          {(step === 2 && !omLoader) && <Transports step={step} />}
-          {(step === 3 && !omLoader) && <Accomodations step={step} />}
-          {(step === 4 && !omLoader) && <Avance step={step} />}
-          {(step === 5 && !omLoader) && <Signature step={step} />}
-          {(step === 6 && !omLoader && docState.length === 0) && <Identity step={step} />}
-          {(step === 6 && !omLoader && docState.length > 0) && (
+        {currentOM.status !== 2 && (
+          <div className="form-page__container">
+            
+            {omLoader && <LoaderCircle />}
+            {(step === 1 && !omLoader) && <Mission step={step} isEfForm={false} />}
+            {(step === 2 && !omLoader) && <Transports step={step} />}
+            {(step === 3 && !omLoader) && <Accomodations step={step} />}
+            {(step === 4 && !omLoader) && <Avance step={step} />}
+            {(step === 5 && !omLoader) && <Signature step={step} />}
+            {(step === 6 && !omLoader && docState.length === 0) && <Identity step={step} />}
+            {(step === 6 && !omLoader && docState.length > 0) && (
+              <div className='form'>
+                  <p className='form__text'>Merci de terminer les étapes précédentes pour accéder à cette étape.</p>
+                  <p className='form__text'>Il vous reste à valider :</p>
+                  <p className='form__text'>{docState.map((missingStep) => {
+                    if (docState.indexOf(missingStep) === docState.length -1 ) {
+                      return <Link key={missingStep.step} to={loaderData.pathname + "?etape=" + missingStep.step + "&id=" + id}>{missingStep.name.toUpperCase()}</Link>;
+                    }
+                    return <Link key={missingStep.step} to={loaderData.pathname + "?etape=" + missingStep.step + "&id=" + id}>{missingStep.name.toUpperCase() + ' - '}</Link>;
+                    })}
+                  </p>
+              </div>
+            )}
+          </div>
+        )}
+        {currentOM.status === 2 && (
+          <div className="form-page__container">
             <div className='form'>
-                <p className='form__text'>Merci de terminer les étapes précédentes pour accéder à cette étape.</p>
-                <p className='form__text'>Il vous reste à valider :</p>
-                <p className='form__text'>{docState.map((missingStep) => {
-                  if (docState.indexOf(missingStep) === docState.length -1 ) {
-                    return <Link key={missingStep.step} to={loaderData.pathname + "?etape=" + missingStep.step + "&id=" + id}>{missingStep.name.toUpperCase()}</Link>;
-                  }
-                  return <Link key={missingStep.step} to={loaderData.pathname + "?etape=" + missingStep.step + "&id=" + id}>{missingStep.name.toUpperCase() + ' - '}</Link>;
-                  })}
-                </p>
+                <p className='form__text' style={{marginBottom: '2rem'}}>Vous ne pouvez plus modifier cet OM. Si vous pensez avoir fait une erreur, veuillez vous rapprocher de votre Gestionnaire. </p>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </>
   );
