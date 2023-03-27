@@ -75,9 +75,9 @@ const VehicleUseForm = () => {
     { errors },
   } = useForm({ defaultValues: formDefaultValues});
   
-  const [showCarList, setShowCarList] = useState(true);
-  const [hasSavedInsurance, setSavedInsurance] = useState(false);
-  const [hasSavedRegistration, setSavedRegistration] = useState(false);
+  const [isPersonalCar, setIsPersonalCar] = useState(true);
+  const [hasSavedInsurance, setSavedInsurance] = useState(formDefaultValues.savedInsurance);
+  const [hasSavedRegistration, setSavedRegistration] = useState(formDefaultValues.savedRegistration);
   const [vehiclesList, setVehiclesList] = useState([]);
 
   const [
@@ -89,7 +89,7 @@ const VehicleUseForm = () => {
     carRegistrationFile,
     carInsuranceFile
   ] = watch(['reasons', 'carType', 'externalSignature', 'savedRegistration', 'savedInsurance', 'carRegistrationFile', 'carInsuranceFile']);
-
+  
   useEffect(() => {
     if (formDefaultValues.savedInsurance) {
       setSavedInsurance(savedInsurance)
@@ -101,21 +101,18 @@ const VehicleUseForm = () => {
   }, [savedRegistration, savedInsurance])
   
   useEffect(() => {
-    if (carType === 'company-car') {
-      setVehiclesList(unimesVehicles)
-      setShowCarList(true);
-    }
-    else if (carType === 'personal-car') {
+    if (carType === 'personal-car') {
       setVehiclesList(vehicles)
-      setShowCarList(true);
+      setIsPersonalCar(true);
     }
     else {
-      setShowCarList(false);
+      setIsPersonalCar(false);
     }
   }, [carType])
   
   const onSubmit = (data) => {
     console.log(data);
+    
     let countErrors = 0;
     if (data.reasons.length === 0) {
       setError('reasons', {type: 'custom', message : "Merci de justifier l'utilisation du véhicule."})
@@ -138,14 +135,14 @@ const VehicleUseForm = () => {
         dispatch(stayOnAuthorizationForm({reasons: data.reasons}))
       }
 
-      if (!data.selectedVehicle || data.selectedVehicle === '0') {
+      if ((!data.selectedVehicle || data.selectedVehicle === '0') && data.carType === 'personal-car') {
         
         dispatch(createVehicle(data));
       }
       else {
           const newDataFormat = {
             omId: Number(data.omId),
-            vehicle_id: Number(data.selectedVehicle),
+            vehicle_id: Number(data.selectedVehicle) === 0 ? null : Number(data.selectedVehicle),
             registration_document: data.carRegistrationFile,
             externalSignature: [],
             insurance: data.carInsuranceFile,
@@ -241,19 +238,21 @@ const VehicleUseForm = () => {
                 register={register}
               />
             </div>
-            {showCarList && (
-              <SelectField 
-                register={register}
-                blankValue="Pas de véhicule enregistré"
-                data={vehiclesList}
-                id="vehicles-list"
-                handler={handleNewCar}
-                formField="selectedVehicle"
-                label="Sélectionner un véhicule déjà enregistré"
-              />
+            {isPersonalCar && (
+              <>
+                <SelectField 
+                  register={register}
+                  blankValue="Pas de véhicule enregistré"
+                  data={vehiclesList}
+                  id="vehicles-list"
+                  handler={handleNewCar}
+                  formField="selectedVehicle"
+                  label="Sélectionner un véhicule déjà enregistré"
+                />
+                <VehicleData register={register} errors={errors} />
+                <p className="form__section-field-label form__section-field-label--infos" style={{marginBottom: '1rem'}}>(*) Produire obligatoirement la photocopie de la carte grise et de l'attestation d'assurance</p>
+              </>
             )}
-            <VehicleData register={register} errors={errors} />
-            <p className="form__section-field-label form__section-field-label--infos" style={{marginBottom: '1rem'}}>(*) Produire obligatoirement la photocopie de la carte grise et de l'attestation d'assurance</p>
           </div>
           <div className="form__section">
             <FormSectionTitle>Raison</FormSectionTitle>
@@ -285,25 +284,27 @@ const VehicleUseForm = () => {
             />
             { errors.reasons && <p className="form__section-field-error form__section-field-error--open">{errors.reasons.message}</p>}
           </div>
-          <div className="form__section">
-            <FormSectionTitle>Documents</FormSectionTitle>
-            <FileOrSavedFile
-              register={register}
-              setValue={setValue}
-              id="registration"
-              label="Carte grise"
-              hasSavedDocument={hasSavedRegistration}
-              errors={errors}
-            />
-            <FileOrSavedFile
-              register={register}
-              setValue={setValue}
-              id="insurance"
-              label="Attestation d'assurance"
-              hasSavedDocument={hasSavedInsurance}
-              errors={errors}
-            />
-          </div>
+          {isPersonalCar && (
+            <div className="form__section">
+              <FormSectionTitle>Documents</FormSectionTitle>
+              <FileOrSavedFile
+                register={register}
+                setValue={setValue}
+                id="registration"
+                label="Carte grise"
+                hasSavedDocument={hasSavedRegistration}
+                errors={errors}
+              />
+              <FileOrSavedFile
+                register={register}
+                setValue={setValue}
+                id="insurance"
+                label="Attestation d'assurance"
+                hasSavedDocument={hasSavedInsurance}
+                errors={errors}
+              />
+            </div>
+          )}
           {externalSignature && (
             <div className="form__section">
               <FormSectionTitle>Signatures</FormSectionTitle>
