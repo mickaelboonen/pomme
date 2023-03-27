@@ -113,7 +113,7 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
   
   // Transports
   let chosenVehicleType = {};
-
+console.log(vehicleTypes);
 
   if (transports.authorizations.length > 0) {
     
@@ -164,7 +164,8 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
   
   const gestArray = ['%', 'UB', 'CR', 'Code Nacres', 'Code LOLF', 'Code Analytique'];
 
-  console.log(mission.addresses);
+  console.log(transports.authorizations);
+  console.log(chosenVehicleType);
   return (
   <Document>
     <Page size="A4" style={styles.page}>
@@ -250,9 +251,9 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
       </View>
       <View style={styles.section}>
         <Text style={styles.section.title} wrap={false}>TRANSPORTS</Text>
-        <Text style={styles.section.text}>Modalités de déplacement pour la mission : {chosenVehicleType.hasOwnProperty('name') ? 'Voiture - ' : ''}{transports.transport_type.map((t) => t + ' - ')}{transports.planeClass ? 'Avion' : ''}</Text>
-        <Text style={styles.section.text} />
-        <Text style={styles.section.text} />
+        {/* <Text style={styles.section.text}>Modalités de déplacement pour la mission : {chosenVehicleType.hasOwnProperty('name') ? 'Voiture - ' : ''}{transports.transport_type.map((t) => t + ' - ')}{transports.planeClass ? 'Avion' : ''}</Text> */}
+        {/* <Text style={styles.section.text} /> */}
+        {/* <Text style={styles.section.text} /> */}
         {trainData.hasOwnProperty('class') && (
           <Text>Train : Voyage en {trainData.class === 'second-class' ? 'deuxième classe' : 'première classe'}, {trainData.payment.includes('agent') ? "avancé par l'agent." : 'payé par Unîmes.'}</Text>
         )}
@@ -261,13 +262,13 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
         )}
         {chosenVehicleType.hasOwnProperty('name') && (
           <>
-            <Text>Vehicule : {chosenVehicleType.name}{!chosenVehicleType.name.includes('Covoiturage') ? `, immatriculé ${transports.authorizations[0].vehicle.license_plate}` : '.'}</Text>
+            <Text>Vehicule : {chosenVehicleType.name}{chosenVehicleType.name.includes('personnel') ? `, immatriculé ${transports.authorizations[0].vehicle.license_plate}` : '.'}</Text>
             {transports.vehicle === 0 && <Text>Remboursement Forfait SNCF 2ème classe.</Text>}
           </>
         )}
         <Text style={styles.section.text} />
         <Text style={styles.section.text} />
-        <Text>Utilisation de transports en commun : {transports.publicTransports ? 'Oui.' : 'Non.'}</Text>
+        <Text>Utilisation de transports en commun : {transports.public_transports ? 'Oui.' : 'Non.'}</Text>
         <Text style={styles.section.text}>Autres moyens de transports / commodités : {otherMeansofTransports.map((other) => other + ' - ')}</Text>
       </View>
       <View style={styles.section} wrap={false}>
@@ -293,7 +294,7 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
           <Text style={styles.section.text}>{more.informations}</Text>
         </View>
       )}
-      <View style={styles.section}>
+      <View style={styles.section} wrap={false}>
         <Text style={styles.section.title} wrap={false}>SIGNATURE</Text>
         <View style={[{ display: 'flex', flexDirection: 'row'}]}>
           <View style={{border: '1px solid #1a1a1a', width: '33%', height: 150, padding: 5}}>

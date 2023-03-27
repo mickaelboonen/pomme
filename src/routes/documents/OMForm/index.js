@@ -17,6 +17,7 @@ import { clearMessage } from 'src/reducer/app';
 
 import './style.scss';
 import LoaderCircle from 'src/components/LoaderCircle';
+import { fetchOm } from 'src/reducer/omForm';
 
 const OMForm = () => {  
   const navigate = useNavigate();
@@ -28,8 +29,7 @@ const OMForm = () => {
     app: { appLoader, apiMessage },
     agent: { user },
   } = useSelector((state) => state);
-
-  console.log(currentOM);
+  
   useEffect(() => {
     if (apiMessage.response) {
       dispatch(clearMessage());
@@ -97,7 +97,7 @@ const OMForm = () => {
       }, "950")
       setTimeout(() => {
         const nextStep = step + 1;
-        if (next === 7) {
+        if (nextStep === 7) {
           navigate('/');
         }
         else {
@@ -107,7 +107,13 @@ const OMForm = () => {
       }, "1000")
     }
   }, [apiMessage]);
-  
+
+  useEffect(() => {
+    if (!currentOM.hasOwnProperty('status')) {
+      dispatch(fetchOm({id: id, handleLoader: false,}));
+    }
+  }, [currentOM]);
+  console.log(omLoader);
   return (
     <>
       <ThreadAsTabs step={step} tabs={steps} isOm urlData={loaderData} />
@@ -115,6 +121,11 @@ const OMForm = () => {
         <div className="form-page__title">
           <PageTitle>Création d'un Ordre de Mission</PageTitle>
         </div>
+        {(!currentOM.hasOwnProperty('status')  && omLoader) && (
+          <div className="form-page__container">
+            <LoaderCircle />
+          </div>
+        )}
         {currentOM.status === 1  && (
           <div className="form-page__container">
             
