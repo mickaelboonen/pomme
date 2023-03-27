@@ -150,7 +150,8 @@ const efSlice = createSlice({
       },
       addNewEf: () => {},
       saveNewEf: (state, action) => {
-
+        state.currentOM = action.payload;
+        state.nextEfTarget = `/modifier-un-document/état-de-frais?etape=1&id=${action.payload.id}&om=${action.payload.omId}`;
       },
       fetchEfs: () => {},
       saveEfs: (state, action) => {
@@ -184,6 +185,7 @@ const efSlice = createSlice({
       updateEfTransports: () => {},
       updateEfAccomodations: () => {},
       getEfAccomodations: () => {},
+      updateEfSignature: () => {},
       saveMissionFormData: (state, action) => {
         
         let currentIndex;
@@ -234,6 +236,9 @@ const efSlice = createSlice({
         console.log(data);
         state.currentEf.accomodations = data;
       },
+      clearEfTarget: (state) => {
+        state.nextEfTarget = '';
+      }
     },
 });
 
@@ -255,6 +260,8 @@ export const {
   saveEf,
   getEfAccomodations,
   saveEfAccomodations,
+  updateEfSignature,
+  clearEfTarget,
 } = efSlice.actions;
 
 export default efSlice.reducer;

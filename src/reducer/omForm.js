@@ -190,7 +190,6 @@ const omFormSlice = createSlice({
       updateMission: () => {},
       saveOm: (state, action) => {
         state.currentOM = action.payload;
-        // state.omLoader = false;
       },
       saveNewOm: (state, action) => {
         state.currentOM = action.payload;

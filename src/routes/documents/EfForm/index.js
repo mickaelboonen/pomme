@@ -73,7 +73,7 @@ const EfForm = () => {
       id: 2,
     },
     {
-      name: 'Hébergements',
+      name: 'Hébergements & repas',
       id: 3,
     },
     {
@@ -81,7 +81,7 @@ const EfForm = () => {
       id: 4,
     },
     {
-      name: 'Signature',
+      name: 'Signature & RIB',
       id: 5,
     },
   ];

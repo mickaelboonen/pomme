@@ -43,7 +43,7 @@ const Mission = ({ step, isEfForm }) => {
     omForm: { currentOM, omForm },
     ef: { isMissionFormDisabled, currentEf }
   } = useSelector((state) => state);
-
+console.log(currentOM);
   // Defining default values -----------------------------------------------------
   let defaultValues = null;
   let modificationsFilenames = '';

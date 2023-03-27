@@ -237,6 +237,8 @@ const router = createBrowserRouter([
               const om = url.searchParams.get("om");
               const id = url.searchParams.get("id");
               const step = url.searchParams.get("etape");
+
+              const { agent : { user, agent } } = store.getState((state) => state);
               
               store.dispatch(setEfLoader(true));
               store.dispatch(fetchOm({id: om, workflow: 'ef', data: {id: id, step: step}}));
@@ -244,8 +246,9 @@ const router = createBrowserRouter([
               if (step === '1') {
                 store.dispatch(fetchCountries());
               }
-              else if (step === '2') {
-                // store.dispatch(getTransports(om));
+              else if (step === '5') {
+                store.dispatch(getSignature(user));
+                store.dispatch(getDocument({id: user, type: 'rib'}));
               }
 
               return url;
@@ -259,6 +262,7 @@ const router = createBrowserRouter([
               const om = url.searchParams.get("om");
               const id = url.searchParams.get("id");
               const step = url.searchParams.get("etape");
+              const { agent : { user, agent } } = store.getState((state) => state);
 
               store.dispatch(setEfLoader(true));
               store.dispatch(fetchOm({id: om, workflow: 'ef', data: {id: id, step: step}}));
@@ -266,8 +270,9 @@ const router = createBrowserRouter([
               if (step === '1') {
                 store.dispatch(fetchCountries());
               }
-              else if (step === '2') {
-                // store.dispatch(getTransports(om));
+              else if (step === '5') {
+                store.dispatch(getSignature(user));
+                store.dispatch(getDocument({id: user, type: 'rib'}));
               }
 
               return url;

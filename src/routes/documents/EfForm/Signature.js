@@ -1,81 +1,76 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLoaderData } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
 
 import './style.scss';
 import Buttons from 'src/components/Fields/Buttons';
 import FileField from 'src/components/Fields/FileField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
+import ApiResponse from 'src/components/ApiResponse';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
 
+import { uploadFile } from 'src/reducer/omForm';
+import { updateEfSignature } from 'src/reducer/ef';
+
 const Signature = ({ step }) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const loader = useLoaderData();
   const efId = loader.searchParams.get('id');
 
-  const {
-    register,
-    unregister,
-    handleSubmit,
-    watch,
-    setValue,
-    formState:
-    { errors },
-  } = useForm();
+  const { userSignature, agentDocuments, apiMessage } = useSelector((state) => state.app);
+  
+  const { register, handleSubmit, watch, setError, setValue, formState: { errors } } = useForm({
+    defaultValues: {
+      savedSignature: userSignature.length > 1 ? true : false,
+      savedRib: agentDocuments.rib.length > 1 ? true : false,
+    }
+  });
 
   const onSubmit = (data) => {
+    let errorCount = 0;
     console.log(data);
-    
-    if (typeof data.signature === 'object') {
-      // TODO : save image then get the path
-    }
 
+    if (data.savedRib) {
+      console.log("rib yes  ");
+      data.rib = agentDocuments.rib;
+    }
+    else if (data.rib.length === 0) {
+      console.log("rib no no ");
+      setError('rib', {type: 'custom', message:"Veuillez fournir un RIB pour pouvoir être remboursé."})
+      errorCount++;
+    }
+    
     if (data.savedSignature) {
-      // TODO : fetch signature
-      data.signature = "path";
+      data.savedSignature = userSignature;
+    }
+    else if (data.signature.length === 0) {
+      setError('signature', {type: 'custom', message:"Veuillez signer la demande de remboursement."});
+      errorCount++;
     }
 
-    localStorage.setItem('signatureEF', JSON.stringify(data))
-    const nextStep = step + 1;
-    navigate('/nouveau-document/état-de-frais?etape=' + nextStep + '&id=' + omId)
+    if (errorCount > 0) {
+      return;
+    }
     
+    console.log(data);
+    if (data.signature instanceof File || data.rib instanceof File) {
+      dispatch(uploadFile({data: data, step: 'signature', docType: 'ef'}));
+    }
+    else {
+      dispatch(updateEfSignature(data))
+    }
   };
 
   const savedSignature = watch('savedSignature');
-  useEffect(() => {
-    
-    const checkbox = document.getElementById('saved-signature-field');
-    checkbox.checked = true;
-    setValue("savedSignature", true);
-  }, [])
-
-  useEffect(() => {
-      const signatureField = document.getElementById('signature');
-
-    if (!savedSignature) {
-      signatureField.classList.remove('form__section-field--hidden');
-      register("signature", {
-        required:"Merci de signer votre ordre de mission.",
-      })
-    }
-    else {
-      signatureField.classList.add('form__section-field--hidden');
-      unregister("signature")
-    }
-    
-
-  }, [savedSignature])
-
-
+  const savedRib = watch('savedRib');
 
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section">
         <FormSectionTitle>Signature</FormSectionTitle>
-        <div className="form__section-field" id="abroad-field">
+        <div className="form__section-field">
           <CheckboxInput
             register={register}
             formField="savedSignature"
@@ -83,15 +78,40 @@ const Signature = ({ step }) => {
             label="Utiliser la signature enregistrée dans mon profil"
           />
         </div>
-        <FileField 
-          register={register}
-          isHidden
-          formField="signature"
-          id="signature"
-          error={errors.signature}
-        />
-        <HiddenField id="omId" value={efId} register={register} />
+        {!savedSignature && (
+          <FileField 
+            register={register}
+            formField="signature"
+            id="signature"
+            error={errors.signature}
+            setValue={setValue}
+            // required="Veuillez signer la demande de remboursement."
+          />
+        )}
       </div>
+      <div className="form__section">
+        <FormSectionTitle>RIB</FormSectionTitle>
+        <div className="form__section-field">
+          <CheckboxInput
+            register={register}
+            formField="savedRib"
+            id="saved-rib-field"
+            label="Utiliser le RIB enregistré dans mon profil"
+          />
+        </div>
+        {!savedRib && (
+          <FileField 
+            register={register}
+            formField="rib"
+            id="rib-field"
+            error={errors.rib}
+            setValue={setValue}
+            // required="Veuillez fournir un RIB pour pouvoir être remboursé."
+          />
+        )}
+      </div>
+      <HiddenField id="docId" value={efId} register={register} />
+      {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
       <Buttons
         step={step}
         id={efId}

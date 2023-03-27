@@ -11,7 +11,7 @@ import PageTitle from 'src/components/PageTitle';
 
 import { toggleModal } from 'src/reducer/app';
 import { addNewOM, clearOMTarget, selectOmData} from 'src/reducer/omForm';
-import { selectEfData } from 'src/reducer/ef';
+import { selectEfData, clearEfTarget } from 'src/reducer/ef';
 
 import { selectDocumentsList } from 'src/reducer/agent';
 
@@ -41,7 +41,13 @@ const MyDocuments = () => {
       dispatch(clearOMTarget());
       navigate(nextOMTarget);
     }
-  }, [nextOMTarget])
+    else if (nextEfTarget !== '') {
+      dispatch(toggleModal());
+      dispatch(clearEfTarget());
+      navigate(nextEfTarget);
+
+    }
+  }, [nextOMTarget, nextEfTarget])
 
   useEffect(() => {
     dispatch(selectDocumentsList({id: location.pathname.includes('ordres') ? 'oms' : 'efs', target: 'ec'}))
@@ -105,6 +111,9 @@ const MyDocuments = () => {
 
   console.log(steps);
 
+  const omThatCanBeRefunded = userOms.filter((om) => om.status === 2);
+  console.log(omThatCanBeRefunded);
+
   return (
     <main className="my-documents">
       <PageTitle>{title}</PageTitle>
@@ -116,7 +125,7 @@ const MyDocuments = () => {
       {isOm && <NewSection data={documentsList} steps={steps} currentDoc={currentDoc} isOm />}
       {!isOm && <NewSection data={documentsList} steps={steps} currentDoc={currentDoc} />}
       <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
-      {isModalOpen && <Modal target={slug.replace(/-/g, ' ')} user={params.slug} userOms={userOms} agent={agent} />}
+      {isModalOpen && <Modal target={slug.replace(/-/g, ' ')} user={params.slug} userOms={omThatCanBeRefunded} agent={agent} />}
     </main>
   );
 };

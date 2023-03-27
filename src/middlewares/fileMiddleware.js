@@ -5,7 +5,7 @@ import { toggleDocModal, saveAllPermDocs, saveAgentSignatureForPdf} from '../red
 import { setApiResponse } from 'src/reducer/app';
 import { updateEfMission, updateEfTransports } from 'src/reducer/ef';
 import { handleEfFilesUploadPayload } from 'src/selectors/fileFunctions';
-import { updateEfAccomodations } from '../reducer/ef';
+import { updateEfAccomodations, updateEfSignature } from '../reducer/ef';
 
 
 fileApi.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -126,50 +126,66 @@ const omMiddleware = (store) => (next) => (action) => {
           files.forEach((file) => filesToUpload.push(file));
         }
         else if (step === 'accomodations') {
-          console.log("AM HERE");
           const files = handleEfFilesUploadPayload(data, 'accomodations');
           files.forEach((file) => filesToUpload.push(file));
         }
-      }
-      else if (type === 'authorization') {
-
-        if (step === 'authorization') {
-
-          if (data.externalSignature instanceof File) {
-            const signature = {
-              omId: data.docId,
-              type: 'externalSignature',
-              user: user,
-              file: data.externalSignature,
+        else if (step === 'signature') {
+          if (data.rib instanceof File) {
+            const fileToUpload = {
+              docId: data.docId,
+              type: 'signature',
+              file: data.rib,
             }
-            filesToUpload.push(signature);
+            filesToUpload.push(fileToUpload);
           }
-
-          if (data.registration_document instanceof File) {
-
-              const registration = {
-                omId: data.docId,
-                type: 'registration',
-                user: user,
-                file: data.registration_document,
-              }
-              filesToUpload.push(registration);
+          if (data.signature instanceof File) {
+            const fileToUpload = {
+              docId: data.docId,
+              type: 'signature',
+              file: data.signature,
+            }
+            filesToUpload.push(fileToUpload);
           }
+        }
+        else if (type === 'authorization') {
 
-          if (data.insurance instanceof File) {
-              const insurance = {
+          if (step === 'authorization') {
+
+            if (data.externalSignature instanceof File) {
+              const signature = {
                 omId: data.docId,
-                type: 'insurance',
+                type: 'externalSignature',
                 user: user,
-                file: data.insurance,
+                file: data.externalSignature,
               }
-              filesToUpload.push(insurance);
+              filesToUpload.push(signature);
+            }
+
+            if (data.registration_document instanceof File) {
+
+                const registration = {
+                  omId: data.docId,
+                  type: 'registration',
+                  user: user,
+                  file: data.registration_document,
+                }
+                filesToUpload.push(registration);
+            }
+
+            if (data.insurance instanceof File) {
+                const insurance = {
+                  omId: data.docId,
+                  type: 'insurance',
+                  user: user,
+                  file: data.insurance,
+                }
+                filesToUpload.push(insurance);
+            }
           }
         }
       }
       console.log('filesToUpload - ', filesToUpload);
       
-      // return;
       // TODO : See if POST method is the right one ? Methods that can add files (post) and delete them (delete)
       fileApi.post(`/api/files/${type}/${step}`, filesToUpload)
         .then((response) => {
@@ -258,24 +274,7 @@ const omMiddleware = (store) => (next) => (action) => {
             if (step === 'mission') {
               data.modificationFiles = [];
             }
-            else if (step === 'transports') {
-              console.log(data);
-              // data.trainFiles = [];
-              // data.taxiFiles = [];
-              // data.planeFiles = [];
-              // data.rentCarFiles = [];
-              // data.fuelFiles = [];
-              // data.tollFiles = [];
-              // data.parkingFiles = [];
-              // data.ferryFiles = [];
-              // data.publicTransportsFiles = [];
-            }
-            else if (step === 'accomodations') {
-              // data.hotelFiles = [];
-              // data.eventFiles = [];
-            }
             
-
             response.data.forEach((file) => {
               
               if (file.type === 'mission') {
@@ -299,14 +298,16 @@ const omMiddleware = (store) => (next) => (action) => {
             }
             else if (step === 'transports') {
               console.log('before update : ', data);
-              // data.docId = data.efId;
-              // delete data.efId;
               store.dispatch(updateEfTransports(data));
             }
             else if (step === 'accomodations') {
               console.log('before update : ', data);
               delete data.efId;
               store.dispatch(updateEfAccomodations(data));
+            }
+            else if (step === 'signature') {
+              console.log('before update : ', data);
+              store.dispatch(updateEfSignature(data));
             }
           }
           else if (type === 'authorization') {

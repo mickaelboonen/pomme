@@ -42,7 +42,7 @@ const Home = () => {
   }
 
   const handleClickOnNewEf = () => {
-    navigate(`/utilisateur/${user}]/mes-états-de-frais`);
+    navigate(`/utilisateur/${user}/mes-états-de-frais`);
     // dispatch(toggleModal());
   }
 

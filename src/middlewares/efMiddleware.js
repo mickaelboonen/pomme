@@ -12,10 +12,10 @@ const efMiddleware = (store) => (next) => (action) => {
   case 'ef/addNewEf':
     api.post("/api/ef/add", action.payload,)
       .then((response) => {
-        console.log(response);
-        // const finalisedEf = action.payload;
-        // finalisedEf.id = response.data;
-        // store.dispatch(saveNewEf(finalisedEf))
+        const finalisedEf = action.payload;
+        finalisedEf.id = response.data;
+        console.log(finalisedEf);
+        store.dispatch(saveNewEf(finalisedEf));
       })
       .catch((error) => {
         console.error('add new om', error);
@@ -62,6 +62,16 @@ const efMiddleware = (store) => (next) => (action) => {
       })
       .catch((error) => {
         console.error('update EF transports', error);
+        store.dispatch(setApiResponse(error))
+      });
+    break;
+  case 'ef/updateEfSignature':
+    api.post("/api/ef/signature/update", action.payload)
+      .then((response) => {
+        store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
+      })
+      .catch((error) => {
+        console.error('update EF signature', error);
         store.dispatch(setApiResponse(error))
       });
     break;
