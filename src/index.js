@@ -250,7 +250,10 @@ const router = createBrowserRouter([
                 store.dispatch(getSignature(user));
                 store.dispatch(getDocument({id: user, type: 'rib'}));
               }
-
+              else if (step === '6') {
+                store.dispatch(getSignature(user));
+                store.dispatch(fetchEf({id: user}));
+              }
               return url;
             },    
           },
@@ -273,6 +276,10 @@ const router = createBrowserRouter([
               else if (step === '5') {
                 store.dispatch(getSignature(user));
                 store.dispatch(getDocument({id: user, type: 'rib'}));
+              }
+              else if (step === '6') {
+                store.dispatch(getSignature(user));
+                store.dispatch(fetchEf({id: user}));
               }
 
               return url;

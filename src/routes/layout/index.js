@@ -13,8 +13,7 @@ const Layout = ({ cas }) => {
   const colorTheme = localStorage.getItem('color-theme');
 
   const { user } = useSelector((state) => state.agent);
-
-  console.log(process.env.IS_MAINTENANCE);
+  
   const isMaintenance = process.env.IS_MAINTENANCE;
   
   useEffect(() => {

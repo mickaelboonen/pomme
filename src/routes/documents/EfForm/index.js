@@ -11,6 +11,7 @@ import Steps from './Steps';
 import Signature from './Signature';
 import Transports from './Transports';
 import Hebergement from './Hebergement';
+import Recap from './Recap';
 import PageTitle from 'src/components/PageTitle';
 import ThreadAsTabs from 'src/components/ThreadAsTabs';
 import LoaderCircle from 'src/components/LoaderCircle';
@@ -84,6 +85,10 @@ const EfForm = () => {
       name: 'Signature & RIB',
       id: 5,
     },
+    {
+      name: 'Recap',
+      id: 6,
+    },
   ];
 
   if (!has_steps && !is_teaching) {
@@ -92,7 +97,7 @@ const EfForm = () => {
   return (
     <div className='form-root'>
       <ThreadAsTabs step={step} tabs={tabs} urlData={loaderData} />
-      <PageTitle>Création d'un État de frais</PageTitle>
+      <PageTitle>{step === 6 ? "Recapitulatif de l'État de frais" : "Création d'un État de frais"}</PageTitle>
       <div className='form-root__container'>
         <div className="form-page__container">
           {/* {step === 1 && <OmSelection step={step} />} */}
@@ -103,7 +108,8 @@ const EfForm = () => {
           {((step === 4 && !efLoader) &&  (has_steps || is_teaching))  && <Steps step={step} />}
           {/* {((step === 4 && !efLoader) &&  (!has_steps && !is_teaching))  && (
           <div>Plop</div>)} */}
-          {(step === 5&& !efLoader) && <Signature step={step} />}
+          {(step === 5 && !efLoader) && <Signature step={step} />}
+          {(step === 6 && !efLoader) && <Recap step={step} />}
         </div>
       </div>
     </div>

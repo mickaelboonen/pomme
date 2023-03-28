@@ -223,6 +223,7 @@ const efSlice = createSlice({
       saveEf: (state, action) => {
         const ef = action.payload;
         const stages = [];
+        
         action.payload.stages.forEach((stage) => {
           stages.push(declareCamelCaseKeys(stage));
         })
