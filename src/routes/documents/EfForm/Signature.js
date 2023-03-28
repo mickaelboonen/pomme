@@ -34,18 +34,18 @@ const Signature = ({ step }) => {
 
     if (data.savedRib) {
       console.log("rib yes  ");
-      data.rib = agentDocuments.rib;
+      data.agentRib = agentDocuments.rib;
     }
-    else if (data.rib.length === 0) {
+    else if (data.agentRib.length === 0) {
       console.log("rib no no ");
       setError('rib', {type: 'custom', message:"Veuillez fournir un RIB pour pouvoir être remboursé."})
       errorCount++;
     }
     
     if (data.savedSignature) {
-      data.savedSignature = userSignature;
+      data.agentSignature = userSignature;
     }
-    else if (data.signature.length === 0) {
+    else if (data.agentSignature.length === 0) {
       setError('signature', {type: 'custom', message:"Veuillez signer la demande de remboursement."});
       errorCount++;
     }
@@ -54,8 +54,11 @@ const Signature = ({ step }) => {
       return;
     }
     
-    console.log(data);
-    if (data.signature instanceof File || data.rib instanceof File) {
+    data.status = 1;
+    delete data.savedRib;
+    delete data.savedSignature;
+
+    if (data.agentSignature instanceof File || data.agentRib instanceof File) {
       dispatch(uploadFile({data: data, step: 'signature', docType: 'ef'}));
     }
     else {
@@ -81,7 +84,7 @@ const Signature = ({ step }) => {
         {!savedSignature && (
           <FileField 
             register={register}
-            formField="signature"
+            formField="agentSignature"
             id="signature"
             error={errors.signature}
             setValue={setValue}
@@ -102,7 +105,7 @@ const Signature = ({ step }) => {
         {!savedRib && (
           <FileField 
             register={register}
-            formField="rib"
+            formField="agentRib"
             id="rib-field"
             error={errors.rib}
             setValue={setValue}

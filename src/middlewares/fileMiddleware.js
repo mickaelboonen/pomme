@@ -130,19 +130,21 @@ const omMiddleware = (store) => (next) => (action) => {
           files.forEach((file) => filesToUpload.push(file));
         }
         else if (step === 'signature') {
-          if (data.rib instanceof File) {
+          if (data.agentRib instanceof File) {
             const fileToUpload = {
               docId: data.docId,
-              type: 'signature',
-              file: data.rib,
+              type: 'rib',
+              name: 'agentRib',
+              file: data.agentRib,
             }
             filesToUpload.push(fileToUpload);
           }
-          if (data.signature instanceof File) {
+          if (data.agentSignature instanceof File) {
             const fileToUpload = {
               docId: data.docId,
               type: 'signature',
-              file: data.signature,
+              name: 'signature',
+              file: data.agentSignature,
             }
             filesToUpload.push(fileToUpload);
           }
@@ -287,6 +289,12 @@ const omMiddleware = (store) => (next) => (action) => {
               else if (file.type === 'accomodations') {
                 data[file.name] = data[file.name].filter((url) => !url instanceof File)
                 data[file.name].push(file.file.url);
+              }
+              else if (file.type === 'signature') {
+                data[file.name] = file.file.url;
+              }
+              else if (file.type === 'rib') {
+                data[file.name] = file.file.url;
               }
             })
 
