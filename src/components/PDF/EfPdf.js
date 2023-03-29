@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Font, Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
+import { floatAddition, floatMultiplication, OTHER_MEALS_AMOUNT, ADMIN_MEALS_AMOUNT } from 'src/selectors/mathFunctions';
 
 // Assets
 import Logo from 'src/assets/images/logo.png'
@@ -10,6 +11,7 @@ import { streetType } from 'src/data/addressData';
 
 // Selectors
 import { getMaxMealsAndNights } from 'src/selectors/formValidationsFunctions';
+import EfSteps from './EfSteps';
 
 Font.register({ family: 'Radjhani', src: RadjhaniFont });
 
@@ -123,18 +125,19 @@ const styles = StyleSheet.create({
   }
 });
 
-const EfPdf = ({ data, agent, agentSignature, mealsExpenses, x}) => {
-
-  console.log(mealsExpenses);
-  // const {admin, french, overseas} = mealsExpenses;
-  const { mission, transports, accomodations } = data;
-  
-  
+const EfPdf = ({ data, agent, agentSignature, country }) => {
+  // console.log('rendu');
+  const { mission, transports, accomodations, stages } = data;
+  console.log(data);
   const dep = new Date(mission.departure);
   const ret = new Date(mission.comeback);
     
   const maxMealsNumber = getMaxMealsAndNights(mission);
   const freeMeals = maxMealsNumber - (accomodations.meals_paid_by_agent + accomodations.meals_in_admin_restaurants);
+
+  const adminMealsAmount = floatMultiplication(accomodations.meals_in_admin_restaurants, ADMIN_MEALS_AMOUNT);
+  const frenchMeals = floatMultiplication(accomodations.meals_paid_by_agent_in_france, OTHER_MEALS_AMOUNT);
+  const overseasMeals = floatMultiplication(accomodations.meals_paid_by_agent_overseas, OTHER_MEALS_AMOUNT);
 
   const filterArrays = (array) => {
     return array.filter((row) => row.amount);
@@ -180,15 +183,15 @@ const EfPdf = ({ data, agent, agentSignature, mealsExpenses, x}) => {
     },
     {
       name: 'Repas pris dans un restaurant administratif ou assimilé',
-      amount: `${accomodations.meals_in_admin_restaurants} repas pour un montant de ${'admin'}`,
+      amount: accomodations.meals_in_admin_restaurants > 0 ? `${accomodations.meals_in_admin_restaurants} repas soit ${adminMealsAmount}€` : '0',
     },
     {
       name: 'Repas à titre onéreux en France',
-      amount: accomodations.meals_paid_by_agent_in_france,
+      amount: accomodations.meals_paid_by_agent_in_france > 0 ? `${accomodations.meals_paid_by_agent_in_france} repas soit ${frenchMeals}€` : mission.region === 'métropole' ? '0' : 0,
     },
     {
       name: "Repas à titre onéreux à l'étranger",
-      amount: accomodations.meals_paid_by_agent_overseas,
+      amount: accomodations.meals_paid_by_agent_overseas > 0 ? `${accomodations.meals_paid_by_agent_overseas} repas soit ${overseasMeals}€` : mission.region !== 'métropole' ? '0' : 0,
     },
   
   ];
@@ -312,7 +315,7 @@ const EfPdf = ({ data, agent, agentSignature, mealsExpenses, x}) => {
         <Text style={styles.section.text} />
         <Text style={styles.section.text} />
         {mission.region === 'dom-tom' && <Text>Mission dans les DOM-TOM : {mission.abroad_costs === "per-diem" ? 'Forfait per diem.' : 'Frais réels dans la limite du forfait.'}</Text>}
-        {mission.region === 'étranger' &&  <Text>Mission dans le pays : {mission.country.toUpperCase()}, avec un forfait {mission.abroad_costs === "per-diem" ? 'Forfait per diem.' : 'Frais réels dans la limite du forfait.'}</Text>}
+        {mission.region === 'étranger' &&  <Text>Mission dans le pays : {country.name.toUpperCase()}, avec un {mission.abroad_costs === "per-diem" ? 'Forfait per diem.' : 'Frais réels dans la limite du forfait.'}</Text>}
       </View>
       <View style={styles.section} wrap={false}>
         <Text style={styles.section.title} wrap={false}>SIGNATURE</Text>
@@ -336,6 +339,7 @@ const EfPdf = ({ data, agent, agentSignature, mealsExpenses, x}) => {
           </View>
         </View>
       </View>
+      <EfSteps steps={stages} isTeaching={data.is_teaching}/>
     </Page>
   </Document>
 );}

@@ -9,6 +9,7 @@ import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import ApiResponse from 'src/components/ApiResponse';
 import EfPDF from 'src/components/PDF/EfPDF';
+import { floatAddition, floatMultiplication } from 'src/selectors/mathFunctions';
 
 const Recap = () => {
 
@@ -16,51 +17,15 @@ const Recap = () => {
   const dispatch = useDispatch();
 
   const { ef: { currentEf },
-    app: { apiMessage, userSignature },
+    app: { apiMessage, userSignature, countries },
     agent: { agent, user },
   } = useSelector((state) => state);
 
   const { mission, transports, accomodations } = currentEf;
   
   const { register, setValue, getValues, watch, formState: { errors } } = useForm({ defaultValues: agent });
-  // const errorMessages = defineValidationRulesForMission(isEfForm, false);
-  
 
-  const floatAddition = (floatArray) => {
-    let floatTotal = 0;
-
-    floatArray.forEach((float) => {
-      if (typeof float === 'number') {
-        float = float.toString() + ',00';
-      }
-      floatTotal += Number(float.replace(',', ''));
-    })
-
-    const floatResult =  floatTotal.toString();
-    
-    if (floatResult === '0') {
-      return '0,00';
-    }
-    else {
-      return floatResult.slice(0, floatResult.length - 2) + ',' + floatResult.slice(floatResult.length - 2);
-    }
-  }
-
-  const floatMultiplication = (int, float) => {
-    const floatX100 = Number(float.replace(',', ''));
-    const totalX100 = floatX100 * int;
-
-    const floatResult =  totalX100.toString();
-    
-    if (floatResult === '0') {
-      return '0,00';
-    }
-    else {
-      return floatResult.slice(0, floatResult.length - 2) + ',' + floatResult.slice(floatResult.length - 2);
-    }
-  }
-
-  let transportsFields = Object.entries(transports).filter((transport) => !transport[0].includes('_files') && transport[1]);
+    let transportsFields = Object.entries(transports).filter((transport) => !transport[0].includes('_files') && transport[1]);
   transportsFields = transportsFields.filter((transport) => transport[0] !== 'id' && transport[0] !== 'status');
 
   const transportsAmountsArray = transportsFields.map((t) => t[1]);
@@ -74,27 +39,32 @@ const Recap = () => {
   
   const totalMission = floatAddition([totalMeals, accomodations.event, totalTransportsExpenses, accomodations.hotel, ])
 
+  const mealsExpenses = {
+    admin : adminMealsAmount,
+    french: frenchMeals,
+    overseas: overseasMeals
+  };
   
   
   const generatePDF = () => {
     const file = getValues('om');
     dispatch(uploadFile({ data: {docId: omId , file: file}, step: 'om'}))
   }
-  
-  
-  useEffect(() => {
-    const aze = document.querySelector('iframe');
-    
-    aze.style.width = '100%';
-    aze.style.height = '100%';
-  }, [])
+
+  const missionCountry = countries.find((country) => country.code === Number(mission.country))
 
   return (
   <div className="form">  
         <div style={{height: "80vh"}}>
           <PDFViewer>
-            <EfPDF agentSignature={userSignature} data={currentEf} agent={agent} mealsExpenses={{admin : adminMealsAmount, french: frenchMeals, overseas: overseasMeals}} x={'lol'}/>
-          </PDFViewer>
+            <EfPDF
+              agentSignature={userSignature}
+              data={currentEf}
+              agent={agent}
+              meals={mealsExpenses}
+              country={missionCountry}
+            />
+            </PDFViewer>
         </div> 
     <div className="form__section" style={{marginBottom: '1rem'}}>
       <FormSectionTitle>Transports</FormSectionTitle>
@@ -147,7 +117,13 @@ const Recap = () => {
     {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
       <div className="form__section">
         <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
-          <BlobProvider document={<EfPDF agentSignature={userSignature} data={currentEf} agent={agent} />}>
+          <BlobProvider document={<EfPDF
+              agentSignature={userSignature}
+              data={currentEf}
+              agent={agent}
+              meals={mealsExpenses}
+              country={missionCountry}
+            />}>
             {({ blob }) => {
 
               const file = new File([blob], currentEf.name, {type: 'pdf'});
