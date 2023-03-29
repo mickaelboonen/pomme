@@ -20,8 +20,6 @@ const Recap = () => {
     agent: { agent, user },
   } = useSelector((state) => state);
 
-  console.log(userSignature);
-
   const { mission, transports, accomodations } = currentEf;
   
   const { register, setValue, getValues, watch, formState: { errors } } = useForm({ defaultValues: agent });
@@ -86,7 +84,7 @@ const Recap = () => {
   
   useEffect(() => {
     const aze = document.querySelector('iframe');
-    console.log(aze);
+    
     aze.style.width = '100%';
     aze.style.height = '100%';
   }, [])
@@ -95,7 +93,7 @@ const Recap = () => {
   <div className="form">  
         <div style={{height: "80vh"}}>
           <PDFViewer>
-            <EfPDF agentSignature={userSignature} data={currentEf} agent={agent} />
+            <EfPDF agentSignature={userSignature} data={currentEf} agent={agent} mealsExpenses={{admin : adminMealsAmount, french: frenchMeals, overseas: overseasMeals}} x={'lol'}/>
           </PDFViewer>
         </div> 
     <div className="form__section" style={{marginBottom: '1rem'}}>
