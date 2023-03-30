@@ -72,16 +72,30 @@ const Step = ({ register, stepNumber, errors, step, deleteStep }) => {
         <HiddenField id={"step-id"} register={register} value={0} />
         <p className='step__container-date-place-title'>Date et Lieu</p>
         <div className='step__container-fields'>
-          <DateField 
-            register={register}
-            id="departure-date-field"
-            label="Date"
-            type="date"
-            formField={"departure" + stepNumber}
-            required="Veuillez renseigner la date."
-            error={errors["departure" + stepNumber]}
-          />
+          <div className='step__container-fields-half'>
+            <DateField 
+              register={register}
+              id="departure-date-field"
+              label="Date de départ"
+              type="date"
+              formField={"departure" + stepNumber}
+              required="Veuillez renseigner la date."
+              error={errors["departure" + stepNumber]}
+            />
+          </div>
+          <div className='step__container-fields-half'>
+            <DateField 
+              register={register}
+              id="arrival-date-field"
+              label="Date d'arrivée"
+              type="date"
+              formField={"arrival" + stepNumber}
+              // required="Veuillez renseigner la date."
+              error={errors["arrival" + stepNumber]}
+            />
+          </div>
         </div>
+        <p className='form__section-container-text' style={{marginBottom: '1rem', marginTop: '0', fontStyle: 'italic'}}>Ne remplir la date d'arrivée que si elle diffère de la date de départ.</p>
         <div className='step__container-fields'>
           <div className='step__container-fields-half'>
             <TextField
