@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
     row: {
       display: 'flex',
       borderLeft: '1px solid #1a1a1a',
-      // borderBottom: '0',
       flexDirection: 'row',
       cell: {
         width: '50%',
@@ -55,10 +54,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const EfSteps = ({ steps, isTeaching }) => {
-  
-    console.log("LOOKATME = ", isTeaching);
-  return (
+const EfSteps = ({ steps, isTeaching }) => (
   <View style={styles.section} wrap={false}>
     <Text style={styles.section.title} wrap={false}>ÉTAPES</Text>
     <View style={styles.section.row}>
@@ -81,65 +77,53 @@ const EfSteps = ({ steps, isTeaching }) => {
         <Text style={styles.section.row.headerCell.text}>APRES-MIDI : HEURES DE DÉBUT ET FIN DE COURS</Text>
       </View>
     </View>
-    <Text style={styles.section.text} />
-    <Text style={styles.section.text} />
-    {steps.map((step) => {
-      
-      const day = getDDMMYYDate(new Date(step.departure));
-      const departureHour = getHHMMTime(new Date(step.departureHour));
-      const arrivalHour = getHHMMTime(new Date(step.arrivalHour));
-      
-      return (
-        <View key={step.id}>
-          <View style={styles.section.row}>
-            <View style={styles.section.row.cell}>
-              <Text style={styles.section.row.cell.text}>Départ</Text>
-            </View>
-            <View style={styles.section.row.cell}>
-              <Text style={styles.section.row.cell.text}>{day}</Text>
-            </View>
-            <View style={styles.section.row.cell}>
-              <Text style={styles.section.row.cell.text}>{departureHour}</Text>
-            </View>
-            <View style={styles.section.row.cell}>
-              <Text style={styles.section.row.cell.text}>{step.departurePlace}</Text>
-            </View>
-            {/* {isTeaching & ( */}
-              <View style={styles.section.row.cell}>
-                <Text style={styles.section.row.cell.text}>{step.amCourseBeginning}</Text>
-              </View>
-            {/* )} */}
-            {/* {isTeaching & ( */}
-            <View style={[styles.section.row.cell, {borderRight: '1px solid #1a1a1a'}]}>
-              <Text style={styles.section.row.cell.text}>{step.amCourseEnding}</Text>
-            </View>
-            {/* )} */}
+    {steps.map((step) => (
+      <View key={step.id}>
+        <View style={styles.section.row}>
+          <View style={styles.section.row.cell}>
+            <Text style={styles.section.row.cell.text}>Départ</Text>
           </View>
-          <View style={styles.section.row}>
-            <View style={styles.section.row.cell}>
-              <Text style={styles.section.row.cell.text}>Arrivée</Text>
-            </View>
-            <View style={styles.section.row.cell}>
-              <Text style={styles.section.row.cell.text}>{step.arrival}</Text>
-            </View>
-            <View style={styles.section.row.cell}>
-              <Text style={styles.section.row.cell.text}>{arrivalHour}</Text>
-            </View>
-            <View style={styles.section.row.cell}>
-              <Text style={styles.section.row.cell.text}>{step.arrivalPlace}</Text>
-            </View>
-            <View style={styles.section.row.cell}>
-              <Text style={styles.section.row.cell.text}>{step.pmCourseBeginning}</Text>
-            </View>
-            <View style={[styles.section.row.cell, {borderRight: '1px solid #1a1a1a'}]}>
-              <Text style={styles.section.row.cell.text}>{step.pmCourseEnding}</Text>
-            </View>
+          <View style={styles.section.row.cell}>
+            <Text style={styles.section.row.cell.text}>{getDDMMYYDate(new Date(step.departure))}</Text>
+          </View>
+          <View style={styles.section.row.cell}>
+            <Text style={styles.section.row.cell.text}>{getHHMMTime(new Date(step.departureHour))}</Text>
+          </View>
+          <View style={styles.section.row.cell}>
+            <Text style={styles.section.row.cell.text}>{step.departurePlace}</Text>
+          </View>
+          <View style={styles.section.row.cell}>
+            <Text style={styles.section.row.cell.text}>{step.amCourseBeginning}</Text>
+          </View>
+          <View style={[styles.section.row.cell, {borderRight: '1px solid #1a1a1a'}]}>
+            <Text style={styles.section.row.cell.text}>{step.amCourseEnding}</Text>
           </View>
         </View>
-    )})}
+        <View style={styles.section.row}>
+          <View style={styles.section.row.cell}>
+            <Text style={styles.section.row.cell.text}>Arrivée</Text>
+          </View>
+          <View style={styles.section.row.cell}>
+            <Text style={styles.section.row.cell.text}>{step.arrival ? getDDMMYYDate(new Date(step.arrival)): step.arrival}</Text>
+          </View>
+          <View style={styles.section.row.cell}>
+            <Text style={styles.section.row.cell.text}>{getHHMMTime(new Date(step.arrivalHour))}</Text>
+          </View>
+          <View style={styles.section.row.cell}>
+            <Text style={styles.section.row.cell.text}>{step.arrivalPlace}</Text>
+          </View>
+          <View style={styles.section.row.cell}>
+            <Text style={styles.section.row.cell.text}>{step.pmCourseBeginning}</Text>
+          </View>
+          <View style={[styles.section.row.cell, {borderRight: '1px solid #1a1a1a'}]}>
+            <Text style={styles.section.row.cell.text}>{step.pmCourseEnding}</Text>
+          </View>
+        </View>
+      </View>
+    ))}
     <View style={{borderTop: '1px solid #1a1a1a'}} />
   </View>
-);}
+);
 
 EfSteps.propTypes = {
 

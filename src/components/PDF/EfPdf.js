@@ -133,7 +133,7 @@ const EfPdf = ({ data, agent, agentSignature, country }) => {
   const ret = new Date(mission.comeback);
     
   const maxMealsNumber = getMaxMealsAndNights(mission);
-  const freeMeals = maxMealsNumber - (accomodations.meals_paid_by_agent + accomodations.meals_in_admin_restaurants);
+  const freeMeals = maxMealsNumber - (accomodations.meals_paid_by_agent_in_france + accomodations.meals_paid_by_agent_overseas + accomodations.meals_in_admin_restaurants);
 
   const adminMealsAmount = floatMultiplication(accomodations.meals_in_admin_restaurants, ADMIN_MEALS_AMOUNT);
   const frenchMeals = floatMultiplication(accomodations.meals_paid_by_agent_in_france, OTHER_MEALS_AMOUNT);
@@ -192,6 +192,10 @@ const EfPdf = ({ data, agent, agentSignature, country }) => {
     {
       name: "Repas à titre onéreux à l'étranger",
       amount: accomodations.meals_paid_by_agent_overseas > 0 ? `${accomodations.meals_paid_by_agent_overseas} repas soit ${overseasMeals}€` : mission.region !== 'métropole' ? '0' : 0,
+    },
+    {
+      name: `Repas gratuits ${mission.region !== 'métropole' ? "à l'étranger" : ""}`,
+      amount: freeMeals.toString(),
     },
   
   ];
