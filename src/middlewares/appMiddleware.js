@@ -124,23 +124,19 @@ const appMiddleware = (store) => (next) => (action) => {
     case 'app/addSteps':      
       api.post("/api/stage/add", action.payload)
         .then((response) => {
-            // store.dispatch(saveCountries(response.data));
-            console.log("API STAGE ADD RESPONSE IS : ", response.data);
+          store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         })
         .catch((error) => {
-          console.error('add stages error', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          store.dispatch(setApiResponse(error))
         });
       break;
     case 'app/handleSteps':      
       api.post("/api/stages/handle", action.payload)
         .then((response) => {
-            // store.dispatch(saveCountries(response.data));
-            console.log("API STAGE ADD RESPONSE IS : ", response.data);
+          store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         })
         .catch((error) => {
-          console.error('add stages error', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          store.dispatch(setApiResponse(error))
         });
       break;
     case 'app/deleteStep':      

@@ -1,28 +1,25 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
-import { IoMdAddCircle } from "react-icons/io";
+const object = require('lodash/fp/object');
+import { useLoaderData } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLoaderData } from 'react-router-dom';
-
-var object = require('lodash/fp/object');
 
 import './style.scss';
-import FormSectionTitle from 'src/components/FormSectionTitle';
 
-import Buttons from 'src/components/Fields/Buttons';
-import TextField from 'src/components/Fields/TextField';
-import ButtonElement from 'src/components/Fields/ButtonElement';
-import SwitchButton from 'src/components/SwitchButton';
-import ApiResponse from 'src/components/ApiResponse';
+// Components
 import Step from './Step';
 import ClassDay from './ClassDay';
+import Buttons from 'src/components/Fields/Buttons';
+import ApiResponse from 'src/components/ApiResponse';
+import TextField from 'src/components/Fields/TextField';
+import FormSectionTitle from 'src/components/FormSectionTitle';
+import ButtonElement from 'src/components/Fields/ButtonElement';
 
+// Actions
 import { addSteps, handleSteps, deleteStep } from 'src/reducer/app';
-import { api } from '../../../middlewares/api';
 
 const Steps = ({ step }) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const loader = useLoaderData();
   const efId = loader.searchParams.get('id');
@@ -31,10 +28,7 @@ const Steps = ({ step }) => {
     agent: {agent : { unimesStatus }},
     ef: { currentEf }
   } = useSelector((state) => state);
-
-  console.log(apiMessage);
   
-  // const isVacataire = unimesStatus === "VACATAIRE";
   const isVacataire = currentEf.is_teaching;
   
   const { stages } = currentEf;
@@ -87,10 +81,13 @@ const Steps = ({ step }) => {
     register, handleSubmit, watch,
     setValue,  setError, trigger,
     formState: { errors },
-  } = useForm({ defaultValues: defaultValues});
+  } = useForm({ defaultValues: {
+    ...defaultValues,
+    numberDays: stages.length,
+  }});
 
   const onSubmit = (data) => {
-    console.log("DATA DU SUBMIT : ",data);
+    // console.log("DATA DU SUBMIT : ",data);
 
 
     const entities = stepsToDisplay.map((stepIndex) => {
@@ -179,7 +176,7 @@ const Steps = ({ step }) => {
 
       })
     }
-  }  
+  }
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
