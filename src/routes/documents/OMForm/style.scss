@@ -213,6 +213,32 @@
         border: 1px solid rgb(13, 117, 27);
       }
     }
+
+    &-recap {
+      // color: aqua;
+
+      &--infos {
+        font-style: italic;
+        font-size: 0.9em;
+        margin-top: 0.5rem;
+        margin-right: 0.5rem;
+        text-align: justify;
+
+        & a {
+          text-decoration: underline;
+          color: rgba(var(--darkestThemeColor));
+        }
+      }
+
+      &--lister {
+        text-decoration: underline;
+        margin-top: 0.5rem;
+      }
+
+      & span {
+        font-weight: 600;
+      }
+    }
   }
 }
 
