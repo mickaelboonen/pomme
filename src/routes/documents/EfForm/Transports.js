@@ -138,6 +138,12 @@ const Transports = ({ step }) => {
   }
   
   const [fieldsToBeDisplayed, setFieldsToBeDisplayed] = useState(filterEfTransportsFields(transportsFields, currentOM.transports))
+
+  if (currentOM.mission.visa && fieldsToBeDisplayed.find((field) => field.formField === 'visa') === undefined) {
+
+    fieldsToBeDisplayed.push(transportsFields.find((field) => field.formField === 'visa'));
+  }
+  
   const hasUsedPersonalCar = currentOM.transports.authorizations.length > 0 &&  currentOM.transports.authorizations[0].type === 'personal-car' ? true : false;
   
   return (

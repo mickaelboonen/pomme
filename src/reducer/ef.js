@@ -24,14 +24,14 @@ const initialState = {
         filelabel:'Billets de train (si non payé par Unîmes)',
         index: 2,
       },
-      // {
-      //   formField: 'personalCar',
-      //   id: 'personal-car-field',
-      //   max: '',
-      //   label: 'Véhicule personnel (sur autorisation préalable)',
-      //   filelabel:'A voir, champs supplémentaires',
-      //   index: 3,
-      // },
+      {
+        formField: 'visa',
+        id: 'visa-field',
+        max: '',
+        label: 'Visa',
+        filelabel:'Facture nominative acquittée',
+        index: 3,
+      },
       {
         formField: 'rentCar',
         id: 'rent-car-field',
@@ -86,7 +86,7 @@ const initialState = {
         max: '',
         label: 'Bus, RER, métro',
         filelabel:'Ticket',
-        index: 111,
+        index: 11,
       },
       // {
       //   formField: 'research',

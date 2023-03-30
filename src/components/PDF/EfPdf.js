@@ -145,41 +145,41 @@ const EfPdf = ({ data, agent, agentSignature, country }) => {
   let transportsExpenses = [
     {
       name: 'Avion',
-      amount: transports.plane,
+      amount: transports.plane > 0 ? `${transports.plane}€` : transports.plane,
     },
     {
       name: 'Train',
-      amount: transports.train,
+      amount: transports.train > 0 ? `${transports.train}€` : transports.train,
     },
     {
       name: 'Transports en public',
-      amount: transports.public_transports,
+      amount: transports.public_transports > 0 ? `${transports.public_transports}€` : transports.public_transports,
     },
     {
       name: 'Carburant pour véhicule administratif ou de location',
-      amount: transports.fuel,
+      amount: transports.fuel > 0 ? `${transports.fuel}€` : transports.fuel,
     },
     {
       name: 'Frais de péage',
-      amount: transports.toll,
+      amount: transports.toll > 0 ? `${transports.toll}€` : transports.toll,
     },
     {
       name: 'Parking',
-      amount: transports.parking,
+      amount: transports.parking > 0 ? `${transports.parking}€` : transports.parking,
     },
     {
       name: 'Taxi',
-      amount: transports.taxi,
+      amount: transports.taxi > 0 ? `${transports.taxi}€` : transports.taxi,
     },
     {
       name: 'Ferry',
-      amount: transports.ferry,
+      amount: transports.ferry > 0 ? `${transports.ferry}€` : transports.ferry,
     },
   ];
   let accomodationsExpenses = [
     {
       name: 'Hébergement',
-      amount: accomodations.hotel,
+      amount: accomodations.hotel ? `${accomodations.hotel}€` : accomodations.hotel,
     },
     {
       name: 'Repas pris dans un restaurant administratif ou assimilé',
@@ -191,22 +191,22 @@ const EfPdf = ({ data, agent, agentSignature, country }) => {
     },
     {
       name: "Repas à titre onéreux à l'étranger",
-      amount: accomodations.meals_paid_by_agent_overseas > 0 ? `${accomodations.meals_paid_by_agent_overseas} repas soit ${overseasMeals}€` : mission.region !== 'métropole' ? '0' : 0,
+      amount: accomodations.meals_paid_by_agent_overseas > 0 ? `${accomodations.meals_paid_by_agent_overseas} repas.` : accomodations.meals_paid_by_agent_overseas,
     },
     {
-      name: `Repas gratuits ${mission.region !== 'métropole' ? "à l'étranger" : ""}`,
-      amount: freeMeals.toString(),
+      name: `Repas gratuits ${mission.region !== 'métropole' ? "à l'étranger" : "en France."}`,
+      amount: `${freeMeals.toString()} repas.`,
     },
   
   ];
   let otherExpenses = [
     {
       name: 'Frais de Visa',
-      amount: mission.visa,
+      amount: transports.visa > 0 ? `${transports.visa}€` : transports.visa,
     },
     {
       name: "Frais d'inscription à un colloque, réunion, séminaire scientifique",
-      amount: accomodations.event,
+      amount: accomodations.event > 0 ? `${accomodations.event}€` : accomodations.event,
     },
   ];
   transportsExpenses = filterArrays(transportsExpenses);
@@ -285,7 +285,7 @@ const EfPdf = ({ data, agent, agentSignature, country }) => {
             <Text style={styles.section.gest.title}>Hébergement & repas</Text>
           </View>
           <View style={styles.section.gest.second}>
-            <Text style={styles.section.gest.title}>Montant</Text>
+            <Text style={styles.section.gest.title}>Montant ou Nombre</Text>
           </View>
         </View>
         {accomodationsExpenses.map((row) => (
