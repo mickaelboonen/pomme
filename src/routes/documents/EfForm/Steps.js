@@ -191,7 +191,7 @@ const Steps = ({ step }) => {
           error={errors.numberDays}
           required="Veuillez remplir le nombre de jour de vacations de votre mission."
         />
-        <div className='form__section-field-buttons'>
+        <div className='form__section-field-buttons  form__section-field-buttons--solo'>
           <ButtonElement
             handler={createSteps}
             label={`Créer les ${isVacataire ? "journées" : "étapes"}`}
@@ -199,7 +199,7 @@ const Steps = ({ step }) => {
           />
         </div>
         {stepsToDisplay.length > 0 && (
-          <div className='form__section-field-buttons'>
+          <div className='form__section-field-buttons  form__section-field-buttons--solo'>
             <ButtonElement
               register={register}
               type="button"
