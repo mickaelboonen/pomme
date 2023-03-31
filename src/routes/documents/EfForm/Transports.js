@@ -124,9 +124,9 @@ const Transports = ({ step }) => {
   const [otherSwitch, fields] = watch(['otherSwitch', 'fields']);
 
 
-  useEffect(() => {
-    equalizeFields();
-  }, []);
+  // useEffect(() => {
+  //   equalizeFields();
+  // }, []);
 
   const displayFields = (event) => {
     if (event.target.checked) {
@@ -135,6 +135,7 @@ const Transports = ({ step }) => {
     else {
       setFieldsToBeDisplayed(filterEfTransportsFields(transportsFields, currentOM.transports));
     }
+    
   }
   
   const [fieldsToBeDisplayed, setFieldsToBeDisplayed] = useState(filterEfTransportsFields(transportsFields, currentOM.transports))
@@ -146,6 +147,10 @@ const Transports = ({ step }) => {
   
   const hasUsedPersonalCar = currentOM.transports.authorizations.length > 0 &&  currentOM.transports.authorizations[0].type === 'personal-car' ? true : false;
   
+
+  useEffect(() => {
+    equalizeFields();
+  }, [fieldsToBeDisplayed.length]);
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section" style={{display: 'flex', flexDirection: 'column'}}>

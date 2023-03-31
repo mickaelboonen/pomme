@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
 
 const CarAuthorizationPdf = ({ data, vehicleTypes, agent, agentSignature, reasons}) => {
   let chosenVehicleType = {};
-
+  console.log(data);
   if (data.type === 'personal-car') {
     chosenVehicleType = vehicleTypes.find((v) => v.id === 0);
   }
@@ -124,11 +124,16 @@ const CarAuthorizationPdf = ({ data, vehicleTypes, agent, agentSignature, reason
         <Text style={styles.section.text}>Type de véhicule choisi : {chosenVehicleType.name}</Text>
         {chosenVehicleType.id === 0 &&<Text style={styles.section.notabene}>Produire obligatoirement la photocopie de la carte grise et de l’attestation d’assurance</Text>}
         <Text style={[styles.section.text, {textDecoration: 'underline'}]}>Informations sur le véhicule :</Text>
-        <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Marque : <Text style={{fontFamily: 'Radjhani'}}>{data.vehicle.make}</Text></Text>
+        {/* <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Marque : <Text style={{fontFamily: 'Radjhani'}}>{data.vehicle.make}</Text></Text>
         <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Immatriculation : <Text style={{fontFamily: 'Radjhani'}}>{data.vehicle.license_plate}</Text></Text>
         <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Puissance fiscale : <Text style={{fontFamily: 'Radjhani'}}>{data.vehicle.rating}</Text></Text>
         <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Compagnie d'assurance : <Text style={{fontFamily: 'Radjhani'}}>{data.vehicle.insurance}</Text></Text>
-        <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Numéro de Police : <Text style={{fontFamily: 'Radjhani'}}>{data.vehicle.police}</Text></Text>
+        <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Numéro de Police : <Text style={{fontFamily: 'Radjhani'}}>{data.vehicle.police}</Text></Text> */}
+        <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Marque : <Text style={{fontFamily: 'Radjhani'}}>{data.make}</Text></Text>
+        <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Immatriculation : <Text style={{fontFamily: 'Radjhani'}}>{data.licensePlate}</Text></Text>
+        <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Puissance fiscale : <Text style={{fontFamily: 'Radjhani'}}>{data.rating}</Text></Text>
+        <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Compagnie d'assurance : <Text style={{fontFamily: 'Radjhani'}}>{data.insurance}</Text></Text>
+        <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Numéro de Police : <Text style={{fontFamily: 'Radjhani'}}>{data.police}</Text></Text>
 
       </View>
       <View style={styles.section}>

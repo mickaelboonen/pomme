@@ -45,8 +45,10 @@
       background-color: var(--thread-background);
       text-transform: uppercase;
       font-size: 0.8em;
+      text-align: center;
       color: var(--fourth-color);
       font-weight: bold;
+      width: 100% !important;
 
 
       &--open, &:hover {

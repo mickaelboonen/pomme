@@ -109,10 +109,7 @@ const MyDocuments = () => {
     },
   ]
 
-  console.log(steps);
-
   const omThatCanBeRefunded = userOms.filter((om) => om.status === 2);
-  console.log(omThatCanBeRefunded);
 
   return (
     <main className="my-documents">

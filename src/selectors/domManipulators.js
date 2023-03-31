@@ -1,20 +1,3 @@
-
-// /**
-//  * routes/documents/EfForm/Transports
-//  */
-// export const toggleSwitchOnOtherExpenses = (isChecked) => {
-//     const otherFieldsGroupElement = document.getElementById('other-fields');
-//     const otherTextFieldElement = document.getElementById('other');
-
-//     if (isChecked) {
-//       otherFieldsGroupElement.classList.remove('form__section--hidden');
-//       otherTextFieldElement.classList.remove('form__section-field--hidden');
-//     }
-//     else {
-//       otherFieldsGroupElement.classList.add('form__section--hidden');
-//       otherTextFieldElement.classList.add('form__section-field--hidden');
-//     }
-
 // }
 /**
  * routes/documents/EfForm/Transports
@@ -42,102 +25,14 @@ export const equalizeFields = () => {
     else if (currentHalves[1] > currentHalves[0]) {
       labels[0].style.display = 'flex';
       labels[0].style.alignItems = 'flex-end';
+      labels[0].style.height = `${currentHalves[1]}px`;
 
     }
     heights.push(currentHalves);
-
   })
 
 }
-// /**
-//  * components/App/OMForm/Mission
-//  */
-// export const displayRegionFieldsInFormMission = () => {
-//   const isAbroad = document.querySelector('#étranger');
-//   const domTom = document.querySelector('#dom-tom');
 
-//   if ( isAbroad.checked ) {
-//     document.querySelector('#country-field').classList.remove('form__section-field--hidden');
-//     document.querySelector('#abroad-field').classList.remove('form__section-field--hidden');
-//     document.querySelector('#abroad-report').classList.remove('form__section-field--hidden');
-//   }
-//   else if (domTom.checked) {
-//     document.querySelector('#country-field').classList.add('form__section-field--hidden');
-//     document.querySelector('#abroad-field').classList.remove('form__section-field--hidden');
-//     document.querySelector('#abroad-report').classList.add('form__section-field--hidden');
-
-//   }
-//   else {
-//     document.querySelector('#country-field').classList.add('form__section-field--hidden');
-//     document.querySelector('#abroad-field').classList.add('form__section-field--hidden');
-//     document.querySelector('#abroad-report').classList.add('form__section-field--hidden');
-//   } 
-// }
-
-// export const toggleIsHiddenOnNextFormSection = (target) => {
-//   const { checked } = target;
-//   const nextSectionField = target.closest('.form__section-field').nextSibling;
-
-//   if (checked) {
-//     nextSectionField.classList.remove('form__section-field--hidden');
-//   }
-//   else {
-//     nextSectionField.classList.add('form__section-field--hidden');
-//   }
-// }
-
-// export const toggleIsHiddenOnWorkAddressesList = () => {
-//   const departureFromWork = document.querySelector('#departure-work');
-//   const comebackToWork = document.querySelector('#comeback-work');
-
-//   if ( departureFromWork.checked || comebackToWork.checked ) {
-
-//     document.querySelector('#workAdress').classList.remove('form__section-field--hidden');
-//   }
-//   else {
-//     document.querySelector('#workAdress').classList.add('form__section-field--hidden');
-//   }
-// }
-
-
-// /**
-//  * components/App/OMForm/Transports
-//  */
-// export const toggleVehicleFields = (value) => {
-//   const personalCarField = document.querySelector('#personal-car-field');
-//   const isHidden = personalCarField.className.includes('hidden');
-
-//   if (value === 'Véhicule personnel, de prêt' && isHidden) {
-//     personalCarField.classList.remove('form__section-field--hidden');
-//   }
-//   else {
-//     personalCarField.classList.add('form__section-field--hidden');
-//   }
-// }
-
-
-// /**
-//  * components/App/OMForm/Transports
-//  */
-// export const toggleDerogationSection = (element, transportClass) => {
-  
-//   const classToManipulate = 'form__section-field--hidden';
-  
-//   if (transportClass === 'first-class' || transportClass === 'business-class' ) {
-//     element.classList.remove(classToManipulate);
-//   }
-//   else if (transportClass === 'second-class' || transportClass === 'eco-class') {
-//     element.classList.add(classToManipulate);
-//   }
-//   else {
-//     if (transportClass === 'Véhicule personnel, de prêt') {
-//       element.classList.remove(classToManipulate);
-//     }
-//     else {
-//       element.classList.add(classToManipulate);
-//     }
-//   }
-// }
 
 
 // HEADER DOM MANIPULATION -------------------------------------------------------

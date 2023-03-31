@@ -70,15 +70,20 @@ const VehicleUseForm = () => {
     watch,
     reset,
     setError,
+    trigger,
     clearErrors,
     formState:
     { errors },
-  } = useForm({ defaultValues: formDefaultValues});
+  } = useForm({ defaultValues: {
+      ...formDefaultValues,
+    validation: 'false',
+  }});
   
   const [isPersonalCar, setIsPersonalCar] = useState(true);
   const [hasSavedInsurance, setSavedInsurance] = useState(formDefaultValues.savedInsurance);
   const [hasSavedRegistration, setSavedRegistration] = useState(formDefaultValues.savedRegistration);
   const [vehiclesList, setVehiclesList] = useState([]);
+  const [dataForPdf, setDataForPdf] = useState(formDefaultValues);
 
   const [
     reasons,
@@ -111,7 +116,8 @@ const VehicleUseForm = () => {
   }, [carType])
   
   const onSubmit = (data) => {
-    console.log(data);
+    console.log("IN SUBMIT : ", data);
+    return;
     
     let countErrors = 0;
     if (data.reasons.length === 0) {
@@ -204,10 +210,25 @@ const VehicleUseForm = () => {
   }
 
   const generatePdf = () => {
+    const data = watch();
+    console.log("IN GENERATE PDF : ", data);
+    return;
+    dispatch()
     dispatch(resetPdfNeed());
     navigate('/modifier-un-document/ordre-de-mission?etape=2&id='+ omId);
   }
+
+  const triggerValidation = () => {
+    trigger();
+    const data = watch();
+    setValue("validation", 'true');
+    setDataForPdf(data);
+    console.log("IN THE TRIGGER = ", data);
+  }
   
+  const validation = watch('validation');
+
+  console.log(validation);
   return (
     <div className="form-container form-container--vehicle">
       <PageTitle>Demande d'autorisation préalable d'utilisation d'un véhicule</PageTitle>
@@ -325,6 +346,11 @@ const VehicleUseForm = () => {
               register={register}
               id="omId"
             />
+            <HiddenField
+              value="false"
+              register={register}
+              id="validate"
+            />
             {carType === 'personal-car' && (
               <div className="form__section-field">
                 <SwitchButton
@@ -335,28 +361,38 @@ const VehicleUseForm = () => {
                 />
               </div>
             )}
-            {externalSignature && (
+            {/* {externalSignature && ( */}
               <div className="form__section-field" id="external-signature-button">
                 <div className="form__section-field-button">
-                  {(!savedAuthorization.hasOwnProperty('reasons')) && (
-                    <ButtonElement 
-                      type="submit"
-                      label="Enregistrer la demande"
-                    />
-                  )}
-                  {(needsPdf && savedAuthorization.hasOwnProperty('reasons')) && (
-                    <BlobProvider document={<CarAuthorizationPdf reasons={staticReasons} agentSignature={agentSignature} agent={agent} data={savedAuthorization} vehicleTypes={vehicleTypes}/>}>
+                    {validation === 'false' && (
+                      <ButtonElement 
+                        type="button"
+                        label="Enregistrer la demande"
+                        handler={triggerValidation}
+                      />
+                    )}
+                  {validation === 'true' && (
+                    <BlobProvider document={<CarAuthorizationPdf reasons={staticReasons} agentSignature={agentSignature} agent={agent} data={dataForPdf} vehicleTypes={vehicleTypes}/>}>
                       {({ blob, url, loading, error }) => {
           
                         const file = new File([blob], new Date().toLocaleDateString() + '-demande-d-autorisation-de-véhicule', {type: 'pdf'});
                         const fileUrl = URL.createObjectURL(file);
-                        
+
+                        setValue('file', file);
+                        if (externalSignature) {
+
+                          return (
+                            <a href={fileUrl} download={new Date().toLocaleDateString() + '-demande-d-autorisation-de-véhicule.pdf'} style={{textAlign: 'center'}}>
+                              <button onClick={generatePdf} type="button">
+                                Générer le PDF de la demande
+                              </button>
+                            </a>
+                          );
+                        }
                         return (
-                          <a href={fileUrl} download={new Date().toLocaleDateString() + '-demande-d-autorisation-de-véhicule.pdf'} style={{textAlign: 'center'}}>
-                            <button onClick={generatePdf} type="button">
-                              Générer le PDF de la demande
+                            <button type="submit">
+                              Valider la demande
                             </button>
-                          </a>
                         );
                       }}
                     </BlobProvider>
@@ -372,19 +408,19 @@ const VehicleUseForm = () => {
                 )}
                 {needsPdf && <a href={'/modifier-un-document/ordre-de-mission?etape=2&id='+ omId}>Retourner au formulaire de l'ordre de mission</a>}
               </div>
-            )} 
+            {/* )}  */}
             {apiMessage.response && <ApiResponse apiResponse={apiMessage} />}
 
-            {!externalSignature && (
-              <div className="form__section-field">
+            {/* {!externalSignature && ( */}
+              {/* <div className="form__section-field">
                 <div className="form__section-field-button">
                   <ButtonElement 
                     type="submit"
                     label="Valider la demande"
                   />
                 </div>
-              </div>
-            )}
+              </div> */}
+            {/* )} */}
           </div>
         </form>
       

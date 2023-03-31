@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import './style.scss';
+import PdfDownloadButton from '../../../components/pdfDownloadButton';
 
-const DocButtons = ({ id, status, name, om, file,  isDocFinished, isOm}) => {
+const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isOm}) => {
   const downloadFileStatusArray = [2, 8];
   let buttons = [];
-  console.log(id);
+  console.log(transports);
   
   if (isOm) {
     buttons = [
@@ -28,6 +29,18 @@ const DocButtons = ({ id, status, name, om, file,  isDocFinished, isOm}) => {
         link: "#",
         label: 'Faire une demande de déplacement',
         status: [8],
+      },
+      {
+        name: 'delete',
+        link: "#",
+        label: 'Prendre connaissance du refus et supprimer',
+        status: [0],
+      },
+      {
+        name: 'delete',
+        link: "#",
+        label: 'Prendre connaissance du refus et supprimer',
+        status: [0],
       },
       {
         name: 'delete',
@@ -70,6 +83,7 @@ const DocButtons = ({ id, status, name, om, file,  isDocFinished, isOm}) => {
         }
       })}
       {downloadFileStatusArray.indexOf(status) >= 0 && <a href={file} download={name + '.pdf'} style={{textAlign: 'center'}}> Télécharger le Document</a>}
+      {(downloadFileStatusArray.indexOf(status) >= 0 && transports.authorizations.length > 0) && <PdfDownloadButton />}
     </div>
   );
 }
