@@ -150,6 +150,10 @@ const Recap = () => {
             </tbody>
           </table>
 
+          <div className='steps__recap-mobile'>
+            <p className='form__section-recap form__section-recap--infos'>Le tableau des étapes ne peut être affiché sur mobile. Veuillez passer en version ordinateur (menu de votre navigateur &gt; version pour ordinateur) pour pouvoir contrôler le détail des étapes. Merci de votre compréhension.</p>
+          </div>
+
 
       </div>
     )}
