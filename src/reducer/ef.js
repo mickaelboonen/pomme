@@ -228,7 +228,7 @@ const efSlice = createSlice({
           stages.push(declareCamelCaseKeys(stage));
         })
         ef.stages = stages;
-        
+        console.log("EF STAGES = ", ef.stages);
         state.currentEf = ef;
       },
       saveEfAccomodations: (state, action) => {

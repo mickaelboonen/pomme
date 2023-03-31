@@ -22,8 +22,9 @@ const Recap = () => {
     omForm: { currentOM },
       agent: { agent, user },
   } = useSelector((state) => state);
-console.log("HERE = ", currentOM);
+  
   const { mission, transports, accomodations, stages } = currentEf;
+  console.log("STAGES IN STEPS = ", stages);
   
   const { register, setValue, getValues, watch, formState: { errors } } = useForm({ defaultValues: agent });
 
@@ -36,15 +37,13 @@ console.log("HERE = ", currentOM);
   //------------------------------------------------------------------------------------------------
   const adminMealsAmount = floatMultiplication(accomodations.meals_in_admin_restaurants, '7,63');
   const frenchMeals = floatMultiplication(accomodations.meals_paid_by_agent_in_france, '15.25');
-  const overseasMeals = floatMultiplication(accomodations.meals_paid_by_agent_overseas, '15.25');
-  const totalMeals = floatAddition([adminMealsAmount, frenchMeals, overseasMeals]);
+  const totalMeals = floatAddition([adminMealsAmount, frenchMeals]);
   
   const totalMission = floatAddition([totalMeals, accomodations.event, totalTransportsExpenses, accomodations.hotel])
 
   const mealsExpenses = {
     admin : adminMealsAmount,
     french: frenchMeals,
-    overseas: overseasMeals
   };
   
   
@@ -132,7 +131,7 @@ console.log("HERE = ", currentOM);
                 <React.Fragment key={step.id}>
                   <tr>
                     <td>Départ</td>
-                    <td>{getDDMMYYDate(new Date(step.departure))}</td>
+                    <td>{getDDMMYYDate(new Date(step.departure ))}</td>
                     <td>{getHHMMTime(new Date(step.departureHour))}</td>
                     <td>{step.departurePlace}</td>
                     <td>{step.amCourseBeginning}</td>
@@ -154,16 +153,15 @@ console.log("HERE = ", currentOM);
 
       </div>
     )}
-    {/* {mission.region === "métropole" && ( */}
       <div className="form__section" style={{marginBottom: '1rem'}}>
         <FormSectionTitle>Total</FormSectionTitle>
-        {/* {mission.region === "métropole" && ( */}
+        {mission.region === "métropole" && (
           <>
             <p className='form__section-recap'>Total des frais déclarés pour la mission : <span>{totalMission}€</span>.</p>
             {currentOM.advance.advance_amount && <p className='form__section-recap form__section-recap--infos'><span>Pour rappel :</span> vous avez bénéficié d'une avance de <span>{currentOM.advance.advance_amount}€</span> qui sera déduite lors du calcul du remboursement définitif effectué par le service financier d'Université.</p>}
             <p className='form__section-recap form__section-recap--infos'><span>Attention :</span> le montant remboursé peut être différent selon les plafonds de remboursement.</p>
           </>
-        {/* // )} */}
+        )}
         {mission.region !== "métropole" && (
           <>
             <p className='form__section-recap'>Dû aux différents taux de remboursement du forfait per diem, nous ne pouvons vous fournir une estimation du total des frais engagés par votre mission.</p>
@@ -171,8 +169,6 @@ console.log("HERE = ", currentOM);
           </>
         )}
       </div>
-    {/* )} */}
-    
     {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
       <div className="form__section">
         <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>

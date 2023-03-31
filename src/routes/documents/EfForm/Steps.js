@@ -18,6 +18,7 @@ import ButtonElement from 'src/components/Fields/ButtonElement';
 
 // Actions
 import { addSteps, handleSteps, deleteStep } from 'src/reducer/app';
+import { getHHMMTime } from '../../../selectors/dateFunctions';
 
 const Steps = ({ step }) => {
   const dispatch = useDispatch();
@@ -44,16 +45,13 @@ const Steps = ({ step }) => {
       keys.forEach((key) => {
 
         if (key.includes('Hour')) {
-          const date = new Date(stage[key]);
           
-          const hours = date.getHours().toString().length === 1 ? '0' + date.getHours() : date.getHours();
-          const minutes = date.getMinutes() === 0 ? '00' : date.getMinutes();
-          
-          defaultValues[key + (stages.indexOf(stage) + 1)] = `${hours}:${minutes}`;
+          defaultValues[key + (stages.indexOf(stage) + 1)] = getHHMMTime(new Date(stage[key]));
         }
         else if ((key ==='departure' || key === 'arrival') && stage[key]) {
           const date = new Date(stage[key]);
           
+          const frDate = date.toUTCString('fr-FR', { timeZone: 'Europe/Paris' });
           const day = date.getDate().toString().length === 1 ? '0' + date.getDate() : date.getDate();
           const month = date.getMonth().toString().length === 1 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
           const year = date.getFullYear();

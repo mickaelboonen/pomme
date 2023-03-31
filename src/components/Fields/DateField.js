@@ -21,7 +21,6 @@ const DateField = ({
     if (handler) {
       handler(event.target.value, min, max, formField);
     }
-    
   };
 
   return (
