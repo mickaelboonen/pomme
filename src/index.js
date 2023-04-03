@@ -153,6 +153,9 @@ const router = createBrowserRouter([
             element: <Derogation />,
             loader: async ({ request }) => {
               const url = new URL(request.url);
+              const { agent: { user } } = store.getState()
+              const id = url.searchParams.get("id");
+              store.dispatch(fetchAgentSignatureForPdf({ agent: user, omId: id}));
               return url;  
             },     
           },
@@ -161,6 +164,9 @@ const router = createBrowserRouter([
             element: <Derogation />,
             loader: async ({ request }) => {
               const url = new URL(request.url);
+              const { agent: { user } } = store.getState()
+              const id = url.searchParams.get("id");
+              store.dispatch(fetchAgentSignatureForPdf({ agent: user, omId: id}));
               return url;  
             },     
           },

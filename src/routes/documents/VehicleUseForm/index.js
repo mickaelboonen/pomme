@@ -372,37 +372,37 @@ const VehicleUseForm = () => {
                 />
               </div>
             )}
-              <div className="form__section-field" id="external-signature-button">
-                <div className="form__section-field-button">
-              
-                    <BlobProvider document={<CarAuthorizationPdf reasons={staticReasons} agentSignature={agentSignature} agent={agent} data={watch()} vehicleTypes={vehicleTypes}/>}>
-                      {({ blob }) => {
-          
-                        const file = new File([blob], new Date().toLocaleDateString() + '-demande-d-autorisation-de-véhicule', {type: 'pdf'});
-                        const fileUrl = URL.createObjectURL(file);
-                        
-                        if (externalSignature) {
+            <div className="form__section-field" id="external-signature-button">
+              <div className="form__section-field-button">
+            
+                  <BlobProvider document={<CarAuthorizationPdf reasons={staticReasons} agentSignature={agentSignature} agent={agent} data={watch()} vehicleTypes={vehicleTypes}/>}>
+                    {({ blob }) => {
+        
+                      const file = new File([blob], new Date().toLocaleDateString() + '-demande-d-autorisation-de-véhicule', {type: 'pdf'});
+                      const fileUrl = URL.createObjectURL(file);
+                      
+                      if (externalSignature) {
 
-                          return (
-                            <a href={fileUrl} download={new Date().toLocaleDateString() + '-demande-d-autorisation-de-véhicule.pdf'} style={{textAlign: 'center'}}>
-                              <button onClick={() => { const data = watch(); data.file = 'pending'; onSubmit(data)}} type="button">
-                                Générer le PDF de la demande
-                              </button>
-                            </a>
-                          );
-                        }
                         return (
-                          <button type="button" onClick={() => { const data = watch(); data.file = file; onSubmit(data)}}>
-                            Valider la demande
-                          </button>
+                          <a href={fileUrl} download={new Date().toLocaleDateString() + '-demande-d-autorisation-de-véhicule.pdf'} style={{textAlign: 'center'}}>
+                            <button onClick={() => { const data = watch(); data.file = 'pending'; onSubmit(data)}} type="button">
+                              Générer le PDF de la demande
+                            </button>
+                          </a>
                         );
-                      }}
-                    </BlobProvider>
-                </div>
-                {needsPdf && <p className="form__section-field-label form__section-field-label--car-form">Veuillez télécharger le PDF de la demande et le faire signer aux personnes extérieures concernées</p>}
-                {needsPdf && <a href={'/modifier-un-document/ordre-de-mission?etape=2&id='+ omId}>Retourner au formulaire de l'ordre de mission</a>}
+                      }
+                      return (
+                        <button type="button" onClick={() => { const data = watch(); data.file = file; onSubmit(data)}}>
+                          Valider la demande
+                        </button>
+                      );
+                    }}
+                  </BlobProvider>
               </div>
-              {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
+              {needsPdf && <p className="form__section-field-label form__section-field-label--car-form">Veuillez télécharger le PDF de la demande et le faire signer aux personnes extérieures concernées</p>}
+              {needsPdf && <a href={'/modifier-un-document/ordre-de-mission?etape=2&id='+ omId}>Retourner au formulaire de l'ordre de mission</a>}
+            </div>
+            {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
           </div>
         </form>
       )}

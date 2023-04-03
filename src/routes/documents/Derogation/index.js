@@ -1,42 +1,62 @@
-import React from 'react';
 import { useForm } from "react-hook-form";
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import classNames from "classnames";
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useLoaderData } from 'react-router-dom';
+import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
 
 import './style.scss';
 import PageTitle from 'src/components/PageTitle';
+import ApiResponse from 'src/components/ApiResponse';
 import TextField from 'src/components/Fields/TextField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import ButtonElement from 'src/components/Fields/ButtonElement';
 import TextareaField from 'src/components/Fields/TextareaField';
-import { useDispatch, useSelector } from 'react-redux';
-import { createDerogation, clearSideForm } from '../../../reducer/omForm';
-import { useEffect } from 'react';
+
+import DispensationPdf from "src/components/PDF/DispensationPdf";
+import { createDerogation, uploadFile } from 'src/reducer/omForm';
+
+import './style.scss';
+
+// Actions
+import { clearMessage } from 'src/reducer/app';
+import CarAuthorizationPdf from "src/components/PDF/CarAuthorizationPdf";
+import LoaderCircle from "src/components/LoaderCircle";
+
+
 
 const Derogation = () => {
   
   const navigate = useNavigate();
-  const loader = useLoaderData();
+  const loaderData = useLoaderData();
   const dispatch = useDispatch();
   const { isSideFormInDB } = useSelector((state) => state.omForm);
 
-  const types = loader.searchParams.get('type').split(',');
-  const omId = loader.searchParams.get('omId');
-  let lol = 'Demande de dérogation pour '
+  let { 
+    app : { apiMessage },
+    agent : { agent },
+    docs: { agentSignature },
+    vehicle: { needsPdf ,vehicleTypes, vehicles, formDefaultValues, loader },
+  } = useSelector((state) => state);
+
+  const types = loaderData.searchParams.get('type').split(',');
+  const omId = loaderData.searchParams.get('omId');
+  let dispensationTitle = 'Demande de dérogation pour '
 
   if (types.length === 2) {
-    lol += "le train et l'avion";
+    dispensationTitle += "le train et l'avion";
   }
   else if (types.length ===1) {
     if (types[0] === 'train') {
-      lol += "le train";
+      dispensationTitle += "le train";
       
     }
     else if (types[0] === 'plane') {
-      lol += "l'avion";
+      dispensationTitle += "l'avion";
     }
     else if (types[0] === 'taxi') {
-      lol += "le taxi";
+      dispensationTitle += "le taxi";
     }
   }
   const {
@@ -45,7 +65,11 @@ const Derogation = () => {
     watch,
     formState:
     { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      type: dispensationTitle
+    }
+  });
 
   useEffect(() => {
     if (isSideFormInDB) {
@@ -55,7 +79,7 @@ const Derogation = () => {
   }, [isSideFormInDB])
 
   const onSubmit = (data) => {
-    data.type = lol;
+    data.type = dispensationTitle;
     console.log(data);
 
     dispatch(createDerogation(data));
@@ -65,7 +89,8 @@ const Derogation = () => {
   };
   return (
     <div className="form-container form-container--vehicle">
-        <PageTitle>Demande de prise en charge d’une dépense par voie dérogatoire au GDM </PageTitle>
+      <PageTitle>Demande de prise en charge d’une dépense par voie dérogatoire au GDM </PageTitle>
+      { agentSignature && (
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
           <div className="form__section">
             <FormSectionTitle>Dérogation</FormSectionTitle>
@@ -76,7 +101,7 @@ const Derogation = () => {
               id="type-field"
               label="Type de dérogation"
               formField="type"
-              value={lol}
+              value={dispensationTitle}
             />
             <TextareaField 
               register={register}
@@ -104,7 +129,40 @@ const Derogation = () => {
               />
             </div>
           </div>
+          <div className="form__section-field" id="external-signature-button">
+              <div className="form__section-field-button">
+            
+                  <BlobProvider document={<DispensationPdf agentSignature={agentSignature} agent={agent} data={watch()}/>}>
+                    {({ blob }) => {
+        
+                      const file = new File([blob], new Date().toLocaleDateString() + '-demande-d-autorisation-de-véhicule', {type: 'pdf'});
+                      const fileUrl = URL.createObjectURL(file);
+                      
+                      return (
+                        <>
+                        <button type="button" onClick={() => { const data = watch(); data.file = file; onSubmit(data)}}>
+                          Valider la demande
+                        </button>
+                        <div style={{width:"100%", height:"100vh"}}>
+                          <PDFViewer>
+                            <DispensationPdf agentSignature={agentSignature} agent={agent} data={watch()}/>
+                          </PDFViewer>
+                        </div>
+                        </>
+                      );
+                    }}
+                  </BlobProvider>
+              </div>
+              {needsPdf && <p className="form__section-field-label form__section-field-label--car-form">Veuillez télécharger le PDF de la demande et le faire signer aux personnes extérieures concernées</p>}
+              {needsPdf && <a href={'/modifier-un-document/ordre-de-mission?etape=2&id='+ omId}>Retourner au formulaire de l'ordre de mission</a>}
+            </div>
+            {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
+
         </form>
+      )}
+      { !agentSignature && (
+        <LoaderCircle />
+      )}
     </div>
   );
 };
@@ -114,3 +172,4 @@ Derogation.propTypes = {
 };
 
 export default Derogation;
+
