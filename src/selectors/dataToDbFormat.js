@@ -148,9 +148,15 @@ export const turnTransportsDataToAppFormat = (data) => {
   
 
   if (data.authorizations.length > 0) {
-    dataForTheComponent.vehicleAuthorizationFileForValidation = true;
 
-    const { type } = data.authorizations[0];
+    const { type, file } = data.authorizations[0];
+
+    if (file === 'pending') {
+      dataForTheComponent.vehicleAuthorizationFileForValidation = true;
+    }
+    else if (file.length > 0) {
+      dataForTheComponent.vehicleAuthorizationFile = file;
+    }
 
     if (type === 'personal-car') {
       dataForTheComponent.vehicle = 0;
