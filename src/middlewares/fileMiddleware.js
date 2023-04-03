@@ -16,7 +16,6 @@ const omMiddleware = (store) => (next) => (action) => {
   switch (action.type) {
     case 'omForm/uploadFile':
       const filesToUpload = [];
-      // console.log('IN THE MIDDLEWARE', action.payload);
 
       const { data, step, docType } = action.payload;
       console.log('DATA IN THE FILEMIDDLEWARE : ', data);
@@ -186,7 +185,38 @@ const omMiddleware = (store) => (next) => (action) => {
           }
         }
       }
+      else if (type === 'authorization') {
+        console.log('------------------------------------------------------------------');
+        console.log(data);
+        console.log('------------------------------------------------------------------');
+
+        if (data.insurance instanceof File) {
+          const insurance = {
+            docId: data.docId,
+            type: 'insurance',
+            file: data.insurance,
+            user: user,
+          }
+          filesToUpload.push(insurance);
+        }
+        if (data.registration_document instanceof File) {
+          const registrationDocument = {
+            docId: data.docId,
+            type: 'registration',
+            file: data.registration_document,
+            user: user,
+          }
+          filesToUpload.push(registrationDocument);
+        }
+        filesToUpload.push({
+          docId: data.docId,
+          type: 'auth-pdf',
+          file: data.file,
+          user: user,
+        });
+      }
       console.log('filesToUpload - ', filesToUpload);
+      
       
       // TODO : See if POST method is the right one ? Methods that can add files (post) and delete them (delete)
       fileApi.post(`/api/files/${type}/${step}`, filesToUpload)
@@ -331,6 +361,10 @@ const omMiddleware = (store) => (next) => (action) => {
               }
               else if (file.type === 'registration') {
                 data.registration_document = file.file.url;
+              }
+              else if (file.type === 'auth-pdf') {
+                
+                data.file = file.file.url;
               }
             })
             

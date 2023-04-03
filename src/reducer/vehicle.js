@@ -44,6 +44,7 @@ const initialState = {
   needsPdf: false,
   message: null,
   savedAuthorization: {},
+  authorizationFile: null,
 };
 const vehicleSlice = createSlice({
     name: 'vehicle',
@@ -153,6 +154,9 @@ const vehicleSlice = createSlice({
       },
       saveAuthorization: (state, action) => {
         state.savedAuthorization = action.payload;
+      },
+      saveAuthorizationFile: (state, action) => {
+        state.authorizationFile = action.payload
       }
     },
 });
@@ -173,6 +177,7 @@ export const {
   updateVehicle,
   deleteVehicle,
   saveAuthorization,
+  saveAuthorizationFile,
 } = vehicleSlice.actions;
 
 export default vehicleSlice.reducer;
