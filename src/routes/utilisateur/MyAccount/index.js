@@ -63,6 +63,7 @@ const MyAccount = () => {
           label="CNI"
           file={docs.cni}
           handler={null}
+          user={user}
         />
         <FileManager
           icon={<FaPassport
@@ -72,6 +73,7 @@ const MyAccount = () => {
           label="Passeport"
           file={docs.passport}
           handler={null}
+          user={user}
         />
         <FileManager
           icon={<FaSignature
@@ -81,6 +83,7 @@ const MyAccount = () => {
           label="Signature"
           file={docs.signature}
           handler={null}
+          user={user}
         />
         <FileManager
           icon={<FaCreditCard
@@ -90,6 +93,7 @@ const MyAccount = () => {
           label="RIB"
           file={docs.rib}
           handler={null}
+          user={user}
         />
       </div>
       
@@ -104,8 +108,9 @@ const MyAccount = () => {
           label="Permis de conduire"
           file={docs.drivingLicense}
           handler={null}
+          user={user}
         />
-        <FileManager
+        {/* <FileManager
           icon={<FaFilePdf
             className='file-displayer__icon-container-icon'
           />}
@@ -122,7 +127,7 @@ const MyAccount = () => {
           label="Attestation d'assurance"
           file={docs.insurance}
           handler={null}
-        />
+        /> */}
       </div>
 
       <div className='form__section'>

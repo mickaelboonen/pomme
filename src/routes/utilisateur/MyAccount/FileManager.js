@@ -82,7 +82,7 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
   };
 
   const filename = file ? file.name : '';
-
+  console.log(file);
   return (
   <div className='file-manager'>
     <div className='file-manager__file'>
@@ -110,15 +110,17 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
 
     </div>
     <div className='file-manager__buttons'>
-      {(!needsSelect && true === false) && (
-        <button
+      {(!needsSelect && user === 'mboone01') && (
+        <a
           className='file-manager__buttons-button'
-          onClick={handleDownload}
+          // onClick={handleDownload}
           data-id={id}
           type="button"
+          href={file ? file.url : ''}
+          download={file ? file.name : ''}
         >
           <FaDownload/>
-        </button>
+        </a>
       )}
       
       <button
