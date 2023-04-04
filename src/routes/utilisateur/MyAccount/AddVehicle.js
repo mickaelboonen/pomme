@@ -18,6 +18,7 @@ import { createVehicle, displayVehicle, updateVehicle } from 'src/reducer/vehicl
 import './style.scss';
 import { useEffect } from 'react';
 import { uploadVehicleFiles } from '../../../reducer/otherDocuments';
+import { getSavedFileName } from '../../../selectors/formDataGetters';
 
 const AddVehicle = () => {
 
@@ -27,19 +28,40 @@ const AddVehicle = () => {
 
   const areWeUpdating = location.pathname.includes('modifier');
 
-  const { app: { apiMessage, user},
+  const { app: { apiMessage },
+    agent: { user },
     vehicle: { currentVehicle, loader }} = useSelector((state) => state)
   
    
-  let defaultValues = null;
+  let defaultValues = {
+    make: null,
+    licensePlate: null,
+    rating: null,
+    insurance: null,
+    police: null,
+    insuranceFile: null,
+    registrationFile:null,
+  };
   if (currentVehicle.hasOwnProperty('make')) {
     defaultValues = currentVehicle;
   }
-  
-  useEffect(() => {
-    reset(defaultValues);
-  }, [defaultValues])
 
+  let insuranceFilename = '';
+  let registrationFilename = '';
+  if (areWeUpdating) {
+    useEffect(() => {
+      reset(defaultValues);
+      
+    }, [defaultValues])
+  }
+
+  if (defaultValues.insuranceFile) {
+    insuranceFilename = getSavedFileName(currentVehicle.insuranceFile);
+  }
+
+  if (defaultValues.registrationFile) {
+    registrationFilename = getSavedFileName(currentVehicle.registrationFile);
+  }
   const {
     register,
     handleSubmit,
@@ -53,19 +75,19 @@ const AddVehicle = () => {
   });
 
   const onSubmit = (data) => {
-    console.log("areWeUpdating : ",areWeUpdating);
+    
     console.log("ON SUBMIT : ",data);
-
+    
     if (data.insuranceFile instanceof File || data.registrationFile instanceof File) {
       dispatch(uploadVehicleFiles({data: data, user: user, isUpdate : areWeUpdating}));
     }
-    return;
-
-    if (areWeUpdating) {
-      dispatch(updateVehicle(data))
-    }
     else {
-      dispatch(createVehicle(data));
+      if (areWeUpdating) {
+        dispatch(updateVehicle(data))
+      }
+      else {
+        dispatch(createVehicle(data));
+      }
     }
   };
 
@@ -85,7 +107,7 @@ const AddVehicle = () => {
     <div className="form-page__title">
       <PageTitle>{areWeUpdating ? 'Modifier' : 'Ajouter'} un véhicule personnel</PageTitle>
     </div>
-    {!loader && (
+    {(!loader || !areWeUpdating ) && (
       <form className="form" onSubmit={handleSubmit(onSubmit)}>
         <div className="form__section">
           <FormSectionTitle>{areWeUpdating ? 'Modifier' : 'Ajouter'} un véhicule</FormSectionTitle>
@@ -135,7 +157,7 @@ const AddVehicle = () => {
             register={register}
             formField="registrationFile"
             id="registration"
-            fileName={''}
+            fileName={registrationFilename}
             label="Carte grise"
             setValue={setValue}
             error={errors.registrationFile}
@@ -144,7 +166,7 @@ const AddVehicle = () => {
             register={register}
             formField="insuranceFile"
             id="insurance"
-            fileName={''}
+            fileName={insuranceFilename}
             label="Attestation d'assurance"
             setValue={setValue}
             error={errors.insuranceFile}
@@ -168,7 +190,7 @@ const AddVehicle = () => {
         </div>
       </form>
     )}
-    {loader && (
+    {(loader && areWeUpdating ) && (
       <LoaderCircle />
     )}
   </main>

@@ -1,6 +1,6 @@
 import { createDispensation, updateOm, updateTransports, updateAdvance, updateMoreAndSignature, updateMission, updateSignature } from 'src/reducer/omForm';
 import { fileApi, api } from './api';
-import { requestVehicleAuthorization, updateVehicle } from '../reducer/vehicle';
+import { requestVehicleAuthorization, updateVehicle, createVehicle } from '../reducer/vehicle';
 import { toggleDocModal, saveAllPermDocs, saveAgentSignatureForPdf} from '../reducer/otherDocuments';
 import { setApiResponse } from 'src/reducer/app';
 import { updateEfMission, updateEfTransports } from 'src/reducer/ef';
@@ -394,33 +394,28 @@ const omMiddleware = (store) => (next) => (action) => {
       
       const filesToUpload = [];
       const { data, user, isUpdate } = action.payload;
-      console.log(data);
+      
       if (data.registrationFile instanceof File) {
         const registration = {
-          id: data.id,
+          id: data.id ? data.id : null,
           type: 'registration',
           file: data.registrationFile,
-          owner: data.user,
+          owner: user,
         }
         filesToUpload.push(registration);
       }
       
       if (data.insuranceFile instanceof File) {
         const insurance = {
-          id: data.id,
+          id: data.id ? data.id : null,
           type: 'insurance',
           file: data.insuranceFile,
-          user: data.user,
+          owner: user,
         }
         filesToUpload.push(insurance);
       }
       fileApi.post(`/api/vehicle/handle/files`, filesToUpload)
         .then((response) => {
-          
-          console.log("--------------------------------------------------------------------------------------");
-          console.log(`/api/vehicle/handle/files RESPONSE IS : `, response.data)
-
-
           const { data } = action.payload;
 
           response.data.forEach((file) => {
@@ -431,8 +426,7 @@ const omMiddleware = (store) => (next) => (action) => {
               data.insuranceFile =  file.file.url;
             }
           })
-
-          console.log("BEFORE " + isUpdate ? "UPDATE = " : "CREATION = ", data );
+          
           if (isUpdate) {
             store.dispatch(updateVehicle(data))
           }
@@ -442,11 +436,9 @@ const omMiddleware = (store) => (next) => (action) => {
           
         })
         .catch((error) => {
-          console.error('handle vehicle files', error);
           store.dispatch(setApiResponse(error));
-          // TODO : error
         });
-      console.log(filesToUpload);
+        
       break;
     case 'other-documents/addPermFile': {
       const { type } = action.payload;
