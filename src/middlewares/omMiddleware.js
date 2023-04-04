@@ -229,10 +229,11 @@ const omMiddleware = (store) => (next) => (action) => {
         });
       break;
     
-      case 'omForm/createDerogation':
+      case 'omForm/createDispensation':
         api.post("/api/om/derogation/create", action.payload)
           .then((response) => {
-              store.dispatch(validateSideForm(response.data));
+            store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
+
           })
           .catch((error) => {
             console.error('create derogation', error);

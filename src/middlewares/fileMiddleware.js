@@ -1,4 +1,4 @@
-import { updateOm, updateTransports, updateAdvance, updateMoreAndSignature, updateMission, updateSignature } from 'src/reducer/omForm';
+import { createDispensation, updateOm, updateTransports, updateAdvance, updateMoreAndSignature, updateMission, updateSignature } from 'src/reducer/omForm';
 import { fileApi, api } from './api';
 import { requestVehicleAuthorization } from '../reducer/vehicle';
 import { toggleDocModal, saveAllPermDocs, saveAgentSignatureForPdf} from '../reducer/otherDocuments';
@@ -186,10 +186,6 @@ const omMiddleware = (store) => (next) => (action) => {
         }
       }
       else if (type === 'authorization') {
-        console.log('------------------------------------------------------------------');
-        console.log(data);
-        console.log('------------------------------------------------------------------');
-
         if (data.insurance instanceof File) {
           const insurance = {
             docId: data.docId,
@@ -215,8 +211,17 @@ const omMiddleware = (store) => (next) => (action) => {
           user: user,
         });
       }
+      else if (type === 'dispensation') {
+
+        filesToUpload.push({
+          docId: data.docId,
+          type: 'dispensation-pdf',
+          file: data.file,
+          user: user,
+        });
+      }
       console.log('filesToUpload - ', filesToUpload);
-      
+      // return;
       
       // TODO : See if POST method is the right one ? Methods that can add files (post) and delete them (delete)
       fileApi.post(`/api/files/${type}/${step}`, filesToUpload)
@@ -369,6 +374,12 @@ const omMiddleware = (store) => (next) => (action) => {
             })
             
             store.dispatch(requestVehicleAuthorization(data));
+          }
+          else if (type === 'dispensation') {
+                
+            data.file = response.data[0].file.url;
+            
+            store.dispatch(createDispensation(data));
           }
         })
         .catch((error) => {

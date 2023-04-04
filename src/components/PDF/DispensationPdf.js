@@ -89,10 +89,9 @@ const styles = StyleSheet.create({
 });
 
 const DispensationPdf = ({ data, agent, agentSignature}) => {
-
   
-  console.log(data);
-  console.log(agentSignature);
+  //Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita cum accusamus dolore, ducimus quibusdam nam vitae. Quos maxime eos magni, iste non optio repudiandae at ipsa repellendus? Obcaecati cupiditate error delectus saepe iste magni vel illum ut. Aliquam error maxime explicabo, quis culpa, quia dolor at, excepturi quisquam laboriosam rem.
+
   return (
   <Document>
     <Page size="A4" style={styles.page}>

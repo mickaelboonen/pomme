@@ -158,7 +158,7 @@ const omFormSlice = createSlice({
       addNewOM: () => {},
       fetchOMs: () => {},
       uploadFile: () => {},
-      createDerogation: () => {},
+      createDispensation: () => {},
       clearSideForm: (state) => {
         state.isSideFormInDB = false;
       },
@@ -297,7 +297,7 @@ export const {
   saveAdvance,
   saveMore,
   updateAccomodations,
-  createDerogation,
+  createDispensation,
   clearSideForm,
   validateSideForm,
   clearOMTarget,

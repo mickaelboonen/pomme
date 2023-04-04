@@ -1,0 +1,41 @@
+@use 'src/styles/vars'; 
+
+.pdf-viewer {
+  background-color: rgba(var(--darkestThemeColor));
+    border: 1px solid rgba(var(--darkestThemeColor));
+  position: absolute;
+  inset: 11vh 2vh;
+  border-radius: vars.$radius vars.$radius;
+  overflow: hidden;
+
+  &__nav {
+    height: 3rem;
+    border: 1px solid rgba(var(--darkestThemeColor));
+    border-bottom: 1px solid rgba(var(--lightestThemeColor));
+    border-radius: vars.$radius vars.$radius 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    color: #fff;
+
+    &-close {
+      font-size: 1.2em;
+      cursor: pointer;
+      margin-right: 1rem;
+      text-transform: uppercase;
+        font-weight: bold;
+
+      &:hover {
+        color:  rgba(var(--lightestThemeColor));
+      }
+    }
+  }
+}
+
+
+@media (min-width: 1250px) {
+
+  .pdf-viewer {
+    inset: 11vh 30vh;
+  }
+}
