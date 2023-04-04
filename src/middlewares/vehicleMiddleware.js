@@ -1,4 +1,4 @@
-import { saveVehicles, saveVehicleDocuments, requestVehicleAuthorization, saveAuthorization } from 'src/reducer/vehicle';
+import { saveVehicles, saveVehicle, saveVehicleDocuments, requestVehicleAuthorization, saveAuthorization } from 'src/reducer/vehicle';
 import { uploadFile, validateSideForm } from 'src/reducer/omForm';
 
 import { api } from './api';
@@ -78,15 +78,24 @@ const vehicleMiddleware = (store) => (next) => (action) => {
           console.error('update vehicle', error);
         });
       break;
-    case 'vehicle/getVehicles':
-      api.get("/api/vehicles/" + action.payload.agent)
-        .then((response) => {
-          store.dispatch(saveVehicles(response.data))
-        })
-        .catch((error) => {
-          console.error('get vehicles', error);
-        });
-      break;
+      case 'vehicle/getVehicles':
+        api.get("/api/vehicles/" + action.payload.agent)
+          .then((response) => {
+            store.dispatch(saveVehicles(response.data))
+          })
+          .catch((error) => {
+            console.error('get vehicles', error);
+          });
+        break;
+        case 'vehicle/fetchVehicle':
+          api.get("/api/vehicle/" + action.payload.id)
+            .then((response) => {
+              store.dispatch(saveVehicle(response.data))
+            })
+            .catch((error) => {
+              console.error('vehicle/fetchVehicle', error);
+            });
+          break;
     case 'vehicle/getVehicleDocuments':
       api.get("/api/perm-file/vehicle/" + action.payload)
         .then((response) => {

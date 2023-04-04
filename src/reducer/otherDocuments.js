@@ -41,6 +41,9 @@ const otherDocsSlice = createSlice({
       saveAgentSignatureForPdf: (state, action) => {
         state.agentSignature = action.payload;
       },
+      uploadVehicleFiles: () => {
+
+      },
     },
 });
 
@@ -53,6 +56,7 @@ export const {
   deletePermFile,
   fetchAgentSignatureForPdf,
   saveAgentSignatureForPdf,
+  uploadVehicleFiles,
 } = otherDocsSlice.actions;
 
 export default otherDocsSlice.reducer;

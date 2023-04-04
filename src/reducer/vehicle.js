@@ -81,9 +81,6 @@ const vehicleSlice = createSlice({
         });
         state.loader = false;
       },
-      saveVehicle: (state, action) => {
-        // action.payload.forEach((vehicle) => state.vehicles.push(vehicle));
-      },
       displayVehicle: (state, action) => {
         
         const vehicleToShow = state.vehicles.find((vehicle) => vehicle.id === Number(action.payload))
@@ -157,7 +154,14 @@ const vehicleSlice = createSlice({
       },
       saveAuthorizationFile: (state, action) => {
         state.authorizationFile = action.payload
-      }
+      },
+      fetchVehicle: () => {
+
+      },
+      saveVehicle: (state, action) => {
+        state.currentVehicle = action.payload;
+        state.loader = false;
+      },
     },
 });
 
@@ -178,6 +182,7 @@ export const {
   deleteVehicle,
   saveAuthorization,
   saveAuthorizationFile,
+  fetchVehicle,
 } = vehicleSlice.actions;
 
 export default vehicleSlice.reducer;

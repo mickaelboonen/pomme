@@ -1,6 +1,6 @@
 import { createDispensation, updateOm, updateTransports, updateAdvance, updateMoreAndSignature, updateMission, updateSignature } from 'src/reducer/omForm';
 import { fileApi, api } from './api';
-import { requestVehicleAuthorization } from '../reducer/vehicle';
+import { requestVehicleAuthorization, updateVehicle } from '../reducer/vehicle';
 import { toggleDocModal, saveAllPermDocs, saveAgentSignatureForPdf} from '../reducer/otherDocuments';
 import { setApiResponse } from 'src/reducer/app';
 import { updateEfMission, updateEfTransports } from 'src/reducer/ef';
@@ -14,7 +14,7 @@ fileApi.defaults.headers['Content-Type'] = 'multipart/form-data';
 const omMiddleware = (store) => (next) => (action) => {
   const { agent: { user }} = store.getState()
   switch (action.type) {
-    case 'omForm/uploadFile':
+    case 'omForm/uploadFile': {
       const filesToUpload = [];
 
       const { data, step, docType } = action.payload;
@@ -387,8 +387,67 @@ const omMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse(error));
           // TODO : error
         });
+      }
       break;
     // TODO -------------------------------------------------------
+    case 'other-documents/uploadVehicleFiles':
+      
+      const filesToUpload = [];
+      const { data, user, isUpdate } = action.payload;
+      console.log(data);
+      if (data.registrationFile instanceof File) {
+        const registration = {
+          id: data.id,
+          type: 'registration',
+          file: data.registrationFile,
+          owner: data.user,
+        }
+        filesToUpload.push(registration);
+      }
+      
+      if (data.insuranceFile instanceof File) {
+        const insurance = {
+          id: data.id,
+          type: 'insurance',
+          file: data.insuranceFile,
+          user: data.user,
+        }
+        filesToUpload.push(insurance);
+      }
+      fileApi.post(`/api/vehicle/handle/files`, filesToUpload)
+        .then((response) => {
+          
+          console.log("--------------------------------------------------------------------------------------");
+          console.log(`/api/vehicle/handle/files RESPONSE IS : `, response.data)
+
+
+          const { data } = action.payload;
+
+          response.data.forEach((file) => {
+            if (file.type === 'registration'){
+              data.registrationFile =  file.file.url;
+            }
+            else if (file.type === 'insurance'){
+              data.insuranceFile =  file.file.url;
+            }
+          })
+
+          console.log("BEFORE " + isUpdate ? "UPDATE = " : "CREATION = ", data );
+          if (isUpdate) {
+            store.dispatch(updateVehicle(data))
+          }
+          else {
+            store.dispatch(createVehicle(data))
+          }
+          
+        })
+        .catch((error) => {
+          console.error('handle vehicle files', error);
+          store.dispatch(setApiResponse(error));
+          // TODO : error
+        });
+      console.log(filesToUpload);
+      break;
     case 'other-documents/addPermFile': {
       const { type } = action.payload;
       fileApi.post(`/api/file/perm/add/${type}`, action.payload)

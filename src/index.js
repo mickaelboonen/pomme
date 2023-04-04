@@ -36,7 +36,7 @@ import CasClient, { constant } from "react-cas-client";
 // import { getSignature } from "src/reducer/app";
 import { getSignature, getDocument, fetchCountries } from "src/reducer/app";
 import { findPermFilesByAgent, fetchAgentSignatureForPdf } from "src/reducer/otherDocuments";
-import { getVehicles, getVehicleDocuments } from "src/reducer/vehicle";
+import { getVehicles, getVehicleDocuments, fetchVehicle} from "src/reducer/vehicle";
 import { getMission, fetchOm, getTransports, getAccomodations, getAdvance, getMore, setLoader  } from "src/reducer/omForm";
 import { fetchOMs, fetchEfs, fetchUserData } from "src/reducer/agent";
 import { setEfLoader, fetchEf, getEfAccomodations } from "src/reducer/ef";
@@ -344,7 +344,16 @@ const router = createBrowserRouter([
               },
               {
                 path: 'modifier-un-véhicule/:id',
-                element: <AddVehicle />
+                element: <AddVehicle />,
+                loader: async ({ request }) => {
+                  const url = new URL(request.url);
+                  const id = url.searchParams.get("id");
+
+                  // console.log(url);
+
+                  store.dispatch(fetchVehicle({id: url.pathname.split('/')[5]}))
+                  
+                }
               },
               {
                 path: 'ajouter-un-v%C3%A9hicule',
@@ -352,7 +361,16 @@ const router = createBrowserRouter([
               },
               {
                 path: 'modifier-un-v%C3%A9hicule/:id',
-                element: <AddVehicle />
+                element: <AddVehicle />,
+                loader: async ({ request }) => {
+                  const url = new URL(request.url);
+                  const id = url.searchParams.get("id");
+
+                  // console.log();
+
+                  store.dispatch(fetchVehicle({id: url.pathname.split('/')[5]}))
+                  
+                }
               },
               {
                 path: 'refus-de-mission',
