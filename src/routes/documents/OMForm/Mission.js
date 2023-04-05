@@ -28,6 +28,7 @@ import { turnFieldsToAddressEntity } from 'src/selectors/formDataGetters';
 // Reducer
 import { enableMissionFormFields, updateEfMission } from 'src/reducer/ef';
 import { uploadFile, updateOmName, updateMission } from 'src/reducer/omForm';
+import { getDDMMYYDate } from '../../../selectors/dateFunctions';
 
 const Mission = ({ step, isEfForm }) => {
   
@@ -39,11 +40,11 @@ const Mission = ({ step, isEfForm }) => {
   
 
   const { app: { apiMessage, countries},
-    agent: { user},
+    agent: { user, agent },
     omForm: { currentOM, omForm },
     ef: { isMissionFormDisabled, currentEf }
   } = useSelector((state) => state);
-console.log(currentOM);
+  
   // Defining default values -----------------------------------------------------
   let defaultValues = null;
   let modificationsFilenames = '';
@@ -169,14 +170,13 @@ console.log(currentOM);
       const comeback = new Date(data.comeback);
 
       const diffDays = Number(comeback.getDate()) - Number(departure.getDate());
-      
+      const timestampDiff = Date.parse(comeback) - Date.parse(departure);
+            
       let errorCount = 0;
 
-      if (diffDays < 0) {
-        if (comeback.getMonth() <= departure.getMonth()) {
-          setError('comeback', {type: 'custom', message: 'La date de retour ne peut précéder la date de départ.'});
-          errorCount++;
-        }
+      if (timestampDiff < 0) {
+        setError('comeback', {type: 'custom', message: 'La date de retour ne peut précéder la date de départ.'});
+        errorCount++;
       }
       else if (diffDays === 0) {
 
@@ -191,9 +191,10 @@ console.log(currentOM);
           errorCount++;
         }
       }
+      
       if (errorCount === 0) {
         data.status = 1;
-
+        
         const fileToAdd = data.missionPurposeFile.find((file) => file instanceof File);
 
         if (fileToAdd === undefined) {
@@ -207,17 +208,23 @@ console.log(currentOM);
         else {
            dispatch(uploadFile({data: data, step: 'mission'}));
         }
-       
-        // TODO : change update name since no more city property
-        const dateForFile = `${departure.getDate()}-${departure.getMonth() + 1}-${departure.getFullYear()}`;
-        const newOmName = `OM_${data.missionAddress.city.toUpperCase()}_${dateForFile}_${user.toUpperCase()}`;
+        
+        const newOmName = createOmName(data);
         
         if (currentOM.name !== newOmName) {
-          dispatch(updateOmName({docId: data.docId, date: dateForFile, place: data.missionAddress.city}));
+          dispatch(updateOmName({docId: data.docId, name: newOmName}));
         }
       }
     }
   };
+
+  const createOmName = (data) => {
+    let name = agent.firstname.slice(0,1) + '.' + agent.lastname.toUpperCase() + '-OM-' + getDDMMYYDate(new Date(data.departure), '.');
+    data.addresses.forEach((address) => {
+      name += '-' + address.city.toUpperCase();
+    })
+    return name;
+  }
 
   const errorMessages = defineValidationRulesForMission(isEfForm, modificationSwitch);
 

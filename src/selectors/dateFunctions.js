@@ -34,9 +34,9 @@ const getMinutes = (date) => {
 
 
 
-export const getDDMMYYDate = (date) => {
-  let dateToString = getDay(date) + '/';
-  dateToString += getMonth(date) + '/';
+export const getDDMMYYDate = (date, separator = '/') => {
+  let dateToString = getDay(date) + separator;
+  dateToString += getMonth(date) + separator;
   dateToString += getYear(date);
 
   return dateToString

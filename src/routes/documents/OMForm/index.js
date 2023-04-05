@@ -113,7 +113,7 @@ const OMForm = () => {
       dispatch(fetchOm({id: id, handleLoader: false,}));
     }
   }, [currentOM]);
-  console.log(omLoader);
+  
   return (
     <>
       <ThreadAsTabs step={step} tabs={steps} isOm urlData={loaderData} />
