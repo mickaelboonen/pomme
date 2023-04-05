@@ -112,7 +112,7 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
     <div className='file-manager__buttons'>
       {(!needsSelect && user === 'mboone01') && (
         <a
-          className='file-manager__buttons-button'
+          className='file-manager__buttons-button file-manager__buttons-button--link'
           // onClick={handleDownload}
           data-id={id}
           type="button"

@@ -132,25 +132,35 @@ export const turnTransportsDataToAppFormat = (data) => {
     taxiDispensationForValidation: false,
   }
 
-  data.dispensations.forEach((dispensation) => {
+  if (data.dispensations.length > 0) {
 
-    if (dispensation && (dispensation.type.includes('train') || dispensation.type.includes('avion'))) {
+    data.dispensations.forEach((dispensation) => {
 
-      dataForTheComponent.dispensationForValidation = true;
-    }
-    else if (dispensation && dispensation.type.includes('taxi')) {
-      if (dataForTheComponent.others.indexOf('taxi') === -1) {
-        dataForTheComponent.taxiDispensationForValidation = true;
-        dataForTheComponent.others.push('taxi');
+      if (dispensation.type.includes('train')) {
+        
+        dataForTheComponent.trainClass = 'first-class';
+        dataForTheComponent.dispensation = dispensation.file;
       }
-    }
-  });
-  
+      else if (dispensation.type.includes('avion')) {
+        
+        dataForTheComponent.planeClass = 'business-class';
+        dataForTheComponent.dispensation = dispensation.file;
+      }
+      else if (dispensation.type.includes('taxi')) {
+        if (dataForTheComponent.others.indexOf('taxi') === -1) {
+          
+          dataForTheComponent.others.push('taxi');
+          dataForTheComponent.taxiDispensation = dispensation.file;
+        }
+      }
+    });
+  }
 
+  console.log(data);
+  console.log('----------------------------------------------');
   if (data.authorizations.length > 0) {
-
     const { type, file } = data.authorizations[0];
-
+    
     if (file === 'pending') {
       dataForTheComponent.vehicleAuthorizationFileForValidation = true;
     }

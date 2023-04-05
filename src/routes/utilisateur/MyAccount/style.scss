@@ -156,18 +156,23 @@
     justify-content: space-between;
     margin: 0.5rem auto 1rem;
 
-      &-button {
-        @include vars.button;
-        padding: 0.5rem;
-        flex-grow: 1;
-        margin-right: 0.5rem;
-        background-color: var(--first-color);
-        font-size: 1em;
+    &-button {
+      @include vars.button;
+      padding: 0.5rem;
+      flex-grow: 1;
+      margin-right: 0.5rem;
+      background-color: var(--first-color);
+      font-size: 1em;
 
-        &:last-of-type {
-           margin: 0;
-        }
+      &:last-of-type {
+         margin: 0;
       }
+
+      &--link {
+        margin-right: 0.5rem!important;
+        text-align: center;
+      }
+    }
 
   }
 }

@@ -18,35 +18,27 @@ const vehicleMiddleware = (store) => (next) => (action) => {
         .then((response) => {
           
           const newDataFormat = {
-            omId: Number(response.data.omId),
+            docId: Number(response.data.docId),
             vehicle_id: Number(response.data.selectedVehicle),
-            registration_document: action.payload.carRegistrationFile,
-            externalSignature: action.payload.signature,
-            insurance: action.payload.carInsuranceFile,
+            registration_document: '',
+            externalSignature: null,
+            insurance: '',
             reasons: response.data.reasons,
             type: response.data.carType,
+            file: action.payload.file,
           }
-
-          if (newDataFormat.registration_document instanceof File) {
-            
+          
+          if (newDataFormat.file instanceof File) {
             store.dispatch(uploadFile({data: newDataFormat, step: 'authorization', docType: 'authorization'}));
           }
-          else if (newDataFormat.insurance instanceof File) {
-            
-            store.dispatch(uploadFile({data: newDataFormat, step: 'authorization', docType: 'authorization'}));
-          }
-          else if (newDataFormat.signature instanceof File) {
-            
-            store.dispatch(uploadFile({data: newDataFormat, step: 'authorization', docType: 'authorization'}));
-          }
-          else if (!response.data.omId) {
+          else if (!response.data.docId) {
 
             const message = "Votre véhicule a bien été enregistré.";
             response.data = message;
             store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
           }
           else {
-            
+            console.log("Am I in the else ? ");
             store.dispatch(requestVehicleAuthorization(newDataFormat));
           }
         })

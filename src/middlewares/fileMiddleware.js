@@ -15,6 +15,7 @@ const omMiddleware = (store) => (next) => (action) => {
   const { agent: { user }} = store.getState()
   switch (action.type) {
     case 'omForm/uploadFile': {
+      const { agent: { user }} = store.getState()
       const filesToUpload = [];
 
       const { data, step, docType } = action.payload;
@@ -186,24 +187,24 @@ const omMiddleware = (store) => (next) => (action) => {
         }
       }
       else if (type === 'authorization') {
-        if (data.insurance instanceof File) {
-          const insurance = {
-            docId: data.docId,
-            type: 'insurance',
-            file: data.insurance,
-            user: user,
-          }
-          filesToUpload.push(insurance);
-        }
-        if (data.registration_document instanceof File) {
-          const registrationDocument = {
-            docId: data.docId,
-            type: 'registration',
-            file: data.registration_document,
-            user: user,
-          }
-          filesToUpload.push(registrationDocument);
-        }
+        // if (data.insurance instanceof File) {
+        //   const insurance = {
+        //     docId: data.docId,
+        //     type: 'insurance',
+        //     file: data.insurance,
+        //     user: user,
+        //   }
+        //   filesToUpload.push(insurance);
+        // }
+        // if (data.registration_document instanceof File) {
+        //   const registrationDocument = {
+        //     docId: data.docId,
+        //     type: 'registration',
+        //     file: data.registration_document,
+        //     user: user,
+        //   }
+        //   filesToUpload.push(registrationDocument);
+        // }
         filesToUpload.push({
           docId: data.docId,
           type: 'auth-pdf',

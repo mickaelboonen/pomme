@@ -31,6 +31,8 @@ const initialState = {
     rating: null,
     insurance: null,
     police: null,
+    registrationFile: null,
+    insuranceFile: null,
     reasons: [],
     otherReason: null,
     savedRegistration: false,
@@ -38,7 +40,7 @@ const initialState = {
     savedRegistration: false,
     carInsuranceFile: null,
     signature: null,
-    externalSignature: null
+    externalSignature: null,
   },
   loader: true,
   needsPdf: false,
@@ -99,6 +101,8 @@ const vehicleSlice = createSlice({
         state.formDefaultValues.rating= vehicleToShow ? vehicleToShow.rating : '';
         state.formDefaultValues.insurance= vehicleToShow ? vehicleToShow.insurance : '';
         state.formDefaultValues.police= vehicleToShow ? vehicleToShow.police : '';
+        state.formDefaultValues.insuranceFile= vehicleToShow ? vehicleToShow.insuranceFile : '';
+        state.formDefaultValues.registrationFile= vehicleToShow ? vehicleToShow.registrationFile : '';
         state.currentVehicle = vehicleToShow;
         
         state.currentVehicle = vehicleToShow ? vehicleToShow : {};

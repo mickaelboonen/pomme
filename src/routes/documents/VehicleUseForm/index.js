@@ -12,6 +12,7 @@ import VehicleData from './VehicleData';
 import PageTitle from 'src/components/PageTitle';
 import ApiResponse from 'src/components/ApiResponse';
 import SwitchButton from 'src/components/SwitchButton';
+import LoaderCircle from "src/components/LoaderCircle";
 import TextField from 'src/components/Fields/TextField';
 import FileField from 'src/components/Fields/FileField';
 import RadioInput from 'src/components/Fields/RadioInput';
@@ -21,20 +22,21 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import ButtonElement from 'src/components/Fields/ButtonElement';
 import FileOrSavedFile from 'src/components/Fields/FileOrSavedFile';
+import CarAuthorizationPdf from "src/components/PDF/CarAuthorizationPdf";
 
 // Actions
-import { clearSideForm, uploadFile } from 'src/reducer/omForm';
+import { uploadFile } from 'src/reducer/omForm';
 import {
   displayVehicle,
   createVehicle,
   requestVehicleAuthorization,
-  stayOnAuthorizationForm,
-  resetPdfNeed,
-  saveAuthorizationFile
+  // stayOnAuthorizationForm,
+  // resetPdfNeed,
+  // saveAuthorizationFile
 } from 'src/reducer/vehicle';
 import { clearMessage } from 'src/reducer/app';
-import CarAuthorizationPdf from "src/components/PDF/CarAuthorizationPdf";
-import LoaderCircle from "src/components/LoaderCircle";
+import { getSavedFileName } from 'src/selectors/formDataGetters'
+import { uploadVehicleFiles } from "../../../reducer/otherDocuments";
 
 
 const VehicleUseForm = () => {
@@ -46,7 +48,7 @@ const VehicleUseForm = () => {
 
   let { 
     app : { apiMessage },
-    agent : { agent },
+    agent : { agent , user },
     docs: { agentSignature },
     vehicle: { needsPdf ,vehicleTypes, vehicles, formDefaultValues, loader },
   } = useSelector((state) => state);
@@ -67,6 +69,16 @@ const VehicleUseForm = () => {
   useEffect(() => {
     reset(formDefaultValues);
   }, [formDefaultValues])
+  
+
+  let insuranceFilename = '';
+  let registrationFilename = '';
+  if (formDefaultValues.insuranceFile) {
+    insuranceFilename = getSavedFileName(formDefaultValues.insuranceFile);
+  }
+  if (formDefaultValues.registrationFile) {
+    registrationFilename = getSavedFileName(formDefaultValues.registrationFile);
+  }
   
   const {
     register,
@@ -93,16 +105,12 @@ const VehicleUseForm = () => {
     externalSignature,
     savedRegistration,
     savedInsurance,
-    // carRegistrationFile,
-    // carInsuranceFile
   ] = watch([
     // 'reasons',
     'carType',
     'externalSignature',
     'savedRegistration',
     'savedInsurance',
-    // 'carRegistrationFile',
-    // 'carInsuranceFile',
   ]);
   
   useEffect(() => {
@@ -119,61 +127,22 @@ const VehicleUseForm = () => {
   const onSubmit = (data) => {
     console.log("IN SUBMIT : ", data);
     
-    let countErrors = 0;
-    if (data.reasons.length === 0) {
-      setError('reasons', {type: 'custom', message : "Merci de justifier l'utilisation du véhicule."})
-      countErrors++;
-    }
-    if (!data.carType) {
-      setError('carType', {type: 'custom', message : "Merci de sélectionner l'option qui correspond à vore demande."})
-      countErrors++;
-    }
-    
-    if (!data.savedRegistration && typeof data.carRegistrationFile !== 'object') {
-      setError('carRegistrationFile', {type: 'custom', message : "Merci de fournir la carte grise du véhicule."})
-      countErrors++;
-    }
-    
-    if (!data.savedInsurance && typeof data.carInsuranceFile !== 'object') {
-      setError('carInsuranceFile', {type: 'custom', message : "Merci de fournir l'attestation d'assurance du véhicule."})
-      countErrors++;
-    }
-    
-    if (!data.make) {
-      setError('make', {type: 'custom', message: "Veuillez indiquer la marque du véhicule."});
-      countErrors++;
-    }
-    if (!data.licensePlate) {
-      setError('licensePlate', {type: 'custom', message: "Veuillez indiquer la plaque d'immatriculation du véhicule."});
-      countErrors++;
-    }
-    if (!data.insurance) {
-      setError('insurance', {type: 'custom', message: "Veuillez indiquer la compagnie d'assurance qui assure le véhicule."});
-      countErrors++;
-    }
-    if (!data.police) {
-      setError('police', {type: 'custom', message: "Veuillez indiquer le n° de police."});
-      countErrors++;
-    }
-    if (!data.rating) {
-      setError('rating', {type: 'custom', message: "Veuillez indiquer la puissance fiscale du véhicule."});
-      countErrors++;
-    }
+    let countErrors = validateDataInSubmit(data);
     
     if (countErrors === 0) {      
       clearErrors();
-
+      
       if ((!data.selectedVehicle || data.selectedVehicle === '0') && data.carType === 'personal-car') {
         
-        dispatch(createVehicle(data));
+        dispatch(uploadVehicleFiles({data: data, user: user, isUpdate: false}));
       }
       else {
         const newDataFormat = {
           docId: Number(data.docId),
           vehicle_id: Number(data.selectedVehicle) === 0 ? null : Number(data.selectedVehicle),
-          registration_document: data.carRegistrationFile,
-          externalSignature: [],
-          insurance: data.carInsuranceFile,
+          registration_document: '',
+          externalSignature: null,
+          insurance: '',
           reasons: data.reasons,
           type: data.carType,
           file: data.file,
@@ -193,16 +162,51 @@ const VehicleUseForm = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (carRegistrationFile instanceof File) {
-  //     clearErrors('carRegistrationFile');
-  //     setValue('carRegistrationFile', carRegistrationFile);
-  //   }
-  //   if (carInsuranceFile instanceof File) {
-  //     clearErrors('carInsuranceFile');
-  //     setValue('carInsuranceFile', carInsuranceFile);
-  //   }
-  // }, [carRegistrationFile, carInsuranceFile])
+  const validateDataInSubmit = (data) => {
+    let countErrors = 0;
+    if (data.reasons.length === 0) {
+      setError('reasons', {type: 'custom', message : "Merci de justifier l'utilisation du véhicule."})
+      countErrors++;
+    }
+    if (!data.carType) {
+      setError('carType', {type: 'custom', message : "Merci de sélectionner l'option qui correspond à vore demande."})
+      countErrors++;
+    }
+
+    if (data.carType === 'personal-car') {
+      if (!data.make) {
+        setError('make', {type: 'custom', message: "Veuillez indiquer la marque du véhicule."});
+        countErrors++;
+      }
+      if (!data.licensePlate) {
+        setError('licensePlate', {type: 'custom', message: "Veuillez indiquer la plaque d'immatriculation du véhicule."});
+        countErrors++;
+      }
+      if (!data.insurance) {
+        setError('insurance', {type: 'custom', message: "Veuillez indiquer la compagnie d'assurance qui assure le véhicule."});
+        countErrors++;
+      }
+      if (!data.police) {
+        setError('police', {type: 'custom', message: "Veuillez indiquer le n° de police."});
+        countErrors++;
+      }
+      if (!data.rating) {
+        setError('rating', {type: 'custom', message: "Veuillez indiquer la puissance fiscale du véhicule."});
+        countErrors++;
+      }
+      if (!data.insuranceFile) {
+        setError('insuranceFile', {type: 'custom', message: "Merci de fournir l'attestation d'assurance du véhicule."});
+        countErrors++;
+      }
+      if (!data.registrationFile) {
+        setError('registrationFile', {type: 'custom', message: "Merci de fournir la carte grise du véhicule."});
+        countErrors++;
+      }
+    }
+    
+
+    return countErrors;
+  }
 
   const staticReasons = [
     {
@@ -233,15 +237,6 @@ const VehicleUseForm = () => {
   const handleNewCar = (event) => {
     dispatch(displayVehicle(event.target.value));
   }
-
-  // const generatePdf = () => {
-  //   const data = watch();
-  //   console.log("IN GENERATE PDF : ", data);
-  //   return;
-  //   dispatch()
-  //   dispatch(resetPdfNeed());
-  //   navigate('/modifier-un-document/ordre-de-mission?etape=2&id='+ omId);
-  // }
   
   return (
     <div className="form-container form-container--vehicle">
@@ -286,7 +281,7 @@ const VehicleUseForm = () => {
                   formField="selectedVehicle"
                   label="Sélectionner un véhicule déjà enregistré"
                 />
-                <VehicleData register={register} errors={errors} />
+                <VehicleData setValue={setValue} register={register} errors={errors} registrationFilename={registrationFilename} insuranceFilename={insuranceFilename} />
                 <p className="form__section-field-label form__section-field-label--infos" style={{marginBottom: '1rem'}}>(*) Produire obligatoirement la photocopie de la carte grise et de l'attestation d'assurance</p>
               </>
             )}
@@ -321,7 +316,7 @@ const VehicleUseForm = () => {
             />
             { errors.reasons && <p className="form__section-field-error form__section-field-error--open">{errors.reasons.message}</p>}
           </div>
-          {carType === 'personal-car' && (
+          {/* {carType === 'personal-car' && (
             <div className="form__section">
               <FormSectionTitle>Documents</FormSectionTitle>
               <FileOrSavedFile
@@ -341,8 +336,8 @@ const VehicleUseForm = () => {
                 errors={errors}
               />
             </div>
-          )}
-          {externalSignature && (
+          )} */}
+          {/* {externalSignature && (
             <div className="form__section">
               <FormSectionTitle>Signatures</FormSectionTitle>
               <FileField
@@ -354,7 +349,7 @@ const VehicleUseForm = () => {
                 pieces="Merci de fournir la signature de la personne à qui vous empruntez le véhicule."
               />
             </div>
-          )}
+          )} */}
           <div className="form__section">
             <FormSectionTitle>Dernière étape</FormSectionTitle>
             <HiddenField
@@ -392,9 +387,17 @@ const VehicleUseForm = () => {
                         );
                       }
                       return (
-                        <button type="button" onClick={() => { const data = watch(); data.file = file; onSubmit(data)}}>
-                          Valider la demande
-                        </button>
+                        <>
+                          <button type="button" onClick={() => { const data = watch(); data.file = file; onSubmit(data)}}>
+                            Valider la demande
+                          </button>
+                          {/* <div style={{height: '100vh'}}>
+
+                            <PDFViewer>
+                              <CarAuthorizationPdf reasons={staticReasons} agentSignature={agentSignature} agent={agent} data={watch()} vehicleTypes={vehicleTypes}/>
+                            </PDFViewer>
+                          </div> */}
+                        </>
                       );
                     }}
                   </BlobProvider>

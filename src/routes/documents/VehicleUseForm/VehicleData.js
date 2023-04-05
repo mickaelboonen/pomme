@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'src/components/Fields/TextField';
+import FileField from 'src/components/Fields/FileField';
 
 import './style.scss';
 
-const VehicleData = ({ register, errors }) => {
+const VehicleData = ({ setValue, register, errors, registrationFilename, insuranceFilename  }) => {
   
   return (
   <div className="form__section-container" id="carForm">
@@ -55,6 +56,30 @@ const VehicleData = ({ register, errors }) => {
         register={register}
         required="Merci de renseigner le numéro de police."
         error={errors.police}
+      />
+    </div>
+    <div className="form__section  form__section--split">
+      <FileField
+        register={register}
+        formField="registrationFile"
+        id="registration"
+        fileName={registrationFilename}
+        label="Carte grise"
+        setValue={setValue}
+        error={errors.registrationFile}
+
+      />
+    </div>
+    <div className="form__section  form__section--split">
+
+      <FileField
+        register={register}
+        formField="insuranceFile"
+        id="insurance"
+        fileName={insuranceFilename}
+        label="Attestation d'assurance"
+        setValue={setValue}
+        error={errors.insuranceFile}
       />
     </div>
   </div>
