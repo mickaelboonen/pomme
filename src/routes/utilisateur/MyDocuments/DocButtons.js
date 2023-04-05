@@ -8,7 +8,7 @@ import PdfDownloadButton from '../../../components/pdfDownloadButton';
 const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isOm}) => {
   const downloadFileStatusArray = [2, 8];
   let buttons = [];
-  console.log(transports);
+  console.log(transports.authorizations);
   
   if (isOm) {
     buttons = [
@@ -82,8 +82,25 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
           }
         }
       })}
-      {downloadFileStatusArray.indexOf(status) >= 0 && <a href={file} download={name + '.pdf'} style={{textAlign: 'center'}}> Télécharger le Document</a>}
-      {(downloadFileStatusArray.indexOf(status) >= 0 && transports.authorizations.length > 0) && <PdfDownloadButton />}
+      {downloadFileStatusArray.indexOf(status) >= 0 && <a href={file} download={name + '.pdf'} style={{textAlign: 'center'}}> Télécharger l'OM</a>}
+      {downloadFileStatusArray.indexOf(status) >= 0 && transports.dispensations.map((dispensation) => (
+        <a
+          key={dispensation.id}
+          href={dispensation.file}
+          download="dérogation.pdf"
+        >
+          {dispensation.type}
+        </a>
+      ))}
+      {downloadFileStatusArray.indexOf(status) >= 0 && transports.authorizations.length > 0 && transports.authorizations[0].file !== "pending" && (
+        <a
+          key={transports.authorizations[0].id}
+          href={transports.authorizations[0].file}
+          download="demande-d-utilisation-de-vehicule.pdf"
+        >
+          Demande d'autorisation de véhicule
+        </a>
+      )}
     </div>
   );
 }

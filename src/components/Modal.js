@@ -49,7 +49,7 @@ const Modal = ({ target, user, userOms, agent}) => {
 
     if (isOm) {
       const newOM = {
-        name: `OM___${user.toUpperCase()}`,
+        name: `Nouvel Ordre de Mission`,
         status: 1,
         url: 'path',
         missioner: user,
@@ -62,7 +62,7 @@ const Modal = ({ target, user, userOms, agent}) => {
     }
     else {
       const newEF = {
-        name: `EF___${user.toUpperCase()}`,
+        name: `Nouvel État de Frais`,
         status: 1,
         url: 'path',
         missioner: user,

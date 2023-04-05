@@ -84,7 +84,14 @@ const Transports = ({ step }) => {
       
       // If there are no errors, we go on
       if (countErrors === 0) {
-        data.status = 1;
+
+        if (data.authorizations.length > 0) {
+          data.status = data.authorizations[0].file === 'pending' ? 0 : 1;
+        }
+        else {
+          data.status = 1;
+        }
+
         // Formats the data for the database
         const databaseData = turnTransportsDataToDbFormat(data);
         // return;
