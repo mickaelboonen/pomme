@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+import { FaDownload } from 'react-icons/fa';
+
 import './style.scss';
 import PdfDownloadButton from '../../../components/pdfDownloadButton';
 
@@ -82,14 +84,14 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
           }
         }
       })}
-      {downloadFileStatusArray.indexOf(status) >= 0 && <a href={file} download={name + '.pdf'} style={{textAlign: 'center'}}> Télécharger l'OM</a>}
+      {downloadFileStatusArray.indexOf(status) >= 0 && <a href={file} download={name + '.pdf'} style={{textAlign: 'center'}}> <FaDownload style={{marginRight: '1rem', fontSize: '1.5rem'}} /> OM</a>}
       {downloadFileStatusArray.indexOf(status) >= 0 && transports.dispensations.map((dispensation) => (
         <a
           key={dispensation.id}
           href={dispensation.file}
           download="dérogation.pdf"
         >
-          {dispensation.type}
+          <FaDownload style={{marginRight: '1rem', fontSize: '1.5rem'}} /> Dérogation au GDM
         </a>
       ))}
       {downloadFileStatusArray.indexOf(status) >= 0 && transports.authorizations.length > 0 && transports.authorizations[0].file !== "pending" && (
@@ -98,7 +100,7 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
           href={transports.authorizations[0].file}
           download="demande-d-utilisation-de-vehicule.pdf"
         >
-          Demande d'autorisation de véhicule
+          <FaDownload style={{marginRight: '1rem', fontSize: '1.5rem'}} /> Demande de véhicule
         </a>
       )}
     </div>
