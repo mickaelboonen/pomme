@@ -151,6 +151,13 @@ const Derogation = () => {
                 placeholder=""
                 error={errors.rule}
               />
+              <a
+                href="https://nuxeo.unimes.fr/nuxeo/ui/#!/browse/default-domain/workspaces/Les%20procedures%20formulair/Missions/Guide%20des%20missions%20UN%C3%8EME"
+                target="_blank"
+                style={{display: 'block', width: '100%', textAlign: 'center', marginBottom: '1rem', textDecoration: 'underline', fontStyle: 'italic'}}
+              >
+                Lien vers le Guide des Missions
+              </a>
             </div>
             <div className="form__section-field" id="external-signature-button">
               <div className="form__section-field-button">

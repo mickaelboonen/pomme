@@ -185,7 +185,7 @@ const Avance = ({ step }) => {
             label="Demander une avance :"
             handler={handleSwitch}
           />
-          <HiddenField id="omId" value={omId} register={register} />
+          <HiddenField id="docId" value={omId} register={register} />
         </div>
       </div>
       {isAdvanceRequested === true && (

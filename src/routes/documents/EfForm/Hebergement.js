@@ -145,6 +145,7 @@ const Hebergement = ({ step }) => {
 
   };
   
+  
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <FormSectionTitle>Hébergement</FormSectionTitle>
@@ -211,7 +212,7 @@ const Hebergement = ({ step }) => {
             register={register}
             isNumber
             min="0"
-            placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné ${data.mealsPaidByAgent} repas.`}
+            placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné ${currentOM.accomodations.mealsPaidByAgent} repas.`}
             label='Repas à titre onéreux en France'
             hasHelp
             helpFunction={showHelp}
@@ -226,7 +227,7 @@ const Hebergement = ({ step }) => {
             isNumber
             min="0"
             label="Repas à titre gratuit"
-            placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné ${maxMealsNumber - data.mealsInAdminRestaurants - data.mealsPaidByAgent} repas gratuits.`}
+            placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné ${maxMealsNumber - currentOM.accomodations.mealsInAdminRestaurants - currentOM.accomodations.mealsPaidByAgent} repas gratuits.`}
           />
         )}
         {currentOM.mission.region !== "métropole" && (
