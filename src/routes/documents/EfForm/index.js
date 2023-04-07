@@ -10,7 +10,7 @@ import './style.scss';
 import Steps from './Steps';
 import Signature from './Signature';
 import Transports from './Transports';
-import Hebergement from './Hebergement';
+import Accomodations from './Accomodations';
 import Recap from './Recap';
 import PageTitle from 'src/components/PageTitle';
 import ThreadAsTabs from 'src/components/ThreadAsTabs';
@@ -104,7 +104,7 @@ const EfForm = () => {
           {efLoader && <LoaderCircle /> }
           {(step === 1&& !efLoader) && <Mission step={step} isEfForm />}
           {(step === 2&& !efLoader) && <Transports step={step} />}
-          {(step === 3&& !efLoader) && <Hebergement step={step} />}
+          {(step === 3&& !efLoader) && <Accomodations step={step} />}
           {((step === 4 && !efLoader) &&  (has_steps || is_teaching))  && <Steps step={step} />}
           {/* {((step === 4 && !efLoader) &&  (!has_steps && !is_teaching))  && (
           <div>Plop</div>)} */}

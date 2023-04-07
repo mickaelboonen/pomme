@@ -153,7 +153,7 @@
 
     if (transport_class.length > 0) {
       transport_class.forEach((transport) => {
-        if ((transport.includes('second') || transport.includes('second')) && fieldsToBeDisplayed.indexOf(fields[1]) === -1) {
+        if ((transport.includes('first') || transport.includes('second')) && fieldsToBeDisplayed.indexOf(fields[1]) === -1) {
           fieldsToBeDisplayed.push(fields.find((field) => field.formField === 'train'))
         }
         else if ((transport.includes('business') || transport.includes('eco')) && fieldsToBeDisplayed.indexOf(fields[0]) === -1)

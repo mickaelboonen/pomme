@@ -19,10 +19,11 @@ import { toggleHelp, updateEfAccomodations } from 'src/reducer/ef';
 import { uploadFile } from 'src/reducer/omForm';
 
 // Selectors
-import { declareCamelCaseKeys } from '../../../selectors/keyObjectService';
-import { getSavedFileName } from '../../../selectors/formDataGetters';
+import { declareCamelCaseKeys } from 'src/selectors/keyObjectService';
+import { getSavedFileName } from 'src/selectors/formDataGetters';
+import { current } from '@reduxjs/toolkit';
 
-const Hebergement = ({ step }) => {
+const Accomodations = ({ step }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   
@@ -145,6 +146,7 @@ const Hebergement = ({ step }) => {
 
   };
   
+  console.log(currentOM.accomodations);
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
@@ -200,7 +202,7 @@ const Hebergement = ({ step }) => {
           isNumber
           min="0"
           label="Repas pris dans un restaurant administratif ou assimilé"
-          placeholder={"Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné " + currentOM.accomodations.mealsInAdminRestaurants + " repas."}
+          placeholder={"Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné " + currentOM.accomodations.meals_in_admin_restaurants + " repas."}
           hasHelp
           helpFunction={showHelp}
         />
@@ -212,7 +214,7 @@ const Hebergement = ({ step }) => {
             register={register}
             isNumber
             min="0"
-            placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné ${currentOM.accomodations.mealsPaidByAgent} repas.`}
+            placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné ${currentOM.accomodations.meals_paid_by_agent} repas.`}
             label='Repas à titre onéreux en France'
             hasHelp
             helpFunction={showHelp}
@@ -227,7 +229,7 @@ const Hebergement = ({ step }) => {
             isNumber
             min="0"
             label="Repas à titre gratuit"
-            placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné ${maxMealsNumber - currentOM.accomodations.mealsInAdminRestaurants - currentOM.accomodations.mealsPaidByAgent} repas gratuits.`}
+            placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné ${maxMealsNumber - currentOM.accomodations.meals_in_admin_restaurants - currentOM.accomodations.meals_paid_by_agent} repas gratuits.`}
           />
         )}
         {currentOM.mission.region !== "métropole" && (
@@ -237,7 +239,7 @@ const Hebergement = ({ step }) => {
             register={register}
             isNumber
             min="0"
-            placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez ${currentOM.accomodations.mealsPaidByAgent} repas.`}
+            placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez ${currentOM.accomodations.meals_paid_by_agent} repas.`}
             label="Repas à titre onéreux à l'étranger"
             hasHelp
             helpFunction={showHelp}
@@ -295,8 +297,8 @@ const Hebergement = ({ step }) => {
   );
 };
 
-Hebergement.propTypes = {
+Accomodations.propTypes = {
 
 };
 
-export default Hebergement;
+export default Accomodations;

@@ -37,6 +37,7 @@ export const turnAddressToFields = (data) => {
   data.streetName = data.address.streetName;
   data.postCode = data.address.postCode;
   data.city = data.address.city;
+  data.countryCode = data.address.countryCode;
 
   delete data.address;
 
@@ -60,6 +61,7 @@ export const turnFieldsToAddressEntity = (data) => {
       streetName: data['streetName' + i],
       postCode: data['postCode' + i],
       city: data['city' + i],
+      countryCode: data['countryCode' + i]
     }
     addresses.push(missionAddress);
 

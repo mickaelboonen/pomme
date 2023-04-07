@@ -34,22 +34,17 @@ const Modal = ({ target, user, userOms, agent}) => {
       isTeaching: agent.unimesStatus === "VACATAIRE",
     }
   }
-  const {
-    register,  handleSubmit, formState: { errors },
-  } = useForm({ defaultValues: defaultValues });
+  const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: defaultValues });
 
   const close = () => {
     dispatch(toggleModal());
   }
 
   const onSubmit = (data) => {
-    console.log(data);
-    // If the user is requesting an advance
     
-
     if (isOm) {
       const newOM = {
-        name: `Nouvel Ordre de Mission`,
+        name: `Ordre-de-mission-${agent.lastname.toUpperCase()}`,
         status: 1,
         url: 'path',
         missioner: user,
@@ -57,12 +52,11 @@ const Modal = ({ target, user, userOms, agent}) => {
         expenses: data.withExpenses,
         isPonctual: data.duration,
       }
-      
       dispatch(addNewOM(newOM)); 
     }
     else {
       const newEF = {
-        name: `Nouvel État de Frais`,
+        name: `État-de-Frais-${agent.lastname.toUpperCase()}`,
         status: 1,
         url: 'path',
         missioner: user,
@@ -71,7 +65,6 @@ const Modal = ({ target, user, userOms, agent}) => {
         is_teaching: data.isTeaching,
         has_steps: data.hasSteps,
       }
-      console.log(newEF);
       dispatch(addNewEf(newEF)); 
     }
   }

@@ -92,37 +92,17 @@ const VehicleUseForm = () => {
     { errors },
   } = useForm({ defaultValues: {
       ...formDefaultValues,
-    validation: 'false',
   }});
-  
-  const [hasSavedInsurance, setSavedInsurance] = useState(formDefaultValues.savedInsurance);
-  const [hasSavedRegistration, setSavedRegistration] = useState(formDefaultValues.savedRegistration);
-  
 
   const [
-    // reasons,
+    reasons,
     carType,
     externalSignature,
-    savedRegistration,
-    savedInsurance,
   ] = watch([
-    // 'reasons',
+    'reasons',
     'carType',
     'externalSignature',
-    'savedRegistration',
-    'savedInsurance',
   ]);
-  
-  useEffect(() => {
-    if (formDefaultValues.savedInsurance) {
-      setSavedInsurance(savedInsurance)
-    }
-    if (formDefaultValues.savedRegistration) {
-      setSavedRegistration(savedRegistration)
-    }
-
-  }, [savedRegistration, savedInsurance])
-  
   
   const onSubmit = (data) => {
     console.log("IN SUBMIT : ", data);
@@ -307,49 +287,16 @@ const VehicleUseForm = () => {
                 handler={handleOtherReason}
               />
             </div>
-            <TextField
-              id="other-reason"
-              label="Autre raison"
-              formField="otherReason"
-              register={register}
-              isHidden
-            />
+            {reasons.indexOf('other') >= 0 && (
+              <TextField
+                id="other-reason"
+                label="Autre raison"
+                formField="otherReason"
+                register={register}
+              />
+            )}
             { errors.reasons && <p className="form__section-field-error form__section-field-error--open">{errors.reasons.message}</p>}
           </div>
-          {/* {carType === 'personal-car' && (
-            <div className="form__section">
-              <FormSectionTitle>Documents</FormSectionTitle>
-              <FileOrSavedFile
-                register={register}
-                setValue={setValue}
-                id="registration"
-                label="Carte grise"
-                hasSavedDocument={hasSavedRegistration}
-                errors={errors}
-              />
-              <FileOrSavedFile
-                register={register}
-                setValue={setValue}
-                id="insurance"
-                label="Attestation d'assurance"
-                hasSavedDocument={hasSavedInsurance}
-                errors={errors}
-              />
-            </div>
-          )} */}
-          {/* {externalSignature && (
-            <div className="form__section">
-              <FormSectionTitle>Signatures</FormSectionTitle>
-              <FileField
-                register={register}
-                setValue={setValue}
-                formField="signature"
-                id="userSignature"
-                label="Signature"
-                pieces="Merci de fournir la signature de la personne à qui vous empruntez le véhicule."
-              />
-            </div>
-          )} */}
           <div className="form__section">
             <FormSectionTitle>Dernière étape</FormSectionTitle>
             <HiddenField
@@ -391,8 +338,7 @@ const VehicleUseForm = () => {
                           <button type="button" onClick={() => { const data = watch(); data.file = file; onSubmit(data)}}>
                             Valider la demande
                           </button>
-                          {/* <div style={{height: '100vh'}}>
-
+                          {/* <div style={{width:"100%", height:"100vh"}}>
                             <PDFViewer>
                               <CarAuthorizationPdf reasons={staticReasons} agentSignature={agentSignature} agent={agent} data={watch()} vehicleTypes={vehicleTypes}/>
                             </PDFViewer>
@@ -402,8 +348,7 @@ const VehicleUseForm = () => {
                     }}
                   </BlobProvider>
               </div>
-              {needsPdf && <p className="form__section-field-label form__section-field-label--car-form">Veuillez télécharger le PDF de la demande et le faire signer aux personnes extérieures concernées</p>}
-              {needsPdf && <a href={'/modifier-un-document/ordre-de-mission?etape=2&id='+ omId}>Retourner au formulaire de l'ordre de mission</a>}
+              {externalSignature && <p className="form__section-container-text form__section-container-text--infos">Veuillez télécharger le PDF de la demande, le faire signer aux personnes extérieures concernées puis le redéposer dans l'application à l'étape Transports.</p>}
             </div>
             {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
           </div>

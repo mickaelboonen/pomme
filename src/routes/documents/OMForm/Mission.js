@@ -232,7 +232,6 @@ const Mission = ({ step, isEfForm }) => {
   
   const [isMissionAScienceEvent, setIsMissionAScienceEvent] = useState(defaultValues.science);
   const [isVisaNeeded, setIsVisaNeeded] = useState(defaultValues.visa);
-  const [addressNumberArray, setAddressNumberArray] = useState(defaultValues.visa);
 
   const handleVisa = (event) => {
     const { id } = event.target;
@@ -258,7 +257,6 @@ const Mission = ({ step, isEfForm }) => {
     setIsMissionAScienceEvent(event.target.checked);
   }
   
-  const frenchRegions = countries.filter((country) => country.nationality === 'Français' || country.nationality === 'FRANCAIS(E)');
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section">
@@ -386,6 +384,7 @@ const Mission = ({ step, isEfForm }) => {
             watch={watch}
             dispatch={dispatch}
             errorMessages={errorMessages}
+            countries={countries}
           />
         </div>
         <div className="form__section form__section--split">
@@ -417,34 +416,14 @@ const Mission = ({ step, isEfForm }) => {
         {errors.region && <p className="form__section-field-error form__section-field-error--open">{errors.region.message}</p>}
 
         {region === 'étranger' && (
-          <>
-          {/* Not using the SelectField component because it doesn't handle optgroups */}
-            <div className="form__section-field" id="country-field">
-              <label className="form__section-field-label" htmlFor="country">Pays de la Mission</label>
-              <select
-                id="country"
-                className="form__section-field-input"
-                {...register("country", {
-                  required: errorMessages.country
-                })}
-                disabled={isEfForm && isMissionFormDisabled}
-              >
-                <optgroup label="France et ses DOM-TOM">
-                  {frenchRegions.map((country) => <option key={country.code + '-fr'} value={country.code}>{country.name}</option>)}
-                  <option value="" />
-                </optgroup>
-                <optgroup label="Tous les pays">
-                  {countries.map((country) => <option key={country.code + '-all'} value={country.code}>{country.name}</option>)}
-                </optgroup>
-              </select>
-              {errors.country && <p className={classNames("form__section-field-error", { "form__section-field-error--open": error?.message.length > 0 })}>{errors.country.message}</p>}
-            </div>
+          <div className='form__section'>
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Visa</label>
               <RadioInput disabled={isEfForm && isMissionFormDisabled} handler={handleVisa} id="visa-yes" formField="visa" label="Oui" register={register} required={errorMessages.visa} />
               <RadioInput disabled={isEfForm && isMissionFormDisabled} handler={handleVisa} id="visa-no" formField="visa" label="Non" register={register} required={errorMessages.visa} />
             </div>
             {errors.visa && <p className="form__section-field-error form__section-field-error--open">{errors.visa.message}</p>}
+
             {isVisaNeeded && (
               <div className="form__section-field">
                 <label className="form__section-field-label" htmlFor="departure-place">Prise en charge du visa</label>
@@ -453,7 +432,7 @@ const Mission = ({ step, isEfForm }) => {
               </div>
             )}
             {errors.visaPayment && <p className="form__section-field-error form__section-field-error--open">{errors.visaPayment.message}</p>}
-          </>
+          </div>
         )}
         {(region === 'dom-tom' || region === 'étranger')  && (
           <div className="form__section-field" id="abroad-field">

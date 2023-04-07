@@ -129,7 +129,7 @@ const router = createBrowserRouter([
               store.dispatch(fetchAgentSignatureForPdf({ agent: user, omId: id}));
               // store.dispatch(fetchUserData({ id: user}));
               store.dispatch(getVehicles({agent: user}));
-              store.dispatch(getVehicleDocuments(user));
+              // store.dispatch(getVehicleDocuments(user));
               return url;  
             },    
           },
@@ -144,7 +144,7 @@ const router = createBrowserRouter([
               store.dispatch(fetchAgentSignatureForPdf({ agent: user, omId: id}));
               // store.dispatch(fetchUserData({ id: user}));
               store.dispatch(getVehicles({agent: user}));
-              store.dispatch(getVehicleDocuments(user));
+              // store.dispatch(getVehicleDocuments(user));
               return url;  
             },       
           },

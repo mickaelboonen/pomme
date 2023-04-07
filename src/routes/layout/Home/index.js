@@ -20,7 +20,7 @@ const Home = () => {
   
   const navigate = useNavigate();
   const { app: { isModalOpen},
-    agent: { user },
+    agent: { user, agent },
     omForm: { nextOMTarget },
   } = useSelector((state) => state);
   
@@ -71,7 +71,7 @@ const Home = () => {
         </div>
       </section>
       <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
-      {isModalOpen && <Modal target={newTarget.replace(/-/g, ' ')} user={user} />}
+      {isModalOpen && <Modal target={newTarget.replace(/-/g, ' ')} user={user} agent={agent} />}
 
     </div>
   );

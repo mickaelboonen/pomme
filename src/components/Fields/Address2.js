@@ -8,7 +8,7 @@ import TextareaField from 'src/components/Fields/TextareaField';
 
 import { deleteAddress } from 'src/reducer/omForm';
 
-const Address2 = ({ watch, data, register, errors, disabled, errorMessages, dispatch }) => {  
+const Address2 = ({ countries, watch, data, register, errors, disabled, errorMessages, dispatch }) => {  
 
   const bisArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
   
@@ -128,6 +128,7 @@ const Address2 = ({ watch, data, register, errors, disabled, errorMessages, disp
             stepNumber={step}
             deleteAddress={handleDeleteAddress}
             title={`Adresse n° ${step}`}
+            countries={countries}
           />
         ))}
       </div>

@@ -108,6 +108,8 @@ const CarAuthorizationPdf = ({ data, vehicleTypes, agent, agentSignature, reason
     }
   })
 
+  console.log(data);
+
   return (
   <Document>
     <Page size="A4" style={styles.page}>
@@ -127,11 +129,6 @@ const CarAuthorizationPdf = ({ data, vehicleTypes, agent, agentSignature, reason
           <>
             <Text style={styles.section.notabene}>Produire obligatoirement la photocopie de la carte grise et de l’attestation d’assurance</Text>
             <Text style={[styles.section.text, {textDecoration: 'underline'}]}>Informations sur le véhicule :</Text>
-            {/* <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Marque : <Text style={{fontFamily: 'Radjhani'}}>{data.vehicle.make}</Text></Text>
-            <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Immatriculation : <Text style={{fontFamily: 'Radjhani'}}>{data.vehicle.license_plate}</Text></Text>
-            <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Puissance fiscale : <Text style={{fontFamily: 'Radjhani'}}>{data.vehicle.rating}</Text></Text>
-            <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Compagnie d'assurance : <Text style={{fontFamily: 'Radjhani'}}>{data.vehicle.insurance}</Text></Text>
-            <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Numéro de Police : <Text style={{fontFamily: 'Radjhani'}}>{data.vehicle.police}</Text></Text> */}
             <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Marque : <Text style={{fontFamily: 'Radjhani'}}>{data.make}</Text></Text>
             <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Immatriculation : <Text style={{fontFamily: 'Radjhani'}}>{data.licensePlate}</Text></Text>
             <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Puissance fiscale : <Text style={{fontFamily: 'Radjhani'}}>{data.rating}</Text></Text>
@@ -144,6 +141,7 @@ const CarAuthorizationPdf = ({ data, vehicleTypes, agent, agentSignature, reason
       <View style={styles.section}>
         <Text style={styles.section.title} wrap={false}>DÉPLACEMENT</Text>
         <Text style={[styles.section.text, {fontFamily: 'RadjhaniBold', marginBottom: 10}]}>Raisons justifiant l'utilisation d'un véhicule : <Text style={[styles.section.text, {fontFamily: 'Radjhani'}]}>{reasonsAsString} </Text> </Text>
+        {data.otherReason && <Text style={[styles.section.text, {fontFamily: 'RadjhaniBold', marginBottom: 10}]}>Autres raisons justifiant l'utilisation d'un véhicule : <Text style={[styles.section.text, {fontFamily: 'Radjhani'}]}>{data.otherReason} </Text> </Text>}
         <Text style={[styles.section.text, {paddingRight: 10, paddingLeft: 10, textAlign: 'justify'}]}>En application de l’article 10 du décret n°2006-781 du 3 juillet 2006 fixant les conditions et les modalités de règlement des frais occasionnés par les déplacements temporaires des personnels civils de l’Etat, je soussigné(e) {agent.lastname.toUpperCase()} {agent.firstname} déclare décharger l’université de Nîmes de toute responsabilité dans le cadre d’un accident qui surviendrait lors du déplacement avec mon véhicule entre ma résidence administrative ou familiale et le lieu de la mission.</Text>
       </View>
       <View style={styles.section}>

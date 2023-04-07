@@ -22,6 +22,7 @@ const Address = ({
   stepNumber,
   deleteAddress,
   title,
+  countries
 }) => {  
  
   const toggleStep = (event) => {
@@ -126,6 +127,7 @@ const Address = ({
   //     name: "Square",
   //   },
   // ];
+  const frenchRegions = countries.filter((country) => country.nationality === 'Français' || country.nationality === 'FRANCAIS(E)');
 
   return (
     <div className={classNames('step', {'step--open': stepNumber === 1})} id={"step-" + stepNumber}>
@@ -211,6 +213,30 @@ const Address = ({
             required={errorMessages.city}
             error={errors['city' + stepNumber]}
           />
+        </div>
+        <div className="address__section">
+          
+          <div className="form__section-field" id="country-field">
+            <label className="form__section-field-label" htmlFor="country">Pays de la Mission</label>
+            <select
+              id="country"
+              className="form__section-field-input"
+              {...register("countryCode" + stepNumber, {
+                required: errorMessages.countryCode
+              })}
+              disabled={disabled}
+            >
+              <optgroup label="France et ses DOM-TOM">
+                {frenchRegions.map((country) => <option key={country.code + '-fr'} value={country.code}>{country.name}</option>)}
+                <option value="" />
+              </optgroup>
+
+              <optgroup label="Tous les pays">
+                {countries.map((country) => <option key={country.code + '-all'} value={country.code}>{country.name}</option>)}
+              </optgroup>
+            </select>
+            {errors.countryCode && <p className={classNames("form__section-field-error", { "form__section-field-error--open": error?.message.length > 0 })}>{errors.country.message}</p>}
+          </div>
         </div>
         {stepNumber > 1 && (
           <div className='address__section address__section--delete'>
