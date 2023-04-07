@@ -52,10 +52,13 @@ $test : #{var(--first-color)};
         & a {
         @include vars.button;
         margin-bottom: 0.5rem;
-        max-width: none;
-        font-size: 0.9em;
+        
+        font-size: 0.7em;
         text-align: center;
-        @include vars.centeredFlex;
+        display: flex;
+        align-items: center;
+        width: 35%;
+        
       }
 
       &--validation {
@@ -69,6 +72,12 @@ $test : #{var(--first-color)};
             margin: 0 auto 0.5rem;
           }
         }
+      }
+
+      &-icon {
+        margin-right: 1rem;
+        font-size: 1.5rem;
+        
       }
     }
 
@@ -209,6 +218,11 @@ $test : #{var(--first-color)};
 
     &__files {
       width: 70%;
+      &-buttons {
+        & a {
+          width: fit-content;
+        }
+      }
     }
   }
 

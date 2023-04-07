@@ -84,14 +84,14 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
           }
         }
       })}
-      {downloadFileStatusArray.indexOf(status) >= 0 && <a href={file} download={name + '.pdf'} style={{textAlign: 'center'}}> <FaDownload style={{marginRight: '1rem', fontSize: '1.5rem'}} /> OM</a>}
+      {downloadFileStatusArray.indexOf(status) >= 0 && <a href={file} download={name + '.pdf'} style={{textAlign: 'center'}}> <FaDownload className='my-documents__files-buttons-icon' /> Ordre de Mission</a>}
       {downloadFileStatusArray.indexOf(status) >= 0 && transports.dispensations.map((dispensation) => (
         <a
           key={dispensation.id}
           href={dispensation.file}
           download="dérogation.pdf"
         >
-          <FaDownload style={{marginRight: '1rem', fontSize: '1.5rem'}} /> Dérogation au GDM
+          <FaDownload className='my-documents__files-buttons-icon' /> Dérogation au GDM
         </a>
       ))}
       {downloadFileStatusArray.indexOf(status) >= 0 && transports.authorizations.length > 0 && transports.authorizations[0].file !== "pending" && (
@@ -100,7 +100,7 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
           href={transports.authorizations[0].file}
           download="demande-d-utilisation-de-vehicule.pdf"
         >
-          <FaDownload style={{marginRight: '1rem', fontSize: '1.5rem'}} /> Demande de véhicule
+          <FaDownload className='my-documents__files-buttons-icon' /> Demande de véhicule
         </a>
       )}
     </div>
