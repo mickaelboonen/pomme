@@ -91,7 +91,7 @@ const Accomodations = ({ step }) => {
     } 
 
     const totalMealsAgent = getTotalMealsAgent(data);
-    const maxMealsNumber = getMaxMealsAndNights(mission); 
+    const maxMealsNumber = getMaxMealsAndNights(currentOM.mission); 
     const mealsErrorElement = document.getElementById('meals-error');
 
     if (totalMealsAgent > maxMealsNumber) {
@@ -107,8 +107,9 @@ const Accomodations = ({ step }) => {
     if (errorsCount !== 0) {
       return;
     }
-
-    if (data.hotelFiles.length > 0 || data.eventFiles.length > 0) {
+    data.status = 1;
+    
+    if (data.hotelFiles.find((file) => file instanceof File) || data.eventFiles.find((file) => file instanceof File)) {
       dispatch(uploadFile({data: data, step: 'accomodations', docType: 'ef'}));
     }
     else {
@@ -129,8 +130,7 @@ const Accomodations = ({ step }) => {
     })
     return total;
   }
-
-  // console.log(currentOM.mission);
+  
   const maxMealsNumber = getMaxMealsAndNights(currentOM.mission);
 
   useEffect(() => {
@@ -146,7 +146,6 @@ const Accomodations = ({ step }) => {
 
   };
   
-  console.log(currentOM.accomodations);
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>

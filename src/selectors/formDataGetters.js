@@ -30,6 +30,7 @@ export const getSavedFileName = (urlFile) => {
 }
 
 export const turnAddressToFields = (data) => {
+  console.log(data);
   data.addressId = data.address.id;
   data.streetNumber = data.address.streetNumber;
   data.bis = data.address.bis;
@@ -78,4 +79,45 @@ export const turnFieldsToAddressEntity = (data) => {
   data.addresses = addresses;
 
   return data;
+}
+
+export const checkStepsStatus = (step, currentDoc) => {
+
+  let docState = {};
+
+  if (step ===6) {
+    const omStepsWithStatus = [
+      {
+        name: 'mission',
+        step: 1,
+        status: (currentDoc.hasOwnProperty('mission') && currentDoc.mission.status) ? currentDoc.mission.status : false
+      },
+      {
+        name: 'transports',
+        step: 2,
+        status: (currentDoc.hasOwnProperty('transports') && currentDoc.transports.status) ? currentDoc.transports.status : false
+      },
+      {
+        name: 'hébergement',
+        step: 3,
+        status: (currentDoc.hasOwnProperty('accomodations') && currentDoc.accomodations.status) ? currentDoc.accomodations.status : false
+      },
+      {
+        name: 'signature',
+        step: 5,
+        status: (currentDoc.hasOwnProperty('signature') && currentDoc.signature.status) ? currentDoc.signature.status : false
+      },
+    ];
+    
+    const unfinishedStep = omStepsWithStatus.filter((step) => !step.status);
+
+    if (!unfinishedStep) {
+      docState.isFinished = true
+    }
+    else {
+      docState = unfinishedStep;
+    }
+  }
+
+  return docState;
 }

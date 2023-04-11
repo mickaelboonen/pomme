@@ -122,7 +122,7 @@ const appMiddleware = (store) => (next) => (action) => {
         });
       break;
     case 'app/addSteps':      
-      api.post("/api/stage/add", action.payload)
+      api.post("/api/stages/add", action.payload)
         .then((response) => {
           store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         })

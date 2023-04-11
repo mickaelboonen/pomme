@@ -17,6 +17,8 @@ import ThreadAsTabs from 'src/components/ThreadAsTabs';
 import LoaderCircle from 'src/components/LoaderCircle';
 import Mission from 'src/routes/documents/OMForm/Mission';
 import { clearMessage } from 'src/reducer/app';
+import { checkStepsStatus } from '../../../selectors/formDataGetters';
+import DocMissingStepsRecap from '../../../components/docMissingsStepsRecap';
 
 const EfForm = () => {      
 
@@ -28,12 +30,12 @@ const EfForm = () => {
   const id = Number(loaderData.searchParams.get('id'));
   const om = Number(loaderData.searchParams.get('om'));
 
-  const { ef: { efLoader, currentEf: { has_steps, is_teaching }},
+  const { ef: { efLoader, currentEf },
     app: { apiMessage },
   } = useSelector((state) => state);
 
   useEffect(() => {
-    if (step === 4 && !has_steps && !is_teaching) {
+    if (step === 4 && !currentEf.currentEf.has_steps && !currentEf.is_teaching) {
       const stepIndex = loaderData.search.indexOf(4);
       let redirectUrl = loaderData.pathname;
       redirectUrl+= loaderData.search.slice(0, 7) + 5 + loaderData.search.slice(stepIndex + 1);
@@ -62,8 +64,8 @@ const EfForm = () => {
     }
   }, [step])
 
+  const docState = checkStepsStatus(step, currentEf);
   
-  // console.log("SEE ME HERE : ", currentEf);
   let tabs = [
     {
       name: 'Mission',
@@ -91,7 +93,7 @@ const EfForm = () => {
     },
   ];
 
-  if (!has_steps && !is_teaching) {
+  if (!currentEf.has_steps && !currentEf.is_teaching) {
     tabs = tabs.filter((tab) => tab.id !== 4);
   }
   return (
@@ -100,16 +102,14 @@ const EfForm = () => {
       <PageTitle>{step === 6 ? "Recapitulatif de l'État de frais" : "Création d'un État de frais"}</PageTitle>
       <div className='form-root__container'>
         <div className="form-page__container">
-          {/* {step === 1 && <OmSelection step={step} />} */}
           {efLoader && <LoaderCircle /> }
-          {(step === 1&& !efLoader) && <Mission step={step} isEfForm />}
-          {(step === 2&& !efLoader) && <Transports step={step} />}
-          {(step === 3&& !efLoader) && <Accomodations step={step} />}
-          {((step === 4 && !efLoader) &&  (has_steps || is_teaching))  && <Steps step={step} />}
-          {/* {((step === 4 && !efLoader) &&  (!has_steps && !is_teaching))  && (
-          <div>Plop</div>)} */}
+          {(step === 1 && !efLoader) && <Mission step={step} isEfForm />}
+          {(step === 2 && !efLoader) && <Transports step={step} />}
+          {(step === 3 && !efLoader) && <Accomodations step={step} />}
+          {((step === 4 && !efLoader) &&  (currentEf.has_steps || currentEf.is_teaching))  && <Steps step={step} />}
           {(step === 5 && !efLoader) && <Signature step={step} />}
-          {(step === 6 && !efLoader) && <Recap step={step} />}
+          {(step === 6 && !efLoader && docState.length === 0) && <Recap step={step} />}
+          {(step === 6 && !efLoader && docState.length > 0) && <DocMissingStepsRecap url={loaderData} id={id} docState={docState} /> }
         </div>
       </div>
     </div>

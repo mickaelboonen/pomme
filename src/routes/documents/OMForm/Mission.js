@@ -55,8 +55,10 @@ const Mission = ({ step, isEfForm }) => {
       
       defaultValues =  declareCamelCaseKeys(currentEf.mission);
       // Since we're not retrieving address data from the ef mission, we feed on the current OM address
-      defaultValues.address = currentOM.mission.address;
-      defaultValues =  turnAddressToFields(defaultValues);
+      defaultValues.addresses = currentOM.mission.addresses;
+      
+      // defaultValues =  turnAddressToFields(defaultValues);
+      defaultValues = addAllAddressesFields(defaultValues);
             
       defaultValues.modificationSwitch = true;
 

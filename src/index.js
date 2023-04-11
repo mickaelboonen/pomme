@@ -244,7 +244,7 @@ const router = createBrowserRouter([
                 }
 
                 store.dispatch(getSignature(user));
-                store.dispatch(fetchEf({id: user}));
+                // store.dispatch(fetchEf({id: user}));
               }
               return url;
             },    
@@ -274,7 +274,7 @@ const router = createBrowserRouter([
                   store.dispatch(fetchCountries());
                 }
                 store.dispatch(getSignature(user));
-                store.dispatch(fetchEf({id: user}));
+                // store.dispatch(fetchEf({id: user}));
               }
 
               return url;

@@ -9,7 +9,7 @@ import './style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import ApiResponse from 'src/components/ApiResponse';
 import EfPDF from 'src/components/PDF/EfPDF';
-import { floatAddition, floatMultiplication } from 'src/selectors/mathFunctions';
+import { floatAddition, floatMultiplication, OTHER_MEALS_AMOUNT, ADMIN_MEALS_AMOUNT} from 'src/selectors/mathFunctions';
 
 import { getDDMMYYDate, getHHMMTime } from 'src/selectors/dateFunctions';
 const Recap = () => {
@@ -24,19 +24,19 @@ const Recap = () => {
   } = useSelector((state) => state);
   
   const { mission, transports, accomodations, stages } = currentEf;
-  console.log("STAGES IN STEPS = ", stages);
   
-  const { register, setValue, getValues, watch, formState: { errors } } = useForm({ defaultValues: agent });
+  const { setValue, getValues } = useForm({ defaultValues: agent });
 
-    let transportsFields = Object.entries(transports).filter((transport) => !transport[0].includes('_files') && transport[1]);
+  let transportsFields = Object.entries(transports).filter((transport) => !transport[0].includes('_files') && transport[1]);
   transportsFields = transportsFields.filter((transport) => transport[0] !== 'id' && transport[0] !== 'status');
 
   const transportsAmountsArray = transportsFields.map((t) => t[1]);
   const totalTransportsExpenses = floatAddition(transportsAmountsArray);
 
   //------------------------------------------------------------------------------------------------
-  const adminMealsAmount = floatMultiplication(accomodations.meals_in_admin_restaurants, '7,63');
-  const frenchMeals = floatMultiplication(accomodations.meals_paid_by_agent_in_france, '15.25');
+  const adminMealsAmount = floatMultiplication(accomodations.meals_in_admin_restaurants, ADMIN_MEALS_AMOUNT);
+  const frenchMeals = floatMultiplication(accomodations.meals_paid_by_agent_in_france, OTHER_MEALS_AMOUNT);
+
   const totalMeals = floatAddition([adminMealsAmount, frenchMeals]);
   
   const totalMission = floatAddition([totalMeals, accomodations.event, totalTransportsExpenses, accomodations.hotel])
@@ -82,7 +82,7 @@ const Recap = () => {
         {transports.public_transports && <p className='form__section-recap'>Montant des frais de transports en commun : <span>{transports.public_transports}€</span>.</p>}
         {transports.rent_car && <p className='form__section-recap'>Montant de la facture du véhicule de location : <span>{transports.rent_car}€</span>.</p>}
 
-        {transports.personal_car && <p className='form__section-recap'>Utilisation d'un véhicule personnel : <span>{km}</span>.</p>}
+        {transports.personal_car && <p className='form__section-recap'>Utilisation d'un véhicule personnel : <span>{transports.km}</span>.</p>}
 
       </div>
     </div>
@@ -104,13 +104,14 @@ const Recap = () => {
         {mission.region !== "métropole" && <p className='form__section-recap form__section-recap--infos'>Pour avoir une idée du montant remboursé pour votre mission à l'étranger, veuillez vous rendre sur <Link to="https://www.economie.gouv.fr/dgfip/mission_taux_chancellerie/frais"> le site de la DGFIP</Link>. La valeur du <span>Groupe 1</span> vous indiquera le montant du forfait per diem comprenant l'hébergement et deux repas.</p>}
       </div>
     </div>
-    {(transports.visa || accomodations.event) && (<div className="form__section" style={{marginBottom: '1rem'}}>
-      <FormSectionTitle>Autres frais de Mission</FormSectionTitle>
-
-      {transports.visa && <p className='form__section-recap'>Montant du visa : <span>{transports.visa}€</span>.</p>}
-      {accomodations.event && <p className='form__section-recap'>Montant des frais d'inscription à un colloque, réunion, séminaire scientifique : <span>{accomodations.event}€</span>.</p>}
-      {accomodations.event && <p className='form__section-recap form__section-recap--infos'>Compte rendu à adresser obligatoirement au service de la recherche.</p>}
-    </div>)}
+    {transports.visa > 0|| accomodations.event > 0 && (
+      <div className="form__section" style={{marginBottom: '1rem'}}>
+        <FormSectionTitle>Autres frais de Mission</FormSectionTitle>
+        {transports.visa && <p className='form__section-recap'>Montant du visa : <span>{transports.visa}€</span>.</p>}
+        {accomodations.event && <p className='form__section-recap'>Montant des frais d'inscription à un colloque, réunion, séminaire scientifique : <span>{accomodations.event}€</span>.</p>}
+        {accomodations.event && <p className='form__section-recap form__section-recap--infos'>Compte rendu à adresser obligatoirement au service de la recherche.</p>}
+      </div>
+    )}
     {stages.length > 0 && (
       <div className="form__section" style={{marginBottom: '1rem'}}>
         <FormSectionTitle>Étapes de la Mission</FormSectionTitle>
@@ -153,10 +154,9 @@ const Recap = () => {
           <div className='steps__recap-mobile'>
             <p className='form__section-recap form__section-recap--infos'>Le tableau des étapes ne peut être affiché sur mobile. Veuillez passer en version ordinateur (menu de votre navigateur &gt; version pour ordinateur) pour pouvoir contrôler le détail des étapes. Merci de votre compréhension.</p>
           </div>
-
-
       </div>
     )}
+  
       <div className="form__section" style={{marginBottom: '1rem'}}>
         <FormSectionTitle>Total</FormSectionTitle>
         {mission.region === "métropole" && (
