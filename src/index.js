@@ -199,9 +199,8 @@ const router = createBrowserRouter([
                 store.dispatch(getSignature(user));
               }
               else if (step === '6') {
-                
                 store.dispatch(fetchAgentSignatureForPdf({ agent: user, omId: id}));
-                store.dispatch(fetchOm({id: id, handleLoader: true,}));
+
                 if (!agent.hasOwnProperty('lastname')) {
                   store.dispatch(fetchUserData({ id: user}));
                 }

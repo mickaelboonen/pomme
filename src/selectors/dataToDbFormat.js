@@ -234,10 +234,10 @@ export const turnAdvanceDataToDbFormat = (data) => {
 
   const {
     docId, status,
-    meals, nights,
+    mealsNumber, nightsNumber,
     hotelQuotation, rib,
     totalAmount, advanceAmount,
-    otherExpensesAmount, otherExpensesJustitication,
+    otherExpensesAmount, otherExpensesJustification,
   } = data;
 
   const dataToBeSubmitted = {
@@ -245,10 +245,10 @@ export const turnAdvanceDataToDbFormat = (data) => {
     advanceAmount: advanceAmount === "" ? 0 : advanceAmount,
     totalAmount: totalAmount,
     hotelQuotation: null,
-    nightsNumber: nights,
-    mealsNumber: meals,
+    nightsNumber: nightsNumber,
+    mealsNumber: mealsNumber,
     otherExpensesAmount: otherExpensesAmount === "" ? 0 : otherExpensesAmount,
-    otherExpensesJustification :otherExpensesJustitication === "" ? 0 : otherExpensesJustitication,
+    otherExpensesJustification :otherExpensesJustification === "" ? 0 : otherExpensesJustification,
     agentRib: null,
     status: status,
 

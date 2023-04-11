@@ -18,7 +18,9 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.agent);
+  const { agent: { user },
+    app : { agentDocuments },
+  } = useSelector((state) => state);
 
   const nextStep = step + 1;
   const backStep = step - 1;
@@ -134,9 +136,12 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
       }
     }
     else if (step === 4) { // --------------------------------------------------------------------------------
-      
+
+      if (data.savedRib) {
+        data.rib = agentDocuments.rib;
+      }
       const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);
-      
+
       if ( dataToBeSubmitted.agentRib instanceof File || dataToBeSubmitted.hotelQuotation instanceof File ) {
         dispatch(uploadFile({data: dataToBeSubmitted, step: 'advance'}))
       }
@@ -145,14 +150,13 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
       }
     }
     else if (step === 5) { // --------------------------------------------------------------------------------
-      const formattedData = turnSignatureDataToDbFormat(data, userSignature);
 
-      const infosFile = formattedData.files.find((file) => file instanceof File);
-      if (formattedData.agentSignature instanceof File || infosFile instanceof File) {
-        dispatch(uploadFile({ data: formattedData, step: 'more-and-signature'}));
+      const infosFile = data.files.find((file) => file instanceof File);
+      if (data.agentSignature instanceof File || infosFile instanceof File) {
+        dispatch(uploadFile({ data: data, step: 'more-and-signature'}));
       } 
       else {
-        dispatch(update(formattedData));
+        dispatch(update(data));
       }
       
     }

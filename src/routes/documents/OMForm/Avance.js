@@ -27,6 +27,7 @@ import { getMaxMealsAndNights } from 'src/selectors/formValidationsFunctions';
 import { clearMessage } from 'src/reducer/app';
 import ApiResponse from 'src/components/ApiResponse';
 import { getSavedFileName } from '../../../selectors/formDataGetters';
+import { current } from '@reduxjs/toolkit';
 
 const Avance = ({ step }) => {
   // ATTENTION : lots of rendu
@@ -38,15 +39,14 @@ const Avance = ({ step }) => {
   
 
   const { app: { apiMessage, agentDocuments },
-    omForm: { omForm },
+    omForm: { omForm, currentOM },
   } = useSelector((state) => state);
 
-  
+  // console.log("om = ", currentOM);
   const defaultValues = omForm.find((omStep) => omStep.step === 'advance').data;
   
   const ribFileName = defaultValues.rib ? getSavedFileName(defaultValues.rib): '';
   const quotationFileName = defaultValues.hotelQuotation ? getSavedFileName(defaultValues.hotelQuotation): '';
-
 
   const {
     register,
@@ -60,9 +60,11 @@ const Avance = ({ step }) => {
   } = useForm({ defaultValues: {
     ...defaultValues,
     advance: defaultValues.totalAmount ? true : false,
+    mealsNumber: currentOM.accomodations.meals_paid_by_agent + currentOM.accomodations.meals_in_admin_restaurants,
+    nightsNumber: currentOM.accomodations.nights_number,
   }});
   
-  const [totalAmount] = watch(['totalAmount']);
+  const [totalAmount, savedRib] = watch(['totalAmount', 'savedRib']);
   
   const [isAdvanceRequested, setIsAdvanceRequested] = useState(defaultValues.totalAmount ? true : false);
 
@@ -100,19 +102,13 @@ const Avance = ({ step }) => {
       if (errorCount !== 0) {
         return;
       }
-
-      data.advanceAmount = Number(document.querySelector('#advance-amount').value);
-
-
+      
       if (data.savedRib) {
         data.rib = agentDocuments.rib;
       }
       
-      // We upload the hotel quotation first
-      data.meals = maxMealsNumber;
-      data.nights = Number(maxNightsNumber);
       data.status = 1;
-      const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);    
+      const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);  
       
       if ( dataToBeSubmitted.agentRib instanceof File || dataToBeSubmitted.hotelQuotation instanceof File) {
 
@@ -148,18 +144,13 @@ const Avance = ({ step }) => {
     setIsAdvanceRequested(event.target.checked);
   };
   
-  const [advance, setAdvance] = useState(defaultValues.advanceAmount ? defaultValues.advanceAmount : 0)
-
   useEffect(() => {
-    setAdvance((totalAmount * 75) / 100);
+    setValue('advanceAmount', (totalAmount * 75) / 100)
   }, [totalAmount]);
 
   const [hasNoRibSaved, setHasNoRibSaved] = useState(agentDocuments.rib === '' ? true : false);
-  const savedRib = watch('savedRib');
 
   useEffect(() => {
-    
-
     if (!savedRib) {
       setHasNoRibSaved(true);
     }
@@ -216,7 +207,7 @@ const Avance = ({ step }) => {
               <TextField
                 id="advance-amount"
                 disabled
-                value={advance}
+                // value={advance}
                 formField="advanceAmount"
                 register={register}
                 isNumber
@@ -244,25 +235,25 @@ const Avance = ({ step }) => {
             <div className='form__section-half'>
               <TextField
                 id="nights-field"
-                formField="nights"
+                formField="nightsNumber"
                 register={register}
                 isNumber
                 disabled
                 min="0"
-                value={maxNightsNumber}
+                // value={maxNightsNumber}
                 label="Nombre de nuits"
               />
             </div>
             <div className='form__section-half'>
               <TextField
                 id="meals-field"
-                formField="meals"
+                formField="mealsNumber"
                 register={register}
                 isNumber
                 disabled
                 min="0"
                 label="Nombre de repas"
-                value={maxMealsNumber}
+                // value={maxMealsNumber}
                 
               />
             </div>
