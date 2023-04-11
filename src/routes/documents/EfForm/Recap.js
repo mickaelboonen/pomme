@@ -12,10 +12,14 @@ import EfPDF from 'src/components/PDF/EfPDF';
 import { floatAddition, floatMultiplication, OTHER_MEALS_AMOUNT, ADMIN_MEALS_AMOUNT} from 'src/selectors/mathFunctions';
 
 import { getDDMMYYDate, getHHMMTime } from 'src/selectors/dateFunctions';
+import { uploadFile } from 'src/reducer/omForm'
+
 const Recap = () => {
 
   
   const dispatch = useDispatch();
+  const loaderData = useLoaderData();
+  const id = Number(loaderData.searchParams.get('id'));
 
   const { ef: { currentEf },
     app: { apiMessage, userSignature, countries },
@@ -48,8 +52,9 @@ const Recap = () => {
   
   
   const generatePDF = () => {
-    const file = getValues('om');
-    dispatch(uploadFile({ data: {docId: omId , file: file}, step: 'om'}))
+    const file = getValues('ef');
+    
+    dispatch(uploadFile({ data: {docId: id , file: file}, step: 'ef', docType: 'ef'}))
   }
 
   const missionCountry = countries.find((country) => country.code === Number(mission.country))
@@ -188,7 +193,7 @@ const Recap = () => {
               const file = new File([blob], currentEf.name, {type: 'pdf'});
               const fileUrl = URL.createObjectURL(file);
               
-              setValue('om', file);
+              setValue('ef', file);
               return (
                 <a href={fileUrl} download={currentEf.name + '.pdf'} style={{textAlign: 'center'}}>
                   <button type='button' files={file} onClick={generatePDF}>Valider les données et télécharger l'Ordre de Mission</button>

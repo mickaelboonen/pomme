@@ -5,7 +5,7 @@ import { toggleDocModal, saveAllPermDocs, saveAgentSignatureForPdf} from '../red
 import { setApiResponse } from 'src/reducer/app';
 import { updateEfMission, updateEfTransports } from 'src/reducer/ef';
 import { handleEfFilesUploadPayload } from 'src/selectors/fileFunctions';
-import { updateEfAccomodations, updateEfSignature } from '../reducer/ef';
+import { updateEfAccomodations, updateEfSignature, updateEf } from '../reducer/ef';
 
 
 fileApi.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -185,26 +185,16 @@ const omMiddleware = (store) => (next) => (action) => {
             }
           }
         }
+        else if (step === 'ef') {
+          filesToUpload.push({
+            docId: data.docId,
+            type: 'pdf-ef',
+            file: data.file,
+            user: user,
+          });
+        }
       }
       else if (type === 'authorization') {
-        // if (data.insurance instanceof File) {
-        //   const insurance = {
-        //     docId: data.docId,
-        //     type: 'insurance',
-        //     file: data.insurance,
-        //     user: user,
-        //   }
-        //   filesToUpload.push(insurance);
-        // }
-        // if (data.registration_document instanceof File) {
-        //   const registrationDocument = {
-        //     docId: data.docId,
-        //     type: 'registration',
-        //     file: data.registration_document,
-        //     user: user,
-        //   }
-        //   filesToUpload.push(registrationDocument);
-        // }
         filesToUpload.push({
           docId: data.docId,
           type: 'auth-pdf',
@@ -222,7 +212,7 @@ const omMiddleware = (store) => (next) => (action) => {
         });
       }
       console.log('filesToUpload - ', filesToUpload);
-      // return;
+      
       
       // TODO : See if POST method is the right one ? Methods that can add files (post) and delete them (delete)
       fileApi.post(`/api/files/${type}/${step}`, filesToUpload)
@@ -332,6 +322,9 @@ const omMiddleware = (store) => (next) => (action) => {
               else if (file.type === 'rib') {
                 data[file.name] = file.file.url;
               }
+              else if (file.type === 'pdf-ef') {
+                data.url = file.file.url;
+              }
             })
 
             // Now updates the transports values in the database
@@ -352,6 +345,10 @@ const omMiddleware = (store) => (next) => (action) => {
             else if (step === 'signature') {
               console.log('before update : ', data);
               store.dispatch(updateEfSignature(data));
+            }
+            else if (step === 'ef') {
+              console.log('before update : ', data);
+              store.dispatch(updateEf(data));
             }
           }
           else if (type === 'authorization') {

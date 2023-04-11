@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
 const object = require('lodash/fp/object');
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -24,12 +24,23 @@ const Steps = ({ step }) => {
   const dispatch = useDispatch();
   const loader = useLoaderData();
   const efId = loader.searchParams.get('id');
+  const navigate = useNavigate();
 
   const { app: { apiMessage },
     agent: {agent : { unimesStatus }},
     ef: { currentEf }
   } = useSelector((state) => state);
   
+  useEffect(() => {
+    if (step === 4 && !currentEf.has_steps && !currentEf.is_teaching) {
+      const stepIndex = loader.search.indexOf(4);
+      let redirectUrl = loader.pathname;
+      redirectUrl+= loader.search.slice(0, 7) + 5 + loader.search.slice(stepIndex + 1);
+
+      navigate(redirectUrl)
+    }
+  }, [])
+
   const isVacataire = currentEf.is_teaching;
   
   const { stages } = currentEf;

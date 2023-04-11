@@ -186,6 +186,7 @@ const efSlice = createSlice({
       updateEfAccomodations: () => {},
       getEfAccomodations: () => {},
       updateEfSignature: () => {},
+      updateEf: () => {},
       saveMissionFormData: (state, action) => {
         
         let currentIndex;
@@ -263,6 +264,7 @@ export const {
   saveEfAccomodations,
   updateEfSignature,
   clearEfTarget,
+  updateEf
 } = efSlice.actions;
 
 export default efSlice.reducer;

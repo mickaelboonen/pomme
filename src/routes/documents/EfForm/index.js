@@ -33,17 +33,6 @@ const EfForm = () => {
   const { ef: { efLoader, currentEf },
     app: { apiMessage },
   } = useSelector((state) => state);
-
-  useEffect(() => {
-    if (step === 4 && !currentEf.currentEf.has_steps && !currentEf.is_teaching) {
-      const stepIndex = loaderData.search.indexOf(4);
-      let redirectUrl = loaderData.pathname;
-      redirectUrl+= loaderData.search.slice(0, 7) + 5 + loaderData.search.slice(stepIndex + 1);
-
-      navigate(redirectUrl)
-    }
-  }, [])
-
   
   useEffect(() => {
     if (apiMessage.response && apiMessage.response.status === 200) {
@@ -52,8 +41,18 @@ const EfForm = () => {
         dispatch(clearMessage());
       }, "950")
       setTimeout(() => {
-        const nextStep = step + 1;
-        navigate(loaderData.pathname + '?etape=' + nextStep + '&id=' + id + '&om=' + om);
+        let nextStep = step + 1;
+
+        if (nextStep === 4 && (!currentEf.has_steps || !currentEf.is_teaching)) {
+          nextStep = 5;
+        }
+        
+        if (nextStep === 7) {
+          navigate('/');
+        }
+        else {
+          navigate(loaderData.pathname + '?etape=' + nextStep + '&id=' + id + '&om=' + om);
+        }
       }, "1000")
     }
   }, [apiMessage]);
@@ -93,9 +92,9 @@ const EfForm = () => {
     },
   ];
 
-  if (!currentEf.has_steps && !currentEf.is_teaching) {
-    tabs = tabs.filter((tab) => tab.id !== 4);
-  }
+  // if (!currentEf.has_steps && !currentEf.is_teaching) {
+  //   tabs = tabs.filter((tab) => tab.id !== 4);
+  // }
   return (
     <div className='form-root'>
       <ThreadAsTabs step={step} tabs={tabs} urlData={loaderData} />
@@ -106,9 +105,10 @@ const EfForm = () => {
           {(step === 1 && !efLoader) && <Mission step={step} isEfForm />}
           {(step === 2 && !efLoader) && <Transports step={step} />}
           {(step === 3 && !efLoader) && <Accomodations step={step} />}
-          {((step === 4 && !efLoader) &&  (currentEf.has_steps || currentEf.is_teaching))  && <Steps step={step} />}
+          {/* {((step === 4 && !efLoader) &&  (currentEf.has_steps || currentEf.is_teaching))  && <Steps step={step} />} */}
+          {((step === 4 && !efLoader))  && <Steps step={step} />}
           {(step === 5 && !efLoader) && <Signature step={step} />}
-          {(step === 6 && !efLoader && docState.length === 0) && <Recap step={step} />}
+          {(step === 6 && !efLoader && docState.length === 0) && <Recap />}
           {(step === 6 && !efLoader && docState.length > 0) && <DocMissingStepsRecap url={loaderData} id={id} docState={docState} /> }
         </div>
       </div>
