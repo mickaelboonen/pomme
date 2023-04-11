@@ -30,7 +30,7 @@ import { getSavedFileName } from '../../../selectors/formDataGetters';
 
 const Avance = ({ step }) => {
   // ATTENTION : lots of rendu
-  const navigate = useNavigate();
+  console.log('rendu');
   const dispatch = useDispatch();
   const loader = useLoaderData();
   const omId = loader.searchParams.get('id');
@@ -57,15 +57,18 @@ const Avance = ({ step }) => {
     clearErrors,
     formState:
     { errors },
-  } = useForm({ defaultValues: defaultValues});
+  } = useForm({ defaultValues: {
+    ...defaultValues,
+    advance: defaultValues.totalAmount ? true : false,
+  }});
   
-  const [total] = watch(['total']);
+  const [totalAmount] = watch(['totalAmount']);
   
-  const [isAdvanceRequested, setIsAdvanceRequested] = useState(defaultValues.advance);
+  const [isAdvanceRequested, setIsAdvanceRequested] = useState(defaultValues.totalAmount ? true : false);
 
   const onSubmit = (data) => {
     // If the user is requesting an advance
-    console.log('PLOP : ', data);
+    console.log('SUBMITTED DATA : ', data);
     
     if (data.advance) {
 
@@ -86,12 +89,12 @@ const Avance = ({ step }) => {
         clearErrors('rib');
       }
 
-      if (data.otherExpensesAmount > 0 && data.otherExpensesNames === '') {
-        setError('otherExpensesNames', { type: 'custom', message: "Merci de justifier le montant des autres frais." });
+      if (data.otherExpensesAmount > 0 && data.otherExpensesJustitication === '') {
+        setError('otherExpensesJustitication', { type: 'custom', message: "Merci de justifier le montant des autres frais." });
         errorCount++;
       }
       else {
-        clearErrors('otherExpensesNames');
+        clearErrors('otherExpensesJustitication');
       }
 
       if (errorCount !== 0) {
@@ -120,11 +123,23 @@ const Avance = ({ step }) => {
       }
     }
     else {
+
+      const noAdvanceData = {
+        id: data.id,
+        docId: data.docId,
+        advanceAmount: null,
+        totalAmount: null,
+        hotelQuotation: null,
+        nightsNumber: null,
+        mealsNumber: null,
+        otherExpensesAmount: null,
+        otherExpensesJustification: null,
+        agentRib: null,
+        agentSignature: null,
+        status: 1,
+      }
       
-      data.status = 1;
-      
-      const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);
-      dispatch(updateAdvance(dataToBeSubmitted));
+      dispatch(updateAdvance(noAdvanceData));
     }
   };
 
@@ -136,15 +151,8 @@ const Avance = ({ step }) => {
   const [advance, setAdvance] = useState(defaultValues.advanceAmount ? defaultValues.advanceAmount : 0)
 
   useEffect(() => {
-
-    if (total) {
-      // const advanceInput = document.getElementById('advance-amount');
-      const advance = (total * 75) / 100;
-      setAdvance(advance);
-      // advanceInput.max = advance;
-      // advanceInput.placeholder= "Limite de l'avance : " + advance + " euros."
-    }
-  }, [total]);
+    setAdvance((totalAmount * 75) / 100);
+  }, [totalAmount]);
 
   const [hasNoRibSaved, setHasNoRibSaved] = useState(agentDocuments.rib === '' ? true : false);
   const savedRib = watch('savedRib');
@@ -195,13 +203,13 @@ const Avance = ({ step }) => {
             <div className='form__section-half'>
               <TextField
                 id="total-amount"
-                formField="total"
+                formField="totalAmount"
                 register={register}
                 required="Merci de renseigner le montant total de la mission."
                 isNumber
                 min="0"
                 label="Montant total de la mission"
-                error={errors.total}
+                error={errors.totalAmount}
               />
             </div>
             <div className='form__section-half'>
@@ -273,11 +281,11 @@ const Avance = ({ step }) => {
             <div className='form__section-half'>
               <TextareaField
                 id="other-expenses-name-field"
-                formField="otherExpensesNames"
+                formField="otherExpensesJustification"
                 register={register}
                 rows={3}
                 label="Justification des autres frais"
-                error={errors.otherExpensesNames}
+                error={errors.otherExpensesJustification}
               />
             </div>
           </div>

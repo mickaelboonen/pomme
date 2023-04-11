@@ -186,31 +186,17 @@ const router = createBrowserRouter([
               const id = url.searchParams.get("id");
 
               const { agent : { user, agent } } = store.getState((state) => state);
+           
+              store.dispatch(fetchOm({id: id, handleLoader: false,}));
 
-              // TODO : faire la requete pour aller chercher la donnée selon l'id et l'étape
-            
               if (step === '1') {
-                store.dispatch(fetchOm({id: id, handleLoader: false,}));
                 store.dispatch(fetchCountries());
-                store.dispatch(getMission({id: id, handleEfLoader: false }));
-              }
-              else if (step === '2') {
-                // store.dispatch(getVehicles());
-                store.dispatch(getTransports(id));
-              }
-              else if (step === '3') {
-                store.dispatch(getAccomodations(id));
-                store.dispatch(getMission({id: id, handleEfLoader: false }));
-                
               }
               else if (step === '4') {
                 store.dispatch(getDocument({id: user, type: 'rib'}));
-                store.dispatch(getAdvance(id));
-                store.dispatch(getMission({id: id, handleEfLoader: false }));
               }
               else if (step === '5') {
                 store.dispatch(getSignature(user));
-                store.dispatch(getMore(id));
               }
               else if (step === '6') {
                 
@@ -219,9 +205,6 @@ const router = createBrowserRouter([
                 if (!agent.hasOwnProperty('lastname')) {
                   store.dispatch(fetchUserData({ id: user}));
                 }
-
-
-                // store.dispatch(fetchUserData({ id: user}));
               }
               
             return url;  

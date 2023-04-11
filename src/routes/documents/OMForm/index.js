@@ -114,11 +114,11 @@ const OMForm = () => {
     }
   }, [apiMessage]);
 
-  useEffect(() => {
-    if (!currentOM.hasOwnProperty('status')) {
-      dispatch(fetchOm({id: id, handleLoader: false,}));
-    }
-  }, [currentOM]);
+  // useEffect(() => {
+  //   if (!currentOM.hasOwnProperty('status')) {
+  //     dispatch(fetchOm({id: id, handleLoader: false,}));
+  //   }
+  // }, [currentOM]);
   
   return (
     <>

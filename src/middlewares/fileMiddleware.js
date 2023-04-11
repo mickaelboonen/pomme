@@ -46,17 +46,17 @@ const omMiddleware = (store) => (next) => (action) => {
           }
         }
         else if (step === "advance") {
-          if (data.hotelQuotation && typeof data.hotelQuotation !== 'string') {
+          if (data.hotelQuotation instanceof File) {
             const hotelQuotation = {
-              omId: data.docId,
+              docId: data.docId,
               type: 'hotel-quotation',
               file: data.hotelQuotation,
             }
             filesToUpload.push(hotelQuotation);
           }
-          if (data.agentRib && typeof data.agentRib !== 'string') {
+          if (data.agentRib instanceof File) {
             const rib = {
-              omId: data.docId,
+              docId: data.docId,
               type: 'rib',
               file: data.agentRib,
             }

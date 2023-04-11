@@ -123,7 +123,7 @@ export const turnTransportsDataToAppFormat = (data) => {
     others:  [],
     dispensations:  data.dispensations,
     authorizations:  data.authorizations,
-    omId: data.om.id,
+    // omId: data.om.id,
     vehicleAuthorizationFile: null,
     vehicleAuthorizationFileForValidation: false,
     dispensation: null,
@@ -155,9 +155,7 @@ export const turnTransportsDataToAppFormat = (data) => {
       }
     });
   }
-
-  console.log(data);
-  console.log('----------------------------------------------');
+  
   if (data.authorizations.length > 0) {
     const { type, file } = data.authorizations[0];
     
@@ -238,19 +236,19 @@ export const turnAdvanceDataToDbFormat = (data) => {
     docId, status,
     meals, nights,
     hotelQuotation, rib,
-    total, advanceAmount,
-    otherExpensesAmount, otherExpensesNames,
+    totalAmount, advanceAmount,
+    otherExpensesAmount, otherExpensesJustitication,
   } = data;
 
   const dataToBeSubmitted = {
     docId: docId,
     advanceAmount: advanceAmount === "" ? 0 : advanceAmount,
-    totalAmount: total,
+    totalAmount: totalAmount,
     hotelQuotation: null,
     nightsNumber: nights,
     mealsNumber: meals,
     otherExpensesAmount: otherExpensesAmount === "" ? 0 : otherExpensesAmount,
-    otherExpensesJustification :otherExpensesNames === "" ? 0 : otherExpensesNames,
+    otherExpensesJustification :otherExpensesJustitication === "" ? 0 : otherExpensesJustitication,
     agentRib: null,
     status: status,
 

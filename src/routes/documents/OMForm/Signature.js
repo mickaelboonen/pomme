@@ -35,12 +35,12 @@ const Signature = ({ step }) => {
   const defaultValues = omForm.find((omStep) => omStep.step === 'signature').data;
   
   let fileNames= '';
-  
-  if (defaultValues.otherFiles.length === 1) {
-    fileNames = getSavedFileName(defaultValues.otherFiles[0]);
+  console.log(defaultValues);
+  if (defaultValues.files.length === 1) {
+    fileNames = getSavedFileName(defaultValues.files[0]);
   }
-  else if (defaultValues.otherFiles.length > 1) {
-    defaultValues.otherFiles.forEach((file) => {
+  else if (defaultValues.files.length > 1) {
+    defaultValues.files.forEach((file) => {
       fileNames += getSavedFileName(file) + ' - ';
     })
   }
@@ -61,21 +61,17 @@ const Signature = ({ step }) => {
   } = useForm({ defaultValues: defaultValues });
   
   const onSubmit = (data) => {
-    console.log(data);
-    console.log("-------------------------------------------------");
-    const formattedData = turnSignatureDataToDbFormat(data, userSignature);
 
-    // return;
+    data.status = 1;
+    const infosFile = data.files.find((file) => file instanceof File);
+
     if (data.savedSignature) {
 
-      const infosFile = formattedData.files.find((file) => file instanceof File);
-
-      formattedData.status = 1;
-      if (formattedData.agentSignature instanceof File || infosFile instanceof File) {
-        dispatch(uploadFile({ data: formattedData, step: 'more-and-signature'}));
+      if (data.agentSignature instanceof File || infosFile instanceof File) {
+        dispatch(uploadFile({ data: data, step: 'more-and-signature'}));
       } 
       else {
-        dispatch(updateMoreAndSignature(formattedData));
+        dispatch(updateMoreAndSignature(data));
       }
     }
     else {
@@ -84,15 +80,12 @@ const Signature = ({ step }) => {
         setError('signature', { type: 'custom', message: "Merci de signer votre ordre de mission." });
         return;
       }
-
-      formattedData.status = 1;
-
-      const infosFile = formattedData.files.find((file) => file instanceof File);
-      if (formattedData.agentSignature instanceof File || infosFile instanceof File) {
-        dispatch(uploadFile({ data: formattedData, step: 'more-and-signature'}));
+      
+      if (data.agentSignature instanceof File || infosFile instanceof File) {
+        dispatch(uploadFile({ data: data, step: 'more-and-signature'}));
       } 
       else {
-        dispatch(updateMoreAndSignature(formattedData));
+        dispatch(updateMoreAndSignature(data));
       }
     }
   };
@@ -148,7 +141,7 @@ const Signature = ({ step }) => {
         <FormSectionTitle>Autres</FormSectionTitle>
         <TextareaField 
           register={register}
-          formField="otherInfos"
+          formField="informations"
           id="other"
           label="Autres renseignements utiles"
           placeholder="Tout renseignements utiles, des cas articuliers non pris en charge par le formulaire"
@@ -156,7 +149,7 @@ const Signature = ({ step }) => {
         <FileField 
           setValue={setValue}
           register={register}
-          formField="otherFiles"
+          formField="files"
           id="other"
           multiple
           fileName={fileNames}

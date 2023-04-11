@@ -190,6 +190,13 @@ const omFormSlice = createSlice({
       updateMission: () => {},
       saveOm: (state, action) => {
         state.currentOM = action.payload;
+        state.omForm[0].data = declareCamelCaseKeys(action.payload.mission);
+        state.omForm[1].data = turnTransportsDataToAppFormat(declareCamelCaseKeys(action.payload.transports));
+        state.omForm[2].data = declareCamelCaseKeys(action.payload.accomodations);
+        state.omForm[3].data = declareCamelCaseKeys(action.payload.advance);
+        state.omForm[4].data = declareCamelCaseKeys({...action.payload.signature, ...action.payload.more});
+        
+        state.omLoader = false;
       },
       saveNewOm: (state, action) => {
         state.currentOM = action.payload;
@@ -245,6 +252,7 @@ const omFormSlice = createSlice({
       },
       saveAdvance: (state, action) => {
         const dataForApp = declareCamelCaseKeys(action.payload);
+        
         const dataForTheComponent =  {
           advance: false,
           savedRib: false,
@@ -253,7 +261,7 @@ const omFormSlice = createSlice({
           advanceAmount: dataForApp.advanceAmount,
           hotelQuotation: dataForApp.hotelQuotation,
           otherExpensesAmount: dataForApp.otherExpensesAmount,
-          otherExpensesNames: dataForApp.otherExpensesJustitication,
+          otherExpensesJustitication: dataForApp.otherExpensesJustitication,
           rib: dataForApp.agentRib,
         }
 
