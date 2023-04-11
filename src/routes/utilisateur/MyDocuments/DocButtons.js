@@ -84,8 +84,8 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
           }
         }
       })}
-      {downloadFileStatusArray.indexOf(status) >= 0 && <a href={file} download={name + '.pdf'} style={{textAlign: 'center'}}> <FaDownload className='my-documents__files-buttons-icon' /> Ordre de Mission</a>}
-      {downloadFileStatusArray.indexOf(status) >= 0 && transports.dispensations.map((dispensation) => (
+      {downloadFileStatusArray.indexOf(status) >= 0 && <a href={file} download={name + '.pdf'} style={{textAlign: 'center'}}> <FaDownload className='my-documents__files-buttons-icon' /> {isOm ? 'Ordre de Mission' : 'État de Frais'}</a>}
+      {isOm && downloadFileStatusArray.indexOf(status) >= 0 && transports.dispensations.map((dispensation) => (
         <a
           key={dispensation.id}
           href={dispensation.file}
@@ -94,7 +94,7 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
           <FaDownload className='my-documents__files-buttons-icon' /> Dérogation au GDM
         </a>
       ))}
-      {downloadFileStatusArray.indexOf(status) >= 0 && transports.authorizations.length > 0 && transports.authorizations[0].file !== "pending" && (
+      {isOm && downloadFileStatusArray.indexOf(status) >= 0 && transports.authorizations.length > 0 && transports.authorizations[0].file !== "pending" && (
         <a
           key={transports.authorizations[0].id}
           href={transports.authorizations[0].file}

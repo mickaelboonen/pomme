@@ -86,7 +86,7 @@ const MyDocuments = () => {
     dispatch(toggleModal())
   }
 
-  const steps = [
+  let steps = [
     {
       name: 'mission',
       status: (currentDoc.hasOwnProperty('mission') && currentDoc.mission.status) ? currentDoc.mission.status : false
@@ -104,10 +104,22 @@ const MyDocuments = () => {
       status: (currentDoc.hasOwnProperty('advance') && currentDoc.advance.status) ? currentDoc.advance.status : false
     },
     {
+      name: 'étapes',
+      status: null
+    },
+    {
       name: 'signature',
       status: (currentDoc.hasOwnProperty('signature') && currentDoc.signature.status) ? currentDoc.signature.status : false
     },
   ]
+
+  if (!isOm) {
+    steps = steps.filter((step) => step.name !== 'avance')
+  }
+  else {
+    
+    steps = steps.filter((step) => step.name !== 'étapes')
+  }
 
   const omThatCanBeRefunded = userOms.filter((om) => om.status === 2);
 
