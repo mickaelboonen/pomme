@@ -38,7 +38,6 @@ const Mission = ({ step, isEfForm }) => {
   const docId = loader.searchParams.get('id');
   const areWeUpdatingData = loader.pathname.includes('modifier');
   
-
   const { app: { apiMessage, countries},
     agent: { user, agent },
     omForm: { currentOM, omForm },
@@ -75,13 +74,8 @@ const Mission = ({ step, isEfForm }) => {
     }
     else {
       defaultValues =  declareCamelCaseKeys(currentOM.mission);
-      // TODO ; check si ok en dessous
-      // defaultValues =  turnAddressToFields(defaultValues);
-    }
-    // defaultValues =  declareCamelCaseKeys(currentOM.mission);
-    // defaultValues =  turnAddressToFields(defaultValues);
+    };
   }
-  // else, default values are from the om mission entity
   else {
     defaultValues = omForm.find((omStep) => omStep.step === 'mission').data;
   }

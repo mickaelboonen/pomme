@@ -39,7 +39,7 @@ const Modal = ({ target, user, userOms, agent}) => {
   const close = () => {
     dispatch(toggleModal());
   }
-
+  
   const onSubmit = (data) => {
     
     if (isOm) {
@@ -55,8 +55,12 @@ const Modal = ({ target, user, userOms, agent}) => {
       dispatch(addNewOM(newOM)); 
     }
     else {
+      const splitName = userOms.find((om) => om.id === Number(data.om)).name.split('-');
+      splitName[1] = 'EF';
+      const efName = splitName.join('-');
+      
       const newEF = {
-        name: `État-de-Frais-${agent.lastname.toUpperCase()}`,
+        name: efName,
         status: 1,
         url: 'path',
         missioner: user,

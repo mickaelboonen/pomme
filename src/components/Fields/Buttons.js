@@ -31,14 +31,11 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
     // Since we're are not validating fields here, we set the status to false so the user will know it has been verified
     data.status = 0;
     
-    
     for (const [key, value] of Object.entries(data)) {
       if (key.includes('_')) {
         delete data[key];
       }
     }
-
-    // trigger();
     
     if (step === 1) { // --------------------------------------------------------------------------------
 
@@ -82,6 +79,8 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
           dispatch(update(dataToBeSubmitted));
         }
       }
+      // console.log(url);
+      navigate(url.pathname + url.search)
     }
     else if (step === 2) { // --------------------------------------------------------------------------------
       
