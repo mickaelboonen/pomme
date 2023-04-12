@@ -34,6 +34,15 @@ const omMiddleware = (store) => (next) => (action) => {
             }
             filesToUpload.push(transportDispensation);
           }
+        
+          if (data.taxiDispensation instanceof File) {
+            const taxiDispensation = {
+              docId: data.docId,
+              type: 'taxi-dispensation',
+              file: data.taxiDispensation,
+            }
+            filesToUpload.push(taxiDispensation);
+          }
           
           
           if (data.vehicleAuthorization instanceof File) {
@@ -46,14 +55,17 @@ const omMiddleware = (store) => (next) => (action) => {
           }
         }
         else if (step === "advance") {
-          if (data.hotelQuotation instanceof File) {
-            const hotelQuotation = {
-              docId: data.docId,
-              type: 'hotel-quotation',
-              file: data.hotelQuotation,
+          data.hotelQuotations.forEach((file) => {
+            if (file instanceof File) {
+              const fileToUpload = {
+                docId: data.docId,
+                type: 'hotel-quotation',
+                file: file,
+              }
+              filesToUpload.push(fileToUpload);
             }
-            filesToUpload.push(hotelQuotation);
-          }
+          })
+
           if (data.agentRib instanceof File) {
             const rib = {
               docId: data.docId,
@@ -194,6 +206,9 @@ const omMiddleware = (store) => (next) => (action) => {
             else if (step === 'mission') {
               data.missionPurposeFile = [];
             }
+            else if (step === 'hotel-quotation') {
+              data.hotelQuotations = [];
+            }
             
             // Retrieving the url for each file and assigning it to the right property
             response.data.forEach((file) => {
@@ -201,11 +216,16 @@ const omMiddleware = (store) => (next) => (action) => {
               if (file.type === 'transport-dispensation') {
                 data.transportDispensation = file.file.url;
               }
+              else if (file.type === 'taxi-dispensation') {
+                data.taxiDispensation = file.file.url;
+              }
               else if (file.type === 'vehicle-authorization') {
                 data.vehicleAuthorization = file.file.url;
               }
               else if (file.type === 'hotel-quotation') {
-                data.hotelQuotation = file.file.url;
+                console.log('immapush : ', file.file.url);
+                data.hotelQuotations.push(file.file.url);
+                console.log("data.hotelQuotations : ", data.hotelQuotations);
               }
               else if (file.type === 'rib') {
                 data.agentRib = file.file.url;
@@ -240,6 +260,9 @@ const omMiddleware = (store) => (next) => (action) => {
             }
             else if (step === 'advance') {
               delete data.advance;
+              console.log('--------------------------------------------------------------------');
+              console.log(data);
+              data.hotelQuotations = data.hotelQuotations.filter((file) => typeof file === 'string')
               console.log('before update : ', data);
               store.dispatch(updateAdvance(data));
             }

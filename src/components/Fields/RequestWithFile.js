@@ -78,16 +78,20 @@ const RequestWithFile = ({
           />
         )}
         {permanentOm && <span className="form__section-container-options__separator">OU</span>}
-        <div className="form__section-field">
-          <CheckboxInput
-            id={id + '-for-validation-field'}
-            formField={id + 'ForValidation'}
-            label="Demande en cours"
-            register={register}
-            columnDisplay
-          />
-        </div>
-        <span className="form__section-container-options__separator">OU</span>
+        {id === "vehicleAuthorizationFile" && (
+          <>
+            <div className="form__section-field">
+              <CheckboxInput
+                id={id + '-for-validation-field'}
+                formField={id + 'ForValidation'}
+                label="Demande en cours"
+                register={register}
+                columnDisplay
+              />
+            </div>
+            <span className="form__section-container-options__separator">OU</span>
+          </>
+        )}
         <div className="form__section-container-button">
           <Link id={id + '-link'} to={link}>FAIRE LA DEMANDE</Link>
         </div>

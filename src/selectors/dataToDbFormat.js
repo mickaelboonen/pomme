@@ -221,11 +221,13 @@ export const turnTransportsDataToAppFormat = (data) => {
     dataForTheComponent.vehicleAuthorizationFile = data.vehicleAuthorization;
   }
 
-  if (data.transportDispensation === 'pending') {
-    dataForTheComponent.dispensationForValidation = true;
-  }
-  else if (data.transportDispensation !== null) {
+  if (data.transportDispensation !== null) {
     dataForTheComponent.dispensation = data.transportDispensation;
+  }
+
+  if (data.taxiDispensation !== null) {
+    dataForTheComponent.taxiDispensation = data.taxiDispensation;
+    dataForTheComponent.others.push('taxi');
   }
   
   return dataForTheComponent;
@@ -242,7 +244,7 @@ export const turnAdvanceDataToDbFormat = (data) => {
   const {
     docId, status,
     mealsNumber, nightsNumber,
-    hotelQuotation, rib,
+    hotelQuotations, rib,
     totalAmount, advanceAmount,
     otherExpensesAmount, otherExpensesJustification,
   } = data;
@@ -251,7 +253,7 @@ export const turnAdvanceDataToDbFormat = (data) => {
     docId: docId,
     advanceAmount: advanceAmount === "" ? 0 : advanceAmount,
     totalAmount: totalAmount,
-    hotelQuotation: null,
+    hotelQuotations: hotelQuotations,
     nightsNumber: nightsNumber,
     mealsNumber: mealsNumber,
     otherExpensesAmount: otherExpensesAmount === "" ? 0 : otherExpensesAmount,
@@ -264,9 +266,6 @@ export const turnAdvanceDataToDbFormat = (data) => {
 
   if (data.rib instanceof File || typeof data.rib === 'string') {
     dataToBeSubmitted.agentRib = rib
-  }
-  if (data.hotelQuotation instanceof File || typeof data.hotelQuotation === 'string') {
-    dataToBeSubmitted.hotelQuotation = hotelQuotation
   }
   
   return dataToBeSubmitted;

@@ -164,7 +164,7 @@ const Derogation = () => {
                 <BlobProvider document={<DispensationPdf agentSignature={agentSignature} agent={agent} data={watch()}/>}>
                   {({ blob }) => {
       
-                    const file = new File([blob], new Date().toLocaleDateString() + '-demande-d-autorisation-de-véhicule', {type: 'pdf'});
+                    const file = new File([blob], new Date().toLocaleDateString() + dispensationTitle.replace(' ', '-'), {type: 'pdf'});
                     const fileUrl = URL.createObjectURL(file);
                     
                     return (

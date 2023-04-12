@@ -46,8 +46,20 @@ const Avance = ({ step }) => {
   const defaultValues = omForm.find((omStep) => omStep.step === 'advance').data;
   
   const ribFileName = defaultValues.rib ? getSavedFileName(defaultValues.rib): '';
-  const quotationFileName = defaultValues.hotelQuotation ? getSavedFileName(defaultValues.hotelQuotation): '';
+  let quotationFileName = '';
+  
+  if (defaultValues.hotelQuotations) {
+    defaultValues.hotelQuotations.forEach((file) => {
 
+      quotationFileName += getSavedFileName(file);
+
+      if (defaultValues.hotelQuotations.length > 1) {
+        quotationFileName += ' - ';
+      }
+    })
+  }
+
+  console.log(defaultValues);
   const {
     register,
     handleSubmit,
@@ -75,8 +87,8 @@ const Avance = ({ step }) => {
     if (data.advance) {
 
       let errorCount = 0;
-      if (!data.hotelQuotation || data.hotelQuotation.length === 0) {
-        setError('hotelQuotation', { type: 'custom', message: "Merci de fournir le devis de l'hôtel." });
+      if (!data.hotelQuotations || data.hotelQuotations.length === 0) {
+        setError('hotelQuotations', { type: 'custom', message: "Merci de fournir le devis de l'hôtel." });
         errorCount++;
       }
       else {
@@ -110,7 +122,7 @@ const Avance = ({ step }) => {
       data.status = 1;
       const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);  
       
-      if ( dataToBeSubmitted.agentRib instanceof File || dataToBeSubmitted.hotelQuotation instanceof File) {
+      if ( dataToBeSubmitted.agentRib instanceof File || dataToBeSubmitted.hotelQuotations.find((file) => file instanceof File)) {
 
         dispatch(uploadFile({data: dataToBeSubmitted, step: 'advance'}))
       }
@@ -223,12 +235,13 @@ const Avance = ({ step }) => {
             <FileField
               setValue={setValue}
               register={register}
-              formField="hotelQuotation"
+              multiple
+              formField="hotelQuotations"
               id="hotel-quote-file-field"
               label="Devis de l'hôtel"
               fileName={quotationFileName}
               // required="Merci de fournir le devis de l'hôtel."
-              error={errors.hotelQuotation}
+              error={errors.hotelQuotations}
             />
           </div>
           <div className="form__section form__section--documents">
@@ -284,16 +297,6 @@ const Avance = ({ step }) => {
 
           <div className="form__section">
             <FormSectionTitle>Documents personnels</FormSectionTitle>
-            {/* <FileField
-              setValue={setValue}
-              register={register}
-              formField="rib"
-              id="rib-file-field"
-              label="RIB"
-              fileName={ribFileName}
-              error={errors.rib}
-              // required="Veuillez fournir votre RIB."            
-            /> */}
             {agentDocuments.rib && (
               <div className="form__section-field">
                 <CheckboxInput
