@@ -26,9 +26,9 @@ const omMiddleware = (store) => (next) => (action) => {
       
         if (step === "transports") {
         
-          if (data.transportDispensation && typeof data.transportDispensation !== 'string') {
+          if (data.transportDispensation instanceof File) {
             const transportDispensation = {
-              omId: data.docId,
+              docId: data.docId,
               type: 'transport-dispensation',
               file: data.transportDispensation,
             }
@@ -36,9 +36,9 @@ const omMiddleware = (store) => (next) => (action) => {
           }
           
           
-          if (data.vehicleAuthorization &&typeof data.vehicleAuthorization !== 'string') {
+          if (data.vehicleAuthorization instanceof File) {
             const vehicleAuthorization = {
-              omId: data.docId,
+              docId: data.docId,
               type: 'vehicle-authorization',
               file: data.vehicleAuthorization,
             }
@@ -76,7 +76,7 @@ const omMiddleware = (store) => (next) => (action) => {
           data.files.forEach((file) => {
             if (file instanceof File) {
               const fileToUpload = {
-                omId: data.docId,
+                docId: data.docId,
                 type: 'more',
                 file: file,
               }
@@ -147,42 +147,6 @@ const omMiddleware = (store) => (next) => (action) => {
               file: data.agentSignature,
             }
             filesToUpload.push(fileToUpload);
-          }
-        }
-        else if (type === 'authorization') {
-
-          if (step === 'authorization') {
-
-            if (data.externalSignature instanceof File) {
-              const signature = {
-                omId: data.docId,
-                type: 'externalSignature',
-                user: user,
-                file: data.externalSignature,
-              }
-              filesToUpload.push(signature);
-            }
-
-            if (data.registration_document instanceof File) {
-
-                const registration = {
-                  omId: data.docId,
-                  type: 'registration',
-                  user: user,
-                  file: data.registration_document,
-                }
-                filesToUpload.push(registration);
-            }
-
-            if (data.insurance instanceof File) {
-                const insurance = {
-                  omId: data.docId,
-                  type: 'insurance',
-                  user: user,
-                  file: data.insurance,
-                }
-                filesToUpload.push(insurance);
-            }
           }
         }
         else if (step === 'ef') {

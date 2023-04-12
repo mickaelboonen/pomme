@@ -73,7 +73,7 @@ const OMForm = () => {
           status: (currentOM.hasOwnProperty('signature') && currentOM.signature.status) ? currentOM.signature.status : false
         },
       ];
-      
+      console.log("CURRENT OM = ", currentOM);
       const unfinishedStep = omStepsWithStatus.filter((step) => !step.status);
 
       console.log(unfinishedStep);

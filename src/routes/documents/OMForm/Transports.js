@@ -21,7 +21,6 @@ import RequestWithFile from 'src/components/Fields/RequestWithFile';
 
 // Actions
 import { updateTransports, uploadFile} from 'src/reducer/omForm';
-import { clearMessage } from 'src/reducer/app';
 
 // Selectors
 import { turnTransportsDataToDbFormat } from 'src/selectors/dataToDbFormat';
@@ -44,6 +43,8 @@ const Transports = ({ step }) => {
   
   const defaultValues = omForm.find((omStep) => omStep.step === 'transports').data;
 
+  console.log(defaultValues);
+
   const {
     register,
     setValue,
@@ -57,6 +58,16 @@ const Transports = ({ step }) => {
   
   const onSubmit = (data) => {
     console.log(data);
+
+    if (data.trainClass === 'no-train') {
+      data.trainClass = null;
+      data.trainPayment = null;
+    }
+    if (data.planeClass === 'no-plane') {
+      data.planeClass = null;
+      data.planePayment = null;
+    }
+    
     // If no transports have been chosen
     if (data.trainClass === null && data.planeClass === null &&  data.vehicle === null) {
       setError('transports', { type: 'custom', message: 'Vous devez choisir un moyen de transport pour vous rendre sur le lieu de la mission.' });
@@ -94,8 +105,7 @@ const Transports = ({ step }) => {
 
         // Formats the data for the database
         const databaseData = turnTransportsDataToDbFormat(data);
-        // return;
-
+        
         // If any file has been selected (for the train, plane or car), we upload it
         if (databaseData.transportDispensation instanceof File || databaseData.vehicleAuthorization instanceof File || databaseData.taxiDispensation instanceof File ) {
           
@@ -191,8 +201,7 @@ const Transports = ({ step }) => {
 
     clearErrors('transports');
   }, [trainClass, planeClass])
-
-  let vehicleTypeTarget = null;
+  
   /**
    * Toggles the FileOrSavedFileComponent
    * @param {*} event 
@@ -228,6 +237,12 @@ const Transports = ({ step }) => {
               label="Deuxième classe"
               register={register}
             />
+            <RadioInput
+              id="no-train"
+              formField="trainClass"
+              label="Pas de train (facultatif)"
+              register={register}
+            />
           </div>
           <div className="form__section-field">
             <label className="form__section-field-label" htmlFor="departure-place">Règlement</label>
@@ -261,6 +276,12 @@ const Transports = ({ step }) => {
               id="eco-class"
               formField="planeClass"
               label="Classe éco"
+              register={register}
+            />
+            <RadioInput
+              id="no-plane"
+              formField="planeClass"
+              label="Pas d'avion (facultatif)"
               register={register}
             />
           </div>
@@ -341,7 +362,7 @@ const Transports = ({ step }) => {
             link={"/nouveau-document/demande-de-dérogation?omId=" + omId + '&type=taxi'}
           />
         )}
-        <HiddenField id="omId" value={omId} register={register} />
+        <HiddenField id="docId" value={omId} register={register} />
       </div>
       {errors.transports && <p className="form__section-field-error form__section-field-error--open">{errors.transports.message}</p>}
       {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />}

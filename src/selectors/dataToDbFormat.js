@@ -7,7 +7,7 @@
 export const turnTransportsDataToDbFormat = (data) => {
   
   const {
-    omId,
+    docId,
     vehicle,
     publicTransports,
     trainClass, trainPayment,
@@ -25,7 +25,7 @@ export const turnTransportsDataToDbFormat = (data) => {
    * 
    */
   const dataToBeSubmitted = {
-    omId: omId,
+    docId: docId,
     vehicleId: vehicle,
     vehicleAuthorization: null,
     transportDispensation: null,
@@ -43,15 +43,16 @@ export const turnTransportsDataToDbFormat = (data) => {
   
   if (data.others) {
     data.others.forEach((option) => {
-      if (option === 'taxi') {
-        dataToBeSubmitted.taxi = true;
-      }
-      else if (option === 'parking') {
-        dataToBeSubmitted.parking = true;
-      }
-      else if (option === 'ferry') {
-        dataToBeSubmitted.ferry = true;
-      }
+      dataToBeSubmitted[option] = true;
+      // if (option === 'taxi') {
+      //   dataToBeSubmitted.taxi = true;
+      // }
+      // else if (option === 'parking') {
+      //   dataToBeSubmitted.parking = true;
+      // }
+      // else if (option === 'ferry') {
+      //   dataToBeSubmitted.ferry = true;
+      // }
     })
   }
   else {
@@ -75,7 +76,13 @@ export const turnTransportsDataToDbFormat = (data) => {
   // VEHICLE AUTHORIZATION
 
   if (vehicleAuthorizationFileForValidation) {
-    dataToBeSubmitted.vehicleAuthorization = "pending";
+
+    if (vehicleAuthorizationFile instanceof File) {
+      dataToBeSubmitted.vehicleAuthorization = vehicleAuthorizationFile;
+    } 
+    else {
+      dataToBeSubmitted.vehicleAuthorization = "pending";
+    }
   }
   else if (vehicle !== "") {
     dataToBeSubmitted.vehicleAuthorization = vehicleAuthorizationFile;
