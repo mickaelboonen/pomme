@@ -58,7 +58,7 @@ const Section = ({ id, data, steps, currentDoc, loader, isOm}) => {
             {steps.map((step) => (
               <div key={step.name} className={classNames("om-status__steps-step", {
                 "om-status__steps-step--validated" : step.status,
-                "om-status__steps-step--not-validated" : !step.status,
+                "om-status__steps-step--not-validated" : !step.status && step.name !== 'étapes',
                 "om-status__steps-step--steps" : step.name === 'étapes',
               })}>
                 {step.name}
