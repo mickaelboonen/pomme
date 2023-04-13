@@ -58,8 +58,7 @@ const Avance = ({ step }) => {
       }
     })
   }
-
-  console.log(defaultValues);
+  
   const {
     register,
     handleSubmit,
@@ -95,14 +94,15 @@ const Avance = ({ step }) => {
         clearErrors('hotelQuotation');
       }
       
-      if (!data.rib instanceof File && !data.savedRib) {
+      
+      if (data.rib && data.rib.length === 0 && !data.savedRib) {
         setError('rib', { type: 'custom', message: "Veuillez fournir votre RIB." });
         errorCount++;
       }
       else {
         clearErrors('rib');
       }
-
+      
       if (data.otherExpensesAmount > 0 && data.otherExpensesJustitication === '') {
         setError('otherExpensesJustitication', { type: 'custom', message: "Merci de justifier le montant des autres frais." });
         errorCount++;
@@ -176,13 +176,7 @@ const Avance = ({ step }) => {
       setHasNoRibSaved(false);
       setValue("savedRib", true);
     }
-  }, [agentDocuments.rib])
-
-
-  const missionData = omForm[0].data;
-
-  const maxMealsNumber = getMaxMealsAndNights(missionData);
-  const maxNightsNumber = getMaxMealsAndNights(missionData, true);
+  }, [agentDocuments.rib]);
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>

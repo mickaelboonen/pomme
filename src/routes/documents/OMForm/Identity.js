@@ -27,7 +27,7 @@ const Identity = ({ isEfForm }) => {
   const omId = loader.searchParams.get('id');
   const areWeUpdatingData = loader.pathname.includes('modifier');
   
-  const { app: { apiMessage },
+  const { app: { apiMessage, countries },
     agent: { agent, user},
     omForm: { currentOM },
     docs: { agentSignature },
@@ -52,8 +52,6 @@ const Identity = ({ isEfForm }) => {
     const file = getValues('om');
     dispatch(uploadFile({ data: {docId: omId , file: file}, step: 'om'}))
   }
-
-  console.log(agent);
   
   return (
     <form className="form">
@@ -97,6 +95,7 @@ const Identity = ({ isEfForm }) => {
         <Address
           register={register}
           disabled
+          countries={countries}
           title="Adresse familiale"
           stepNumber=''
         />
@@ -104,6 +103,7 @@ const Identity = ({ isEfForm }) => {
           title="Adresse administrative"
           register={register}
           disabled
+          countries={countries}
           stepNumber='Pro'
         />
       </div>

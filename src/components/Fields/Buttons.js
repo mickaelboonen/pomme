@@ -73,7 +73,7 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
         }
         
         if (fileObject) {
-          dispatch(uploadFile({data: dataToBeSubmitted, step: 'mission', docType: 'ef'}));
+          dispatch(uploadFile({data: dataToBeSubmitted, step: 'mission', docType: 'om'}));
         }
         else {
           dispatch(update(dataToBeSubmitted));

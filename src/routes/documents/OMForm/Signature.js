@@ -35,7 +35,7 @@ const Signature = ({ step }) => {
   const defaultValues = omForm.find((omStep) => omStep.step === 'signature').data;
   
   let fileNames= '';
-  console.log(defaultValues);
+  
   if (defaultValues.files.length === 1) {
     fileNames = getSavedFileName(defaultValues.files[0]);
   }
@@ -44,10 +44,10 @@ const Signature = ({ step }) => {
       fileNames += getSavedFileName(file) + ' - ';
     })
   }
-  
+  console.log(userSignature);
   let signatureFilename = '';
-  if (defaultValues.signature && defaultValues.signature.length > 1) {
-    signatureFilename = getSavedFileName(defaultValues.signature);
+  if (defaultValues.agentSignature && defaultValues.agentSignature.length > 1) {
+    signatureFilename = getSavedFileName(defaultValues.agentSignature);
   }
   
   const {
@@ -64,10 +64,13 @@ const Signature = ({ step }) => {
 
     data.status = 1;
     const infosFile = data.files.find((file) => file instanceof File);
+    
 
     if (data.savedSignature) {
 
-      if (data.agentSignature instanceof File || infosFile instanceof File) {
+      data.agentSignature = userSignature;
+      
+      if (infosFile instanceof File) {
         dispatch(uploadFile({ data: data, step: 'more-and-signature'}));
       } 
       else {
@@ -76,12 +79,12 @@ const Signature = ({ step }) => {
     }
     else {
       
-      if (data.signature.length === 0) {
+      if (data.agentSignature.length === 0) {
         setError('signature', { type: 'custom', message: "Merci de signer votre ordre de mission." });
         return;
       }
       
-      if (data.agentSignature instanceof File || infosFile instanceof File) {
+      if (typeof data.agentSignature !== 'string' || infosFile instanceof File) {
         dispatch(uploadFile({ data: data, step: 'more-and-signature'}));
       } 
       else {
@@ -128,9 +131,9 @@ const Signature = ({ step }) => {
           <FileField 
             setValue={setValue}
             register={register}
-            formField="signature"
-            id="signature"
-            error={errors.signature}
+            formField="agentSignature"
+            id="agent-signature-field"
+            error={errors.agentSignature}
             fileName={signatureFilename}
           />
         )}

@@ -1,4 +1,4 @@
-import { createDispensation, updateOm, updateTransports, updateAdvance, updateMoreAndSignature, updateMission, updateSignature } from 'src/reducer/omForm';
+import { createDispensation, updateOm, updateTransports, updateAdvance, updateMoreAndSignature, updateMission } from 'src/reducer/omForm';
 import { fileApi, api } from './api';
 import { requestVehicleAuthorization, updateVehicle, createVehicle } from '../reducer/vehicle';
 import { toggleDocModal, saveAllPermDocs, saveAgentSignatureForPdf} from '../reducer/otherDocuments';
@@ -19,7 +19,7 @@ const omMiddleware = (store) => (next) => (action) => {
       const filesToUpload = [];
 
       const { data, step, docType } = action.payload;
-      console.log('DATA IN THE FILEMIDDLEWARE : ', data);
+      console.log('DATA IN THE FILEMIDDLEWARE : ', data, docType);
       
       const type = docType ? docType : 'om';
       if (type === 'om') {
@@ -275,10 +275,10 @@ const omMiddleware = (store) => (next) => (action) => {
               console.log('before update : ', data);
               store.dispatch(updateMission(data));
             }
-            else if (step === 'signature') {
-              console.log('before update : ', data);
-              store.dispatch(updateSignature(data));
-            }
+            // else if (step === 'signature') {
+            //   console.log('before update : ', data);
+            //   store.dispatch(updateSignature(data));
+            // }
             else if (step === 'om') {
               console.log('before update : ', data);
               delete data.file;

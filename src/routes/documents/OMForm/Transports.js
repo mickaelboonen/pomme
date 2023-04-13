@@ -96,8 +96,11 @@ const Transports = ({ step }) => {
       // If there are no errors, we go on
       if (countErrors === 0) {
 
+        console.log('-----------------------------------------------------------------');
+        console.log(data);
+        console.log('-----------------------------------------------------------------');
         if (data.authorizations.length > 0) {
-          data.status = data.authorizations[0].file === 'pending' ? 0 : 1;
+          data.status = data.authorizations[0].file === 'pending' && data.vehicleAuthorizationFile.length === 0 ? 0 : 1;
         }
         else {
           data.status = 1;
