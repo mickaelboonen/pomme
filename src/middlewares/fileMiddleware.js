@@ -128,6 +128,7 @@ const omMiddleware = (store) => (next) => (action) => {
                 docId: data.docId,
                 type: 'mission',
                 file: file,
+                name: 'modificationFiles',
               }
               filesToUpload.push(fileToUpload);
             }
@@ -317,7 +318,7 @@ const omMiddleware = (store) => (next) => (action) => {
             // Now updates the transports values in the database
             if (step === 'mission') {
               console.log('before update : ', data);
-              data.docId = data.efId;
+              // data.docId = data.efId;
               store.dispatch(updateEfMission(data));
             }
             else if (step === 'transports') {

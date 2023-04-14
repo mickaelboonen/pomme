@@ -240,7 +240,6 @@ const Mission = ({ step, isEfForm }) => {
     }
   }
   
-  
   const toggleDisabledFields = (event) => {
     dispatch(enableMissionFormFields(event.currentTarget.checked));
   }

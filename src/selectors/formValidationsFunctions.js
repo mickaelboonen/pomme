@@ -217,7 +217,8 @@ export const defineValidationRulesForMission = (isEfForm, isFormModified, isScie
   }
 
   let requiredErrorMessages = {
-    missionPurpose: 'Merci de rensigner le motif de la mission.',
+    abroadCosts: 'Merci de renseigner votre forfait de remboursement.',
+    missionPurpose: 'Merci de renseigner le motif de la mission.',
     departure: "Veuillez renseigner le jour et l'heure de départ.",
     departurePlace: "Veuillez renseigner le lieu de départ lors de votre départ en mission.",
     comeback: "Veuillez renseigner le jour et l'heure du retour.",

@@ -145,7 +145,7 @@ const Accomodations = ({ step }) => {
     dispatch(toggleHelp(currentHelp));
 
   };
-  
+  console.log(currentOM.mission);
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
@@ -191,8 +191,8 @@ const Accomodations = ({ step }) => {
           <p className="form__section-container-text form__section-container-text--infos"><span className='form__section-container-text__span'>NOTA BENE :</span> Merci de ne pas déclarer les repas gratuits ou non pris par l'agent.</p>
 
           {currentOM.mission.region !== "métropole" && (
-          <p className='form__section-container-text'><span>MISSION A L'ÉTRANGER : </span>Forfait de Remboursement choisi : <span>{currentOM.mission.abroad_costs.replace('-', ' ')}</span>.</p>
-        )}
+            <p className='form__section-container-text'><span>MISSION A L'ÉTRANGER : </span>Forfait de Remboursement choisi : <span>{currentOM.mission.abroad_costs.replace('-', ' ')}</span>.</p>
+          )}
         </div>
         <TextField
           id="admin-restaurant-field"
