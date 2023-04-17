@@ -1,33 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLoaderData } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
 
-import './style.scss';
+import '../style.scss';
 
 // Components
-import FormSectionTitle from 'src/components/FormSectionTitle';
-import RefusalMessage from 'src/components/Fields/RefusalMessage';
 import Buttons from 'src/components/Fields/Buttons';
-import CheckboxInput from 'src/components/Fields/CheckboxInput';
-
+import ApiResponse from 'src/components/ApiResponse';
 import SwitchButton from 'src/components/SwitchButton';
 import TextField from 'src/components/Fields/TextField';
 import FileField from 'src/components/Fields/FileField';
-import TextareaField from 'src/components/Fields/TextareaField';
 import HiddenField from 'src/components/Fields/HiddenField';
+import TextareaField from 'src/components/Fields/TextareaField';
+import FormSectionTitle from 'src/components/FormSectionTitle';
+import CheckboxInput from 'src/components/Fields/CheckboxInput';
 
 // Actions
+
+// Selectors & actions
 import { uploadFile, updateAdvance } from 'src/reducer/omForm';
+import { getSavedFileName } from 'src/selectors/formDataGetters';
 import { turnAdvanceDataToDbFormat } from 'src/selectors/dataToDbFormat';
-import { getMaxMealsAndNights } from 'src/selectors/formValidationsFunctions';
-
-// Selectors
-
-import { clearMessage } from 'src/reducer/app';
-import ApiResponse from 'src/components/ApiResponse';
-import { getSavedFileName } from '../../../selectors/formDataGetters';
-import { current } from '@reduxjs/toolkit';
 
 const Avance = ({ step }) => {
   // ATTENTION : lots of rendu
@@ -35,14 +29,12 @@ const Avance = ({ step }) => {
   const dispatch = useDispatch();
   const loader = useLoaderData();
   const omId = loader.searchParams.get('id');
-  const areWeUpdatingData = loader.pathname.includes('modifier');
   
 
   const { app: { apiMessage, agentDocuments },
     omForm: { omForm, currentOM },
   } = useSelector((state) => state);
-
-  // console.log("om = ", currentOM);
+  
   const defaultValues = omForm.find((omStep) => omStep.step === 'advance').data;
   
   const ribFileName = defaultValues.rib ? getSavedFileName(defaultValues.rib): '';
@@ -80,8 +72,6 @@ const Avance = ({ step }) => {
   const [isAdvanceRequested, setIsAdvanceRequested] = useState(defaultValues.totalAmount ? true : false);
 
   const onSubmit = (data) => {
-    // If the user is requesting an advance
-    console.log('SUBMITTED DATA : ', data);
     
     if (data.advance) {
 
@@ -213,13 +203,11 @@ const Avance = ({ step }) => {
               <TextField
                 id="advance-amount"
                 disabled
-                // value={advance}
                 formField="advanceAmount"
                 register={register}
                 isNumber
                 min="0"
                 label="Montant de l'avance"
-                // required="Veuillez renseigner le montant de l'avance souhaitée."
                 error={errors.advanceAmount}
               />
             </div>
@@ -234,7 +222,6 @@ const Avance = ({ step }) => {
               id="hotel-quote-file-field"
               label="Devis de l'hôtel"
               fileName={quotationFileName}
-              // required="Merci de fournir le devis de l'hôtel."
               error={errors.hotelQuotations}
             />
           </div>
@@ -247,7 +234,6 @@ const Avance = ({ step }) => {
                 isNumber
                 disabled
                 min="0"
-                // value={maxNightsNumber}
                 label="Nombre de nuits"
               />
             </div>
@@ -260,7 +246,6 @@ const Avance = ({ step }) => {
                 disabled
                 min="0"
                 label="Nombre de repas"
-                // value={maxMealsNumber}
                 
               />
             </div>
@@ -315,7 +300,8 @@ const Avance = ({ step }) => {
           </div>
         </div>
       )} 
-      {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />}      <Buttons
+      {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
+      <Buttons
         step={step}
         id={omId}
         url={loader}

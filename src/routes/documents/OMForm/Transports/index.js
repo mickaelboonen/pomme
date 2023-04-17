@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLoaderData } from 'react-router-dom';
 
-import './style.scss';
+import '../style.scss';
 
 // Components
 

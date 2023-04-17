@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
 import { useLoaderData } from 'react-router-dom';
 
-import './style.scss';
+import '../style.scss';
 import Buttons from 'src/components/Fields/Buttons';
 import FileField from 'src/components/Fields/FileField';
 import HiddenField from 'src/components/Fields/HiddenField';
@@ -13,13 +13,15 @@ import CheckboxInput from 'src/components/Fields/CheckboxInput';
 
 import { uploadFile } from 'src/reducer/omForm';
 import { updateEfSignature } from 'src/reducer/ef';
+import { getSavedFileName } from 'src/selectors/formDataGetters';
 
 const Signature = ({ step }) => {
   const dispatch = useDispatch();
   const loader = useLoaderData();
   const efId = loader.searchParams.get('id');
 
-  const { userSignature, agentDocuments, apiMessage } = useSelector((state) => state.app);
+  const { app: {userSignature, agentDocuments, apiMessage},
+    ef: { currentEf } } = useSelector((state) => state);
   
   const { register, handleSubmit, watch, setError, setValue, formState: { errors } } = useForm({
     defaultValues: {
@@ -28,16 +30,17 @@ const Signature = ({ step }) => {
     }
   });
 
+  const ribFilename = currentEf.signature.agent_rib ? getSavedFileName(currentEf.signature.agent_rib) : '';
+  const signatureFilemane = currentEf.signature.agent_signature ? getSavedFileName(currentEf.signature.agent_signature) : '';
+
+
   const onSubmit = (data) => {
     let errorCount = 0;
-    console.log(data);
 
     if (data.savedRib) {
-      console.log("rib yes  ");
       data.agentRib = agentDocuments.rib;
     }
     else if (data.agentRib.length === 0) {
-      console.log("rib no no ");
       setError('rib', {type: 'custom', message:"Veuillez fournir un RIB pour pouvoir être remboursé."})
       errorCount++;
     }
@@ -46,7 +49,7 @@ const Signature = ({ step }) => {
       data.agentSignature = userSignature;
     }
     else if (data.agentSignature.length === 0) {
-      setError('signature', {type: 'custom', message:"Veuillez signer la demande de remboursement."});
+      setError('agentSignature', {type: 'custom', message:"Veuillez signer la demande de remboursement."});
       errorCount++;
     }
 
@@ -85,9 +88,10 @@ const Signature = ({ step }) => {
           <FileField 
             register={register}
             formField="agentSignature"
-            id="signature"
-            error={errors.signature}
+            id="agentSignature"
+            error={errors.agentSignature}
             setValue={setValue}
+            fileName={signatureFilemane}
             // required="Veuillez signer la demande de remboursement."
           />
         )}
@@ -109,6 +113,7 @@ const Signature = ({ step }) => {
             id="rib-field"
             error={errors.rib}
             setValue={setValue}
+            fileName={ribFilename}
             // required="Veuillez fournir un RIB pour pouvoir être remboursé."
           />
         )}
@@ -120,6 +125,8 @@ const Signature = ({ step }) => {
         id={efId}
         url={loader}
         watch={watch}
+        type="ef"
+        update={updateEfSignature}
       />
     </form>
     

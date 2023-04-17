@@ -156,7 +156,7 @@ const omMiddleware = (store) => (next) => (action) => {
             const fileToUpload = {
               docId: data.docId,
               type: 'signature',
-              name: 'signature',
+              name: 'agentSignature',
               file: data.agentSignature,
             }
             filesToUpload.push(fileToUpload);
@@ -338,6 +338,7 @@ const omMiddleware = (store) => (next) => (action) => {
             }
             else if (step === 'ef') {
               console.log('before update : ', data);
+              delete data.file;
               store.dispatch(updateEf(data));
             }
           }

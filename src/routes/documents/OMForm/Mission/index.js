@@ -3,10 +3,10 @@ import { useForm } from "react-hook-form";
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import './style.scss';
+import '../style.scss';
 
 // Components
-import EfMission from '../EfForm/Mission';
+import EfMission from '../../EfForm/Mission';
 import Address2 from 'src/components/Fields/Address2';
 import Buttons from 'src/components/Fields/Buttons';
 import ApiResponse from 'src/components/ApiResponse';
@@ -28,7 +28,7 @@ import { turnFieldsToAddressEntity } from 'src/selectors/formDataGetters';
 // Reducer
 import { enableMissionFormFields, updateEfMission } from 'src/reducer/ef';
 import { uploadFile, updateOmName, updateMission } from 'src/reducer/omForm';
-import { getDDMMYYDate } from '../../../selectors/dateFunctions';
+import { getDDMMYYDate } from '../../../../selectors/dateFunctions';
 
 const Mission = ({ step, isEfForm }) => {
   

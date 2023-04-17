@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLoaderData } from 'react-router-dom';
 
-import './style.scss';
+import '../style.scss';
 import Buttons from 'src/components/Fields/Buttons';
 import TextField from 'src/components/Fields/TextField';
 import FileField from 'src/components/Fields/FileField';

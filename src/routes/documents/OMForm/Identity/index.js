@@ -4,7 +4,7 @@ import { useLoaderData, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
 
-import './style.scss';
+import '../style.scss';
 
 // Components
 import MyPDF from 'src/components/PDF';
@@ -15,9 +15,8 @@ import RadioInput from 'src/components/Fields/RadioInput';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 
 // Selectors & actions
-import {  defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
 import { uploadFile } from 'src/reducer/omForm';
-import { turnFieldsToAddressEntity } from '../../../selectors/formDataGetters';
+import {  defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
 
 
 const Identity = ({ isEfForm }) => {

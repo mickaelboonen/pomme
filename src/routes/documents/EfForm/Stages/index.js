@@ -5,7 +5,7 @@ import { useLoaderData, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import './style.scss';
+import '../style.scss';
 
 // Components
 import Step from './Step';
@@ -18,12 +18,12 @@ import ButtonElement from 'src/components/Fields/ButtonElement';
 
 // Actions
 import { addSteps, handleSteps, deleteStep } from 'src/reducer/app';
-import { getHHMMTime } from '../../../selectors/dateFunctions';
+import { getHHMMTime } from 'src/selectors/dateFunctions';
 
 const Steps = ({ step }) => {
   const dispatch = useDispatch();
   const loader = useLoaderData();
-  const efId = loader.searchParams.get('id');
+  const docId = loader.searchParams.get('id');
   const navigate = useNavigate();
 
   const { app: { apiMessage },
@@ -119,11 +119,11 @@ const Steps = ({ step }) => {
     })
 
     if (stages.length === 0) {
-      dispatch(addSteps({data: entities, type: 'ef', docId: efId}))
+      dispatch(addSteps({data: entities, type: 'ef', docId: docId}))
     }
     else {
       
-      dispatch(handleSteps({data: entities, type: 'ef', docId: efId}))
+      dispatch(handleSteps({data: entities, type: 'ef', docId: docId}))
     }
     
   };
@@ -262,10 +262,10 @@ const Steps = ({ step }) => {
 
       <Buttons
         step={step}
-        id={efId}
+        id={docId}
         url={loader}
         watch={watch}
-        trigger={trigger}
+        type="ef"
       />
     </form>
     

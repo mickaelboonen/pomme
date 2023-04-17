@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useLoaderData } from 'react-router-dom';
 
-import './style.scss';
+import '../style.scss';
 
 // Components
 import ApiResponse from 'src/components/ApiResponse';

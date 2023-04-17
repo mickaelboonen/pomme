@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import './style.scss';
+import '../style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import FileField from 'src/components/Fields/FileField';
 import SwitchButton from 'src/components/SwitchButton';

@@ -13,6 +13,7 @@ import {
   efAccomodationsToDbFormat
 } from 'src/selectors/dataToDbFormat';
 import { turnFieldsToAddressEntity } from '../../selectors/formDataGetters';
+import { addSteps, handleSteps } from 'src/reducer/app';
 
 const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
   
@@ -20,6 +21,7 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
   const navigate = useNavigate();
   const { agent: { user },
     app : { agentDocuments },
+    ef: { currentEf }
   } = useSelector((state) => state);
 
   const nextStep = step + 1;
@@ -91,7 +93,8 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
         const filesArray = Object.entries(data).filter((entry) => entry[0].includes('Files'));
 
         const firstFoundFile = filesArray.find((property) => property[1].find((value) => value instanceof File));
-
+        console.log(data);
+        // return;
         if (firstFoundFile === undefined) {
           dispatch(update(data));
         }
@@ -136,26 +139,77 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
     }
     else if (step === 4) { // --------------------------------------------------------------------------------
 
-      if (data.savedRib) {
-        data.rib = agentDocuments.rib;
-      }
-      const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);
+      if (type !== "ef") {
 
-      if ( dataToBeSubmitted.agentRib instanceof File || dataToBeSubmitted.hotelQuotation instanceof File ) {
-        dispatch(uploadFile({data: dataToBeSubmitted, step: 'advance'}))
+        if (data.savedRib) {
+          data.rib = agentDocuments.rib;
+        }
+        const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);
+
+        if ( dataToBeSubmitted.agentRib instanceof File || dataToBeSubmitted.hotelQuotation instanceof File ) {
+          dispatch(uploadFile({data: dataToBeSubmitted, step: 'advance'}))
+        }
+        else {
+          dispatch(update(dataToBeSubmitted));
+        }
       }
       else {
-        dispatch(update(dataToBeSubmitted));
+
+        const stepsArray = [];
+        for (let i = 1; i <= data.numberDays; i++) {
+          stepsArray.push(i);
+        }
+        
+
+        const entities = stepsArray.map((stepIndex) => {
+          const step = {};
+          step.id = data['id' + stepIndex]
+          step.amCourseBeginning = data['amCourseBeginning' + stepIndex];
+          step.amCourseEnding = data['amCourseEnding' + stepIndex];
+          step.pmCourseBeginning = data['pmCourseBeginning' + stepIndex];
+          step.pmCourseEnding = data['pmCourseEnding' + stepIndex];
+          step.departurePlace = data['departurePlace' + stepIndex];
+          step.arrivalPlace = data['arrivalPlace' + stepIndex];
+          step.departure = data['departure' + stepIndex];
+          step.arrival = data['arrival' + stepIndex];
+          step.departureHour = data['departureHour' + stepIndex];
+          step.arrivalHour = data['arrivalHour' + stepIndex];
+          step.workDepartureHour = data['workDepartureHour' + stepIndex];
+          step.homeArrivalHour = data['homeArrivalHour' + stepIndex];
+          
+          return step;
+        })
+    
+        if (currentEf.stages.length === 0) {
+          dispatch(addSteps({data: entities, type: 'ef', docId: id}))
+        }
+        else {
+          
+          dispatch(handleSteps({data: entities, type: 'ef', docId: id}))
+        }
       }
     }
     else if (step === 5) { // --------------------------------------------------------------------------------
 
-      const infosFile = data.files.find((file) => file instanceof File);
-      if (data.agentSignature instanceof File || infosFile instanceof File) {
-        dispatch(uploadFile({ data: data, step: 'more-and-signature'}));
-      } 
+      if (type === 'ef') {
+        delete data.savedRib;
+        delete data.savedSignature;
+        if (data.agentSignature instanceof File || data.agentRib instanceof File) {
+          dispatch(uploadFile({data: data, step: 'signature', docType: 'ef'}));
+        }
+        else {
+          dispatch(update(data))
+        }
+      }
       else {
-        dispatch(update(data));
+        const infosFile = data.files.find((file) => file instanceof File);
+        if (data.agentSignature instanceof File || infosFile instanceof File) {
+          dispatch(uploadFile({ data: data, step: 'more-and-signature'}));
+        } 
+        else {
+          dispatch(update(data));
+        }
+
       }
       
     }

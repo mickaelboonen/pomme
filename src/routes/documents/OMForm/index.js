@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useLoaderData, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import Avance from './Avance';
+import Advance from './Advance';
 import Mission from './Mission';
 import Identity from './Identity';
 import Signature from './Signature';
@@ -131,7 +131,7 @@ const OMForm = () => {
             {(step === 1 && !omLoader) && <Mission step={step} isEfForm={false} />}
             {(step === 2 && !omLoader) && <Transports step={step} />}
             {(step === 3 && !omLoader) && <Accomodations step={step} />}
-            {(step === 4 && !omLoader) && <Avance step={step} />}
+            {(step === 4 && !omLoader) && <Advance step={step} />}
             {(step === 5 && !omLoader) && <Signature step={step} />}
             {(step === 6 && !omLoader && docState.length === 0) && <Identity step={step} />}
             {(step === 6 && !omLoader && docState.length > 0) && (

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './style.scss';
+import '../style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import TextField from 'src/components/Fields/TextField';
 import FileField from 'src/components/Fields/FileField';

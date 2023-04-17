@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { FaTrash } from 'react-icons/fa';
 
-import './style.scss';
+import '../style.scss';
 import SelectField from 'src/components/Fields/SelectField';
 import DateField from 'src/components/Fields/DateField';
 import TextField from 'src/components/Fields/TextField';

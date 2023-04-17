@@ -7,7 +7,7 @@ import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 import './style.scss';
 
 // Components 
-import Steps from './Steps';
+import Stages from './Stages';
 import Signature from './Signature';
 import Transports from './Transports';
 import Accomodations from './Accomodations';
@@ -17,8 +17,8 @@ import ThreadAsTabs from 'src/components/ThreadAsTabs';
 import LoaderCircle from 'src/components/LoaderCircle';
 import Mission from 'src/routes/documents/OMForm/Mission';
 import { clearMessage } from 'src/reducer/app';
-import { checkStepsStatus } from '../../../selectors/formDataGetters';
-import DocMissingStepsRecap from '../../../components/docMissingsStepsRecap';
+import { checkStepsStatus } from 'src/selectors/formDataGetters';
+import DocMissingStepsRecap from 'src/components/docMissingsStepsRecap';
 
 const EfForm = () => {      
 
@@ -106,7 +106,7 @@ const EfForm = () => {
           {(step === 2 && !efLoader) && <Transports step={step} />}
           {(step === 3 && !efLoader) && <Accomodations step={step} />}
           {/* {((step === 4 && !efLoader) &&  (currentEf.has_steps || currentEf.is_teaching))  && <Steps step={step} />} */}
-          {((step === 4 && !efLoader))  && <Steps step={step} />}
+          {((step === 4 && !efLoader))  && <Stages step={step} />}
           {(step === 5 && !efLoader) && <Signature step={step} />}
           {(step === 6 && !efLoader && docState.length === 0) && <Recap />}
           {(step === 6 && !efLoader && docState.length > 0) && <DocMissingStepsRecap url={loaderData} id={id} docState={docState} /> }

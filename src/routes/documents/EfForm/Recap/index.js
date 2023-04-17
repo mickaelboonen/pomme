@@ -4,7 +4,7 @@ import { useLoaderData, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
 
-import './style.scss';
+import '../style.scss';
 
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import ApiResponse from 'src/components/ApiResponse';
@@ -59,6 +59,8 @@ const Recap = () => {
 
   const missionCountry = countries.find((country) => country.code === Number(mission.country))
 
+  console.log(transports.visa, accomodations.event);
+
   return (
   <div className="form">  
         {/* <div style={{height: "80vh"}}>
@@ -109,7 +111,7 @@ const Recap = () => {
         {mission.region !== "métropole" && <p className='form__section-recap form__section-recap--infos'>Pour avoir une idée du montant remboursé pour votre mission à l'étranger, veuillez vous rendre sur <Link to="https://www.economie.gouv.fr/dgfip/mission_taux_chancellerie/frais"> le site de la DGFIP</Link>. La valeur du <span>Groupe 1</span> vous indiquera le montant du forfait per diem comprenant l'hébergement et deux repas.</p>}
       </div>
     </div>
-    {transports.visa > 0|| accomodations.event > 0 && (
+    {(transports.visa || accomodations.event) && (
       <div className="form__section" style={{marginBottom: '1rem'}}>
         <FormSectionTitle>Autres frais de Mission</FormSectionTitle>
         {transports.visa && <p className='form__section-recap'>Montant du visa : <span>{transports.visa}€</span>.</p>}
