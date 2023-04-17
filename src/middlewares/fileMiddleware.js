@@ -197,7 +197,7 @@ const omMiddleware = (store) => (next) => (action) => {
 
           const { data } = action.payload;
           console.log("--------------------------------------------------------------------------------------");
-          console.log(`/api/files/${type}/${step} RESPONSE IS : `, response.data)
+          console.log(`FILECONTROLLER RESPONSE IS : `, response.data)
 
           if (type === 'om') {
 
@@ -301,7 +301,6 @@ const omMiddleware = (store) => (next) => (action) => {
                 data[file.name].push(file.file.url);
               }
               else if (file.type === 'accomodations') {
-                data[file.name] = data[file.name].filter((url) => !url instanceof File)
                 data[file.name].push(file.file.url);
               }
               else if (file.type === 'signature') {
@@ -326,6 +325,9 @@ const omMiddleware = (store) => (next) => (action) => {
               store.dispatch(updateEfTransports(data));
             }
             else if (step === 'accomodations') {
+              console.log('before filters : ', data);
+              data.eventFiles = data.eventFiles.filter((url) => typeof url === 'string');
+              data.hotelFiles = data.hotelFiles.filter((url) => typeof url === 'string');
               console.log('before update : ', data);
               delete data.efId;
               store.dispatch(updateEfAccomodations(data));

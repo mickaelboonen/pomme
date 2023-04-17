@@ -145,7 +145,6 @@ const Accomodations = ({ step }) => {
     dispatch(toggleHelp(currentHelp));
 
   };
-  console.log(currentOM.mission);
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
@@ -188,10 +187,8 @@ const Accomodations = ({ step }) => {
           { !isNaN(maxMealsNumber) && <p className="form__section-container-text">D'après les dates fournies à l'étape <span>MISSION</span>, vous pouvez demander jusqu'à : <span>{maxMealsNumber}</span> repas.</p>}
           <div />
           <p className="form__section-container-text"><span className='form__section-container-text__span'>VACATAIRE :</span>Les frais de repas ne pourront être pris en compte que pour les intervenants dispensant des cours le matin et l’après-midi d’une même journée. La prise en charge est alors faite au tarif « passager » en vigueur du CROUS.</p>
-          <p className="form__section-container-text form__section-container-text--infos"><span className='form__section-container-text__span'>NOTA BENE :</span> Merci de ne pas déclarer les repas gratuits ou non pris par l'agent.</p>
-
           {currentOM.mission.region !== "métropole" && (
-            <p className='form__section-container-text'><span>MISSION A L'ÉTRANGER : </span>Forfait de Remboursement choisi : <span>{currentOM.mission.abroad_costs.replace('-', ' ')}</span>.</p>
+            <p className='form__section-container-text'><span>MISSION {currentOM.mission.region === "dom-tom" ? 'DANS LES DOM-TOM': "A L'ÉTRANGER"} : </span>Forfait de Remboursement choisi : <span>{currentOM.mission.abroad_costs.replace('-', ' ')}</span>.</p>
           )}
         </div>
         <TextField
@@ -201,54 +198,54 @@ const Accomodations = ({ step }) => {
           isNumber
           min="0"
           label="Repas pris dans un restaurant administratif ou assimilé"
-          placeholder={"Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné " + currentOM.accomodations.meals_in_admin_restaurants + " repas."}
+          placeholder="Nombre de repas à renseigner."
           hasHelp
           helpFunction={showHelp}
         />
-        
-        {currentOM.mission.region === "métropole" && (
           <TextField
             id="paid-by-agent-in-France-field"
             formField="mealsPaidByAgentInFrance"
             register={register}
             isNumber
             min="0"
-            placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné ${currentOM.accomodations.meals_paid_by_agent} repas.`}
+            placeholder="Nombre de repas à renseigner."
             label='Repas à titre onéreux en France'
             hasHelp
             helpFunction={showHelp}
           />
-        )}
-        
-        {currentOM.mission.region === "métropole" && (
           <TextField
             id="free-field"
-            formField="freeMeals"
+            formField="freeMealsInFrance"
             register={register}
             isNumber
             min="0"
-            label="Repas à titre gratuit"
-            placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez pré-renseigné ${maxMealsNumber - currentOM.accomodations.meals_in_admin_restaurants - currentOM.accomodations.meals_paid_by_agent} repas gratuits.`}
+            label="Repas à titre gratuit en France"
+            placeholder="Nombre de repas à renseigner."
           />
-        )}
         {currentOM.mission.region !== "métropole" && (
-          <TextField
-            id='paid-by-agent-overseas-field'
-            formField="mealsPaidByAgentOverseas"
-            register={register}
-            isNumber
-            min="0"
-            placeholder={`Nombre de repas à renseigner. D'après votre OM, vous avez ${currentOM.accomodations.meals_paid_by_agent} repas.`}
-            label="Repas à titre onéreux à l'étranger"
-            hasHelp
-            helpFunction={showHelp}
-          />
+          <>
+            <TextField
+              id='paid-by-agent-overseas-field'
+              formField="mealsPaidByAgentOverseas"
+              register={register}
+              isNumber
+              min="0"
+              placeholder="Nombre de repas à renseigner."
+              label="Repas à titre onéreux à l'étranger"
+              hasHelp
+              helpFunction={showHelp}
+            />
+            <TextField
+              id="free-field"
+              formField="overseasFreeMeals"
+              register={register}
+              isNumber
+              min="0"
+              label="Repas à titre gratuit à l'étranger"
+              placeholder="Nombre de repas à renseigner."
+            />
+          </>
         )}
-        {/* {!isNaN(maxMealsNumber) && <p className="form__section-field-label form__section-field-label--infos">Vous avez le droit à un total de : <span>{maxMealsNumber}</span> repas.</p>} */}
-
-        {/* {currentOM.mission.region !== "métropole" && (
-          <p className='form__section-field-label form__section-field-label--infos'>Forfait de Remboursement choisi : <span>{currentOM.mission.abroad_costs.replace('-', ' ')}</span>.</p>
-        )} */}
         <p id="meals-error" className="form__section-field-error" />
       </div>        
         <FormSectionTitle>Frais d'inscription</FormSectionTitle>
