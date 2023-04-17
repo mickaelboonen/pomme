@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { PDFViewer } from '@react-pdf/renderer';
 
 import './style.scss';
-import MyPDF from 'src/components/PDF';
+import MyPDF from 'src/components/PDF/OmPdf';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'src/components/Modal';
 import { toggleModal } from 'src/reducer/app';

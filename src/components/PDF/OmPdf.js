@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
+const MyPDF = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
   
   const {mission, transports, accomodations, advance, signature, more} = data;
   
@@ -113,7 +113,7 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature}) => {
   
   // Transports
   let chosenVehicleType = {};
-console.log(vehicleTypes);
+// console.log(vehicleTypes);
 
   if (transports.authorizations.length > 0) {
     
@@ -157,6 +157,10 @@ console.log(vehicleTypes);
     otherMeansofTransports.push('parking');
   }
 
+  let missionCountries = [];
+  mission.addresses.forEach((country) => missionCountries.push(countries.find((countryFromList) => countryFromList.code === country.countryCode)));
+  missionCountries = missionCountries.map((country) => country.name);
+  console.log(missionCountries);
 
   
   const maxMealsNumber = getMaxMealsAndNights(mission);
@@ -164,8 +168,8 @@ console.log(vehicleTypes);
   
   const gestArray = ['%', 'UB', 'CR', 'Code Nacres', 'Code LOLF', 'Code Analytique'];
 
-  console.log(transports.authorizations);
-  console.log(chosenVehicleType);
+  // console.log(transports.authorizations);
+  console.log(mission);
   return (
   <Document>
     <Page size="A4" style={styles.page}>
@@ -185,7 +189,7 @@ console.log(vehicleTypes);
           <Text>Sans frais, notamment pris en charge par un organisme extérieur, à transmettre à la DRH.</Text>
         )}
       </View>
-      {/* <View style={styles.section} wrap={false}>
+      <View style={styles.section} wrap={false}>
           <Text style={styles.section.title}>SERVICE OU DÉPARTEMENT</Text>
           <View style={{display: 'flex', width: '100%', flexDirection: 'row', borderBottom: '1px solid #1a1a1a', borderRight: '1px solid #1a1a1a'}}>
             {gestArray.map((cat) => (
@@ -204,7 +208,7 @@ console.log(vehicleTypes);
 
           </View>
 
-      </View> */}
+      </View>
       <View style={styles.section}>
         <Text style={styles.section.title} wrap={false}>MISSIONNAIRE</Text>
         <Text style={styles.section.text}>Qualité : {agent.gender} {agent.lastname.toUpperCase()} {agent.firstname}</Text>
@@ -230,11 +234,12 @@ console.log(vehicleTypes);
         )}
         {mission.region === 'étranger' && (
           <>
-            <Text>Mission dans le pays : {mission.country.toUpperCase()}, avec un forfait {mission.abroad_costs === "per-diem" ? 'per diem' : 'frais réels'}</Text>
+            {/* <Text>Mission dans le pays : {mission.country.toUpperCase()}, avec un forfait {mission.abroad_costs === "per-diem" ? 'per diem' : 'frais réels'}</Text> */}
+            <Text>Le Compte rendu est à fournir au retour de la mission si financement RI.</Text>
             <Text>Le Compte rendu est à fournir au retour de la mission si financement RI.</Text>
           </>
         )}
-        <Text style={styles.section.subtitle}>Modalités de la mission</Text>
+        <Text style={styles.section.subtitle}>Modalités de la mission :</Text>
         <View style={styles.flexSection}>
           <View style={styles.halfSection}>
             <Text style={{textAlign:"center", padding: '4'}}>Début de mission</Text>
@@ -248,6 +253,14 @@ console.log(vehicleTypes);
             <Text style={styles.section.text}>Lieu d'arrivée : {mission.comeback_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}</Text>
           </View>
         </View>
+        
+        <Text style={styles.section.text} />
+        {mission.planning && (
+          <>
+            <Text style={styles.section.text}>Planning de la mission : </Text>
+            <Text style={styles.section.text}>{mission.planning}</Text>
+          </>
+        )}
       </View>
       <View style={styles.section}>
         <Text style={styles.section.title} wrap={false}>TRANSPORTS</Text>
@@ -269,7 +282,7 @@ console.log(vehicleTypes);
         <Text style={styles.section.text} />
         <Text style={styles.section.text} />
         <Text>Utilisation de transports en commun : {transports.public_transports ? 'Oui.' : 'Non.'}</Text>
-        <Text style={styles.section.text}>Autres moyens de transports / commodités : {otherMeansofTransports.map((other) => other + ' - ')}</Text>
+        <Text style={styles.section.text}>Autres moyens de transports / commodités : {otherMeansofTransports.map((other) => other.replace(other[0], other[0].toUpperCase()) + '. ')}</Text>
       </View>
       <View style={styles.section} wrap={false}>
         <Text style={styles.section.title} wrap={false}>HÉBERGEMENT ET REPAS</Text>

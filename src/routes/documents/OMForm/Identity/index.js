@@ -7,7 +7,7 @@ import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
 import '../style.scss';
 
 // Components
-import MyPDF from 'src/components/PDF';
+import OmPdf from 'src/components/PDF/OmPdf';
 import Address from 'src/components/Fields/Address';
 import ApiResponse from 'src/components/ApiResponse';
 import TextField from 'src/components/Fields/TextField';
@@ -55,11 +55,11 @@ const Identity = ({ isEfForm }) => {
   return (
     <form className="form">
             
-        {/* <div style={{width:"100%", height:"100vh"}}>
+        <div style={{width:"100%", height:"100vh"}}>
           <PDFViewer>
-            <MyPDF agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />
+            <OmPdf countries={countries} agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />
           </PDFViewer>
-        </div>  */}
+        </div> 
      
       <div className="form__section">
         <FormSectionTitle>Missionnaire</FormSectionTitle>
@@ -194,7 +194,7 @@ const Identity = ({ isEfForm }) => {
       {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />}
       <div className="form__section">
         <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
-          <BlobProvider document={<MyPDF agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />}>
+          <BlobProvider document={<OmPdf countries={countries} agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />}>
             {({ blob }) => {
 
               const file = new File([blob], currentOM.name, {type: 'pdf'});
