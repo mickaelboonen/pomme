@@ -120,12 +120,12 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
     else if (step === 3) { // --------------------------------------------------------------------------------
 
       if (type === "ef") {
-        const dataToBeSubmitted = efAccomodationsToDbFormat(data);
+        // const dataToBeSubmitted = efAccomodationsToDbFormat(data);
         if ( data.eventFiles.length > 0 || data.hotelFiles.length > 0 ) {
-          dispatch(uploadFile({data: dataToBeSubmitted, step: 'accomodations', docType: 'ef'}));
+          dispatch(uploadFile({data: data, step: 'accomodations', docType: 'ef'}));
         }
         else {
-          dispatch(update(dataToBeSubmitted));
+          dispatch(update(data));
         }
       }
       else {
