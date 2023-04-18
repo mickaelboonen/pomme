@@ -36,17 +36,18 @@ import CasClient, { constant } from "react-cas-client";
 // import { getSignature } from "src/reducer/app";
 import { getSignature, getDocument, fetchCountries } from "src/reducer/app";
 import { findPermFilesByAgent, fetchAgentSignatureForPdf } from "src/reducer/otherDocuments";
-import { getVehicles, getVehicleDocuments, fetchVehicle} from "src/reducer/vehicle";
-import { getMission, fetchOm, getTransports, getAccomodations, getAdvance, getMore, setLoader  } from "src/reducer/omForm";
+import { getVehicles, fetchVehicle} from "src/reducer/vehicle";
+import { fetchOm } from "src/reducer/omForm";
 import { fetchOMs, fetchEfs, fetchUserData } from "src/reducer/agent";
-import { setEfLoader, fetchEf, getEfAccomodations } from "src/reducer/ef";
+import { setEfLoader } from "src/reducer/ef";
 
 
 import { persistor } from 'src/store';
 import TestPDF from "./routes/test/TestPDF";
 
 let casEndpoint = "cas.unimes.fr";
-let casOptions = { version: constant.CAS_VERSION_3_0,
+let casOptions = {
+  version: constant.CAS_VERSION_3_0,
   validation_proxy: true,
   validation_proxy_path: '/cas_proxy'
 };
@@ -106,13 +107,9 @@ const router = createBrowserRouter([
       {
         path: 'se-connecter',
         element: <Login cas={casClient} />,
-        loader: async ({ request }) =>  {
-
-          const url = new URL(request.url);
-          console.log(url);
-          console.log("rendu");
-          return new URL(request.url);
-        },
+        // loader: async ({ request }) =>  {
+        //   return new URL(request.url);
+        // },
       },
       // new documents forms
       {
