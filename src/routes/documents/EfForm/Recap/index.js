@@ -63,7 +63,7 @@ const Recap = () => {
 
   return (
   <div className="form">  
-        {/* <div style={{height: "80vh"}}>
+        <div style={{height: "80vh"}}>
           <PDFViewer className='form__section-recap'>
             <EfPDF
               agentSignature={userSignature}
@@ -73,7 +73,7 @@ const Recap = () => {
               country={missionCountry}
             />
           </PDFViewer>
-        </div>  */}
+        </div> 
     <div className="form__section" style={{marginBottom: '1rem'}}>
       <FormSectionTitle>Transports</FormSectionTitle>
       <p className='form__section-recap'>Total des frais de transports déclarés pour la mission : <span>{totalTransportsExpenses}€</span>.</p>

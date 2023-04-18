@@ -48,7 +48,7 @@ const VehicleUseForm = () => {
 
   let { 
     app : { apiMessage },
-    agent : { agent , user },
+    agent : { agent , user , oms },
     docs: { agentSignature },
     vehicle: { needsPdf ,vehicleTypes, vehicles, formDefaultValues, loader },
   } = useSelector((state) => state);
@@ -320,13 +320,16 @@ const VehicleUseForm = () => {
                   <BlobProvider document={<CarAuthorizationPdf reasons={staticReasons} agentSignature={agentSignature} agent={agent} data={watch()} vehicleTypes={vehicleTypes}/>}>
                     {({ blob }) => {
         
-                      const file = new File([blob], new Date().toLocaleDateString() + '-demande-d-autorisation-de-véhicule', {type: 'pdf'});
+                      const { mission } = oms.find((om) => om.id == omId);
+                      const fileName = `${agent.lastname.toUpperCase()}-${new Date(mission.departure).toLocaleDateString().split('/').join('-')}-demande-d-autorisation-de-véhicule`
+                      const file = new File([blob], fileName, {type: 'pdf'});
+                      
                       const fileUrl = URL.createObjectURL(file);
                       
                       if (externalSignature) {
 
                         return (
-                          <a href={fileUrl} download={new Date().toLocaleDateString() + '-demande-d-autorisation-de-véhicule.pdf'} style={{textAlign: 'center'}}>
+                          <a href={fileUrl} download={fileName} style={{textAlign: 'center'}}>
                             <button onClick={() => { const data = watch(); data.file = 'pending'; onSubmit(data)}} type="button">
                               Générer le PDF de la demande
                             </button>

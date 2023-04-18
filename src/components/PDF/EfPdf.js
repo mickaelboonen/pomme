@@ -15,115 +15,7 @@ import EfSteps from './EfSteps';
 
 Font.register({ family: 'Radjhani', src: RadjhaniFont });
 
-// Create styles
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: 'column',
-    backgroundColor: '#fff',
-    padding: 20,
-    fontSize:10,
-    fontFamily: 'Radjhani',
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  signature: {
-    // maxWidth: 100,
-    // height: 100,
-  },
-  firstSection: {
-    padding: 10,
-  },
-  flexSection: {
-    display: 'flex',
-    flexDirection: 'row',
-    border: '1px solid #1a1a1a',
-  },
-  halfSection: {
-    width: '50%',
-    padding:'0 8 8',
-    // border: '1px solid red'
-  },
-  separator: {
-    border: '1px solid #1a1a1a'
-  },
-  section: {
-    margin: '0 10',
-    // marginTop: 0,
-    padding: '0 10 10',
-    title: {
-      fontSize: 14,
-      border: '1px solid #1a1a1a',
-      backgroundColor: '#c1c1c1',
-      fontWeight: 'bold',
-      padding:'8',
-      marginBottom: '8'
-    },
-    subsection: {
-      border: '1px solid #1a1a1a',
-      padding:'8'
-    },
-    text: {
-      marginBottom: '4',
-    },
-    longtext: {
-      width: '60%',
-      color: 'red'
-    },
-    notabene: {
-      color: '#111',
-      fontSize: '8',
-      marginBottom: '4',
-    },
-    gest: {
-      display: 'flex',
-      borderBottom: '1px solid #1a1a1a',
-      borderLeft: '1px solid #1a1a1a',
-      flexDirection: 'row',
-      first: {
-        width: '50%',
-        text: {
-          paddingLeft: '10',
-        }
-      },
-      second: {
-        width: '50%',
-        borderRight: '1px solid #1a1a1a',
-        borderLeft: '1px solid #1a1a1a',
-        text: {
-          textAlign: 'center',
-          paddingLeft: '10',
-          width: '100%'
-        }
-      },
-      title: {
-        textTransform: 'uppercase',
-        backgroundColor: '#c1c1c1',
-        textAlign: 'center',
-        fontWeight: 'bold',
-        padding: '2',
-        borderTop: '1px solid #1a1a1a',
-      }
-    }
-    
-  },
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    width: '100%',
-    image: {
-      width: '40%',
-    },
-    title: {
-      width: '50%',
-      fontWeight: 'bold',
-      fontSize: 30,
-      textAlign: 'center'
-
-    }
-  }
-});
+import { styles } from './pdfStyles';
 
 const EfPdf = ({ data, agent, agentSignature, country }) => {
   // console.log('rendu');
@@ -252,67 +144,67 @@ const EfPdf = ({ data, agent, agentSignature, country }) => {
       <View style={styles.section}>
         <Text style={styles.section.title} wrap={false}>FRAIS A REMBOURSER A L'AGENT</Text>
         <Text style={styles.section.text} />
-        <View style={styles.section.gest} >
-          <View style={styles.section.gest.first}>
-            <Text style={styles.section.gest.title}>Transport</Text>
+        <View style={styles.section.efArray} >
+          <View style={styles.section.efArray.first}>
+            <Text style={styles.section.efArray.title}>Transport</Text>
           </View>
-          <View style={styles.section.gest.second}>
-            <Text style={styles.section.gest.title}>Montant</Text>
+          <View style={styles.section.efArray.second}>
+            <Text style={styles.section.efArray.title}>Montant</Text>
           </View>
         </View>
         {transportsExpenses.map((row) => (
-          <View key={row.name} style={styles.section.gest} >
-            <View style={styles.section.gest.first}>
-              <Text style={styles.section.gest.first.text}>{row.name}</Text>
+          <View key={row.name} style={styles.section.efArray} >
+            <View style={styles.section.efArray.first}>
+              <Text style={styles.section.efArray.first.text}>{row.name}</Text>
             </View>
-            <View style={styles.section.gest.second}>
-              <Text style={styles.section.gest.second.text}>{row.amount}</Text>
+            <View style={styles.section.efArray.second}>
+              <Text style={styles.section.efArray.second.text}>{row.amount}</Text>
             </View>
           </View>
         ))}
         {transports.personal_car &&(
-          <View style={styles.section.gest} >
-            <View style={styles.section.gest.first}>
-              <Text style={styles.section.gest.first.text}>Véhicule personnel</Text>
+          <View style={styles.section.efArray} >
+            <View style={styles.section.efArray.first}>
+              <Text style={styles.section.efArray.first.text}>Véhicule personnel</Text>
             </View>
-            <View style={styles.section.gest.second}>
-              <Text style={styles.section.gest.second.text}>{transports.personal_car}€ (Nb. chevaux fiscaux : {transports.horsepower} / Kilométrage : {transports.km})</Text>
+            <View style={styles.section.efArray.second}>
+              <Text style={styles.section.efArray.second.text}>{transports.personal_car}€ (Nb. chevaux fiscaux : {transports.horsepower} / Kilométrage : {transports.km})</Text>
             </View>
           </View>
         )}
-        <View style={styles.section.gest} >
-          <View style={styles.section.gest.first}>
-            <Text style={styles.section.gest.title}>Hébergement & repas</Text>
+        <View style={styles.section.efArray} >
+          <View style={styles.section.efArray.first}>
+            <Text style={styles.section.efArray.title}>Hébergement & repas</Text>
           </View>
-          <View style={styles.section.gest.second}>
-            <Text style={styles.section.gest.title}>Montant ou Nombre</Text>
+          <View style={styles.section.efArray.second}>
+            <Text style={styles.section.efArray.title}>Montant ou Nombre</Text>
           </View>
         </View>
         {accomodationsExpenses.map((row) => (
-          <View key={row.name} style={styles.section.gest} >
-            <View style={styles.section.gest.first}>
-              <Text style={styles.section.gest.first.text}>{row.name}</Text>
+          <View key={row.name} style={styles.section.efArray} >
+            <View style={styles.section.efArray.first}>
+              <Text style={styles.section.efArray.first.text}>{row.name}</Text>
             </View>
-            <View style={styles.section.gest.second}>
-              <Text style={styles.section.gest.second.text}>{row.amount}</Text>
+            <View style={styles.section.efArray.second}>
+              <Text style={styles.section.efArray.second.text}>{row.amount}</Text>
             </View>
           </View>
         ))}
-        <View style={styles.section.gest} >
-          <View style={styles.section.gest.first}>
-            <Text style={styles.section.gest.title}>Autres frais</Text>
+        <View style={styles.section.efArray} >
+          <View style={styles.section.efArray.first}>
+            <Text style={styles.section.efArray.title}>Autres frais</Text>
           </View>
-          <View style={styles.section.gest.second}>
-            <Text style={styles.section.gest.title}>Montant</Text>
+          <View style={styles.section.efArray.second}>
+            <Text style={styles.section.efArray.title}>Montant</Text>
           </View>
         </View>
         {otherExpenses.map((row) => (
-          <View key={row.name} style={styles.section.gest} >
-            <View style={styles.section.gest.first}>
-              <Text style={styles.section.gest.first.text}>{row.name}</Text>
+          <View key={row.name} style={styles.section.efArray} >
+            <View style={styles.section.efArray.first}>
+              <Text style={styles.section.efArray.first.text}>{row.name}</Text>
             </View>
-            <View style={styles.section.gest.second}>
-              <Text style={styles.section.gest.second.text}>{row.amount}</Text>
+            <View style={styles.section.efArray.second}>
+              <Text style={styles.section.efArray.second.text}>{row.amount}</Text>
             </View>
           </View>
         ))}

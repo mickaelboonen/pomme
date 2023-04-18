@@ -36,7 +36,7 @@ const Derogation = () => {
 
   let { 
     app : { apiMessage },
-    agent : { agent },
+    agent : { agent, oms },
     docs: { agentSignature }
   } = useSelector((state) => state);
 
@@ -163,8 +163,14 @@ const Derogation = () => {
               <div className="form__section-field-button">
                 <BlobProvider document={<DispensationPdf agentSignature={agentSignature} agent={agent} data={watch()}/>}>
                   {({ blob }) => {
-      
-                    const file = new File([blob], new Date().toLocaleDateString() + dispensationTitle.replace(' ', '-'), {type: 'pdf'});
+                    
+                    const { mission } = oms.find((om) => om.id == omId);
+                    const fileName = `${agent.lastname.toUpperCase()}-${new Date(mission.departure).toLocaleDateString().split('/').join('-')}-${dispensationTitle.split(' ').join('-')}`
+                    
+                    
+                    const file = new File([blob], fileName, {type: 'pdf'});
+                    
+                    console.log(file);
                     const fileUrl = URL.createObjectURL(file);
                     
                     return (

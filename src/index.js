@@ -185,9 +185,13 @@ const router = createBrowserRouter([
               const step = url.searchParams.get("etape");
               const id = url.searchParams.get("id");
 
-              const { agent : { user, agent } } = store.getState((state) => state);
+              const {
+                agent : { user, agent },
+                app: { countries },
+              } = store.getState((state) => state);
            
               store.dispatch(fetchOm({id: id, handleLoader: false,}));
+
 
               if (step === '1') {
                 store.dispatch(fetchCountries());
@@ -199,6 +203,10 @@ const router = createBrowserRouter([
                 store.dispatch(getSignature(user));
               }
               else if (step === '6') {
+                if (countries.length === 0) {
+                  store.dispatch(fetchCountries());
+                }
+                
                 store.dispatch(fetchAgentSignatureForPdf({ agent: user, omId: id}));
 
                 if (!agent.hasOwnProperty('lastname')) {

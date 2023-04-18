@@ -1,58 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Font, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Font, Text, View } from '@react-pdf/renderer';
 
 // Assets
 import RadjhaniFont from 'src/assets/fonts/Rajdhani-Medium.ttf';
-import { getDDMMYYDate, getHHMMTime } from '../../selectors/dateFunctions';
+import { getDDMMYYDate, getHHMMTime } from 'src/selectors/dateFunctions';
 
 
 Font.register({ family: 'Radjhani', src: RadjhaniFont });
 
 // Create styles
-const styles = StyleSheet.create({
-  section: {
-    margin: '0 10',
-    // marginTop: 0,
-    padding: '0 10 10',
-    title: {
-      fontSize: 14,
-      border: '1px solid #1a1a1a',
-      backgroundColor: '#c1c1c1',
-      fontWeight: 'bold',
-      padding:'8',
-      marginBottom: '8'
-    },
-    row: {
-      display: 'flex',
-      borderLeft: '1px solid #1a1a1a',
-      flexDirection: 'row',
-      cell: {
-        width: '50%',
-        borderTop: '1px solid #1a1a1a',
-        borderRight: '1px solid #1a1a1a',
-        text: {
-          textAlign: 'center',
-        }
-      },
-      headerCell: {
-        width: '50%',
-        borderTop: '1px solid #1a1a1a',
-        borderRight: '1px solid #1a1a1a',
-        backgroundColor: '#c1c1c1',
-        padding: '2',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'row',
-        textTransorm: 'uppercase',
-        text: {
-          textAlign: 'center',
-        }
-      }
-    }
-  }
-});
+import { styles } from './pdfStyles';
 
 const EfSteps = ({ steps, isTeaching }) => (
   <View style={styles.section} wrap={false}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Font, Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
+import { Font, Document, Page, Text, View, Image } from '@react-pdf/renderer';
 
 // Assets
 import Logo from 'src/assets/images/logo.png'
@@ -13,107 +13,17 @@ import { getMaxMealsAndNights } from 'src/selectors/formValidationsFunctions';
 
 Font.register({ family: 'Radjhani', src: RadjhaniFont });
 
-// Create styles
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: 'column',
-    backgroundColor: '#fff',
-    padding: 20,
-    fontSize:10,
-    fontFamily: 'Radjhani',
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  signature: {
-    // maxWidth: 100,
-    // height: 100,
-  },
-  firstSection: {
-    padding: 10,
-  },
-  flexSection: {
-    display: 'flex',
-    flexDirection: 'row',
-    border: '1px solid #1a1a1a',
-  },
-  halfSection: {
-    width: '50%',
-    padding:'0 8 8',
-    // border: '1px solid red'
-  },
-  separator: {
-    border: '1px solid #1a1a1a'
-  },
-  section: {
-    margin: '0 10',
-    // marginTop: 0,
-    padding: '0 10 10',
-    title: {
-      fontSize: 14,
-      border: '1px solid #1a1a1a',
-      backgroundColor: '#c1c1c1',
-      fontWeight: 'bold',
-      padding:'8',
-      marginBottom: '8'
-    },
-    subsection: {
-      border: '1px solid #1a1a1a',
-      padding:'8'
-    },
-    text: {
-      marginBottom: '4',
-    },
-    longtext: {
-      width: '60%',
-      color: 'red'
-    },
-    notabene: {
-      color: '#111',
-      fontSize: '8',
-      marginBottom: '4',
-    },
-    gest: {
-      // flexGrow: 1,
-      borderTop: '1px solid #1a1a1a',
-      borderLeft: '1px solid #1a1a1a',
-      width: '17%'
-      
-      // display: 'flex',
-      // justifyContent: 'center'
-      // flexDirection: 'column',
-      // alignItems: 'center'
-    }
-    
-  },
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    width: '100%',
-    image: {
-      width: '40%',
-    },
-    title: {
-      width: '50%',
-      fontWeight: 'bold',
-      fontSize: 30,
-      textAlign: 'center'
+import { styles } from './pdfStyles';
 
-    }
-  }
-});
-
-const MyPDF = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
+const OmPdf = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
   
-  const {mission, transports, accomodations, advance, signature, more} = data;
+  const {mission, transports, accomodations, advance, more} = data;
   
   const dep = new Date(mission.departure);
   const ret = new Date(mission.comeback);
   
   // Transports
   let chosenVehicleType = {};
-// console.log(vehicleTypes);
 
   if (transports.authorizations.length > 0) {
     
@@ -160,16 +70,13 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
   let missionCountries = [];
   mission.addresses.forEach((country) => missionCountries.push(countries.find((countryFromList) => countryFromList.code === country.countryCode)));
   missionCountries = missionCountries.map((country) => country.name);
-  console.log(missionCountries);
 
   
   const maxMealsNumber = getMaxMealsAndNights(mission);
   const freeMeals = maxMealsNumber - (accomodations.meals_paid_by_agent + accomodations.meals_in_admin_restaurants);
   
   const gestArray = ['%', 'UB', 'CR', 'Code Nacres', 'Code LOLF', 'Code Analytique'];
-
-  // console.log(transports.authorizations);
-  console.log(mission);
+  
   return (
   <Document>
     <Page size="A4" style={styles.page}>
@@ -193,7 +100,7 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
           <Text style={styles.section.title}>SERVICE OU DÉPARTEMENT</Text>
           <View style={{display: 'flex', width: '100%', flexDirection: 'row', borderBottom: '1px solid #1a1a1a', borderRight: '1px solid #1a1a1a'}}>
             {gestArray.map((cat) => (
-              <View key={cat} style={styles.section.gest}>
+              <View key={cat} style={[styles.section.gest, { width: '17%', display: 'block'}]}>
                 <View style={{fontWeight: 800, textAlign: 'center', backgroundColor: '#c1c1c1'}}>
                   <Text>{cat}</Text>
                 </View>
@@ -224,23 +131,23 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
         <Text style={styles.section.title} wrap={false}>MISSION</Text>
         <Text style={styles.section.text}>Motif de la mission : {mission.mission_purpose}</Text>
 
-        {mission.addresses.map((address) => (
+        {/* {mission.addresses.map((address) => (
           <Text style={styles.section.text} key={address.streetName}>
             Adresse n° {mission.addresses.indexOf(address) + 1} de la mission : {address.streetNumber} {address.bis} {streetType.find((type) => address.streetType === type.id).name} {address.streetName} {address.postCode} {address.city}
           </Text>
-        ))}
+        ))} */}
         {mission.region === 'dom-tom' && (
           <Text>Mission dans les DOM-TOM avec un forfait {mission.abroad_costs === "per-diem" ? 'per diem' : 'frais réels'}</Text>
         )}
         {mission.region === 'étranger' && (
           <>
-            {/* <Text>Mission dans le pays : {mission.country.toUpperCase()}, avec un forfait {mission.abroad_costs === "per-diem" ? 'per diem' : 'frais réels'}</Text> */}
-            <Text>Le Compte rendu est à fournir au retour de la mission si financement RI.</Text>
+            <Text>Mission avec un forfait {mission.abroad_costs === "per-diem" ? 'per diem' : 'frais réels'} dans le{missionCountries.length > 1 ? 's' : ''} pays : {missionCountries.map((country) => country + ' ')}</Text>
             <Text>Le Compte rendu est à fournir au retour de la mission si financement RI.</Text>
           </>
         )}
+        <Text style={styles.section.text} />
         <Text style={styles.section.subtitle}>Modalités de la mission :</Text>
-        <View style={styles.flexSection}>
+        {/* <View style={styles.flexSection}>
           <View style={styles.halfSection}>
             <Text style={{textAlign:"center", padding: '4'}}>Début de mission</Text>
             <Text style={styles.section.text}>Date et heure : {dep.toLocaleString()}</Text>
@@ -252,21 +159,39 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
             <Text style={styles.section.text}>Date et heure : {ret.toLocaleString()}</Text>
             <Text style={styles.section.text}>Lieu d'arrivée : {mission.comeback_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}</Text>
           </View>
+        </View> */}
+        <View style={styles.section.subsection}>
+          {/* <View style={styles.halfSection}> */}
+            <Text style={{textAlign:"center", padding: '4'}}>Début de la mission</Text>
+            <Text style={styles.section.text}>Date et heure : {dep.toLocaleString()}</Text>
+            <Text style={styles.section.text}>Lieu de départ : {mission.departure_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}</Text>
+          {/* </View> */}
+          <View style={styles.separator} />
+            <Text style={{textAlign:"center", padding: '4'}}>Étapes de la mission</Text>
+          {mission.addresses.map((address) => (
+            <Text style={styles.section.text} key={address.streetName}>
+              Adresse n° {mission.addresses.indexOf(address) + 1} : {address.streetNumber} {address.bis} {streetType.find((type) => address.streetType === type.id).name} {address.streetName} {address.postCode} {address.city}
+            </Text>
+          ))}
+          {mission.planning && (
+            <>
+              <Text style={{textAlign:"center", padding: '4'}}>Planning de la mission</Text>
+              <Text style={styles.section.text}>{mission.planning}</Text>
+            </>
+          )}
+          <View style={styles.separator} />
+          {/* <View style={styles.halfSection}> */}
+          <Text style={{textAlign:"center", padding: '4'}}>Fin de la mission</Text>
+          <Text style={styles.section.text}>Date et heure : {ret.toLocaleString()}</Text>
+          <Text style={styles.section.text}>Lieu d'arrivée : {mission.comeback_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}</Text>
+          {/* </View> */}
         </View>
         
         <Text style={styles.section.text} />
-        {mission.planning && (
-          <>
-            <Text style={styles.section.text}>Planning de la mission : </Text>
-            <Text style={styles.section.text}>{mission.planning}</Text>
-          </>
-        )}
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta laboriosam magnam, libero neque itaque, fugiat dolore sunt mollitia iste explicabo dolorem sint similique maxime accusamus aliquid molestias debitis, consequuntur error? Est optio corporis iste explicabo consequuntur id laborum impedit aliquid eaque illo necessitatibus eius dolores, pariatur adipisci dolorem excepturi fuga?
       </View>
-      <View style={styles.section}>
+      <View style={styles.section} wrap={false}>
         <Text style={styles.section.title} wrap={false}>TRANSPORTS</Text>
-        {/* <Text style={styles.section.text}>Modalités de déplacement pour la mission : {chosenVehicleType.hasOwnProperty('name') ? 'Voiture - ' : ''}{transports.transport_type.map((t) => t + ' - ')}{transports.planeClass ? 'Avion' : ''}</Text> */}
-        {/* <Text style={styles.section.text} /> */}
-        {/* <Text style={styles.section.text} /> */}
         {trainData.hasOwnProperty('class') && (
           <Text>Train : Voyage en {trainData.class === 'second-class' ? 'deuxième classe' : 'première classe'}, {trainData.payment.includes('agent') ? "avancé par l'agent." : 'payé par Unîmes.'}</Text>
         )}
@@ -333,8 +258,8 @@ const MyPDF = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
   </Document>
 );}
 
-MyPDF.propTypes = {
+OmPdf.propTypes = {
 
 };
 
-export default MyPDF;
+export default OmPdf;
