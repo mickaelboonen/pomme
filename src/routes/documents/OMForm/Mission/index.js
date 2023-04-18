@@ -21,7 +21,7 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 
 // Selectors 
 import { defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
-import { getSavedFileName, turnAddressToFields } from 'src/selectors/formDataGetters';
+import { getSavedFileName } from 'src/selectors/formDataGetters';
 import { declareCamelCaseKeys, addAllAddressesFields } from 'src/selectors/keyObjectService';
 import { turnFieldsToAddressEntity } from 'src/selectors/formDataGetters';
 

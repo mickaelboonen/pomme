@@ -1,68 +1,55 @@
-import { createDispensation, updateOm, updateTransports, updateAdvance, updateMoreAndSignature, updateMission } from 'src/reducer/omForm';
+
 import { fileApi, api } from './api';
-import { requestVehicleAuthorization, updateVehicle, createVehicle } from '../reducer/vehicle';
-import { toggleDocModal, saveAllPermDocs, saveAgentSignatureForPdf} from '../reducer/otherDocuments';
 import { setApiResponse } from 'src/reducer/app';
-import { updateEfMission, updateEfTransports } from 'src/reducer/ef';
 import { handleEfFilesUploadPayload } from 'src/selectors/fileFunctions';
-import { updateEfAccomodations, updateEfSignature, updateEf } from '../reducer/ef';
+import { requestVehicleAuthorization, updateVehicle, createVehicle } from 'src/reducer/vehicle';
+import { toggleDocModal, saveAllPermDocs, saveAgentSignatureForPdf} from 'src/reducer/otherDocuments';
+import { updateEfAccomodations, updateEfSignature, updateEf, updateEfMission, updateEfTransports } from 'src/reducer/ef';
+import { createDispensation, updateOm, updateTransports, updateAdvance, updateMoreAndSignature, updateMission } from 'src/reducer/omForm';
 
 
 fileApi.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 fileApi.defaults.headers['Content-Type'] = 'multipart/form-data';
 
 const omMiddleware = (store) => (next) => (action) => {
-  const { agent: { user }} = store.getState()
   switch (action.type) {
     case 'omForm/uploadFile': {
       const { agent: { user }} = store.getState()
       const filesToUpload = [];
 
       const { data, step, docType } = action.payload;
-      console.log('DATA IN THE FILEMIDDLEWARE : ', data, docType);
+      // console.log('DATA IN THE FILEMIDDLEWARE : ', data, docType);
       
       const type = docType ? docType : 'om';
       if (type === 'om') {
       
         if (step === "transports") {
-        
-          if (data.transportDispensation instanceof File) {
-            const transportDispensation = {
-              docId: data.docId,
-              type: 'transport-dispensation',
-              file: data.transportDispensation,
+
+          const docTypes = ['transport-dispensation', 'taxi-dispensation', 'vehicle-authorization']
+
+          docTypes.forEach((currentType) => {
+            const deconstructedType = currentType.split('-');
+            deconstructedType[1] = deconstructedType[1].replace(deconstructedType[1][0], deconstructedType[1][0].toUpperCase());
+            
+            const property = deconstructedType[0] + deconstructedType[1];
+            
+            if (data[property] instanceof File) {
+              filesToUpload.push({
+                docId: data.docId,
+                type: currentType,
+                file: data[property],
+              });
             }
-            filesToUpload.push(transportDispensation);
-          }
-        
-          if (data.taxiDispensation instanceof File) {
-            const taxiDispensation = {
-              docId: data.docId,
-              type: 'taxi-dispensation',
-              file: data.taxiDispensation,
-            }
-            filesToUpload.push(taxiDispensation);
-          }
-          
-          
-          if (data.vehicleAuthorization instanceof File) {
-            const vehicleAuthorization = {
-              docId: data.docId,
-              type: 'vehicle-authorization',
-              file: data.vehicleAuthorization,
-            }
-            filesToUpload.push(vehicleAuthorization);
-          }
+          })
         }
         else if (step === "advance") {
           data.hotelQuotations.forEach((file) => {
             if (file instanceof File) {
-              const fileToUpload = {
+              filesToUpload.push({
                 docId: data.docId,
                 type: 'hotel-quotation',
                 file: file,
-              }
-              filesToUpload.push(fileToUpload);
+              });
             }
           })
 
@@ -77,7 +64,6 @@ const omMiddleware = (store) => (next) => (action) => {
         }
         else if (step === "more-and-signature") {
           if (data.agentSignature instanceof File) {
-            console.log(data);
             const signature = {
               docId: data.docId,
               type: 'signature',
@@ -97,23 +83,20 @@ const omMiddleware = (store) => (next) => (action) => {
           })
         }
         else if (step === "om") {
-          console.log(data);
-          const fileToUpload = {
+          filesToUpload.push({
             docId: data.docId,
             type: 'om',
             file: data.file,
-          }
-          filesToUpload.push(fileToUpload);
+          });
         }
         else if (step === 'mission') {
           data.missionPurposeFile.forEach((file) => {
             if (file instanceof File) {
-              const fileToUpload = {
+              filesToUpload.push({
                 docId: data.docId,
                 type: 'mission',
                 file: file,
-              }
-              filesToUpload.push(fileToUpload);
+              });
             }
           })
         }
@@ -190,13 +173,10 @@ const omMiddleware = (store) => (next) => (action) => {
       }
       console.log('filesToUpload - ', filesToUpload);
       
-      
-      // TODO : See if POST method is the right one ? Methods that can add files (post) and delete them (delete)
       fileApi.post(`/api/files/${type}/${step}`, filesToUpload)
         .then((response) => {
 
           const { data } = action.payload;
-          console.log("--------------------------------------------------------------------------------------");
           console.log(`FILECONTROLLER RESPONSE IS : `, response.data)
 
           if (type === 'om') {
@@ -325,7 +305,6 @@ const omMiddleware = (store) => (next) => (action) => {
               store.dispatch(updateEfTransports(data));
             }
             else if (step === 'accomodations') {
-              console.log('before filters : ', data);
               data.eventFiles = data.eventFiles.filter((url) => typeof url === 'string');
               data.hotelFiles = data.hotelFiles.filter((url) => typeof url === 'string');
               console.log('before update : ', data);
@@ -374,7 +353,6 @@ const omMiddleware = (store) => (next) => (action) => {
         .catch((error) => {
           console.error('addfiles', error);
           store.dispatch(setApiResponse(error));
-          // TODO : error
         });
       }
       break;

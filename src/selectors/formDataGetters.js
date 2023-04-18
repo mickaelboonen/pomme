@@ -1,15 +1,15 @@
-export const getAccomodationsDefault = (path) => {
+// export const getAccomodationsDefault = (path) => {
 
-  let data = {
+//   let data = {
 
-  };
-  if (loader.pathname.includes('modifier')) {
-    const accomodationsData = omForm.find((omStep) => omStep.step === 'accomodations');
+//   };
+//   if (loader.pathname.includes('modifier')) {
+//     const accomodationsData = omForm.find((omStep) => omStep.step === 'accomodations');
 
-    defaultValues = accomodationsData.data; 
-  }
-  return data;
-}
+//     defaultValues = accomodationsData.data; 
+//   }
+//   return data;
+// }
 
 export const getSavedFileName = (urlFile) => {
 
@@ -29,21 +29,21 @@ export const getSavedFileName = (urlFile) => {
   return finalName;
 }
 
-export const turnAddressToFields = (data) => {
-  console.log(data);
-  data.addressId = data.address.id;
-  data.streetNumber = data.address.streetNumber;
-  data.bis = data.address.bis;
-  data.streetType = data.address.streetType;
-  data.streetName = data.address.streetName;
-  data.postCode = data.address.postCode;
-  data.city = data.address.city;
-  data.countryCode = data.address.countryCode;
+// export const turnAddressToFields = (data) => {
+//   console.log(data);
+//   data.addressId = data.address.id;
+//   data.streetNumber = data.address.streetNumber;
+//   data.bis = data.address.bis;
+//   data.streetType = data.address.streetType;
+//   data.streetName = data.address.streetName;
+//   data.postCode = data.address.postCode;
+//   data.city = data.address.city;
+//   data.countryCode = data.address.countryCode;
 
-  delete data.address;
+//   delete data.address;
 
-  return data;
-}
+//   return data;
+// }
 
 export const turnFieldsToAddressEntity = (data) => {
 
