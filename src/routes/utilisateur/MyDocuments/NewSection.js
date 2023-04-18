@@ -8,13 +8,12 @@ import './style.scss';
 import SelectField from 'src/components/Fields/SelectField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 
-import { displayOmStatus } from 'src/reducer/omForm';
-import { displayEfStatus } from 'src/reducer/ef';
-import { showDocStatus } from 'src/reducer/agent';
+import { showDocStatus, fetchOMs, fetchEfs } from 'src/reducer/agent';
 import DocButtons from './DocButtons';
 import LoaderCircle from '../../../components/LoaderCircle';
+import { MdRefresh } from 'react-icons/md'
 
-const Section = ({ id, data, steps, currentDoc, loader, isOm}) => {
+const Section = ({ id, data, user, steps, currentDoc, loader, isOm}) => {
   
   const dispatch = useDispatch();
   const {
@@ -35,12 +34,21 @@ const Section = ({ id, data, steps, currentDoc, loader, isOm}) => {
   if (!unfinishedStep) {
     isDocFinished = true;
   }
-  console.log(currentDoc);
+
+  const refreshData = () => {
+    console.log(isOm, user);
+
+    if (isOm) {
+      console.log('here');
+      dispatch(fetchOMs(user));
+    }
+    else {
+      dispatch(fetchEfs(user))
+    }
+  };
   
   return (
     <section id={id} className="my-documents__files">
-    { loader && <LoaderCircle />}
-    { !loader && (
       <SelectField
         data={data}
         register={register}
@@ -50,7 +58,11 @@ const Section = ({ id, data, steps, currentDoc, loader, isOm}) => {
         label={`Liste des Ordres de Missions`}
         blankValue="Aucun document sélectionné"
       />
-    )}
+      <div className="my-documents__files-buttons">
+        <button style={{width: 'fit-content'}} onClick={refreshData}>
+          <MdRefresh className={classNames('my-documents__files-buttons-icon', {'my-documents__files-buttons-icon--animated': loader})} />  {!loader ? 'Rafraîchir la liste' : ''}
+        </button>
+      </div>
       {currentDoc.hasOwnProperty('id') && (
         <div className='om-status'>
           <FormSectionTitle>Statut des différentes étapes</FormSectionTitle>

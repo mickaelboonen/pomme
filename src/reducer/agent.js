@@ -12,6 +12,7 @@ const initialState = {
   documentsList: [],
   isAuthenticated: false,
   agent: {},
+  loader: false,
   // agentDocuments:{
   //   rib: false,
   // },
@@ -32,13 +33,21 @@ const agentSlice = createSlice({
         state.agent = data;
         // state.appLoader = false;
       },
-      fetchOMs: () => {},
-      fetchEfs: () => {},
+      fetchOMs: (state) => {
+        state.loader = true
+        state.currentDoc = {};
+      },
+      fetchEfs: (state) => {
+        state.loader = true
+        state.currentDoc = {};
+      },
       saveOMs: (state, action) => {
         state.oms = action.payload;
+        state.loader = false;
       },
       saveEfs: (state, action) => {
         state.efs = action.payload;
+        state.loader = false;
       },
       fetchUserData: () => {},
       selectDocumentsList: (state, action) => {

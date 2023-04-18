@@ -32,7 +32,7 @@ const MyDocuments = () => {
   const { omForm: { currentOM, nextOMTarget, OMTabs, userOms, omLoader },
     ef: { nextEfTarget, currentEf, efLoader, EFTabs },
     app: { isModalOpen },
-    agent: { agent, user, documentsList, efs, currentDoc }
+    agent: { agent, user, documentsList, loader, currentDoc }
   } = useSelector((state) => state);
   
   useEffect(() => {
@@ -131,8 +131,8 @@ const MyDocuments = () => {
       </div>
       {isOm && <Tabs tabs={OMTabs} handler={displayWantedSection} />}
       {!isOm && <Tabs tabs={EFTabs} handler={displayWantedSection} />}
-      {isOm && <NewSection data={documentsList} steps={steps} currentDoc={currentDoc} isOm />}
-      {!isOm && <NewSection data={documentsList} steps={steps} currentDoc={currentDoc} />}
+      <NewSection loader={loader} data={documentsList} user={user} steps={steps} currentDoc={currentDoc} isOm={isOm} />
+      {/* {!isOm && <NewSection data={documentsList} steps={steps} currentDoc={currentDoc} />} */}
       <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
       {isModalOpen && <Modal target={slug.replace(/-/g, ' ')} user={params.slug} userOms={omThatCanBeRefunded} agent={agent} />}
     </main>

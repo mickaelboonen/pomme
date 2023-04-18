@@ -3,6 +3,15 @@
 
 $test : #{var(--first-color)};
 
+@keyframes spin {
+  from {
+      transform:rotate(0deg);
+  }
+  to {
+      transform:rotate(360deg);
+  }
+}
+
 .my-documents {
   min-width:100vw;
   margin: auto;
@@ -49,7 +58,7 @@ $test : #{var(--first-color)};
       margin: 1rem;
 
 
-        & a {
+        & a, & button  {
         @include vars.button;
         margin-bottom: 0.5rem;
         
@@ -78,6 +87,10 @@ $test : #{var(--first-color)};
         margin-right: 1rem;
         font-size: 1.5rem;
         
+        &--animated {
+          margin-left: 1rem;
+          animation: spin 1s infinite linear;
+        }
       }
     }
 
