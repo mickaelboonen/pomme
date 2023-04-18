@@ -19,7 +19,7 @@ import { clearOMTarget } from 'src/reducer/omForm';
 const Home = () => {
   
   const navigate = useNavigate();
-  const { app: { isModalOpen},
+  const { app: { isModalOpen, apiMessage },
     agent: { user, agent },
     omForm: { nextOMTarget },
   } = useSelector((state) => state);
@@ -71,7 +71,7 @@ const Home = () => {
         </div>
       </section>
       <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
-      {isModalOpen && <Modal target={newTarget.replace(/-/g, ' ')} user={user} agent={agent} />}
+      {isModalOpen && <Modal target={newTarget.replace(/-/g, ' ')} user={user} agent={agent} apiMessage={apiMessage} />}
 
     </div>
   );

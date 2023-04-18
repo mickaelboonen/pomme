@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import './modalStyle.scss';
 
 // Components 
+import ApiResponse from 'src/components/ApiResponse';
 import SwitchButton from 'src/components/SwitchButton';
 import SelectField from 'src/components/Fields/SelectField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
@@ -16,7 +17,7 @@ import { toggleModal } from '../reducer/app';
 import { addNewOM } from 'src/reducer/omForm';
 import { addNewEf } from 'src/reducer/ef';
 
-const Modal = ({ target, user, userOms, agent}) => {
+const Modal = ({ target, user, userOms, agent, apiMessage }) => {
 
   const dispatch = useDispatch();
   let isOm = false;
@@ -27,6 +28,7 @@ const Modal = ({ target, user, userOms, agent}) => {
     defaultValues = {
       duration: true,
       withExpenses: true,
+      isTrainingCourse: false,
     }
   }
   else {
@@ -51,6 +53,7 @@ const Modal = ({ target, user, userOms, agent}) => {
         comments: '',
         expenses: data.withExpenses,
         isPonctual: data.duration,
+        isTrainingCourse: data.isTrainingCourse,
       }
       dispatch(addNewOM(newOM)); 
     }
@@ -92,6 +95,12 @@ const Modal = ({ target, user, userOms, agent}) => {
                   formField='withExpenses'
                   label="Avec Frais :"
                 />
+                <SwitchButton
+                  register={register}
+                  isInForm
+                  formField='isTrainingCourse'
+                  label="Mission de formation :"
+                />
               </div>
             )}
             { target === 'état de frais' && (
@@ -126,7 +135,8 @@ const Modal = ({ target, user, userOms, agent}) => {
               </>
             )}
           </div>
-          <div className="form__section-field-buttons" id="modal-button">
+          {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
+          <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}} id="modal-button">
             <ButtonElement
               type="submit"
               label="Valider"
