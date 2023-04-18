@@ -89,6 +89,15 @@ const appMiddleware = (store) => (next) => (action) => {
               console.log('error : ', response);
             });
     break;
+    case 'app/authenticate': 
+    api.get('/api/authenticate')
+      .then((response) => {
+        console.log(response);
+      })
+      .catch(response => {
+        console.log('error : ', response);
+      });
+    break;
     case 'agent/fetchUserData':      
       api.post("/api/agent/get-data", action.payload)
         .then((response) => {
