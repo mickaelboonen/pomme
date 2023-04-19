@@ -89,13 +89,15 @@ const appMiddleware = (store) => (next) => (action) => {
               console.log('error : ', response);
             });
     break;
-    case 'app/authenticate': 
-    api.get('/api/authenticate')
+    case 'agent/getAgentData': 
+    api.post('/login/agent/find', action.payload)
       .then((response) => {
-        console.log(response);
+        console.log("SUCCES = ", response);
+
+        // TODO : open application to user
       })
       .catch(response => {
-        console.log('error : ', response);
+        console.log(' agent/getAgentData error : ', response);
       });
     break;
     case 'agent/fetchUserData':      

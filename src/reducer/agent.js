@@ -75,12 +75,14 @@ const agentSlice = createSlice({
         const doc = state[action.payload.type].find((doc) => doc.id === Number(action.payload.doc));
         state.currentDoc = doc ? doc : {};
 
-      }
+      },
+      getAgentData: () => {},
     },
 });
 
 export const {
   validateAuthentication,
+  getAgentData,
   saveUserData,
   fetchOMs,
   fetchEfs,
