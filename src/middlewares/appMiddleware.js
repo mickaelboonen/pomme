@@ -98,6 +98,7 @@ const appMiddleware = (store) => (next) => (action) => {
       })
       .catch(response => {
         console.log(' agent/getAgentData error : ', response);
+        store.dispatch(setApiResponse(response))
       });
     break;
     case 'agent/fetchUserData':      

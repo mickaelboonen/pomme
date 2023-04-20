@@ -49,7 +49,8 @@ const Login = ({ cas }) => {
         .finally(() => {
           // TODO : a mettre dans le success
           console.log("FINALLY");
-          dispatch(getAgentData({id : 'mboone01'}))
+          dispatch(getAgentData({username : 'mboone01', password: ''}))
+          // dispatch(getAgentData({username : 'sdgsdfdgdsgsd', password: ''}))
         });
   }
   
