@@ -6,6 +6,7 @@ import {
 import {
   validateAuthentication,
   saveUserData,
+  fetchUserLightData,
 } from 'src/reducer/agent';
 
 import { api } from './api';
@@ -89,10 +90,16 @@ const appMiddleware = (store) => (next) => (action) => {
               console.log('error : ', response);
             });
     break;
-    case 'agent/getAgentData': 
-    api.post('/login/agent/find', action.payload)
+    case 'agent/checkAuthentication': 
+    api.post('/api/login_check', action.payload)
       .then((response) => {
         console.log("SUCCES = ", response);
+        api.defaults.headers.common['Authorization'] = `bearer ${response.data.token}`;
+
+        // TODO: store token
+
+        // TODO: check user
+        store.dispatch(fetchUserLightData({id: action.payload.username})) 
 
         // TODO : open application to user
       })
@@ -101,28 +108,41 @@ const appMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse(response))
       });
     break;
-    case 'agent/fetchUserData':      
-      api.post("/api/agent/get-data", action.payload)
+    case 'agent/fetchUserLightData':      
+      api.post("/api/agent/get-data/light", action.payload)
         .then((response) => {
-          // if (response.data.length > 0) {
-            
-
-            store.dispatch(saveUserData(response.data));
-            store.dispatch(setLoader(false));
+            console.log('LIGHT USER : ', response.data);
+            // TODO: récupérer la donnée du user dans le reducer. saveUserData provoque une erreur.
+            // store.dispatch(saveUserData(response.data));
+            // store.dispatch(setLoader(false));
           // }
         })
         .catch((error) => {
-          console.error('get signature', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
-
-          // TODO : Temporary solution to fetch user Data after the first fail
-          // Since the Hydrate only happens after fetchUserData is called, meaning the payload for the action above === { id = ""}
-          if (error.response.data.detail === "Call to a member function getPersId() on null") {
-            const { agent : { user }} = store.getState((state) => state)
-            store.dispatch(fetchUserData({id: user}))
-          }
+          console.error("fetch user's light data", error);
         });
       break;
+      case 'agent/fetchUserData':      
+        api.post("/api/agent/get-data/full", action.payload)
+          .then((response) => {
+            // if (response.data.length > 0) {
+              
+  
+              store.dispatch(saveUserData(response.data));
+              store.dispatch(setLoader(false));
+            // }
+          })
+          .catch((error) => {
+            console.error('get signature', error);
+            // store.dispatch(showTicketCreationResponse(error.response))
+  
+            // TODO : Temporary solution to fetch user Data after the first fail
+            // Since the Hydrate only happens after fetchUserData is called, meaning the payload for the action above === { id = ""}
+            if (error.response.data.detail === "Call to a member function getPersId() on null") {
+              const { agent : { user }} = store.getState((state) => state)
+              store.dispatch(fetchUserData({id: user}))
+            }
+          });
+        break;
     case 'app/fetchCountries':      
       api.get("/api/countries/list")
         .then((response) => {

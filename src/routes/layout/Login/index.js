@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './style.scss';
 import HomepageTitle from 'src/routes/layout/Home/HomepageTitle';
 import ApiResponse from 'src/components/ApiResponse';
-import { validateAuthentication, getAgentData } from "src/reducer/agent";
+import { validateAuthentication, checkAuthentication } from "src/reducer/agent";
 import { setApiResponse, authenticate } from "src/reducer/app";
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -49,7 +49,7 @@ const Login = ({ cas }) => {
         .finally(() => {
           // TODO : a mettre dans le success
           console.log("FINALLY");
-          dispatch(getAgentData({username : 'mboone01', password: ''}))
+          dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))
           // dispatch(getAgentData({username : 'sdgsdfdgdsgsd', password: ''}))
         });
   }

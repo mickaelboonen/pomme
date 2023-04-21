@@ -76,13 +76,15 @@ const agentSlice = createSlice({
         state.currentDoc = doc ? doc : {};
 
       },
-      getAgentData: () => {},
+      checkAuthentication: () => {},
+      saveToken: () => {},
+      fetchUserLightData: () => {},
     },
 });
 
 export const {
   validateAuthentication,
-  getAgentData,
+  checkAuthentication,
   saveUserData,
   fetchOMs,
   fetchEfs,
@@ -91,6 +93,8 @@ export const {
   fetchUserData,
   selectDocumentsList,
   showDocStatus,
+  fetchUserLightData,
+  saveToken,
 } = agentSlice.actions;
 
 export default agentSlice.reducer;
