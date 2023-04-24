@@ -28,7 +28,8 @@ const Signature = ({ step }) => {
   const areWeUpdatingData = loader.pathname.includes('modifier');
   
 
-  const { app: { apiMessage, userSignature },
+  const { app: { apiMessage },
+    agent: { userSignature },
     omForm: { omForm },
   } = useSelector((state) => state);
   
@@ -44,7 +45,7 @@ const Signature = ({ step }) => {
       fileNames += getSavedFileName(file) + ' - ';
     })
   }
-  console.log(userSignature);
+  
   let signatureFilename = '';
   if (defaultValues.agentSignature && defaultValues.agentSignature.length > 1) {
     signatureFilename = getSavedFileName(defaultValues.agentSignature);

@@ -1,17 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { agentDataToAppFormat } from '../selectors/dataToDbFormat';
-
-// const defaultUser = process.env.NODE_ENV === 'development' ? process.env.DEFAULT_USER : '';
-// console.log(defaultUser, ' : defaultUser');
+import { extractUserData } from '../selectors/dataToDbFormat';
 
 const initialState = {
-  // user: defaultUser,
-  userSignature: null,
   apiMessage: {},
   appLoader: false,
   isModalOpen: false,
   isAuthenticated: false,
-  // agent: {},
   agentDocuments:{
     rib: false,
   },
@@ -21,20 +15,13 @@ const omFormSlice = createSlice({
     name: 'app',
     initialState,
     reducers: {
+      pouet: () => {console.log('pouet');},
       authenticate: () => {},
       saveUser: () => {},
       getSignature: () => {},
-      // validateAuthentication: (state, action) => {
-        
-      //   state.isAuthenticated= true;
-      //   state.user = action.payload.user;
-      // },
       logout: (state) => {
         state.isAuthenticated= false;
         state.user = '';
-      },
-      saveSignature: (state, action) => {
-        state.userSignature = action.payload.url;
       },
       setApiResponse: (state, action) => {
         
@@ -65,7 +52,7 @@ const omFormSlice = createSlice({
         // state.appLoader = true;
       },
       saveUserData: (state, action) => {
-        const data = agentDataToAppFormat(action.payload);
+        const data = extractUserData(action.payload.agent);
         
         state.agent = data;
         // state.appLoader = false;
@@ -97,7 +84,7 @@ export const {
   clearMessage,
   setApiResponse,
   getSignature,
-  saveSignature,
+  // saveSignature,
   toggleModal,
   logout,
   // validateAuthentication,
@@ -109,6 +96,7 @@ export const {
   saveCountries,
   addSteps,
   handleSteps,
+  pouet,
   deleteStep,
 } = omFormSlice.actions;
 

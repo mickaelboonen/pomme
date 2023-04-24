@@ -1,5 +1,5 @@
 
-import { fileApi, api } from './api';
+import { fileApi, api, setTokenOnApi } from './api';
 import { setApiResponse } from 'src/reducer/app';
 import { handleEfFilesUploadPayload } from 'src/selectors/fileFunctions';
 import { requestVehicleAuthorization, updateVehicle, createVehicle } from 'src/reducer/vehicle';
@@ -12,6 +12,10 @@ fileApi.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 fileApi.defaults.headers['Content-Type'] = 'multipart/form-data';
 
 const omMiddleware = (store) => (next) => (action) => {
+  
+  // const { agent: { token } } = store.getState();
+  // setTokenOnApi(token);
+
   switch (action.type) {
     case 'omForm/uploadFile': {
       const { agent: { user }} = store.getState()

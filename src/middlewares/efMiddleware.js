@@ -1,5 +1,5 @@
 import { setApiResponse } from 'src/reducer/app';
-import { api } from './api';
+import { api, setTokenOnApi } from './api';
 import { saveNewEf, saveEf, setEfLoader, saveEfAccomodations } from 'src/reducer/ef';
 import { saveEfs } from 'src/reducer/agent';
 
@@ -8,13 +8,15 @@ api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 api.defaults.headers['Content-Type'] = 'application/json';
 
 const efMiddleware = (store) => (next) => (action) => {
+  // const { agent: { token } } = store.getState();
+  // setTokenOnApi(token);
+  
   switch (action.type) {
   case 'ef/addNewEf':
     api.post("/api/ef/add", action.payload,)
       .then((response) => {
         const finalisedEf = action.payload;
         finalisedEf.id = response.data;
-        console.log(finalisedEf);
         store.dispatch(saveNewEf(finalisedEf));
       })
       .catch((error) => {

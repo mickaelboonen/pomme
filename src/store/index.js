@@ -32,7 +32,7 @@ const persistConfig = {
   version: 1,
   storage,
   whitelist: ['agent', 'app'],
-  blacklist: ['docs', 'omForm', 'ef'],
+  blacklist: ['docs', 'omForm', 'ef', '_persist'],
   stateReconciler: autoMergeLevel2 // ADDED
 };
 
@@ -54,7 +54,8 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(omMiddleware, efMiddleware, fileMiddleware, appMiddleware, vehicleMiddleware)
+    }).concat(omMiddleware, efMiddleware, fileMiddleware, appMiddleware, vehicleMiddleware),
+    devTools: process.env.NODE_ENV !== 'production',
 })
 
 export const persistor = persistStore(store)

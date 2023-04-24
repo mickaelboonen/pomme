@@ -22,9 +22,9 @@ const Recap = () => {
   const id = Number(loaderData.searchParams.get('id'));
 
   const { ef: { currentEf },
-    app: { apiMessage, userSignature, countries },
+    app: { apiMessage, countries },
     omForm: { currentOM },
-      agent: { agent, user },
+      agent: { agent, user, userSignature },
   } = useSelector((state) => state);
   
   const { mission, transports, accomodations, stages } = currentEf;

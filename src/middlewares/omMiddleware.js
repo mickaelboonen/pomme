@@ -13,13 +13,19 @@ import {
 import { saveOMs } from 'src/reducer/agent';
 import { setApiResponse } from 'src/reducer/app';
 import { setEfLoader, fetchEf } from 'src/reducer/ef';
-import { api } from './api';
+import { api, setTokenOnApi } from './api';
+// import { api } from './newApi';
 
 
 api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 api.defaults.headers['Content-Type'] = 'application/json';
 
 const omMiddleware = (store) => (next) => (action) => {
+  // setTokenOnApi(token);
+  
+  const { agent: { token } } = store.getState();
+  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
   switch (action.type) {
     case 'omForm/addNewOM':
       api.post("/api/om/add", action.payload,)

@@ -11,7 +11,7 @@ import Preferences from './Preferences';
 import BurgerIcon from './BurgerIcon';
 
 // Actions and selectors
-import { logout } from 'src/reducer/app';
+import { logout } from 'src/reducer/agent';
 import { toggleBurgerMenu, toggleNavList } from 'src/selectors/domManipulators';
 
 const DesktopHeader = ({ cas }) => {
@@ -25,7 +25,7 @@ const DesktopHeader = ({ cas }) => {
     localStorage.removeItem('persist:root');
     dispatch(logout());
     persistor.purge();
-    cas.logout("/");
+    cas.logout("/se-connecter");
   }
   
   return (

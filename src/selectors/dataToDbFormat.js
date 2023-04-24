@@ -327,34 +327,38 @@ export const turnAccomodationDataToDbFormat = (data) => {
 
 
 
-export const agentDataToAppFormat = (data) => {
-
-  const { agent, personalAddress, professionalAddress } = data;
-
-  const formattedValues = {
-    bis:personalAddress.bisTer,
-    bisPro:professionalAddress.bisTer,
-    city:personalAddress.ville,
-    cityPro:professionalAddress.ville,
+export const extractUserData = (data) => {
+  return {
     employer:'unimes',
-    firstname:agent.prenom,
-    gender:agent.cCivilite === 'Mlle' ? 'Mme' : agent.cCivilite,
-    lastname:agent.nomAffichage,
-    postCode:personalAddress.codePostal,
-    postCodePro:professionalAddress.codePostal,
-    streetName:personalAddress.nomVoie,
-    streetNamePro:professionalAddress.nomVoie,
-    streetNumber:personalAddress.noVoie,
-    streetNumberPro:professionalAddress.noVoie,
-    streetType:personalAddress.cVoie,
-    streetTypePro:professionalAddress.cVoie,
-    unimesCategory:agent.categorie,
-    unimesStatus:agent.title,
-    unimesDepartment: agent.llStructure,
+    firstname:data.prenom,
+    gender:data.cCivilite === 'Mlle' ? 'Mme' : data.cCivilite,
+    lastname:data.nomAffichage,
+    unimesCategory:data.categorie,
+    unimesStatus:data.title,
+    unimesDepartment: data.llStructure,
   }
+}
 
+export const extractAgentPersonalAddress = (data) => {
+  return {
+    bis:data.bisTer,
+    city:data.ville,
+    postCode:data.codePostal,
+    streetName:data.nomVoie,
+    streetNumber:data.noVoie,
+    streetType:data.cVoie,
+  }
+}
 
-  return formattedValues;
+export const extractAgentProfessionalAddress = (data) => {
+  return {
+    bisPro:data.bisTer,
+    cityPro:data.ville,
+    postCodePro:data.codePostal,
+    streetNamePro:data.nomVoie,
+    streetNumberPro:data.noVoie,
+    streetTypePro:data.cVoie,
+  }
 }
 
 export const efAccomodationsToDbFormat = (data) => {

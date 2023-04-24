@@ -20,8 +20,10 @@ const Signature = ({ step }) => {
   const loader = useLoaderData();
   const efId = loader.searchParams.get('id');
 
-  const { app: {userSignature, agentDocuments, apiMessage},
-    ef: { currentEf } } = useSelector((state) => state);
+  const { app: {agentDocuments, apiMessage},
+    agent: {userSignature},
+    ef: { currentEf }
+  } = useSelector((state) => state);
   
   const { register, handleSubmit, watch, setError, setValue, formState: { errors } } = useForm({
     defaultValues: {

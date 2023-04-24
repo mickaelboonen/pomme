@@ -1,7 +1,7 @@
 import { saveVehicles, saveVehicle, saveVehicleDocuments, requestVehicleAuthorization, saveAuthorization } from 'src/reducer/vehicle';
 import { uploadFile, validateSideForm } from 'src/reducer/omForm';
 
-import { api } from './api';
+import { api, setTokenOnApi } from './api';
 import { setMessage } from '../reducer/vehicle';
 import { setApiResponse } from '../reducer/app';
 
@@ -11,6 +11,9 @@ api.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 api.defaults.headers['Content-Type'] = 'application/json';
 
 const vehicleMiddleware = (store) => (next) => (action) => {
+  // const { agent: { token } } = store.getState();
+  // setTokenOnApi(token);
+  
   const { agent : { user } } = store.getState();
   switch (action.type) {
     case 'vehicle/createVehicle':

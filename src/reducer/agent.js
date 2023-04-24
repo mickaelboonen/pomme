@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { agentDataToAppFormat } from 'src/selectors/dataToDbFormat';
+import { extractUserData, extractAgentPersonalAddress, extractAgentProfessionalAddress } from '../selectors/dataToDbFormat';
 
 const defaultUser = process.env.NODE_ENV === 'development' ? process.env.DEFAULT_USER : '';
 // console.log(defaultUser, ' : defaultUser');
@@ -7,15 +7,15 @@ const defaultUser = process.env.NODE_ENV === 'development' ? process.env.DEFAULT
 const initialState = {
   user: defaultUser,
   userSignature: null,
+  token: '',
   oms: [],
   efs: [],
   documentsList: [],
   isAuthenticated: false,
   agent: {},
+  agentProfessionalAddress: {},
+  agentPersonalAddress: {},
   loader: false,
-  // agentDocuments:{
-  //   rib: false,
-  // },
   currentDoc: {},
 };
 
@@ -23,15 +23,31 @@ const agentSlice = createSlice({
     name: 'agent',
     initialState,
     reducers: {
+      logout: (state) => {
+        state.userSignature = null;
+        state.user = defaultUser;
+        state.token = '';
+        state.oms = [];
+        state.efs = [];
+        state.documentsList = [];
+        state.isAuthenticated = false;
+        state.agent = {};
+        state.agentProfessionalAddress = {};
+        state.agentPersonalAddress = {};
+        state.loader = false;
+        state.currentDoc = {};
+      },
+      saveSignature: (state, action) => {
+        state.userSignature = action.payload.url;
+      },
       validateAuthentication: (state, action) => {
         state.isAuthenticated= true;
         state.user = action.payload.user;
       },
       saveUserData: (state, action) => {
-        const data = agentDataToAppFormat(action.payload);
-        
-        state.agent = data;
-        // state.appLoader = false;
+        state.agentProfessionalAddress = extractAgentProfessionalAddress(action.payload.agentProfessionalAddress);
+        state.agentPersonalAddress = extractAgentPersonalAddress(action.payload.personalAddress);
+        state.agent = extractUserData(action.payload.agent);
       },
       fetchOMs: (state) => {
         state.loader = true
@@ -77,13 +93,23 @@ const agentSlice = createSlice({
 
       },
       checkAuthentication: () => {},
-      saveToken: () => {},
-      fetchUserLightData: () => {},
+      fetchUserLightData: (state, action) => {
+        state.isAuthenticated= true;
+        state.user = action.payload.id;
+        state.token = action.payload.token;
+      },
+      saveUserLightData: (state, action) => {
+        const data = extractUserData(action.payload);
+        
+        state.agent = data;
+        // state.appLoader = false;
+      },
     },
 });
 
 export const {
   validateAuthentication,
+  saveSignature,
   checkAuthentication,
   saveUserData,
   fetchOMs,
@@ -94,7 +120,8 @@ export const {
   selectDocumentsList,
   showDocStatus,
   fetchUserLightData,
-  saveToken,
+  saveUserLightData,
+  logout
 } = agentSlice.actions;
 
 export default agentSlice.reducer;

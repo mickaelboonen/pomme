@@ -1,15 +1,16 @@
 import {
-  saveSignature,
   saveDocument,
-  saveCountries
+  saveCountries,
 } from 'src/reducer/app';
 import {
   validateAuthentication,
   saveUserData,
   fetchUserLightData,
+  saveUserLightData,
+  saveSignature,
 } from 'src/reducer/agent';
 
-import { api } from './api';
+import { api, setTokenOnApi } from './api';
 import CasClient, { constant } from "react-cas-client";
 import { setLoader } from '../reducer/omForm';
 import { fetchUserData, setApiResponse } from '../reducer/app';
@@ -30,6 +31,9 @@ api.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 api.defaults.headers['Content-Type'] = 'application/json';
 
 const appMiddleware = (store) => (next) => (action) => {
+  const { agent: { token } } = store.getState();
+  // setTokenOnApi(token);
+
   switch (action.type) {
     case 'app/fetchUserSignature':
         api.get("/api/agent/get-data", action.payload)
@@ -94,14 +98,9 @@ const appMiddleware = (store) => (next) => (action) => {
     api.post('/api/login_check', action.payload)
       .then((response) => {
         console.log("SUCCES = ", response);
-        api.defaults.headers.common['Authorization'] = `bearer ${response.data.token}`;
-
-        // TODO: store token
-
-        // TODO: check user
-        store.dispatch(fetchUserLightData({id: action.payload.username})) 
-
-        // TODO : open application to user
+        api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+        store.dispatch(fetchUserLightData({id: action.payload.username, token: response.data.token})) 
+        
       })
       .catch(response => {
         console.log(' agent/getAgentData error : ', response);
@@ -113,7 +112,7 @@ const appMiddleware = (store) => (next) => (action) => {
         .then((response) => {
             console.log('LIGHT USER : ', response.data);
             // TODO: récupérer la donnée du user dans le reducer. saveUserData provoque une erreur.
-            // store.dispatch(saveUserData(response.data));
+            store.dispatch(saveUserLightData({agent: response.data}));
             // store.dispatch(setLoader(false));
           // }
         })
@@ -121,28 +120,28 @@ const appMiddleware = (store) => (next) => (action) => {
           console.error("fetch user's light data", error);
         });
       break;
-      case 'agent/fetchUserData':      
-        api.post("/api/agent/get-data/full", action.payload)
-          .then((response) => {
-            // if (response.data.length > 0) {
-              
-  
-              store.dispatch(saveUserData(response.data));
-              store.dispatch(setLoader(false));
-            // }
-          })
-          .catch((error) => {
-            console.error('get signature', error);
-            // store.dispatch(showTicketCreationResponse(error.response))
-  
-            // TODO : Temporary solution to fetch user Data after the first fail
-            // Since the Hydrate only happens after fetchUserData is called, meaning the payload for the action above === { id = ""}
-            if (error.response.data.detail === "Call to a member function getPersId() on null") {
-              const { agent : { user }} = store.getState((state) => state)
-              store.dispatch(fetchUserData({id: user}))
-            }
-          });
-        break;
+    case 'agent/fetchUserData':      
+      api.post("/api/agent/get-data/full", action.payload)
+        .then((response) => {
+          // if (response.data.length > 0) {
+            
+
+            store.dispatch(saveUserData(response.data));
+            store.dispatch(setLoader(false));
+          // }
+        })
+        .catch((error) => {
+          console.error('get signature', error);
+          // store.dispatch(showTicketCreationResponse(error.response))
+
+          // TODO : Temporary solution to fetch user Data after the first fail
+          // Since the Hydrate only happens after fetchUserData is called, meaning the payload for the action above === { id = ""}
+          if (error.response.data.detail === "Call to a member function getPersId() on null") {
+            const { agent : { user }} = store.getState((state) => state)
+            store.dispatch(fetchUserData({id: user}))
+          }
+        });
+      break;
     case 'app/fetchCountries':      
       api.get("/api/countries/list")
         .then((response) => {
