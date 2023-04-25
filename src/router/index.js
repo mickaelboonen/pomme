@@ -1,5 +1,6 @@
 import React from "react";
-import { createBrowserRouter, redirect } from "react-router-dom";
+
+import { createBrowserRouter, RouterProvider, redirect } from "react-router-dom";
 import store from 'src/store';
 
 
@@ -31,8 +32,9 @@ import { getSignature, getDocument, fetchCountries } from "src/reducer/app";
 import { findPermFilesByAgent, fetchAgentSignatureForPdf } from "src/reducer/otherDocuments";
 import { getVehicles, fetchVehicle} from "src/reducer/vehicle";
 import { fetchOm } from "src/reducer/omForm";
-import { fetchOMs, fetchEfs, fetchUserData } from "src/reducer/agent";
+import { fetchOMs, fetchEfs, fetchUserData, fetchAgentAppDocuments } from "src/reducer/agent";
 import { setEfLoader } from "src/reducer/ef";
+
 
 let casEndpoint = "cas.unimes.fr";
 let casOptions = {
@@ -43,7 +45,8 @@ let casOptions = {
 
 const casClient = new CasClient(casEndpoint, casOptions);
 
-export default createBrowserRouter([
+const AppWithRouter = () => (
+  <RouterProvider router={createBrowserRouter([
     {
       path: "/",
       element: <Layout cas={casClient} />,
@@ -56,7 +59,7 @@ export default createBrowserRouter([
           index: true,
           element: <Home />,
           loader: async ({ request }) => {
-  
+            
             const url = new URL(request.url);
             const { agent: { user,isAuthenticated } } = store.getState()
   
@@ -66,12 +69,11 @@ export default createBrowserRouter([
             
             if (isAuthenticated) {
               // store.dispatch(fetchUserData({ id: user}));
+              store.dispatch(fetchAgentAppDocuments(user))
               store.dispatch(fetchOMs(user));
               store.dispatch(fetchEfs(user));
             }
-            else {
-              console.log(devHost, url.host, devHost !== url.host);
-  
+            else {  
               // Condition depending on the host
               if (devHost !== url.host) {
   
@@ -467,4 +469,11 @@ export default createBrowserRouter([
         },
       ],
     },
-  ]);
+  ])} />
+);
+
+AppWithRouter.propTypes = {
+
+};
+
+export default AppWithRouter;

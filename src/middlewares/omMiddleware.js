@@ -21,13 +21,22 @@ api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 api.defaults.headers['Content-Type'] = 'application/json';
 
 const omMiddleware = (store) => (next) => (action) => {
-  // setTokenOnApi(token);
   
   const { agent: { token } } = store.getState();
-  console.log(token);
-  api.defaults.headers.common['Authorization'] = `bearer ${token}`;
+  setTokenOnApi(token);
 
   switch (action.type) {
+    case 'agent/fetchAgentAppDocuments':
+      api.get("/api/om/" + action.payload)
+      .then((response) => {
+        // TODO : 
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('fetch om and ef', error);
+        store.dispatch(setApiResponse(error))
+      });
+      break;
     case 'omForm/addNewOM':
       api.post("/api/om/add", action.payload,)
         .then((response) => {

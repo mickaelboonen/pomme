@@ -44,6 +44,8 @@ const agentSlice = createSlice({
         state.isAuthenticated= true;
         state.user = action.payload.user;
       },
+      fetchAgentAppDocuments: () => {},
+      savegentAppDocuments: () => {},
       saveUserData: (state, action) => {
         state.agentProfessionalAddress = extractAgentProfessionalAddress(action.payload.agentProfessionalAddress);
         state.agentPersonalAddress = extractAgentPersonalAddress(action.payload.personalAddress);
@@ -121,7 +123,9 @@ export const {
   showDocStatus,
   fetchUserLightData,
   saveUserLightData,
-  logout
+  logout,
+  fetchAgentAppDocuments,
+  savegentAppDocuments,
 } = agentSlice.actions;
 
 export default agentSlice.reducer;
