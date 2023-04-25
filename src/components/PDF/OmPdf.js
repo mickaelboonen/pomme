@@ -188,7 +188,6 @@ const OmPdf = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
         </View>
         
         <Text style={styles.section.text} />
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta laboriosam magnam, libero neque itaque, fugiat dolore sunt mollitia iste explicabo dolorem sint similique maxime accusamus aliquid molestias debitis, consequuntur error? Est optio corporis iste explicabo consequuntur id laborum impedit aliquid eaque illo necessitatibus eius dolores, pariatur adipisci dolorem excepturi fuga?
       </View>
       <View style={styles.section} wrap={false}>
         <Text style={styles.section.title} wrap={false}>TRANSPORTS</Text>

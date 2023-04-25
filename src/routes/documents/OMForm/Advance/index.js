@@ -81,7 +81,7 @@ const Avance = ({ step }) => {
         errorCount++;
       }
       else {
-        clearErrors('hotelQuotation');
+        clearErrors('hotelQuotations');
       }
       
       
@@ -127,7 +127,7 @@ const Avance = ({ step }) => {
         docId: data.docId,
         advanceAmount: null,
         totalAmount: null,
-        hotelQuotation: null,
+        hotelQuotations: null,
         nightsNumber: null,
         mealsNumber: null,
         otherExpensesAmount: null,

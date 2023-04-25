@@ -20,8 +20,7 @@ const efMiddleware = (store) => (next) => (action) => {
         store.dispatch(saveNewEf(finalisedEf));
       })
       .catch((error) => {
-        console.error('add new om', error);
-          store.dispatch(setApiResponse(error))
+        store.dispatch(setApiResponse(error));
       });
     break;
   case 'agent/fetchEfs':
@@ -31,8 +30,7 @@ const efMiddleware = (store) => (next) => (action) => {
         store.dispatch(saveEfs(response.data))
       })
       .catch((error) => {
-        console.error('add new om', error);
-        // store.dispatch(showTicketCreationResponse(error.response))
+        store.dispatch(setApiResponse(error));
       });
     break;
   case 'ef/updateEf':
@@ -41,8 +39,7 @@ const efMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })
       .catch((error) => {
-        console.error('update EF', error);
-        store.dispatch(setApiResponse(error))
+        store.dispatch(setApiResponse(error));
       });
     break;
   case 'ef/updateEfMission':
@@ -51,8 +48,7 @@ const efMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })
       .catch((error) => {
-        console.error('update EF mission', error);
-        store.dispatch(setApiResponse(error))
+        store.dispatch(setApiResponse(error));
       });
     break;
   case 'ef/updateEfTransports':
@@ -61,8 +57,7 @@ const efMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })
       .catch((error) => {
-        console.error('update EF transports', error);
-        store.dispatch(setApiResponse(error))
+        store.dispatch(setApiResponse(error));
       });
     break;
   case 'ef/updateEfAccomodations':
@@ -72,8 +67,7 @@ const efMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })
       .catch((error) => {
-        console.error('update EF transports', error);
-        store.dispatch(setApiResponse(error))
+        store.dispatch(setApiResponse(error));
       });
     break;
   case 'ef/updateEfSignature':
@@ -82,8 +76,7 @@ const efMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })
       .catch((error) => {
-        console.error('update EF signature', error);
-        store.dispatch(setApiResponse(error))
+        store.dispatch(setApiResponse(error));
       });
     break;
   case 'ef/fetchEf':
@@ -96,8 +89,7 @@ const efMiddleware = (store) => (next) => (action) => {
         // }
       })
       .catch((error) => {
-        console.error('fetchEf', error);
-        // store.dispatch(showTicketCreationResponse(error.response))
+        store.dispatch(setApiResponse(error));
       });
     
     break;
@@ -109,8 +101,7 @@ const efMiddleware = (store) => (next) => (action) => {
 
       })
       .catch((error) => {
-        console.error('get ef accomodations', error);
-        store.dispatch(setApiResponse(error))
+        store.dispatch(setApiResponse(error));
       });
     break;
 

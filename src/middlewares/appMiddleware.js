@@ -42,8 +42,7 @@ const appMiddleware = (store) => (next) => (action) => {
           store.dispatch(saveSignature(response.data))
         })
         .catch((error) => {
-          console.error('get signature', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          store.dispatch(setApiResponse(error));
         });
       break;
     case 'app/getSignature':
@@ -54,8 +53,7 @@ const appMiddleware = (store) => (next) => (action) => {
             }
         })
         .catch((error) => {
-          console.error('get signature', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          store.dispatch(setApiResponse(error));
         });
       break;
     case 'app/getDocument':
@@ -67,8 +65,7 @@ const appMiddleware = (store) => (next) => (action) => {
             }
         })
         .catch((error) => {
-          console.error('get signature', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          store.dispatch(setApiResponse(error));
         });
       break;
     case 'app/getMission':
@@ -80,31 +77,28 @@ const appMiddleware = (store) => (next) => (action) => {
           // }
         })
         .catch((error) => {
-          console.error('get signature', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
+          store.dispatch(setApiResponse(error));
         });
       break;
-    case 'agent/authenticate':  
-      casClient
-        .auth()
-            .then((response) => {
-              store.dispatch(validateAuthentication(response))
-            })
-            .catch(response => {
-              console.log('error : ', response);
-            });
-    break;
+    // case 'agent/authenticate':  
+    //   casClient
+    //     .auth()
+    //         .then((response) => {
+    //           store.dispatch(validateAuthentication(response))
+    //         })
+    //         .catch(response => {
+    //           console.log('error : ', response);
+    //         });
+    // break;
     case 'agent/checkAuthentication': 
     api.post('/api/login_check', action.payload)
       .then((response) => {
-        console.log("SUCCES = ", response);
         api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
         store.dispatch(fetchUserLightData({id: action.payload.username, token: response.data.token})) 
         
       })
-      .catch(response => {
-        console.log(' agent/getAgentData error : ', response);
-        store.dispatch(setApiResponse(response))
+      .catch((error) => {
+        store.dispatch(setApiResponse(error));
       });
     break;
     case 'agent/fetchUserLightData':      
@@ -117,7 +111,7 @@ const appMiddleware = (store) => (next) => (action) => {
           // }
         })
         .catch((error) => {
-          console.error("fetch user's light data", error);
+          
         });
       break;
     case 'agent/fetchUserData':      
@@ -158,7 +152,7 @@ const appMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         })
         .catch((error) => {
-          store.dispatch(setApiResponse(error))
+          store.dispatch(setApiResponse(error));
         });
       break;
     case 'app/handleSteps':      
@@ -167,7 +161,7 @@ const appMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         })
         .catch((error) => {
-          store.dispatch(setApiResponse(error))
+          store.dispatch(setApiResponse(error));
         });
       break;
     case 'app/deleteStep':      
@@ -177,7 +171,7 @@ const appMiddleware = (store) => (next) => (action) => {
             store.dispatch(saveEf(response.data));
         })
         .catch((error) => {
-          store.dispatch(setApiResponse(error))
+          store.dispatch(setApiResponse(error));
         });
       break;
   

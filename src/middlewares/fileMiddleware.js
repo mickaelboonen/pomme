@@ -356,7 +356,7 @@ const omMiddleware = (store) => (next) => (action) => {
         })
         .catch((error) => {
           console.error('addfiles', error);
-          store.dispatch(setApiResponse(error));
+          store.dispatch(setApiResponse(error));;
         });
       }
       break;
@@ -407,7 +407,7 @@ const omMiddleware = (store) => (next) => (action) => {
           
         })
         .catch((error) => {
-          store.dispatch(setApiResponse(error));
+          store.dispatch(setApiResponse(error));;
         });
         
       break;

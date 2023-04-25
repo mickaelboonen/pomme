@@ -330,12 +330,12 @@ export const turnAccomodationDataToDbFormat = (data) => {
 export const extractUserData = (data) => {
   return {
     employer:'unimes',
-    firstname:data.prenom,
-    gender:data.cCivilite === 'Mlle' ? 'Mme' : data.cCivilite,
-    lastname:data.nomAffichage,
-    unimesCategory:data.categorie,
-    unimesStatus:data.title,
-    unimesDepartment: data.llStructure,
+    firstname:data.agent.prenom,
+    gender:data.agent.cCivilite === 'Mlle' ? 'Mme' : data.agent.cCivilite,
+    lastname:data.agent.nomAffichage,
+    unimesCategory:data.agent.categorie,
+    unimesStatus:data.agent.title,
+    unimesDepartment: data.agent.llStructure,
   }
 }
 
@@ -362,7 +362,6 @@ export const extractAgentProfessionalAddress = (data) => {
 }
 
 export const efAccomodationsToDbFormat = (data) => {
-
   const formattedValues = {
     docId: data.docId,
     status: data.status,

@@ -43,7 +43,7 @@ const Modal = ({ target, user, userOms, agent, apiMessage }) => {
   }
   
   const onSubmit = (data) => {
-    
+    console.log(agent);
     if (isOm) {
       const newOM = {
         name: `Ordre-de-mission-${agent.lastname.toUpperCase()}`,

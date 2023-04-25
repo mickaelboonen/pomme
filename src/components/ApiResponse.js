@@ -24,7 +24,7 @@ const ApiResponse = ({ apiResponse, updateForm }) => {
     {(response.status && response.status !== 200 && response.status !== 202) && (
       <div className="api-response__error">
         <h5 className="api-response__error-title">{response.statusText} - {response.status}</h5>
-        <p className="api-response__error-details">{response.data.detail} </p>
+        <p className="api-response__error-details">{response.data.detail || response.data.message} </p>
         <p className='api-response__error-details'>Merci de contacter l'assistance informatique via <a className='api-response__error-details__link' href='https://glpi.unimes.fr/front/helpdesk.public.php?create_ticket=1'>GLPI</a> et d'expliquer ce que vous faisiez lorque l'erreur est survenue, en fournissant une capture d'écran de l'erreur avec les toutes informations.</p>
         {response.data.trace && (
           <>

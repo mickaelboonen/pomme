@@ -33,8 +33,7 @@ const omMiddleware = (store) => (next) => (action) => {
         console.log(response);
       })
       .catch((error) => {
-        console.error('fetch om and ef', error);
-        store.dispatch(setApiResponse(error))
+        store.dispatch(setApiResponse(error));
       });
       break;
     case 'omForm/addNewOM':
@@ -45,8 +44,7 @@ const omMiddleware = (store) => (next) => (action) => {
           store.dispatch(saveNewOm(finalisedOM))
         })
         .catch((error) => {
-          console.error('add new om', error);
-          store.dispatch(setApiResponse(error))
+          store.dispatch(setApiResponse(error));
         });
       break;
     case 'omForm/fetchOm':
@@ -66,8 +64,7 @@ const omMiddleware = (store) => (next) => (action) => {
           }
         })
         .catch((error) => {
-          console.error('fetch om', error);
-          store.dispatch(setApiResponse(error))
+          store.dispatch(setApiResponse(error));
         });
       break;
 
@@ -79,8 +76,7 @@ const omMiddleware = (store) => (next) => (action) => {
           store.dispatch(saveOMs(response.data))
         })
         .catch((error) => {
-          console.error('add new om', error);
-          store.dispatch(setApiResponse(error))
+          store.dispatch(setApiResponse(error));
         });
       break;
 
@@ -91,8 +87,7 @@ const omMiddleware = (store) => (next) => (action) => {
           // store.dispatch(setApiResponse(response));
         })
         .catch((error) => {
-          console.error('add new om', error);
-          store.dispatch(setApiResponse(error))
+          store.dispatch(setApiResponse(error));
         });
       break;
 
@@ -103,8 +98,7 @@ const omMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         })
         .catch((error) => {
-          console.log('update new om', error);
-          store.dispatch(setApiResponse(error))
+          store.dispatch(setApiResponse(error));
         });
       break;
 
@@ -115,8 +109,7 @@ const omMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         })
         .catch((error) => {
-          console.error('update new om', error);
-          store.dispatch(setApiResponse(error))
+          store.dispatch(setApiResponse(error));
         });
       break;
 
@@ -127,8 +120,7 @@ const omMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         })
         .catch((error) => {
-          console.error('update advance', error);
-          store.dispatch(setApiResponse(error))
+          store.dispatch(setApiResponse(error));
         });
       break;
 
@@ -139,8 +131,7 @@ const omMiddleware = (store) => (next) => (action) => {
             store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
           })
           .catch((error) => {
-            console.error('update more', error);
-            store.dispatch(setApiResponse(error))
+            store.dispatch(setApiResponse(error));
           });
       break;
 
@@ -151,8 +142,7 @@ const omMiddleware = (store) => (next) => (action) => {
             store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
           })
           .catch((error) => {
-            console.error('update more', error);
-            store.dispatch(setApiResponse(error))
+            store.dispatch(setApiResponse(error));
           });
       break;
 
@@ -162,8 +152,7 @@ const omMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         })
         .catch((error) => {
-          console.error('update accomodations', error);
-          store.dispatch(setApiResponse(error))
+          store.dispatch(setApiResponse(error));
         });
       break;
     
@@ -175,8 +164,7 @@ const omMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         })
         .catch((error) => {
-          console.error('updateMoreAndSignature', error);
-          store.dispatch(setApiResponse(error))
+          store.dispatch(setApiResponse(error));
         });
       break;
     
@@ -190,8 +178,7 @@ const omMiddleware = (store) => (next) => (action) => {
           }
         })
         .catch((error) => {
-          console.error('get signature', error);
-          store.dispatch(setApiResponse(error))
+          store.dispatch(setApiResponse(error));
         });
       break;
     
@@ -202,8 +189,7 @@ const omMiddleware = (store) => (next) => (action) => {
           store.dispatch(setEfLoader(false));
         })
         .catch((error) => {
-          console.error('get transports', error);
-          store.dispatch(setApiResponse(error))
+          store.dispatch(setApiResponse(error));
         });
       break;
     
@@ -216,8 +202,7 @@ const omMiddleware = (store) => (next) => (action) => {
 
         })
         .catch((error) => {
-          console.error('get accomodations', error);
-          store.dispatch(setApiResponse(error))
+          store.dispatch(setApiResponse(error));
         });
       break;
     
@@ -228,8 +213,7 @@ const omMiddleware = (store) => (next) => (action) => {
               store.dispatch(saveMore(response.data))
           })
           .catch((error) => {
-            console.error('get more and signature', error);
-            store.dispatch(setApiResponse(error))
+            store.dispatch(setApiResponse(error));
           });
         break;
     
@@ -240,8 +224,7 @@ const omMiddleware = (store) => (next) => (action) => {
 
         })
         .catch((error) => {
-          console.error('get advance', error);
-          store.dispatch(setApiResponse(error))
+          store.dispatch(setApiResponse(error));
         });
       break;
     
@@ -252,8 +235,7 @@ const omMiddleware = (store) => (next) => (action) => {
 
           })
           .catch((error) => {
-            console.error('create derogation', error);
-            store.dispatch(setApiResponse(error))
+            store.dispatch(setApiResponse(error));
           });
         break;
       case 'omForm/updateOm':
@@ -262,8 +244,7 @@ const omMiddleware = (store) => (next) => (action) => {
             store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
           })
           .catch((error) => {
-            console.error('update om', error);
-            store.dispatch(setApiResponse(error))
+            store.dispatch(setApiResponse(error));
           });
         break;
       case 'omForm/deleteAddress':
@@ -275,8 +256,7 @@ const omMiddleware = (store) => (next) => (action) => {
               // store.dispatch(validateSideForm(response.data));
           })
           .catch((error) => {
-            console.error('delete mission address', error);
-            store.dispatch(setApiResponse(error))
+            store.dispatch(setApiResponse(error));
           });
         break;
     

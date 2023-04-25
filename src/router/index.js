@@ -199,6 +199,7 @@ const AppWithRouter = () => (
                     store.dispatch(fetchCountries());
                   }
                   
+                  store.dispatch(fetchUserData({ id: user}));
                   store.dispatch(fetchAgentSignatureForPdf({ agent: user, omId: id}));
   
                   if (!agent.hasOwnProperty('lastname')) {

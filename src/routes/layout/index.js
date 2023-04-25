@@ -1,18 +1,21 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import { Outlet, useLoaderData } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Outlet, redirect } from 'react-router-dom';
 
 import './style.scss';
 import Header from './Header';
 import Maintenance from './Maintenance';
+import ErrorDisplayer from '../../components/ErrorDisplayer';
+import { logout } from 'src/reducer/app';
 
 const Layout = ({ cas }) => {
   
   const theme = localStorage.getItem('theme');
   const colorTheme = localStorage.getItem('color-theme');
+  const dispatch = useDispatch();
 
-  const { user } = useSelector((state) => state.agent);
+  const { agent: { user },app : { apiMessage }  } = useSelector((state) => state);
   
   const isMaintenance = process.env.IS_MAINTENANCE;
   
@@ -24,6 +27,15 @@ const Layout = ({ cas }) => {
       document.documentElement.style = colorTheme;
     }
   }, [])
+
+  if (apiMessage.hasOwnProperty('response')) {
+    if (apiMessage.response.status !== 200
+      && (apiMessage.response.data.message === 'JWT Token not found'
+      || apiMessage.response.data.message === 'Expired JWT Token')) {
+      dispatch(logout());
+      redirect('/se-connecter');
+    }
+  }
   
   return (
     <>
@@ -33,6 +45,7 @@ const Layout = ({ cas }) => {
           <Outlet />
         </main>
       )}
+      { apiMessage.hasOwnProperty('response') && <ErrorDisplayer error={apiMessage} /> } 
       {(isMaintenance && user !=='mboone01') &&(
         <main id="main">
           <Maintenance />

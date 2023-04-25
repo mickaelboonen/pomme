@@ -259,7 +259,7 @@ const omFormSlice = createSlice({
           omId: dataForApp.om.id,
           total: dataForApp.totalAmount,
           advanceAmount: dataForApp.advanceAmount,
-          hotelQuotation: dataForApp.hotelQuotation,
+          hotelQuotations: dataForApp.hotelQuotations,
           otherExpensesAmount: dataForApp.otherExpensesAmount,
           otherExpensesJustitication: dataForApp.otherExpensesJustitication,
           rib: dataForApp.agentRib,

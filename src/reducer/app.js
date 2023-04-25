@@ -41,6 +41,7 @@ const omFormSlice = createSlice({
           state.apiMessage = action.payload;
         }
       },
+      
       clearMessage: (state) => {
         state.apiMessage = {};
       },

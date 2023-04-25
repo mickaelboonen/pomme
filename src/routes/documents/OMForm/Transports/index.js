@@ -43,7 +43,7 @@ const Transports = ({ step }) => {
   
   const defaultValues = omForm.find((omStep) => omStep.step === 'transports').data;
 
-  console.log(defaultValues);
+  console.log(errors);
 
   const {
     register,
