@@ -45,9 +45,6 @@ const Home = () => {
     navigate(`/utilisateur/${user}/mes-états-de-frais`);
     // dispatch(toggleModal());
   }
-
-  console.log(user);
-
   return (
     <div className="home">
       <HomepageTitle />

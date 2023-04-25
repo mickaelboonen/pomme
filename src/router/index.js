@@ -68,8 +68,9 @@ const AppWithRouter = () => (
             console.log("ENV = ", process.env.NODE_ENV);
             
             if (isAuthenticated) {
+              console.log('ploup');
               // store.dispatch(fetchUserData({ id: user}));
-              store.dispatch(fetchAgentAppDocuments(user))
+              // store.dispatch(fetchAgentAppDocuments(user))
               store.dispatch(fetchOMs(user));
               store.dispatch(fetchEfs(user));
             }
@@ -85,6 +86,7 @@ const AppWithRouter = () => (
                 }
               }
               else {
+                console.log('plop');
                 // Dev environment
                 // store.dispatch(fetchUserData({ id: user}));
                 store.dispatch(fetchOMs(user));
