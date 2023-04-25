@@ -1,12 +1,5 @@
-import React, { useEffect, useState } from "react";
-// import ReactDOM from "react-dom/client";
-// import { Provider } from 'react-redux';
-// import {
-//   persistStore,
-// } from 'redux-persist'
-
-// import { PersistGate } from 'redux-persist/integration/react'
-import { createBrowserRouter, RouterProvider, redirect } from "react-router-dom";
+import React from "react";
+import { createBrowserRouter, redirect } from "react-router-dom";
 import store from 'src/store';
 
 
@@ -20,7 +13,6 @@ import OMForm from "src/routes/documents/OMForm";
 import EfForm from "src/routes/documents/EfForm";
 import EfControl from "src/routes/dafc/EfControl";
 import Gestionnaires from "src/routes/gestionnaire";
-import LoaderCircle from 'src/components/LoaderCircle';
 import EfValidation from "src/routes/dafc/EfValidation";
 import Derogation from "src/routes/documents/Derogation";
 import MyAccount from "src/routes/utilisateur/MyAccount";
@@ -35,21 +27,12 @@ import TicketRequest from "src/routes/utilisateur/MyAccount/TicketRequest";
 import RefusalNotification from "src/routes/utilisateur/MyAccount/RefusalNotification";
 import CasClient, { constant } from "react-cas-client";
 
-
-// import { getSignature } from "src/reducer/app";
 import { getSignature, getDocument, fetchCountries } from "src/reducer/app";
 import { findPermFilesByAgent, fetchAgentSignatureForPdf } from "src/reducer/otherDocuments";
 import { getVehicles, fetchVehicle} from "src/reducer/vehicle";
 import { fetchOm } from "src/reducer/omForm";
 import { fetchOMs, fetchEfs, fetchUserData } from "src/reducer/agent";
 import { setEfLoader } from "src/reducer/ef";
-
-// import { fetchOMs, getOmMission } from 'src/middlewares/newApi';
-
-// import { persistor } from 'src/store';
-// import TestPDF from "./routes/test/TestPDF";
-// import StoreGate from "./components/StoreGate";
-// import persistStore from "redux-persist/es/persistStore";
 
 let casEndpoint = "cas.unimes.fr";
 let casOptions = {
@@ -60,12 +43,7 @@ let casOptions = {
 
 const casClient = new CasClient(casEndpoint, casOptions);
 
-// export const router = ;
-
-// import { RouterProvider } from "react-router-dom";
-// import { router } from 'src/router';
-const Pouet = () => (
-  <RouterProvider router={createBrowserRouter([
+export default createBrowserRouter([
     {
       path: "/",
       element: <Layout cas={casClient} />,
@@ -489,11 +467,4 @@ const Pouet = () => (
         },
       ],
     },
-  ])} />
-);
-
-Pouet.propTypes = {
-
-};
-
-export default Pouet;
+  ]);

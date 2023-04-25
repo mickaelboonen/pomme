@@ -24,7 +24,8 @@ const omMiddleware = (store) => (next) => (action) => {
   // setTokenOnApi(token);
   
   const { agent: { token } } = store.getState();
-  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  console.log(token);
+  api.defaults.headers.common['Authorization'] = `bearer ${token}`;
 
   switch (action.type) {
     case 'omForm/addNewOM':
@@ -64,7 +65,7 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'agent/fetchOMs':
       api.get("/api/om/" + action.payload,)
         .then((response) => {
-           
+          
           store.dispatch(saveUserOms(response.data))
           store.dispatch(saveOMs(response.data))
         })
@@ -160,7 +161,7 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/updateMoreAndSignature':
       api.post("/api/om/more-and-signature/update",  action.payload)
         .then((response) => {
-           
+          
             // store.dispatch(saveMoreAndSignature(response.data))
           store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         })
@@ -214,7 +215,7 @@ const omMiddleware = (store) => (next) => (action) => {
       case 'omForm/getMore':
         api.get("/api/om/more-and-signature/find/" + action.payload)
           .then((response) => {
-             
+            
               store.dispatch(saveMore(response.data))
           })
           .catch((error) => {
