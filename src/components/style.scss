@@ -54,6 +54,7 @@
     &-icon {
       @include vars.centeredFlex;
       margin-bottom: 1rem;
+      cursor: pointer;
 
       & svg { 
         margin-right: 1rem;
@@ -316,15 +317,15 @@
 }
 
 .api-response {
-  margin: 1rem auto;
+  margin: 0 auto 1rem;
 
   &__error {
     border-radius: 10px;
     margin: auto;
-    padding: 1rem;
+    // padding: 1rem;
     width: 80%;
     background-color: #fa9494;
-    border: 1px solid #750d0d;
+    // border: 1px solid #750d0d;
     // color: #750d0d;
     color: #000;
 
@@ -333,10 +334,12 @@
       text-align: center;
       text-transform: uppercase;
       margin-bottom: 1rem;
+      border-bottom: 1px solid #750d0d;
     }
     
     &-details {
-      margin-top: 1rem;
+      margin-top: 0.5rem;
+      text-align: justify;
       // cursor: pointer;
 
       &__link {

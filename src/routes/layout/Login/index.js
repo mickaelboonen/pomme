@@ -28,10 +28,10 @@ const Login = ({ cas }) => {
       .auth() 
         .then((response) => {
           console.log('SUCCESS CAS : ', response);
+          sessionStorage.removeItem('logout-reason');
           dispatch(validateAuthentication(response))
         })
-        .catch(response => {
-          console.log('ERREUR CAS : ', response);
+        .catch(response => 
           dispatch(setApiResponse({
             response : {
               status: 500,
@@ -43,26 +43,22 @@ const Login = ({ cas }) => {
             },
             // message: response.message,
           }))
-
-          
-        })
+        )
         .finally(() => {
           // TODO : a mettre dans le success
-          console.log("FINALLY");
+          sessionStorage.removeItem('logout-reason');
           dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))
           // dispatch(getAgentData({username : 'sdgsdfdgdsgsd', password: ''}))
         });
   }
-  
-  
+
   return (
   <div className='home'>
     <HomepageTitle />
     <div className='home__login'>
-      <p className='home__login-text'>Merci de vous identifier pour accéder à l'application.</p>
-      <button className='home__login-button' onClick={handleLogin} type="button">S'IDENTIFIER AVEC LE CAS</button>
-      {/* <a href="https://cas.unimes.fr/cas/login?TARGET=http://10.30.20.87:8000/api/casHandler">S'IDENTIFIER AVEC LE CAS</a> */}
-      {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={false} />}
+      <p className='home__login-text'>{sessionStorage.getItem('logout-reason') ?? "Merci de vous identifier pour accéder à l'application."}</p>
+      <button className='home__login-button' onClick={handleLogin} type="button">S'IDENTIFIER</button>
+      {/* {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={false} />} */}
     </div>
   </div>
 );}

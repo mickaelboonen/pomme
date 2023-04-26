@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { persistor } from 'src/store';
@@ -10,6 +10,7 @@ import Maintenance from './Maintenance';
 import ErrorDisplayer from '../../components/ErrorDisplayer';
 import { clearMessage } from 'src/reducer/app';
 import { logout } from 'src/reducer/agent';
+import { setApiResponse } from '../../reducer/app';
 
 const Layout = ({ cas }) => {
   
@@ -37,12 +38,12 @@ const Layout = ({ cas }) => {
       localStorage.removeItem('persist:root');
       dispatch(clearMessage());
       dispatch(logout());
+      sessionStorage.setItem('logout-reason', "La durée de votre session a expiré. Veuillez vous connecter pour accéder à l'application.");
       persistor.purge();
       cas.logout("/se-connecter");
     }
   }
   }, [apiMessage])
-  
   return (
     <>
       <Header cas={cas} />

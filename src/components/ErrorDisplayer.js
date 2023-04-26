@@ -35,9 +35,9 @@ const ErrorDisplayer = ({ error }) => {
       <p>Erreur</p>
       <RxDoubleArrowRight className='error-sidebar__header-icon' id="right-icon" />
     </div>
-    <div className='error-sidebar__body' onClick={hideError}>
+    <div className='error-sidebar__body'>
       <ApiResponse apiResponse={error} updateForm={false} />
-      <div className='error-sidebar__body-icon'>
+      <div className='error-sidebar__body-icon' onClick={hideError}>
         <BiHide/> Ne plus afficher l'erreur
       </div>
     </div>
