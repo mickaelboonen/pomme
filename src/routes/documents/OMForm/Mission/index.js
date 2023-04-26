@@ -21,9 +21,9 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 
 // Selectors 
 import { defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
-import { getSavedFileName } from 'src/selectors/formDataGetters';
+// import {  } from 'src/selectors/formDataGetters';
 import { declareCamelCaseKeys, addAllAddressesFields } from 'src/selectors/keyObjectService';
-import { turnFieldsToAddressEntity } from 'src/selectors/formDataGetters';
+import { getSavedFileName, turnFieldsToAddressEntity } from 'src/selectors/formDataGetters';
 
 // Reducer
 import { enableMissionFormFields, updateEfMission } from 'src/reducer/ef';
@@ -36,7 +36,6 @@ const Mission = ({ step, isEfForm }) => {
   const loader = useLoaderData();
   
   const docId = loader.searchParams.get('id');
-  const areWeUpdatingData = loader.pathname.includes('modifier');
   
   const { app: { apiMessage, countries},
     agent: { user, agent },
@@ -121,7 +120,7 @@ const Mission = ({ step, isEfForm }) => {
   const onSubmit = (data) => {
     
     data = turnFieldsToAddressEntity(data);
-    
+    // return;
     if (data.science) {
       if ((!data.missionPurposeFile || data.missionPurposeFile.length === 0) && !data.missionPurposeFileForValidation) {
         setError('missionPurposeFile', { type: 'custom', message: 'Merci de fournir le justificatif de la mission.'})
