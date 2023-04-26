@@ -182,7 +182,7 @@ const Accomodations = ({ step }) => {
       </div>
       <p id="meals-error" className="form__section-field-error"/>
       {maxNightsNumber < 0 && <p id="nights-error" className="form__section-field-error form__section-field-error--open">Les dates saisies pour la mission sont incorrectes. Merci de les corriger pour pouvoir procéder à cette étape.</p>}
-      {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />}
+      {/* {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />} */}
       <Buttons
         step={step}
         id={omId}

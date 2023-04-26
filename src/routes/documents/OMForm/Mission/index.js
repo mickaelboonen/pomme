@@ -464,7 +464,7 @@ const Mission = ({ step, isEfForm }) => {
           filenames={modificationsFilenames}
         />
       )}
-      {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />}
+      {/* {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />} */}
       <Buttons
         step={step}
         id={docId}

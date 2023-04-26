@@ -121,7 +121,7 @@ const Signature = ({ step }) => {
         )}
       </div>
       <HiddenField id="docId" value={efId} register={register} />
-      {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
+      {/* {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />} */}
       <Buttons
         step={step}
         id={efId}

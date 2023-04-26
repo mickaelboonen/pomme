@@ -180,7 +180,7 @@ const Recap = () => {
           </>
         )}
       </div>
-    {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
+    {/* {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />} */}
       <div className="form__section">
         <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
           <BlobProvider document={<EfPDF

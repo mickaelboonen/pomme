@@ -279,7 +279,7 @@ const Accomodations = ({ step }) => {
         
         {errors.eventFiles && <p className="form__section-field-error form__section-field-error--open">{errors.eventFiles.message}</p>}
         <HiddenField id="docId" register={register} value={efId} />
-        {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
+        {/* {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />} */}
         <Buttons
           step={step}
           id={efId}
