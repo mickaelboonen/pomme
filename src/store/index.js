@@ -32,19 +32,14 @@ const persistConfig = {
   version: 1,
   storage,
   whitelist: ['agent', 'app'],
-  blacklist: ['docs', 'omForm', 'ef', '_persist'],
+  blacklist: ['docs', 'omForm', 'ef', '_persist', 'app.apiMessage'],
   stateReconciler: autoMergeLevel2 // ADDED
-};
-
-const appConfig = {
-  key: 'root',
-  storage,
-  blacklist: ['apiMessage']
 };
 
 const reducers = combineReducers({
   ef: efReducer,
-  app: persistReducer(appConfig, appReducer),
+  // app: persistReducer(appConfig, appReducer),
+  app: appReducer,
   agent: agentReducer,
   omForm: omFormReducer,
   docs: otherDocsReducer,

@@ -33,7 +33,7 @@ import { findPermFilesByAgent, fetchAgentSignatureForPdf } from "src/reducer/oth
 import { getVehicles, fetchVehicle} from "src/reducer/vehicle";
 import { fetchOm } from "src/reducer/omForm";
 import { fetchOMs, fetchEfs, fetchUserData, fetchAgentAppDocuments } from "src/reducer/agent";
-import { setEfLoader } from "src/reducer/ef";
+import { setEfLoader, fetchEf } from "src/reducer/ef";
 
 
 let casEndpoint = "cas.unimes.fr";
@@ -64,13 +64,8 @@ const AppWithRouter = () => (
             const { agent: { user,isAuthenticated } } = store.getState()
   
             const devHost = process.env.DEV_HOST + ':8080';
-            console.log("HOST = ", devHost);
-            console.log("ENV = ", process.env.NODE_ENV);
             
             if (isAuthenticated) {
-              console.log('ploup');
-              // store.dispatch(fetchUserData({ id: user}));
-              // store.dispatch(fetchAgentAppDocuments(user))
               store.dispatch(fetchOMs(user));
               store.dispatch(fetchEfs(user));
             }
@@ -86,9 +81,6 @@ const AppWithRouter = () => (
                 }
               }
               else {
-                console.log('plop');
-                // Dev environment
-                // store.dispatch(fetchUserData({ id: user}));
                 store.dispatch(fetchOMs(user));
                 store.dispatch(fetchEfs(user));
               }
@@ -102,9 +94,6 @@ const AppWithRouter = () => (
         {
           path: 'se-connecter',
           element: <Login cas={casClient} />,
-          // loader: async ({ request }) =>  {
-          //   return new URL(request.url);
-          // },
         },
         // new documents forms
         {
@@ -234,6 +223,8 @@ const AppWithRouter = () => (
                 store.dispatch(setEfLoader(true));
                 store.dispatch(fetchOm({id: om, workflow: 'ef', data: {id: id, step: step}}));
   
+                // store.dispatch(fetchEf({id: id, step: step}));
+
                 if (step === '1') {
                   store.dispatch(fetchCountries());
                 }

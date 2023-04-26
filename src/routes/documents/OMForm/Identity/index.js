@@ -27,13 +27,25 @@ const Identity = ({ isEfForm }) => {
   const areWeUpdatingData = loader.pathname.includes('modifier');
   
   const { app: { apiMessage, countries },
-    agent: { agent, user},
+    agent: { agent, agentProfessionalAddress, agentPersonalAddress, user},
     omForm: { currentOM },
     docs: { agentSignature },
     vehicle: { vehicleTypes },
   } = useSelector((state) => state);
   
-  const { register, setValue, getValues, watch, formState: { errors } } = useForm({ defaultValues: agent });
+  const agentFullData = {
+    ...agent,
+    ...agentProfessionalAddress,
+    ...agentPersonalAddress
+  };
+  const {
+    register,
+    setValue,
+    getValues,
+    formState:
+      { errors }
+  } = useForm({ defaultValues: agentFullData});
+
   const errorMessages = defineValidationRulesForMission(isEfForm, false);
   
   const [employer, setEmployer] = useState(agent.employer);
@@ -55,11 +67,11 @@ const Identity = ({ isEfForm }) => {
   return (
     <form className="form">
             
-        <div style={{width:"100%", height:"100vh"}}>
+        {/* <div style={{width:"100%", height:"100vh"}}>
           <PDFViewer>
-            <OmPdf countries={countries} agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />
+            <OmPdf countries={countries} agentSignature={agentSignature} data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />
           </PDFViewer>
-        </div> 
+        </div>  */}
      
       <div className="form__section">
         <FormSectionTitle>Missionnaire</FormSectionTitle>
@@ -194,7 +206,7 @@ const Identity = ({ isEfForm }) => {
       {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />}
       <div className="form__section">
         <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
-          <BlobProvider document={<OmPdf countries={countries} agentSignature={agentSignature} data={currentOM} agent={agent} vehicleTypes={vehicleTypes} />}>
+          <BlobProvider document={<OmPdf countries={countries} agentSignature={agentSignature} data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />}>
             {({ blob }) => {
 
               const file = new File([blob], currentOM.name, {type: 'pdf'});
