@@ -52,7 +52,7 @@ const Layout = ({ cas }) => {
           <Outlet />
         </main>
       )}
-      { apiMessage.hasOwnProperty('response') && <ErrorDisplayer error={apiMessage} /> } 
+      { apiMessage.hasOwnProperty('response') && <ErrorDisplayer response={apiMessage} /> } 
       {(isMaintenance && user !=='mboone01') &&(
         <main id="main">
           <Maintenance />

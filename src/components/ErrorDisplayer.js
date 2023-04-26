@@ -7,21 +7,22 @@ import { BiHide } from "react-icons/bi";
 import './style.scss';
 import { clearMessage } from '../reducer/app';
 import { useDispatch } from 'react-redux';
+import classNames from 'classnames';
 
-const ErrorDisplayer = ({ error }) => {
+const ErrorDisplayer = ({ response }) => {
 
   const dispatch = useDispatch()
-  
+
   const showError = (event) => {
     const {parentNode, nextElementSibling} = event.currentTarget;
     
     const visibleIcon = document.getElementById(`${parentNode.classList.length > 1 ? 'left' : 'right'}-icon`);
     const hiddenIcon = document.getElementById(`${parentNode.classList.length > 1 ? 'right' : 'left'}-icon`);
 
-    parentNode.classList.toggle('error-sidebar--still');
-    visibleIcon.classList.toggle('error-sidebar__header-icon--visible');
-    hiddenIcon.classList.toggle('error-sidebar__header-icon--visible');
-    nextElementSibling.classList.toggle('error-sidebar__body--open');
+    parentNode.classList.toggle('sidebar-notification--still');
+    visibleIcon.classList.toggle('sidebar-notification__header-icon--visible');
+    hiddenIcon.classList.toggle('sidebar-notification__header-icon--visible');
+    nextElementSibling.classList.toggle('sidebar-notification__body--open');
   }
 
   const hideError = () => {
@@ -29,17 +30,19 @@ const ErrorDisplayer = ({ error }) => {
   
   }
   return (
-  <div className='error-sidebar'>
-    <div className='error-sidebar__header' onClick={showError}>
-      <RxDoubleArrowLeft className='error-sidebar__header-icon error-sidebar__header-icon--visible' id="left-icon" />
-      <p>Erreur</p>
-      <RxDoubleArrowRight className='error-sidebar__header-icon' id="right-icon" />
+  <div className={classNames('sidebar-notification', {'sidebar-notification--success': response.response.status === 200, 'sidebar-notification--error': response.response.status !== 200})}>
+    <div className='sidebar-notification__header' onClick={showError}>
+      <RxDoubleArrowLeft className='sidebar-notification__header-icon sidebar-notification__header-icon--visible' id="left-icon" />
+      <p>{response.response.status === 200 ? 'Succès' : 'Erreur'}</p>
+      <RxDoubleArrowRight className='sidebar-notification__header-icon' id="right-icon" />
     </div>
-    <div className='error-sidebar__body'>
-      <ApiResponse apiResponse={error} updateForm={false} />
-      <div className='error-sidebar__body-icon' onClick={hideError}>
-        <BiHide/> Ne plus afficher l'erreur
-      </div>
+    <div className='sidebar-notification__body'>
+      <ApiResponse apiResponse={response} updateForm={false} />
+      {response.response.status !== 200 && (
+        <div className='sidebar-notification__body-icon' onClick={hideError}>
+          <BiHide/> Ne plus afficher l'erreur
+        </div>
+      )}
     </div>
   </div>
 );}

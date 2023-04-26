@@ -6,8 +6,7 @@
   60% {transform: translateX(-15px);} 
 }
 
-.error-sidebar {
-  background-color: #fa9494;
+.sidebar-notification {
   position: fixed;
   top: 20vh;
   right: -30px;
@@ -16,7 +15,6 @@
   border-radius: vars.$radius 0 0 vars.$radius;
   box-shadow: 3px 3px  1px #1a1a1a;
   animation: 2s ease-in 1s infinite reverse both running bounce;
-  border: 1px solid rgb(117, 13, 13);
 
 
   &__header {
@@ -46,7 +44,7 @@
     &--open {
       display: block;
 
-      .error-sidebar { 
+      .sidebar-notification { 
         animation: none;
       }
     }
@@ -65,15 +63,25 @@
   &--still {
     animation: none;
 
-    & .error-sidebar__header {
+    & .sidebar-notification__header {
       justify-content: space-between;
     }
+  }
+
+  &--error {
+    background-color: var(--backgroundError);
+    border: 1px solid var(--textError);
+  }
+
+  &--success {
+    background-color: var(--backgroundSuccess);
+    border: 1px solid var(--textSuccess);
   }
 }
 
 
 @media (min-width: vars.$sm) {
-  .error-sidebar {
+  .sidebar-notification {
     top: 20vh;
     right: -30px;
   

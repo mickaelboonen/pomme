@@ -182,7 +182,7 @@
 
     &-message {
       margin: auto;
-      padding: 1rem;
+      // padding: 1rem;
       border-radius: 10px;
       text-align: justify;
 
@@ -199,20 +199,16 @@
 
       &--error, &--success {
         width: 80%;
-
       }
 
       &--error {
-        background-color: rgb(250, 148, 148);
-        color: rgb(117, 13, 13);
-        border: 1px solid rgb(117, 13, 13);
-
+        background-color: var(--backgroundError);
+        // border: 1px solid var(--textError);
       }
-
+    
       &--success {
-        background-color: rgb(148, 250, 190);
-        color: rgb(13, 117, 27);
-        border: 1px solid rgb(13, 117, 27);
+        background-color: var(--backgroundSuccess);
+        // border: 1px solid var(--textSuccess);
       }
     }
 
