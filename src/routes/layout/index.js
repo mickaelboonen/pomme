@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
+import { persistor } from 'src/store';
 import { Outlet, redirect } from 'react-router-dom';
 
 import './style.scss';
 import Header from './Header';
 import Maintenance from './Maintenance';
 import ErrorDisplayer from '../../components/ErrorDisplayer';
-import { logout } from 'src/reducer/app';
+import { clearMessage } from 'src/reducer/app';
+import { logout } from 'src/reducer/agent';
 
 const Layout = ({ cas }) => {
   
@@ -27,15 +29,19 @@ const Layout = ({ cas }) => {
       document.documentElement.style = colorTheme;
     }
   }, [])
-
+  useEffect(() => {
   if (apiMessage.hasOwnProperty('response')) {
     if (apiMessage.response.status !== 200
       && (apiMessage.response.data.message === 'JWT Token not found'
       || apiMessage.response.data.message === 'Expired JWT Token')) {
+      localStorage.removeItem('persist:root');
+      dispatch(clearMessage());
       dispatch(logout());
-      redirect('/se-connecter');
+      persistor.purge();
+      cas.logout("/se-connecter");
     }
   }
+  }, [apiMessage])
   
   return (
     <>

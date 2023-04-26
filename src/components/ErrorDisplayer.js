@@ -10,14 +10,13 @@ const ErrorDisplayer = ({ error }) => {
   const handleClick = (event) => {
     const {parentNode, nextElementSibling} = event.currentTarget;
     
-      const visibleIcon = document.getElementById(`${parentNode.classList.length > 1 ? 'left' : 'right'}-icon`);
-      const hiddenIcon = document.getElementById(`${parentNode.classList.length > 1 ? 'right' : 'left'}-icon`);
+    const visibleIcon = document.getElementById(`${parentNode.classList.length > 1 ? 'left' : 'right'}-icon`);
+    const hiddenIcon = document.getElementById(`${parentNode.classList.length > 1 ? 'right' : 'left'}-icon`);
 
-    parentNode.classList.toggle('error-sidebar--still')
-    visibleIcon.classList.toggle('error-sidebar__header-icon--visible')
-    hiddenIcon.classList.toggle('error-sidebar__header-icon--visible')
-    nextElementSibling.classList.toggle('error-sidebar__body--open')
-    icon.classList.toggle('error-sidebar__body--open')
+    parentNode.classList.toggle('error-sidebar--still');
+    visibleIcon.classList.toggle('error-sidebar__header-icon--visible');
+    hiddenIcon.classList.toggle('error-sidebar__header-icon--visible');
+    nextElementSibling.classList.toggle('error-sidebar__body--open');
   }
   return (
   <div className='error-sidebar'>
