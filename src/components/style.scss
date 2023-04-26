@@ -8,19 +8,20 @@
 
 .error-sidebar {
   background-color: #fa9494;
-  padding: 1rem;
   position: fixed;
   top: 20vh;
   right: -30px;
-  z-index: 999;
+  z-index: 500;
   border-radius: vars.$radius 0 0 vars.$radius;
-  box-shadow: 2px 2px 2px #1a1a1a;
-  cursor: pointer;
+  box-shadow: 3px 3px  1px #1a1a1a;
   animation: 3s ease-in 1s infinite reverse both running bounce;
+  border: 1px solid rgb(117, 13, 13);
 
 
   &__header {
+    cursor: pointer;
     text-transform: uppercase;
+    padding: 1rem;
     margin-right: 30px;
     font-size: 1.2em;
     font-weight: bold;
@@ -39,12 +40,22 @@
   &__body {
     display: none;
     width: 20rem;
+    margin-right: 1rem;
 
     &--open {
       display: block;
 
       .error-sidebar { 
         animation: none;
+      }
+    }
+
+    &-icon {
+      @include vars.centeredFlex;
+      margin-bottom: 1rem;
+
+      & svg { 
+        margin-right: 1rem;
       }
     }
   }
@@ -58,6 +69,22 @@
   }
 }
 
+
+@media (min-width: vars.$sm) {
+  .error-sidebar {
+    top: 20vh;
+    right: -30px;
+  
+    &__body {
+      display: none;
+      width: 20rem;
+  
+      &--open {
+        display: block;
+      }
+    }
+  }
+}
 
 .title {
   border-bottom: 2px solid var(--third-color);

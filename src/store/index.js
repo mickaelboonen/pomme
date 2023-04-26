@@ -36,9 +36,15 @@ const persistConfig = {
   stateReconciler: autoMergeLevel2 // ADDED
 };
 
+const appConfig = {
+  key: 'root',
+  storage,
+  blacklist: ['apiMessage']
+};
+
 const reducers = combineReducers({
   ef: efReducer,
-  app: appReducer,
+  app: persistReducer(appConfig, appReducer),
   agent: agentReducer,
   omForm: omFormReducer,
   docs: otherDocsReducer,
