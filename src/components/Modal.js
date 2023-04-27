@@ -140,6 +140,7 @@ const Modal = ({ target, user, userOms, agent, apiMessage }) => {
             <ButtonElement
               type="submit"
               label="Valider"
+              hasLoader
               />
             <ButtonElement
               type="button"

@@ -36,10 +36,7 @@ const Section = ({ id, data, user, steps, currentDoc, loader, isOm}) => {
   }
 
   const refreshData = () => {
-    console.log(isOm, user);
-
     if (isOm) {
-      console.log('here');
       dispatch(fetchOMs(user));
     }
     else {
