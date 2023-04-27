@@ -1,0 +1,39 @@
+@use 'src/styles/vars';
+
+@keyframes rotate{
+  0%{ transform: rotate(0deg); }
+  100%{ transform: rotate(360deg); }
+}
+
+.rotating-loader {
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  position: relative;
+  overflow: hidden;
+  display: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 3rem;
+    height: 3rem;
+    transform: rotate(10deg);
+    animation: rotate 1.5s linear infinite;
+    background-image: conic-gradient( var(--second-color), var(--second-color), transparent,transparent,transparent);
+  }
+
+  & svg { 
+    width: 3rem;
+    height: 3rem;
+  }
+
+
+  &--loading {
+    @include vars.centeredFlex;
+  }
+}
+
+.home__login-button:hover .rotating-loader::after {
+  background-image: conic-gradient( var(--fourth-color), var(--fourth-color), transparent,transparent,transparent);
+}
