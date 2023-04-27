@@ -90,8 +90,10 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
   };
 
   const handleLogOut = () => {
-    cas.logout("/");
+    localStorage.removeItem('persist:root');
+    dispatch(logout());
     persistor.purge();
+    cas.logout("/se-connecter");
   }
 
   const savedTheme = localStorage.getItem('theme');

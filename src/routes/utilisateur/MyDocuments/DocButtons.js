@@ -10,7 +10,6 @@ import PdfDownloadButton from '../../../components/pdfDownloadButton';
 const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isOm}) => {
   const downloadFileStatusArray = [2, 8];
   let buttons = [];
-  console.log(transports.authorizations);
   
   if (isOm) {
     buttons = [
