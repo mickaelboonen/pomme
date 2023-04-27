@@ -10,8 +10,12 @@ const ButtonElement = ({ type, label, handler, isLink, link, hasLoader}) => {
   
   const handleClickOnButton = (event) => {
     if (hasLoader) {
-      document.querySelector('.rotating-loader').classList.add('rotating-loader--loading')
-      event.currentTarget.querySelector('span').textContent = '';
+      const selectElement = document.querySelector('select');
+
+      if (selectElement.value !== '') {
+        document.querySelector('.rotating-loader').classList.add('rotating-loader--loading')
+        event.currentTarget.querySelector('span').textContent = '';
+      }
     }
     handler();
   }
@@ -32,7 +36,7 @@ ButtonElement.defaultProps = {
   handler: () => {},
   isLink: false,
   link: null,
-  hasLoader: false
+  hasLoader: false,
 };
 
 export default ButtonElement;

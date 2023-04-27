@@ -114,8 +114,8 @@ const Modal = ({ target, user, userOms, agent, apiMessage }) => {
                     id="work-address-select"
                     label="Sélectionner l'OM dont vous voulez faire l'état de frais"
                     blankValue="Liste des OMs disponibles pour un remboursement"
-                    required="Merci de sélectionner l'Ordre de Mission"
-                    error={errors.omList}
+                    required="Merci de sélectionner un Ordre de Mission"
+                    error={errors.om}
                   />
                 </div>
                 <div className="form__section-field">
