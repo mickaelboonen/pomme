@@ -24,8 +24,7 @@ import { getSavedFileName } from 'src/selectors/formDataGetters';
 import { turnAdvanceDataToDbFormat } from 'src/selectors/dataToDbFormat';
 
 const Avance = ({ step }) => {
-  // ATTENTION : lots of rendu
-  console.log('rendu');
+  
   const dispatch = useDispatch();
   const loader = useLoaderData();
   const omId = loader.searchParams.get('id');

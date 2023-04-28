@@ -75,9 +75,7 @@ const AddVehicle = () => {
   });
 
   const onSubmit = (data) => {
-    
-    console.log("ON SUBMIT : ",data);
-    
+        
     if (data.insuranceFile instanceof File || data.registrationFile instanceof File) {
       dispatch(uploadVehicleFiles({data: data, user: user, isUpdate : areWeUpdating}));
     }

@@ -164,13 +164,12 @@ const Derogation = () => {
                 <BlobProvider document={<DispensationPdf agentSignature={agentSignature} agent={agent} data={watch()}/>}>
                   {({ blob }) => {
                     
-                    const { mission } = oms.find((om) => om.id == omId);
-                    const fileName = `${agent.lastname.toUpperCase()}-${new Date(mission.departure).toLocaleDateString().split('/').join('-')}-${dispensationTitle.split(' ').join('-')}`
+                    const om = oms.find((om) => om.id == omId);
+                    const fileName = `${agent.lastname.toUpperCase()}-${new Date(om.mission.departure).toLocaleDateString().split('/').join('-')}-${dispensationTitle.split(' ').join('-')}`
                     
                     
                     const file = new File([blob], fileName, {type: 'pdf'});
                     
-                    console.log(file);
                     const fileUrl = URL.createObjectURL(file);
                     
                     return (

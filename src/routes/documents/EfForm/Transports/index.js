@@ -50,8 +50,7 @@ const Transports = ({ step }) => {
     delete data.otherSwitch;
 
     const propertiesArray = Object.entries(data);
-
-    console.log(data);
+    
     let errors = 0;
 
     const dataWithoutEmptyFields = {};
@@ -102,9 +101,6 @@ const Transports = ({ step }) => {
 
     dataWithoutEmptyFields.status = 1;
     dataWithoutEmptyFields.docId = data.docId;
-    console.log(dataWithoutEmptyFields);
-    
-
 
     const filesArray = Object.entries(dataWithoutEmptyFields).filter((entry) => entry[0].includes('Files'));
     const firstFoundFile = filesArray.find((property) => property[1].find((value) => value instanceof File));

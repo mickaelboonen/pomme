@@ -26,7 +26,6 @@ const efMiddleware = (store) => (next) => (action) => {
   case 'agent/fetchEfs':
     api.get("/api/ef/" + action.payload)
       .then((response) => {
-        console.log(response);
         store.dispatch(saveEfs(response.data))
       })
       .catch((error) => {
@@ -61,7 +60,6 @@ const efMiddleware = (store) => (next) => (action) => {
       });
     break;
   case 'ef/updateEfAccomodations':
-    console.log(action.type, action.payload);
     api.post("/api/ef/accomodations/update", action.payload)
       .then((response) => {
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));

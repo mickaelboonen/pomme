@@ -82,7 +82,7 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
   };
 
   const filename = file ? file.name : '';
-  console.log(file);
+  
   return (
   <div className='file-manager'>
     <div className='file-manager__file'>

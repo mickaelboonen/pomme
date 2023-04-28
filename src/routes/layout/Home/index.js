@@ -68,7 +68,7 @@ const Home = () => {
         </div>
       </section>
       <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
-      {isModalOpen && <Modal target={newTarget.replace(/-/g, ' ')} user={user} agent={agent} apiMessage={apiMessage} />}
+      {isModalOpen && <Modal target={newTarget.replace(/-/g, ' ')} user={user} agent={agent} loader={loader} apiMessage={apiMessage} />}
 
     </div>
   );

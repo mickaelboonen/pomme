@@ -18,9 +18,9 @@ Font.register({ family: 'Radjhani', src: RadjhaniFont });
 import { styles } from './pdfStyles';
 
 const EfPdf = ({ data, agent, agentSignature, country }) => {
-  // console.log('rendu');
+  
   const { mission, transports, accomodations, stages } = data;
-  console.log(data);
+  
   const dep = new Date(mission.departure);
   const ret = new Date(mission.comeback);
     
@@ -104,8 +104,7 @@ const EfPdf = ({ data, agent, agentSignature, country }) => {
   transportsExpenses = filterArrays(transportsExpenses);
   accomodationsExpenses = filterArrays(accomodationsExpenses);
   otherExpenses = filterArrays(otherExpenses);
-
-
+  
   return (
   <Document>
     <Page size="A4" style={styles.page}>

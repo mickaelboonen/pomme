@@ -24,7 +24,7 @@ const Recap = () => {
   const { ef: { currentEf },
     app: { apiMessage, countries },
     omForm: { currentOM },
-      agent: { agent, user, userSignature },
+    agent: { agent, user, userSignature, agentProfessionalAddress, agentPersonalAddress},
   } = useSelector((state) => state);
   
   const { mission, transports, accomodations, stages } = currentEf;
@@ -57,23 +57,27 @@ const Recap = () => {
     dispatch(uploadFile({ data: {docId: id , file: file}, step: 'ef', docType: 'ef'}))
   }
 
-  const missionCountry = countries.find((country) => country.code === Number(mission.country))
+  const missionCountry = countries.find((country) => country.code === Number(mission.country));
 
-  console.log(transports.visa, accomodations.event);
-
+  const fullAgentData = {
+    ...agent,
+    ...agentProfessionalAddress,
+    ...agentPersonalAddress,
+  }
+  
   return (
   <div className="form">  
-        <div style={{height: "80vh"}}>
+        {/* <div style={{height: "80vh"}}>
           <PDFViewer className='form__section-recap'>
             <EfPDF
               agentSignature={userSignature}
               data={currentEf}
-              agent={agent}
+              agent={fullAgentData}
               meals={mealsExpenses}
               country={missionCountry}
             />
           </PDFViewer>
-        </div> 
+        </div>  */}
     <div className="form__section" style={{marginBottom: '1rem'}}>
       <FormSectionTitle>Transports</FormSectionTitle>
       <p className='form__section-recap'>Total des frais de transports déclarés pour la mission : <span>{totalTransportsExpenses}€</span>.</p>
@@ -89,7 +93,7 @@ const Recap = () => {
         {transports.public_transports && <p className='form__section-recap'>Montant des frais de transports en commun : <span>{transports.public_transports}€</span>.</p>}
         {transports.rent_car && <p className='form__section-recap'>Montant de la facture du véhicule de location : <span>{transports.rent_car}€</span>.</p>}
 
-        {transports.personal_car && <p className='form__section-recap'>Utilisation d'un véhicule personnel : <span>{transports.km}</span>.</p>}
+        {transports.personal_car && <p className='form__section-recap'>Utilisation d'un véhicule personnel : <span>{transports.km}</span>km.</p>}
 
       </div>
     </div>
@@ -186,7 +190,7 @@ const Recap = () => {
           <BlobProvider document={<EfPDF
               agentSignature={userSignature}
               data={currentEf}
-              agent={agent}
+              agent={fullAgentData}
               meals={mealsExpenses}
               country={missionCountry}
             />}>

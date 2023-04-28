@@ -19,6 +19,8 @@ export const getSavedFileName = (urlFile) => {
 
 export const turnFieldsToAddressEntity = (data) => {
   
+  const isMissionInFrance = data.region === 'métropole';
+  
   const dataArray = Object.entries(data);
   const addressIdsArray = dataArray.filter((property) => property[0].includes('addressId'));
   const addressesNumber = addressIdsArray.length;
@@ -33,7 +35,7 @@ export const turnFieldsToAddressEntity = (data) => {
       streetName: data['streetName' + i],
       postCode: data['postCode' + i],
       city: data['city' + i],
-      countryCode: data['countryCode' + i]
+      countryCode: data['countryCode' + i] === 0 && isMissionInFrance ? 100 : data['countryCode' + i]
     }
     addresses.push(missionAddress);
 

@@ -3,7 +3,7 @@ export const OTHER_MEALS_AMOUNT = '15,25';
 
 export const floatAddition = (floatArray) => {
   let floatTotal = 0;
-
+  
   floatArray.forEach((float) => {
     if (typeof float === 'number') {
       float = float.toString() + ',00';

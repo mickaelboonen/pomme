@@ -15,7 +15,7 @@ const omFormSlice = createSlice({
     name: 'app',
     initialState,
     reducers: {
-      pouet: () => {console.log('pouet');},
+      pouet: () => {},
       authenticate: () => {},
       saveUser: () => {},
       getSignature: () => {},

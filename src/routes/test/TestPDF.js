@@ -44,7 +44,7 @@ const TestPDF = () =>   {
         </PDFViewer>
       </section>
       <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
-      {isModalOpen && <Modal target={newTarget.replace(/-/g, ' ')} user={user} />}
+      {isModalOpen && <Modal target={newTarget.replace(/-/g, ' ')} user={user} loader={loader} />}
 
     </div>
   );

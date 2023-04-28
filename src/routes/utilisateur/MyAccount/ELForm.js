@@ -23,7 +23,6 @@ const ELForm = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
   };
   const message = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque eos rem possimus expedita dolores odio qui voluptas architecto culpa nobis.'
   

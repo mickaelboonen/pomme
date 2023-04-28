@@ -32,7 +32,7 @@ import { getSignature, getDocument, fetchCountries } from "src/reducer/app";
 import { findPermFilesByAgent, fetchAgentSignatureForPdf } from "src/reducer/otherDocuments";
 import { getVehicles, fetchVehicle} from "src/reducer/vehicle";
 import { fetchOm } from "src/reducer/omForm";
-import { fetchOMs, fetchEfs, fetchUserData, fetchAgentAppDocuments } from "src/reducer/agent";
+import { fetchOMs, fetchEfs, fetchUserData } from "src/reducer/agent";
 import { setEfLoader, fetchEf } from "src/reducer/ef";
 
 
@@ -237,6 +237,7 @@ const AppWithRouter = () => (
                     store.dispatch(fetchCountries());
                   }
   
+                  store.dispatch(fetchUserData({ id: user}));
                   store.dispatch(getSignature(user));
                   // store.dispatch(fetchEf({id: user}));
                 }
@@ -267,6 +268,7 @@ const AppWithRouter = () => (
                   if (countries.length === 0 ) {
                     store.dispatch(fetchCountries());
                   }
+                  store.dispatch(fetchUserData({ id: user}));
                   store.dispatch(getSignature(user));
                   // store.dispatch(fetchEf({id: user}));
                 }
@@ -325,8 +327,6 @@ const AppWithRouter = () => (
                     const url = new URL(request.url);
                     const id = url.searchParams.get("id");
   
-                    // console.log(url);
-  
                     store.dispatch(fetchVehicle({id: url.pathname.split('/')[5]}))
                     
                   }
@@ -341,8 +341,6 @@ const AppWithRouter = () => (
                   loader: async ({ request }) => {
                     const url = new URL(request.url);
                     const id = url.searchParams.get("id");
-  
-                    // console.log();
   
                     store.dispatch(fetchVehicle({id: url.pathname.split('/')[5]}))
                     

@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
 import { useDispatch } from 'react-redux';
+import { MdRefresh } from 'react-icons/md'
+import classNames from 'classnames';
 
 import './modalStyle.scss';
 
@@ -16,9 +18,10 @@ import ButtonElement from 'src/components/Fields/ButtonElement';
 import { toggleModal } from '../reducer/app';
 import { addNewOM } from 'src/reducer/omForm';
 import { addNewEf } from 'src/reducer/ef';
+import { fetchOMs } from 'src/reducer/agent';
 
-const Modal = ({ target, user, userOms, agent, apiMessage }) => {
-
+const Modal = ({ target, user, userOms, agent, apiMessage, loader }) => {
+  console.log(userOms);
   const dispatch = useDispatch();
   let isOm = false;
   let defaultValues = {};
@@ -41,9 +44,13 @@ const Modal = ({ target, user, userOms, agent, apiMessage }) => {
   const close = () => {
     dispatch(toggleModal());
   }
+
+  
+  const refreshData = () => {
+      dispatch(fetchOMs(user));
+  };
   
   const onSubmit = (data) => {
-    console.log(agent);
     if (isOm) {
       const newOM = {
         name: `Ordre-de-mission-${agent.lastname.toUpperCase()}`,
@@ -117,6 +124,11 @@ const Modal = ({ target, user, userOms, agent, apiMessage }) => {
                     required="Merci de sélectionner un Ordre de Mission"
                     error={errors.om}
                   />
+                  <div className="my-documents__files-buttons">
+                    <button style={{width: 'fit-content'}} onClick={refreshData} type="button">
+                      <MdRefresh className={classNames('my-documents__files-buttons-icon', {'my-documents__files-buttons-icon--animated': loader})} />  {!loader ? 'Rafraîchir la liste' : ''}
+                    </button>
+                  </div>
                 </div>
                 <div className="form__section-field">
                   <SwitchButton
@@ -135,7 +147,7 @@ const Modal = ({ target, user, userOms, agent, apiMessage }) => {
               </>
             )}
           </div>
-          {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
+          {/* {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />} */}
           <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}} id="modal-button">
             <ButtonElement
               type="submit"

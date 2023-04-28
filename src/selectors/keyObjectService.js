@@ -57,15 +57,13 @@ export const setEfTranportsFilenames = (data) => {
 }
 
 export const addAllAddressesFields = (data) => {
-
-  // console.log(index);
+  
   const { addresses } = data;
   
   const newAddresses = { ...data};
   
   for(let i = 1; i <= data.addresses.length; i++) {
     const x = Object.entries(addresses[i - 1]);
-    // console.log(x);
 
     x.forEach((property) => {
       if (property[0] === 'id') {
@@ -76,7 +74,6 @@ export const addAllAddressesFields = (data) => {
       }
     })
   }
-  // console.log(newAddresses);
-  // console.log("-------------------------------------------------------------------------------");
+  
   return newAddresses;
 }

@@ -234,7 +234,6 @@ const efSlice = createSlice({
       saveEfAccomodations: (state, action) => {
 
         const data = declareCamelCaseKeys(action.payload);
-        console.log(data);
         state.currentEf.accomodations = data;
       },
       clearEfTarget: (state) => {

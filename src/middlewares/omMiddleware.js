@@ -26,16 +26,15 @@ const omMiddleware = (store) => (next) => (action) => {
   setTokenOnApi(token);
 
   switch (action.type) {
-    case 'agent/fetchAgentAppDocuments':
-      api.get("/api/om/" + action.payload)
-      .then((response) => {
-        // TODO : 
-        console.log(response);
-      })
-      .catch((error) => {
-        store.dispatch(setApiResponse(error));
-      });
-      break;
+    // case 'agent/fetchAgentAppDocuments':
+    //   api.get("/api/om/" + action.payload)
+    //   .then((response) => {
+    //     // TODO : 
+    //   })
+    //   .catch((error) => {
+    //     store.dispatch(setApiResponse(error));
+    //   });
+    //   break;
     case 'omForm/addNewOM':
       api.post("/api/om/add", action.payload,)
         .then((response) => {
@@ -196,9 +195,7 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/getAccomodations':
       api.get("/api/om/accomodations/find/" + action.payload)
         .then((response) => {
-          console.log(response.data);
             store.dispatch(saveAccomodations(response.data));
-            // store.dispatch(setEfLoader(false));
 
         })
         .catch((error) => {

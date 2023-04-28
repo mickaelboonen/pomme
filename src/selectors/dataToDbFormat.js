@@ -375,7 +375,5 @@ export const efAccomodationsToDbFormat = (data) => {
     eventFiles: data.eventFiles,
   }
 
-  console.log(formattedValues);
-
   return formattedValues;
 }

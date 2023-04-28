@@ -9,14 +9,12 @@
 //   const persist = store.getState()._persist
 //   const { rehydrated } = useSelector((state) => state._persist)
   
-//   // console.log(persist);
 //   const [isGateOpen, setIsGateOpen] = useState(isRehydrated)
   
 //   useEffect(() => {
 //     setIsGateOpen(rehydrated);
 
 //   }, [rehydrated])
-// console.log("IS GATE OPEN = ", isGateOpen, new Date().getTime());
 //   return ( 
 //     <>
 //       {isGateOpen ? <Pouet />: <LoaderCircle />}

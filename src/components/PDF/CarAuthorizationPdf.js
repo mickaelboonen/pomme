@@ -33,8 +33,6 @@ const CarAuthorizationPdf = ({ data, vehicleTypes, agent, agentSignature, reason
     }
   })
 
-  console.log(data);
-
   return (
   <Document>
     <Page size="A4" style={styles.page}>

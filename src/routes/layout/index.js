@@ -7,6 +7,7 @@ import { Outlet, redirect } from 'react-router-dom';
 import './style.scss';
 import Header from './Header';
 import Maintenance from './Maintenance';
+import Login from './Login';
 import ErrorDisplayer from '../../components/ErrorDisplayer';
 import { clearMessage } from 'src/reducer/app';
 import { logout } from 'src/reducer/agent';
@@ -18,7 +19,7 @@ const Layout = ({ cas }) => {
   const colorTheme = localStorage.getItem('color-theme');
   const dispatch = useDispatch();
 
-  const { agent: { user },app : { apiMessage }  } = useSelector((state) => state);
+  const { agent: { user, isAuthenticated }, app : { apiMessage }  } = useSelector((state) => state);
   
   const isMaintenance = process.env.IS_MAINTENANCE;
   
@@ -53,9 +54,19 @@ const Layout = ({ cas }) => {
         </main>
       )}
       { apiMessage.hasOwnProperty('response') && <ErrorDisplayer response={apiMessage} /> } 
-      {(isMaintenance && user !=='mboone01') &&(
+      {(isMaintenance && user ==='' && !isAuthenticated) &&(
+        <main id="main">
+          <Login cas={cas} />
+        </main>
+      )}
+      {(isMaintenance && user !=='mboone01' && isAuthenticated) &&(
         <main id="main">
           <Maintenance />
+        </main>
+      )}
+      {(isMaintenance && user !=='mboone01' && isAuthenticated) &&(
+        <main id="main">
+          <Outlet />
         </main>
       )}
     </>

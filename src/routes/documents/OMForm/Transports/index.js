@@ -43,8 +43,6 @@ const Transports = ({ step }) => {
   
   const defaultValues = omForm.find((omStep) => omStep.step === 'transports').data;
 
-  console.log(errors);
-
   const {
     register,
     setValue,
@@ -57,7 +55,6 @@ const Transports = ({ step }) => {
   } = useForm({ defaultValues: defaultValues});
   
   const onSubmit = (data) => {
-    console.log(data);
 
     if (data.trainClass === 'no-train') {
       data.trainClass = null;
@@ -95,10 +92,6 @@ const Transports = ({ step }) => {
       
       // If there are no errors, we go on
       if (countErrors === 0) {
-
-        console.log('-----------------------------------------------------------------');
-        console.log(data);
-        console.log('-----------------------------------------------------------------');
         if (data.authorizations.length > 0) {
           data.status = data.authorizations[0].file === 'pending' && data.vehicleAuthorizationFile.length === 0 ? 0 : 1;
         }

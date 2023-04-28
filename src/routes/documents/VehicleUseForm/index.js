@@ -105,8 +105,6 @@ const VehicleUseForm = () => {
   ]);
   
   const onSubmit = (data) => {
-    console.log("IN SUBMIT : ", data);
-    
     let countErrors = validateDataInSubmit(data);
     
     if (countErrors === 0) {      
@@ -127,7 +125,6 @@ const VehicleUseForm = () => {
           type: data.carType,
           file: data.file,
         };
-        console.log(newDataFormat);
 
         if (newDataFormat.file instanceof File
           || newDataFormat.insurance instanceof File

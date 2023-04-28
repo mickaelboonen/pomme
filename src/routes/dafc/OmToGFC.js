@@ -20,7 +20,6 @@ const OmToGFC = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
   };
   const progress = '95%'
   const message = "Affiche l'erreur rencontrée, l'étape et invite à se rediriger sur l'appli GFC_MISSIONS pour finaliser la saisie et corriger l'erreur. Si la première étape a été validée, retourne l'ID de l'OM dans la base de données. Première erreur possible : le missionnaire n'est pas fournisseur dans la BDD GFC Missions et donc l'OM ne peut pas etre saisi pour lui.";

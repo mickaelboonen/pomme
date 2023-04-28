@@ -77,7 +77,6 @@ const Accomodations = ({ step }) => {
   } = useForm({ defaultValues: defaultValues });
 
   const onSubmit = (data) => {
-    console.log(data);
     let errorsCount = 0;
 
     if (Number(data.hotel) > 0 && data.hotelFiles.length === 0) {
@@ -108,6 +107,9 @@ const Accomodations = ({ step }) => {
       return;
     }
     data.status = 1;
+    data.freeMealsInFrance === '' ? data.freeMealsInFrance = null : data.freeMealsInFrance;
+    data.overseasFreeMeals === '' ? data.overseasFreeMeals = null : data.overseasFreeMeals;
+    data.event === '' ? data.event = 0 : data.event;
     
     if (data.hotelFiles.find((file) => file instanceof File) || data.eventFiles.find((file) => file instanceof File)) {
       dispatch(uploadFile({data: data, step: 'accomodations', docType: 'ef'}));

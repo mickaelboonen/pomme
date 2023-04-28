@@ -80,16 +80,6 @@ const appMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse(error));
         });
       break;
-    // case 'agent/authenticate':  
-    //   casClient
-    //     .auth()
-    //         .then((response) => {
-    //           store.dispatch(validateAuthentication(response))
-    //         })
-    //         .catch(response => {
-    //           console.log('error : ', response);
-    //         });
-    // break;
     case 'agent/checkAuthentication': 
     api.post('/api/login_check', action.payload)
       .then((response) => {
@@ -104,14 +94,10 @@ const appMiddleware = (store) => (next) => (action) => {
     case 'agent/fetchUserLightData':      
       api.post("/api/agent/get-data/light", action.payload)
         .then((response) => {
-            console.log('LIGHT USER : ', response.data);
-            // TODO: récupérer la donnée du user dans le reducer. saveUserData provoque une erreur.
             store.dispatch(saveUserLightData({agent: response.data}));
-            // store.dispatch(setLoader(false));
-          // }
         })
         .catch((error) => {
-          
+          store.dispatch(setApiResponse(error));
         });
       break;
     case 'agent/fetchUserData':      
@@ -167,7 +153,6 @@ const appMiddleware = (store) => (next) => (action) => {
     case 'app/deleteStep':      
       api.delete("/api/stage/delete/" + 11)
         .then((response) => {
-            console.log("API STAGE DELETE RESPONSE IS : ", response.data);
             store.dispatch(saveEf(response.data));
         })
         .catch((error) => {

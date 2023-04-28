@@ -81,7 +81,6 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
           dispatch(update(dataToBeSubmitted));
         }
       }
-      // console.log(url);
       navigate(url.pathname + url.search)
     }
     else if (step === 2) { // --------------------------------------------------------------------------------
@@ -93,8 +92,7 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
         const filesArray = Object.entries(data).filter((entry) => entry[0].includes('Files'));
 
         const firstFoundFile = filesArray.find((property) => property[1].find((value) => value instanceof File));
-        console.log(data);
-        // return;
+        
         if (firstFoundFile === undefined) {
           dispatch(update(data));
         }

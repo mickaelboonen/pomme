@@ -25,7 +25,6 @@ const TicketRequest = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
   };
 
   const id = 1

@@ -208,9 +208,7 @@ const omMiddleware = (store) => (next) => (action) => {
                 data.vehicleAuthorization = file.file.url;
               }
               else if (file.type === 'hotel-quotation') {
-                console.log('immapush : ', file.file.url);
                 data.hotelQuotations.push(file.file.url);
-                console.log("data.hotelQuotations : ", data.hotelQuotations);
               }
               else if (file.type === 'rib') {
                 data.agentRib = file.file.url;
@@ -240,32 +238,21 @@ const omMiddleware = (store) => (next) => (action) => {
             
             // Now updates the transports values in the database
             if (step === 'transports') {
-              console.log('before update : ', data);
               store.dispatch(updateTransports(data));
             }
             else if (step === 'advance') {
               delete data.advance;
-              console.log('--------------------------------------------------------------------');
-              console.log(data);
               data.hotelQuotations = data.hotelQuotations.filter((file) => typeof file === 'string')
-              console.log('before update : ', data);
               store.dispatch(updateAdvance(data));
             }
             else if (step === 'more-and-signature') {
-              console.log('before update : ', data);
               store.dispatch(updateMoreAndSignature(data));
             }
             else if (step === 'mission') {
               delete data.om;
-              console.log('before update : ', data);
               store.dispatch(updateMission(data));
             }
-            // else if (step === 'signature') {
-            //   console.log('before update : ', data);
-            //   store.dispatch(updateSignature(data));
-            // }
             else if (step === 'om') {
-              console.log('before update : ', data);
               delete data.file;
               store.dispatch(updateOm(data));
             }
@@ -300,27 +287,21 @@ const omMiddleware = (store) => (next) => (action) => {
 
             // Now updates the transports values in the database
             if (step === 'mission') {
-              console.log('before update : ', data);
-              // data.docId = data.efId;
               store.dispatch(updateEfMission(data));
             }
             else if (step === 'transports') {
-              console.log('before update : ', data);
               store.dispatch(updateEfTransports(data));
             }
             else if (step === 'accomodations') {
               data.eventFiles = data.eventFiles.filter((url) => typeof url === 'string');
               data.hotelFiles = data.hotelFiles.filter((url) => typeof url === 'string');
-              console.log('before update : ', data);
               delete data.efId;
               store.dispatch(updateEfAccomodations(data));
             }
             else if (step === 'signature') {
-              console.log('before update : ', data);
               store.dispatch(updateEfSignature(data));
             }
             else if (step === 'ef') {
-              console.log('before update : ', data);
               delete data.file;
               store.dispatch(updateEf(data));
             }

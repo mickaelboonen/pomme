@@ -120,7 +120,7 @@ const Mission = ({ step, isEfForm }) => {
   const onSubmit = (data) => {
     
     data = turnFieldsToAddressEntity(data);
-    // return;
+    
     if (data.science) {
       if ((!data.missionPurposeFile || data.missionPurposeFile.length === 0) && !data.missionPurposeFileForValidation) {
         setError('missionPurposeFile', { type: 'custom', message: 'Merci de fournir le justificatif de la mission.'})

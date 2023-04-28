@@ -96,8 +96,6 @@ const Steps = ({ step }) => {
   }});
 
   const onSubmit = (data) => {
-    // console.log("DATA DU SUBMIT : ",data);
-
 
     const entities = stepsToDisplay.map((stepIndex) => {
       const step = {};

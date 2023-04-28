@@ -10,10 +10,7 @@ api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 api.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 api.defaults.headers['Content-Type'] = 'application/json';
 
-const vehicleMiddleware = (store) => (next) => (action) => {
-  // const { agent: { token } } = store.getState();
-  // setTokenOnApi(token);
-  
+const vehicleMiddleware = (store) => (next) => (action) => {  
   const { agent : { user } } = store.getState();
   switch (action.type) {
     case 'vehicle/createVehicle':
@@ -41,12 +38,10 @@ const vehicleMiddleware = (store) => (next) => (action) => {
             store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
           }
           else {
-            console.log("Am I in the else ? ");
             store.dispatch(requestVehicleAuthorization(newDataFormat));
           }
         })
         .catch((error) => {
-          console.error('add vehicle', error);
           store.dispatch(setApiResponse(error));;
         });
       break;
@@ -59,7 +54,7 @@ const vehicleMiddleware = (store) => (next) => (action) => {
 
         })
       .catch((error) => {
-        console.error('update vehicle', error);
+        store.dispatch(setApiResponse(error));;
       });
       break;
     case 'vehicle/deleteVehicle':
@@ -70,7 +65,7 @@ const vehicleMiddleware = (store) => (next) => (action) => {
 
           })
         .catch((error) => {
-          console.error('update vehicle', error);
+          store.dispatch(setApiResponse(error));
         });
       break;
       case 'vehicle/getVehicles':
@@ -79,7 +74,7 @@ const vehicleMiddleware = (store) => (next) => (action) => {
             store.dispatch(saveVehicles(response.data))
           })
           .catch((error) => {
-            console.error('get vehicles', error);
+            store.dispatch(setApiResponse(error));
           });
         break;
         case 'vehicle/fetchVehicle':
@@ -88,7 +83,7 @@ const vehicleMiddleware = (store) => (next) => (action) => {
               store.dispatch(saveVehicle(response.data))
             })
             .catch((error) => {
-              console.error('vehicle/fetchVehicle', error);
+              store.dispatch(setApiResponse(error));
             });
           break;
     case 'vehicle/getVehicleDocuments':
@@ -99,7 +94,7 @@ const vehicleMiddleware = (store) => (next) => (action) => {
           }
         })
         .catch((error) => {
-          console.error('get vehicle documents', error);
+          store.dispatch(setApiResponse(error));
         });
       break;
     case 'vehicle/requestVehicleAuthorization':
@@ -110,7 +105,7 @@ const vehicleMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse({message: response.data.message, response: { status: 200}}));
         })
         .catch((error) => {
-          console.error('vehicle/requestVehicleAuthorization', error);
+          store.dispatch(setApiResponse(error));
         });
       break;
 

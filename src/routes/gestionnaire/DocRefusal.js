@@ -23,7 +23,6 @@ const DocRefusalForm = ({ role = "DGS"}) => {
 
 
   const onSubmit = (data) => {
-    console.log(data);
     // TODO : Process Data
   };
 

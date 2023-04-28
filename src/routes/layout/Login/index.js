@@ -28,12 +28,14 @@ const Login = ({ cas }) => {
     sessionStorage.removeItem('logout-reason');
     const loaderElement = document.querySelector('.rotating-loader');
     document.querySelector('.home__login-button-text').textContent = '';
-    loaderElement.classList.add('rotating-loader--loading')
+    loaderElement.classList.add('rotating-loader--loading');
     cas
       .auth() 
         .then((response) => {
           console.log('SUCCESS CAS : ', response);
-          dispatch(validateAuthentication(response))
+          // dispatch(validateAuthentication(response));
+          sessionStorage.removeItem('logout-reason');
+          dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))
         })
         .catch(response => 
           dispatch(setApiResponse({
@@ -50,8 +52,11 @@ const Login = ({ cas }) => {
         )
         .finally(() => {
           // TODO : a mettre dans le success
+        if (process.env.NODE_ENV === 'development') {
+
           sessionStorage.removeItem('logout-reason');
           dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))
+        }
           // dispatch(getAgentData({username : 'sdgsdfdgdsgsd', password: ''}))
         });
   }

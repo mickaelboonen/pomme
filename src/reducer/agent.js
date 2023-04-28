@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { extractUserData, extractAgentPersonalAddress, extractAgentProfessionalAddress } from '../selectors/dataToDbFormat';
 
 const defaultUser = process.env.NODE_ENV === 'development' ? process.env.DEFAULT_USER : '';
-// console.log(defaultUser, ' : defaultUser');
 
 const initialState = {
   user: defaultUser,
