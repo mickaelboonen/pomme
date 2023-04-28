@@ -11,7 +11,7 @@ const ButtonElement = ({ type, label, handler, isLink, link, hasLoader}) => {
   const handleClickOnButton = (event) => {
     if (hasLoader) {
       const selectElement = document.querySelector('select');
-      console.log(selectElement.value);
+      
       if (selectElement.value !== '') {
         document.querySelector('.rotating-loader').classList.add('rotating-loader--loading')
         event.currentTarget.querySelector('span').textContent = '';

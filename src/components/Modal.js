@@ -21,7 +21,7 @@ import { addNewEf } from 'src/reducer/ef';
 import { fetchOMs } from 'src/reducer/agent';
 
 const Modal = ({ target, user, userOms, agent, apiMessage, loader }) => {
-  console.log(userOms);
+  
   const dispatch = useDispatch();
   let isOm = false;
   let defaultValues = {};

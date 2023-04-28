@@ -32,10 +32,8 @@ const Login = ({ cas }) => {
     cas
       .auth() 
         .then((response) => {
-          console.log('SUCCESS CAS : ', response);
-          // dispatch(validateAuthentication(response));
           sessionStorage.removeItem('logout-reason');
-          dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))
+          dispatch(checkAuthentication({username : response.user, password: 'fsdf'}))
         })
         .catch(response => 
           dispatch(setApiResponse({
@@ -57,7 +55,6 @@ const Login = ({ cas }) => {
           sessionStorage.removeItem('logout-reason');
           dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))
         }
-          // dispatch(getAgentData({username : 'sdgsdfdgdsgsd', password: ''}))
         });
   }
 
