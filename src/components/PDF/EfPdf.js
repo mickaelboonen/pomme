@@ -20,7 +20,7 @@ import { styles } from './pdfStyles';
 const EfPdf = ({ data, agent, agentSignature, country }) => {
   
   const { mission, transports, accomodations, stages } = data;
-  
+  console.log(data);
   const dep = new Date(mission.departure);
   const ret = new Date(mission.comeback);
     

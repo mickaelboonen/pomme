@@ -15,11 +15,11 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleDownload = (event) => {
-    const { id } = event.currentTarget.dataset;
-  };
+  // const handleDownload = (event) => {
+  //   const { id } = event.currentTarget.dataset;
+  // };
 
-  const handleUplaod = (event) => {
+  const handleUpload = (event) => {
     const { id } = event.currentTarget.dataset;
 
     if (id === 'cars') {
@@ -110,7 +110,7 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
 
     </div>
     <div className='file-manager__buttons'>
-      {(!needsSelect && user === 'mboone01') && (
+      {/* {(!needsSelect && user === 'mboone01') && (
         <a
           className='file-manager__buttons-button file-manager__buttons-button--link'
           // onClick={handleDownload}
@@ -121,35 +121,39 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
         >
           <FaDownload/>
         </a>
+      )} */}
+      
+      {(filename === '' || needsSelect) && (
+        <button
+          className='file-manager__buttons-button'
+          onClick={handleUpload}
+          data-id={id}
+          type="button"
+        >
+          <FaUpload/>
+        </button>
       )}
-      
-      <button
-        className='file-manager__buttons-button'
-        onClick={handleUplaod}
-        data-id={id}
-        type="button"
-      >
-        <FaUpload/>
-      </button>
-      
-      <button
-        className='file-manager__buttons-button'
-        onClick={handleEdit}
-        data-id={id}
-        type="button"
-      >
-        <FaEdit/>
-      </button>
-      <button
-        className='file-manager__buttons-button'
-        onClick={handleDelete}
-        data-id={id}
-        type="button"
-      >
-        <FaTrash
-      />
-      </button>
-
+      {(filename !== '' || needsSelect) && (
+        <>
+          <button
+            className='file-manager__buttons-button'
+            onClick={handleEdit}
+            data-id={id}
+            type="button"
+          >
+            <FaEdit/>
+          </button>
+          <button
+            className='file-manager__buttons-button'
+            onClick={handleDelete}
+            data-id={id}
+            type="button"
+          >
+            <FaTrash
+          />
+          </button>
+        </>
+      )}
     </div>
   </div>
 );}

@@ -20,7 +20,7 @@ const Home = () => {
   
   const navigate = useNavigate();
   const { app: { isModalOpen, apiMessage },
-    agent: { user, agent },
+    agent: { user, agent, loader },
     omForm: { nextOMTarget },
   } = useSelector((state) => state);
   
@@ -33,7 +33,7 @@ const Home = () => {
   }, [nextOMTarget])
 
   const dispatch = useDispatch();
-
+  
   const [newTarget, setNewTarget] = useState('');
   
   const handleClickOnNewDoc = (event) => {

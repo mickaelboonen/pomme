@@ -3,14 +3,19 @@ export const OTHER_MEALS_AMOUNT = '15,25';
 
 export const floatAddition = (floatArray) => {
   let floatTotal = 0;
+  console.log(floatArray);
   
   floatArray.forEach((float) => {
     if (typeof float === 'number') {
       float = float.toString() + ',00';
     }
+    
     floatTotal += Number(float.replace(',', ''));
+    console.log(floatTotal);
   })
 
+
+  
   const floatResult =  floatTotal.toString();
   
   if (floatResult === '0') {

@@ -169,7 +169,7 @@ const AddVehicle = () => {
             setValue={setValue}
             error={errors.insuranceFile}
           />
-          {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
+          {/* {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />} */}
 
           <div className="form__section-field-button" id="submit-vehicle">
             <ButtonElement

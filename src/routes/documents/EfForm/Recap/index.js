@@ -42,7 +42,7 @@ const Recap = () => {
   const frenchMeals = floatMultiplication(accomodations.meals_paid_by_agent_in_france, OTHER_MEALS_AMOUNT);
 
   const totalMeals = floatAddition([adminMealsAmount, frenchMeals]);
-  
+  console.log("DEBUT HERE");
   const totalMission = floatAddition([totalMeals, accomodations.event, totalTransportsExpenses, accomodations.hotel])
 
   const mealsExpenses = {
@@ -64,6 +64,16 @@ const Recap = () => {
     ...agentProfessionalAddress,
     ...agentPersonalAddress,
   }
+
+
+  let dataForThePdf = { ...currentEf };
+
+  if (!currentEf.mission.modifications) {
+    dataForThePdf = {
+      ...currentEf,
+      mission: currentOM.mission
+    }
+  }
   
   return (
   <div className="form">  
@@ -71,7 +81,7 @@ const Recap = () => {
           <PDFViewer className='form__section-recap'>
             <EfPDF
               agentSignature={userSignature}
-              data={currentEf}
+              data={dataForThePdf}
               agent={fullAgentData}
               meals={mealsExpenses}
               country={missionCountry}
@@ -109,10 +119,10 @@ const Recap = () => {
       <p className='form__section-recap form__section-recap--lister'>Rappel des frais déclarés : </p>
       <div className='form__section-field' style={{margin: '0.5rem'}}>
         <p className='form__section-recap'>Montant des repas pris dans un restaurant administratif ou assimilé : <span>{adminMealsAmount}€</span> pour <span>{accomodations.meals_in_admin_restaurants} repas</span>.</p>
-        {mission.region === "métropole" && <p className='form__section-recap'>Montant des repas à titre onéreux en France : <span>{frenchMeals}€</span> pour <span>{accomodations.meals_paid_by_agent_in_france} repas</span>.</p>}
-        {mission.region !== "métropole" && <p className='form__section-recap'>Nombre des repas à titre onéreux à l'étranger : <span>{accomodations.meals_paid_by_agent_overseas} repas</span>.</p>}
+        {dataForThePdf.mission.region === "métropole" && <p className='form__section-recap'>Montant des repas à titre onéreux en France : <span>{frenchMeals}€</span> pour <span>{accomodations.meals_paid_by_agent_in_france} repas</span>.</p>}
+        {dataForThePdf.mission.region !== "métropole" && <p className='form__section-recap'>Nombre des repas à titre onéreux à l'étranger : <span>{accomodations.meals_paid_by_agent_overseas} repas</span>.</p>}
         
-        {mission.region !== "métropole" && <p className='form__section-recap form__section-recap--infos'>Pour avoir une idée du montant remboursé pour votre mission à l'étranger, veuillez vous rendre sur <Link to="https://www.economie.gouv.fr/dgfip/mission_taux_chancellerie/frais"> le site de la DGFIP</Link>. La valeur du <span>Groupe 1</span> vous indiquera le montant du forfait per diem comprenant l'hébergement et deux repas.</p>}
+        {dataForThePdf.mission.region !== "métropole" && <p className='form__section-recap form__section-recap--infos'>Pour avoir une idée du montant remboursé pour votre mission à l'étranger, veuillez vous rendre sur <Link to="https://www.economie.gouv.fr/dgfip/mission_taux_chancellerie/frais"> le site de la DGFIP</Link>. La valeur du <span>Groupe 1</span> vous indiquera le montant du forfait per diem comprenant l'hébergement et deux repas.</p>}
       </div>
     </div>
     {(transports.visa || accomodations.event) && (
@@ -170,14 +180,14 @@ const Recap = () => {
   
       <div className="form__section" style={{marginBottom: '1rem'}}>
         <FormSectionTitle>Total</FormSectionTitle>
-        {mission.region === "métropole" && (
+        {dataForThePdf.mission.region === "métropole" && (
           <>
             <p className='form__section-recap'>Total des frais déclarés pour la mission : <span>{totalMission}€</span>.</p>
             {currentOM.advance.advance_amount && <p className='form__section-recap form__section-recap--infos'><span>Pour rappel :</span> vous avez bénéficié d'une avance de <span>{currentOM.advance.advance_amount}€</span> qui sera déduite lors du calcul du remboursement définitif effectué par le service financier d'Université.</p>}
             <p className='form__section-recap form__section-recap--infos'><span>Attention :</span> le montant remboursé peut être différent selon les plafonds de remboursement.</p>
           </>
         )}
-        {mission.region !== "métropole" && (
+        {dataForThePdf.mission.region !== "métropole" && (
           <>
             <p className='form__section-recap'>Dû aux différents taux de remboursement du forfait per diem, nous ne pouvons vous fournir une estimation du total des frais engagés par votre mission.</p>
             {currentOM.advance.advance_amount && <p className='form__section-recap form__section-recap--infos'><span>Pour rappel :</span> vous avez bénéficié d'une avance de <span>{currentOM.advance.advance_amount}€</span> qui sera déduite lors du calcul du remboursement définitif effectué par le service financier d'Université.</p>}
@@ -189,7 +199,7 @@ const Recap = () => {
         <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
           <BlobProvider document={<EfPDF
               agentSignature={userSignature}
-              data={currentEf}
+              data={dataForThePdf}
               agent={fullAgentData}
               meals={mealsExpenses}
               country={missionCountry}

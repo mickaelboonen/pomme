@@ -8,7 +8,10 @@ import {
   FaFilePdf,
   FaIdCard,
   FaPassport,
-  FaSignature
+  FaSignature,
+  FaPlaneDeparture,
+  FaTrain,
+  FaTaxi
 } from "react-icons/fa";
 
 import './style.scss';
@@ -97,6 +100,55 @@ const MyAccount = () => {
         />
       </div>
       
+      {user === 'mboone01' && (
+        <div className='form__section'>
+          <FormSectionTitle>Demandes permanentes</FormSectionTitle>
+
+          <FileManager
+            icon={<FaCar
+              className='file-displayer__icon-container-icon'
+            />}
+            id="permanent-car-authorization"
+            label="Autorisation d'utilisation de véhicule"
+            file={docs.permanentCarAuthorization}
+            handler={null}
+            user={user}
+          />
+
+          <FileManager
+            icon={<FaTrain
+              className='file-displayer__icon-container-icon'
+            />}
+            id="permanent-train-dispensation"
+            label="Dérogation 1ère classe en train"
+            file={docs.permanentTrainDispensation}
+            handler={null}
+            user={user}
+          />
+
+          <FileManager
+            icon={<FaPlaneDeparture
+              className='file-displayer__icon-container-icon'
+            />}
+            id="permanent-plane-dispensation"
+            label="Dérogation classe affaires en avion"
+            file={docs.permanentPlaneDispensation}
+            handler={null}
+            user={user}
+          />
+          <FileManager
+            icon={<FaTaxi
+              className='file-displayer__icon-container-icon'
+            />}
+            id="permanent-taxi-dispensation"
+            label="Dérogation pour le taxi"
+            file={docs.permanentTaxiDispensation}
+            handler={null}
+            user={user}
+          />
+        </div>
+      )}
+      
       <div className='form__section'>
         <FormSectionTitle>Véhicules</FormSectionTitle>
 
@@ -110,24 +162,6 @@ const MyAccount = () => {
           handler={null}
           user={user}
         />
-        {/* <FileManager
-          icon={<FaFilePdf
-            className='file-displayer__icon-container-icon'
-          />}
-          id="registration"
-          label="Carte grise"
-          file={docs.registration}
-          handler={null}
-        />
-        <FileManager
-          icon={<FaFilePdf
-            className='file-displayer__icon-container-icon'
-          />}
-          id="insurance"
-          label="Attestation d'assurance"
-          file={docs.insurance}
-          handler={null}
-        /> */}
       </div>
 
       <div className='form__section'>
@@ -144,8 +178,6 @@ const MyAccount = () => {
           data={vehicles}
         />
       </div>
-      {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
-
     </div>
     <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
     {isModalOpen && <OneFileForm />}

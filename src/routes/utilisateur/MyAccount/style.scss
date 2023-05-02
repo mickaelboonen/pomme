@@ -163,6 +163,7 @@
       margin-right: 0.5rem;
       background-color: var(--first-color);
       font-size: 1em;
+      max-width: none;
 
       &:last-of-type {
          margin: 0;

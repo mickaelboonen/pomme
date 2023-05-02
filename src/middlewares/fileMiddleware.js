@@ -388,7 +388,7 @@ const omMiddleware = (store) => (next) => (action) => {
           
         })
         .catch((error) => {
-          store.dispatch(setApiResponse(error));;
+          store.dispatch(setApiResponse(error));
         });
         
       break;
@@ -401,6 +401,7 @@ const omMiddleware = (store) => (next) => (action) => {
       })
       .catch((error) => {
         console.error('add perm files', error);
+        store.dispatch(setApiResponse(error));
         // TODO : error
       });
       break;
