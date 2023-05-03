@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useForm } from "react-hook-form";
 import { useLoaderData, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,13 +6,12 @@ import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
 
 import '../style.scss';
 
-import FormSectionTitle from 'src/components/FormSectionTitle';
-import ApiResponse from 'src/components/ApiResponse';
 import EfPDF from 'src/components/PDF/EfPDF';
-import { floatAddition, floatMultiplication, OTHER_MEALS_AMOUNT, ADMIN_MEALS_AMOUNT} from 'src/selectors/mathFunctions';
+import FormSectionTitle from 'src/components/FormSectionTitle';
 
-import { getDDMMYYDate, getHHMMTime } from 'src/selectors/dateFunctions';
 import { uploadFile } from 'src/reducer/omForm'
+import { getDDMMYYDate, getHHMMTime } from 'src/selectors/dateFunctions';
+import { floatAddition, floatMultiplication, OTHER_MEALS_AMOUNT, ADMIN_MEALS_AMOUNT} from 'src/selectors/mathFunctions';
 
 const Recap = () => {
 
@@ -22,7 +21,7 @@ const Recap = () => {
   const id = Number(loaderData.searchParams.get('id'));
 
   const { ef: { currentEf },
-    app: { apiMessage, countries },
+    app: { countries },
     omForm: { currentOM },
     agent: { agent, user, userSignature, agentProfessionalAddress, agentPersonalAddress},
   } = useSelector((state) => state);
@@ -42,7 +41,7 @@ const Recap = () => {
   const frenchMeals = floatMultiplication(accomodations.meals_paid_by_agent_in_france, OTHER_MEALS_AMOUNT);
 
   const totalMeals = floatAddition([adminMealsAmount, frenchMeals]);
-  console.log("DEBUT HERE");
+  
   const totalMission = floatAddition([totalMeals, accomodations.event, totalTransportsExpenses, accomodations.hotel])
 
   const mealsExpenses = {
@@ -114,8 +113,8 @@ const Recap = () => {
     </div>
     <div className="form__section" style={{marginBottom: '1rem'}}>
       <FormSectionTitle>Repas</FormSectionTitle>
-      {totalMeals !== '0,00' && <p className='form__section-recap'>Total des frais de repas déclarés pour la mission : <span>{totalMeals}€</span>.</p>}
-      {totalMeals === '0,00' && <p className='form__section-recap'>Pas de frais d'hébergement à rembourser.</p>}
+      {totalMeals !== 0 && <p className='form__section-recap'>Total des frais de repas déclarés pour la mission : <span>{totalMeals}€</span>.</p>}
+      {totalMeals === 0 && <p className='form__section-recap'>Pas de frais d'hébergement à rembourser.</p>}
       <p className='form__section-recap form__section-recap--lister'>Rappel des frais déclarés : </p>
       <div className='form__section-field' style={{margin: '0.5rem'}}>
         <p className='form__section-recap'>Montant des repas pris dans un restaurant administratif ou assimilé : <span>{adminMealsAmount}€</span> pour <span>{accomodations.meals_in_admin_restaurants} repas</span>.</p>
@@ -125,12 +124,14 @@ const Recap = () => {
         {dataForThePdf.mission.region !== "métropole" && <p className='form__section-recap form__section-recap--infos'>Pour avoir une idée du montant remboursé pour votre mission à l'étranger, veuillez vous rendre sur <Link to="https://www.economie.gouv.fr/dgfip/mission_taux_chancellerie/frais"> le site de la DGFIP</Link>. La valeur du <span>Groupe 1</span> vous indiquera le montant du forfait per diem comprenant l'hébergement et deux repas.</p>}
       </div>
     </div>
-    {(transports.visa || accomodations.event) && (
+    {(transports.visa !== null && transports.visa !== 0) 
+    || (accomodations.event !== null && accomodations.event !== 0) 
+    && (
       <div className="form__section" style={{marginBottom: '1rem'}}>
         <FormSectionTitle>Autres frais de Mission</FormSectionTitle>
-        {transports.visa && <p className='form__section-recap'>Montant du visa : <span>{transports.visa}€</span>.</p>}
-        {accomodations.event && <p className='form__section-recap'>Montant des frais d'inscription à un colloque, réunion, séminaire scientifique : <span>{accomodations.event}€</span>.</p>}
-        {accomodations.event && <p className='form__section-recap form__section-recap--infos'>Compte rendu à adresser obligatoirement au service de la recherche.</p>}
+        {(transports.visa !== null && transports.visa !== 0)  && <p className='form__section-recap'>Montant du visa : <span>{transports.visa}€</span>.</p>}
+        {(accomodations.event !== null && accomodations.event !== 0)  && <p className='form__section-recap'>Montant des frais d'inscription à un colloque, réunion, séminaire scientifique : <span>{accomodations.event}€</span>.</p>}
+        {(accomodations.event !== null && accomodations.event !== 0)  && <p className='form__section-recap form__section-recap--infos'>Compte rendu à adresser obligatoirement au service de la recherche.</p>}
       </div>
     )}
     {stages.length > 0 && (

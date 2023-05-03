@@ -33,7 +33,7 @@ const Home = () => {
   }, [nextOMTarget])
 
   const dispatch = useDispatch();
-  
+    
   const [newTarget, setNewTarget] = useState('');
   
   const handleClickOnNewDoc = (event) => {

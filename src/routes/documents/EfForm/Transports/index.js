@@ -68,11 +68,14 @@ const Transports = ({ step }) => {
           errors++;
         }
         else {
-          dataWithoutEmptyFields[property[0]] = property[1];
+          dataWithoutEmptyFields[property[0]] = Number(property[1]);
           dataWithoutEmptyFields[filesProperty] = data[filesProperty];
         }
       }
     })
+
+    console.log(dataWithoutEmptyFields);
+    
 
     // Handling personalCar-related properties
     if (data.personalCar > 0) {
@@ -111,10 +114,6 @@ const Transports = ({ step }) => {
     else {
       dispatch(uploadFile({data: dataWithoutEmptyFields, step: 'transports', docType: 'ef'}))
     }
-
-        
-    // dispatch(uploadFile({data: dataWithoutEmptyFields, step: 'transports', docType: 'ef'}))
-
   };
   
   const [otherSwitch, fields] = watch(['otherSwitch', 'fields']);
