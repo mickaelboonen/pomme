@@ -31,6 +31,7 @@ const Layout = ({ cas }) => {
       document.documentElement.style = colorTheme;
     }
   }, [])
+
   useEffect(() => {
   if (apiMessage.hasOwnProperty('response')) {
     if (apiMessage.response.status !== 200
@@ -45,26 +46,37 @@ const Layout = ({ cas }) => {
     }
   }
   }, [apiMessage])
+  
   return (
     <>
       <Header cas={cas} />
-      {(!isMaintenance || user === 'mboone01') && (
+      {/* {(!isMaintenance || user === 'mboone01') && (
         <main id="main">
           <Outlet />
         </main>
-      )}
+      )} */}
       { apiMessage.hasOwnProperty('response') && <ErrorDisplayer response={apiMessage} /> } 
-      {(isMaintenance && user ==='' && !isAuthenticated) &&(
+      {/* {(isMaintenance && user === '' && !isAuthenticated) &&(
         <main id="main">
           <Login cas={cas} />
         </main>
       )}
-      {(isMaintenance && user !=='mboone01' && isAuthenticated) &&(
+      {(isMaintenance && user !=='mboone01' && isAuthenticated) && (
         <main id="main">
           <Maintenance />
         </main>
       )}
-      {(isMaintenance && user !=='mboone01' && isAuthenticated) &&(
+      {(isMaintenance && user ==='mboone01' && isAuthenticated) &&(
+        <main id="main">
+          <Outlet />
+        </main>
+      )} */}
+      {!isAuthenticated &&(
+        <main id="main">
+          <Login cas={cas} />
+        </main>
+      )}
+      {isAuthenticated &&(
         <main id="main">
           <Outlet />
         </main>

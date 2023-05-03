@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { persistor } from "src/store";
@@ -9,7 +9,8 @@ import { RiLogoutBoxRFill } from "react-icons/ri";
 import { FaHome, FaSun, FaMoon } from "react-icons/fa";
 
 // Selectors
-import { closeBurgerMenu,  } from 'src/selectors/domManipulators';
+import { logout } from 'src/reducer/agent';
+import { closeBurgerMenu  } from 'src/selectors/domManipulators';
 
 import './style.scss';
 
@@ -17,6 +18,7 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
   const { agent : { user }} = useSelector((state) => state);
 
   const location = useLocation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const openMenu = document.querySelector('.small-screen-menu--open');
@@ -71,11 +73,11 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
         url: `/utilisateur/${user}/mes-ordres-de-mission`,
         label: 'Mes ordres de Mission'
       },
-      // {
-      //   id: 'user-ef',
-      //   url: `/utilisateur/${role}/mes-états-de-frais`,
-      //   label: 'Mes états de frais'
-      // },
+      {
+        id: 'user-ef',
+        url: `/utilisateur/${user}/mes-états-de-frais`,
+        label: 'Mes états de frais'
+      },
       {
         id: 'user-files',
         url: `/utilisateur/${user}/mes-documents`,

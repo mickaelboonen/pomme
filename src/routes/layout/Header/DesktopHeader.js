@@ -60,7 +60,7 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
             <p>MON COMPTE</p>
             <ul className="header__menu-section-list">
               <li><Link to={`/utilisateur/${user}/mes-ordres-de-mission`}>Mes Ordres de Mission {/*<span id="mes-oms">1</span>*/}</Link></li>
-              {(user === 'mboone01' || user === 'nathalie') &&<li><Link to={`/utilisateur/${user}/mes-états-de-frais`}>Mes États de Frais <span id="mes-efs"></span></Link></li>}
+              <li><Link to={`/utilisateur/${user}/mes-états-de-frais`}>Mes États de Frais <span id="mes-efs"></span></Link></li>
               <li><Link to={`/utilisateur/${user}/mes-documents`}>Mes Justificatifs</Link></li>
               <li><Link to={`/utilisateur/${user}/mes-préférences`}>Mes Préférences</Link></li>
               <li><a onClick={handleLogOut}>Se déconnecter</a></li>

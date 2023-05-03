@@ -67,7 +67,7 @@ const Avance = ({ step }) => {
     nightsNumber: currentOM.accomodations.nights_number,
   }});
   
-  const [totalAmount, savedRib] = watch(['totalAmount', 'savedRib']);
+  const [totalAmount, savedRib, advance] = watch(['totalAmount', 'savedRib', 'advance']);
   
   const [isAdvanceRequested, setIsAdvanceRequested] = useState(defaultValues.totalAmount ? true : false);
 
@@ -180,6 +180,7 @@ const Avance = ({ step }) => {
             label="Demander une avance :"
             handler={handleSwitch}
           />
+          {!advance && <p className="form__section-message">Si vous <span>ne souhaitez pas</span> faire de demande d'avance, veuillez quand même <span>valider la saisie décisive</span> pour valider cette étape et ne pas bloquer la création de l'OM.</p>}
           <HiddenField id="docId" value={omId} register={register} />
         </div>
       </div>
@@ -210,7 +211,7 @@ const Avance = ({ step }) => {
               />
             </div>
           </div>
-          <FormSectionTitle>Détail état prévisionnel des frais</FormSectionTitle>
+          {/* <FormSectionTitle>Détail état prévisionnel des frais</FormSectionTitle> */}
           <div className='form__section'>
             <FileField
               setValue={setValue}
