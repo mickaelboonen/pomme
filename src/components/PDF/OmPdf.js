@@ -206,7 +206,7 @@ const OmPdf = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
         <Text style={styles.section.text} />
         <Text style={styles.section.text} />
         <Text>Utilisation de transports en commun : {transports.public_transports ? 'Oui.' : 'Non.'}</Text>
-        <Text style={styles.section.text}>Autres moyens de transports / commodités : {otherMeansofTransports.map((other) => other.replace(other[0], other[0].toUpperCase()) + '. ')}</Text>
+        {otherMeansofTransports.length > 0 && <Text style={styles.section.text}>Autres moyens de transports / commodités : {otherMeansofTransports.map((other) => other.replace(other[0], other[0].toUpperCase()) + '. ')}</Text>}
       </View>
       <View style={styles.section} wrap={false}>
         <Text style={styles.section.title} wrap={false}>HÉBERGEMENT ET REPAS</Text>
