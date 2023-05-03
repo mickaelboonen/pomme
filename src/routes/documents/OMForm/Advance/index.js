@@ -22,6 +22,7 @@ import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import { uploadFile, updateAdvance } from 'src/reducer/omForm';
 import { getSavedFileName } from 'src/selectors/formDataGetters';
 import { turnAdvanceDataToDbFormat } from 'src/selectors/dataToDbFormat';
+import NumberField from '../../../../components/Fields/NumberField';
 
 const Avance = ({ step }) => {
   
@@ -187,27 +188,25 @@ const Avance = ({ step }) => {
           <FormSectionTitle>Montants</FormSectionTitle>
           <div className='form__section form__section--documents' id="other-fields">
             <div className='form__section-half'>
-              <TextField
+              <NumberField
                 id="total-amount"
                 formField="totalAmount"
                 register={register}
                 required="Merci de renseigner le montant total de la mission."
-                isNumber
-                min="0"
                 label="Montant total de la mission"
                 error={errors.totalAmount}
+                isAmount
               />
             </div>
             <div className='form__section-half'>
-              <TextField
+              <NumberField
                 id="advance-amount"
                 disabled
                 formField="advanceAmount"
                 register={register}
-                isNumber
-                min="0"
                 label="Montant de l'avance"
                 error={errors.advanceAmount}
+                isAmount
               />
             </div>
           </div>
@@ -226,38 +225,32 @@ const Avance = ({ step }) => {
           </div>
           <div className="form__section form__section--documents">
             <div className='form__section-half'>
-              <TextField
+              <NumberField
                 id="nights-field"
                 formField="nightsNumber"
                 register={register}
-                isNumber
                 disabled
-                min="0"
                 label="Nombre de nuits"
               />
             </div>
             <div className='form__section-half'>
-              <TextField
+              <NumberField
                 id="meals-field"
                 formField="mealsNumber"
                 register={register}
-                isNumber
                 disabled
-                min="0"
                 label="Nombre de repas"
-                
               />
             </div>
           </div>
           <div className="form__section form__section--documents">
             <div className='form__section-half'>
-              <TextField
+              <NumberField
                 id="other-expenses-amount-field"
                 formField="otherExpensesAmount"
                 register={register}
-                isNumber
-                min="0"
                 label="Montant des autres frais"
+                isAmount
               />
             </div>
             <div className='form__section-half'>

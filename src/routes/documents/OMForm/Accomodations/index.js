@@ -16,6 +16,7 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 import { turnAccomodationDataToDbFormat } from 'src/selectors/dataToDbFormat';
 import { updateAccomodations } from 'src/reducer/omForm';
 import { getMaxMealsAndNights } from 'src/selectors/formValidationsFunctions';
+import NumberField from '../../../../components/Fields/NumberField';
 
 
 const Accomodations = ({ step }) => {
@@ -109,13 +110,11 @@ const Accomodations = ({ step }) => {
           />
         </div>
         {isHotelSelected && (
-          <TextField
+          <NumberField
             id="nights-number-field"
             formField="nightsNumber"
             register={register}
-            min="0"
             max={maxNightsNumber}
-            isNumber
             required="Merci de renseigner le nombre de nuits d'hôtel."
             error={errors.nightsNumber}
             label="Nombre de nuits"
@@ -149,38 +148,29 @@ const Accomodations = ({ step }) => {
           <p className="form__section-container-text form__section-container-text--infos"><span className='form__section-container-text__span'>NOTA BENE :</span> Merci de ne pas déclarer les repas gratuits ou non pris par l'agent.</p>
 
         </div>
-        <TextField
+        <NumberField
           id="outside-meals-number-field"
           formField="mealsPaidByAgent"
           register={register}
-          isNumber
-          min="0"
           max={maxMealsNumber}
           label="Nombre de repas payés par l'agent"
           required="Merci de renseigner le nombre de repas prévus à la charge de l'agent"
-          // placeholder="Vous ne pouvez saisir plus de repas que le nombre calculé selon vos dates de missions."
           placeholder={"Limite maximale de repas à saisir : " + maxMealsNumber + "."}
           error={errors.mealsPaidByAgent}
         />
-        <TextField
+        <NumberField
           id="admin-meals-number-field"
           formField="mealsInAdminRestaurants"
           register={register}
-          isNumber
-          min="0"
           max={maxMealsNumber}
           label="Nombre de repas payés par l'agent en restaurant administratif"
           required="Merci de renseigner le nombre de repas en restaurant administratif"
-          // placeholder="Vous ne pouvez saisir plus de repas que le nombre calculé selon vos dates de missions."
           placeholder={"Limite maximale de repas à saisir : " + maxMealsNumber + "."}
-          error={errors.mealsInAdminRestaurants
-          }
+          error={errors.mealsInAdminRestaurants}
         />
-        {/* <input id="max-meals-field" name="max-meals-field" type="hidden" value={maxMealsNumber} {...register('maxMealsNumber')} /> */}
       </div>
       <p id="meals-error" className="form__section-field-error"/>
       {maxNightsNumber < 0 && <p id="nights-error" className="form__section-field-error form__section-field-error--open">Les dates saisies pour la mission sont incorrectes. Merci de les corriger pour pouvoir procéder à cette étape.</p>}
-      {/* {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />} */}
       <Buttons
         step={step}
         id={omId}

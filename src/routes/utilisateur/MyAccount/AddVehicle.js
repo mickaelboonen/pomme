@@ -19,6 +19,7 @@ import './style.scss';
 import { useEffect } from 'react';
 import { uploadVehicleFiles } from '../../../reducer/otherDocuments';
 import { getSavedFileName } from '../../../selectors/formDataGetters';
+import NumberField from '../../../components/Fields/NumberField';
 
 const AddVehicle = () => {
 
@@ -125,14 +126,12 @@ const AddVehicle = () => {
             error={errors.licensePlate}
             required="Merci de renseigner le numéro d'immatriculation du véhicule."
           />
-          <TextField
+          <NumberField
             id="car-rating"
             label="Puissance fiscale"
             formField="rating"
             register={register}
             error={errors.rating}
-            isNumber
-            min="0"
             required="Merci de renseigner la puisance fiscale du véhicule."
           />
           <TextField

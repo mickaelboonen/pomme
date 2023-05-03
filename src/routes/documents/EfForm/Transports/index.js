@@ -19,6 +19,7 @@ import { filterEfTransportsFields } from 'src/selectors/formValidationsFunctions
 import { uploadFile } from 'src/reducer/omForm';
 import { updateEfTransports } from 'src/reducer/ef';
 import { declareCamelCaseKeys, setEfTranportsFilenames } from 'src/selectors/keyObjectService';
+import NumberField from '../../../../components/Fields/NumberField';
 
 const Transports = ({ step }) => {
   
@@ -161,15 +162,14 @@ const Transports = ({ step }) => {
         {fieldsToBeDisplayed.map( (field) => (
           <div className='form__section form__section--documents' key={field.id} style={{order: field.index}}>
             <div className='form__section-half'>
-              <TextField
-                isNumber
-                min='0'
+              <NumberField
                 register={register}
                 formField={field.formField}
                 id={field.id}
                 label={field.label}
                 error={errors[field.formField]}
                 placeholder="Montant"
+                isAmount
               />
             </div>
             <div className='form__section-half'>
@@ -190,21 +190,18 @@ const Transports = ({ step }) => {
         {(hasUsedPersonalCar || fields) && (
           <div className='form__section form__section--documents'style={{order: 4}}>
             <div className='form__section-half' style={{display: 'flex', alignItems: 'center'}}>
-              <TextField
-                isNumber
-                min='0'
+              <NumberField
                 register={register}
                 formField="personalCar"
                 id="personal-car-field"
                 label="Véhicule personnel (sur autorisation préalable)"
                 error={errors.personalCar}
                 placeholder="Montant"
+                isAmount
               />
             </div>
             <div className='form__section-half'>
-              <TextField
-                isNumber
-                min='0'
+              <NumberField
                 register={register}
                 formField="horsepower"
                 id="horsepower-field"
@@ -212,21 +209,20 @@ const Transports = ({ step }) => {
                 error={errors.horsepower}
                 placeholder="Nombre de Chevaux fiscaux"
               />
-              <TextField
-                isNumber
-                min='0'
+              <NumberField
                 register={register}
                 formField="km"
                 id="km-field"
                 label="Kilométrage"
                 error={errors.km}
                 placeholder="Kilométrage"
+                isAmount // Not an amount but we need km can be a double
               />
             </div>
           </div>
         )}
-        </div>
-        <div className='form__section'>
+      </div>
+      <div className='form__section'>
         <SwitchButton
           formField="otherSwitch"
           isInForm
@@ -247,14 +243,13 @@ const Transports = ({ step }) => {
         {otherSwitch && (
           <div className='form__section form__section--documents' id="other-fields">
             <div className='form__section-half'>
-              <TextField
-                isNumber
-                min='0'
+              <NumberField
                 register={register}
                 formField="otherAmount"
                 id="other-amount-field"
                 label="Montant total des autres dépenses"
                 placeholder="Montant"
+                isAmount
               />
             </div>
             <div className='form__section-half'>
@@ -272,7 +267,6 @@ const Transports = ({ step }) => {
           </div>
         )}
       </div>
-      {/* {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />} */}
       <Buttons
         step={step}
         id={efId}
@@ -282,7 +276,6 @@ const Transports = ({ step }) => {
         type={"ef"}
       />
     </form>
-    
   );
 };
 

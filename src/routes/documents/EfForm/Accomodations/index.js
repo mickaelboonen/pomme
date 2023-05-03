@@ -22,6 +22,7 @@ import { uploadFile } from 'src/reducer/omForm';
 import { declareCamelCaseKeys } from 'src/selectors/keyObjectService';
 import { getSavedFileName } from 'src/selectors/formDataGetters';
 import { current } from '@reduxjs/toolkit';
+import NumberField from '../../../../components/Fields/NumberField';
 
 const Accomodations = ({ step }) => {
   const dispatch = useDispatch();
@@ -154,9 +155,8 @@ const Accomodations = ({ step }) => {
       <FormSectionTitle>Hébergement</FormSectionTitle>
       <div className='form__section form__section--documents'>
         <div className='form__section-half'>
-          <TextField
-            isNumber
-            min='0'
+          <NumberField 
+            isAmount
             id="hotel-field"
             formField="hotel"
             register={register}
@@ -194,56 +194,46 @@ const Accomodations = ({ step }) => {
             <p className='form__section-container-text'><span>MISSION {currentOM.mission.region === "dom-tom" ? 'DANS LES DOM-TOM': "A L'ÉTRANGER"} : </span>Forfait de Remboursement choisi : <span>{currentOM.mission.abroad_costs.replace('-', ' ')}</span>.</p>
           )}
         </div>
-        <TextField
+        <NumberField
           id="admin-restaurant-field"
           formField="mealsInAdminRestaurants"
           register={register}
-          isNumber
-          min="0"
           label="Repas pris dans un restaurant administratif ou assimilé"
           placeholder="Nombre de repas à renseigner."
           hasHelp
           helpFunction={showHelp}
         />
-          <TextField
-            id="paid-by-agent-in-France-field"
-            formField="mealsPaidByAgentInFrance"
-            register={register}
-            isNumber
-            min="0"
-            placeholder="Nombre de repas à renseigner."
-            label='Repas à titre onéreux en France'
-            hasHelp
-            helpFunction={showHelp}
-          />
-          <TextField
-            id="free-field"
-            formField="freeMealsInFrance"
-            register={register}
-            isNumber
-            min="0"
-            label="Repas à titre gratuit en France"
-            placeholder="Nombre de repas à renseigner."
-          />
+        <NumberField 
+          id="paid-by-agent-in-France-field"
+          formField="mealsPaidByAgentInFrance"
+          register={register}
+          placeholder="Nombre de repas à renseigner."
+          label='Repas à titre onéreux en France'
+          hasHelp
+          helpFunction={showHelp}
+        />
+        <NumberField
+          id="free-field"
+          formField="freeMealsInFrance"
+          register={register}
+          label="Repas à titre gratuit en France"
+          placeholder="Nombre de repas à renseigner."
+        />
         {currentOM.mission.region !== "métropole" && (
           <>
-            <TextField
+            <NumberField
               id='paid-by-agent-overseas-field'
               formField="mealsPaidByAgentOverseas"
               register={register}
-              isNumber
-              min="0"
               placeholder="Nombre de repas à renseigner."
               label="Repas à titre onéreux à l'étranger"
               hasHelp
               helpFunction={showHelp}
             />
-            <TextField
+            <NumberField
               id="free-field"
               formField="overseasFreeMeals"
               register={register}
-              isNumber
-              min="0"
               label="Repas à titre gratuit à l'étranger"
               placeholder="Nombre de repas à renseigner."
             />
@@ -253,44 +243,41 @@ const Accomodations = ({ step }) => {
       </div>        
         <FormSectionTitle>Frais d'inscription</FormSectionTitle>
       <div className='form__section form__section--documents'>
-
-          <div className='form__section-half'>
-            <TextField
-              isNumber
-              min='0'
-              register={register}
-              formField="event"
-              id="event-field"
-              label="Frais d'inscription à un colloque, une réunion, un séminaire scientifique (*)"
-              error={errors.event}
-              placeholder="Montant"
-            />
-          </div>  
-          <div className='form__section-half'>
-            <FileField
-              setValue={setValue}
-              register={register}
-              formField="eventFiles"
-              id="event-files"
-              multiple
-              label="Facture nominative acquittée et programme"
-              fileName={eventFilesNames}
-            />
-          </div>
+        <div className='form__section-half'>
+          <NumberField
+            register={register}
+            formField="event"
+            id="event-field"
+            label="Frais d'inscription à un colloque, une réunion, un séminaire scientifique (*)"
+            error={errors.event}
+            placeholder="Montant"
+            isAmount
+          />
+        </div>  
+        <div className='form__section-half'>
+          <FileField
+            setValue={setValue}
+            register={register}
+            formField="eventFiles"
+            id="event-files"
+            multiple
+            label="Facture nominative acquittée et programme"
+            fileName={eventFilesNames}
+          />
         </div>
-        <p className="form__section-field-label" style={{marginTop: '-1.5rem', marginLeft: '1rem', fontStyle: 'italic'}}>(*) Compte rendu à adresser obligatoirement au service de la recherche</p>
-        
-        {errors.eventFiles && <p className="form__section-field-error form__section-field-error--open">{errors.eventFiles.message}</p>}
-        <HiddenField id="docId" register={register} value={efId} />
-        {/* {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />} */}
-        <Buttons
-          step={step}
-          id={efId}
-          url={loader}
-          watch={watch}
-          type="ef"
-          update={updateEfAccomodations}
-        />
+      </div>
+      <p className="form__section-field-label" style={{marginTop: '-1.5rem', marginLeft: '1rem', fontStyle: 'italic'}}>(*) Compte rendu à adresser obligatoirement au service de la recherche</p>
+      
+      {errors.eventFiles && <p className="form__section-field-error form__section-field-error--open">{errors.eventFiles.message}</p>}
+      <HiddenField id="docId" register={register} value={efId} />
+      <Buttons
+        step={step}
+        id={efId}
+        url={loader}
+        watch={watch}
+        type="ef"
+        update={updateEfAccomodations}
+      />
     </form>
     
   );

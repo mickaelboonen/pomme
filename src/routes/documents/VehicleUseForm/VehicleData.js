@@ -4,6 +4,7 @@ import TextField from 'src/components/Fields/TextField';
 import FileField from 'src/components/Fields/FileField';
 
 import './style.scss';
+import NumberField from '../../../components/Fields/NumberField';
 
 const VehicleData = ({ setValue, register, errors, registrationFilename, insuranceFilename  }) => {
   
@@ -29,13 +30,11 @@ const VehicleData = ({ setValue, register, errors, registrationFilename, insuran
       />
     </div>
     <div className="form__section  form__section--split">
-      <TextField
+      <NumberField
         id="car-rating"
         label="Puissance fiscale"
         formField="rating"
         register={register}
-        isNumber
-        min="0"
         required='Merci de renseigner la puissance fiscale de la voiture.'
         error={errors.rating}
       />

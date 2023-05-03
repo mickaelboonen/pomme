@@ -10,6 +10,7 @@ import { bisArray, streetType } from 'src/data/addressData';
 
 import './style.scss';
 import classNames from 'classnames';
+import NumberField from './NumberField';
 
 const Address = ({
   register,
@@ -150,11 +151,9 @@ const Address = ({
       />
       <div className={classNames('address', {'address--open': stepNumber === 1})}>
         <div className="address__section">
-          <TextField
+          <NumberField
             id="street-number-field"
             disabled={disabled}
-            isNumber
-            min="0"
             formField={"streetNumber" + stepNumber}
             label="N° de voie"
             register={register}
@@ -202,7 +201,6 @@ const Address = ({
             register={register}
             error={errors['postCode' + stepNumber]}
             required={errorMessages.postCode}
-            isNumber
           />
           <TextField
             id="city-field"

@@ -19,6 +19,7 @@ import ButtonElement from 'src/components/Fields/ButtonElement';
 // Actions
 import { addSteps, handleSteps, deleteStep } from 'src/reducer/app';
 import { getHHMMTime } from 'src/selectors/dateFunctions';
+import NumberField from '../../../../components/Fields/NumberField';
 
 const Steps = ({ step }) => {
   const dispatch = useDispatch();
@@ -189,11 +190,10 @@ const Steps = ({ step }) => {
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section">
         <FormSectionTitle>Étapes</FormSectionTitle>
-        <TextField
+        <NumberField
           register={register}
           id="days"
           formField="numberDays"
-          isNumber
           label={`Combien ${isVacataire ? "de jours de vacations" : "d'étapes"} souhaitez-vous enregistrer ?`}
           error={errors.numberDays}
           required="Veuillez remplir le nombre de jour de vacations de votre mission."
