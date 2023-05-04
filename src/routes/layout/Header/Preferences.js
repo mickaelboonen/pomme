@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import './style.scss';
 import classNames from 'classnames';
+import { useEffect } from 'react';
 
 const Preferences = ({ isSkewed, id }) => {
   
@@ -19,10 +20,18 @@ const Preferences = ({ isSkewed, id }) => {
       localStorage.removeItem('theme');
     }
 
-    !event.target.checked;
-
     document.querySelector(':root').classList.toggle('dark');
   };
+
+  useEffect(() => {
+    const input = document.getElementById(`theme-switch-${id}`);
+    if (localStorage.getItem('theme') === 'dark') {
+      input.checked = true;
+    }
+    else {
+      input.checked = false;
+    }
+  }, [])
 
   return (
   <div className={classNames("header-theme", {"header-theme--straight": isSkewed})}>
