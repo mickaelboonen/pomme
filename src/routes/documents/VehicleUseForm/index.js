@@ -319,7 +319,7 @@ const VehicleUseForm = () => {
         
                       const { mission } = oms.find((om) => om.id == omId);
                       const fileName = `${agent.lastname.toUpperCase()}-${new Date(mission.departure).toLocaleDateString().split('/').join('-')}-demande-d-autorisation-de-véhicule`
-                      const file = new File([blob], fileName, {type: 'pdf'});
+                      const file = new File([blob], fileName, {type: 'application/pdf'});
                       
                       const fileUrl = URL.createObjectURL(file);
                       
@@ -350,7 +350,6 @@ const VehicleUseForm = () => {
               </div>
               {externalSignature && <p className="form__section-container-text form__section-container-text--infos">Veuillez télécharger le PDF de la demande, le faire signer aux personnes extérieures concernées puis le redéposer dans l'application à l'étape Transports.</p>}
             </div>
-            {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
           </div>
         </form>
       )}

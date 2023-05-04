@@ -41,7 +41,7 @@ const CarAuthorizationPdf = ({ data, vehicleTypes, agent, agentSignature, reason
           src={Logo}
           style={styles.header.image}
         />
-        <Text style={styles.header.title}>DEMANDE D’AUTORISATION PREALABLE D’UTILISATION D'UN VEHICULE </Text>
+        <Text style={styles.header.title}>DEMANDE D’AUTORISATION D'UN VEHICULE </Text>
       </View>
       <Text style={styles.header.subtitle}>Décret n°2006-781 du 3 juillet 2006 article 10</Text>
       <View style={styles.section}>
