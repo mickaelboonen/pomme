@@ -107,7 +107,7 @@ const AppWithRouter = () => (
                 const { agent: { user } } = store.getState()
                 const id = url.searchParams.get("id");
                 
-                store.dispatch(fetchAgentSignatureForPdf({ agent: user, omId: id}));
+                store.dispatch(fetchAgentSignatureForPdf({ agent: user }));
                 // store.dispatch(fetchUserData({ id: user}));
                 store.dispatch(getVehicles({agent: user}));
                 // store.dispatch(getVehicleDocuments(user));
@@ -122,7 +122,7 @@ const AppWithRouter = () => (
                 const { agent : {user} } = store.getState();
                 const id = url.searchParams.get("id");
   
-                store.dispatch(fetchAgentSignatureForPdf({ agent: user, omId: id}));
+                store.dispatch(fetchAgentSignatureForPdf({ agent: user }));
                 // store.dispatch(fetchUserData({ id: user}));
                 store.dispatch(getVehicles({agent: user}));
                 // store.dispatch(getVehicleDocuments(user));
@@ -136,7 +136,7 @@ const AppWithRouter = () => (
                 const url = new URL(request.url);
                 const { agent: { user } } = store.getState()
                 const id = url.searchParams.get("id");
-                store.dispatch(fetchAgentSignatureForPdf({ agent: user, omId: id}));
+                store.dispatch(fetchAgentSignatureForPdf({ agent: user }));
                 return url;  
               },     
             },
@@ -147,7 +147,7 @@ const AppWithRouter = () => (
                 const url = new URL(request.url);
                 const { agent: { user } } = store.getState()
                 const id = url.searchParams.get("id");
-                store.dispatch(fetchAgentSignatureForPdf({ agent: user, omId: id}));
+                store.dispatch(fetchAgentSignatureForPdf({ agent: user }));
                 return url;  
               },     
             },
@@ -191,7 +191,7 @@ const AppWithRouter = () => (
                   }
                   
                   store.dispatch(fetchUserData({ id: user}));
-                  store.dispatch(fetchAgentSignatureForPdf({ agent: user, omId: id}));
+                  store.dispatch(fetchAgentSignatureForPdf({ agent: user }));
   
                   if (!agent.hasOwnProperty('lastname')) {
                     store.dispatch(fetchUserData({ id: user}));
@@ -238,7 +238,7 @@ const AppWithRouter = () => (
                   }
   
                   store.dispatch(fetchUserData({ id: user}));
-                  store.dispatch(getSignature(user));
+                  store.dispatch(fetchAgentSignatureForPdf({ agent: user }));
                   // store.dispatch(fetchEf({id: user}));
                 }
                 return url;
@@ -269,7 +269,7 @@ const AppWithRouter = () => (
                     store.dispatch(fetchCountries());
                   }
                   store.dispatch(fetchUserData({ id: user}));
-                  store.dispatch(getSignature(user));
+                  store.dispatch(fetchAgentSignatureForPdf({ agent: user }));
                   // store.dispatch(fetchEf({id: user}));
                 }
   

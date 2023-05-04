@@ -10,7 +10,7 @@ import {
   setLoader,
   validateSideForm,
 } from 'src/reducer/omForm';
-import { saveOMs } from 'src/reducer/agent';
+import { saveOMs, addOmToList } from 'src/reducer/agent';
 import { setApiResponse } from 'src/reducer/app';
 import { setEfLoader, fetchEf } from 'src/reducer/ef';
 import { api, setTokenOnApi } from './api';
@@ -38,9 +38,9 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/addNewOM':
       api.post("/api/om/add", action.payload,)
         .then((response) => {
-          const finalisedOM = action.payload;
-          finalisedOM.id = response.data;
-          store.dispatch(saveNewOm(finalisedOM))
+          console.log(response.data);
+          store.dispatch(addOmToList(response.data));
+          store.dispatch(saveNewOm(response.data));
         })
         .catch((error) => {
           store.dispatch(setApiResponse(error));

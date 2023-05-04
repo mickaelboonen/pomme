@@ -400,9 +400,7 @@ const omMiddleware = (store) => (next) => (action) => {
         store.dispatch(toggleDocModal({ action: '', type: '', data: response.data}));
       })
       .catch((error) => {
-        console.error('add perm files', error);
         store.dispatch(setApiResponse(error));
-        // TODO : error
       });
       break;
     }
@@ -412,8 +410,7 @@ const omMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })
       .catch((error) => {
-        console.error('delete perm files', error);
-        // TODO : error
+        store.dispatch(setApiResponse(error));
       });
       break;
     // TODO -------------------------------------------------------
@@ -425,8 +422,7 @@ const omMiddleware = (store) => (next) => (action) => {
           store.dispatch(toggleDocModal({ action: '', type: ''}));
         })
         .catch((error) => {
-          console.error('add perm files', error);
-          // TODO : error
+          store.dispatch(setApiResponse(error));
         });
         break;
       }
@@ -437,8 +433,7 @@ const omMiddleware = (store) => (next) => (action) => {
         store.dispatch(saveAllPermDocs(response.data));
       })
       .catch((error) => {
-        console.error('add perm files', error);
-        // TODO : error
+        store.dispatch(setApiResponse(error));
       });
       break;
         break;
@@ -449,8 +444,7 @@ const omMiddleware = (store) => (next) => (action) => {
           store.dispatch(saveAgentSignatureForPdf(response.data));
         })
         .catch((error) => {
-          console.error('error fetchAgentSignatureForPdf', error);
-          // TODO : error
+          // store.dispatch(setApiResponse(error));
         });
       break;
     default:

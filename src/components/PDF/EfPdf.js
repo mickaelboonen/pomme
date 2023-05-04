@@ -217,24 +217,24 @@ const EfPdf = ({ data, agent, agentSignature, country }) => {
         <View style={[{ display: 'flex', flexDirection: 'row'}]}>
           <View style={{border: '1px solid #1a1a1a', width: '33%', height: 150, padding: 5}}>
             <Text style={{fontSize: 10}}>Nîmes, le {new Date().toLocaleDateString()}</Text>
-            <Text style={{fontSize: 10}}>Signature de l'agent</Text>
+            <Text style={{fontSize: 10}}>Signature de l'agent.e</Text>
             <Image source={agentSignature} style={styles.signature} />
             {/* <img src={agentSignature}></img> */}
             {/* <Image debug src={"https://pom.unimes.fr/back/.." +signature.signature} /> */}
           </View>
           <View style={{border: '1px solid #1a1a1a', width: '33%', height: 150, padding: 5}}>
             <Text style={{fontSize: 10}}>Nîmes, le {''}</Text>
-            <Text style={{fontSize: 10}}>Signature du directeur de département ou du chef de service</Text>
+            <Text style={{fontSize: 10}}>Signature du.de la directeur.rice de département ou du.de la chef.fe de service</Text>
             {/* <Image debug src={"http://10.30.20.87:8000" +signature.signature} /> */}
           </View>
           <View style={{border: '1px solid #1a1a1a', width: '33%', height: 150, padding: 5}}>
             <Text style={{fontSize: 10}}>Nîmes, le {''}</Text>
-            <Text style={{fontSize: 10}}>Signature de l'ordonnateur (Président ou DGS)</Text>
+            <Text style={{fontSize: 10}}>Signature de l'ordonnateur.rice (Président, DGS, VP)</Text>
             {/* <Image debug src={''} /> */}
           </View>
         </View>
       </View>
-      <EfSteps steps={stages} isTeaching={data.is_teaching}/>
+      {stages.length > 1 && <EfSteps steps={stages} isTeaching={data.is_teaching}/>}
     </Page>
   </Document>
 );}

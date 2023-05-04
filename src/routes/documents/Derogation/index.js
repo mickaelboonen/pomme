@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import classNames from "classnames";
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLoaderData } from 'react-router-dom';
+import { useNavigate, useLoaderData, Link } from 'react-router-dom';
 import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
 
 import './style.scss';
@@ -11,7 +11,7 @@ import ApiResponse from 'src/components/ApiResponse';
 import TextField from 'src/components/Fields/TextField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import ButtonElement from 'src/components/Fields/ButtonElement';
+import FileField from 'src/components/Fields/FileField';
 import TextareaField from 'src/components/Fields/TextareaField';
 
 import DispensationPdf from "src/components/PDF/DispensationPdf";
@@ -36,9 +36,10 @@ const Derogation = () => {
 
   let { 
     app : { apiMessage },
-    agent : { agent, oms },
+    agent : { agent, oms, user},
     docs: { agentSignature }
   } = useSelector((state) => state);
+
 
   useEffect(() => {
     if (apiMessage.response && apiMessage.response.status === 200) {
@@ -74,6 +75,7 @@ const Derogation = () => {
     handleSubmit,
     watch,
     clearErrors,
+    setValue,
     setError,
     formState:
     { errors },
@@ -82,7 +84,7 @@ const Derogation = () => {
       type: dispensationTitle
     }
   });
-
+  
   const onSubmit = (data) => {
     
     let errorCount = 0;
@@ -104,7 +106,7 @@ const Derogation = () => {
     clearErrors();
     dispatch(uploadFile({data: data, step: 'dispensation', docType: 'dispensation'}))
   };
-
+  
   const [isPdfVisible, setIsPdfVisible] = useState(false)
 
   const toggleViewer = (event) => {
@@ -163,8 +165,9 @@ const Derogation = () => {
               <div className="form__section-field-button">
                 <BlobProvider document={<DispensationPdf agentSignature={agentSignature} agent={agent} data={watch()}/>}>
                   {({ blob }) => {
-                    
+                    console.log(oms);
                     const om = oms.find((om) => om.id == omId);
+                    
                     const fileName = `${agent.lastname.toUpperCase()}-${new Date(om.mission.departure).toLocaleDateString().split('/').join('-')}-${dispensationTitle.split(' ').join('-')}`
                     
                     
@@ -185,14 +188,22 @@ const Derogation = () => {
                   }}
                 </BlobProvider>
               </div>
-              {/* {needsPdf && <p className="form__section-field-label form__section-field-label--car-form">Veuillez télécharger le PDF de la demande et le faire signer aux personnes extérieures concernées</p>}
-              {needsPdf && <a href={'/modifier-un-document/ordre-de-mission?etape=2&id='+ omId}>Retourner au formulaire de l'ordre de mission</a>} */}
             </div>
-            {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />}
           </form>
         )}
         { !agentSignature && (
-          <LoaderCircle />
+          <form className="form" onSubmit={handleSubmit(onSubmit)}>
+            <p className="form__section-message form__section-message--infos">
+              Attention, vous n'avez pas renseigné de signature dans vos pièces justificatives. Merci de bien vouloir la rajouter pour accéder au formulaire de demande de dérogation.
+              </p>
+            <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
+              <Link to={`/utilisateur/${user}/mes-documents`}>
+                <button type="button">
+                  Rajouter ma signature dans mes pièces justificatives
+                </button>
+              </Link>          
+            </div>
+          </form>
         )}
       </div>
       {isPdfVisible && (

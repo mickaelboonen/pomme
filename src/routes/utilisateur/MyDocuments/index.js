@@ -58,12 +58,12 @@ const MyDocuments = () => {
 
     if (path.includes('ordres-de-mission')) {
       pageData.isOm = true;
-      pageData.title = 'Ordres de Mission de ' + user;
+      pageData.title = 'Mes Ordres de Mission';
       pageData.slug = 'ordre-de-mission'
     }
     else {
       pageData.isOm = false;
-      pageData.title = `États de Frais de ${user}`;
+      pageData.title = 'Mes États de Frais';
       pageData.slug = 'état-de-frais'
     }
 

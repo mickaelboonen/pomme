@@ -24,9 +24,8 @@ const Identity = ({ isEfForm }) => {
   const dispatch = useDispatch();
   const loader = useLoaderData();
   const omId = loader.searchParams.get('id');
-  const areWeUpdatingData = loader.pathname.includes('modifier');
   
-  const { app: { apiMessage, countries },
+  const { app: { countries },
     agent: { agent, agentProfessionalAddress, agentPersonalAddress, user},
     omForm: { currentOM },
     docs: { agentSignature },

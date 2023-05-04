@@ -53,7 +53,7 @@ const MyAccount = () => {
   
   return (
   <main className="my-documents">
-    <PageTitle>Pièces justificatives de {user}</PageTitle>
+    <PageTitle>Mes Pièces justificatives</PageTitle>
     <div className='form'>
       <div className='form__section'>
         <FormSectionTitle>Identité</FormSectionTitle>

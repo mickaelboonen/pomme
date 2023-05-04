@@ -23,6 +23,7 @@ const Recap = () => {
   const { ef: { currentEf },
     app: { countries },
     omForm: { currentOM },
+    docs: { agentSignature },
     agent: { agent, user, userSignature, agentProfessionalAddress, agentPersonalAddress},
   } = useSelector((state) => state);
   
@@ -76,17 +77,17 @@ const Recap = () => {
   
   return (
   <div className="form">  
-        {/* <div style={{height: "80vh"}}>
+        <div style={{height: "80vh"}}>
           <PDFViewer className='form__section-recap'>
             <EfPDF
-              agentSignature={userSignature}
+              agentSignature={agentSignature}
               data={dataForThePdf}
               agent={fullAgentData}
               meals={mealsExpenses}
               country={missionCountry}
             />
           </PDFViewer>
-        </div>  */}
+        </div> 
     <div className="form__section" style={{marginBottom: '1rem'}}>
       <FormSectionTitle>Transports</FormSectionTitle>
       <p className='form__section-recap'>Total des frais de transports déclarés pour la mission : <span>{totalTransportsExpenses}€</span>.</p>
@@ -199,7 +200,7 @@ const Recap = () => {
       <div className="form__section">
         <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
           <BlobProvider document={<EfPDF
-              agentSignature={userSignature}
+              agentSignature={agentSignature}
               data={dataForThePdf}
               agent={fullAgentData}
               meals={mealsExpenses}

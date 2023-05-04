@@ -22,6 +22,13 @@ const agentSlice = createSlice({
     name: 'agent',
     initialState,
     reducers: {
+      addOmToList: (state, action) => {
+        const oms = state.oms;
+        oms.push(action.payload);
+        state.oms = oms;
+        // state.oms.push(action.payload);
+
+      },
       logout: (state) => {
         state.userSignature = null;
         state.user = defaultUser;
@@ -125,6 +132,7 @@ export const {
   logout,
   fetchAgentAppDocuments,
   savegentAppDocuments,
+  addOmToList
 } = agentSlice.actions;
 
 export default agentSlice.reducer;
