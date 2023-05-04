@@ -129,7 +129,8 @@ const Accomodations = ({ step }) => {
             {errors.hotelPayment && <p className='form__section-field-error form__section-field-error--open'>{errors.hotelPayment.message}</p>}
           </div>
         )}
-        { (!isNaN(maxNightsNumber) && isHotelSelected) && <p className="form__section-field-label form__section-field-label--infos">Vous avez le droit à un total de : <span>{maxNightsNumber}</span> nuits à l'hôtel.</p>}
+        { (!isNaN(maxNightsNumber) && isHotelSelected) && <p className="form__section-field-label form__section-field-label--infos">Selon vos dates de mission, vous avez le droit à un total de : <span>{maxNightsNumber}</span> nuits à l'hôtel.</p>}
+        {isHotelSelected && <p className="form__section-field-label form__section-field-label--infos">Pour que l'hôtel vous soit bien remboursé, veillez à ce que la facture ne soit pas à l'ordre de l'Université mais bien bien à votre nom.</p>}
         {maxNightsNumber < 0 && <p id="nights-error" className="form__section-field-error form__section-field-error--open">Les dates saisies pour la mission sont incorrectes. Merci de les corriger pour pouvoir procéder à cette étape.</p>}
         <p id="nights-error" className="form__section-field-error"/>
       </div>
