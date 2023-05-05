@@ -187,6 +187,14 @@ const Avance = ({ step }) => {
       {isAdvanceRequested === true && (
         <div className='form__section' id='advance-container'>
           <FormSectionTitle>Montants</FormSectionTitle>
+          <div className="form__section" style={{marginBottom: '1rem'}}>
+            <CheckboxInput
+              register={register}
+              formField="unknownAmount"
+              id="unknown-amount-field"
+              label="Je ne connais pas le montant total de la mission / J'ai besoin d'aide"
+            />
+          </div>
           <div className='form__section form__section--documents' id="other-fields">
             <div className='form__section-half'>
               <NumberField
@@ -212,7 +220,7 @@ const Avance = ({ step }) => {
             </div>
           </div>
           {/* <FormSectionTitle>Détail état prévisionnel des frais</FormSectionTitle> */}
-          <div className='form__section'>
+          <div className='form__section' style={{padding: '0 0.8rem'}}>
             <FileField
               setValue={setValue}
               register={register}
@@ -265,10 +273,8 @@ const Avance = ({ step }) => {
               />
             </div>
           </div>
-          <p className='form__section-field-label form__section-field-label--infos'>Détail prévisionnel de la mission : énumérer les étapes du voyage (cf page suivante)</p>
-
           <div className="form__section">
-            <FormSectionTitle>Documents personnels</FormSectionTitle>
+            <FormSectionTitle>Document bancaire</FormSectionTitle>
             {agentDocuments.rib && (
               <div className="form__section-field">
                 <CheckboxInput
