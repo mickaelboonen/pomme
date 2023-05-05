@@ -134,9 +134,9 @@ const Preferences = () => {
       colors: ['#100907', '#211f37', '#585b88', '#979dea', '#d0dbef']
     },
     // {
-    //   id: 'light-blue',
-    //   label: 'Bleu clair',
-    //   colors: ['#6ba1ca', '#60b3ce', '#93d0dc', '#cbeaeb', '#f3f3f3']
+    //   id: 'orange',
+    //   label: 'Orange',
+    //   colors: ['#b5370c', '#e84e24', '#ff8364', '#ffc7b8', '#f6d9cc']
     // },
     // {
     //   id: 'light-green',

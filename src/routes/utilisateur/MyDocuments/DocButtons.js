@@ -55,13 +55,13 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
     buttons = [
       {
         name: 'modify',
-        link: `/modifier-un-document/état-de-frais?etape=1&id=${id}&om=${om ? om.id : null}`,
+        link: `/modifier-un-document/${encodeURIComponent('état-de-frais')}?etape=1&id=${id}&om=${om ? om.id : null}`,
         label: 'Reprendre / Modifier',
         status: [1],
       },
       {
         name: 'submit',
-        link: `/modifier-un-document/état-de-frais?etape=6&id=${id}&om=${om ? om.id : null}`,
+        link: `/modifier-un-document/${encodeURIComponent('état-de-frais')}?etape=6&id=${id}&om=${om ? om.id : null}`,
         label: "Soumettre l'ordre de mission",
         status: [1],
       },

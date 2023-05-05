@@ -151,7 +151,7 @@ const efSlice = createSlice({
       addNewEf: () => {},
       saveNewEf: (state, action) => {
         state.currentOM = action.payload;
-        state.nextEfTarget = `/modifier-un-document/état-de-frais?etape=1&id=${action.payload.id}&om=${action.payload.omId}`;
+        state.nextEfTarget = `/modifier-un-document/${encodeURIComponent('état-de-frais')}?etape=1&id=${action.payload.id}&om=${action.payload.omId}`;
       },
       fetchEfs: () => {},
       saveEfs: (state, action) => {

@@ -42,8 +42,7 @@ const Home = () => {
   }
 
   const handleClickOnNewEf = () => {
-    navigate(`/utilisateur/${user}/mes-états-de-frais`);
-    // dispatch(toggleModal());
+    navigate(`/utilisateur/${user}/${encodeURIComponent('mes-états-de-frais')}`);
   }
   return (
     <div className="home">

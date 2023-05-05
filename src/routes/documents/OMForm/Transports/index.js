@@ -300,7 +300,7 @@ const Transports = ({ step }) => {
           id="dispensation"
           data={defaultValues}
           permanentOm={permanentOm}
-          link={"/nouveau-document/demande-de-dérogation?omId=" + omId + "&type=" + dispensationTarget}
+          link={`/nouveau-document/${encodeURIComponent('demande-de-dérogation')}?omId=` + omId + "&type=" + dispensationTarget}
         />
       )}
       <FormSectionTitle>Véhicule</FormSectionTitle>
@@ -324,7 +324,7 @@ const Transports = ({ step }) => {
           id="vehicleAuthorizationFile"
           data={defaultValues}
           permanentOm={permanentOm}
-          link={"/nouveau-document/autorisation-de-véhicule?omId=" + omId}
+          link={`/nouveau-document/${encodeURIComponent('autorisation-de-véhicule')}?omId=` + omId}
         />
       )}
       <div className="form__section">

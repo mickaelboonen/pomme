@@ -123,8 +123,8 @@ const OmPdf = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
         <Text style={styles.section.text}>Service / Département : {agent.unimesDepartment}</Text>
         <Text style={styles.section.subtitle}>Adresses du missionnaire :</Text>
         <View style={styles.section.subsection}>
-          <Text style={styles.section.text}>Adresse familiale : {agent.streetNumber} {agent.bis} {agent.streetType} {agent.streetName} {agent.postCode} {agent.city}</Text>
-          <Text style={styles.section.text}>Adresse administrative : {agent.streetNumberPro} {agent.bisPro} {agent.streetTypePro} {agent.streetNamePro} {agent.postCodePro} {agent.cityPro}</Text>
+          <Text style={styles.section.text}>Adresse familiale : {agent.streetNumber} {agent.bis} {streetType.find((type) => agent.streetType === type.id).name} {agent.streetName} {agent.postCode} {agent.city}</Text>
+          <Text style={styles.section.text}>Adresse administrative : Université de Nîmes {agent.streetNumberPro} {agent.bisPro} {streetType.find((type) => agent.streetTypePro === type.id).name} {agent.streetNamePro} {agent.postCodePro} {agent.cityPro}</Text>
         </View>
       </View>
       <View style={styles.section}>

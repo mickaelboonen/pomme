@@ -75,7 +75,7 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
       },
       {
         id: 'user-ef',
-        url: `/utilisateur/${user}/mes-états-de-frais`,
+        url: `/utilisateur/${user}/${encodeURIComponent('mes-états-de-frais')}`,
         label: 'Mes états de frais'
       },
       {
@@ -85,7 +85,7 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
       },
       {
         id: 'user-pref',
-        url: `/utilisateur/${user}/mes-préférences`,
+        url: `/utilisateur/${user}/${encodeURIComponent('mes-préférences')}`,
         label: 'Mes préférences'
       },
     ],
