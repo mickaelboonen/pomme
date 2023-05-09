@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from 'react-redux';
 import { useLoaderData } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import '../style.scss';
 
 // Components
 import Buttons from 'src/components/Fields/Buttons';
-import ApiResponse from 'src/components/ApiResponse';
 import SwitchButton from 'src/components/SwitchButton';
-import TextField from 'src/components/Fields/TextField';
 import FileField from 'src/components/Fields/FileField';
+import NumberField from 'src/components/Fields/NumberField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import TextareaField from 'src/components/Fields/TextareaField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
@@ -22,7 +21,6 @@ import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import { uploadFile, updateAdvance } from 'src/reducer/omForm';
 import { getSavedFileName } from 'src/selectors/formDataGetters';
 import { turnAdvanceDataToDbFormat } from 'src/selectors/dataToDbFormat';
-import NumberField from '../../../../components/Fields/NumberField';
 
 const Avance = ({ step }) => {
   

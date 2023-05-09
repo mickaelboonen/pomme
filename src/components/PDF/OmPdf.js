@@ -130,12 +130,6 @@ const OmPdf = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
       <View style={styles.section}>
         <Text style={styles.section.title} wrap={false}>MISSION</Text>
         <Text style={styles.section.text}>Motif de la mission : {mission.mission_purpose}</Text>
-
-        {/* {mission.addresses.map((address) => (
-          <Text style={styles.section.text} key={address.streetName}>
-            Adresse n° {mission.addresses.indexOf(address) + 1} de la mission : {address.streetNumber} {address.bis} {streetType.find((type) => address.streetType === type.id).name} {address.streetName} {address.postCode} {address.city}
-          </Text>
-        ))} */}
         {mission.region === 'dom-tom' && (
           <Text>Mission dans les DOM-TOM avec un forfait {mission.abroad_costs === "per-diem" ? 'per diem' : 'frais réels'}</Text>
         )}
@@ -147,44 +141,27 @@ const OmPdf = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
         )}
         <Text style={styles.section.text} />
         <Text style={styles.section.subtitle}>Modalités de la mission :</Text>
-        {/* <View style={styles.flexSection}>
-          <View style={styles.halfSection}>
-            <Text style={{textAlign:"center", padding: '4'}}>Début de mission</Text>
-            <Text style={styles.section.text}>Date et heure : {dep.toLocaleString()}</Text>
-            <Text style={styles.section.text}>Lieu de départ : {mission.departure_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}</Text>
-          </View>
-          <View style={styles.separator} />
-          <View style={styles.halfSection}>
-            <Text style={{textAlign:"center", padding: '4'}}>Fin de mission</Text>
-            <Text style={styles.section.text}>Date et heure : {ret.toLocaleString()}</Text>
-            <Text style={styles.section.text}>Lieu d'arrivée : {mission.comeback_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}</Text>
-          </View>
-        </View> */}
         <View style={styles.section.subsection}>
-          {/* <View style={styles.halfSection}> */}
-            <Text style={{textAlign:"center", padding: '4'}}>Début de la mission</Text>
-            <Text style={styles.section.text}>Date et heure : {dep.toLocaleString()}</Text>
-            <Text style={styles.section.text}>Lieu de départ : {mission.departure_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}</Text>
-          {/* </View> */}
-          <View style={styles.separator} />
-            <Text style={{textAlign:"center", padding: '4'}}>Étapes de la mission</Text>
+            <Text style={styles.section.text}>DÉBUT DE LA MISSION</Text>
+            <Text style={[styles.section.text, {paddingLeft: '10'}]}>Date et heure : {dep.toLocaleString()}</Text>
+            <Text style={[styles.section.text, {paddingLeft: '10'}]}>Lieu de départ : {mission.departure_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}</Text>
+          {/* <View style={styles.separator} /> */}
+            <Text style={[styles.section.text, {marginTop: '8'}]}>ÉTAPES DE LA MISSION</Text>
           {mission.addresses.map((address) => (
-            <Text style={styles.section.text} key={address.streetName}>
-              Adresse n° {mission.addresses.indexOf(address) + 1} : {address.streetNumber} {address.bis} {streetType.find((type) => address.streetType === type.id).name} {address.streetName} {address.postCode} {address.city}
+            <Text style={[styles.section.text, {paddingLeft: '10'}]} key={address.streetName}>
+              Adresse n° {mission.addresses.indexOf(address) + 1} : {address.streetNumber === 0 ? '' : address.streetNumber} {address.bis} {streetType.find((type) => address.streetType === type.id).name} {address.streetName} {address.postCode} {address.city}
             </Text>
           ))}
           {mission.planning && (
             <>
-              <Text style={{textAlign:"center", padding: '4'}}>Planning de la mission</Text>
-              <Text style={styles.section.text}>{mission.planning}</Text>
+              <Text style={[styles.section.text, {marginTop: '8'}]}>PLANNING DE LA MISSION</Text>
+              <Text style={[styles.section.text, {paddingLeft: '10'}]}>{mission.planning}</Text>
             </>
           )}
-          <View style={styles.separator} />
-          {/* <View style={styles.halfSection}> */}
-          <Text style={{textAlign:"center", padding: '4'}}>Fin de la mission</Text>
-          <Text style={styles.section.text}>Date et heure : {ret.toLocaleString()}</Text>
-          <Text style={styles.section.text}>Lieu d'arrivée : {mission.comeback_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}</Text>
-          {/* </View> */}
+          {/* <View style={styles.separator} /> */}
+          <Text style={[styles.section.text, {marginTop: '8'}]}>FIN DE LA MISSION</Text>
+          <Text style={[styles.section.text, {paddingLeft: '10'}]}>Date et heure : {ret.toLocaleString()}</Text>
+          <Text style={[styles.section.text, {paddingLeft: '10'}]}>Lieu d'arrivée : {mission.comeback_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}</Text>
         </View>
         
         <Text style={styles.section.text} />
@@ -223,7 +200,7 @@ const OmPdf = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
       </View>
       <View style={styles.section} wrap={false}>
         <Text style={styles.section.title} wrap={false}>AVANCE</Text>
-        <Text style={styles.section.text}>Demande d'avance : {advance.advance_amount > 0 ? advance.advance_amount + '€' : 'Non.'}</Text>
+        <Text style={styles.section.text}>Demande d'avance : {advance.advance_amount > 0 ? advance.advance_amount + '€' : advance.unknown_amount ? 'En attente de calcul par le service financier.' : 'Non.'}</Text>
       </View>
       {(more.informations && more.informations.length > 0) && (
         <View style={styles.section} wrap={false}>
@@ -238,18 +215,14 @@ const OmPdf = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
             <Text style={{fontSize: 10}}>Nîmes, le {new Date().toLocaleDateString()}</Text>
             <Text style={{fontSize: 10}}>Signature de l'agent.e</Text>
             <Image source={agentSignature} style={styles.signature} />
-            {/* <img src={agentSignature}></img> */}
-            {/* <Image debug src={"https://pom.unimes.fr/back/.." +signature.signature} /> */}
           </View>
           <View style={{border: '1px solid #1a1a1a', width: '33%', height: 150, padding: 5}}>
             <Text style={{fontSize: 10}}>Nîmes, le {''}</Text>
             <Text style={{fontSize: 10}}>Signature du.de la directeur.rice de département ou du.de la chef.fe de service</Text>
-            {/* <Image debug src={"http://10.30.20.87:8000" +signature.signature} /> */}
           </View>
           <View style={{border: '1px solid #1a1a1a', width: '33%', height: 150, padding: 5}}>
             <Text style={{fontSize: 10}}>Nîmes, le {''}</Text>
             <Text style={{fontSize: 10}}>Signature de l'ordonnateur.rice (Président, DGS, VP)</Text>
-            {/* <Image debug src={''} /> */}
           </View>
         </View>
       </View>

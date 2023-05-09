@@ -30,7 +30,9 @@ export const styles = StyleSheet.create({
     // border: '1px solid red'
   },
   separator: {
-    border: '1px solid #1a1a1a'
+    border: '1px solid #1a1a1a',
+    marginTop: 10,
+    marginBottom: 10,
   },
   section: {
     margin: '0 10',

@@ -65,13 +65,11 @@ const Identity = ({ isEfForm }) => {
   
   return (
     <form className="form">
-            
-        {/* <div style={{width:"100%", height:"100vh"}}>
-          <PDFViewer>
-            <OmPdf countries={countries} agentSignature={agentSignature} data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />
-          </PDFViewer>
-        </div>  */}
-     
+      {/* <div style={{width:"100%", height:"100vh"}}>
+        <PDFViewer>
+          <OmPdf countries={countries} agentSignature={agentSignature} data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />
+        </PDFViewer>
+      </div>  */}
       <div className="form__section">
         <FormSectionTitle>Missionnaire</FormSectionTitle>
         <div className="form__section form__section--split">
