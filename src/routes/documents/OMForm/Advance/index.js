@@ -31,7 +31,7 @@ const Avance = ({ step }) => {
   const omId = loader.searchParams.get('id');
   
 
-  const { app: { apiMessage, agentDocuments },
+  const { app: { agentDocuments },
     omForm: { omForm, currentOM },
   } = useSelector((state) => state);
   
@@ -62,14 +62,15 @@ const Avance = ({ step }) => {
     { errors },
   } = useForm({ defaultValues: {
     ...defaultValues,
-    advance: defaultValues.totalAmount ? true : false,
+    unknownAmount: defaultValues.unknownAmount ? "unknown-amount-field" : false,
     mealsNumber: currentOM.accomodations.meals_paid_by_agent + currentOM.accomodations.meals_in_admin_restaurants,
     nightsNumber: currentOM.accomodations.nights_number,
   }});
   
   const [totalAmount, savedRib, advance] = watch(['totalAmount', 'savedRib', 'advance']);
   
-  const [isAdvanceRequested, setIsAdvanceRequested] = useState(defaultValues.totalAmount ? true : false);
+  
+  const [isAdvanceRequested, setIsAdvanceRequested] = useState(defaultValues.advance);
 
   const onSubmit = (data) => {
     
@@ -125,6 +126,7 @@ const Avance = ({ step }) => {
       const noAdvanceData = {
         id: data.id,
         docId: data.docId,
+        advance: false,
         advanceAmount: null,
         totalAmount: null,
         hotelQuotations: null,
@@ -134,6 +136,7 @@ const Avance = ({ step }) => {
         otherExpensesJustification: null,
         agentRib: null,
         agentSignature: null,
+        unknownAmount: false,
         status: 1,
       }
       
@@ -195,13 +198,13 @@ const Avance = ({ step }) => {
               label="Je ne connais pas le montant total de la mission / J'ai besoin d'aide"
             />
           </div>
-          <div className='form__section form__section--documents' id="other-fields">
+          <div className='form__section form__section--documents'>
             <div className='form__section-half'>
               <NumberField
                 id="total-amount"
                 formField="totalAmount"
                 register={register}
-                required="Merci de renseigner le montant total de la mission."
+                // required="Merci de renseigner le montant total de la mission."
                 label="Montant total de la mission"
                 error={errors.totalAmount}
                 isAmount

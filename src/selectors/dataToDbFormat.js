@@ -242,15 +242,16 @@ export const turnTransportsDataToAppFormat = (data) => {
 export const turnAdvanceDataToDbFormat = (data) => {
 
   const {
-    docId, status,
+    docId, status, advance,
     mealsNumber, nightsNumber,
     hotelQuotations, rib,
-    totalAmount, advanceAmount,
+    totalAmount, advanceAmount, unknownAmount,
     otherExpensesAmount, otherExpensesJustification,
   } = data;
 
   const dataToBeSubmitted = {
     docId: docId,
+    advance: advance,
     advanceAmount: advanceAmount === "" ? 0 : advanceAmount,
     totalAmount: totalAmount,
     hotelQuotations: hotelQuotations,
@@ -259,6 +260,7 @@ export const turnAdvanceDataToDbFormat = (data) => {
     otherExpensesAmount: otherExpensesAmount === "" ? 0 : otherExpensesAmount,
     otherExpensesJustification :otherExpensesJustification === "" ? 0 : otherExpensesJustification,
     agentRib: null,
+    unknownAmount: typeof unknownAmount === 'string' ? true : false,
     status: status,
 
   };
