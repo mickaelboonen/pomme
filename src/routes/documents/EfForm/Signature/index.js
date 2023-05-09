@@ -1,14 +1,13 @@
 import React from 'react';
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from 'react-redux';
 import { useLoaderData } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import '../style.scss';
 import Buttons from 'src/components/Fields/Buttons';
 import FileField from 'src/components/Fields/FileField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import ApiResponse from 'src/components/ApiResponse';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
 
 import { uploadFile } from 'src/reducer/omForm';
@@ -20,15 +19,15 @@ const Signature = ({ step }) => {
   const loader = useLoaderData();
   const efId = loader.searchParams.get('id');
 
-  const { app: {agentDocuments, apiMessage},
-    agent: {userSignature},
+  const { app: { agentDocuments },
+    agent: { userSignature },
     ef: { currentEf }
   } = useSelector((state) => state);
   
-  const { register, handleSubmit, watch, setError, setValue, formState: { errors } } = useForm({
+  const { register, clearErrors, handleSubmit, watch, setError, setValue, formState: { errors } } = useForm({
     defaultValues: {
       savedSignature: userSignature.length > 1 ? true : false,
-      savedRib: agentDocuments.rib.length > 1 ? true : false,
+      savedRib: agentDocuments.hasOwnProperty('rib') && agentDocuments.rib.length > 1 ? true : false,
     }
   });
 
@@ -37,13 +36,21 @@ const Signature = ({ step }) => {
 
 
   const onSubmit = (data) => {
+    
     let errorCount = 0;
-
+    
     if (data.savedRib) {
-      data.agentRib = agentDocuments.rib;
+      if (agentDocuments.rib === undefined) {
+        setError('agentRib', {type: 'custom', message:"Vous n'avez pas de RIB enregistré dans votre profil."})
+        setValue('savedRib', false);
+        errorCount++;
+      }
+      else {
+        data.agentRib = agentDocuments.rib;
+      }
     }
     else if (data.agentRib.length === 0) {
-      setError('rib', {type: 'custom', message:"Veuillez fournir un RIB pour pouvoir être remboursé."})
+      setError('agentRib', {type: 'custom', message:"Veuillez fournir un RIB pour pouvoir être remboursé."})
       errorCount++;
     }
     
@@ -71,9 +78,12 @@ const Signature = ({ step }) => {
     }
   };
 
-  const savedSignature = watch('savedSignature');
-  const savedRib = watch('savedRib');
+  const [savedSignature, savedRib] = watch(['savedSignature', 'savedRib']);
 
+  const handleRibCheckbox = () => {
+    clearErrors('agentRib');
+  }
+  
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section">
@@ -94,7 +104,6 @@ const Signature = ({ step }) => {
             error={errors.agentSignature}
             setValue={setValue}
             fileName={signatureFilemane}
-            // required="Veuillez signer la demande de remboursement."
           />
         )}
       </div>
@@ -104,6 +113,7 @@ const Signature = ({ step }) => {
           <CheckboxInput
             register={register}
             formField="savedRib"
+            handler={handleRibCheckbox}
             id="saved-rib-field"
             label="Utiliser le RIB enregistré dans mon profil"
           />
@@ -113,15 +123,13 @@ const Signature = ({ step }) => {
             register={register}
             formField="agentRib"
             id="rib-field"
-            error={errors.rib}
+            error={errors.agentRib}
             setValue={setValue}
             fileName={ribFilename}
-            // required="Veuillez fournir un RIB pour pouvoir être remboursé."
           />
         )}
       </div>
       <HiddenField id="docId" value={efId} register={register} />
-      {/* {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />} */}
       <Buttons
         step={step}
         id={efId}

@@ -32,7 +32,7 @@ const persistConfig = {
   version: 1,
   storage,
   whitelist: ['agent', 'app'],
-  blacklist: ['docs', 'omForm', 'ef', '_persist', 'app.apiMessage'],
+  blacklist: ['docs', 'omForm', 'ef', '_persist', 'app.apiMessage', 'app.agentDocuments'],
   stateReconciler: autoMergeLevel2 // ADDED
 };
 

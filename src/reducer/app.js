@@ -48,13 +48,13 @@ const omFormSlice = createSlice({
       toggleModal:(state) => {
         
         state.isModalOpen = !state.isModalOpen;
+        
       },
       fetchUserData: (state) => {
         // state.appLoader = true;
       },
       saveUserData: (state, action) => {
         const data = extractUserData(action.payload.agent);
-        
         state.agent = data;
         // state.appLoader = false;
         
