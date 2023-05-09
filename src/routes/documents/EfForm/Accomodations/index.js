@@ -1,39 +1,34 @@
 import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
+import { useLoaderData } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLoaderData } from 'react-router-dom';
 
 import '../style.scss';
 import Buttons from 'src/components/Fields/Buttons';
-import TextField from 'src/components/Fields/TextField';
 import FileField from 'src/components/Fields/FileField';
+import NumberField from 'src/components/Fields/NumberField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import ApiResponse from 'src/components/ApiResponse';
 
 // Selectors & actions
-import { getMaxMealsAndNights } from 'src/selectors/formValidationsFunctions';
-import { equalizeFields } from 'src/selectors/domManipulators';
 import { efHelp } from 'src/data/efHelp';
-import { toggleHelp, updateEfAccomodations } from 'src/reducer/ef';
 import { uploadFile } from 'src/reducer/omForm';
+import { toggleHelp, updateEfAccomodations } from 'src/reducer/ef';
 
 // Selectors
-import { declareCamelCaseKeys } from 'src/selectors/keyObjectService';
+import { equalizeFields } from 'src/selectors/domManipulators';
 import { getSavedFileName } from 'src/selectors/formDataGetters';
-import { current } from '@reduxjs/toolkit';
-import NumberField from '../../../../components/Fields/NumberField';
+import { declareCamelCaseKeys } from 'src/selectors/keyObjectService';
+import { getMaxMealsAndNights } from 'src/selectors/formValidationsFunctions';
 
 const Accomodations = ({ step }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   
   const loader = useLoaderData();
   const efId = loader.searchParams.get('id');
   
-  const { ef: { currentEf: { accomodations }},
-    omForm: { currentOM },
-    app: { apiMessage }
+  const { ef: { currentEf: { accomodations, mission }},
+    omForm: { currentOM }
   } = useSelector((state) => state);
   
   let defaultValues = null;
@@ -91,7 +86,14 @@ const Accomodations = ({ step }) => {
     } 
 
     const totalMealsAgent = getTotalMealsAgent(data);
-    const maxMealsNumber = getMaxMealsAndNights(currentOM.mission); 
+
+    let maxMealsNumber = 0;
+    if (mission.modifications) {
+      maxMealsNumber = getMaxMealsAndNights(mission);
+    }
+    else {
+      maxMealsNumber = getMaxMealsAndNights(currentOM.mission);
+    }
     const mealsErrorElement = document.getElementById('meals-error');
 
     if (totalMealsAgent > maxMealsNumber) {
@@ -111,6 +113,7 @@ const Accomodations = ({ step }) => {
     data.mealsInAdminRestaurants === '' ? data.mealsInAdminRestaurants = null : data.mealsInAdminRestaurants;
     data.freeMealsInFrance === '' ? data.freeMealsInFrance = null : data.freeMealsInFrance;
     data.overseasFreeMeals === '' ? data.overseasFreeMeals = null : data.overseasFreeMeals;
+    data.mealsPaidByAgentInFrance === '' ? data.mealsPaidByAgentInFrance = null : data.mealsPaidByAgentInFrance;
     (data.event === '' || !data.event) ? data.event = 0 : data.event;
     
     if (data.hotelFiles.find((file) => file instanceof File) || data.eventFiles.find((file) => file instanceof File)) {
@@ -135,7 +138,14 @@ const Accomodations = ({ step }) => {
     return total;
   }
   
-  const maxMealsNumber = getMaxMealsAndNights(currentOM.mission);
+  let maxMealsNumber = 0;
+  if (mission.modifications) {
+    maxMealsNumber = getMaxMealsAndNights(mission);
+  }
+  else {
+    maxMealsNumber = getMaxMealsAndNights(currentOM.mission);
+  }
+  
 
   useEffect(() => {
     trigger();
