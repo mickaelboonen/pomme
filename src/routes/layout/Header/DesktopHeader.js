@@ -39,23 +39,23 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
       {isAuthenticated && (
         <nav className="header__menu">
           <Preferences />
-          {/* {user === 'mboone01' &&(
+          {user === 'mboone01' &&(
             <>
-              <div className="header__menu-section" id="dafc" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
+              {/* <div className="header__menu-section" id="dafc" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
                 <p>DAFC</p>
                 <ul className="header__menu-section-list">
                   <li><Link to="/dafc/ordres-de-mission">Ordres de Mission <span id="mes-oms">1</span></Link></li>
                   <li><Link to="/dafc/états-de-frais">États de Frais <span id="mes-oms">1</span></Link></li>
                 </ul>
-              </div>
+              </div> */}
               <Link to={`/gestionnaire/${role}/documents-a-signer`}>
                 <div className="header__menu-section" id="a-signer">GESTIONNAIRE</div>
               </Link>
-              <Link to={`/test/pdf`}>
+              {/* <Link to={`/test/pdf`}>
                 <div className="header__menu-section" id="a-signer">TEST PDF</div>
-              </Link>
+              </Link> */}
             </>
-          )} */}
+          )}
           <div className="header__menu-section" id="mon-compte" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
             <p>MON COMPTE</p>
             <ul className="header__menu-section-list">

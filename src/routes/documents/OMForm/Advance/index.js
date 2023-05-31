@@ -35,7 +35,7 @@ const Avance = ({ step }) => {
   
   const defaultValues = omForm.find((omStep) => omStep.step === 'advance').data;
   
-  const ribFileName = defaultValues.rib ? getSavedFileName(defaultValues.rib): '';
+  const ribFileName = defaultValues.agent_rib ? getSavedFileName(defaultValues.agent_rib): '';
   let quotationFileName = '';
   
   if (defaultValues.hotelQuotations) {

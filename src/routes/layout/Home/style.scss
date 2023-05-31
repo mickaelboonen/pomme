@@ -25,27 +25,29 @@
       }
 
       &-rest  {
-        width: 0;
-        opacity: 0;
-        overflow: hidden;
+        // width: 0;
+        // opacity: 0;
+        // overflow: hidden;
         transition: 1s;
         text-transform: lowercase;
         font-size: 2em;
+        padding: 0 0.2rem 0.75rem;
+        margin-right: 1rem;
         @include vars.centeredFlex;
-        padding-bottom: 0.75rem;
+        // padding-bottom: 0.75rem;
       }
     }
 
-    &:hover {
-      height: fit-content;
-      & .home__title-group-rest {
-        width: fit-content;
-        margin-right: 1rem;
-        opacity: 1;
-        position: relative;
-        padding: 0 0.2rem 0.75rem;
-      }
-    }
+    // &:hover {
+    //   height: fit-content;
+    //   & .home__title-group-rest {
+    //     width: fit-content;
+    //     margin-right: 1rem;
+    //     opacity: 1;
+    //     position: relative;
+    //     padding: 0 0.2rem 0.75rem;
+    //   }
+    // }
   }
 
   &__new {

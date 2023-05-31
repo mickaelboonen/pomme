@@ -12,7 +12,7 @@ const ButtonElement = ({ type, label, handler, isLink, link, hasLoader}) => {
     if (hasLoader) {
       const selectElement = document.querySelector('select');
       
-      if (selectElement.value !== '') {
+      if (selectElement && selectElement.value !== '') {
         document.querySelector('.rotating-loader').classList.add('rotating-loader--loading')
         event.currentTarget.querySelector('span').textContent = '';
       }
