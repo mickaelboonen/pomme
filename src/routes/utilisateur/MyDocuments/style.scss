@@ -58,15 +58,15 @@ $test : #{var(--first-color)};
       margin: 1rem;
 
 
-        & a, & button  {
-        @include vars.button;
-        margin-bottom: 0.5rem;
-        
-        font-size: 0.7em;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        width: 35%;
+      & a, & button  {
+      @include vars.button;
+      margin-bottom: 0.5rem;
+      
+      font-size: 0.7em;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      width: 35%;
         
       }
 
@@ -84,11 +84,13 @@ $test : #{var(--first-color)};
       }
 
       &-icon {
-        margin-right: 1rem;
+        margin-right: 0.5rem;
         font-size: 1.5rem;
+        min-width: 1rem;
+        min-height: 1rem;
         
         &--animated {
-          margin-left: 1rem;
+          margin-left: 0.5rem;
           animation: spin 1s infinite linear;
         }
       }

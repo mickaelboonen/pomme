@@ -71,22 +71,27 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
       {
         id: 'user-om',
         url: `/utilisateur/${user}/mes-ordres-de-mission`,
-        label: 'Mes ordres de Mission'
+        label: 'Mes Ordres de Mission'
       },
       {
         id: 'user-ef',
         url: `/utilisateur/${user}/${encodeURIComponent('mes-états-de-frais')}`,
-        label: 'Mes états de frais'
+        label: 'Mes États de Frais'
       },
       {
         id: 'user-files',
         url: `/utilisateur/${user}/mes-documents`,
-        label: 'Mes justificatifs'
+        label: 'Mes Justificatifs'
+      },
+      {
+        id: 'user-traveller',
+        url: `/utilisateur/${user}/mes-documents`,
+        label: 'Mon Profil Voyageur'
       },
       {
         id: 'user-pref',
         url: `/utilisateur/${user}/${encodeURIComponent('mes-préférences')}`,
-        label: 'Mes préférences'
+        label: 'Mes Préférences'
       },
     ],
   };
