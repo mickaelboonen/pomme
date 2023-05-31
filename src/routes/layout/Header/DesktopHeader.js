@@ -62,6 +62,7 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
               <li><Link to={`/utilisateur/${user}/mes-ordres-de-mission`}>Mes Ordres de Mission {/*<span id="mes-oms">1</span>*/}</Link></li>
               <li><Link to={`/utilisateur/${user}/${encodeURIComponent('mes-états-de-frais')}`}>Mes États de Frais <span id="mes-efs"></span></Link></li>
               <li><Link to={`/utilisateur/${user}/mes-documents`}>Mes Justificatifs</Link></li>
+              {user === 'mboone01' &&(<li><Link to={`/utilisateur/${user}/mes-documents`}>Mon Profil Voyageur</Link></li>)}
               <li><Link to={`/utilisateur/${user}/${encodeURIComponent('mes-préférences')}`}>Mes Préférences</Link></li>
               <li><a onClick={handleLogOut}>Se déconnecter</a></li>
             </ul>
