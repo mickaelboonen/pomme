@@ -81,7 +81,7 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
       {
         id: 'user-files',
         url: `/utilisateur/${user}/mes-documents`,
-        label: 'Mes fichiers récurrents'
+        label: 'Mes justificatifs'
       },
       {
         id: 'user-pref',
