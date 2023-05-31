@@ -5,7 +5,7 @@
   padding: 1.5rem;
 
   &__title {
-    height: 6rem;
+    min-height: 6rem;
     @include vars.centeredFlex;
     flex-wrap: wrap;
     margin-bottom: 2rem;
@@ -25,14 +25,14 @@
       }
 
       &-rest  {
-        // width: 0;
+        width: 0;
         // opacity: 0;
-        // overflow: hidden;
-        transition: 1s;
+        overflow: hidden;
+        // transition: 1s;
         text-transform: lowercase;
         font-size: 2em;
-        padding: 0 0.2rem 0.75rem;
-        margin-right: 1rem;
+        // padding: 0 0.2rem 0.75rem;
+        // margin-right: 1rem;
         @include vars.centeredFlex;
         // padding-bottom: 0.75rem;
       }
@@ -124,12 +124,77 @@
   
       &-group {
       
+        // &-capital, &-rest {
+        //   font-size: 6rem;
+        // }
+  
+        // &-rest  {
+        //   width: fit-content;
+        //   transition: 1s;
+        //   text-transform: lowercase;
+        //   font-size: 2.5em;
+        //   padding: 0 0.2rem 0.75rem;
+        //   margin-right: 1rem;
+        //   @include vars.centeredFlex;
+        //   // padding-bottom: 0.75rem;
+        // }
+      }
+    }
+
+    &__login {
+      margin: auto;
+      width: 60%;
+    
+      &-text {
+        font-size: 1.4em;
+      }
+      
+
+      &-button {
+        @include vars.button;
+        padding: 1rem;
+        font-size: 1em;
+      }
+    }
+  }
+}
+
+@media (min-width: 700px) {
+  .home {
+    padding: 3rem;
+    width: 70%;
+    margin: auto;
+  
+    &__new {
+      margin-bottom: 2rem;
+  
+      &-buttons {
+        display: flex;
+        justify-content: space-around;
+  
+        &-item {
+          // color: vars.$unimes;
+        }
+      }
+    }
+
+    &__title {
+  
+      &-group {
+      
         &-capital, &-rest {
           font-size: 6rem;
         }
   
         &-rest  {
+          width: fit-content;
+          // transition: 1s;
+          text-transform: lowercase;
           font-size: 2.5em;
+          padding: 0 0.2rem 0.75rem;
+          margin-right: 1rem;
+          @include vars.centeredFlex;
+          // padding-bottom: 0.75rem;
         }
       }
     }
