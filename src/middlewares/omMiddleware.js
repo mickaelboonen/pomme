@@ -38,7 +38,6 @@ const omMiddleware = (store) => (next) => (action) => {
     case 'omForm/addNewOM':
       api.post("/api/om/add", action.payload,)
         .then((response) => {
-          console.log(response.data);
           store.dispatch(addOmToList(response.data));
           store.dispatch(saveNewOm(response.data));
         })

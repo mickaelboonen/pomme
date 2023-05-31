@@ -10,7 +10,6 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 
 import { showDocStatus, fetchOMs, fetchEfs } from 'src/reducer/agent';
 import DocButtons from './DocButtons';
-import LoaderCircle from '../../../components/LoaderCircle';
 import { MdRefresh } from 'react-icons/md'
 
 const Section = ({ id, data, user, steps, currentDoc, loader, isOm}) => {

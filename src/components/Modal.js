@@ -32,6 +32,7 @@ const Modal = ({ target, user, userOms, agent, apiMessage, loader }) => {
       duration: true,
       withExpenses: true,
       isTrainingCourse: false,
+      isResearch: false,
     }
   }
   else {
@@ -61,6 +62,7 @@ const Modal = ({ target, user, userOms, agent, apiMessage, loader }) => {
         expenses: data.withExpenses,
         isPonctual: data.duration,
         isTrainingCourse: data.isTrainingCourse,
+        isResearch: data.isResearch,
       }
       dispatch(addNewOM(newOM)); 
     }
@@ -101,6 +103,12 @@ const Modal = ({ target, user, userOms, agent, apiMessage, loader }) => {
                   isInForm
                   formField='withExpenses'
                   label="Avec Frais :"
+                />
+                <SwitchButton
+                  register={register}
+                  isInForm
+                  formField='isResearch'
+                  label="Mission de recherche :"
                 />
                 <SwitchButton
                   register={register}
