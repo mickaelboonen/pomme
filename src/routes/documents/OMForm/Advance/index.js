@@ -38,7 +38,7 @@ const Avance = ({ step }) => {
   const ribFileName = defaultValues.agent_rib ? getSavedFileName(defaultValues.agent_rib): '';
   let quotationFileName = '';
   
-  if (defaultValues.hotelQuotations) {
+  if (defaultValues.hotelQuotations && defaultValues.hotelQuotations.length > 0) {
     defaultValues.hotelQuotations.forEach((file) => {
 
       quotationFileName += getSavedFileName(file);

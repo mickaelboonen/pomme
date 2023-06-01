@@ -23,7 +23,7 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
     const { id } = event.currentTarget.dataset;
 
     if (id === 'cars') {
-      navigate(`/utilisateur/${user}/mes-documents/ajouter-un-véhicule` )
+      navigate(`/utilisateur/${user}/mes-documents/ajouter-un-${encodeURIComponent('véhicule')}` )
 
     }
     else {
@@ -40,7 +40,7 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
       
       if (!isNaN(value)) {
         dispatch(displayVehicle(value))
-        navigate(`/utilisateur/${user}/mes-documents/modifier-un-véhicule/` + value)
+        navigate(`/utilisateur/${user}/mes-documents/modifier-un-${encodeURIComponent('véhicule')}/` + value)
       }
       else {
         window.alert("Veuillez sélectionner un véhiculer à modifier.")

@@ -2,7 +2,7 @@
 export const getSavedFileName = (urlFile) => {
 
   const spliter = process.env.NODE_ENV === 'development' ? '\\' : '/';
-
+  
   const file = urlFile.split(spliter);
   const  filename = file[file.length - 1];
 
