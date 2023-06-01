@@ -164,6 +164,18 @@
     margin-bottom: 1rem;
     width: 100%;
 
+    &-modal {
+      display: flex;
+      // justify-content: space-between;
+
+      &-icon {
+        margin-left: 0.5rem;
+        color: rgba(var(--darkerThemeColor));
+        font-size: 1.2em;
+        cursor: pointer;
+      }
+    }
+
     &-container {
       display: flex;
     }

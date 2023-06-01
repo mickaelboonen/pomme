@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
 import { useDispatch } from 'react-redux';
 import { MdRefresh } from 'react-icons/md'
+import { FaQuestionCircle } from 'react-icons/fa'
 import classNames from 'classnames';
 
 import './modalStyle.scss';
 
 // Components 
-import ApiResponse from 'src/components/ApiResponse';
+import Help from 'src/components/Help';
 import SwitchButton from 'src/components/SwitchButton';
 import SelectField from 'src/components/Fields/SelectField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
@@ -20,7 +21,7 @@ import { addNewOM } from 'src/reducer/omForm';
 import { addNewEf } from 'src/reducer/ef';
 import { fetchOMs } from 'src/reducer/agent';
 
-const Modal = ({ target, user, userOms, agent, apiMessage, loader }) => {
+const Modal = ({ target, user, userOms, agent, loader }) => {
   
   const dispatch = useDispatch();
   let isOm = false;
@@ -85,6 +86,17 @@ const Modal = ({ target, user, userOms, agent, apiMessage, loader }) => {
     }
   }
 
+  const toggleHelp = (event) => {
+    const target = event.currentTarget.id.split('-')[0];
+    const helpElement = document.getElementById(target);
+    helpElement.classList.toggle('help--open');
+  };
+
+  useEffect(() => {
+    if (target === '') {
+      dispatch(toggleModal());
+    }
+  }, [])
   return (
     <div className='modal'>
         <form className="modal__form" onSubmit={handleSubmit(onSubmit)}>
@@ -104,18 +116,32 @@ const Modal = ({ target, user, userOms, agent, apiMessage, loader }) => {
                   formField='withExpenses'
                   label="Avec Frais :"
                 />
-                <SwitchButton
-                  register={register}
-                  isInForm
-                  formField='isResearch'
-                  label="Mission de recherche :"
+                <div className="form__section-field-modal">
+                  <SwitchButton
+                    register={register}
+                    isInForm
+                    formField='isResearch'
+                    label="Mission de Recherche :"
+                  />
+                  <FaQuestionCircle id="research-help" className="form__section-field-modal-icon" onClick={toggleHelp} />
+                </div>
+                <Help
+                  id="research"
+                  message="Comprend les missions en rapport avec la Recherche, les événements scientifiques, colloques, séminaires, conférences et réunions, ainsi que les formations prises en charge par le Labo."
                 />
-                <SwitchButton
-                  register={register}
-                  isInForm
-                  formField='isTrainingCourse'
-                  label="Mission de formation :"
-                />
+                <div className="form__section-field-modal">
+                  <SwitchButton
+                    register={register}
+                    isInForm
+                    formField='isTrainingCourse'
+                    label="Mission de formation des personnels :"
+                  />
+                  {/* <FaQuestionCircle className="form__section-field-modal-icon" id="hr-help" onClick={toggleHelp} /> */}
+                </div>
+                {/* <Help
+                  id="hr"
+                  message="blablabl"
+                /> */}
               </div>
             )}
             { target === 'état de frais' && (
@@ -155,7 +181,6 @@ const Modal = ({ target, user, userOms, agent, apiMessage, loader }) => {
               </>
             )}
           </div>
-          {/* {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />} */}
           <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}} id="modal-button">
             <ButtonElement
               type="submit"

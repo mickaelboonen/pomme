@@ -204,10 +204,10 @@
   display: none;
   background-color: var(--lighter-first-color);
   padding: 0.5rem;
-  margin-top: 0.5rem;
+  margin: 0 0.5rem 1rem;
   border-radius: vars.$radius;
   font-style: italic;
-  width: calc(100% - 1rem - 24px);
+  // width: calc(100% - 1rem - 24px);
 
   &__title {
     color: rgba(var(--darkestThemeColor));
