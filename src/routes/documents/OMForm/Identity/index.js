@@ -65,11 +65,11 @@ const Identity = ({ isEfForm }) => {
   
   return (
     <form className="form">
-      {/* <div style={{width:"100%", height:"100vh"}}>
+      <div style={{width:"100%", height:"100vh"}}>
         <PDFViewer>
           <OmPdf countries={countries} agentSignature={agentSignature} data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />
         </PDFViewer>
-      </div>  */}
+      </div> 
       <div className="form__section">
         <FormSectionTitle>Missionnaire</FormSectionTitle>
         <div className="form__section form__section--split">
@@ -200,7 +200,6 @@ const Identity = ({ isEfForm }) => {
           )}
         </div>
       </div>
-      {/* {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />} */}
       <div className="form__section">
         <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
           <BlobProvider document={<OmPdf countries={countries} agentSignature={agentSignature} data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />}>
@@ -210,6 +209,7 @@ const Identity = ({ isEfForm }) => {
               const fileUrl = URL.createObjectURL(file);
               
               setValue('om', file);
+
               return (
                 <a href={fileUrl} download={currentOM.name + '.pdf'} style={{textAlign: 'center'}}>
                   <button type='button' files={file} onClick={generatePDF}>Valider les données et télécharger l'Ordre de Mission</button>

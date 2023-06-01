@@ -46,7 +46,7 @@ export default {
           }
           
           store.dispatch(fetchUserData({ id: user}));
-          store.dispatch(fetchAgentSignatureForPdf({ agent: user }));
+          store.dispatch(fetchAgentSignatureForPdf({ agent: user, docId: id}));
 
           if (!agent.hasOwnProperty('lastname')) {
             store.dispatch(fetchUserData({ id: user}));

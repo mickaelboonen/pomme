@@ -436,7 +436,6 @@ const omMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse(error));
       });
       break;
-        break;
 
     case 'other-documents/fetchAgentSignatureForPdf':
       fileApi.post('/api/agent/signature', action.payload)
@@ -444,7 +443,19 @@ const omMiddleware = (store) => (next) => (action) => {
           store.dispatch(saveAgentSignatureForPdf(response.data));
         })
         .catch((error) => {
-          // store.dispatch(setApiResponse(error));
+          
+          if (error.response.data.includes('Aucune signature trouvée pour ' + action.payload.agent)) {
+            api.post('/api/om/signature/fetch', action.payload)
+              .then((response) => {
+                store.dispatch(saveAgentSignatureForPdf(response.data));
+              })
+              .catch((error) => {
+                store.dispatch(setApiResponse(error));
+              });
+          }
+          else {
+            store.dispatch(setApiResponse(error));
+          }
         });
       break;
     default:
