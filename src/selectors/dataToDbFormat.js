@@ -253,7 +253,7 @@ export const turnAdvanceDataToDbFormat = (data) => {
     docId: docId,
     advance: advance,
     advanceAmount: advanceAmount === "" ? null : advanceAmount,
-    totalAmount: advanceAmount === "" ? null : advanceAmount,
+    totalAmount: totalAmount === "" ? null : totalAmount,
     hotelQuotations: hotelQuotations,
     nightsNumber: nightsNumber,
     mealsNumber: mealsNumber,
