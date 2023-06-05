@@ -51,9 +51,7 @@ const Home = () => {
   return (
     <div className="home">
       <HomepageTitle />
-      <VideoPlayer
-        link={Presentation}
-      />
+      <VideoPlayer link={Presentation} />
       <section className="home__new">
         <TitleH3>Nouveau document</TitleH3>
         <div className="home__new-buttons">

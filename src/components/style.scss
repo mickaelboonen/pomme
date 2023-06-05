@@ -393,33 +393,73 @@
 
 .video {
   position: relative;
-  margin-bottom: 1rem;
-  
-  &__player {
-    // width: 820px;
-    // height: 640px;
-    max-width: 100%;
+  margin-bottom: 2rem;
+  display: flex;
+  width: 100%;
+
+  &__container {
+    position: relative;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    @include vars.centeredFlex;
+      transition: 1s;
+      border: 1px solid rgba(var(--darkestThemeColor));
+      border: 1px solid var(--second-color);
+
+    &--open {
+      width: 100%;
+      height: fit-content;
+      border-radius: 0;
+    }
+
+    &-player {
+      width: 100%;
+      position: relative;
+
+      &-icon {
+        display: none;
+        position: absolute;
+        top: -2rem;
+        right: -1px;
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--second-color);
+        cursor: pointer;
+
+        &--visible {
+          display: block;
+        }
+      }
+    }
+
+    &-cover {
+      position: absolute;
+      inset: 0;
+      // background-color: #750d0d;
+      @include vars.centeredFlex;
+
+      &-icon {
+        color: var(--second-color);
+        font-size: 4rem;
+      }
+    }
   }
-  
-  &__cover {
-    position: absolute;
-    top: 0;
-    background-color: var(--background-page);
-    opacity: 1;
-    // width: 820px;
-    // height: 640px;
-    width: 100%;
+
+  &__player {
     height: 100%;
+    width: 100%;
+    display: none;
 
+    &--visible {
+      display: block;
+    }
+  }
+
+  &__title {
     display: flex;
-
-    & div {
-      flex-grow: 1;
-      border: 1px solid red;
-    }
-    &--hidden {
-      display: none;
-    }
+    align-items: center;
+    margin-left: 1rem
   }
 }
 
@@ -428,33 +468,19 @@
 @media (min-width: vars.$sm) {
   .video {
     position: relative;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
+
+    &__container {
     
-    &__player {
-      width: 820px;
-      height: 640px;
-      // max-width: 100%;
+      &--open {
+        width: calc(820px - 10rem);
+        margin: auto;
+      }
+
+      &-player-icon {
+        top: 2px;
+        right: -4rem;
+      }
     }
-    
-    // &__cover {
-    //   position: absolute;
-    //   top: 0;
-    //   background-color: var(--background-page);
-    //   opacity: 1;
-    //   // width: 820px;
-    //   // height: 640px;
-    //   width: 100%;
-    //   height: 100%;
-
-    //   display: flex;
-
-    //   & div {
-    //     flex-grow: 1;
-    //     border: 1px solid red;
-    //   }
-    //   &--hidden {
-    //     display: none;
-    //   }
-    // }
   }
 }
