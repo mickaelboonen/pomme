@@ -84,6 +84,16 @@ module.exports = {
           filename: 'fonts/[hash][ext][query]'
         }
       },
+      // Videos
+      {
+        test: /\.(mp4|webm|ogg)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: 'videos/[name].[ext]',
+          },
+        },
+      },
     ],
   },
 };

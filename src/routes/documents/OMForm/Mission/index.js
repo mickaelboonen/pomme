@@ -305,7 +305,7 @@ const Mission = ({ step, isEfForm }) => {
               disabled={isEfForm && isMissionFormDisabled}
               type="datetime-local"
               id="departure"
-              label="Jour et Heure de départ"
+              label="Jour et heure de départ"
               register={register}
               formField="departure"
               error={errors.departure}
@@ -338,7 +338,7 @@ const Mission = ({ step, isEfForm }) => {
               disabled={isEfForm && isMissionFormDisabled}
               type="datetime-local"
               id="comeback"
-              label="Jour et Heure de retour"
+              label="Jour et heure de retour"
               register={register}
               formField="comeback"
               error={errors.comeback}

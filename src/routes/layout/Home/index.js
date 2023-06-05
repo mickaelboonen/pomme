@@ -15,6 +15,8 @@ import TitleH3 from 'src/components/TitleH3';
 
 import { toggleModal } from 'src/reducer/app';
 import { clearOMTarget } from 'src/reducer/omForm';
+import VideoPlayer from '../../../components/VideoPlayer';
+import Presentation from 'src/assets/video/presentation-pom.mp4';
 
 const Home = () => {
   
@@ -44,9 +46,14 @@ const Home = () => {
   const handleClickOnNewEf = () => {
     navigate(`/utilisateur/${user}/${encodeURIComponent('mes-états-de-frais')}`);
   }
+
+
   return (
     <div className="home">
       <HomepageTitle />
+      <VideoPlayer
+        link={Presentation}
+      />
       <section className="home__new">
         <TitleH3>Nouveau document</TitleH3>
         <div className="home__new-buttons">
@@ -54,16 +61,14 @@ const Home = () => {
             <IoMdAddCircle
               className='home__new-buttons-item-image'
             />
-            <p>Ordre de Mission</p>
+            <p>Ordre de mission</p>
           </div>
-          {/* {(user === 'mboone01' || user === 'nathalie') && ( */}
-            <div id="état-de-frais" className="home__new-buttons-item" onClick={handleClickOnNewEf}>
-              <IoMdAddCircle
-                className='home__new-buttons-item-image'
-              />
-              <p>État de Frais</p>
-            </div>
-          {/* )} */}
+          <div id="état-de-frais" className="home__new-buttons-item" onClick={handleClickOnNewEf}>
+            <IoMdAddCircle
+              className='home__new-buttons-item-image'
+            />
+            <p>État de frais</p>
+          </div>
         </div>
       </section>
       <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />

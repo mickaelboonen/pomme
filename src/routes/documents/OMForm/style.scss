@@ -53,7 +53,7 @@
 
       &--open, &:hover {
         @include vars.centeredFlex;
-        font-style: italic;
+        // font-style: italic;
         color: var(--first-color);
         background-color: var(--fifth-color);
       }

@@ -51,7 +51,7 @@ const Section = ({ id, data, user, steps, currentDoc, loader, isOm}) => {
         handler={handleChange}
         formField="selectInput"
         id="list"
-        label={`Liste des Ordres de Missions`}
+        label={`Liste des ordres de missions`}
         blankValue="Aucun document sélectionné"
       />
       <div className="my-documents__files-buttons">
