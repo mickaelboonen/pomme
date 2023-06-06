@@ -1,17 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
 import { persistor } from 'src/store';
-import { Outlet, redirect } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './style.scss';
+
+// Components
 import Header from './Header';
-import Maintenance from './Maintenance';
 import Login from './Login';
-import ErrorDisplayer from '../../components/ErrorDisplayer';
+import ErrorDisplayer from 'src/components/ErrorDisplayer';
+
+// Reducers & actions
 import { clearMessage } from 'src/reducer/app';
 import { logout } from 'src/reducer/agent';
-import { setApiResponse } from '../../reducer/app';
+import Footer from './Footer';
 
 const Layout = ({ cas }) => {
   
@@ -81,6 +84,7 @@ const Layout = ({ cas }) => {
           <Outlet />
         </main>
       )}
+      <Footer />
     </>
   );
 };

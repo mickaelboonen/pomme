@@ -1,0 +1,16 @@
+@use 'src/styles/vars';
+
+.footer {
+  border-top: 1px solid rgba(var(--darkestThemeColor));
+  @include vars.centeredFlex;
+  height: 7vh;
+  background-color: var(--first-color);
+  // background-color: #fff;
+
+  & img {
+    max-height: 70%;
+    // filter: drop-shadow(1px 1px 1px var(--opposite-theme-color)); /* Définissez les valeurs d'ombre appropriées ici */
+  
+    filter: drop-shadow(1px 1px 1px #000); /* Définissez les valeurs d'ombre appropriées ici */
+  }
+}

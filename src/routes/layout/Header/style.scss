@@ -2,19 +2,23 @@
 
 .header-container {
   background-color: var(--menu-color);
+  height: 10vh;
+  border-bottom: 1px solid rgba(var(--darkestThemeColor));
 }
 
 .header {
   color:  var(--opposite-theme-color);
-  height: 10vh;
   width: 100%;
   display: flex;
+  height: inherit;
   justify-content: space-between;
+  font-family: 'Oswald';
 
   &-theme {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-right: 1rem;
 
     &--straight {
       transform: skew(0deg,0);
@@ -103,6 +107,7 @@
       color:#fff;
       text-shadow: 1px 1px 1px var(--dark-color);
       text-transform: uppercase;
+      font-family: 'Oswald';
       
       transition: 0.6s;
       overflow: hidden;
@@ -115,9 +120,10 @@
         &:hover {
           color: var(--first-color);
           // font-style: italic;
+          font-family: 'OswaldBold';
           font-size: 1.05em;
           cursor: pointer;
-          font-weight: bold;
+          // font-weight: bold;
           z-index: 999;
           
         }
@@ -143,6 +149,17 @@
 
   &--open {
     height:90vh;
+  }
+
+  &-help {
+
+    width: 5rem;
+    height: 100%;
+    color: var(--menu-title-color);
+    font-size: 1.3em;
+    position: relative;
+    @include vars.centeredFlex;
+
   }
 }
 

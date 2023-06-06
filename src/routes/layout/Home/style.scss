@@ -1,15 +1,34 @@
 @use 'src/styles/vars';
 
 .home {
-  height: 90vh;
+  min-height: 83vh;
   padding: 1.5rem;
 
   &__title {
     min-height: 6rem;
-    @include vars.centeredFlex;
     flex-wrap: wrap;
     margin-bottom: 2rem;
     font-family: var(--font-title);
+    display: none;
+
+    &--responsive {
+      @include vars.centeredFlex;
+    }
+
+    &-text {
+      @include vars.pageTitle;
+      color: var(--second-color);
+      line-height: normal;
+      text-transform: lowercase;
+      font-size: 2em;
+      display: block;
+
+      & span {
+        text-transform: uppercase;
+        font-size: 6rem;
+      }
+
+    }
 
     &-group {
       display: flex;
@@ -106,6 +125,20 @@
     padding: 3rem;
     width: 70%;
     margin: auto;
+
+    &__title {
+      @include vars.centeredFlex;
+
+      &-text {
+        & span {
+          font-size: 6rem;
+        }
+      }
+
+      &--responsive {
+        display: none;
+      }
+    }
   
     &__new {
       margin-bottom: 2rem;
@@ -113,31 +146,6 @@
       &-buttons {
         display: flex;
         justify-content: space-around;
-  
-        &-item {
-          // color: vars.$unimes;
-        }
-      }
-    }
-
-    &__title {
-  
-      &-group {
-      
-        // &-capital, &-rest {
-        //   font-size: 6rem;
-        // }
-  
-        // &-rest  {
-        //   width: fit-content;
-        //   transition: 1s;
-        //   text-transform: lowercase;
-        //   font-size: 2.5em;
-        //   padding: 0 0.2rem 0.75rem;
-        //   margin-right: 1rem;
-        //   @include vars.centeredFlex;
-        //   // padding-bottom: 0.75rem;
-        // }
       }
     }
 
@@ -171,10 +179,6 @@
       &-buttons {
         display: flex;
         justify-content: space-around;
-  
-        &-item {
-          // color: vars.$unimes;
-        }
       }
     }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { persistor } from 'src/store';
 import { Link } from 'react-router-dom';
+import { FaQuestionCircle } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 
 import './style.scss';
@@ -41,19 +42,21 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
           <Preferences />
           {user === 'mboone01' &&(
             <>
-              {/* <div className="header__menu-section" id="dafc" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
+              <div className="header__menu-section" id="dafc" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
                 <p>DAFC</p>
                 <ul className="header__menu-section-list">
-                  <li><Link to="/dafc/ordres-de-mission">Ordres de Mission <span id="mes-oms">1</span></Link></li>
-                  <li><Link to="/dafc/états-de-frais">États de Frais <span id="mes-oms">1</span></Link></li>
+                  <li><Link to="/dafc/ordres-de-mission">Ordres de Mission</Link></li>
+                  <li><Link to="/dafc/états-de-frais">États de Frais</Link></li>
                 </ul>
-              </div> */}
-              <Link to={`/gestionnaire/${role}/documents-a-signer`}>
-                <div className="header__menu-section" id="a-signer">GESTIONNAIRE</div>
-              </Link>
-              {/* <Link to={`/test/pdf`}>
-                <div className="header__menu-section" id="a-signer">TEST PDF</div>
-              </Link> */}
+              </div>
+              <div className="header__menu-section" id="gest" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
+                <p>GESTIONNAIRE</p>
+                <ul className="header__menu-section-list">
+                  <li><Link to="/gestionnaire/ordres-de-mission">Ordres de Mission</Link></li>
+                  <li><Link to={`/gestionnaire/${user}/${encodeURIComponent('mes-états-de-frais')}`}>États de Frais <span id="mes-efs"></span></Link></li>
+                  <li><Link to={`/gestionnaire/${user}/${encodeURIComponent('mes-préférences')}`}>Mes Préférences</Link></li>
+                </ul>
+              </div>
             </>
           )}
           <div className="header__menu-section" id="mon-compte" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
@@ -67,6 +70,11 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
               <li><a onClick={handleLogOut}>Se déconnecter</a></li>
             </ul>
           </div>
+          <Link to={`/gestionnaire/${role}/documents-a-signer`}>
+            <div className="header__menu-help">
+              <FaQuestionCircle />
+            </div>
+          </Link>
         </nav>  
       )}
     </div>

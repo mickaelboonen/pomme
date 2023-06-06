@@ -2,8 +2,29 @@
 @use 'vars';
 @use "sass:color";
 
+@font-face {
+  font-family: 'MulishExtraBold';
+  src: url('../assets/fonts/Unimes/Mulish/static/Mulish-ExtraBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Mulish';
+  src: url('../assets/fonts/Unimes/Mulish/static/Mulish-Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'OswaldBold';
+  src: url('../assets/fonts/Unimes/Oswald/static/Oswald-Bold.ttf') format('truetype');
+}
+
+
+@font-face {
+  font-family: 'Oswald';
+  src: url('../assets/fonts/Unimes/Oswald/static/Oswald-Light.ttf') format('truetype');
+}
+
 body {
-  font-family: 'Rajdhani', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Mulish', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   background-color: var(--background-page);
 }
 
@@ -22,49 +43,14 @@ body {
   
   --header-height: 10vh;
 
-  --font-title: 'Lobster';
+  --font-title: 'MulishExtraBold';
+  // --font-title: 'OswaldBold';
 
   --backgroundSuccess: rgb(148, 250, 190);
   --backgroundError: rgb(250, 148, 148);
   --textSuccess: rgb(13, 117, 27);
   --textError: rgb(117, 13, 13);
-
-  // & input[type="radio"] {
-  //     /* Add if not using autoprefixer */
-  //   -webkit-appearance: none;
-  //   appearance: none;
-  //   /* For iOS < 15 to remove gradient background */
-  //   background-color: #fff;
-  //   /* Not removed via appearance */
-  //   margin: 0 0.5rem;
-  //   color: var(--third-color);
-  //   width: 14px;
-  //   height: 14px;
-  //   border: 1.5px solid var(--third-color);
-  //   border-radius: 50%;
-  //   transform: translateY(-0.075em);
-    
-  //   display: flex;
-  //   align-self: center;
-
-  //     &::before {
-  //       content: "";
-  //       width: 10px;
-  //       height: 10px;
-  //       margin: 1px 0 0 1px;
-  //       border-radius: 50%;
-  //       transform: scale(0);
-  //       transition: 120ms transform ease-in-out;
-  //       box-shadow: inset 10px 10px var(--third-color);
-  //     }
-  // }
-
-
-  // & input[type="radio"]:checked::before {
-  //   transform: scale(1);
-
-  // }
-
+  
   & iframe {
     width: 100%;
     height: 100%;
