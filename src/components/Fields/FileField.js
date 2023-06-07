@@ -50,7 +50,7 @@ const FileField = ({
   
   return (
   <div id={formField} className={classNames("form__section-field", {"form__section-field--hidden": isHidden})} >
-    <label className="form__section-field-label" htmlFor={id}>{label}</label>
+    <label className="form__section-field-label" htmlFor={id}>{label ?? `Pièce${multiple ? 's' : ''} justificative${multiple ? 's' : ''}`}</label>
     <div className="form__section-field-input form__section-field-input--file" onClick={handleClickOnFileInput}>
       <input
         id={id}
@@ -84,7 +84,7 @@ FileField.defaultProps = {
   pieces: '',
   isHidden: false,
   placeholder: '',
-  label: 'Pièce justificative',
+  // label: `Pièce${multiple ? 's' : ''} justificative${multiple ? 's' : ''}`,
 }
 
 export default FileField;

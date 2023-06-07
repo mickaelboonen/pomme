@@ -2,15 +2,16 @@
 
 .header-container {
   background-color: var(--menu-color);
-  height: 10vh;
+  min-height: 10vh;
   border-bottom: 1px solid rgba(var(--darkestThemeColor));
 }
 
 .header {
   color:  var(--opposite-theme-color);
   width: 100%;
+  
+  height: calc(10vh - 1px);
   display: flex;
-  height: inherit;
   justify-content: space-between;
   font-family: 'Oswald';
 

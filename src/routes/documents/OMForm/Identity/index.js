@@ -221,7 +221,7 @@ const Identity = ({ isEfForm }) => {
                 return (
                   <>
                     <a href={fileUrl} download={currentOM.name + '.pdf'} style={{textAlign: 'center'}}>
-                      <button type='button' files={file} onClick={generatePDF}>Valider les données et télécharger l'Ordre de Mission</button>
+                      <button type='button' files={file} onClick={generatePDF}>Valider les données <br /> et télécharger l'Ordre de Mission</button>
                     </a>
                     <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
                       Visualiser le document

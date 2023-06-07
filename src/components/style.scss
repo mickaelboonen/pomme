@@ -237,29 +237,25 @@
 
 .tabs {
   display: flex;
-  border-radius: vars.$radius vars.$radius 0 0;
+  // border-radius: vars.$radius vars.$radius 0 0;
   overflow: hidden;
   cursor: pointer;
   width: 100vw;
+  // box-shadow: 0 0 5px #f30909;
 
   &__item {
     width: 50%;
     border: 1px solid #1a1a1a;
     padding: 0.8rem;
     text-transform: uppercase;
-    background-color: var(--third-color);
+    background-color: var(--lighter-first-color);
+    background-color: transparent;
     color: #1a1a1a;
     @include vars.centeredFlex;
     text-align: center;
-
-    &:nth-of-type(1) {
-      border-radius: vars.$radius 0 0 0;
-    }
-    
-    &:nth-last-of-type(1) {
-      border-radius: 0 vars.$radius 0 0;
-    }
-
+    // color: var(--opposite-theme-color);
+    font-size: 0.9em;
+    letter-spacing: 1px;
 
 
 
@@ -272,14 +268,18 @@
 
     &--open {
       background-color: var(--first-color);
-      color: var(--fifth-color);
-      box-shadow: 1px 1px 5px var(--second-color);
-      font-weight: bold;
+      color: var(--third-color);
+      font-family: var(--font-title);
+      background-color: var(--lighter-first-color);
+      box-shadow: 0 0 5px #1a1a1a;
+      border-bottom: 0;
+      z-index: 50;
+
 
     }
     &--open &-notification {
         background-color: var(--third-color);
-        box-shadow: 1px 1px 1px #1a1a1a;
+        // box-shadow: 1px 1px 1px #1a1a1a;
         color: var(--first-color);
       }
   }
@@ -288,6 +288,17 @@
 @media (min-width: vars.$sm) {
   .tabs {
     width: 70%;
+    border-radius: vars.$radius vars.$radius 0 0;
+
+    &__item {
+      &:nth-of-type(1) {
+        border-radius: vars.$radius 0 0 0;
+      }
+      
+      &:nth-last-of-type(1) {
+        border-radius: 0 vars.$radius 0 0;
+      }
+    }
 
   }
 }

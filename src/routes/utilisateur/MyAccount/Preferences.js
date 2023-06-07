@@ -11,9 +11,7 @@ const Preferences = () => {
   
   const {
     register,
-    watch,
-    formState:
-    { errors },
+    watch
   } = useForm();
 
 
@@ -88,14 +86,19 @@ const Preferences = () => {
 
   const themes = [
     {
-      id: 'green',
-      label: 'Vert',
-      colors: ['#020402', '#0c2c30', '#468884', '#98c4ac', '#dfe7da']
-    },
-    {
       id: 'classic',
       label: 'Classique',
       colors: ['rgba(116, 41, 70, 1)', 'rgba(153, 56, 79, 1)', 'rgba(209, 84, 94, 1)', 'rgba(255, 137, 127, 1)', 'rgba(255, 204, 156, 1)']
+    },
+    {
+      id: 'unimes',
+      label: 'Orange',
+      colors: ['#e84e24', '#292929', '#FF8303', '#FEDEBE', '#FFAF42']
+    },
+    {
+      id: 'green',
+      label: 'Vert',
+      colors: ['#020402', '#0c2c30', '#468884', '#98c4ac', '#dfe7da']
     },
     {
       id: 'olive',
@@ -104,7 +107,7 @@ const Preferences = () => {
     },
     {
       id: 'other',
-      label: 'Autre',
+      label: 'Taupe',
       colors: ['#403036', '#5e485b', '#927078', '#d0a6a4', '#d1bdb0']
     },
     {
@@ -112,16 +115,6 @@ const Preferences = () => {
       label: 'Bleu',
       colors: ['#0c3043', '#12475b', '#1a6f78', '#20959f', '#2bc9c7']
       
-    }, 
-    {
-      id: 'rose',
-      label: 'Rose',
-      colors: ['#3d2d3f', '#5c4159', '#8a617e', '#ca8cad', '#fbc4e8']
-    },
-    {
-      id: 'slytherin',
-      label: 'Vert Serpentard',
-      colors: ['#132c36', '#1b4043', '#285d58', '#377072', '#55a19b']
     },
     {
       id: 'brown',
@@ -129,20 +122,25 @@ const Preferences = () => {
       colors: ['#471923','#6f2f2e','#a15238','#da8642','#ffcc4d']
     },
     {
-      id: 'lilac',
-      label: 'Lilas',
-      colors: ['#100907', '#211f37', '#585b88', '#979dea', '#d0dbef']
+      id: 'hufflepuff',
+      label: 'Poufsouffle',
+      colors: ['#141414', '#362e29', '#706254', '#ecc655', '#e7b827']
     },
-    // {
-    //   id: 'orange',
-    //   label: 'Orange',
-    //   colors: ['#b5370c', '#e84e24', '#ff8364', '#ffc7b8', '#f6d9cc']
-    // },
-    // {
-    //   id: 'light-green',
-    //   label: 'Vert clair',
-    //   colors: ['#468b88', '#98bea8', '#cad6c6', '#ede8d8', '#f6f5eb']
-    // },
+    {
+      id: 'ravenclaw',
+      label: 'Serdaigle',
+      colors: ['#222f5b', '#040d3f', '#2c428a', '#5d5d5d', '#946b2d']
+    },
+    {
+      id: 'slytherin2',
+      label: 'Serpy',
+      colors: ['#1a472a', '#013403', '#2a623d', '#5d5d5d', '#aaa']
+    },
+    {
+      id: 'gryffindor',
+      label: 'Gryffondor',
+      colors: ['#740001', '#530909', '#ae0001', '#eeba30', '#d3a625']
+    },
   ];
 
   return (

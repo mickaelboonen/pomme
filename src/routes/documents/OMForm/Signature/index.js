@@ -148,7 +148,7 @@ const Signature = ({ step }) => {
           formField="informations"
           id="other"
           label="Autres renseignements utiles"
-          placeholder="Tout renseignements utiles, des cas articuliers non pris en charge par le formulaire"
+          placeholder="Tous renseignements utiles, des cas particuliers non pris en charge par le formulaire"
         />
         <FileField 
           setValue={setValue}

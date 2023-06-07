@@ -58,7 +58,8 @@ $lightestThemeColor: #ffcc9c;
 
 @mixin pageTitle {
   font-size: 2em;
-  text-shadow: 2px 2px 2px var(--text-shadow);
+  // text-shadow: 2px 2px 2px var(--text-shadow);
+  font-family: 'MulishExtraBold';
   color: var(--second-color);
   text-transform: uppercase;
   margin: 0 auto 2rem;

@@ -16,7 +16,7 @@
     }
 
     &-text {
-      @include vars.pageTitle;
+      // @include vars.pageTitle;
       color: var(--second-color);
       line-height: normal;
       text-transform: lowercase;
@@ -26,6 +26,11 @@
       & span {
         text-transform: uppercase;
         font-size: 6rem;
+
+        &:first-of-type {
+
+        letter-spacing: -10px;
+        }
       }
 
     }
@@ -131,7 +136,7 @@
 
       &-text {
         & span {
-          font-size: 6rem;
+          font-size: 4rem;
         }
       }
 

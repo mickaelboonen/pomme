@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Logo from 'src/assets/images/logo.svg';
+import Logo from 'src/assets/images/logo-white.svg';
 
 import '../style.scss';
 
