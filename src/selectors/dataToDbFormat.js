@@ -130,7 +130,7 @@ export const turnTransportsDataToAppFormat = (data) => {
     others:  [],
     dispensations:  data.dispensations,
     authorizations:  data.authorizations,
-    // omId: data.om.id,
+    toll: null,
     vehicleAuthorizationFile: null,
     vehicleAuthorizationFileForValidation: false,
     dispensation: null,
@@ -190,9 +190,9 @@ export const turnTransportsDataToAppFormat = (data) => {
   if (data.ferry) {
     dataForTheComponent.others.push('ferry');
   }
-  // if (data.taxi) {
-  //   dataForTheComponent.others.push('taxi');
-  // }
+  if (data.toll) {
+    dataForTheComponent.others.push('toll');
+  }
   
   data.transportClass.forEach((service) => {
     if (service === 'first-class' || service === 'second-class') {

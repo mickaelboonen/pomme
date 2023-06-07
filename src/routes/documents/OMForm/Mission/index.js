@@ -250,8 +250,6 @@ const Mission = ({ step, isEfForm }) => {
   const toggleScienceForm = (event) => {
     setIsMissionAScienceEvent(event.target.checked);
   }
-
-  console.log("currentOM : ", currentOM);
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
