@@ -12,7 +12,7 @@ const ApiResponse = ({ apiResponse, updateForm }) => {
       {(response.status && response.status !== 200 && response.status !== 202) && (
         <div className="api-response__error">
           <p className='api-response__error-details'>
-            <span>Merci de contacter l'assistance informatique via</span> <a className='api-response__error-details__link' href='https://glpi.unimes.fr/front/helpdesk.public.php?create_ticket=1'>GLPI</a> et d'expliquer ce que vous faisiez lorque l'erreur est survenue, en fournissant une capture d'écran de l'erreur avec les toutes informations ci-dessous.
+            <span>Merci de contacter l'assistance informatique via</span> <a className='api-response__error-details__link' href='https://glpi.unimes.fr/front/helpdesk.public.php?create_ticket=1'>GLPI</a> et d'expliquer ce que vous faisiez lorque l'erreur est survenue, en fournissant une capture d'écran de l'erreur <span>avec toutes les informations ci-dessous</span>.
           </p>
           <div className="api-response__error-separator" />
           <h5 className="api-response__error-title">{response.statusText} - {response.status}</h5>

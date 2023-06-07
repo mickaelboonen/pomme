@@ -16,6 +16,7 @@ import managerRouter from "./managerRouter";
 import modifyDocumentsRouter from "./modifyDocumentsRouter";
 import newDocumentsRouter from "./newDocumentsRouter";
 import userRouter from "./userRouter";
+import Assistance from "../routes/help";
 
 
 let casEndpoint = "cas.unimes.fr";
@@ -76,6 +77,11 @@ const AppWithRouter = () => (
         {
           path: 'se-connecter',
           element: <Login cas={casClient} />,
+        },
+        // login route
+        {
+          path: 'assistance',
+          element: <Assistance />
         },
         // routes starting with 'nouveau-document/'
         newDocumentsRouter,

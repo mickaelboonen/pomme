@@ -70,7 +70,7 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
               <li><a onClick={handleLogOut}>Se déconnecter</a></li>
             </ul>
           </div>
-          <Link to={`/gestionnaire/${role}/documents-a-signer`}>
+          <Link to={`/assistance`}>
             <div className="header__menu-help">
               <FaQuestionCircle />
             </div>

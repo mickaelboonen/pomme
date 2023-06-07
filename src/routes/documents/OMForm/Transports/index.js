@@ -353,7 +353,7 @@ const Transports = ({ step }) => {
             id="taxiDispensation"
             data={defaultValues}
             permanentOm={permanentOm}
-            link={"/nouveau-document/demande-de-dérogation?omId=" + omId + '&type=taxi'}
+            link={`/nouveau-document/${encodeURIComponent('demande-de-dérogation')}?omId=${omId}&type=taxi`}
           />
         )}
         <HiddenField id="docId" value={omId} register={register} />
