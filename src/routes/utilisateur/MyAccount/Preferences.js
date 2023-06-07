@@ -154,31 +154,31 @@ const Preferences = () => {
   }
 
   return (
-  <main className='my-preferences'>
-    <PageTitle>Mes préférences</PageTitle>
-    <form className='theme'>
-      <FormSectionTitle>Thème de l'application</FormSectionTitle>
-      <div className='theme__container'>
-
-      {themes.map((theme) => (
-        <div className='theme__container-theme' key={theme.id}>
-          <div className='theme__container-theme-colors'>
-            {theme.colors.map((color) => <div key={color} className='theme__container-theme-colors-color' style={{'backgroundColor': color}} />)}
-          </div>
-          <RadioInput
-            id={theme.id}
-            checked={theme.id === currentTheme ? true : false}
-            formField="theme"
-            label={theme.label}
-            register={register}
-            handler={handleClick}
-          />
+    <div className='my-preferences'>
+      <PageTitle>Mes préférences</PageTitle>
+      <form className='theme'>
+        <FormSectionTitle>Thème de l'application</FormSectionTitle>
+        <div className='theme__container'>
+          {themes.map((theme) => (
+            <div className='theme__container-theme' key={theme.id}>
+              <div className='theme__container-theme-colors'>
+                {theme.colors.map((color) => <div key={color} className='theme__container-theme-colors-color' style={{'backgroundColor': color}} />)}
+              </div>
+              <RadioInput
+                id={theme.id}
+                checked={theme.id === currentTheme ? true : false}
+                formField="theme"
+                label={theme.label}
+                register={register}
+                handler={handleClick}
+              />
+            </div>
+          ))}
         </div>
-      ))}
-      </div>
-    </form>
-  </main>
-);}
+      </form>
+    </div>
+  );
+}
 
 Preferences.propTypes = {
 

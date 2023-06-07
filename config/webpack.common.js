@@ -94,6 +94,19 @@ module.exports = {
           },
         },
       },
+      // PDFs
+      {
+        test: /\.(pdf)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'pdfs/' // Répertoire de sortie pour les fichiers PDF
+            }
+          }
+        ]
+      }
     ],
   },
 };
