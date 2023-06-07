@@ -342,6 +342,7 @@ const Transports = ({ step }) => {
           <p className="form__section-field-label">Autres</p>
           <CheckboxInput id="taxi" formField="others" label="Taxi" register={register} />
           <CheckboxInput id="parking" formField="others" label="Parking" register={register} />
+          <CheckboxInput id="toll" formField="others" label="Péage" register={register} />
           <CheckboxInput id="ferry" formField="others" label="Ferry (bateau)" register={register} />
         </div>
         {needsTaxiDispensation && (

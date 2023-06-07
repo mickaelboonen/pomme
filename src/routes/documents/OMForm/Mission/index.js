@@ -250,6 +250,8 @@ const Mission = ({ step, isEfForm }) => {
   const toggleScienceForm = (event) => {
     setIsMissionAScienceEvent(event.target.checked);
   }
+
+  console.log("currentOM : ", currentOM);
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
@@ -265,14 +267,16 @@ const Mission = ({ step, isEfForm }) => {
           error={errors.missionPurpose}
           required={errorMessages.missionPurpose}
         />
-        <SwitchButton
-          register={register}
-          handler={toggleScienceForm}
-          disabled={isEfForm && isMissionFormDisabled}
-          isInForm
-          formField="science"
-          label="Est-ce que c'est un événement scientifique ?"
-        />
+        {currentOM.is_research && (
+          <SwitchButton
+            register={register}
+            handler={toggleScienceForm}
+            disabled={isEfForm && isMissionFormDisabled}
+            isInForm
+            formField="science"
+            label="Est-ce que c'est un événement scientifique ?"
+          />
+        )}
         {!isMissionAScienceEvent && (
             <FileField
               disabled={isEfForm}
