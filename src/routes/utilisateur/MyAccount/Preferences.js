@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './style.scss';
 import PageTitle from 'src/components/PageTitle';
-import FormSectionTitle from 'src/components/FormSectionTitle';
-import { useForm } from 'react-hook-form';
 import RadioInput from 'src/components/Fields/RadioInput';
+import FormSectionTitle from 'src/components/FormSectionTitle';
 
 const Preferences = () => {
   
@@ -13,6 +14,9 @@ const Preferences = () => {
     register,
     watch
   } = useForm();
+
+  const { agent: { user }} = useSelector((state) => state);
+  console.log(user);
 
 
   let currentTheme = localStorage.getItem('color-theme-name');
@@ -84,16 +88,11 @@ const Preferences = () => {
 
   };
 
-  const themes = [
+  let themes = [
     {
       id: 'classic',
       label: 'Classique',
       colors: ['rgba(116, 41, 70, 1)', 'rgba(153, 56, 79, 1)', 'rgba(209, 84, 94, 1)', 'rgba(255, 137, 127, 1)', 'rgba(255, 204, 156, 1)']
-    },
-    {
-      id: 'unimes',
-      label: 'Orange',
-      colors: ['#e84e24', '#292929', '#FF8303', '#FEDEBE', '#FFAF42']
     },
     {
       id: 'green',
@@ -121,27 +120,38 @@ const Preferences = () => {
       label: 'Marron & Jaune',
       colors: ['#471923','#6f2f2e','#a15238','#da8642','#ffcc4d']
     },
-    {
-      id: 'hufflepuff',
-      label: 'Poufsouffle',
-      colors: ['#141414', '#362e29', '#706254', '#ecc655', '#e7b827']
-    },
-    {
-      id: 'ravenclaw',
-      label: 'Serdaigle',
-      colors: ['#222f5b', '#040d3f', '#2c428a', '#5d5d5d', '#946b2d']
-    },
-    {
-      id: 'slytherin2',
-      label: 'Serpy',
-      colors: ['#1a472a', '#013403', '#2a623d', '#5d5d5d', '#aaa']
-    },
-    {
-      id: 'gryffindor',
-      label: 'Gryffondor',
-      colors: ['#740001', '#530909', '#ae0001', '#eeba30', '#d3a625']
-    },
   ];
+
+  const allThemesAllowedUsers = ['mboone01', 'nathalie', 'malexa04'];
+  if (allThemesAllowedUsers.indexOf(user) >= 0) {
+    themes = [...themes,
+      {
+        id: 'hufflepuff',
+        label: 'Poufsouffle',
+        colors: ['#141414', '#362e29', '#706254', '#ecc655', '#e7b827']
+      },
+      {
+        id: 'ravenclaw',
+        label: 'Serdaigle',
+        colors: ['#222f5b', '#040d3f', '#2c428a', '#5d5d5d', '#946b2d']
+      },
+      {
+        id: 'slytherin2',
+        label: 'Serpentard',
+        colors: ['#1a472a', '#013403', '#2a623d', '#5d5d5d', '#aaa']
+      },
+      {
+        id: 'gryffindor',
+        label: 'Gryffondor',
+        colors: ['#740001', '#530909', '#ae0001', '#eeba30', '#d3a625']
+      },
+      // {
+      //   id: 'unimes',
+      //   label: 'Orange',
+      //   colors: ['#e84e24', '#292929', '#FF8303', '#FEDEBE', '#FFAF42']
+      // },
+    ]
+  }
 
   return (
   <main className='my-preferences'>
