@@ -22,7 +22,7 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
       {
         name: 'submit',
         link: "/modifier-un-document/ordre-de-mission?etape=6&id=" + id,
-        label: "Soumettre l'ordre de mission",
+        label: "Passer à l'étape finale",
         status: [1],
       },
       {
@@ -62,7 +62,7 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
       {
         name: 'submit',
         link: `/modifier-un-document/${encodeURIComponent('état-de-frais')}?etape=6&id=${id}&om=${om ? om.id : null}`,
-        label: "Soumettre l'ordre de mission",
+        label: "Passer à l'étape finale",
         status: [1],
       },
     ];

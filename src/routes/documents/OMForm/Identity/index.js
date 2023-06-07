@@ -9,7 +9,6 @@ import '../style.scss';
 // Components
 import OmPdf from 'src/components/PDF/OmPdf';
 import Address from 'src/components/Fields/Address';
-import ApiResponse from 'src/components/ApiResponse';
 import TextField from 'src/components/Fields/TextField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import FormSectionTitle from 'src/components/FormSectionTitle';
@@ -209,6 +208,11 @@ const Identity = ({ isEfForm }) => {
           </div>
         </div>
         <div className="form__section">
+          <p class="form__section-recap form__section-recap--infos">
+            <span>Attention :</span> en cas d'erreur dans vos données personnelles ou si votre situation a changé, veuillez vous rapprocher du Service DRH pour les mettre à jour.
+          </p>
+        </div>
+        <div className="form__section">
           <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
             <BlobProvider document={<OmPdf countries={countries} agentSignature={agentSignature} data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />}>
               {({ blob }) => {
@@ -221,10 +225,10 @@ const Identity = ({ isEfForm }) => {
                 return (
                   <>
                     <a href={fileUrl} download={currentOM.name + '.pdf'} style={{textAlign: 'center'}}>
-                      <button type='button' files={file} onClick={generatePDF}>Valider les données <br /> et télécharger l'Ordre de Mission</button>
+                      <button type='button' files={file} onClick={generatePDF}>Valider les données <br /> et télécharger <br /> l'Ordre de Mission</button>
                     </a>
                     <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
-                      Visualiser le document
+                      Visualiser <br /> le document
                     </button>
                   </>
                 );
