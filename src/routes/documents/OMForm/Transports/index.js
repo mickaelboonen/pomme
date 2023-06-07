@@ -10,7 +10,6 @@ import '../style.scss';
 // Components
 
 import Buttons from 'src/components/Fields/Buttons';
-import ApiResponse from 'src/components/ApiResponse';
 import SwitchButton from 'src/components/SwitchButton';
 import RadioInput from 'src/components/Fields/RadioInput';
 import SelectField from 'src/components/Fields/SelectField';
@@ -27,16 +26,12 @@ import { turnTransportsDataToDbFormat } from 'src/selectors/dataToDbFormat';
 
 const Transports = ({ step }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const loader = useLoaderData();
   const omId = loader.searchParams.get('id');
 
-  const areWeUpdatingData = loader.pathname.includes('modifier');
 
   
-  const { app: { apiMessage },
-    omForm: { omForm, currentOm }
-  } = useSelector((state) => state);
+  const { omForm: { omForm }} = useSelector((state) => state);
 
   // TODO 
   let permanentOm = true;
@@ -342,7 +337,9 @@ const Transports = ({ step }) => {
           <p className="form__section-field-label">Autres</p>
           <CheckboxInput id="taxi" formField="others" label="Taxi" register={register} />
           <CheckboxInput id="parking" formField="others" label="Parking" register={register} />
-          <CheckboxInput id="toll" formField="others" label="Péage" register={register} />
+          {/* TODO : to create errors */}
+          {/* <CheckboxInput id="toll" formField="others" label="Péage" register={register} /> */}
+          <CheckboxInput id="troll" formField="others" label="Troll" register={register} />
           <CheckboxInput id="ferry" formField="others" label="Ferry (bateau)" register={register} />
         </div>
         {needsTaxiDispensation && (
