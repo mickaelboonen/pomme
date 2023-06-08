@@ -1,8 +1,7 @@
 import { useForm } from "react-hook-form";
-import classNames from "classnames";
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLoaderData } from 'react-router-dom';
+import { useNavigate, useLoaderData, Link } from 'react-router-dom';
 import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
 
 import './style.scss';
@@ -10,33 +9,25 @@ import './style.scss';
 // Components
 import VehicleData from './VehicleData';
 import PageTitle from 'src/components/PageTitle';
-import ApiResponse from 'src/components/ApiResponse';
 import SwitchButton from 'src/components/SwitchButton';
 import LoaderCircle from "src/components/LoaderCircle";
 import TextField from 'src/components/Fields/TextField';
-import FileField from 'src/components/Fields/FileField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import HiddenField from 'src/components/Fields/HiddenField';
 import SelectField from 'src/components/Fields/SelectField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
-import ButtonElement from 'src/components/Fields/ButtonElement';
-import FileOrSavedFile from 'src/components/Fields/FileOrSavedFile';
 import CarAuthorizationPdf from "src/components/PDF/CarAuthorizationPdf";
 
 // Actions
 import { uploadFile } from 'src/reducer/omForm';
 import {
   displayVehicle,
-  createVehicle,
   requestVehicleAuthorization,
-  // stayOnAuthorizationForm,
-  // resetPdfNeed,
-  // saveAuthorizationFile
 } from 'src/reducer/vehicle';
 import { clearMessage } from 'src/reducer/app';
 import { getSavedFileName } from 'src/selectors/formDataGetters'
-import { uploadVehicleFiles } from "../../../reducer/otherDocuments";
+import { uploadVehicleFiles } from "src/reducer/otherDocuments";
 
 
 const VehicleUseForm = () => {
@@ -219,7 +210,7 @@ const VehicleUseForm = () => {
     <div className="form-container form-container--vehicle">
       <PageTitle>Demande d'autorisation préalable d'utilisation d'un véhicule</PageTitle>
       {loader && <LoaderCircle />}
-      {!loader &&(
+      {(!loader && agentSignature) && (
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
           <div className="form__section">
             <FormSectionTitle>Voiture</FormSectionTitle>
@@ -350,6 +341,21 @@ const VehicleUseForm = () => {
               </div>
               {externalSignature && <p className="form__section-container-text form__section-container-text--infos">Veuillez télécharger le PDF de la demande, le faire signer aux personnes extérieures concernées puis le redéposer dans l'application à l'étape Transports.</p>}
             </div>
+          </div>
+        </form>
+      )}
+      
+      {(!loader && !agentSignature) && (
+        <form className="form" onSubmit={handleSubmit(onSubmit)}>
+          <p className="form__section-message form__section-message--infos">
+            Attention, vous n'avez pas renseigné de signature dans vos pièces justificatives. Merci de bien vouloir la rajouter pour accéder au formulaire de demande de dérogation.
+            </p>
+          <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
+            <Link to={`/utilisateur/${user}/mes-documents`}>
+              <button type="button">
+                Rajouter ma signature dans mes pièces justificatives
+              </button>
+            </Link>          
           </div>
         </form>
       )}
