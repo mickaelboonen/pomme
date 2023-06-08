@@ -17,7 +17,8 @@ const FileField = ({
   disabled,
   error,
   required,
-  setValue
+  setValue,
+  accept
 }) => {
 
   // Triggers the click on the file input that's hidden
@@ -65,6 +66,7 @@ const FileField = ({
         onChange={handleChange}
         multiple={multiple}
         disabled={disabled}
+        accept={accept}
       />
       <div>{fileName}</div>
     </div>
@@ -84,6 +86,7 @@ FileField.defaultProps = {
   pieces: '',
   isHidden: false,
   placeholder: '',
+  accept: '',
   // label: `Pièce${multiple ? 's' : ''} justificative${multiple ? 's' : ''}`,
 }
 

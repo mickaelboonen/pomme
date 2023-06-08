@@ -134,6 +134,8 @@ const Signature = ({ step }) => {
             register={register}
             formField="agentSignature"
             id="agent-signature-field"
+            accept="image/*"
+            label="Signature de l'agent (au format .jpg, .jpeg ou .png)"
             error={errors.agentSignature}
             fileName={signatureFilename}
           />
