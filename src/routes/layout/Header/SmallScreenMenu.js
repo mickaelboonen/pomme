@@ -6,7 +6,7 @@ import { persistor } from "src/store";
 
 // Icons
 import { RiLogoutBoxRFill } from "react-icons/ri";
-import { FaHome, FaSun, FaMoon } from "react-icons/fa";
+import { FaHome, FaSun, FaMoon, FaQuestionCircle } from "react-icons/fa";
 
 // Selectors
 import { logout } from 'src/reducer/agent';
@@ -147,6 +147,13 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
               className='small-screen-menu__section-icons-item small-screen-menu__section-icons-item--theme'
             />
           )}
+          <Link to="/assistance">
+            {/* <div className="header__menu-help"> */}
+              <FaQuestionCircle
+                className='small-screen-menu__section-icons-item'
+              />
+            {/* </div> */}
+          </Link>
         </ul>
       </div>
       <div className="small-screen-menu__section">
