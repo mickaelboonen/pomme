@@ -1,0 +1,62 @@
+@use 'src/styles/vars';
+
+.assistance {
+
+  &__section {
+    overflow: hidden;
+    height: 0;
+    transition: 0.6s;
+
+    &--open {
+      height: 20rem;
+      overflow: auto;
+    }
+
+    &-docs {
+      flex-wrap: wrap;
+      height: fit-content;
+      padding-left: 2rem;
+
+      &-link {
+        width: 50%;
+
+        &-item {
+          width: 100%;
+          margin-bottom: 0.5rem;
+          display: flex;
+          align-items: center;
+
+          &__icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+          }
+
+            &:hover {
+              font-weight: bold;
+            }
+          }
+
+      }
+    }
+
+    &-video {
+      // height: 15rem;
+      max-width: 100%;
+    }
+  }
+}
+
+@media (min-width: vars.$sm) {
+  .assistance {
+
+    &__section {
+  
+      &-docs {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+    }
+  }
+}
+

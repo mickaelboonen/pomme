@@ -15,7 +15,7 @@ import TitleH3 from 'src/components/TitleH3';
 
 import { toggleModal } from 'src/reducer/app';
 import { clearOMTarget } from 'src/reducer/omForm';
-import VideoPlayer from '../../../components/VideoPlayer';
+import VideoPlayer from 'src/components/VideoPlayer';
 import Presentation from 'src/assets/video/presentation-pom.mp4';
 
 const Home = () => {
