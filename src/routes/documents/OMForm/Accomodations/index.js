@@ -109,6 +109,30 @@ const Accomodations = ({ step }) => {
             label="Hotel :"
           />
         </div>
+        <div className='form__section-container' id="nights-rules">
+          <h4 className="form__section-container-title">Règle de remboursement de l'hébergement</h4>
+          <p className="form__section-container-text">Les frais d’hébergement sont remboursés au réel sur production de justificatifs de dépenses, dans la limite de :</p>
+          <ul className="form__section-container-list">
+            <li>80 € pour la province pour les villes de – de 200.000 habitants, et pour la Martinique, la Guadeloupe, la Guyane, La Réunion, Saint-Barthélemy, Saint-Pierre-et-Miquelon, Saint-Martin,</li>
+            <li>90 € pour la province pour les villes de + de 200.000 habitants et pour la Nouvelle-Calédonie, les îles Wallis et Futuna, la Polynésie française,</li>
+            <li>110 € pour Paris, l’Ile de France et pour Mayotte,</li>
+            <li>120 € pour les agents reconnus.</li>
+          </ul>
+          <div className="form__section-container-separator" />
+          <p className="form__section-container-text"><span className='form__section-container-text__span'>CAS PARTICULIER DES MISSIONS REALISEES DANS LE CADRE DES
+  REUNIONS CNU SUR CONVOCATION </span></p>
+          <p className="form__section-container-text"> Conformément au décret N°2006-781 du 03 juillet 2006, les frais d’hébergement sont
+  pris en charge aux frais réels, dans les limites suivantes :</p>
+          <p className="form__section-container-text">Pour les réunions de sections du CNU ou du CNAP :</p>
+          <ul className="form__section-container-list">
+            <li>83 € la nuitée dans les villes de province</li>
+            <li>90 € la nuitée dans les villes de province de plus de 200 000 habitants et les communes de la métropole du Grand Paris</li>
+            <li>110 € la nuitée à Paris</li>
+          </ul>
+          <p className="form__section-container-text">120 € la nuitée pour les réunions de la CP-CNU</p>
+          <p className="form__section-container-text form__section-container-text--infos"><span className='form__section-container-text__span'>NOTA BENE :</span> Ce montant, fixé par le ministère, peut évoluer.</p>
+
+        </div>
         {isHotelSelected && (
           <NumberField
             id="nights-number-field"
@@ -129,8 +153,11 @@ const Accomodations = ({ step }) => {
             {errors.hotelPayment && <p className='form__section-field-error form__section-field-error--open'>{errors.hotelPayment.message}</p>}
           </div>
         )}
-        { (!isNaN(maxNightsNumber) && isHotelSelected) && <p className="form__section-field-label form__section-field-label--infos">Selon vos dates de mission, vous avez le droit à un total de : <span>{maxNightsNumber}</span> nuits à l'hôtel.</p>}
-        {isHotelSelected && <p className="form__section-field-label form__section-field-label--infos">Pour que l'hôtel vous soit bien remboursé, veillez à ce que la facture ne soit pas à l'ordre de l'Université mais bien bien à votre nom.</p>}
+        <div className='form__section-container' id="nights-rules">
+        <p className="form__section-container-text" style={{marginTop: '0'}}><span className='form__section-container-text__span'>POUR VOTRE MISSION </span></p>
+          { (!isNaN(maxNightsNumber) && isHotelSelected) && <p className="form__section-container-text">Selon vos dates de mission, vous avez le droit à un total de : <span>{maxNightsNumber}</span> nuits à l'hôtel.</p>}
+          {isHotelSelected && <p className="form__section-container-text">Pour que l'hôtel vous soit bien remboursé, veillez à ce que la facture ne soit pas à l'ordre de l'Université mais bien bien à votre nom.</p>}
+        </div>
         {maxNightsNumber < 0 && <p id="nights-error" className="form__section-field-error form__section-field-error--open">Les dates saisies pour la mission sont incorrectes. Merci de les corriger pour pouvoir procéder à cette étape.</p>}
         <p id="nights-error" className="form__section-field-error"/>
       </div>

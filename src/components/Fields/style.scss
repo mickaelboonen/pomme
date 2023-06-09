@@ -84,10 +84,11 @@
         margin-bottom: 1rem;
       }
       &-separator {
-        width: 80%;
-        margin: auto;
-        border-bottom: 1px solid #000;
+        width: 90%;
+        margin: 1rem auto;
+        border-bottom: 1px solid rgba(var(--darkestThemeColor));
       }
+
       &-text {
         margin-top: 1rem;
         text-align: justify;
