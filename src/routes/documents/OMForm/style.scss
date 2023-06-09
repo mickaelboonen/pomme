@@ -103,6 +103,27 @@
 
   &__section {
     
+    &-category {
+
+      &__title {
+        color: blue;
+        margin: auto 2rem;
+        height: 3rem;
+        border: 1px solid red;
+      }
+
+      &__body {
+        display: none;
+        height: 10rem;
+        border: 1px solid green;
+        margin-bottom: 2rem;
+
+        &--open {
+          display: block;
+        }
+      }
+      
+    }
     &-notification-message {
       text-align: left;
       margin: 1rem 1rem 2rem;

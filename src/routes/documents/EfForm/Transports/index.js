@@ -28,7 +28,7 @@ const Transports = ({ step }) => {
   const loader = useLoaderData();
   const efId = loader.searchParams.get('id');
 
-  const { ef: { transportsFields, currentEf: { transports} },
+  const { ef: { transportsFields, transportsFieldsBis, currentEf: { transports} },
     omForm: { omForm, currentOM },
     app: { apiMessage }
   } = useSelector((state) => state);
@@ -147,6 +147,52 @@ const Transports = ({ step }) => {
   useEffect(() => {
     equalizeFields();
   }, [fieldsToBeDisplayed.length]);
+
+  
+
+  const handleClick = (event) => {
+
+    const sectionHeights = [
+      {
+        id: 'plane',
+        height: '23rem',
+        responsive: '12rem',
+      },
+      {
+        id: 'train',
+        height: '12rem',
+        responsive: '18rem',
+      },
+      {
+        id: 'vehicles',
+        height: '35rem',
+        responsive: '8rem',
+      },
+      {
+        id: 'others',
+        height: '20rem',
+        responsive: '5rem',
+      },
+    ]
+    const { id } = event.target;
+    const el = document.getElementById(id + '-section');
+    el.classList.toggle('form__section-category__body--open');
+    
+    if (Array.from(el.classList).indexOf('form__section-category__body--open') >= 0) {
+
+      const { height, responsive } = sectionHeights.find((section) => section.id === id);
+
+      if (window.innerWidth < 600) {
+        el.style.height = responsive;
+      } else {
+        el.style.height = height;
+      }
+      
+    }
+    else {
+      el.style.height = 0;
+    }
+  }
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section" style={{display: 'flex', flexDirection: 'column'}}>
@@ -159,7 +205,141 @@ const Transports = ({ step }) => {
           register={register}
           label="Afficher tous les champs"
         />
-        {fieldsToBeDisplayed.map( (field) => (
+        <div className='form__section-category'>
+          <FormSectionTitle needsClarity id="plane" handler={handleClick}>AVION</FormSectionTitle>
+          <div className='form__section-category__body form__section-category__body--open' id="plane-section">
+            {transportsFieldsBis.find((category) => category.id === 'plane').fields.map( (field) => (
+              <div className='form__section form__section--documents' key={field.id} style={{order: field.index}}>
+                <div className='form__section-half'>
+                  <NumberField
+                    register={register}
+                    formField={field.formField}
+                    id={field.id}
+                    label={field.label}
+                    error={errors[field.formField]}
+                    placeholder="Montant"
+                    isAmount
+                  />
+                </div>
+                <div className='form__section-half'>
+                  <FileField
+                    setValue={setValue}
+                    register={register}
+                    formField={`${field.formField}Files`}
+                    id={`${field.formField}-files`}
+                    multiple
+                    label={field.filelabel}
+                    placeholder=""
+                    error={errors[`${field.formField}Files`]}
+                    fileName={filenames[`${field.formField}Files`]}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className='form__section-category'>
+          <FormSectionTitle needsClarity id="train" handler={handleClick}>TRAIN</FormSectionTitle>
+          <div className='form__section-category__body' id='train-section'>
+            {transportsFieldsBis.find((category) => category.id === 'train').fields.map( (field) => (
+              <div className='form__section form__section--documents' key={field.id} style={{order: field.index}}>
+                <div className='form__section-half'>
+                  <NumberField
+                    register={register}
+                    formField={field.formField}
+                    id={field.id}
+                    label={field.label}
+                    error={errors[field.formField]}
+                    placeholder="Montant"
+                    isAmount
+                  />
+                </div>
+                <div className='form__section-half'>
+                  <FileField
+                    setValue={setValue}
+                    register={register}
+                    formField={`${field.formField}Files`}
+                    id={`${field.formField}-files`}
+                    multiple
+                    label={field.filelabel}
+                    placeholder=""
+                    error={errors[`${field.formField}Files`]}
+                    fileName={filenames[`${field.formField}Files`]}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className='form__section-category'>
+          <FormSectionTitle needsClarity id="vehicles" handler={handleClick}>VEHICULES</FormSectionTitle>
+          <div className='form__section-category__body' id="vehicles-section">
+            
+            {transportsFieldsBis.find((category) => category.id === 'vehicles').fields.map( (field) => (
+              <div className='form__section form__section--documents' key={field.id} style={{order: field.index}}>
+                <div className='form__section-half'>
+                  <NumberField
+                    register={register}
+                    formField={field.formField}
+                    id={field.id}
+                    label={field.label}
+                    error={errors[field.formField]}
+                    placeholder="Montant"
+                    isAmount
+                  />
+                </div>
+                <div className='form__section-half'>
+                  <FileField
+                    setValue={setValue}
+                    register={register}
+                    formField={`${field.formField}Files`}
+                    id={`${field.formField}-files`}
+                    multiple
+                    label={field.filelabel}
+                    placeholder=""
+                    error={errors[`${field.formField}Files`]}
+                    fileName={filenames[`${field.formField}Files`]}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className='form__section-category'>
+          <FormSectionTitle needsClarity id="others" handler={handleClick}>AUTRES</FormSectionTitle>
+          <div className='form__section-category__body' id="others-section">
+            {transportsFieldsBis.find((category) => category.id === 'others').fields.map( (field) => (
+              <div className='form__section form__section--documents' key={field.id} style={{order: field.index}}>
+                <div className='form__section-half'>
+                  <NumberField
+                    register={register}
+                    formField={field.formField}
+                    id={field.id}
+                    label={field.label}
+                    error={errors[field.formField]}
+                    placeholder="Montant"
+                    isAmount
+                  />
+                </div>
+                <div className='form__section-half'>
+                  <FileField
+                    setValue={setValue}
+                    register={register}
+                    formField={`${field.formField}Files`}
+                    id={`${field.formField}-files`}
+                    multiple
+                    label={field.filelabel}
+                    placeholder=""
+                    error={errors[`${field.formField}Files`]}
+                    fileName={filenames[`${field.formField}Files`]}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* // TODO : code en prod */}
+        {/* {fieldsToBeDisplayed.map( (field) => (
           <div className='form__section form__section--documents' key={field.id} style={{order: field.index}}>
             <div className='form__section-half'>
               <NumberField
@@ -186,7 +366,7 @@ const Transports = ({ step }) => {
               />
             </div>
           </div>
-        ))}
+        ))} */}
         {/* //TODO Dépenses kilométriques */}
         {/* {(hasUsedPersonalCar || fields) && (
           <div className='form__section form__section--documents'style={{order: 4}}>

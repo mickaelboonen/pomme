@@ -97,6 +97,118 @@ const initialState = {
       //   index: 12,
       // },
     ],
+    transportsFieldsBis: [
+      {
+        id: 'plane', 
+        fields: [
+          {
+            formField: 'plane',
+            id: 'plane-field',
+            max: '',
+            label: 'Avion',
+            filelabel:"Billets d'avion (si non payé par Unîmes)",
+            index: 1,
+          },
+        ],
+      },
+      {
+        id: 'train', 
+        fields: [
+          {
+            formField: 'train',
+            id: 'train-field',
+            max: '',
+            label: 'Train',
+            filelabel:'Billets de train (si non payé par Unîmes)',
+            index: 2,
+          },
+        ],
+      },
+      {
+        id: 'vehicles', 
+        fields: [
+          {
+            formField: 'rentCar',
+            id: 'rent-car-field',
+            max: '',
+            label: 'Véhicule de location (sur autorisation préalable)',
+            filelabel:'Facture nominative acquittée du loueur',
+            index: 5,
+          },
+          {
+            formField: 'fuel',
+            id: 'fuel-field',
+            max: '',
+            label: 'Carburant pour véhicule administratif ou de location (sur autorisation préalable)',
+            filelabel:'Facture',
+            index: 6,
+          },
+          {
+            formField: 'toll',
+            id: 'toll-field',
+            max: '',
+            label: 'Frais de péage',
+            filelabel:'Reçu ou ticket',
+            index: 7,
+          },
+          {
+            formField: 'parking',
+            id: 'parking-field',
+            max: '',
+            label: 'Parking',
+            filelabel:'Reçu ou ticket',
+            index: 8,
+          },
+          {
+            formField: 'taxi',
+            id: 'taxi-field',
+            max: '',
+            label: 'Taxi',
+            filelabel:'Facture nominative acquittée',
+            index: 9,
+          },
+
+        ],
+      },
+      {
+        id: 'others', 
+        fields: [
+          {
+            formField: 'visa',
+            id: 'visa-field',
+            max: '',
+            label: 'Visa',
+            filelabel:'Facture nominative acquittée',
+            index: 3,
+          },
+          {
+            formField: 'ferry',
+            id: 'ferry-field',
+            max: '',
+            label: 'Ferry',
+            filelabel:'Facture nominative acquittée',
+            index: 10,
+          },
+          {
+            formField: 'publicTransports',
+            id: 'public-transports-field',
+            max: '',
+            label: 'Bus, RER, métro',
+            filelabel:'Ticket',
+            index: 11,
+          },
+
+        ],
+      },
+      // {
+      //   formField: 'research',
+      //   id: 'research-field',
+      //   max: '',
+      //   label: "Frais d'inscription à un colloque ou réunion / séminaire scientifique (*)",
+      //   filelabel:'Facture nominative acquittée et programme',
+      //   index: 12,
+      // },
+    ],
     mealFields: [
       {
         id: 'admin-restaurant-field',
