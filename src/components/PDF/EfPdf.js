@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Font, Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
-import { floatAddition, floatMultiplication, OTHER_MEALS_AMOUNT, ADMIN_MEALS_AMOUNT } from 'src/selectors/mathFunctions';
+import { Font, Document, Page, Text, View, Image } from '@react-pdf/renderer';
+import { floatMultiplication, OTHER_MEALS_AMOUNT, ADMIN_MEALS_AMOUNT } from 'src/selectors/mathFunctions';
 
 // Assets
 import Logo from 'src/assets/images/logo.png'
@@ -17,10 +17,11 @@ Font.register({ family: 'Radjhani', src: RadjhaniFont });
 
 import { styles } from './pdfStyles';
 
-const EfPdf = ({ data, agent, agentSignature, country }) => {
+const EfPdf = ({ data, agent, agentSignature, country, om}) => {
   
   const { mission, transports, accomodations, stages } = data;
-  console.log(data);
+  const { mission: { addresses, planning }} = om;
+  
   const dep = new Date(mission.departure);
   const ret = new Date(mission.comeback);
     
@@ -120,7 +121,13 @@ const EfPdf = ({ data, agent, agentSignature, country }) => {
         <Text style={styles.section.text}>Qualité : {agent.gender} {agent.lastname.toUpperCase()} {agent.firstname}</Text>
         <Text style={styles.section.text}>Service / Département : {agent.unimesDepartment}</Text>
         <Text style={styles.section.text} />
-        <Text style={styles.section.subtitle}>Modalités de la mission</Text>
+        <Text style={styles.section.subtitle}>Adresses du missionnaire :</Text>
+        <View style={styles.section.subsection}>
+          <Text style={styles.section.text}>Adresse familiale : {agent.streetNumber} {agent.bis} {streetType.find((type) => agent.streetType === type.id).name} {agent.streetName} {agent.postCode} {agent.city}</Text>
+          <Text style={styles.section.text}>Adresse administrative : Université de Nîmes {agent.streetNumberPro} {agent.bisPro} {streetType.find((type) => agent.streetTypePro === type.id).name} {agent.streetNamePro} {agent.postCodePro} {agent.cityPro}</Text>
+        </View>
+
+        {/* <Text style={styles.section.subtitle}>Modalités de la mission</Text>
         <View style={styles.flexSection}>
           <View style={styles.halfSection}>
             <Text style={{textAlign:"center", padding: '4'}}>Début de mission</Text>
@@ -138,7 +145,30 @@ const EfPdf = ({ data, agent, agentSignature, country }) => {
             {!mission.departure_place.includes('home') && <Text style={styles.section.text}>Adresse : {agent.streetNumberPro} {agent.bisPro} {streetType.find((type) => agent.streetTypePro === type.id).name} {agent.streetNamePro} {agent.postCodePro} {agent.cityPro} </Text>}
 
           </View>
+        </View> */}
+        {/*  */}
+        <Text style={styles.section.subtitle}>Modalités de la mission :</Text>
+        <View style={styles.section.subsection}>
+            <Text style={styles.section.text}>DÉBUT DE LA MISSION</Text>
+            <Text style={[styles.section.text, {paddingLeft: '10'}]}>Date et heure : {dep.toLocaleString()}</Text>
+            <Text style={[styles.section.text, {paddingLeft: '10'}]}>Lieu de départ : {mission.departure_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}</Text>
+            <Text style={[styles.section.text, {marginTop: '8'}]}>ÉTAPES DE LA MISSION</Text>
+          {addresses.map((address) => (
+            <Text style={[styles.section.text, {paddingLeft: '10'}]} key={address.streetName}>
+              Adresse n° {addresses.indexOf(address) + 1} : {address.streetNumber === 0 ? '' : address.streetNumber} {address.bis} {streetType.find((type) => address.streetType === type.id).name} {address.streetName} {address.postCode} {address.city}
+            </Text>
+          ))}
+          {planning && (
+            <>
+              <Text style={[styles.section.text, {marginTop: '8'}]}>PLANNING DE LA MISSION</Text>
+              <Text style={[styles.section.text, {paddingLeft: '10'}]}>{mission.planning}</Text>
+            </>
+          )}
+          <Text style={[styles.section.text, {marginTop: '8'}]}>FIN DE LA MISSION</Text>
+          <Text style={[styles.section.text, {paddingLeft: '10'}]}>Date et heure : {ret.toLocaleString()}</Text>
+          <Text style={[styles.section.text, {paddingLeft: '10'}]}>Lieu d'arrivée : {mission.comeback_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}</Text>
         </View>
+        {/*  */}
       </View>
       <View style={styles.section}>
         <Text style={styles.section.title} wrap={false}>FRAIS A REMBOURSER A L'AGENT</Text>

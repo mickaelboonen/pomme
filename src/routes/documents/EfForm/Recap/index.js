@@ -22,9 +22,9 @@ const Recap = () => {
 
   const { ef: { currentEf },
     app: { countries },
-    omForm: { currentOM },
+    omForm: { currentOM, omForm },
     docs: { agentSignature },
-    agent: { agent, user, userSignature, agentProfessionalAddress, agentPersonalAddress},
+    agent: { agent, user, oms, agentProfessionalAddress, agentPersonalAddress},
   } = useSelector((state) => state);
   
   const { mission, transports, accomodations, stages } = currentEf;
@@ -214,6 +214,7 @@ const Recap = () => {
             <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
               <BlobProvider document={<EfPDF
                   agentSignature={agentSignature}
+                  om={oms.find((om) => om.id == id)}
                   data={dataForThePdf}
                   agent={fullAgentData}
                   meals={mealsExpenses}
@@ -249,6 +250,7 @@ const Recap = () => {
           <PDFViewer className='form__section-recap'>
             <EfPDF
               agentSignature={agentSignature}
+              om={oms.find((om) => om.id == id)}
               data={dataForThePdf}
               agent={fullAgentData}
               meals={mealsExpenses}
