@@ -33,7 +33,9 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
   return (
   <div className="header">
       <div className="header__identity">
-        <Link to="/" className="header__identity-logo"><p>POM</p></Link>
+        <Link to="/" className="header__identity-logo">
+          <p>POM</p>
+        </Link>
         {agent.firstname && <p className="header__identity-user">Bonjour {agent.firstname}</p>}
       </div>
       {isAuthenticated && <BurgerIcon handler={toggleBurgerMenu} />}
@@ -71,7 +73,7 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
             </ul>
           </div>
           <Link to={`/assistance`}>
-            <div className="header__menu-help">
+            <div className="header__menu-section header__menu-section--help">
               <FaQuestionCircle />
             </div>
           </Link>

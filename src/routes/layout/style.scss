@@ -3,7 +3,7 @@
 .footer {
   border-top: 1px solid rgba(var(--darkestThemeColor));
   @include vars.centeredFlex;
-  height: 7vh;
+  height: 4rem;
   background-color: var(--first-color);
   
   & img {
