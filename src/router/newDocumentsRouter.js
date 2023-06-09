@@ -18,8 +18,9 @@ export default {
       loader: async ({ request }) => {
         const url = new URL(request.url);
         const { agent : {user} } = store.getState();
-        
-        store.dispatch(fetchAgentSignatureForPdf({ agent: user }));
+        const id = url.searchParams.get("omId");
+
+        store.dispatch(fetchAgentSignatureForPdf({ agent: user, stopHere: true}));
         store.dispatch(getVehicles({agent: user}));
         return url;  
       },       
@@ -29,8 +30,10 @@ export default {
       element: <Derogation />,
       loader: async ({ request }) => {
         const url = new URL(request.url);
+        const id = url.searchParams.get("omId");
+
         const { agent: { user } } = store.getState()
-        store.dispatch(fetchAgentSignatureForPdf({ agent: user }));
+        store.dispatch(fetchAgentSignatureForPdf({ agent: user, stopHere: true }));
         return url;  
       },     
     },
