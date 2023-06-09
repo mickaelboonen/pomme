@@ -83,7 +83,7 @@ export default {
           }
 
           store.dispatch(fetchUserData({ id: user}));
-          store.dispatch(fetchAgentSignatureForPdf({ agent: user }));
+          store.dispatch(fetchAgentSignatureForPdf({ agent: user, docId: id }));
         }
         return url;
       },    

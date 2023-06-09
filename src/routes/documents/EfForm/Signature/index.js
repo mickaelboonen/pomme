@@ -26,7 +26,7 @@ const Signature = ({ step }) => {
   
   const { register, clearErrors, handleSubmit, watch, setError, setValue, formState: { errors } } = useForm({
     defaultValues: {
-      savedSignature: userSignature.length > 1 ? true : false,
+      savedSignature: userSignature && userSignature.length > 1 ? true : false,
       savedRib: agentDocuments.hasOwnProperty('rib') && agentDocuments.rib.length > 1 ? true : false,
     }
   });

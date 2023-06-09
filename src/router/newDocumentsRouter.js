@@ -3,8 +3,8 @@ import store from 'src/store';
 import Derogation from "src/routes/documents/Derogation";
 import VehicleUseForm from "src/routes/documents/VehicleUseForm";
 
-import { getVehicles, fetchVehicle} from "src/reducer/vehicle";
-import { findPermFilesByAgent, fetchAgentSignatureForPdf } from "src/reducer/otherDocuments";
+import { getVehicles } from "src/reducer/vehicle";
+import { fetchAgentSignatureForPdf } from "src/reducer/otherDocuments";
 
 
 
@@ -18,7 +18,6 @@ export default {
       loader: async ({ request }) => {
         const url = new URL(request.url);
         const { agent : {user} } = store.getState();
-        const id = url.searchParams.get("omId");
 
         store.dispatch(fetchAgentSignatureForPdf({ agent: user, stopHere: true}));
         store.dispatch(getVehicles({agent: user}));
@@ -30,7 +29,6 @@ export default {
       element: <Derogation />,
       loader: async ({ request }) => {
         const url = new URL(request.url);
-        const id = url.searchParams.get("omId");
 
         const { agent: { user } } = store.getState()
         store.dispatch(fetchAgentSignatureForPdf({ agent: user, stopHere: true }));
