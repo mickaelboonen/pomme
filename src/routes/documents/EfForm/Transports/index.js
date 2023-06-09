@@ -187,20 +187,10 @@ const Transports = ({ step }) => {
             </div>
           </div>
         ))}
-        {(hasUsedPersonalCar || fields) && (
+        {/* //TODO Dépenses kilométriques */}
+        {/* {(hasUsedPersonalCar || fields) && (
           <div className='form__section form__section--documents'style={{order: 4}}>
             <div className='form__section-half' style={{display: 'flex', alignItems: 'center'}}>
-              <NumberField
-                register={register}
-                formField="personalCar"
-                id="personal-car-field"
-                label="Véhicule personnel (sur autorisation préalable)"
-                error={errors.personalCar}
-                placeholder="Montant"
-                isAmount
-              />
-            </div>
-            <div className='form__section-half'>
               <NumberField
                 register={register}
                 formField="horsepower"
@@ -209,6 +199,8 @@ const Transports = ({ step }) => {
                 error={errors.horsepower}
                 placeholder="Nombre de Chevaux fiscaux"
               />
+            </div>
+            <div className='form__section-half'>
               <NumberField
                 register={register}
                 formField="km"
@@ -220,9 +212,10 @@ const Transports = ({ step }) => {
               />
             </div>
           </div>
-        )}
+        )} */}
       </div>
-      <div className='form__section'>
+      {/* // TODO: autres dépenses à implémenter  */}
+      {/* <div className='form__section'>
         <SwitchButton
           formField="otherSwitch"
           isInForm
@@ -266,7 +259,7 @@ const Transports = ({ step }) => {
             </div>
           </div>
         )}
-      </div>
+      </div> */}
       <Buttons
         step={step}
         id={efId}

@@ -120,38 +120,32 @@ const Preferences = () => {
       label: 'Marron & Jaune',
       colors: ['#471923','#6f2f2e','#a15238','#da8642','#ffcc4d']
     },
-  ];
-
-  const allThemesAllowedUsers = ['mboone01', 'nathalie', 'malexa04'];
-  if (allThemesAllowedUsers.indexOf(user) >= 0) {
-    themes = [...themes,
-      {
-        id: 'hufflepuff',
-        label: 'Poufsouffle',
-        colors: ['#141414', '#362e29', '#706254', '#ecc655', '#e7b827']
-      },
-      {
-        id: 'ravenclaw',
-        label: 'Serdaigle',
-        colors: ['#222f5b', '#040d3f', '#2c428a', '#5d5d5d', '#946b2d']
-      },
-      {
-        id: 'slytherin2',
-        label: 'Serpentard',
-        colors: ['#1a472a', '#013403', '#2a623d', '#5d5d5d', '#aaa']
-      },
-      {
-        id: 'gryffindor',
-        label: 'Gryffondor',
-        colors: ['#740001', '#530909', '#ae0001', '#eeba30', '#d3a625']
-      },
+    {
+      id: 'hufflepuff',
+      label: 'Jaune & Noir',
+      colors: ['#141414', '#362e29', '#706254', '#ecc655', '#e7b827']
+    },
+    {
+      id: 'ravenclaw',
+      label: 'Bleu & Bronze',
+      colors: ['#222f5b', '#040d3f', '#2c428a', '#5d5d5d', '#946b2d']
+    },
+    {
+      id: 'slytherin2',
+      label: 'Vert & Argent',
+      colors: ['#1a472a', '#013403', '#2a623d', '#5d5d5d', '#aaa']
+    },
+    {
+      id: 'gryffindor',
+      label: 'Rouge & Or',
+      colors: ['#740001', '#530909', '#ae0001', '#eeba30', '#d3a625']
+    },
       // {
       //   id: 'unimes',
       //   label: 'Orange',
       //   colors: ['#e84e24', '#292929', '#FF8303', '#FEDEBE', '#FFAF42']
       // },
-    ]
-  }
+  ];
 
   return (
     <div className='my-preferences'>
