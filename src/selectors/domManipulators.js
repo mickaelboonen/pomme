@@ -16,7 +16,7 @@ export const equalizeFields = () => {
     labels.forEach((currentLabel) => {
       currentHalves.push(currentLabel.offsetHeight);
     })
-
+    
     if (currentHalves[0] > currentHalves[1]) {
       labels[1].style.height = `${currentHalves[0]}px`;
       labels[1].style.display = 'flex';

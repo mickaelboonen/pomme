@@ -104,6 +104,7 @@
   &__section {
     
     &-category {
+      margin-bottom: 2rem;
 
       &__title {
         color: blue;
@@ -113,13 +114,18 @@
       }
 
       &__body {
-        display: none;
-        height: 10rem;
-        border: 1px solid green;
-        margin-bottom: 2rem;
+        // display: none;
+        height: 0;
+        overflow: hidden;
+        // height: 10rem;
+        background-color: rgba(255, 255, 255, 0.4);
+        border-radius: 0 0 vars.$radius vars.$radius;
+        transition: 0.6s;
 
         &--open {
-          display: block;
+          height: fit-content;
+          // display: block;
+          // padding: 0 0.5rem 0.5rem;
         }
       }
       
@@ -303,6 +309,15 @@
     border: 1px solid #1a1a1a;
 
     &__section {
+    
+      &-category {
+        &__body {
+          &--open {
+            padding-top: 1rem;
+          }
+        }
+        
+      }
 
       &-container {
 

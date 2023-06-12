@@ -2,35 +2,30 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLoaderData } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
 
 import '../style.scss';
-import ApiResponse from 'src/components/ApiResponse';
-import FormSectionTitle from 'src/components/FormSectionTitle';
 import Buttons from 'src/components/Fields/Buttons';
 import FileField from 'src/components/Fields/FileField';
-import SwitchButton from 'src/components/SwitchButton';
-import TextField from 'src/components/Fields/TextField';
+import NumberField from 'src/components/Fields/NumberField';
 import HiddenField from 'src/components/Fields/HiddenField';
+import FormSectionTitle from 'src/components/FormSectionTitle';
 
 // Selectors  && actions
-import { equalizeFields } from 'src/selectors/domManipulators';
-import { filterEfTransportsFields } from 'src/selectors/formValidationsFunctions';
 import { uploadFile } from 'src/reducer/omForm';
 import { updateEfTransports } from 'src/reducer/ef';
+import { equalizeFields } from 'src/selectors/domManipulators';
+import { filterEfTransportsFields } from 'src/selectors/formValidationsFunctions';
 import { declareCamelCaseKeys, setEfTranportsFilenames } from 'src/selectors/keyObjectService';
-import NumberField from '../../../../components/Fields/NumberField';
 
 const Transports = ({ step }) => {
   
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const loader = useLoaderData();
   const efId = loader.searchParams.get('id');
-
-  const { ef: { transportsFields, transportsFieldsBis, currentEf: { transports} },
-    omForm: { omForm, currentOM },
-    app: { apiMessage }
+  
+  const { ef: { transportsFields, transportsFieldsBis, currentEf: { transports } },
+    omForm: { currentOM }
   } = useSelector((state) => state);
   
   let defaultValues = null;
@@ -42,14 +37,17 @@ const Transports = ({ step }) => {
 
   const {
     register, handleSubmit, watch,
-    setValue,  setError, trigger,
+    setValue,  setError,
     formState: { errors },
-  } = useForm({ defaultValues: defaultValues});
+  } = useForm({ defaultValues: {
+    ...defaultValues,
+    horsepower: currentOM.transports.authorizations[0] ? currentOM.transports.authorizations[0].vehicle.rating : '',
+  }});
   
   const onSubmit = (data) => {    
     delete data.fields;
     delete data.otherSwitch;
-
+    
     const propertiesArray = Object.entries(data);
     
     let errors = 0;
@@ -65,7 +63,7 @@ const Transports = ({ step }) => {
         const filesProperty = property[0] + 'Files';
         
         if (data[filesProperty].length < 1) {
-          setError(filesProperty, { type: 'custom', message: "Veuillez justifier la demande de remboursement pour ce type de transport."})
+          setError(filesProperty, { type: 'custom', message: "Veuillez justifier la demande de remboursement pour ce type de dépense."})
           errors++;
         }
         else {
@@ -116,98 +114,55 @@ const Transports = ({ step }) => {
       dispatch(uploadFile({data: dataWithoutEmptyFields, step: 'transports', docType: 'ef'}))
     }
   };
-  
-  const [otherSwitch, fields] = watch(['otherSwitch', 'fields']);
 
+  useEffect(() => {
+    if (errors) {
+      
+      const fields = [
+        'train', 'plane', 'rentCar', 'fuel', 'toll', 'parking', 'taxi', 'visa', 'ferry', 'public_transports'
+      ]
 
-  // useEffect(() => {
-  //   equalizeFields();
-  // }, []);
+      const carFields = [ 'rentCar', 'fuel', 'toll', 'parking', 'taxi'];
+      const otherFields = [ 'visa', 'ferry', 'public_transports'];
+      fields.forEach((currentField) => {
+        
+        if (errors.hasOwnProperty(currentField + 'Files')) {
 
-  const displayFields = (event) => {
-    if (event.target.checked) {
-      setFieldsToBeDisplayed(transportsFields);
-    }
-    else {
-      setFieldsToBeDisplayed(filterEfTransportsFields(transportsFields, currentOM.transports));
+          if (otherFields.indexOf(currentField) >= 0) {
+            currentField = 'others';
+          }
+          else if (carFields.indexOf(currentField) >= 0) {
+          currentField = 'vehicles';
+          }
+
+          const el = document.getElementById(currentField + '-section');
+          el.classList.add('form__section-category__body--open');
+          
+        }
+      })
     }
     
-  }
+  }, [errors]);
   
   const [fieldsToBeDisplayed, setFieldsToBeDisplayed] = useState(filterEfTransportsFields(transportsFields, currentOM.transports))
-
-  if (currentOM.mission.visa && fieldsToBeDisplayed.find((field) => field.formField === 'visa') === undefined) {
-
-    fieldsToBeDisplayed.push(transportsFields.find((field) => field.formField === 'visa'));
-  }
-  
-  const hasUsedPersonalCar = currentOM.transports.authorizations.length > 0 &&  currentOM.transports.authorizations[0].type === 'personal-car' ? true : false;
-  
 
   useEffect(() => {
     equalizeFields();
   }, [fieldsToBeDisplayed.length]);
-
   
-
   const handleClick = (event) => {
-
-    const sectionHeights = [
-      {
-        id: 'plane',
-        height: '23rem',
-        responsive: '12rem',
-      },
-      {
-        id: 'train',
-        height: '12rem',
-        responsive: '18rem',
-      },
-      {
-        id: 'vehicles',
-        height: '35rem',
-        responsive: '8rem',
-      },
-      {
-        id: 'others',
-        height: '20rem',
-        responsive: '5rem',
-      },
-    ]
     const { id } = event.target;
     const el = document.getElementById(id + '-section');
     el.classList.toggle('form__section-category__body--open');
-    
-    if (Array.from(el.classList).indexOf('form__section-category__body--open') >= 0) {
-
-      const { height, responsive } = sectionHeights.find((section) => section.id === id);
-
-      if (window.innerWidth < 600) {
-        el.style.height = responsive;
-      } else {
-        el.style.height = height;
-      }
-      
-    }
-    else {
-      el.style.height = 0;
-    }
   }
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section" style={{display: 'flex', flexDirection: 'column'}}>
         <FormSectionTitle>Frais de transports</FormSectionTitle>
         <HiddenField id="docId" register={register} value={efId} />
-        <SwitchButton
-          formField="fields"
-          isInForm
-          handler={displayFields}
-          register={register}
-          label="Afficher tous les champs"
-        />
         <div className='form__section-category'>
           <FormSectionTitle needsClarity id="plane" handler={handleClick}>AVION</FormSectionTitle>
-          <div className='form__section-category__body form__section-category__body--open' id="plane-section">
+          <div className='form__section-category__body' id="plane-section">
             {transportsFieldsBis.find((category) => category.id === 'plane').fields.map( (field) => (
               <div className='form__section form__section--documents' key={field.id} style={{order: field.index}}>
                 <div className='form__section-half'>
@@ -303,6 +258,29 @@ const Transports = ({ step }) => {
                 </div>
               </div>
             ))}
+            <div className='form__section form__section--documents'style={{order: 4}}>
+              <div className='form__section-half' style={{display: 'flex', alignItems: 'center'}}>
+                <NumberField
+                  register={register}
+                  formField="horsepower"
+                  id="horsepower-field"
+                  label="Nombre de Chevaux fiscaux"
+                  error={errors.horsepower}
+                  placeholder="Nombre de Chevaux fiscaux"
+                />
+              </div>
+              <div className='form__section-half'>
+                <NumberField
+                  register={register}
+                  formField="km"
+                  id="km-field"
+                  label="Kilométrage"
+                  error={errors.km}
+                  placeholder="Kilométrage"
+                  isAmount // Not an amount but we need km can be a double
+                />
+              </div>
+            </div>
           </div>
         </div>
         <div className='form__section-category'>
@@ -338,61 +316,6 @@ const Transports = ({ step }) => {
             ))}
           </div>
         </div>
-        {/* // TODO : code en prod */}
-        {/* {fieldsToBeDisplayed.map( (field) => (
-          <div className='form__section form__section--documents' key={field.id} style={{order: field.index}}>
-            <div className='form__section-half'>
-              <NumberField
-                register={register}
-                formField={field.formField}
-                id={field.id}
-                label={field.label}
-                error={errors[field.formField]}
-                placeholder="Montant"
-                isAmount
-              />
-            </div>
-            <div className='form__section-half'>
-              <FileField
-                setValue={setValue}
-                register={register}
-                formField={`${field.formField}Files`}
-                id={`${field.formField}-files`}
-                multiple
-                label={field.filelabel}
-                placeholder=""
-                error={errors[`${field.formField}Files`]}
-                fileName={filenames[`${field.formField}Files`]}
-              />
-            </div>
-          </div>
-        ))} */}
-        {/* //TODO Dépenses kilométriques */}
-        {/* {(hasUsedPersonalCar || fields) && (
-          <div className='form__section form__section--documents'style={{order: 4}}>
-            <div className='form__section-half' style={{display: 'flex', alignItems: 'center'}}>
-              <NumberField
-                register={register}
-                formField="horsepower"
-                id="horsepower-field"
-                label="Nombre de Chevaux fiscaux"
-                error={errors.horsepower}
-                placeholder="Nombre de Chevaux fiscaux"
-              />
-            </div>
-            <div className='form__section-half'>
-              <NumberField
-                register={register}
-                formField="km"
-                id="km-field"
-                label="Kilométrage"
-                error={errors.km}
-                placeholder="Kilométrage"
-                isAmount // Not an amount but we need km can be a double
-              />
-            </div>
-          </div>
-        )} */}
       </div>
       {/* // TODO: autres dépenses à implémenter  */}
       {/* <div className='form__section'>
