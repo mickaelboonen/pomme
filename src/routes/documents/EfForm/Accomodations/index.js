@@ -20,6 +20,7 @@ import { equalizeFields } from 'src/selectors/domManipulators';
 import { getSavedFileName } from 'src/selectors/formDataGetters';
 import { declareCamelCaseKeys } from 'src/selectors/keyObjectService';
 import { getMaxMealsAndNights } from 'src/selectors/formValidationsFunctions';
+import Rules from '../../../../components/Rules';
 
 const Accomodations = ({ step }) => {
   const dispatch = useDispatch();
@@ -189,8 +190,24 @@ const Accomodations = ({ step }) => {
         </div>
       </div>
       <FormSectionTitle>Repas</FormSectionTitle>
+      <Rules
+        id="meals-rules"
+        title="Règle de déclaration des repas"
+      >
+        <p className="form__section-container-text"><span className='form__section-container-text__span'>NON VACATAIRE :</span>Pour pouvoir bénéficier d’un remboursement de ses frais de repas et d’hébergement, le voyageur doit être en déplacement sur les créneaux complets suivants :</p>
+        <ul className="form__section-container-list">
+          <li>Pour le midi : entre 12h00 et 14h00</li>
+          <li>Pour le soir : entre 19h00 et 21h00</li>
+        </ul>
+        { !isNaN(maxMealsNumber) && <p className="form__section-container-text">D'après les dates fournies à l'étape <span>MISSION</span>, vous pouvez demander jusqu'à : <span>{maxMealsNumber}</span> repas.</p>}
+        <div />
+        <p className="form__section-container-text"><span className='form__section-container-text__span'>VACATAIRE :</span>Les frais de repas ne pourront être pris en compte que pour les intervenants dispensant des cours le matin et l’après-midi d’une même journée. La prise en charge est alors faite au tarif « passager » en vigueur du CROUS.</p>
+        {currentOM.mission.region !== "métropole" && (
+          <p className='form__section-container-text'><span>MISSION {currentOM.mission.region === "dom-tom" ? 'DANS LES DOM-TOM': "A L'ÉTRANGER"} : </span>Forfait de Remboursement choisi : <span>{currentOM.mission.abroad_costs.replace('-', ' ')}</span>.</p>
+        )}
+      </Rules>
       <div className="form__section-field" id="meals">
-        <div className='form__section-container' id="meals-rules">
+        {/* <div className='form__section-container' id="meals-rules">
           <h4 className="form__section-container-title">Règle de déclaration des repas</h4>
           <p className="form__section-container-text"><span className='form__section-container-text__span'>NON VACATAIRE :</span>Pour pouvoir bénéficier d’un remboursement de ses frais de repas et d’hébergement, le voyageur doit être en déplacement sur les créneaux complets suivants :</p>
           <ul className="form__section-container-list">
@@ -203,7 +220,7 @@ const Accomodations = ({ step }) => {
           {currentOM.mission.region !== "métropole" && (
             <p className='form__section-container-text'><span>MISSION {currentOM.mission.region === "dom-tom" ? 'DANS LES DOM-TOM': "A L'ÉTRANGER"} : </span>Forfait de Remboursement choisi : <span>{currentOM.mission.abroad_costs.replace('-', ' ')}</span>.</p>
           )}
-        </div>
+        </div> */}
         <NumberField
           id="admin-restaurant-field"
           formField="mealsInAdminRestaurants"

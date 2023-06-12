@@ -510,3 +510,62 @@
     }
   }
 }
+
+.rules {
+  
+  padding: 0.5rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  border: 1px solid rgb(153, 150, 150);
+  background-color: #fff;
+
+  &__title {
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--second-color);
+    font-weight: bold;
+    font-size: 1.2em;
+    cursor: pointer;
+  }
+
+  &__body {
+    display: none;
+
+    &--open {
+      display: block;
+    }
+    &-separator {
+      width: 90%;
+      margin: 1rem auto;
+      border-bottom: 1px solid rgba(var(--darkestThemeColor));
+    }
+
+
+    &-text {
+      margin-top: 1rem;
+      text-align: justify;
+      font-size: 0.8em;
+
+      &__span {
+       margin-right: 0.5rem;
+      }
+
+      & span {
+       text-transform: uppercase;
+       color: var(--second-color);
+       font-weight: bold;
+      }
+
+      &--infos {
+        font-style: italic;
+      }
+    }
+    
+    &-list {
+      margin: 0.5rem 2rem;
+      font-size: 0.8em;
+      font-weight: bold;
+      // margin-left: 2rem;
+    }
+  }
+}

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useLoaderData } from 'react-router-dom';
+import { FaQuestionCircle } from 'react-icons/fa';
+
 
 import '../style.scss';
 
@@ -16,8 +18,8 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 import { turnAccomodationDataToDbFormat } from 'src/selectors/dataToDbFormat';
 import { updateAccomodations } from 'src/reducer/omForm';
 import { getMaxMealsAndNights } from 'src/selectors/formValidationsFunctions';
-import NumberField from '../../../../components/Fields/NumberField';
-
+import NumberField from 'src/components/Fields/NumberField';
+import Rules from '../../../../components/Rules';
 
 const Accomodations = ({ step }) => {
   
@@ -25,12 +27,8 @@ const Accomodations = ({ step }) => {
   const dispatch = useDispatch();
   const loader = useLoaderData();
   const omId = loader.searchParams.get('id');
-
-  const areWeUpdatingData = loader.pathname.includes('modifier');
   
-  const { app: { apiMessage },
-    omForm: { omForm },
-  } = useSelector((state) => state);
+  const { omForm: { omForm } } = useSelector((state) => state);
 
   const accomodationsData = omForm.find((omStep) => omStep.step === 'accomodations');
 
@@ -109,73 +107,75 @@ const Accomodations = ({ step }) => {
             label="Hotel :"
           />
         </div>
-        <div className='form__section-container' id="nights-rules">
-          <h4 className="form__section-container-title">Règle de remboursement de l'hébergement</h4>
-          <p className="form__section-container-text">Les frais d’hébergement sont remboursés au réel sur production de justificatifs de dépenses, dans la limite de :</p>
-          <ul className="form__section-container-list">
-            <li>80 € pour la province pour les villes de – de 200.000 habitants, et pour la Martinique, la Guadeloupe, la Guyane, La Réunion, Saint-Barthélemy, Saint-Pierre-et-Miquelon, Saint-Martin,</li>
-            <li>90 € pour la province pour les villes de + de 200.000 habitants et pour la Nouvelle-Calédonie, les îles Wallis et Futuna, la Polynésie française,</li>
-            <li>110 € pour Paris, l’Ile de France et pour Mayotte,</li>
-            <li>120 € pour les agents reconnus.</li>
-          </ul>
-          <div className="form__section-container-separator" />
-          <p className="form__section-container-text"><span className='form__section-container-text__span'>CAS PARTICULIER DES MISSIONS REALISEES DANS LE CADRE DES
-  REUNIONS CNU SUR CONVOCATION </span></p>
-          <p className="form__section-container-text"> Conformément au décret N°2006-781 du 03 juillet 2006, les frais d’hébergement sont
-  pris en charge aux frais réels, dans les limites suivantes :</p>
-          <p className="form__section-container-text">Pour les réunions de sections du CNU ou du CNAP :</p>
-          <ul className="form__section-container-list">
-            <li>83 € la nuitée dans les villes de province</li>
-            <li>90 € la nuitée dans les villes de province de plus de 200 000 habitants et les communes de la métropole du Grand Paris</li>
-            <li>110 € la nuitée à Paris</li>
-          </ul>
-          <p className="form__section-container-text">120 € la nuitée pour les réunions de la CP-CNU</p>
-          <p className="form__section-container-text form__section-container-text--infos"><span className='form__section-container-text__span'>NOTA BENE :</span> Ce montant, fixé par le ministère, peut évoluer.</p>
-
-        </div>
         {isHotelSelected && (
-          <NumberField
-            id="nights-number-field"
-            formField="nightsNumber"
-            register={register}
-            max={maxNightsNumber}
-            required="Merci de renseigner le nombre de nuits d'hôtel."
-            error={errors.nightsNumber}
-            label="Nombre de nuits"
-            placeholder="Vous ne pouvez saisir plus de nuits que le nombre calculé selon vos dates de missions."
-          />
+          <>
+            <Rules
+              title="Règle de remboursement de l'hébergement"
+              id="night-rules"
+            >
+              <p className="rules__body-text">Les frais d’hébergement sont remboursés au réel sur production de justificatifs de dépenses, dans la limite de :</p>
+              <ul className="rules__body-list">
+                <li>80 € pour la province pour les villes de – de 200.000 habitants, et pour la Martinique, la Guadeloupe, la Guyane, La Réunion, Saint-Barthélemy, Saint-Pierre-et-Miquelon, Saint-Martin,</li>
+                <li>90 € pour la province pour les villes de + de 200.000 habitants et pour la Nouvelle-Calédonie, les îles Wallis et Futuna, la Polynésie française,</li>
+                <li>110 € pour Paris, l’Ile de France et pour Mayotte,</li>
+                <li>120 € pour les agents reconnus.</li>
+              </ul>
+              <div className="rules__body-separator" />
+              <p className="rules__body-text"><span className='rules__body-text__span'>CAS PARTICULIER DES MISSIONS REALISEES DANS LE CADRE DES
+      REUNIONS CNU SUR CONVOCATION </span></p>
+              <p className="rules__body-text"> Conformément au décret N°2006-781 du 03 juillet 2006, les frais d’hébergement sont
+      pris en charge aux frais réels, dans les limites suivantes :</p>
+              <p className="rules__body-text">Pour les réunions de sections du CNU ou du CNAP :</p>
+              <ul className="rules__body-list">
+                <li>83 € la nuitée dans les villes de province</li>
+                <li>90 € la nuitée dans les villes de province de plus de 200 000 habitants et les communes de la métropole du Grand Paris</li>
+                <li>110 € la nuitée à Paris</li>
+              </ul>
+              <p className="rules__body-text">120 € la nuitée pour les réunions de la CP-CNU</p>
+              <p className="rules__body-text rules__body-text--infos"><span className='rules__body-text__span'>NOTA BENE :</span> Ce montant, fixé par le ministère, peut évoluer.</p>
+            </Rules>
+            <div className='rules' id="nights-rules">
+              <p className="rules__body-text" style={{marginTop: '0'}}><span className='rules__body-text__span'>POUR VOTRE MISSION </span></p>
+              { (!isNaN(maxNightsNumber) && isHotelSelected) && <p className="rules__body-text">Selon vos dates de mission, vous avez le droit à un total de : <span>{maxNightsNumber}</span> nuits à l'hôtel.</p>}
+              {isHotelSelected && <p className="rules__body-text">Pour que l'hôtel vous soit bien remboursé, veillez à ce que la facture ne soit pas à l'ordre de l'Université mais bien bien à votre nom.</p>}
+            </div>
+            <NumberField
+              id="nights-number-field"
+              formField="nightsNumber"
+              register={register}
+              max={maxNightsNumber}
+              required="Merci de renseigner le nombre de nuits d'hôtel."
+              error={errors.nightsNumber}
+              label="Nombre de nuits"
+              placeholder="Vous ne pouvez saisir plus de nuits que le nombre calculé selon vos dates de missions."
+            />
+            <div className="form__section-field">
+              <p className="form__section-field-label">Réglement</p>
+              <RadioInput id="unimes" formField="hotelPayment" label="Payé par Unîmes" register={register} required="Merci de renseigner le champ." />
+              <RadioInput id="agent" formField="hotelPayment" label="Avancé par l'agent" register={register} required="Merci de renseigner le champ." />
+              {errors.hotelPayment && <p className='form__section-field-error form__section-field-error--open'>{errors.hotelPayment.message}</p>}
+            </div>
+          </>
         )}
-        {isHotelSelected && (
-          <div className="form__section-field">
-            <p className="form__section-field-label">Réglement</p>
-            <RadioInput id="unimes" formField="hotelPayment" label="Payé par Unîmes" register={register} required="Merci de renseigner le champ." />
-            <RadioInput id="agent" formField="hotelPayment" label="Avancé par l'agent" register={register} required="Merci de renseigner le champ." />
-            {errors.hotelPayment && <p className='form__section-field-error form__section-field-error--open'>{errors.hotelPayment.message}</p>}
-          </div>
-        )}
-        <div className='form__section-container' id="nights-rules">
-        <p className="form__section-container-text" style={{marginTop: '0'}}><span className='form__section-container-text__span'>POUR VOTRE MISSION </span></p>
-          { (!isNaN(maxNightsNumber) && isHotelSelected) && <p className="form__section-container-text">Selon vos dates de mission, vous avez le droit à un total de : <span>{maxNightsNumber}</span> nuits à l'hôtel.</p>}
-          {isHotelSelected && <p className="form__section-container-text">Pour que l'hôtel vous soit bien remboursé, veillez à ce que la facture ne soit pas à l'ordre de l'Université mais bien bien à votre nom.</p>}
-        </div>
-        {maxNightsNumber < 0 && <p id="nights-error" className="form__section-field-error form__section-field-error--open">Les dates saisies pour la mission sont incorrectes. Merci de les corriger pour pouvoir procéder à cette étape.</p>}
-        <p id="nights-error" className="form__section-field-error"/>
       </div>
+      {maxNightsNumber < 0 && <p id="nights-error" className="form__section-field-error form__section-field-error--open">Les dates saisies pour la mission sont incorrectes. Merci de les corriger pour pouvoir procéder à cette étape.</p>}
+      <p id="nights-error" className="form__section-field-error"/>
       <div className="form__section">
         <FormSectionTitle>Repas</FormSectionTitle>
-        <div className='form__section-container' id="meals-rules">
-          <h4 className="form__section-container-title">Règle de déclaration des repas</h4>
-          <p className="form__section-container-text"><span className='form__section-container-text__span'>NON VACATAIRE :</span>Pour pouvoir bénéficier d’un remboursement de ses frais de repas et d’hébergement, le voyageur doit être en déplacement sur les créneaux complets suivants :</p>
-          <ul className="form__section-container-list">
+        <Rules
+          title="Règle de déclaration des repas"
+          id="meals-rules"
+        >
+          <p className="rules__body-text"><span className='rules__body-text__span'>NON VACATAIRE :</span>Pour pouvoir bénéficier d’un remboursement de ses frais de repas et d’hébergement, le voyageur doit être en déplacement sur les créneaux complets suivants :</p>
+          <ul className="rules__body-list">
             <li>Pour le midi : entre 12h00 et 14h00</li>
             <li>Pour le soir : entre 19h00 et 21h00</li>
           </ul>
-          { !isNaN(maxMealsNumber) && <p className="form__section-container-text">D'après les dates fournies à l'étape <span>MISSION</span>, vous pouvez demander jusqu'à : <span>{maxMealsNumber}</span> repas.</p>}
+          { !isNaN(maxMealsNumber) && <p className="rules__body-text">D'après les dates fournies à l'étape <span>MISSION</span>, vous pouvez demander jusqu'à : <span>{maxMealsNumber}</span> repas.</p>}
           <div />
-          <p className="form__section-container-text"><span className='form__section-container-text__span'>VACATAIRE :</span>Les frais de repas ne pourront être pris en compte que pour les intervenants dispensant des cours le matin et l’après-midi d’une même journée. La prise en charge est alors faite au tarif « passager » en vigueur du CROUS.</p>
-          <p className="form__section-container-text form__section-container-text--infos"><span className='form__section-container-text__span'>NOTA BENE :</span> Merci de ne pas déclarer les repas gratuits ou non pris par l'agent.</p>
-
-        </div>
+          <p className="rules__body-text"><span className='rules__body-text__span'>VACATAIRE :</span>Les frais de repas ne pourront être pris en compte que pour les intervenants dispensant des cours le matin et l’après-midi d’une même journée. La prise en charge est alors faite au tarif « passager » en vigueur du CROUS.</p>
+          <p className="rules__body-text rules__body-text--infos"><span className='rules__body-text__span'>NOTA BENE :</span> Merci de ne pas déclarer les repas gratuits ou non pris par l'agent.</p>
+      </Rules>
         <NumberField
           id="outside-meals-number-field"
           formField="mealsPaidByAgent"
