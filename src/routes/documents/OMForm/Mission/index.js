@@ -428,6 +428,17 @@ const Mission = ({ step, isEfForm }) => {
               </div>
             )}
             {errors.visaPayment && <p className="form__section-field-error form__section-field-error--open">{errors.visaPayment.message}</p>}
+            <FileField
+              disabled={isEfForm}
+              setValue={setValue}
+              multiple
+              id="map"
+              formField="mapFile"
+              fileName={'mapFileName'}
+              register={register}
+              error={errors.mapFile}
+              pieces="Joindre impérativement convocation, mail ou tout autre document en attestant"
+            />
           </div>
         )}
         {(region === 'dom-tom' || region === 'étranger')  && (
