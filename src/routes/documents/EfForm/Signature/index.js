@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import '../style.scss';
 import Buttons from 'src/components/Fields/Buttons';
 import FileField from 'src/components/Fields/FileField';
+import StatusChecker from 'src/components/StatusChecker';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
@@ -86,6 +87,7 @@ const Signature = ({ step }) => {
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
+      <StatusChecker status={currentEf.signature.status} />
       <div className="form__section">
         <FormSectionTitle>Signature</FormSectionTitle>
         <div className="form__section-field">

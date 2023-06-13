@@ -11,7 +11,7 @@ import '../style.scss';
 import ApiResponse from 'src/components/ApiResponse';
 import Buttons from 'src/components/Fields/Buttons';
 import SwitchButton from 'src/components/SwitchButton';
-import TextField from 'src/components/Fields/TextField';
+import StatusChecker from 'src/components/StatusChecker';
 import RadioInput from 'src/components/Fields/RadioInput';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
@@ -95,6 +95,7 @@ const Accomodations = ({ step }) => {
 
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
+      <StatusChecker status={defaultValues.status} />
       <div className="form__section">
         <FormSectionTitle>Hébergement</FormSectionTitle>
         <HiddenField id="omId" value={omId} register={register} />

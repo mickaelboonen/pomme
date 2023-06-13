@@ -12,6 +12,7 @@ import '../style.scss';
 import Buttons from 'src/components/Fields/Buttons';
 import SwitchButton from 'src/components/SwitchButton';
 import RadioInput from 'src/components/Fields/RadioInput';
+import StatusChecker from 'src/components/StatusChecker';
 import SelectField from 'src/components/Fields/SelectField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
@@ -210,6 +211,7 @@ const Transports = ({ step }) => {
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
+      <StatusChecker status={defaultValues.status} />
       <FormSectionTitle>Départ et retour</FormSectionTitle>
       <div className="form__section form__section--split">
         <div className="form__section-half">

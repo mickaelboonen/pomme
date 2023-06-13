@@ -90,6 +90,72 @@
   height: fit-content;
   padding: 1rem 1rem 0;
   border-radius: vars.$radius *2;
+  position: relative;
+  // overflow: hidden;
+
+  &__graphic-validation {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    top: -10px;
+    right: -10px;
+    overflow: hidden;
+
+    &-ribbon {
+      
+      position: absolute;
+      transform: rotate(45deg);
+      left: -25px;
+      top: 30px;
+      width: 225px;
+      padding: 15px 0;
+      font-weight: bold;
+      text-transform: uppercase;
+      @include vars.centeredFlex;
+      box-shadow: 0px 5px 5px rgba(26, 26, 26, 0.8);
+      background-color: var(--backgroundError);
+      color: var(--textError);
+      border-bottom: 1px solid var(--textError);
+
+      
+      &--validated {
+
+        background-color: var(--backgroundSuccess);
+        color: var(--textSuccess);
+        border-bottom: 1px solid var(--textSuccess);
+      }
+    }
+
+    &::after {
+      bottom: 0;
+      right: 0;
+    }
+
+    &::before {
+      top: 0;
+      left: 0;
+    }
+
+    &::after, &::before {
+      position: absolute;
+      z-index: -1;
+      content: '';
+      border-top-color: transparent;
+      border-right-color: transparent;
+      display: block;
+      border: 5px solid var(--backgroundError);
+    }
+
+    &--validated {
+      &::after, &::before {
+        background-color: var(--backgroundSuccess);
+      }
+    }
+
+    & svg {
+      margin-right: 0.5rem;
+    }
+  }
 
   &__text {
     &:nth-of-type(3) {

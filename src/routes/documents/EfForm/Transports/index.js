@@ -6,6 +6,7 @@ import { useLoaderData } from 'react-router-dom';
 
 import '../style.scss';
 import Buttons from 'src/components/Fields/Buttons';
+import StatusChecker from 'src/components/StatusChecker';
 import FileField from 'src/components/Fields/FileField';
 import NumberField from 'src/components/Fields/NumberField';
 import HiddenField from 'src/components/Fields/HiddenField';
@@ -157,6 +158,7 @@ const Transports = ({ step }) => {
   }
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
+      <StatusChecker status={defaultValues.status} />
       <div className="form__section" style={{display: 'flex', flexDirection: 'column'}}>
         <FormSectionTitle>Frais de transports</FormSectionTitle>
         <HiddenField id="docId" register={register} value={efId} />

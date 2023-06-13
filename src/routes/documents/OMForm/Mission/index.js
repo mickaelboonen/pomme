@@ -28,7 +28,8 @@ import { getSavedFileName, turnFieldsToAddressEntity } from 'src/selectors/formD
 // Reducer
 import { enableMissionFormFields, updateEfMission } from 'src/reducer/ef';
 import { uploadFile, updateOmName, updateMission } from 'src/reducer/omForm';
-import { getDDMMYYDate } from '../../../../selectors/dateFunctions';
+import { getDDMMYYDate } from 'src/selectors/dateFunctions';
+import StatusChecker from 'src/components/StatusChecker';
 
 const Mission = ({ step, isEfForm }) => {
   
@@ -95,7 +96,6 @@ const Mission = ({ step, isEfForm }) => {
     })
   }
   let mapsFileName = '';
-  
 
   if (defaultValues.maps) {
     defaultValues.maps.forEach((file) => {
@@ -273,6 +273,7 @@ const Mission = ({ step, isEfForm }) => {
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
+      <StatusChecker status={defaultValues.status} />
       <div className="form__section">
         <FormSectionTitle>Raison de la mission</FormSectionTitle>
 
@@ -519,7 +520,6 @@ const Mission = ({ step, isEfForm }) => {
           filenames={modificationsFilenames}
         />
       )}
-      {/* {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />} */}
       <Buttons
         step={step}
         id={docId}

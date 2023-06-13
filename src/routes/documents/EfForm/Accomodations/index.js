@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import '../style.scss';
 import Buttons from 'src/components/Fields/Buttons';
 import FileField from 'src/components/Fields/FileField';
+import StatusChecker from 'src/components/StatusChecker';
 import NumberField from 'src/components/Fields/NumberField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
@@ -163,6 +164,7 @@ const Accomodations = ({ step }) => {
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
+      <StatusChecker status={defaultValues.status} />
       <FormSectionTitle>Hébergement</FormSectionTitle>
       <div className='form__section form__section--documents'>
         <div className='form__section-half'>

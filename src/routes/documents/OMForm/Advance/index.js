@@ -8,6 +8,7 @@ import '../style.scss';
 // Components
 import Buttons from 'src/components/Fields/Buttons';
 import SwitchButton from 'src/components/SwitchButton';
+import StatusChecker from 'src/components/StatusChecker';
 import FileField from 'src/components/Fields/FileField';
 import NumberField from 'src/components/Fields/NumberField';
 import HiddenField from 'src/components/Fields/HiddenField';
@@ -171,6 +172,7 @@ const Avance = ({ step }) => {
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
+      <StatusChecker status={defaultValues.status} />
       <div className="form__section">
         <FormSectionTitle>Avance</FormSectionTitle>
         <div className="form__section-field">

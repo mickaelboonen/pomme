@@ -7,7 +7,7 @@ import '../style.scss';
 
 // Components
 import Buttons from 'src/components/Fields/Buttons';
-import ApiResponse from 'src/components/ApiResponse';
+import StatusChecker from 'src/components/StatusChecker';
 import FileField from 'src/components/Fields/FileField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
@@ -116,6 +116,7 @@ const Signature = ({ step }) => {
 
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
+      <StatusChecker status={defaultValues.status} />
       <div className="form__section">
         <FormSectionTitle>Signature</FormSectionTitle>
         {userSignature && (
