@@ -18,7 +18,8 @@ const FileField = ({
   error,
   required,
   setValue,
-  accept
+  accept,
+  link
 }) => {
 
   // Triggers the click on the file input that's hidden
@@ -70,6 +71,7 @@ const FileField = ({
       />
       <div>{fileName}</div>
     </div>
+    {link !== "" && <a target='_blank' href={link} className="form__section-field-label form__section-field-label--infos">{link}</a>}
     {pieces !== "" && <p className="form__section-field-label form__section-field-label--infos">{pieces}</p>}
     {error !== undefined && <p className="form__section-field-error form__section-field-error--open">{error?.message}</p>}
   
@@ -84,6 +86,7 @@ FileField.defaultProps = {
   multiple: false,
   disabled: false,
   pieces: '',
+  link: '',
   isHidden: false,
   placeholder: '',
   accept: '',

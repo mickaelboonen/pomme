@@ -560,6 +560,11 @@
         font-style: italic;
       }
     }
+
+    &-link {
+      text-decoration: underline;
+      color: var(--fourth-color);
+    }
     
     &-list {
       margin: 0.5rem 2rem;

@@ -103,6 +103,15 @@ const omMiddleware = (store) => (next) => (action) => {
               });
             }
           })
+          data.maps.forEach((file) => {
+            if (file instanceof File) {
+              filesToUpload.push({
+                docId: data.docId,
+                type: 'map',
+                file: file,
+              });
+            }
+          })
         }
 
       }
@@ -189,7 +198,8 @@ const omMiddleware = (store) => (next) => (action) => {
               data.files = [];
             }
             else if (step === 'mission') {
-              data.missionPurposeFile = [];
+              // data.missionPurposeFile = [];
+              // data.maps = [];
             }
             else if (step === 'hotel-quotation') {
               data.hotelQuotations = [];
@@ -218,6 +228,9 @@ const omMiddleware = (store) => (next) => (action) => {
               }
               else if (file.type === 'mission') {
                 data.missionPurposeFile.push(file.file.url);
+              }
+              else if (file.type === 'map') {
+                data.maps.push(file.file.url);
               }
               else if (file.type === 'signature') {
                 data.agentSignature = file.file.url;
@@ -250,6 +263,7 @@ const omMiddleware = (store) => (next) => (action) => {
             }
             else if (step === 'mission') {
               delete data.om;
+              data.maps = data.maps.filter((file) => typeof file === 'string')
               store.dispatch(updateMission(data));
             }
             else if (step === 'om') {

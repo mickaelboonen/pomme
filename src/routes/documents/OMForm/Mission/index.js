@@ -9,7 +9,7 @@ import '../style.scss';
 import EfMission from '../../EfForm/Mission';
 import Address2 from 'src/components/Fields/Address2';
 import Buttons from 'src/components/Fields/Buttons';
-import ApiResponse from 'src/components/ApiResponse';
+import Rules from 'src/components/Rules';
 import ScientificEvent from './ScientificEventFields';
 import SwitchButton from 'src/components/SwitchButton';
 import DateField from 'src/components/Fields/DateField';
@@ -83,7 +83,7 @@ const Mission = ({ step, isEfForm }) => {
   
   // Defining file names to display them in the browser -------------------------
   let fileName = '';
-
+  
   if (defaultValues.missionPurposeFile) {
     defaultValues.missionPurposeFile.forEach((file) => {
 
@@ -94,9 +94,22 @@ const Mission = ({ step, isEfForm }) => {
       }
     })
   }
+  let mapsFileName = '';
+  
+
+  if (defaultValues.maps) {
+    defaultValues.maps.forEach((file) => {
+
+      mapsFileName += getSavedFileName(file);
+
+      if (defaultValues.maps.length > 1) {
+        mapsFileName += ' - ';
+      }
+    })
+  }
   
   defaultValues = addAllAddressesFields(defaultValues);
-
+  
   const {
     register, handleSubmit, watch,
     setError, setValue, formState: { errors }
@@ -120,7 +133,7 @@ const Mission = ({ step, isEfForm }) => {
   const onSubmit = (data) => {
     
     data = turnFieldsToAddressEntity(data);
-    
+
     if (data.science) {
       if ((!data.missionPurposeFile || data.missionPurposeFile.length === 0) && !data.missionPurposeFileForValidation) {
         setError('missionPurposeFile', { type: 'custom', message: 'Merci de fournir le justificatif de la mission.'})
@@ -191,13 +204,14 @@ const Mission = ({ step, isEfForm }) => {
         data.status = 1;
         
         const fileToAdd = data.missionPurposeFile.find((file) => file instanceof File);
+        const mapsToAdd = data.maps.find((file) => file instanceof File);
 
-        if (fileToAdd === undefined) {
+        if (fileToAdd === undefined && mapsToAdd === undefined ) {
           delete data.om;
-          if (data.science && data.missionPurposeFileForValidation) {
-            data.missionPurposeFile = 'pending';
-          }
-          delete data.missionPurposeFileForValidation;
+          // if (data.science && data.missionPurposeFileForValidation) {
+          //   data.missionPurposeFile = 'pending';
+          // }
+          // delete data.missionPurposeFileForValidation;
           dispatch(updateMission(data));
         }
         else {
@@ -227,6 +241,12 @@ const Mission = ({ step, isEfForm }) => {
   
   const [isMissionAScienceEvent, setIsMissionAScienceEvent] = useState(defaultValues.science);
   const [isVisaNeeded, setIsVisaNeeded] = useState(defaultValues.visa);
+
+  useEffect(() => {
+    if (region === 'étranger') {
+
+    }
+  }, [region])
 
   const handleVisa = (event) => {
     const { id } = event.target;
@@ -412,34 +432,57 @@ const Mission = ({ step, isEfForm }) => {
         {errors.region && <p className="form__section-field-error form__section-field-error--open">{errors.region.message}</p>}
 
         {region === 'étranger' && (
-          <div className='form__section'>
-            <div className="form__section-field">
-              <label className="form__section-field-label" htmlFor="departure-place">Visa</label>
-              <RadioInput disabled={isEfForm && isMissionFormDisabled} handler={handleVisa} id="visa-yes" formField="visa" label="Oui" register={register} required={errorMessages.visa} />
-              <RadioInput disabled={isEfForm && isMissionFormDisabled} handler={handleVisa} id="visa-no" formField="visa" label="Non" register={register} required={errorMessages.visa} />
-            </div>
-            {errors.visa && <p className="form__section-field-error form__section-field-error--open">{errors.visa.message}</p>}
+          <>
+            <Rules
+              title="Règles de départ à l'étranger"
+              id="foreign-mission"
+            >
+            <p className="rules__body-text"><span className='rules__body-text__span'>CARTE DU PAYS : </span></p>
+              <p className="rules__body-text">
+                Dans le cadre d'une mission à l'étranger, merci de vous rendre sur <a target='_blank' className="rules__body-link" href='https://www.diplomatie.gouv.fr/fr/conseils-aux-voyageurs/conseils-par-pays-destination'> France Diplomatie</a> afin de récupérer les informations relatives  à la sécurité sur le pays de destination.
+              </p>
+              <p className="rules__body-text">
+                Une fois le pays sélectionné, aller dans l'onglet Sécurité - Zones de vigilance et récupérer la carte du pays puis la transmettre ci-dessous dans le champ approprié.
+              </p>
 
-            {isVisaNeeded && (
+              <div className="rules__body-separator" />
+              <p className="rules__body-text"><span className='rules__body-text__span'>ARIANE </span></p>
+              <p className="rules__body-text"></p>
+              <p className="rules__body-text">Également, merci de créer un compte sur <a target='_blank' className="rules__body-link" href="https://pastel.diplomatie.gouv.fr/fildariane/dyn/public/login.html">Ariane</a> et d'enregistrer votre voyage pour des raisons de sécurité.</p>
+          
+
+            </Rules>
+            <div className='form__section'>
+              <FileField
+                disabled={isEfForm}
+                setValue={setValue}
+                multiple
+                id="maps-field"
+                formField="maps"
+                fileName={mapsFileName}
+                register={register}
+                error={errors.mapFile}
+                label="Carte.s du.des pays"
+                required={errorMessages.map}
+                link="https://www.diplomatie.gouv.fr/fr/conseils-aux-voyageurs/conseils-par-pays-destination"
+              />
               <div className="form__section-field">
-                <label className="form__section-field-label" htmlFor="departure-place">Prise en charge du visa</label>
-                <RadioInput disabled={isEfForm && isMissionFormDisabled} id="unimes" formField="visaPayment" label="Réglé par Unîmes" register={register} required={errorMessages.visaPayment} />
-                <RadioInput disabled={isEfForm && isMissionFormDisabled} id="user" formField="visaPayment" label="Avancé par l'agent" register={register} required={errorMessages.visaPayment} />
+                <label className="form__section-field-label" htmlFor="departure-place">Visa</label>
+                <RadioInput disabled={isEfForm && isMissionFormDisabled} handler={handleVisa} id="visa-yes" formField="visa" label="Oui" register={register} required={errorMessages.visa} />
+                <RadioInput disabled={isEfForm && isMissionFormDisabled} handler={handleVisa} id="visa-no" formField="visa" label="Non" register={register} required={errorMessages.visa} />
               </div>
-            )}
-            {errors.visaPayment && <p className="form__section-field-error form__section-field-error--open">{errors.visaPayment.message}</p>}
-            <FileField
-              disabled={isEfForm}
-              setValue={setValue}
-              multiple
-              id="map"
-              formField="mapFile"
-              fileName={'mapFileName'}
-              register={register}
-              error={errors.mapFile}
-              pieces="Joindre impérativement convocation, mail ou tout autre document en attestant"
-            />
-          </div>
+              {errors.visa && <p className="form__section-field-error form__section-field-error--open">{errors.visa.message}</p>}
+
+              {isVisaNeeded && (
+                <div className="form__section-field">
+                  <label className="form__section-field-label" htmlFor="departure-place">Prise en charge du visa</label>
+                  <RadioInput disabled={isEfForm && isMissionFormDisabled} id="unimes" formField="visaPayment" label="Réglé par Unîmes" register={register} required={errorMessages.visaPayment} />
+                  <RadioInput disabled={isEfForm && isMissionFormDisabled} id="user" formField="visaPayment" label="Avancé par l'agent" register={register} required={errorMessages.visaPayment} />
+                </div>
+              )}
+              {errors.visaPayment && <p className="form__section-field-error form__section-field-error--open">{errors.visaPayment.message}</p>}
+            </div>
+          </>
         )}
         {(region === 'dom-tom' || region === 'étranger')  && (
           <div className="form__section-field" id="abroad-field">
