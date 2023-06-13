@@ -340,8 +340,8 @@ const Transports = ({ step }) => {
           <CheckboxInput id="taxi" formField="others" label="Taxi" register={register} />
           <CheckboxInput id="parking" formField="others" label="Parking" register={register} />
           {/* TODO : to create errors */}
-          {/* <CheckboxInput id="toll" formField="others" label="Péage" register={register} /> */}
-          <CheckboxInput id="troll" formField="others" label="Troll" register={register} />
+          <CheckboxInput id="toll" formField="others" label="Péage" register={register} />
+          {/* <CheckboxInput id="troll" formField="others" label="Troll" register={register} /> */}
           <CheckboxInput id="ferry" formField="others" label="Ferry (bateau)" register={register} />
         </div>
         {needsTaxiDispensation && (
