@@ -148,7 +148,7 @@
 
     &--validated {
       &::after, &::before {
-        background-color: var(--backgroundSuccess);
+        border-color: var(--textSuccess);
       }
     }
 

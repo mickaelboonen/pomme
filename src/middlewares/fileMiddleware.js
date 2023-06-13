@@ -264,6 +264,7 @@ const omMiddleware = (store) => (next) => (action) => {
             else if (step === 'mission') {
               delete data.om;
               data.maps = data.maps.filter((file) => typeof file === 'string')
+              data.missionPurposeFile = data.missionPurposeFile.filter((file) => typeof file === 'string')
               store.dispatch(updateMission(data));
             }
             else if (step === 'om') {
