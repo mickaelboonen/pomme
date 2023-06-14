@@ -103,15 +103,17 @@ const omMiddleware = (store) => (next) => (action) => {
               });
             }
           })
-          data.maps.forEach((file) => {
-            if (file instanceof File) {
-              filesToUpload.push({
-                docId: data.docId,
-                type: 'map',
-                file: file,
-              });
-            }
-          })
+          if (data.maps) {
+            data.maps.forEach((file) => {
+              if (file instanceof File) {
+                filesToUpload.push({
+                  docId: data.docId,
+                  type: 'map',
+                  file: file,
+                });
+              }
+            })
+          }
         }
 
       }
@@ -263,7 +265,9 @@ const omMiddleware = (store) => (next) => (action) => {
             }
             else if (step === 'mission') {
               delete data.om;
-              data.maps = data.maps.filter((file) => typeof file === 'string')
+              if (data.maps) {
+                data.maps = data.maps.filter((file) => typeof file === 'string')
+              }
               data.missionPurposeFile = data.missionPurposeFile.filter((file) => typeof file === 'string')
               store.dispatch(updateMission(data));
             }

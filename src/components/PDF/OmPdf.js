@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Font, Document, Page, Text, View, Image } from '@react-pdf/renderer';
+import { Font, Document, Page, Text, View, Image, PDFViewer } from '@react-pdf/renderer';
+import { PDFDocument, StandardFonts, PDFPage } from 'pdf-lib';
+
+import Test from 'src/assets/docs/old-pdf/ef.pdf'
 
 // Assets
 import Logo from 'src/assets/images/logo.png'
@@ -79,7 +82,10 @@ const OmPdf = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
   const freeMeals = maxMealsNumber - (accomodations.meals_paid_by_agent + accomodations.meals_in_admin_restaurants);
   
   const gestArray = ['%', 'UB', 'CR', 'Code Nacres', 'Code LOLF', 'Code Analytique'];
-  
+// console.log(mission);
+
+
+
   return (
   <Document>
     <Page size="A4" style={styles.page}>
@@ -229,6 +235,10 @@ const OmPdf = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
           </View>
         </View>
       </View>
+    </Page>
+    <Page size="A4" style={styles.page}>
+      {mission.mission_purpose_file.map((file) => <Image src={file} />)}
+      {/* <Image src={mission.mission_purpose_file} /> */}
     </Page>
   </Document>
 );}

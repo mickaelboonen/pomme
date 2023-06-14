@@ -73,7 +73,7 @@ const Identity = ({ isEfForm }) => {
       setIsPdfVisible(true);
     }
   }
-  
+
   return (
     <>
       <form className="form">

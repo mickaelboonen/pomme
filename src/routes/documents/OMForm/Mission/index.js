@@ -204,7 +204,10 @@ const Mission = ({ step, isEfForm }) => {
         data.status = 1;
         
         const fileToAdd = data.missionPurposeFile.find((file) => file instanceof File);
-        const mapsToAdd = data.maps.find((file) => file instanceof File);
+        let mapsToAdd = undefined;
+        if (data.maps) {
+          mapsToAdd = data.maps.find((file) => file instanceof File);
+        }
 
         if (fileToAdd === undefined && mapsToAdd === undefined ) {
           delete data.om;
