@@ -143,7 +143,7 @@ const Preferences = () => {
       // {
       //   id: 'unimes',
       //   label: 'Orange',
-      //   colors: ['#e84e24', '#292929', '#FF8303', '#FEDEBE', '#FFAF42']
+      //   colors: [ '#ff8364', '#e84e24', '#b5370c', '#ffc7b8', '#f6d9cc']
       // },
   ];
 

@@ -66,6 +66,9 @@ const OmPdf = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
   if (transports.parking) {
     otherMeansofTransports.push('parking');
   }
+  if (transports.toll) {
+    otherMeansofTransports.push('péage');
+  }
 
   let missionCountries = [];
   mission.addresses.forEach((country) => missionCountries.push(countries.find((countryFromList) => countryFromList.code === country.countryCode)));
@@ -177,7 +180,7 @@ const OmPdf = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
         {chosenVehicleType.hasOwnProperty('name') && (
           <>
             <Text>Vehicule : {chosenVehicleType.name}{chosenVehicleType.name.includes('personnel') ? `, immatriculé ${transports.authorizations[0].vehicle.license_plate}` : '.'}</Text>
-            {transports.vehicle === 0 && <Text>Remboursement Forfait SNCF 2ème classe.</Text>}
+            {chosenVehicleType.name.includes('personnel') && <Text>Remboursement Forfait SNCF 2ème classe.</Text>}
           </>
         )}
         <Text style={styles.section.text} />
