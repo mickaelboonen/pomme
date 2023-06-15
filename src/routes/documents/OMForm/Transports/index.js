@@ -32,13 +32,13 @@ const Transports = ({ step }) => {
 
 
   
-  const { omForm: { omForm }} = useSelector((state) => state);
+  const { omForm: { omForm, currentOM }} = useSelector((state) => state);
 
   // TODO 
   let permanentOm = true;
   
   const defaultValues = omForm.find((omStep) => omStep.step === 'transports').data;
-  
+  console.log(currentOM);
   const {
     register,
     setValue,
@@ -75,7 +75,7 @@ const Transports = ({ step }) => {
       }
 
       // If a vehicle has been selected but no authorization was submitted or given
-      if ((data.vehicle !== "" && data.vehicle) && !data.vehicleAuthorizationFileForValidation && (!data.vehicleAuthorizationFile || data.vehicleAuthorizationFile.length === 0)) {
+      if ((data.vehicle !== "" && data.vehicle !== 1 && data.vehicle) && !data.vehicleAuthorizationFileForValidation && (!data.vehicleAuthorizationFile || data.vehicleAuthorizationFile.length === 0)) {
         setError('authorization', { type: 'custom', message: "Merci de fournir la demande d'autorisation d'utilisation d'un véhicule ou d'en faire la demande." });
         countErrors++;
       }
@@ -199,7 +199,7 @@ const Transports = ({ step }) => {
    * @param {*} event 
    */
   const changeVehicle = (event) => {
-
+    console.log(event.target.value);
     if (event.target.value !== "1" && event.target.value !== "") {
       setNeedsAuthorization(true);
       clearErrors('transports');
@@ -211,7 +211,7 @@ const Transports = ({ step }) => {
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
-      <StatusChecker status={defaultValues.status} />
+      <StatusChecker status={currentOM.transports.status} />
       <FormSectionTitle>Départ et retour</FormSectionTitle>
       <div className="form__section form__section--split">
         <div className="form__section-half">

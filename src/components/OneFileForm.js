@@ -6,15 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import './modalStyle.scss';
 
 // Components 
-import SwitchButton from 'src/components/SwitchButton';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import ApiResponse from 'src/components/ApiResponse';
 import ButtonElement from 'src/components/Fields/ButtonElement';
 import FileField from 'src/components/Fields/FileField';
 
 // Actions
 import { toggleDocModal, addPermFile, editPermFile } from 'src/reducer/otherDocuments';
-import { addNewOM } from 'src/reducer/omForm';
 
 import './style.scss';
 
