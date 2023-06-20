@@ -59,8 +59,7 @@ const Identity = ({ isEfForm }) => {
   
   const generatePDF = () => {
     const file = getValues('om');
-    const validationDate = Date.now();
-    dispatch(uploadFile({ data: {docId: omId , file: file, agent: user, validationDate: validationDate}, step: 'om'}))
+    dispatch(uploadFile({ data: {docId: omId , file: file, agent: user}, step: 'om'}))
   }
   
   const [isPdfVisible, setIsPdfVisible] = useState(false)
