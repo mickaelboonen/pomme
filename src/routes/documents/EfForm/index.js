@@ -8,7 +8,7 @@ import './style.scss';
 
 // Components 
 import Stages from './Stages';
-import Signature from './Signature';
+import Rib from './Rib';
 import Transports from './Transports';
 import Accomodations from './Accomodations';
 import Recap from './Recap';
@@ -83,7 +83,7 @@ const EfForm = () => {
       id: 4,
     },
     {
-      name: 'Signature & RIB',
+      name: 'RIB',
       id: 5,
     },
     {
@@ -107,7 +107,7 @@ const EfForm = () => {
           {(step === 3 && !efLoader) && <Accomodations step={step} />}
           {/* {((step === 4 && !efLoader) &&  (currentEf.has_steps || currentEf.is_teaching))  && <Steps step={step} />} */}
           {((step === 4 && !efLoader))  && <Stages step={step} />}
-          {(step === 5 && !efLoader) && <Signature step={step} />}
+          {(step === 5 && !efLoader) && <Rib step={step} />}
           {(step === 6 && !efLoader && docState.length === 0) && <Recap />}
           {(step === 6 && !efLoader && docState.length > 0) && <DocMissingStepsRecap url={loaderData} id={id} docState={docState} /> }
         </div>

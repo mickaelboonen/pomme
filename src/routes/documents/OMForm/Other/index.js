@@ -21,7 +21,7 @@ import { updateMoreAndSignature, uploadFile } from 'src/reducer/omForm';
 import { turnSignatureDataToDbFormat } from 'src/selectors/dataToDbFormat';
 import { getSavedFileName } from 'src/selectors/formDataGetters';
 
-const Signature = ({ step }) => {
+const Other = ({ step }) => {
   const dispatch = useDispatch();
   const loader = useLoaderData();
   const omId = loader.searchParams.get('id');
@@ -117,7 +117,7 @@ const Signature = ({ step }) => {
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <StatusChecker status={defaultValues.status} />
-      <div className="form__section">
+      {/* <div className="form__section">
         <FormSectionTitle>Signature</FormSectionTitle>
         {userSignature && (
           <div className="form__section-field">
@@ -142,7 +142,7 @@ const Signature = ({ step }) => {
           />
         )}
         <HiddenField id="docId" value={omId} register={register} />
-      </div>
+      </div> */}
 
       <div className="form__section">
         <FormSectionTitle>Autres</FormSectionTitle>
@@ -176,8 +176,8 @@ const Signature = ({ step }) => {
   );
 };
 
-Signature.propTypes = {
+Other.propTypes = {
 
 };
 
-export default Signature;
+export default Other;

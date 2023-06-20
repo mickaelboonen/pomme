@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Advance from './Advance';
 import Mission from './Mission';
 import Identity from './Identity';
-import Signature from './Signature';
+import Other from './Other';
 import Transports from './Transports';
 import Accomodations from './Accomodations';
 import PageTitle from 'src/components/PageTitle';
@@ -132,7 +132,7 @@ const OMForm = () => {
             {(step === 2 && !omLoader) && <Transports step={step} />}
             {(step === 3 && !omLoader) && <Accomodations step={step} />}
             {(step === 4 && !omLoader) && <Advance step={step} />}
-            {(step === 5 && !omLoader) && <Signature step={step} />}
+            {(step === 5 && !omLoader) && <Other step={step} />}
             {(step === 6 && !omLoader && docState.length === 0) && <Identity step={step} />}
             {(step === 6 && !omLoader && docState.length > 0) && (
               <div className='form'>

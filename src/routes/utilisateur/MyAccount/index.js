@@ -19,7 +19,6 @@ import './style.scss';
 // Components
 import FileManager from './FileManager';
 import OneFileForm from 'src/components/OneFileForm';
-import ApiResponse from 'src/components/ApiResponse';
 import PageTitle from 'src/components/PageTitle';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 
@@ -31,7 +30,6 @@ const MyAccount = () => {
   const dispatch = useDispatch();
 
   const {docs: { isModalOpen, agentDocs },
-  app: { apiMessage },
   agent: { user },
     vehicle: { vehicles },
   } = useSelector((state) => state);
@@ -40,7 +38,7 @@ const MyAccount = () => {
   const docs = {
     cni: agentDocs.find((doc) => doc.type === 'cni'),
     passport: agentDocs.find((doc) => doc.type === 'passport'),
-    signature: agentDocs.find((doc) => doc.type === 'signature'),
+    // signature: agentDocs.find((doc) => doc.type === 'signature'),
     rib: agentDocs.find((doc) => doc.type === 'rib'),
     drivingLicense: agentDocs.find((doc) => doc.type === 'driving-license'),
     insurance: agentDocs.find((doc) => doc.type === 'insurance'),
@@ -78,7 +76,7 @@ const MyAccount = () => {
           handler={null}
           user={user}
         />
-        <FileManager
+        {/* <FileManager
           icon={<FaSignature
             className='file-displayer__icon-container-icon'
           />}
@@ -87,7 +85,7 @@ const MyAccount = () => {
           file={docs.signature}
           handler={null}
           user={user}
-        />
+        /> */}
         <FileManager
           icon={<FaCreditCard
             className='file-displayer__icon-container-icon'

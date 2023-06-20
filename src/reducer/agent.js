@@ -43,9 +43,9 @@ const agentSlice = createSlice({
         state.loader = false;
         state.currentDoc = {};
       },
-      saveSignature: (state, action) => {
-        state.userSignature = action.payload.url;
-      },
+      // saveSignature: (state, action) => {
+      //   state.userSignature = action.payload.url;
+      // },
       validateAuthentication: (state, action) => {
         state.isAuthenticated= true;
         state.user = action.payload.user;
@@ -117,7 +117,7 @@ const agentSlice = createSlice({
 
 export const {
   validateAuthentication,
-  saveSignature,
+  // saveSignature,
   checkAuthentication,
   saveUserData,
   fetchOMs,

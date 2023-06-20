@@ -18,7 +18,7 @@ const omFormSlice = createSlice({
       pouet: () => {},
       authenticate: () => {},
       saveUser: () => {},
-      getSignature: () => {},
+      // getSignature: () => {},
       logout: (state) => {
         state.isAuthenticated= false;
         state.user = '';
@@ -84,7 +84,7 @@ export const {
   saveUser,
   clearMessage,
   setApiResponse,
-  getSignature,
+  // getSignature,
   // saveSignature,
   toggleModal,
   logout,

@@ -16,7 +16,7 @@ const initialState = {
       id: 2,
     },
     {
-      name: 'Hébergement',
+      name: 'Hébergement & Repas',
       property: 'accomodations',
       id: 3,
     },
@@ -26,7 +26,7 @@ const initialState = {
       id: 4,
     },
     {
-      name: 'Signature',
+      name: 'Autre',
       property: 'signature',
       id: 5,
     },

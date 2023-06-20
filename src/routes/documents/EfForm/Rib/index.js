@@ -15,7 +15,7 @@ import { uploadFile } from 'src/reducer/omForm';
 import { updateEfSignature } from 'src/reducer/ef';
 import { getSavedFileName } from 'src/selectors/formDataGetters';
 
-const Signature = ({ step }) => {
+const Rib = ({ step }) => {
   const dispatch = useDispatch();
   const loader = useLoaderData();
   const efId = loader.searchParams.get('id');
@@ -88,7 +88,7 @@ const Signature = ({ step }) => {
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <StatusChecker status={currentEf.signature.status} />
-      <div className="form__section">
+      {/* <div className="form__section">
         <FormSectionTitle>Signature</FormSectionTitle>
         <div className="form__section-field">
           <CheckboxInput
@@ -110,7 +110,7 @@ const Signature = ({ step }) => {
             fileName={signatureFilemane}
           />
         )}
-      </div>
+      </div> */}
       <div className="form__section">
         <FormSectionTitle>RIB</FormSectionTitle>
         <div className="form__section-field">
@@ -147,8 +147,8 @@ const Signature = ({ step }) => {
   );
 };
 
-Signature.propTypes = {
+Rib.propTypes = {
 
 };
 
-export default Signature;
+export default Rib;
