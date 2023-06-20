@@ -59,7 +59,8 @@ const Identity = ({ isEfForm }) => {
   
   const generatePDF = () => {
     const file = getValues('om');
-    dispatch(uploadFile({ data: {docId: omId , file: file}, step: 'om'}))
+    const validationDate = Date.now();
+    dispatch(uploadFile({ data: {docId: omId , file: file, agent: user, validationDate: validationDate}, step: 'om'}))
   }
   
   const [isPdfVisible, setIsPdfVisible] = useState(false)
@@ -208,7 +209,7 @@ const Identity = ({ isEfForm }) => {
           </div>
         </div>
         <div className="form__section">
-          <p class="form__section-recap form__section-recap--infos">
+          <p className="form__section-recap form__section-recap--infos">
             <span>Attention :</span> en cas d'erreur dans vos données personnelles ou si votre situation a changé, veuillez vous rapprocher du Service DRH pour les mettre à jour.
           </p>
         </div>
