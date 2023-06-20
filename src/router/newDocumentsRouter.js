@@ -4,9 +4,6 @@ import Derogation from "src/routes/documents/Derogation";
 import VehicleUseForm from "src/routes/documents/VehicleUseForm";
 
 import { getVehicles } from "src/reducer/vehicle";
-import { fetchAgentSignatureForPdf } from "src/reducer/otherDocuments";
-
-
 
 
 export default {
@@ -18,8 +15,7 @@ export default {
       loader: async ({ request }) => {
         const url = new URL(request.url);
         const { agent : {user} } = store.getState();
-
-        store.dispatch(fetchAgentSignatureForPdf({ agent: user, stopHere: true}));
+        
         store.dispatch(getVehicles({agent: user}));
         return url;  
       },       
@@ -28,14 +24,9 @@ export default {
       path: encodeURIComponent('demande-de-dérogation'),
       element: <Derogation />,
       loader: async ({ request }) => {
-        const url = new URL(request.url);
-
-        const { agent: { user } } = store.getState()
-        store.dispatch(fetchAgentSignatureForPdf({ agent: user, stopHere: true }));
-        return url;  
+        return new URL(request.url);
       },     
     },
-
   ],
 };
 

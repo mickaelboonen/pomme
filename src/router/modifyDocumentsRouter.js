@@ -8,7 +8,6 @@ import { setEfLoader } from "src/reducer/ef";
 import { fetchOm } from "src/reducer/omForm";
 import { fetchUserData } from "src/reducer/agent";
 import { getSignature, getDocument, fetchCountries } from "src/reducer/app";
-import { fetchAgentSignatureForPdf } from "src/reducer/otherDocuments";
 
 
 
@@ -46,7 +45,6 @@ export default {
           }
           
           store.dispatch(fetchUserData({ id: user}));
-          store.dispatch(fetchAgentSignatureForPdf({ agent: user, docId: id}));
 
           if (!agent.hasOwnProperty('lastname')) {
             store.dispatch(fetchUserData({ id: user}));
@@ -83,7 +81,6 @@ export default {
           }
 
           store.dispatch(fetchUserData({ id: user}));
-          store.dispatch(fetchAgentSignatureForPdf({ agent: user, docId: id }));
         }
         return url;
       },    

@@ -35,12 +35,12 @@ const otherDocsSlice = createSlice({
       deletePermFile: () => {
 
       },
-      fetchAgentSignatureForPdf: () => {
+      // fetchAgentSignatureForPdf: () => {
 
-      },
-      saveAgentSignatureForPdf: (state, action) => {
-        state.agentSignature = action.payload;
-      },
+      // },
+      // saveAgentSignatureForPdf: (state, action) => {
+      //   state.agentSignature = action.payload;
+      // },
       uploadVehicleFiles: () => {
 
       },
@@ -54,8 +54,8 @@ export const {
   editPermFile,
   findPermFilesByAgent,
   deletePermFile,
-  fetchAgentSignatureForPdf,
-  saveAgentSignatureForPdf,
+  // fetchAgentSignatureForPdf,
+  // saveAgentSignatureForPdf,
   uploadVehicleFiles,
 } = otherDocsSlice.actions;
 

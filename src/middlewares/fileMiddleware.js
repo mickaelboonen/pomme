@@ -456,30 +456,30 @@ const omMiddleware = (store) => (next) => (action) => {
       });
       break;
 
-    case 'other-documents/fetchAgentSignatureForPdf':
-      fileApi.post('/api/agent/signature', action.payload)
-        .then((response) => {
-          store.dispatch(saveAgentSignatureForPdf(response.data));
-        })
-        .catch((error) => {
+    // case 'other-documents/fetchAgentSignatureForPdf':
+    //   fileApi.post('/api/agent/signature', action.payload)
+    //     .then((response) => {
+    //       store.dispatch(saveAgentSignatureForPdf(response.data));
+    //     })
+    //     .catch((error) => {
           
-          if (error.response.data.includes('Aucune signature trouvée pour ' + action.payload.agent) && !action.payload.stopHere) {
-            api.post('/api/om/signature/fetch', action.payload)
-              .then((response) => {
-                store.dispatch(saveAgentSignatureForPdf(response.data));
-              })
-              .catch((error) => {
-                store.dispatch(setApiResponse(error));
-              });
-          }
-          else if (action.payload.stopHere) {
+    //       if (error.response.data.includes('Aucune signature trouvée pour ' + action.payload.agent) && !action.payload.stopHere) {
+    //         api.post('/api/om/signature/fetch', action.payload)
+    //           .then((response) => {
+    //             store.dispatch(saveAgentSignatureForPdf(response.data));
+    //           })
+    //           .catch((error) => {
+    //             store.dispatch(setApiResponse(error));
+    //           });
+    //       }
+    //       else if (action.payload.stopHere) {
             
-          }
-          else {
-            store.dispatch(setApiResponse(error));
-          }
-        });
-      break;
+    //       }
+    //       else {
+    //         store.dispatch(setApiResponse(error));
+    //       }
+    //     });
+    //   break;
     default:
   }
   next(action);
