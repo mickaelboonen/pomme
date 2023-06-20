@@ -7,7 +7,7 @@ import EfForm from "src/routes/documents/EfForm";
 import { setEfLoader } from "src/reducer/ef";
 import { fetchOm } from "src/reducer/omForm";
 import { fetchUserData } from "src/reducer/agent";
-import { getSignature, getDocument, fetchCountries } from "src/reducer/app";
+import { getDocument, fetchCountries } from "src/reducer/app";
 
 
 
@@ -35,9 +35,6 @@ export default {
         }
         else if (step === '4') {
           store.dispatch(getDocument({id: user, type: 'rib'}));
-        }
-        else if (step === '5') {
-          store.dispatch(getSignature(user));
         }
         else if (step === '6') {
           if (countries.length === 0) {
@@ -72,7 +69,6 @@ export default {
           store.dispatch(fetchCountries());
         }
         else if (step === '5') {
-          store.dispatch(getSignature(user));
           store.dispatch(getDocument({id: user, type: 'rib'}));
         }
         else if (step === '6') {
