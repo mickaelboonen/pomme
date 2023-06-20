@@ -123,7 +123,7 @@ const Derogation = () => {
     <>
       <div className="form-container form-container--vehicle">
         <PageTitle>Demande de prise en charge d’une dépense par voie dérogatoire au GDM </PageTitle>
-        { agentSignature && (
+        {/* { agentSignature && ( */}
           <form className="form" onSubmit={handleSubmit(onSubmit)}>
             <div className="form__section">
               <FormSectionTitle>Dérogation</FormSectionTitle>
@@ -190,8 +190,8 @@ const Derogation = () => {
               </div>
             </div>
           </form>
-        )}
-        { !agentSignature && (
+        {/* )} */}
+        {/* { !agentSignature && (
           <form className="form" onSubmit={handleSubmit(onSubmit)}>
             <p className="form__section-message form__section-message--infos">
               Attention, vous n'avez pas renseigné de signature dans vos pièces justificatives. Merci de bien vouloir la rajouter pour accéder au formulaire de demande de dérogation.
@@ -204,7 +204,7 @@ const Derogation = () => {
               </Link>          
             </div>
           </form>
-        )}
+        )} */}
       </div>
       {isPdfVisible && (
         <div className="pdf-viewer">

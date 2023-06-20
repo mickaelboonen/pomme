@@ -210,7 +210,7 @@ const VehicleUseForm = () => {
     <div className="form-container form-container--vehicle">
       <PageTitle>Demande d'autorisation préalable d'utilisation d'un véhicule</PageTitle>
       {loader && <LoaderCircle />}
-      {(!loader && agentSignature) && (
+      {!loader && (
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
           <div className="form__section">
             <FormSectionTitle>Voiture</FormSectionTitle>
@@ -345,7 +345,7 @@ const VehicleUseForm = () => {
         </form>
       )}
       
-      {(!loader && !agentSignature) && (
+      {/* {(!loader && !agentSignature) && (
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
           <p className="form__section-message form__section-message--infos">
             Attention, vous n'avez pas renseigné de signature dans vos pièces justificatives. Merci de bien vouloir la rajouter pour accéder au formulaire de demande de dérogation.
@@ -358,7 +358,7 @@ const VehicleUseForm = () => {
             </Link>          
           </div>
         </form>
-      )}
+      )} */}
     </div>
   );
 };
