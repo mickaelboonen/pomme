@@ -111,7 +111,7 @@ const DispensationPdf = ({ data, agent, agentSignature}) => {
         <Text style={styles.section.title} wrap={false}>REGLE DU GUIDE DES MISSIONS FAISANT L'OBJET D'UNE DEMANDE DE DÉROGATION</Text>
         <Text style={[styles.section.text, {paddingRight: 10, paddingLeft: 10, textAlign: 'justify'}]}>{data.rule}</Text>
       </View>
-      <View style={styles.section}>
+      {/* <View style={styles.section}>
         <Text style={styles.section.title} wrap={false}>SIGNATURE DU DEMANDEUR</Text>
         <View style={[{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}]}>
           <View style={{height: 100, padding: 5}}>
@@ -121,7 +121,7 @@ const DispensationPdf = ({ data, agent, agentSignature}) => {
             <Image source={agentSignature} style={styles.signature} />
           </View>
         </View>
-      </View>
+      </View> */}
 
       <View style={styles.section} wrap={false}>
         <Text style={styles.section.title} wrap={false}>DÉCISION</Text>

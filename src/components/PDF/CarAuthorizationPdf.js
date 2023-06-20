@@ -70,13 +70,13 @@ const CarAuthorizationPdf = ({ data, vehicleTypes, agent, agentSignature, reason
       <View style={styles.section}>
         <Text style={styles.section.title} wrap={false}>SIGNATURES</Text>
         <View style={[{ display: 'flex', flexDirection: 'row'}]}>
-          <View style={{border: '1px solid #1a1a1a', width: '50%', height: 150, padding: 5}}>
+          {/* <View style={{border: '1px solid #1a1a1a', width: '50%', height: 150, padding: 5}}>
             <Text style={{fontSize: 10}}>Nîmes, le {new Date().toLocaleDateString()}</Text>
             <Text style={{fontSize: 10}}>Signature de l'agent demandeur</Text>
             <Image source={agentSignature} style={styles.signature} />
-          </View>
-          <View style={{border: '1px solid #1a1a1a', width: '50%', height: 150, padding: 5}}>
-            <Text style={{fontSize: 10}}>Nîmes, le {''}</Text>
+          </View> */}
+          <View style={{border: '1px solid #1a1a1a', width: '100%', height: 150, padding: 5}}>
+            <Text style={{fontSize: 10}}>Nîmes, le __ / __ / ____</Text>
             <Text style={{fontSize: 10}}>Signature du prêteur (le cas échéant)</Text>
           </View>
         </View>

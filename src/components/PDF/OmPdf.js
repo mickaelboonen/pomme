@@ -219,8 +219,9 @@ const OmPdf = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
       )}
       <View style={styles.section} wrap={false}>
         <Text style={styles.section.title} wrap={false}>SIGNATURE</Text>
-        <View style={[{ display: 'flex', flexDirection: 'row'}]}>
-          <View style={{border: '1px solid #1a1a1a', width: '33%', height: 150, padding: 5}}>
+        <View style={[styles.section.subsection, {height: 150, padding: 5}]}>
+        {/* <View style={[{ display: 'flex', flexDirection: 'row'}]}> */}
+          {/* <View style={{border: '1px solid #1a1a1a', width: '33%', height: 150, padding: 5}}>
             <Text style={{fontSize: 10}}>Nîmes, le {new Date().toLocaleDateString()}</Text>
             <Text style={{fontSize: 10}}>Signature de l'agent.e</Text>
             <Image source={agentSignature} style={styles.signature} />
@@ -229,16 +230,13 @@ const OmPdf = ({ data, agent, vehicleTypes, agentSignature, countries}) => {
             <Text style={{fontSize: 10}}>Nîmes, le {''}</Text>
             <Text style={{fontSize: 10}}>Signature du.de la directeur.rice de département ou du.de la chef.fe de service</Text>
           </View>
-          <View style={{border: '1px solid #1a1a1a', width: '33%', height: 150, padding: 5}}>
-            <Text style={{fontSize: 10}}>Nîmes, le {''}</Text>
-            <Text style={{fontSize: 10}}>Signature de l'ordonnateur.rice (Président, DGS, VP)</Text>
-          </View>
+          <View style={{border: '1px solid #1a1a1a', width: '33%', height: 150, padding: 5}}> */}
+            <Text style={styles.section.text}>Validé à Nîmes, le __/__/____.</Text>
+            <Text style={styles.section.text}>Signature de l'ordonnateur.rice (Président, DGS, VP) :</Text>
+          {/* </View> */}
+          {/* </View> */}
         </View>
       </View>
-    </Page>
-    <Page size="A4" style={styles.page}>
-      {mission.mission_purpose_file.map((file) => <Image src={file} />)}
-      {/* <Image src={mission.mission_purpose_file} /> */}
     </Page>
   </Document>
 );}

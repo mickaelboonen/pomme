@@ -75,7 +75,7 @@ const Transports = ({ step }) => {
       }
 
       // If a vehicle has been selected but no authorization was submitted or given
-      if ((data.vehicle !== "" && data.vehicle !== 1 && data.vehicle) && !data.vehicleAuthorizationFileForValidation && (!data.vehicleAuthorizationFile || data.vehicleAuthorizationFile.length === 0)) {
+      if ((data.vehicle !== "" && data.vehicle != 1 && data.vehicle) && !data.vehicleAuthorizationFileForValidation && (!data.vehicleAuthorizationFile || data.vehicleAuthorizationFile.length === 0)) {
         setError('authorization', { type: 'custom', message: "Merci de fournir la demande d'autorisation d'utilisation d'un véhicule ou d'en faire la demande." });
         countErrors++;
       }
@@ -199,7 +199,6 @@ const Transports = ({ step }) => {
    * @param {*} event 
    */
   const changeVehicle = (event) => {
-    console.log(event.target.value);
     if (event.target.value !== "1" && event.target.value !== "") {
       setNeedsAuthorization(true);
       clearErrors('transports');
