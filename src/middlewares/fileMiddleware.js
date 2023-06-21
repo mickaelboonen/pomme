@@ -186,7 +186,24 @@ const omMiddleware = (store) => (next) => (action) => {
           user: user,
         });
       }
-      console.log('filesToUpload - ', filesToUpload);
+      else if (type === 'science') {
+
+        data.files.forEach((file) => {
+          if (file instanceof File) {
+            filesToUpload.push({
+              docId: data.docId,
+              type: 'documents',
+              file: file,
+            });
+          }
+        })
+        filesToUpload.push({
+          docId: data.docId,
+          type: 'scientific-pdf',
+          file: data.pdf,
+          user: user,
+        });
+      }
       
       fileApi.post(`/api/files/${type}/${step}`, filesToUpload)
         .then((response) => {

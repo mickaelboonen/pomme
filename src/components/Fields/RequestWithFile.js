@@ -40,6 +40,10 @@ const RequestWithFile = ({
     title = "Demande d'autorisation préalable d'utilisation d'un véhicule'"
 
   }
+  else if (id === 'scientificEvent') {
+    title = "Participation à un événement scientifique"
+
+  }
 
   const handleClickOnDelete = () => {
     setValue(id, null);

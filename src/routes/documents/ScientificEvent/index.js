@@ -51,7 +51,7 @@ const ScientificEvent = () => {
         dispatch(clearMessage());
       }, "950")
       setTimeout(() => {
-        navigate('/modifier-un-document/ordre-de-mission?etape=2&id='+ omId);
+        navigate('/modifier-un-document/ordre-de-mission?etape=1&id='+ omId);
         
       }, "1000")
     }
@@ -86,7 +86,7 @@ const ScientificEvent = () => {
     console.log("DATA = ", data);
     
     const errorNumber = handleErrorsOnSubmit(data);
-    return;
+    
     if (errorNumber > 0) {
       return;
     }
@@ -156,6 +156,14 @@ const ScientificEvent = () => {
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
         <div className="form__section">
             <FormSectionTitle>Événement scientifique</FormSectionTitle>
+            <DateField
+              type="date"
+              id="event-date-field"
+              label="Date de l'événement"
+              register={register}
+              formField="date"
+              error={errors.date}
+            />
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Prise en charge de l'événement scientifique (Inscription colloque, séminaire, conférence)</label>
                 <RadioInput
@@ -243,7 +251,7 @@ const ScientificEvent = () => {
               formField="files"
               register={register}
               error={errors.files}
-              label="Jutificatif d'événement"
+              label="Justificatif d'événement"
               pieces="Si le document est langue étrangère, merci de fournir une traduction en plus."
             />
             <HiddenField
@@ -257,28 +265,22 @@ const ScientificEvent = () => {
           
                 <BlobProvider document={<ScienceEventPdf data={watch()} agent={agent} creationDate={setValidationDate()} />}>
                   {({ blob }) => {
-      
-                    const { mission } = oms.find((om) => om.id == omId);
-                    const fileName = `${agent.lastname.toUpperCase()}-${new Date(mission.departure).toLocaleDateString().split('/').join('-')}-demande-d-autorisation-de-véhicule`
+                    const fileName = `${agent.lastname.toUpperCase()}-${watch('date')}-événément-scientifique`
                     const file = new File([blob], fileName, {type: 'application/pdf'});
-                    
-                    const fileUrl = URL.createObjectURL(file);
                     
                     return (
                       <>
-                        <button type="button" onClick={() => { const data = watch(); data.file = file; onSubmit(data)}}>
+                        <button type="button" onClick={() => { const data = watch(); data.pdf = file; onSubmit(data)}}>
                           Valider la demande
                         </button>
                         <button type="button" id="viewer-opener" onClick={toggleViewer}>
                           Visualiser le PDF
                         </button>
-
                       </>
                     );
                   }}
                 </BlobProvider>
             </div>
-            {/* {externalSignature && <p className="form__section-container-text form__section-container-text--infos">Veuillez télécharger le PDF de la demande, le faire signer aux personnes extérieures concernées puis le redéposer dans l'application à l'étape Transports.</p>} */}
           </div>
         </form>
       </div>

@@ -18,6 +18,7 @@ import TextField from 'src/components/Fields/TextField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
+import RequestWithFile from 'src/components/Fields/RequestWithFile';
 
 // Selectors 
 import { defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
@@ -111,7 +112,7 @@ const Mission = ({ step, isEfForm }) => {
   defaultValues = addAllAddressesFields(defaultValues);
   
   const {
-    register, handleSubmit, watch,
+    register, handleSubmit, watch, clearErrors,
     setError, setValue, formState: { errors }
   } = useForm({
     defaultValues: {
@@ -299,6 +300,20 @@ const Mission = ({ step, isEfForm }) => {
             label="Est-ce que c'est un événement scientifique ?"
           />
         )}
+        {isMissionAScienceEvent && (
+          <RequestWithFile
+            requestType="scientific"
+            register={register}
+            setValue={setValue}
+            errors={errors}
+            watch={watch}
+            clearErrors={clearErrors}
+            id="scientificEvent"
+            data={defaultValues}
+            permanentOm={true}
+            link={`/nouveau-document/${encodeURIComponent('participation-à-un-événement-scientifique')}?omId=` + docId}
+          />
+        )}
         {!isMissionAScienceEvent && (
             <FileField
               disabled={isEfForm}
@@ -312,7 +327,7 @@ const Mission = ({ step, isEfForm }) => {
               pieces="Joindre impérativement convocation, mail ou tout autre document en attestant"
             />
           )}
-        {isMissionAScienceEvent && (
+        {/* {isMissionAScienceEvent && (
           <ScientificEvent
             isEfForm={isEfForm}
             isMissionFormDisabled={isMissionFormDisabled}
@@ -321,7 +336,7 @@ const Mission = ({ step, isEfForm }) => {
             register={register}
             filename={fileName}
           />
-        )}
+        )} */}
         <HiddenField id="docId" value={docId} register={register} />
       </div>
         <FormSectionTitle>Départ et retour</FormSectionTitle>
