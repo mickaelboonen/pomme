@@ -83,8 +83,22 @@ const OmPdf = ({ data, agent, vehicleTypes, validationDate, countries}) => {
   const freeMeals = maxMealsNumber - (accomodations.meals_paid_by_agent + accomodations.meals_in_admin_restaurants);
   
   const gestArray = ['%', 'UB', 'CR', 'Code Nacres', 'Code LOLF', 'Code Analytique'];
-// console.log(mission);
+console.log(mission);
 
+  const sciencePaymentArray = [
+    {
+      value: 'unimes-science',
+      label: 'Réglé par Unîmes'
+    },
+    {
+      value: 'user-science',
+      label: "Avancé par l'agent."
+    },
+    {
+      value: 'free-science',
+      label: "Pris en charge par un autre organisme."
+    },
+  ];
 
 
   return (
@@ -176,6 +190,16 @@ const OmPdf = ({ data, agent, vehicleTypes, validationDate, countries}) => {
         
         <Text style={styles.section.text} />
       </View>
+      {mission.science && (
+        <View style={styles.section} wrap={false}>
+          <Text style={styles.section.title} wrap={false}>PARTICIPATION A UN ÉVÉNEMENT SCIENTIFIQUE</Text>
+          <Text style={styles.section.text}>Type de présentation : {mission.presentation.map((type) => type.replace(type[0], type[0].toUpperCase()) + '. ')}</Text>
+          <Text style={styles.section.text}>Prise en charge des frais d'inscription : {sciencePaymentArray.find((type) => type.value === mission.science_payment).label}</Text>
+          <Text style={styles.section.text}>Budget ou contrat concerné : {mission.budget}</Text>
+
+          <Text style={styles.section.text} />
+        </View>
+      )}
       <View style={styles.section} wrap={false}>
         <Text style={styles.section.title} wrap={false}>TRANSPORTS</Text>
         {trainData.hasOwnProperty('class') && (
