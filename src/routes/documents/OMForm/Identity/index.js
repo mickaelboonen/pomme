@@ -15,7 +15,9 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 
 // Selectors & actions
 import { uploadFile } from 'src/reducer/omForm';
+import { getDDMMYYDate, getHHMMTime } from 'src/selectors/dateFunctions';
 import {  defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
+import { setValidationDate } from '../../../../selectors/pdfFunctions';
 
 
 const Identity = ({ isEfForm }) => {
@@ -56,12 +58,7 @@ const Identity = ({ isEfForm }) => {
   const toggleIsCivil = (event) => {
     setIsCivil(event.target.id);
   }
-  
-  const generatePDF = () => {
-    const file = getValues('om');
-    dispatch(uploadFile({ data: {docId: omId , file: file, agent: user}, step: 'om'}))
-  }
-  
+
   const [isPdfVisible, setIsPdfVisible] = useState(false)
 
   const toggleViewer = (event) => {
@@ -72,6 +69,13 @@ const Identity = ({ isEfForm }) => {
     else {
       setIsPdfVisible(true);
     }
+  }
+  
+  const validationDate = setValidationDate();
+  
+  const generatePDF = () => {
+    const file = getValues('om');
+    dispatch(uploadFile({ data: {docId: omId , file: file, date: validationDate, agent: user}, step: 'om'}))
   }
 
   return (
@@ -214,7 +218,7 @@ const Identity = ({ isEfForm }) => {
         </div>
         <div className="form__section">
           <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
-            <BlobProvider document={<OmPdf countries={countries} agentSignature={agentSignature} data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />}>
+            <BlobProvider document={<OmPdf validationDate={validationDate} countries={countries} agentSignature={agentSignature} data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />}>
               {({ blob }) => {
 
                 const file = new File([blob], currentOM.name, {type: 'pdf'});
@@ -244,7 +248,7 @@ const Identity = ({ isEfForm }) => {
             <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer la fenêtre</p>
           </div>
           <PDFViewer>
-            <OmPdf countries={countries} agentSignature={agentSignature} data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />
+            <OmPdf validationDate={validationDate} countries={countries} agentSignature={agentSignature} data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />
           </PDFViewer>
         </div>
       )}

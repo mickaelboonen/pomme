@@ -12,6 +12,7 @@ Font.register({ family: 'Radjhani', src: RadjhaniFont });
 Font.register({ family: 'RadjhaniBold', src: RadjhaniBoldFont });
 
 import { styles } from './pdfStyles';
+import { setValidationDate } from '../../selectors/pdfFunctions';
 
 const CarAuthorizationPdf = ({ data, vehicleTypes, agent, agentSignature, reasons}) => {
   let chosenVehicleType = {};
@@ -33,6 +34,7 @@ const CarAuthorizationPdf = ({ data, vehicleTypes, agent, agentSignature, reason
     }
   })
 
+  const validationDate = setValidationDate();
   return (
   <Document>
     <Page size="A4" style={styles.page}>
