@@ -10,6 +10,7 @@ import RadjhaniBoldFont from 'src/assets/fonts/Rajdhani-Bold.ttf';
 
 Font.register({ family: 'Radjhani', src: RadjhaniFont });
 Font.register({ family: 'RadjhaniBold', src: RadjhaniBoldFont });
+Font.registerHyphenationCallback(word => [word]);
 
 import { styles } from './pdfStyles';
 import { setValidationDate } from '../../selectors/pdfFunctions';

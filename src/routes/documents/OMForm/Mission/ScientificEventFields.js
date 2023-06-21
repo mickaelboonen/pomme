@@ -4,6 +4,8 @@ import '../style.scss';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import TextField from 'src/components/Fields/TextField';
 import FileField from 'src/components/Fields/FileField';
+import NumberField from 'src/components/Fields/NumberField';
+import DateField from 'src/components/Fields/DateField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
 
@@ -65,6 +67,24 @@ const ScientificEvent = ({ setValue, register, errors, filename, isEfForm, isMis
         />
         {errors.presentation && <p className="form__section-field-error form__section-field-error--open">{errors.presentation.message}</p>}
       </div>
+      <NumberField
+        id="cost-field"
+        label="Montant de l'inscription"
+        error={errors.scienceCost}
+        disabled={isEfForm && isMissionFormDisabled}
+        register={register}
+        formField="cost"
+        isAmount
+      />
+      <DateField
+        type="date"
+        id="deadline-field"
+        label="Date limite du règlement de l'inscription"
+        register={register}
+        formField="deadline"
+        disabled={isEfForm && isMissionFormDisabled}
+        error={errors.deadline}
+      />
       <TextField 
         disabled={isEfForm && isMissionFormDisabled}
         register={register}
@@ -85,6 +105,17 @@ const ScientificEvent = ({ setValue, register, errors, filename, isEfForm, isMis
         error={errors.missionPurposeFile}
         label="Jutificatif d'événement"
         pieces="Si le document est langue étrangère, merci de fournir une traduction en plus."
+      />
+      <TextareaField
+        id="comment-field"
+        label="Commentaires"
+        formField="comment"
+        register={register}
+        // placeholder
+        // isHidden
+        // rows
+        // required
+        error={errors.comment}
       />
     </div>
   );

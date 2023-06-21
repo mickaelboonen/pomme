@@ -44,7 +44,7 @@ const DateField = ({
 };
 
 DateField.defaultProps = {
-  handler: null,
+  handler: () => {},
   min: null,
   max: null,
 };
