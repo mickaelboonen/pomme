@@ -8,29 +8,21 @@ import './style.scss';
 
 // Components
 import PageTitle from 'src/components/PageTitle';
-import SwitchButton from 'src/components/SwitchButton';
-import LoaderCircle from "src/components/LoaderCircle";
 import TextField from 'src/components/Fields/TextField';
 import FileField from 'src/components/Fields/FileField';
-import HiddenField from 'src/components/Fields/HiddenField';
-import RadioInput from 'src/components/Fields/RadioInput';
-import NumberField from 'src/components/Fields/NumberField';
 import DateField from 'src/components/Fields/DateField';
-import TextareaField from 'src/components/Fields/TextareaField';
+import RadioInput from 'src/components/Fields/RadioInput';
+import HiddenField from 'src/components/Fields/HiddenField';
+import NumberField from 'src/components/Fields/NumberField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
+import TextareaField from 'src/components/Fields/TextareaField';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import ScienceEventPdf from "src/components/PDF/ScienceEventPdf";
 
 // Actions
 import { uploadFile } from 'src/reducer/omForm';
 import { setValidationDate } from 'src/selectors/pdfFunctions';
-import {
-  displayVehicle,
-  requestVehicleAuthorization,
-} from 'src/reducer/vehicle';
 import { clearMessage } from 'src/reducer/app';
-import { getSavedFileName } from 'src/selectors/formDataGetters'
-import { uploadVehicleFiles } from "src/reducer/otherDocuments";
 
 
 const ScientificEvent = () => {
@@ -42,7 +34,7 @@ const ScientificEvent = () => {
 
   let { 
     app : { apiMessage },
-    agent : { agent , user , oms },
+    agent : { agent },
   } = useSelector((state) => state);
   
   useEffect(() => {
@@ -62,7 +54,6 @@ const ScientificEvent = () => {
     handleSubmit,
     setValue,
     watch,
-    reset,
     setError,
     clearErrors,
     formState:
@@ -105,11 +96,6 @@ const ScientificEvent = () => {
 
     if (!data.presentation || data.presentation.length === 0 ) {
       setError('presentation', {type: 'custom', message: "Merci de renseigner le type de présentation."})
-      errorCount++;
-    }
-
-    if (data.budget === "" || !data.budget) {
-      setError('budget', {type: 'custom', message: "Merci de renseigner le budget ou le contrat concerné par l'événement."})
       errorCount++;
     }
 

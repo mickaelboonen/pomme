@@ -5,7 +5,7 @@ import VehicleUseForm from "src/routes/documents/VehicleUseForm";
 // import ScientificEvent from "src/routes/documents/ScientificEvent";
 
 import { getVehicles } from "src/reducer/vehicle";
-import ScientificEvent from "../routes/documents/ScientificEvent.js";
+import ScientificEvent from "../routes/documents/ScientificEvent";
 
 
 export default {

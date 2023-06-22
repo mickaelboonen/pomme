@@ -26,15 +26,16 @@ const omMiddleware = (store) => (next) => (action) => {
   setTokenOnApi(token);
 
   switch (action.type) {
-    // case 'agent/fetchAgentAppDocuments':
-    //   api.get("/api/om/" + action.payload)
-    //   .then((response) => {
-    //     // TODO : 
-    //   })
-    //   .catch((error) => {
-    //     store.dispatch(setApiResponse(error));
-    //   });
-    //   break;
+    case 'omForm/createScientificEvent':
+      api.post("/api/om/scientific-event/create", action.payload)
+        .then((response) => {
+          store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
+
+        })
+        .catch((error) => {
+          store.dispatch(setApiResponse(error));
+        });
+      break;
     case 'omForm/addNewOM':
       api.post("/api/om/add", action.payload,)
         .then((response) => {

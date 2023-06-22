@@ -276,7 +276,8 @@ const omFormSlice = createSlice({
       setLoader: (state, action) => {
         state.omLoader = action.payload;
       },
-      deleteAddress: () => {}
+      deleteAddress: () => {},
+      createScientificEvent: () => {},
     },
 });
 
@@ -315,6 +316,7 @@ export const {
   saveOmPdf,
   updateOm,
   deleteAddress,
+  createScientificEvent
 } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

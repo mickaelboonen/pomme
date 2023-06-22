@@ -5,7 +5,7 @@ import { handleEfFilesUploadPayload } from 'src/selectors/fileFunctions';
 import { requestVehicleAuthorization, updateVehicle, createVehicle } from 'src/reducer/vehicle';
 import { toggleDocModal, saveAllPermDocs, saveAgentSignatureForPdf} from 'src/reducer/otherDocuments';
 import { updateEfAccomodations, updateEfSignature, updateEf, updateEfMission, updateEfTransports } from 'src/reducer/ef';
-import { createDispensation, updateOm, updateTransports, updateAdvance, updateMoreAndSignature, updateMission } from 'src/reducer/omForm';
+import { createDispensation, updateOm, updateTransports, updateAdvance, updateMoreAndSignature, updateMission, createScientificEvent } from 'src/reducer/omForm';
 
 
 fileApi.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -194,6 +194,7 @@ const omMiddleware = (store) => (next) => (action) => {
               docId: data.docId,
               type: 'documents',
               file: file,
+              user: user,
             });
           }
         })
@@ -369,6 +370,21 @@ const omMiddleware = (store) => (next) => (action) => {
             data.file = response.data[0].file.url;
             
             store.dispatch(createDispensation(data));
+          }
+          else if (type === 'science') {
+            data.files = [];
+                
+            response.data.forEach((currentFile) => {
+              
+              if (currentFile.type === 'documents') {
+                data.files.push(currentFile.file.url);
+              }
+              else {
+                data.pdf = currentFile.file.url;
+              }
+            })
+            
+            store.dispatch(createScientificEvent(data));
           }
         })
         .catch((error) => {
