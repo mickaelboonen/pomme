@@ -88,15 +88,9 @@ const CarAuthorizationPdf = ({ data, vehicleTypes, agent, agentSignature, reason
       <View style={styles.section} wrap={false}>
         <Text style={styles.section.title} wrap={false}>DÉCISION</Text>
         <Text style={{marginBottom: 10}}>Bon pour accord : </Text>
-        <View style={[{ display: 'flex', flexDirection: 'row'}]}>
-          <View style={{border: '1px solid #1a1a1a', width: '50%', height: 150, padding: 5}}>
-            <Text style={{fontSize: 10}}>Nom et signature du directeur de département ou chef de service</Text>
-            {/* <Image source={agentSignature} style={styles.signature} /> */}
-          </View>
-          <View style={{border: '1px solid #1a1a1a', width: '50%', height: 150, padding: 5}}>
-            <Text style={{fontSize: 10}}>Nom et signature de l’ordonnateur ou son représentant</Text>
-
-          </View>
+        <View style={[styles.section.subsection, {height: 150, padding: 5}]}>
+            <Text style={styles.section.text}>Validé à Nîmes, le __/__/____.</Text>
+            <Text style={styles.section.text}>Signature de l'ordonnateur.rice (Président, DGS, VP) :</Text>
         </View>
       </View>
     </Page>

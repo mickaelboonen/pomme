@@ -11,21 +11,21 @@ import StatusChecker from 'src/components/StatusChecker';
 import FileField from 'src/components/Fields/FileField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import CheckboxInput from 'src/components/Fields/CheckboxInput';
+// import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import TextareaField from 'src/components/Fields/TextareaField';
 
 // ACTIONS
 import { updateMoreAndSignature, uploadFile } from 'src/reducer/omForm';
 
 // Selectors
-import { turnSignatureDataToDbFormat } from 'src/selectors/dataToDbFormat';
+// import { turnSignatureDataToDbFormat } from 'src/selectors/dataToDbFormat';
 import { getSavedFileName } from 'src/selectors/formDataGetters';
 
 const Other = ({ step }) => {
   const dispatch = useDispatch();
   const loader = useLoaderData();
   const omId = loader.searchParams.get('id');
-  const areWeUpdatingData = loader.pathname.includes('modifier');
+  // const areWeUpdatingData = loader.pathname.includes('modifier');
   
 
   const { app: { apiMessage },
@@ -46,10 +46,10 @@ const Other = ({ step }) => {
     })
   }
   
-  let signatureFilename = '';
-  if (defaultValues.agentSignature && defaultValues.agentSignature.length > 1) {
-    signatureFilename = getSavedFileName(defaultValues.agentSignature);
-  }
+  // let signatureFilename = '';
+  // if (defaultValues.agentSignature && defaultValues.agentSignature.length > 1) {
+  //   signatureFilename = getSavedFileName(defaultValues.agentSignature);
+  // }
   
   const {
     register,
@@ -67,9 +67,9 @@ const Other = ({ step }) => {
     const infosFile = data.files.find((file) => file instanceof File);
     
 
-    if (data.savedSignature) {
+    // if (data.savedSignature) {
 
-      data.agentSignature = userSignature;
+    //   data.agentSignature = userSignature;
       
       if (infosFile instanceof File) {
         dispatch(uploadFile({ data: data, step: 'more-and-signature'}));
@@ -77,73 +77,46 @@ const Other = ({ step }) => {
       else {
         dispatch(updateMoreAndSignature(data));
       }
-    }
-    else {
+    // }
+    // else {
       
-      if (data.agentSignature.length === 0) {
-        setError('signature', { type: 'custom', message: "Merci de signer votre ordre de mission." });
-        return;
-      }
+    //   if (data.agentSignature.length === 0) {
+    //     setError('signature', { type: 'custom', message: "Merci de signer votre ordre de mission." });
+    //     return;
+    //   }
       
-      if (typeof data.agentSignature !== 'string' || infosFile instanceof File) {
-        dispatch(uploadFile({ data: data, step: 'more-and-signature'}));
-      } 
-      else {
-        dispatch(updateMoreAndSignature(data));
-      }
-    }
+    //   if (typeof data.agentSignature !== 'string' || infosFile instanceof File) {
+    //     dispatch(uploadFile({ data: data, step: 'more-and-signature'}));
+    //   } 
+    //   else {
+    //     dispatch(updateMoreAndSignature(data));
+    //   }
+    // }
   };
 
-  const [hasNoSignatureSaved, setHasNoSignatureSaved] = useState(userSignature === '' ? true : false);
-  const savedSignature = watch('savedSignature');
+  // const [hasNoSignatureSaved, setHasNoSignatureSaved] = useState(userSignature === '' ? true : false);
+  // const savedSignature = watch('savedSignature');
   
-  useEffect(() => {
+  // useEffect(() => {
     
-    if (!savedSignature) {
-      setHasNoSignatureSaved(true);
-    }
-    else {
-      setHasNoSignatureSaved(false);
-    }
-  }, [savedSignature])
+  //   if (!savedSignature) {
+  //     setHasNoSignatureSaved(true);
+  //   }
+  //   else {
+  //     setHasNoSignatureSaved(false);
+  //   }
+  // }, [savedSignature])
 
-  useEffect(() => {
-    if (userSignature) {
-      setHasNoSignatureSaved(false);
-      setValue("savedSignature", true);
-    }
-  }, [userSignature])
+  // useEffect(() => {
+  //   if (userSignature) {
+  //     setHasNoSignatureSaved(false);
+  //     setValue("savedSignature", true);
+  //   }
+  // }, [userSignature])
 
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <StatusChecker status={defaultValues.status} />
-      {/* <div className="form__section">
-        <FormSectionTitle>Signature</FormSectionTitle>
-        {userSignature && (
-          <div className="form__section-field">
-            <CheckboxInput
-              register={register}
-              formField="savedSignature"
-              id="saved-signature-field"
-              label="Utiliser la signature enregistrée dans mon profil"
-            />
-          </div>
-        )}
-        {hasNoSignatureSaved && (
-          <FileField 
-            setValue={setValue}
-            register={register}
-            formField="agentSignature"
-            id="agent-signature-field"
-            accept="image/*"
-            label="Signature de l'agent (au format .jpg, .jpeg ou .png)"
-            error={errors.agentSignature}
-            fileName={signatureFilename}
-          />
-        )}
-        <HiddenField id="docId" value={omId} register={register} />
-      </div> */}
-
       <div className="form__section">
         <FormSectionTitle>Autres</FormSectionTitle>
         <TextareaField 
@@ -161,8 +134,8 @@ const Other = ({ step }) => {
           multiple
           fileName={fileNames}
         />
+        <HiddenField id="docId" value={omId} register={register} />
       </div>
-      {/* {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />} */}
       <Buttons
         step={step}
         id={omId}

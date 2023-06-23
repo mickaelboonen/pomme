@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import '../style.scss';
@@ -24,7 +24,7 @@ import RequestWithFile from 'src/components/Fields/RequestWithFile';
 import { defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
 // import {  } from 'src/selectors/formDataGetters';
 import { declareCamelCaseKeys, addAllAddressesFields } from 'src/selectors/keyObjectService';
-import { getSavedFileName, turnFieldsToAddressEntity } from 'src/selectors/formDataGetters';
+import { getSavedFileName, getAllFilenamesForProperty, turnFieldsToAddressEntity } from 'src/selectors/formDataGetters';
 
 // Reducer
 import { enableMissionFormFields, updateEfMission } from 'src/reducer/ef';
@@ -82,32 +82,9 @@ const Mission = ({ step, isEfForm }) => {
   else {
     defaultValues = omForm.find((omStep) => omStep.step === 'mission').data;
   }
-  
-  // Defining file names to display them in the browser -------------------------
-  let fileName = '';
-  
-  if (defaultValues.missionPurposeFile) {
-    defaultValues.missionPurposeFile.forEach((file) => {
-
-      fileName += getSavedFileName(file);
-
-      if (defaultValues.missionPurposeFile.length > 1) {
-        fileName += ' - ';
-      }
-    })
-  }
-  let mapsFileName = '';
-
-  if (defaultValues.maps) {
-    defaultValues.maps.forEach((file) => {
-
-      mapsFileName += getSavedFileName(file);
-
-      if (defaultValues.maps.length > 1) {
-        mapsFileName += ' - ';
-      }
-    })
-  }
+  console.log(defaultValues);
+  const fileName = getAllFilenamesForProperty(defaultValues.missionPurposeFile);
+  const mapsFileName = getAllFilenamesForProperty(defaultValues.maps);
   
   defaultValues = addAllAddressesFields(defaultValues);
   
@@ -134,10 +111,10 @@ const Mission = ({ step, isEfForm }) => {
   const onSubmit = (data) => {
     
     data = turnFieldsToAddressEntity(data);
-
+    
     if (data.science) {
-      if ((!data.missionPurposeFile || data.missionPurposeFile.length === 0) && !data.missionPurposeFileForValidation) {
-        setError('missionPurposeFile', { type: 'custom', message: 'Merci de fournir le justificatif de la mission.'})
+      if (data.scientificEvents.length === 0) {
+        setError('scientificEvents', { type: 'custom', message: 'Merci de remplir le formulaire de participation à un événement scientifique.'});
         return;
       }
     }
@@ -245,7 +222,7 @@ const Mission = ({ step, isEfForm }) => {
   
   const [isMissionAScienceEvent, setIsMissionAScienceEvent] = useState(defaultValues.science);
   const [isVisaNeeded, setIsVisaNeeded] = useState(defaultValues.visa);
-
+  console.log(errors);
   useEffect(() => {
     if (region === 'étranger') {
 
@@ -300,7 +277,7 @@ const Mission = ({ step, isEfForm }) => {
             label="Est-ce que c'est un événement scientifique ?"
           />
         )}
-        {isMissionAScienceEvent && (
+        {/* {isMissionAScienceEvent && (
           <RequestWithFile
             requestType="scientific"
             register={register}
@@ -311,32 +288,33 @@ const Mission = ({ step, isEfForm }) => {
             id="scientificEvent"
             data={defaultValues}
             permanentOm={true}
-            link={`/nouveau-document/${encodeURIComponent('participation-à-un-événement-scientifique')}?omId=` + docId}
-          />
-        )}
-        {!isMissionAScienceEvent && (
-            <FileField
-              disabled={isEfForm}
-              setValue={setValue}
-              multiple
-              id="mission-goal"
-              formField="missionPurposeFile"
-              fileName={fileName}
-              register={register}
-              error={errors.missionPurposeFile}
-              pieces="Joindre impérativement convocation, mail ou tout autre document en attestant"
-            />
-          )}
-        {/* {isMissionAScienceEvent && (
-          <ScientificEvent
-            isEfForm={isEfForm}
-            isMissionFormDisabled={isMissionFormDisabled}
-            errors={errors}
-            setValue={setValue}
-            register={register}
-            filename={fileName}
+            link={`/nouveau-document/${encodeURIComponent('participation-à-un-événement-scientifique')}?omId=${docId}`}
           />
         )} */}
+        {isMissionAScienceEvent && (
+          
+          <div className="form__section-container" id="upper-class-request">
+            <h4 className="form__section-container-title">PARTICIPATION À UN ÉVÉNEMENT SCIENTIFIQUE</h4>
+            <div className="form__section-container-button">
+              <Link id={'scientificEvent-link'} to={`/nouveau-document/${encodeURIComponent('participation-à-un-événement-scientifique')}?omId=${docId}`}>FAIRE LA DEMANDE</Link>
+            </div>
+            <p style={{margin: '1rem'}}>Nombre de demandes en cours : {defaultValues.scientificEvents.length}.</p>
+            {errors.scientificEvents && <p className="form__section-field-error form__section-field-error--open">{errors.scientificEvents.message}</p>}
+          </div>
+        )}
+        {!isMissionAScienceEvent && (
+          <FileField
+            disabled={isEfForm}
+            setValue={setValue}
+            multiple
+            id="mission-goal"
+            formField="missionPurposeFile"
+            fileName={fileName}
+            register={register}
+            error={errors.missionPurposeFile}
+            pieces="Joindre impérativement convocation, mail ou tout autre document en attestant"
+          />
+        )}
         <HiddenField id="docId" value={docId} register={register} />
       </div>
         <FormSectionTitle>Départ et retour</FormSectionTitle>

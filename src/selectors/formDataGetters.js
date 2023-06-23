@@ -17,6 +17,23 @@ export const getSavedFileName = (urlFile) => {
   return finalName;
 }
 
+export const getAllFilenamesForProperty = (files) => {
+  let filename = '';
+
+  if (files) {
+    files.forEach((file) => {
+
+      filename += getSavedFileName(file);
+
+      if (files.length > 1) {
+        filename += ' - ';
+      }
+    })
+  }
+
+  return filename;
+}
+
 export const turnFieldsToAddressEntity = (data) => {
   
   const isMissionInFrance = data.region === 'métropole';
