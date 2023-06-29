@@ -239,6 +239,28 @@ const Mission = ({ step, isEfForm }) => {
   const toggleScienceForm = (event) => {
     setIsMissionAScienceEvent(event.target.checked);
   }
+
+  const setAddressesErrors = (errors) => {
+    
+    const errorsArray = Object.getOwnPropertyNames(errors);
+    const addressProperties = ['postCode', 'city'];
+    let errorMessage = 'Vous avez des erreurs aux adresses numéros : ';
+    
+    if (errorsArray.length === 0) {
+      errorMessage = '';
+    }
+    else {
+      errorsArray.forEach((error) => {
+        const property = error.slice(0, error.length - 1);
+        const number = error.slice(error.length - 1);
+
+        if (addressProperties.indexOf(property)) {
+          errorMessage += number + ' - ' ;
+        }
+      });
+    }
+    return errorMessage;
+  }
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
@@ -489,6 +511,7 @@ const Mission = ({ step, isEfForm }) => {
           filenames={modificationsFilenames}
         />
       )}
+      {setAddressesErrors(errors) !== '' && <p className="form__section-field-error form__section-field-error--open">{setAddressesErrors(errors)}</p>}
       <Buttons
         step={step}
         id={docId}

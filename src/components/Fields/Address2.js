@@ -9,79 +9,6 @@ import TextareaField from 'src/components/Fields/TextareaField';
 import { deleteAddress } from 'src/reducer/omForm';
 
 const Address2 = ({ countries, watch, data, register, errors, disabled, errorMessages, dispatch }) => {  
-
-  const bisArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-  
-  const streetType = [
-    {
-      id: 'R',
-      name: "Rue",
-    },
-    {
-      id: 'CIT',
-      name: "Cité",
-    },
-    {
-      id: 'AV',
-      name: "Avenue",
-    },
-    {
-      id: 'CHE',
-      name: "Chemin",
-    },
-    {
-      id: 'BD',
-      name: "Boulevard",
-    },
-    {
-      id: 'IMP',
-      name: "Impasse",
-    },
-    {
-      id: 'ALL',
-      name: "Allée",
-    },
-    {
-      id: 'QUA',
-      name: "Quartier",
-    },
-    {
-      id: 'LOT',
-      name: "Lot",
-    },
-    {
-      id: 'PL',
-      name: "Place",
-    },
-    {
-      id: 'PAS',
-      name: "Passage",
-    },
-    {
-      id: 'RTE',
-      name: "Route",
-    },
-    {
-      id: 'DOM',
-      name: "Domaine",
-    },
-    {
-      id: 'RES',
-      name: "Résidence",
-    },
-    {
-      id: 'HAM',
-      name: "Hameau",
-    },
-    {
-      id: 'QU',
-      name: "Quai",
-    },
-    {
-      id: 'SQ',
-      name: "Square",
-    },
-  ];
   
   const numberAddressesArray = [];
   for(let i = 1; i <= data.length; i++) {
@@ -109,7 +36,6 @@ const Address2 = ({ countries, watch, data, register, errors, disabled, errorMes
     
     const newArray = addressNumberArray.filter((number) => number !== id);
     setAddressesNumber(newArray);
-    
   }
 
   return (

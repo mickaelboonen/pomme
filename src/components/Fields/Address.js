@@ -56,78 +56,6 @@ const Address = ({
     }
   }
   
-  //   const bisArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-  
-  // const streetType = [
-  //   {
-  //     id: 'R',
-  //     name: "Rue",
-  //   },
-  //   {
-  //     id: 'CIT',
-  //     name: "Cité",
-  //   },
-  //   {
-  //     id: 'AV',
-  //     name: "Avenue",
-  //   },
-  //   {
-  //     id: 'CHE',
-  //     name: "Chemin",
-  //   },
-  //   {
-  //     id: 'BD',
-  //     name: "Boulevard",
-  //   },
-  //   {
-  //     id: 'IMP',
-  //     name: "Impasse",
-  //   },
-  //   {
-  //     id: 'ALL',
-  //     name: "Allée",
-  //   },
-  //   {
-  //     id: 'QUA',
-  //     name: "Quartier",
-  //   },
-  //   {
-  //     id: 'LOT',
-  //     name: "Lot",
-  //   },
-  //   {
-  //     id: 'PL',
-  //     name: "Place",
-  //   },
-  //   {
-  //     id: 'PAS',
-  //     name: "Passage",
-  //   },
-  //   {
-  //     id: 'RTE',
-  //     name: "Route",
-  //   },
-  //   {
-  //     id: 'DOM',
-  //     name: "Domaine",
-  //   },
-  //   {
-  //     id: 'RES',
-  //     name: "Résidence",
-  //   },
-  //   {
-  //     id: 'HAM',
-  //     name: "Hameau",
-  //   },
-  //   {
-  //     id: 'QU',
-  //     name: "Quai",
-  //   },
-  //   {
-  //     id: 'SQ',
-  //     name: "Square",
-  //   },
-  // ];
   const frenchRegions = countries.filter((country) => country.nationality === 'Français' || country.nationality === 'FRANCAIS(E)');
 
   return (
@@ -143,7 +71,6 @@ const Address = ({
         <h4>{title}</h4>
         <div><RxDoubleArrowUp /></div>
       </div>
-      {/* <label className="form__section-field-label">{'Adresse ' + addressType}</label> */}
       <HiddenField
         register={register}
         id={"addressId" + stepNumber}
@@ -177,7 +104,7 @@ const Address = ({
             id="street-type-field"
             formField={"streetType" + stepNumber}
             label="Type de voie"
-            required={errorMessages.streetType}
+            // required={errorMessages.streetType}
             error={errors['streetType' + stepNumber]}
           />
         </div>
@@ -189,7 +116,7 @@ const Address = ({
             label="Nom de la rue"
             register={register}
             error={errors['streetName' + stepNumber]}
-            required={errorMessages.streetName}
+            // required={errorMessages.streetName}
           />
         </div>
         <div className="address__section">

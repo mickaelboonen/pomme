@@ -54,7 +54,10 @@ export const turnFieldsToAddressEntity = (data) => {
       city: data['city' + i],
       countryCode: data['countryCode' + i] === 0 && isMissionInFrance ? 100 : data['countryCode' + i]
     }
-    addresses.push(missionAddress);
+    
+    if (data['postCode' + i] !== 0 && data['city' + i] !== '') {
+      addresses.push(missionAddress);
+    }
 
     delete data['addressId' + i];
     delete data['streetNumber' + i];
