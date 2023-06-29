@@ -3,6 +3,10 @@ export const getSavedFileName = (urlFile) => {
 
   const spliter = process.env.NODE_ENV === 'development' ? '\\' : '/';
   
+  // In case arrays are registered instead of file urls
+  if (typeof urlFile !== 'string') {
+    return 'Aucun fichier trouvé';
+  }
   const file = urlFile.split(spliter);
   const  filename = file[file.length - 1];
 

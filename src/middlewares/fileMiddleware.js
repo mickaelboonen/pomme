@@ -275,7 +275,7 @@ const omMiddleware = (store) => (next) => (action) => {
             }
             else if (step === 'advance') {
               delete data.advance;
-              data.hotelQuotations = data.hotelQuotations.filter((file) => typeof file === 'string')
+              data.hotelQuotations = data.hotelQuotations.filter((file) => typeof file === 'string');
               store.dispatch(updateAdvance(data));
             }
             else if (step === 'more-and-signature') {

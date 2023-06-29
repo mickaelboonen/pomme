@@ -87,6 +87,9 @@ const OMForm = () => {
         docState = unfinishedStep;
       }
     }
+    else {
+      return [];
+    }
 
     return docState;
   }
@@ -112,17 +115,11 @@ const OMForm = () => {
     }
   }, [apiMessage]);
 
-  const showLastStep = (step, loader, unfinishedSteps, agent) => {
-    console.log(step);
-    if (step === 6) { // Current step
-      console.log(!loader);
-      if (!loader) { // if the loader === false, we have the om data
-        console.log(unfinishedSteps);
-        if (unfinishedSteps.length === 0) { // if length === 0, all steps have been validated bu agent
-          console.log(agent);
-          if (agent.hasOwnProperty('lastname')) { // if true, agent's data has been fetched
-            return true;
-          }
+  const showLastStep = (loader, unfinishedSteps, agent) => {
+    if (!loader) { // if the loader === false, we have the om data
+      if (unfinishedSteps.length === 0) { // if length === 0, all steps have been validated bu agent
+        if (agent.hasOwnProperty('lastname')) { // if true, agent's data has been fetched
+          return true;
         }
       }
     }
@@ -151,8 +148,8 @@ const OMForm = () => {
             {(step === 3 && !omLoader) && <Accomodations step={step} />}
             {(step === 4 && !omLoader) && <Advance step={step} />}
             {(step === 5 && !omLoader) && <Other step={step} />}
-            {showLastStep(step, omLoader, docState, agent) && <Identity step={step} />}
-            {!showLastStep(step, omLoader, docState, agent) && (
+            {(step === 6 && showLastStep(omLoader, docState, agent)) && <Identity step={step} />}
+            {(step === 6 && !showLastStep(omLoader, docState, agent)) && (
               <div className='form'>
                   <p className='form__text'>Merci de terminer les étapes précédentes pour accéder à cette étape.</p>
                   <p className='form__text'>Il vous reste à valider :</p>
