@@ -69,4 +69,8 @@ export const streetType = [
     id: 'SQ',
     name: "Square",
   },
+  {
+    id: '',
+    name: "",
+  },
 ];
