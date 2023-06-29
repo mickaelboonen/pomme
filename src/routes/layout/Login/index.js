@@ -35,7 +35,8 @@ const Login = ({ cas }) => {
           sessionStorage.removeItem('logout-reason');
           dispatch(checkAuthentication({username : response.user, password: 'fsdf'}))
         })
-        .catch(response => 
+        .catch((response) => {
+          console.log(response);
           dispatch(setApiResponse({
             response : {
               status: 500,
@@ -46,7 +47,7 @@ const Login = ({ cas }) => {
               }
             },
             // message: response.message,
-          }))
+          }))}
         )
         .finally(() => {
           // TODO : a mettre dans le success

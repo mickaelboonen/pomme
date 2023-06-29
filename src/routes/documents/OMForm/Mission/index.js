@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
-import { useLoaderData, useNavigate, Link } from 'react-router-dom';
+import { useLoaderData, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import '../style.scss';
@@ -10,7 +10,6 @@ import EfMission from '../../EfForm/Mission';
 import Address2 from 'src/components/Fields/Address2';
 import Buttons from 'src/components/Fields/Buttons';
 import Rules from 'src/components/Rules';
-import ScientificEvent from './ScientificEventFields';
 import SwitchButton from 'src/components/SwitchButton';
 import DateField from 'src/components/Fields/DateField';
 import FileField from 'src/components/Fields/FileField';
@@ -18,11 +17,9 @@ import TextField from 'src/components/Fields/TextField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import RequestWithFile from 'src/components/Fields/RequestWithFile';
 
 // Selectors 
 import { defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
-// import {  } from 'src/selectors/formDataGetters';
 import { declareCamelCaseKeys, addAllAddressesFields } from 'src/selectors/keyObjectService';
 import { getSavedFileName, getAllFilenamesForProperty, turnFieldsToAddressEntity } from 'src/selectors/formDataGetters';
 
@@ -82,7 +79,7 @@ const Mission = ({ step, isEfForm }) => {
   else {
     defaultValues = omForm.find((omStep) => omStep.step === 'mission').data;
   }
-  console.log(defaultValues);
+  
   const fileName = getAllFilenamesForProperty(defaultValues.missionPurposeFile);
   const mapsFileName = getAllFilenamesForProperty(defaultValues.maps);
   
@@ -146,11 +143,6 @@ const Mission = ({ step, isEfForm }) => {
       }
     }
     else {
-
-      if (!data.science) {
-        data.budget = null;
-        data.presentation = null;
-      }
       
       const departure = new Date(data.departure);
       const comeback = new Date(data.comeback);
@@ -189,10 +181,6 @@ const Mission = ({ step, isEfForm }) => {
 
         if (fileToAdd === undefined && mapsToAdd === undefined ) {
           delete data.om;
-          // if (data.science && data.missionPurposeFileForValidation) {
-          //   data.missionPurposeFile = 'pending';
-          // }
-          // delete data.missionPurposeFileForValidation;
           dispatch(updateMission(data));
         }
         else {
@@ -222,7 +210,7 @@ const Mission = ({ step, isEfForm }) => {
   
   const [isMissionAScienceEvent, setIsMissionAScienceEvent] = useState(defaultValues.science);
   const [isVisaNeeded, setIsVisaNeeded] = useState(defaultValues.visa);
-  console.log(errors);
+  
   useEffect(() => {
     if (region === 'étranger') {
 
@@ -277,22 +265,7 @@ const Mission = ({ step, isEfForm }) => {
             label="Est-ce que c'est un événement scientifique ?"
           />
         )}
-        {/* {isMissionAScienceEvent && (
-          <RequestWithFile
-            requestType="scientific"
-            register={register}
-            setValue={setValue}
-            errors={errors}
-            watch={watch}
-            clearErrors={clearErrors}
-            id="scientificEvent"
-            data={defaultValues}
-            permanentOm={true}
-            link={`/nouveau-document/${encodeURIComponent('participation-à-un-événement-scientifique')}?omId=${docId}`}
-          />
-        )} */}
         {isMissionAScienceEvent && (
-          
           <div className="form__section-container" id="upper-class-request">
             <h4 className="form__section-container-title">PARTICIPATION À UN ÉVÉNEMENT SCIENTIFIQUE</h4>
             <div className="form__section-container-button">

@@ -95,7 +95,7 @@ const Derogation = () => {
     }
 
     if (data.rule === "") {
-      setError('rule', {type: 'custom', message: "Merci de renseigner la règle du guide des missions daisant l'objet de la demande de dérogation."})
+      setError('rule', {type: 'custom', message: "Merci de renseigner la règle du guide des missions faisant l'objet de la demande de dérogation."})
       errorCount++;
     }
 

@@ -39,8 +39,10 @@ const Home = () => {
   const [newTarget, setNewTarget] = useState('');
   
   const handleClickOnNewDoc = (event) => {
-    dispatch(toggleModal());
-    setNewTarget(event.currentTarget.id);
+    
+    navigate(`/utilisateur/${user}/mes-ordres-de-mission`);
+    // dispatch(toggleModal());
+    // setNewTarget(event.currentTarget.id);
   }
 
   const handleClickOnNewEf = () => {
