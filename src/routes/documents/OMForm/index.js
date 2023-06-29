@@ -27,7 +27,7 @@ const OMForm = () => {
 
   const { omForm :{ omForm, steps, omLoader, currentOM},
     app: { appLoader, apiMessage },
-    agent: { user },
+    agent: { user, agent },
   } = useSelector((state) => state);
   
   useEffect(() => {
@@ -111,6 +111,24 @@ const OMForm = () => {
       }, "1000")
     }
   }, [apiMessage]);
+
+  const showLastStep = (step, loader, unfinishedSteps, agent) => {
+    console.log(step);
+    if (step === 6) { // Current step
+      console.log(!loader);
+      if (!loader) { // if the loader === false, we have the om data
+        console.log(unfinishedSteps);
+        if (unfinishedSteps.length === 0) { // if length === 0, all steps have been validated bu agent
+          console.log(agent);
+          if (agent.hasOwnProperty('lastname')) { // if true, agent's data has been fetched
+            return true;
+          }
+        }
+      }
+    }
+    
+    return false;
+  }
   
   return (
     <>
@@ -133,8 +151,8 @@ const OMForm = () => {
             {(step === 3 && !omLoader) && <Accomodations step={step} />}
             {(step === 4 && !omLoader) && <Advance step={step} />}
             {(step === 5 && !omLoader) && <Other step={step} />}
-            {(step === 6 && !omLoader && docState.length === 0) && <Identity step={step} />}
-            {(step === 6 && !omLoader && docState.length > 0) && (
+            {showLastStep(step, omLoader, docState, agent) && <Identity step={step} />}
+            {!showLastStep(step, omLoader, docState, agent) && (
               <div className='form'>
                   <p className='form__text'>Merci de terminer les étapes précédentes pour accéder à cette étape.</p>
                   <p className='form__text'>Il vous reste à valider :</p>
