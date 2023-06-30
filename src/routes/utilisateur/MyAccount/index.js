@@ -24,6 +24,7 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 
 // Actions
 import { clearMessage } from 'src/reducer/app';
+import Rules from '../../../components/Rules';
 
 const MyAccount = () => {
   
@@ -53,6 +54,22 @@ const MyAccount = () => {
   <main className="my-documents">
     <PageTitle>Mes Pièces justificatives</PageTitle>
     <div className='form'>
+      <div className='form__section'>
+          <Rules
+            title="Données personnelles"
+            id="data"
+          >
+            <p className="rules__body-text" style={{margin: '1rem', textAlign: 'justify'}}>
+              Afin de pouvoir traiter les missions des agents, l’Université de Nîmes collecte et traite vos données personnelles (pièces d'identité, données bancaires, données relatives aux véhicules personnels...). 
+            </p>
+            <p className="rules__body-text" style={{margin: '1rem', textAlign: 'justify'}}>
+              Les données enregistrées dans ce dispositif sont conservées pendant la durée de votre contrat ou de votre affectation et sont accessibles aux services de l'Université de Nîmes (DSIUN, DAF, Recherche, DRH).
+            </p>
+            <p className="rules__body-text" style={{margin: '1rem', textAlign: 'justify'}}>
+              Une notice d’information plus complète est à votre disposition ... Pour exercer vos droits Informatique et Libertés et pour toute information sur ce dispositif, veuillez contacter notre délégué à la protection des données (DPD) en écrivant à <span className='rules__body-text__span'><a href="mailto:cil@unimes.fr">cil@unimes.fr</a></span>  ou à l’adresse postale suivante : Université de Nîmes – Affaires Générales - DPD - Rue du Docteur Georges SALAN - CS 13019 – 30021 Nîmes cedex 1
+            </p>
+          </Rules>
+      </div>
       <div className='form__section'>
         <FormSectionTitle>Identité</FormSectionTitle>
 
