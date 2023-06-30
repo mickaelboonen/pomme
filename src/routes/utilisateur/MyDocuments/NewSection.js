@@ -8,11 +8,11 @@ import './style.scss';
 import SelectField from 'src/components/Fields/SelectField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 
-import { displayOmStatus, saveOm } from 'src/reducer/omForm';
+import { showDocStatus, fetchOMs, fetchEfs } from 'src/reducer/agent';
 import DocButtons from './DocButtons';
-import LoaderCircle from '../../../components/LoaderCircle';
+import { MdRefresh } from 'react-icons/md'
 
-const Section = ({ id, data, steps, currentDoc, loader}) => {
+const Section = ({ id, data, user, steps, currentDoc, loader, isOm}) => {
   
   const dispatch = useDispatch();
   const {
@@ -24,7 +24,7 @@ const Section = ({ id, data, steps, currentDoc, loader}) => {
   });
 
   const handleChange = (event) => {
-    dispatch(displayOmStatus(event.target.value));
+    dispatch(showDocStatus({doc: event.target.value, type: isOm ? 'oms' : 'efs'}));   
   }
 
   let isDocFinished = false;
@@ -33,30 +33,41 @@ const Section = ({ id, data, steps, currentDoc, loader}) => {
   if (!unfinishedStep) {
     isDocFinished = true;
   }
+
+  const refreshData = () => {
+    if (isOm) {
+      dispatch(fetchOMs(user));
+    }
+    else {
+      dispatch(fetchEfs(user))
+    }
+  };
   
   return (
     <section id={id} className="my-documents__files">
-    { loader && <LoaderCircle />}
-    { !loader && (
       <SelectField
         data={data}
         register={register}
         handler={handleChange}
         formField="selectInput"
         id="list"
-        label={`Liste des Ordres de Missions`}
+        label={`Liste des ${isOm ? 'ordres de mission' : 'états de frais'}`}
         blankValue="Aucun document sélectionné"
       />
-    )}
+      <div className="my-documents__files-buttons">
+        <button style={{width: 'fit-content'}} onClick={refreshData}>
+          <MdRefresh className={classNames('my-documents__files-buttons-icon', {'my-documents__files-buttons-icon--animated': loader})} />  {!loader ? 'Rafraîchir la liste' : ''}
+        </button>
+      </div>
       {currentDoc.hasOwnProperty('id') && (
         <div className='om-status'>
-          <FormSectionTitle>Documents en rapport avec la mission</FormSectionTitle>
           <FormSectionTitle>Statut des différentes étapes</FormSectionTitle>
           <div className='om-status__steps'>
             {steps.map((step) => (
               <div key={step.name} className={classNames("om-status__steps-step", {
                 "om-status__steps-step--validated" : step.status,
-                "om-status__steps-step--not-validated" : !step.status,
+                "om-status__steps-step--not-validated" : !step.status && step.name !== 'étapes',
+                "om-status__steps-step--steps" : step.name === 'étapes',
               })}>
                 {step.name}
               </div>
@@ -71,7 +82,7 @@ const Section = ({ id, data, steps, currentDoc, loader}) => {
         </div>
       )}
       {currentDoc.hasOwnProperty('id') && (
-        <DocButtons {...currentDoc} isDocFinished={isDocFinished} />
+        <DocButtons isOm={isOm} {...currentDoc} isDocFinished={isDocFinished} />
       )}
     </section>
   );
@@ -79,6 +90,10 @@ const Section = ({ id, data, steps, currentDoc, loader}) => {
 
 Section.propTypes = {
 
+};
+
+Section.defaultProps = {
+  isOm: false,
 };
 
 export default Section;

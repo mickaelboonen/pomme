@@ -9,14 +9,20 @@ import {
   turnTransportsDataToDbFormat,
   turnAccomodationDataToDbFormat,
   turnAdvanceDataToDbFormat,
-  turnSignatureDataToDbFormat
+  turnSignatureDataToDbFormat,
+  efAccomodationsToDbFormat
 } from 'src/selectors/dataToDbFormat';
+import { turnFieldsToAddressEntity } from '../../selectors/formDataGetters';
+import { addSteps, handleSteps } from 'src/reducer/app';
 
-const Buttons = ({ trigger, step, url, id, watch, update, userSignature}) => {
+const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.app);
+  const { agent: { user },
+    app : { agentDocuments },
+    ef: { currentEf }
+  } = useSelector((state) => state);
 
   const nextStep = step + 1;
   const backStep = step - 1;
@@ -27,115 +33,201 @@ const Buttons = ({ trigger, step, url, id, watch, update, userSignature}) => {
     // Since we're are not validating fields here, we set the status to false so the user will know it has been verified
     data.status = 0;
     
-    
     for (const [key, value] of Object.entries(data)) {
       if (key.includes('_')) {
         delete data[key];
       }
     }
-
-    // trigger();
     
     if (step === 1) { // --------------------------------------------------------------------------------
 
-      data.missionAddress = {
-        id: data.addressId,
-        streetNumber: data.streetNumber,
-        bis: data.bis,
-        streetType: data.streetType,
-        streetName: data.streetName,
-        postCode: data.postCode,
-        city: data.city,
-      }
+      if (type === 'ef') {
+        
+        if (data.modificationSwitch) {
+
+          const dataToBeSubmitted = turnFieldsToAddressEntity(data);
+          
+          let fileObject = null;
   
-      delete data.addressId;
-      delete data.streetNumber;
-      delete data.bis;
-      delete data.streetType;
-      delete data.streetName;
-      delete data.postCode;
-      delete data.city;
-      
-
-      let fileObject = null;
-
-      if (data.missionPurposeFile) {
-        fileObject = data.missionPurposeFile.find((file) => file instanceof File);
-      }
-      
-      if (fileObject) {
-        dispatch(uploadFile({data: data, step: 'mission'}));
+          if (dataToBeSubmitted.missionPurposeFile) {
+            fileObject = dataToBeSubmitted.missionPurposeFile.find((file) => file instanceof File);
+          }
+          
+          if (fileObject) {
+            dispatch(uploadFile({data: dataToBeSubmitted, step: 'mission', docType: 'ef'}));
+          }
+          else {
+            dispatch(update(dataToBeSubmitted));
+          }
+        }
+        else {
+          dispatch(update({ docId: data.docId, status: data.status, isModified: false}));
+        }
       }
       else {
-        dispatch(update(data));
+
+        const dataToBeSubmitted = turnFieldsToAddressEntity(data);        
+
+        let fileObject = null;
+
+        if (dataToBeSubmitted.missionPurposeFile) {
+          fileObject = dataToBeSubmitted.missionPurposeFile.find((file) => file instanceof File);
+        }
+        
+        if (fileObject) {
+          dispatch(uploadFile({data: dataToBeSubmitted, step: 'mission', docType: 'om'}));
+        }
+        else {
+          dispatch(update(dataToBeSubmitted));
+        }
       }
+      navigate(url.pathname + url.search)
     }
     else if (step === 2) { // --------------------------------------------------------------------------------
       
-      const databaseData = turnTransportsDataToDbFormat(data);
+      if (type === 'ef') {
+        delete data.fields;
+        delete data.otherSwitch;
 
-      // return;
+        const filesArray = Object.entries(data).filter((entry) => entry[0].includes('Files'));
 
-      !databaseData.vehicleId ? databaseData.vehicleId = "" : databaseData.vehicleId;
-
-      if (databaseData.transportDispensation && typeof databaseData.transportDispensation !== 'string') {
-        dispatch(uploadFile({data: databaseData, step: 'transports'}));
-      } 
-      else if (databaseData.vehicleAuthorization && typeof databaseData.vehicleAuthorization !== 'string') {
-        dispatch(uploadFile({data: databaseData, step: 'transports'}));
-      } 
-      else {
+        const firstFoundFile = filesArray.find((property) => property[1].find((value) => value instanceof File));
         
-        dispatch(update(databaseData));
+        if (firstFoundFile === undefined) {
+          dispatch(update(data));
+        }
+        else {
+          dispatch(uploadFile({data: data, step: 'transports', docType: 'ef'}))
+        }
       }
+      else {
+        const databaseData = turnTransportsDataToDbFormat(data);
+
+        !databaseData.vehicleId ? databaseData.vehicleId = "" : databaseData.vehicleId;
+
+        if (databaseData.transportDispensation && typeof databaseData.transportDispensation !== 'string') {
+          dispatch(uploadFile({data: databaseData, step: 'transports'}));
+        } 
+        else if (databaseData.vehicleAuthorization && typeof databaseData.vehicleAuthorization !== 'string') {
+          dispatch(uploadFile({data: databaseData, step: 'transports'}));
+        } 
+        else {
+          
+          dispatch(update(databaseData));
+        }
+      }
+
     }
     else if (step === 3) { // --------------------------------------------------------------------------------
-      data.omId = id;
-      const dataToBeSubmitted = turnAccomodationDataToDbFormat(data);
-      dispatch(update(dataToBeSubmitted));
-    }
-    else if (step === 4) { // --------------------------------------------------------------------------------
-      
-      const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);
-      
-      if ( dataToBeSubmitted.agentRib instanceof File || dataToBeSubmitted.hotelQuotation instanceof File ) {
-        dispatch(uploadFile({data: dataToBeSubmitted, step: 'advance'}))
+
+      if (type === "ef") {
+        // const dataToBeSubmitted = efAccomodationsToDbFormat(data);
+        if ( data.eventFiles.length > 0 || data.hotelFiles.length > 0 ) {
+          dispatch(uploadFile({data: data, step: 'accomodations', docType: 'ef'}));
+        }
+        else {
+          dispatch(update(data));
+        }
       }
       else {
+        data.omId = id;
+        const dataToBeSubmitted = turnAccomodationDataToDbFormat(data);
         dispatch(update(dataToBeSubmitted));
       }
     }
-    else if (step === 5) { // --------------------------------------------------------------------------------
-      const formattedData = turnSignatureDataToDbFormat(data, userSignature);
+    else if (step === 4) { // --------------------------------------------------------------------------------
 
-      const infosFile = formattedData.files.find((file) => file instanceof File);
-      if (formattedData.agentSignature instanceof File || infosFile instanceof File) {
-        dispatch(uploadFile({ data: formattedData, step: 'more-and-signature'}));
-      } 
+      if (type !== "ef") {
+
+        if (data.savedRib) {
+          data.rib = agentDocuments.rib;
+        }
+        const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);
+
+        if ( dataToBeSubmitted.agentRib instanceof File || dataToBeSubmitted.hotelQuotation instanceof File ) {
+          dispatch(uploadFile({data: dataToBeSubmitted, step: 'advance'}))
+        }
+        else {
+          dispatch(update(dataToBeSubmitted));
+        }
+      }
       else {
-        dispatch(update(formattedData));
+
+        const stepsArray = [];
+        for (let i = 1; i <= data.numberDays; i++) {
+          stepsArray.push(i);
+        }
+        
+
+        const entities = stepsArray.map((stepIndex) => {
+          const step = {};
+          step.id = data['id' + stepIndex]
+          step.amCourseBeginning = data['amCourseBeginning' + stepIndex];
+          step.amCourseEnding = data['amCourseEnding' + stepIndex];
+          step.pmCourseBeginning = data['pmCourseBeginning' + stepIndex];
+          step.pmCourseEnding = data['pmCourseEnding' + stepIndex];
+          step.departurePlace = data['departurePlace' + stepIndex];
+          step.arrivalPlace = data['arrivalPlace' + stepIndex];
+          step.departure = data['departure' + stepIndex];
+          step.arrival = data['arrival' + stepIndex];
+          step.departureHour = data['departureHour' + stepIndex];
+          step.arrivalHour = data['arrivalHour' + stepIndex];
+          step.workDepartureHour = data['workDepartureHour' + stepIndex];
+          step.homeArrivalHour = data['homeArrivalHour' + stepIndex];
+          
+          return step;
+        })
+    
+        if (currentEf.stages.length === 0) {
+          dispatch(addSteps({data: entities, type: 'ef', docId: id}))
+        }
+        else {
+          
+          dispatch(handleSteps({data: entities, type: 'ef', docId: id}))
+        }
+      }
+    }
+    else if (step === 5) { // --------------------------------------------------------------------------------
+
+      if (type === 'ef') {
+        delete data.savedRib;
+        delete data.savedSignature;
+        if (data.agentSignature instanceof File || data.agentRib instanceof File) {
+          dispatch(uploadFile({data: data, step: 'signature', docType: 'ef'}));
+        }
+        else {
+          dispatch(update(data))
+        }
+      }
+      else {
+        const infosFile = data.files.find((file) => file instanceof File);
+        if (data.agentSignature instanceof File || infosFile instanceof File) {
+          dispatch(uploadFile({ data: data, step: 'more-and-signature'}));
+        } 
+        else {
+          dispatch(update(data));
+        }
+
       }
       
     }
   }
-  const handleClickOnNav = (event) => {
-    const { id } = event.target;
-    
-    if (event.target.querySelector('a').href.includes(user)) {
-      navigate(`/utilisateur/${user}/mes-ordres-de-mission`)
-    }else {
-      navigate('?etape=' + (id === 'back' ? step - 1 : step + 1) + '&id=' + id);
-    }
-    
-  }
 
+  const setNewSearch = (url, step) => {
+    return '?etape=' + step + url.search.slice(8);
+  }
+  
   return (
     <div className="form__section">
       <div className="form__section-field-buttons">
-        <button type='button' id='back' onClick={handleClickOnNav}><Link to={step === 1 ? `/utilisateur/${user}/mes-ordres-de-mission` : url.pathname + '?etape=' + backStep + '&id=' + id}>PRÉCÉDENT</Link></button>
-        <button type="button" id="previous-button" onClick={handleClick}>Enregistrer en l'état</button>
-        <button type="submit">Valider les données</button>
-        <button type='button' id='next' onClick={handleClickOnNav}><Link to={url.pathname + '?etape=' + nextStep + '&id=' + id}>SUIVANT</Link></button>
+        <div className="form__section-field-buttons__row">
+          <button type="button" id="previous-button" onClick={handleClick}>Enregistrer la saisie en cours</button>
+          <button type="submit">Valider la saisie définitive</button>
+        </div>
+        <div className="form__section-field-buttons__row">
+          <Link to={step === 1 ? `/utilisateur/${user}/mes-ordres-de-mission` : url.pathname + setNewSearch(url, backStep)}>{'<<'}</Link>
+          <Link to={url.pathname + setNewSearch(url, nextStep)}>{'>>'}</Link>
+        </div>
       </div>
     </div>
   );
@@ -148,6 +240,7 @@ Buttons.propTypes = {
 Buttons.defaultProps = {
   secondUpdate: null,
   userSignature: null,
+  om: null,
 };
 
 export default Buttons;

@@ -1,15 +1,39 @@
 @use 'src/styles/vars';
 
 .home {
-  height: 90vh;
+  min-height: 100%;
   padding: 1.5rem;
 
   &__title {
-    height: 6rem;
-    @include vars.centeredFlex;
+    min-height: 6rem;
     flex-wrap: wrap;
     margin-bottom: 2rem;
     font-family: var(--font-title);
+    display: none;
+
+    &--responsive {
+      @include vars.centeredFlex;
+    }
+
+    &-text {
+      // @include vars.pageTitle;
+      color: var(--second-color);
+      line-height: normal;
+      text-transform: lowercase;
+      font-size: 2em;
+      display: block;
+
+      & span {
+        text-transform: uppercase;
+        font-size: 6rem;
+
+        &:first-of-type {
+
+        letter-spacing: -10px;
+        }
+      }
+
+    }
 
     &-group {
       display: flex;
@@ -26,26 +50,28 @@
 
       &-rest  {
         width: 0;
-        opacity: 0;
+        // opacity: 0;
         overflow: hidden;
-        transition: 1s;
+        // transition: 1s;
         text-transform: lowercase;
         font-size: 2em;
+        // padding: 0 0.2rem 0.75rem;
+        // margin-right: 1rem;
         @include vars.centeredFlex;
-        padding-bottom: 0.75rem;
+        // padding-bottom: 0.75rem;
       }
     }
 
-    &:hover {
-      height: fit-content;
-      & .home__title-group-rest {
-        width: fit-content;
-        margin-right: 1rem;
-        opacity: 1;
-        position: relative;
-        padding: 0 0.2rem 0.75rem;
-      }
-    }
+    // &:hover {
+    //   height: fit-content;
+    //   & .home__title-group-rest {
+    //     width: fit-content;
+    //     margin-right: 1rem;
+    //     opacity: 1;
+    //     position: relative;
+    //     padding: 0 0.2rem 0.75rem;
+    //   }
+    // }
   }
 
   &__new {
@@ -54,6 +80,11 @@
     &-buttons {
       display: flex;
       justify-content: space-around;
+
+      & svg, & p {
+        cursor: pointer;
+      }
+      
 
       &-item {
         color: #1a1a1a;
@@ -81,7 +112,7 @@
 
     &-text {
       margin: 1rem;
-      text-align: center;
+      text-align: justify;
       font-size: 1.4em;
       font-weight: bold;
       color: var(--first-color);
@@ -90,13 +121,58 @@
 
     &-button {
       @include vars.button;
-      // padding: 1rem;
-      // font-size: 1em;
     }
   }
 }
 
 @media (min-width: vars.$sm) {
+  .home {
+    padding: 3rem;
+    width: 70%;
+    margin: auto;
+
+    &__title {
+      @include vars.centeredFlex;
+
+      &-text {
+        & span {
+          font-size: 4rem;
+        }
+      }
+
+      &--responsive {
+        display: none;
+      }
+    }
+  
+    &__new {
+      margin-bottom: 2rem;
+  
+      &-buttons {
+        display: flex;
+        justify-content: space-around;
+      }
+    }
+
+    &__login {
+      margin: auto;
+      width: 60%;
+    
+      &-text {
+        font-size: 1.4em;
+      }
+      
+
+      &-button {
+        @include vars.button;
+        padding: 1rem;
+        font-size: 1em;
+      }
+    }
+  }
+}
+
+@media (min-width: 700px) {
   .home {
     padding: 3rem;
     width: 70%;
@@ -108,10 +184,6 @@
       &-buttons {
         display: flex;
         justify-content: space-around;
-  
-        &-item {
-          // color: vars.$unimes;
-        }
       }
     }
 
@@ -124,7 +196,14 @@
         }
   
         &-rest  {
+          width: fit-content;
+          // transition: 1s;
+          text-transform: lowercase;
           font-size: 2.5em;
+          padding: 0 0.2rem 0.75rem;
+          margin-right: 1rem;
+          @include vars.centeredFlex;
+          // padding-bottom: 0.75rem;
         }
       }
     }

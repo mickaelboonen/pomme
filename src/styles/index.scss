@@ -2,8 +2,29 @@
 @use 'vars';
 @use "sass:color";
 
+@font-face {
+  font-family: 'MulishExtraBold';
+  src: url('../assets/fonts/Unimes/Mulish/static/Mulish-ExtraBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Mulish';
+  src: url('../assets/fonts/Unimes/Mulish/static/Mulish-Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'OswaldBold';
+  src: url('../assets/fonts/Unimes/Oswald/static/Oswald-Bold.ttf') format('truetype');
+}
+
+
+@font-face {
+  font-family: 'Oswald';
+  src: url('../assets/fonts/Unimes/Oswald/static/Oswald-Light.ttf') format('truetype');
+}
+
 body {
-  font-family: 'Rajdhani', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Mulish', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   background-color: var(--background-page);
 }
 
@@ -20,11 +41,26 @@ body {
   --lighterLightestThemeColor: 255, 204, 156, 0.3;
   --lighterDarkestThemeColor: 116, 41, 70, 0.25;
   
-  --header-height: 10vh;
+  --header-height: 6rem;
+  --main-height: calc(100vh - 10rem);
 
-  --font-title: 'Lobster';
+  --font-title: 'MulishExtraBold';
+  // --font-title: 'Lobster';
+
+  --backgroundSuccess: rgb(148, 250, 190);
+  --backgroundError: rgb(250, 148, 148);
+  --textSuccess: rgb(13, 117, 27);
+  --textError: rgb(117, 13, 13);
+  
+  & iframe {
+    width: 100%;
+    height: 100%;
+  }
 }
 
+#main {
+  min-height: var(--main-height);
+}
 
 :root:not(.dark) {
 
@@ -62,4 +98,6 @@ body {
   --thread-background: rgba(var(--darkerThemeColor));
   --background-page: rgba(var(--lighterDarkestThemeColor));
 }
+
+  
 

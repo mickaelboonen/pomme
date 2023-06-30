@@ -6,21 +6,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import './modalStyle.scss';
 
 // Components 
-import SwitchButton from 'src/components/SwitchButton';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import ButtonElement from 'src/components/Fields/ButtonElement';
 import FileField from 'src/components/Fields/FileField';
 
 // Actions
 import { toggleDocModal, addPermFile, editPermFile } from 'src/reducer/otherDocuments';
-import { addNewOM } from 'src/reducer/omForm';
 
 import './style.scss';
 
 const OneFileForm = () => {
   
   const { docs: { action, type, agentDocs},
-    app: { user },
+    agent: { user }
   } = useSelector((state) => state)
 
   const docToUpdate = agentDocs.find((doc) => doc.type === type);
@@ -67,33 +65,33 @@ const OneFileForm = () => {
 
   return (
   <div className='modal modal--file'>
-      <form className="modal__form" onSubmit={handleSubmit(onSubmit)}>
-        <div className="form__section">
-          <FormSectionTitle>{setTitle()}</FormSectionTitle>
-          <div className="form__section-field">
-            <FileField
-              register={register}
-              formField="file"
-              id="lol"
-              fileName={docToUpdate ? docToUpdate.name : ''}
-              label="Sélectionner un fichier à télécharger"
-              setValue={setValue}
-              error={errors.file}
-            />
-          </div>
-        </div>
-        <div className="form__section-field-buttons" id="modal-button">
-          <ButtonElement
-            type="submit"
-            label="Valider"
-            />
-          <ButtonElement
-            type="button"
-            label="Annuler"
-            handler={close}
+    <form className="modal__form" onSubmit={handleSubmit(onSubmit)}>
+      <div className="form__section">
+        <FormSectionTitle>{setTitle()}</FormSectionTitle>
+        <div className="form__section-field">
+          <FileField
+            register={register}
+            formField="file"
+            id="lol"
+            fileName={docToUpdate ? docToUpdate.name : ''}
+            label="Sélectionner un fichier à télécharger"
+            setValue={setValue}
+            error={errors.file}
           />
         </div>
-      </form>
+      </div>
+      <div className="form__section-field-buttons" id="modal-button">
+        <ButtonElement
+          type="submit"
+          label="Valider"
+          />
+        <ButtonElement
+          type="button"
+          label="Annuler"
+          handler={close}
+        />
+      </div>
+    </form>
   </div>
 );}
 

@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'src/components/Fields/TextField';
+import FileField from 'src/components/Fields/FileField';
 
 import './style.scss';
+import NumberField from '../../../components/Fields/NumberField';
 
-const VehicleData = ({ register, errors }) => {
+const VehicleData = ({ setValue, register, errors, registrationFilename, insuranceFilename  }) => {
   
   return (
   <div className="form__section-container" id="carForm">
@@ -13,48 +15,70 @@ const VehicleData = ({ register, errors }) => {
       <TextField
         id="car-brand"
         label="Marque du véhicule"
-        formField="carBrand"
+        formField="make"
         register={register}
         required='Merci de renseigner la marque de la voiture.'
-        error={errors.carBrand}
+        error={errors.make}
       />
       <TextField
         id="car-registration"
         label="Numéro d'immatriculation"
-        formField="carRegistration"
+        formField="licensePlate"
         register={register}
         required="Merci de renseigner la plaque d'immatriculation de la voiture."
-        error={errors.carRegistration}
+        error={errors.licensePlate}
       />
     </div>
     <div className="form__section  form__section--split">
-      <TextField
+      <NumberField
         id="car-rating"
         label="Puissance fiscale"
-        formField="carRating"
+        formField="rating"
         register={register}
-        isNumber
-        min="0"
         required='Merci de renseigner la puissance fiscale de la voiture.'
-        error={errors.carRating}
+        error={errors.rating}
       />
       <TextField
         id="car-insurance"
         label="Compagnie d'assurance"
-        formField="carInsurance"
+        formField="insurance"
         register={register}
         required="Merci de renseigner la compagnie assurant la voiture."
-        error={errors.carInsurance}
+        error={errors.insurance}
       />
     </div>
     <div className="form__section  form__section--split">
       <TextField
         id="police-number"
         label="Numéro Police"
-        formField="policeNumber"
+        formField="police"
         register={register}
         required="Merci de renseigner le numéro de police."
-        error={errors.policeNumber}
+        error={errors.police}
+      />
+    </div>
+    <div className="form__section  form__section--split">
+      <FileField
+        register={register}
+        formField="registrationFile"
+        id="registration"
+        fileName={registrationFilename}
+        label="Carte grise"
+        setValue={setValue}
+        error={errors.registrationFile}
+
+      />
+    </div>
+    <div className="form__section  form__section--split">
+
+      <FileField
+        register={register}
+        formField="insuranceFile"
+        id="insurance"
+        fileName={insuranceFilename}
+        label="Attestation d'assurance"
+        setValue={setValue}
+        error={errors.insuranceFile}
       />
     </div>
   </div>

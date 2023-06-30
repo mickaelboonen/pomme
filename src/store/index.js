@@ -13,14 +13,16 @@ import {
 import storage from 'redux-persist/lib/storage'
 
 // Reducers
-import omFormReducer from 'src/reducer/omForm';
-import efFormReducer from 'src/reducer/efForm';
+import efReducer from 'src/reducer/ef';
 import appReducer from 'src/reducer/app';
+import agentReducer from 'src/reducer/agent';
+import omFormReducer from 'src/reducer/omForm';
 import vehicleReducer from 'src/reducer/vehicle';
 import otherDocsReducer from 'src/reducer/otherDocuments';
 
 // Middlewares
 import omMiddleware from '../middlewares/omMiddleware';
+import efMiddleware from '../middlewares/efMiddleware';
 import fileMiddleware from '../middlewares/fileMiddleware';
 import appMiddleware from '../middlewares/appMiddleware';
 import vehicleMiddleware from '../middlewares/vehicleMiddleware';
@@ -29,15 +31,19 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage,
+  whitelist: ['agent', 'app'],
+  blacklist: ['docs', 'omForm', 'ef', '_persist', 'app.apiMessage', 'app.agentDocuments'],
   stateReconciler: autoMergeLevel2 // ADDED
-}
+};
 
 const reducers = combineReducers({
+  ef: efReducer,
+  // app: persistReducer(appConfig, appReducer),
   app: appReducer,
+  agent: agentReducer,
   omForm: omFormReducer,
-  efForm: efFormReducer,
-  vehicle: vehicleReducer,
   docs: otherDocsReducer,
+  vehicle: vehicleReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers);
@@ -49,7 +55,8 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(omMiddleware, fileMiddleware, appMiddleware, vehicleMiddleware)
+    }).concat(omMiddleware, efMiddleware, fileMiddleware, appMiddleware, vehicleMiddleware),
+    devTools: process.env.NODE_ENV !== 'production',
 })
 
 export const persistor = persistStore(store)

@@ -3,11 +3,20 @@
 
 $test : #{var(--first-color)};
 
+@keyframes spin {
+  from {
+      transform:rotate(0deg);
+  }
+  to {
+      transform:rotate(360deg);
+  }
+}
+
 .my-documents {
   min-width:100vw;
   margin: auto;
-  min-height: 90vh;
-  background-color: var(--lighter-first-color);
+  min-height: 100%;
+  // background-color: var(--lighter-first-color);
   padding-top: 1rem;
 
   &__title {
@@ -40,7 +49,11 @@ $test : #{var(--first-color)};
     height: fit-content;
     overflow: hidden;
     background-color: var(--lighter-first-color);
+    // background-color: transparent;
     border-radius: 0 0 vars.$radius vars.$radius;
+    border: 1px solid #1a1a1a;
+    border-top: 0;
+    // box-shadow: 1px 1px 5px #1a1a1a;
 
     &-buttons {
       display: flex;
@@ -49,13 +62,16 @@ $test : #{var(--first-color)};
       margin: 1rem;
 
 
-        & a {
-        @include vars.button;
-        margin-bottom: 0.5rem;
-        max-width: none;
-        font-size: 0.9em;
-        text-align: center;
-        @include vars.centeredFlex;
+      & a, & button  {
+      @include vars.button;
+      margin-bottom: 0.5rem;
+      
+      font-size: 0.7em;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      width: 35%;
+        
       }
 
       &--validation {
@@ -68,6 +84,18 @@ $test : #{var(--first-color)};
           &:nth-of-type(3) {
             margin: 0 auto 0.5rem;
           }
+        }
+      }
+
+      &-icon {
+        margin-right: 0.5rem;
+        font-size: 1.5rem;
+        min-width: 1rem;
+        min-height: 1rem;
+        
+        &--animated {
+          margin-left: 0.5rem;
+          animation: spin 1s infinite linear;
         }
       }
     }
@@ -176,6 +204,29 @@ $test : #{var(--first-color)};
         }
       }
 
+      &--steps {
+        background-color: var(--lighter-first-color);
+        color: rgba(var(--darkestThemeColor));
+        border: 1px solid rgba(var(--darkestThemeColor));
+        position: relative;
+
+        // &::after {
+        //   content: '';
+        //   position: absolute;
+        //   bottom: -0.50rem;
+        //   right: -0.50rem;
+        //   text-align: center;
+        //   font-weight: bold;
+        //   border-radius: 50%;
+        //   padding: 0.2rem;
+        //   height: 1.5rem;
+        //   width: 1.5rem;
+        //   background-color: var(--first-color);
+        //   // color: var(--opposite-theme-color);
+        //   border: 1px solid rgba(var(--darkestThemeColor));
+        // }
+      }
+
       &:last-child {
         margin-right: 0;
       }
@@ -191,7 +242,7 @@ $test : #{var(--first-color)};
 @media (min-width: vars.$sm) {
 
   .my-documents {
-    background-color: var(--background-page);
+    // background-color: var(--background-page);
     width: 80%;
     display: flex;
     flex-direction: column;
@@ -209,6 +260,11 @@ $test : #{var(--first-color)};
 
     &__files {
       width: 70%;
+      &-buttons {
+        & a {
+          width: fit-content;
+        }
+      }
     }
   }
 

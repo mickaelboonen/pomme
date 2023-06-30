@@ -1,0 +1,43 @@
+#carBrand, #carRating {
+  margin-right: 1rem;
+}
+
+#carForm {
+  .form__section {
+    margin-bottom: 0;
+
+    &-field {
+      margin-bottom: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 1rem;
+    }
+  }
+
+  & button{
+    margin-bottom: 1rem;
+  }
+
+  &Button {
+    display: block;
+  }
+}
+
+#external-signature-button {
+  align-items: center;
+  & button { 
+    margin-bottom: 0;
+  }
+  & .form__section-field {
+
+    &-label {
+
+      &--car-form {
+        width: fit-content;
+        margin-top: 0.5rem;
+        margin-bottom: 1.5rem;
+      }
+    }
+  }
+}

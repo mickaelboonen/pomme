@@ -26,11 +26,13 @@ const initialState = {
   formDefaultValues: {
     carType: null,
     selectedVehicle: null,
-    carBrand: null,
-    carRegistration: null,
-    carRating: null,
-    carInsurance: null,
-    policeNumber: null,
+    make: null,
+    licensePlate: null,
+    rating: null,
+    insurance: null,
+    police: null,
+    registrationFile: null,
+    insuranceFile: null,
     reasons: [],
     otherReason: null,
     savedRegistration: false,
@@ -38,12 +40,13 @@ const initialState = {
     savedRegistration: false,
     carInsuranceFile: null,
     signature: null,
-    externalSignature: null
+    externalSignature: null,
   },
   loader: true,
   needsPdf: false,
   message: null,
   savedAuthorization: {},
+  authorizationFile: null,
 };
 const vehicleSlice = createSlice({
     name: 'vehicle',
@@ -80,9 +83,6 @@ const vehicleSlice = createSlice({
         });
         state.loader = false;
       },
-      saveVehicle: (state, action) => {
-        // action.payload.forEach((vehicle) => state.vehicles.push(vehicle));
-      },
       displayVehicle: (state, action) => {
         
         const vehicleToShow = state.vehicles.find((vehicle) => vehicle.id === Number(action.payload))
@@ -96,11 +96,13 @@ const vehicleSlice = createSlice({
         
         state.formDefaultValues.carType= isUnimeVehicle ? 'company-car': 'personal-car';
         state.formDefaultValues.selectedVehicle= vehicleToShow ? vehicleToShow.id : '';
-        state.formDefaultValues.carBrand= vehicleToShow ? vehicleToShow.make : '';
-        state.formDefaultValues.carRegistration= vehicleToShow ? vehicleToShow.licensePlate : '';
-        state.formDefaultValues.carRating= vehicleToShow ? vehicleToShow.rating : '';
-        state.formDefaultValues.carInsurance= vehicleToShow ? vehicleToShow.insurance : '';
-        state.formDefaultValues.policeNumber= vehicleToShow ? vehicleToShow.police : '';
+        state.formDefaultValues.make= vehicleToShow ? vehicleToShow.make : '';
+        state.formDefaultValues.licensePlate= vehicleToShow ? vehicleToShow.licensePlate : '';
+        state.formDefaultValues.rating= vehicleToShow ? vehicleToShow.rating : '';
+        state.formDefaultValues.insurance= vehicleToShow ? vehicleToShow.insurance : '';
+        state.formDefaultValues.police= vehicleToShow ? vehicleToShow.police : '';
+        state.formDefaultValues.insuranceFile= vehicleToShow ? vehicleToShow.insuranceFile : '';
+        state.formDefaultValues.registrationFile= vehicleToShow ? vehicleToShow.registrationFile : '';
         state.currentVehicle = vehicleToShow;
         
         state.currentVehicle = vehicleToShow ? vehicleToShow : {};
@@ -153,7 +155,17 @@ const vehicleSlice = createSlice({
       },
       saveAuthorization: (state, action) => {
         state.savedAuthorization = action.payload;
-      }
+      },
+      saveAuthorizationFile: (state, action) => {
+        state.authorizationFile = action.payload
+      },
+      fetchVehicle: () => {
+
+      },
+      saveVehicle: (state, action) => {
+        state.currentVehicle = action.payload;
+        state.loader = false;
+      },
     },
 });
 
@@ -173,6 +185,8 @@ export const {
   updateVehicle,
   deleteVehicle,
   saveAuthorization,
+  saveAuthorizationFile,
+  fetchVehicle,
 } = vehicleSlice.actions;
 
 export default vehicleSlice.reducer;

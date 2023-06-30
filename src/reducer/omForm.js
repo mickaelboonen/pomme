@@ -2,30 +2,37 @@ import { createSlice } from '@reduxjs/toolkit';
 import { turnTransportsDataToAppFormat } from '../selectors/dataToDbFormat';
 import { declareCamelCaseKeys } from '../selectors/keyObjectService';
 
+
 const initialState = {
   steps: [
     {
       name: 'Mission',
+      property: 'mission',
       id: 1,
     },
     {
       name: 'Transports',
+      property: 'transports',
       id: 2,
     },
     {
-      name: 'Hébergements',
+      name: 'Hébergement & Repas',
+      property: 'accomodations',
       id: 3,
     },
     {
       name: 'Avance',
+      property: 'advance',
       id: 4,
     },
     {
-      name: 'Signature',
+      name: 'Autre',
+      property: 'signature',
       id: 5,
     },
     {
       name: 'Missionnaire',
+      property: 'missioner',
       id: 6,
     },
   ],
@@ -38,7 +45,6 @@ const initialState = {
         abroadCosts: null,
         departure: null,
         departurePlace: null,
-        workAdress: null,
         missionPurpose: null,
         missionPurposeFile: null,
         region: null,
@@ -81,11 +87,11 @@ const initialState = {
       step: 'signature',
       data: {},
     }, 
-    {
-      id: 6,
-      step: 'more',
-      data: {},
-    }, 
+    // {
+    //   id: 6,
+    //   step: 'more',
+    //   data: {},
+    // }, 
   ],
   omPdf: "null",
   currentOM: {},
@@ -120,7 +126,7 @@ const omFormSlice = createSlice({
     name: 'omForm',
     initialState,
     reducers: {
-      selectData: (state, action) => {
+      selectOmData: (state, action) => {
 
         let status = 1;
         if (action.payload === 'ec') {
@@ -134,12 +140,13 @@ const omFormSlice = createSlice({
           status = 8;
         }
         
-        state.dataToSelect = state.userOms.filter((om) => om.status === status);
+        state.dataToSelect = action.payload.filter((om) => om.status === status);
         state.currentOM = {};
       },
       displayOmStatus: (state, action) => {
-        const omToDisplay = state.userOms.find((om) => om.id === Number(action.payload));
+        const omToDisplay = action.payload.data.find((om) => om.id === Number(action.payload.om));
         state.currentOM = omToDisplay ? omToDisplay : {};
+
       },
       // saveOm: () => {},
       saveOmPdf: (state, action) => {
@@ -151,7 +158,7 @@ const omFormSlice = createSlice({
       addNewOM: () => {},
       fetchOMs: () => {},
       uploadFile: () => {},
-      createDerogation: () => {},
+      createDispensation: () => {},
       clearSideForm: (state) => {
         state.isSideFormInDB = false;
       },
@@ -177,12 +184,18 @@ const omFormSlice = createSlice({
       updateOm: () => {},
       updateOmName: () => {},
       updateAdvance: () => {},
-      updateSignature: () => {},
+      // updateSignature: () => {},
       updateTransports: () => {},
       updateAccomodations: () => {},
       updateMission: () => {},
       saveOm: (state, action) => {
         state.currentOM = action.payload;
+        state.omForm[0].data = declareCamelCaseKeys(action.payload.mission);
+        state.omForm[1].data = turnTransportsDataToAppFormat(declareCamelCaseKeys(action.payload.transports));
+        state.omForm[2].data = declareCamelCaseKeys(action.payload.accomodations);
+        state.omForm[3].data = declareCamelCaseKeys(action.payload.advance);
+        state.omForm[4].data = declareCamelCaseKeys({...action.payload.signature, ...action.payload.more});
+        
         state.omLoader = false;
       },
       saveNewOm: (state, action) => {
@@ -198,22 +211,13 @@ const omFormSlice = createSlice({
       saveUserOms: (state, action) => {
         state.userOms = action.payload;
         state.dataToSelect = state.userOms.filter((om) => om.status === 1);
+        
         state.omLoader = false;
       },
       saveMission: (state, action) => {
-        state.omForm[0].data.omId = action.payload.om.id;
-
-        const formattedValues = declareCamelCaseKeys(action.payload);
-        formattedValues.streetNumber = formattedValues.address ? formattedValues.address.streetNumber : null;
-        formattedValues.bis = formattedValues.address ? formattedValues.address.bis : null;
-        formattedValues.streetType = formattedValues.address ? formattedValues.address.streetType : null;
-        formattedValues.streetName = formattedValues.address ? formattedValues.address.streetName : null;
-        formattedValues.postCode = formattedValues.address ? formattedValues.address.postCode : null;
-        formattedValues.city = formattedValues.address ? formattedValues.address.city : null;
-        formattedValues.addressId = formattedValues.address ? formattedValues.address.id : null;
-        delete formattedValues.address;
         
-        state.omForm[0].data = formattedValues;
+        state.omForm[0].data.omId = action.payload.om.id;        
+        state.omForm[0].data = declareCamelCaseKeys(action.payload);
         
         state.omLoader = false;
       },
@@ -247,15 +251,16 @@ const omFormSlice = createSlice({
       },
       saveAdvance: (state, action) => {
         const dataForApp = declareCamelCaseKeys(action.payload);
+        console.log("DATA FOR APP = ", dataForApp);
         const dataForTheComponent =  {
-          advance: false,
           savedRib: false,
+          advance: dataForApp.advance,
           omId: dataForApp.om.id,
           total: dataForApp.totalAmount,
           advanceAmount: dataForApp.advanceAmount,
-          hotelQuotation: dataForApp.hotelQuotation,
+          hotelQuotations: dataForApp.hotelQuotations,
           otherExpensesAmount: dataForApp.otherExpensesAmount,
-          otherExpensesNames: dataForApp.otherExpensesJustitication,
+          otherExpensesJustitication: dataForApp.otherExpensesJustitication,
           rib: dataForApp.agentRib,
         }
 
@@ -270,7 +275,9 @@ const omFormSlice = createSlice({
       },
       setLoader: (state, action) => {
         state.omLoader = action.payload;
-      }
+      },
+      deleteAddress: () => {},
+      createScientificEvent: () => {},
     },
 });
 
@@ -279,7 +286,7 @@ export const {
   fetchOm,
   saveOm,
   updateOmName,
-  updateSignature,
+  // updateSignature,
   saveUserOms,
   fetchOMs,
   addNewOM,
@@ -300,14 +307,42 @@ export const {
   saveAdvance,
   saveMore,
   updateAccomodations,
-  createDerogation,
+  createDispensation,
   clearSideForm,
   validateSideForm,
   clearOMTarget,
-  selectData,
+  selectOmData,
   displayOmStatus,
   saveOmPdf,
   updateOm,
+  deleteAddress,
+  createScientificEvent
 } = omFormSlice.actions;
 
 export default omFormSlice.reducer;
+
+// START TRANSACTION;
+// SET FOREIGN_KEY_CHECKS = 0;
+// DELETE FROM om WHERE id = 11;
+// DELETE FROM om_mission WHERE id = 10;
+// DELETE FROM om_transports WHERE id = 10;
+// DELETE FROM om_accomodations WHERE id = 10;
+// DELETE FROM om_advance WHERE id = 10;
+// DELETE FROM om_more WHERE id = 10;
+// DELETE FROM om_signature WHERE id = 10;
+// DELETE FROM om WHERE id = 12;
+// DELETE FROM om_mission WHERE id = 11;
+// DELETE FROM om_transports WHERE id = 11;
+// DELETE FROM om_accomodations WHERE id = 11;
+// DELETE FROM om_advance WHERE id = 11;
+// DELETE FROM om_more WHERE id = 11;
+// DELETE FROM om_signature WHERE id = 11;
+// DELETE FROM om WHERE id = 13;
+// DELETE FROM om_mission WHERE id = 12;
+// DELETE FROM om_transports WHERE id = 12;
+// DELETE FROM om_accomodations WHERE id = 12;
+// DELETE FROM om_advance WHERE id = 12;
+// DELETE FROM om_more WHERE id = 12;
+// DELETE FROM om_signature WHERE id = 12;
+// SET FOREIGN_KEY_CHECKS = 1;
+// COMMIT;

@@ -84,6 +84,29 @@ module.exports = {
           filename: 'fonts/[hash][ext][query]'
         }
       },
+      // Videos
+      {
+        test: /\.(mp4|webm|ogg)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: 'videos/[name].[ext]',
+          },
+        },
+      },
+      // PDFs
+      {
+        test: /\.(pdf)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'pdfs/' // Répertoire de sortie pour les fichiers PDF
+            }
+          }
+        ]
+      }
     ],
   },
 };

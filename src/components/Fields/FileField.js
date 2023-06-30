@@ -17,7 +17,9 @@ const FileField = ({
   disabled,
   error,
   required,
-  setValue
+  setValue,
+  accept,
+  link
 }) => {
 
   // Triggers the click on the file input that's hidden
@@ -50,7 +52,7 @@ const FileField = ({
   
   return (
   <div id={formField} className={classNames("form__section-field", {"form__section-field--hidden": isHidden})} >
-    <label className="form__section-field-label" htmlFor={id}>{label}</label>
+    <label className="form__section-field-label" htmlFor={id}>{label ?? `Pièce${multiple ? 's' : ''} justificative${multiple ? 's' : ''}`}</label>
     <div className="form__section-field-input form__section-field-input--file" onClick={handleClickOnFileInput}>
       <input
         id={id}
@@ -65,9 +67,11 @@ const FileField = ({
         onChange={handleChange}
         multiple={multiple}
         disabled={disabled}
+        accept={accept}
       />
       <div>{fileName}</div>
     </div>
+    {link !== "" && <a target='_blank' href={link} className="form__section-field-label form__section-field-label--infos">{link}</a>}
     {pieces !== "" && <p className="form__section-field-label form__section-field-label--infos">{pieces}</p>}
     {error !== undefined && <p className="form__section-field-error form__section-field-error--open">{error?.message}</p>}
   
@@ -82,9 +86,11 @@ FileField.defaultProps = {
   multiple: false,
   disabled: false,
   pieces: '',
+  link: '',
   isHidden: false,
   placeholder: '',
-  label: 'Pièce justificative',
+  accept: '',
+  // label: `Pièce${multiple ? 's' : ''} justificative${multiple ? 's' : ''}`,
 }
 
 export default FileField;

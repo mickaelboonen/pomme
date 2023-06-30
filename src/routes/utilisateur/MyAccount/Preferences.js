@@ -1,20 +1,22 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './style.scss';
 import PageTitle from 'src/components/PageTitle';
-import FormSectionTitle from 'src/components/FormSectionTitle';
-import { useForm } from 'react-hook-form';
 import RadioInput from 'src/components/Fields/RadioInput';
+import FormSectionTitle from 'src/components/FormSectionTitle';
 
 const Preferences = () => {
   
   const {
     register,
-    watch,
-    formState:
-    { errors },
+    watch
   } = useForm();
+
+  const { agent: { user }} = useSelector((state) => state);
+  console.log(user);
 
 
   let currentTheme = localStorage.getItem('color-theme-name');
@@ -86,16 +88,16 @@ const Preferences = () => {
 
   };
 
-  const themes = [
-    {
-      id: 'green',
-      label: 'Vert',
-      colors: ['#020402', '#0c2c30', '#468884', '#98c4ac', '#dfe7da']
-    },
+  let themes = [
     {
       id: 'classic',
       label: 'Classique',
       colors: ['rgba(116, 41, 70, 1)', 'rgba(153, 56, 79, 1)', 'rgba(209, 84, 94, 1)', 'rgba(255, 137, 127, 1)', 'rgba(255, 204, 156, 1)']
+    },
+    {
+      id: 'green',
+      label: 'Vert',
+      colors: ['#020402', '#0c2c30', '#468884', '#98c4ac', '#dfe7da']
     },
     {
       id: 'olive',
@@ -104,7 +106,7 @@ const Preferences = () => {
     },
     {
       id: 'other',
-      label: 'Autre',
+      label: 'Taupe',
       colors: ['#403036', '#5e485b', '#927078', '#d0a6a4', '#d1bdb0']
     },
     {
@@ -112,16 +114,6 @@ const Preferences = () => {
       label: 'Bleu',
       colors: ['#0c3043', '#12475b', '#1a6f78', '#20959f', '#2bc9c7']
       
-    }, 
-    {
-      id: 'rose',
-      label: 'Rose',
-      colors: ['#3d2d3f', '#5c4159', '#8a617e', '#ca8cad', '#fbc4e8']
-    },
-    {
-      id: 'slytherin',
-      label: 'Vert Serpentard',
-      colors: ['#132c36', '#1b4043', '#285d58', '#377072', '#55a19b']
     },
     {
       id: 'brown',
@@ -129,48 +121,58 @@ const Preferences = () => {
       colors: ['#471923','#6f2f2e','#a15238','#da8642','#ffcc4d']
     },
     {
-      id: 'lilac',
-      label: 'Lilas',
-      colors: ['#100907', '#211f37', '#585b88', '#979dea', '#d0dbef']
+      id: 'hufflepuff',
+      label: 'Jaune & Noir',
+      colors: ['#141414', '#362e29', '#706254', '#ecc655', '#e7b827']
     },
-    // {
-    //   id: 'light-blue',
-    //   label: 'Bleu clair',
-    //   colors: ['#6ba1ca', '#60b3ce', '#93d0dc', '#cbeaeb', '#f3f3f3']
-    // },
-    // {
-    //   id: 'light-green',
-    //   label: 'Vert clair',
-    //   colors: ['#468b88', '#98bea8', '#cad6c6', '#ede8d8', '#f6f5eb']
-    // },
+    {
+      id: 'ravenclaw',
+      label: 'Bleu & Bronze',
+      colors: ['#222f5b', '#040d3f', '#2c428a', '#5d5d5d', '#946b2d']
+    },
+    {
+      id: 'slytherin2',
+      label: 'Vert & Argent',
+      colors: ['#1a472a', '#013403', '#2a623d', '#5d5d5d', '#aaa']
+    },
+    {
+      id: 'gryffindor',
+      label: 'Rouge & Or',
+      colors: ['#740001', '#530909', '#ae0001', '#eeba30', '#d3a625']
+    },
+      // {
+      //   id: 'unimes',
+      //   label: 'Orange',
+      //   colors: [ '#ff8364', '#e84e24', '#b5370c', '#ffc7b8', '#f6d9cc']
+      // },
   ];
 
   return (
-  <main className='my-preferences'>
-    <PageTitle>Mes préférences</PageTitle>
-    <form className='theme'>
-      <FormSectionTitle>Thème de l'application</FormSectionTitle>
-      <div className='theme__container'>
-
-      {themes.map((theme) => (
-        <div className='theme__container-theme' key={theme.id}>
-          <div className='theme__container-theme-colors'>
-            {theme.colors.map((color) => <div key={color} className='theme__container-theme-colors-color' style={{'backgroundColor': color}} />)}
-          </div>
-          <RadioInput
-            id={theme.id}
-            checked={theme.id === currentTheme ? true : false}
-            formField="theme"
-            label={theme.label}
-            register={register}
-            handler={handleClick}
-          />
+    <div className='my-preferences'>
+      <PageTitle>Mes préférences</PageTitle>
+      <form className='theme'>
+        <FormSectionTitle>Thème de l'application</FormSectionTitle>
+        <div className='theme__container'>
+          {themes.map((theme) => (
+            <div className='theme__container-theme' key={theme.id}>
+              <div className='theme__container-theme-colors'>
+                {theme.colors.map((color) => <div key={color} className='theme__container-theme-colors-color' style={{'backgroundColor': color}} />)}
+              </div>
+              <RadioInput
+                id={theme.id}
+                checked={theme.id === currentTheme ? true : false}
+                formField="theme"
+                label={theme.label}
+                register={register}
+                handler={handleClick}
+              />
+            </div>
+          ))}
         </div>
-      ))}
-      </div>
-    </form>
-  </main>
-);}
+      </form>
+    </div>
+  );
+}
 
 Preferences.propTypes = {
 

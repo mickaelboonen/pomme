@@ -13,13 +13,14 @@ const DateField = ({
   disabled,
   error,
   required,
+  min,
+  max,
   handler,
 }) => {
   const handleChange = (event) => {
     if (handler) {
-      handler(event.target.value);
+      handler(event.target.value, min, max, formField);
     }
-    
   };
 
   return (
@@ -29,6 +30,8 @@ const DateField = ({
       id={id}
       disabled={disabled}
       type={type}
+      min={min}
+      max={max}
       className="form__section-field-input"
         {...register(formField, {
           required: required
@@ -41,12 +44,14 @@ const DateField = ({
 };
 
 DateField.defaultProps = {
-  handler: null,
+  handler: () => {},
+  min: null,
+  max: null,
 };
 
 
 DateField.propTypes = {
 
-};
+};  
 
 export default DateField;

@@ -1,0 +1,12 @@
+@use 'src/styles/vars';
+
+.footer {
+  border-top: 1px solid rgba(var(--darkestThemeColor));
+  @include vars.centeredFlex;
+  height: 4rem;
+  background-color: var(--first-color);
+  
+  & img {
+    max-height: 70%;
+  }
+}

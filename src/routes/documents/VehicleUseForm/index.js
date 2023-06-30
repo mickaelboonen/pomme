@@ -1,8 +1,7 @@
 import { useForm } from "react-hook-form";
-import classNames from "classnames";
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLoaderData } from 'react-router-dom';
+import { useNavigate, useLoaderData, Link } from 'react-router-dom';
 import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
 
 import './style.scss';
@@ -11,21 +10,24 @@ import './style.scss';
 import VehicleData from './VehicleData';
 import PageTitle from 'src/components/PageTitle';
 import SwitchButton from 'src/components/SwitchButton';
+import LoaderCircle from "src/components/LoaderCircle";
 import TextField from 'src/components/Fields/TextField';
-import FileField from 'src/components/Fields/FileField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import HiddenField from 'src/components/Fields/HiddenField';
 import SelectField from 'src/components/Fields/SelectField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
-import ButtonElement from 'src/components/Fields/ButtonElement';
-import FileOrSavedFile from 'src/components/Fields/FileOrSavedFile';
+import CarAuthorizationPdf from "src/components/PDF/CarAuthorizationPdf";
 
 // Actions
-import { clearSideForm, uploadFile } from 'src/reducer/omForm';
-import { displayVehicle, createVehicle, requestVehicleAuthorization, stayOnAuthorizationForm, clearMessage, resetPdfNeed } from 'src/reducer/vehicle';
-import CarAuthorizationPdf from "../../../components/PDF/CarAuthorizationPdf";
-import LoaderCircle from "../../../components/LoaderCircle";
+import { uploadFile } from 'src/reducer/omForm';
+import {
+  displayVehicle,
+  requestVehicleAuthorization,
+} from 'src/reducer/vehicle';
+import { clearMessage } from 'src/reducer/app';
+import { getSavedFileName } from 'src/selectors/formDataGetters'
+import { uploadVehicleFiles } from "src/reducer/otherDocuments";
 
 
 const VehicleUseForm = () => {
@@ -36,30 +38,38 @@ const VehicleUseForm = () => {
   const omId = url.searchParams.get('omId');
 
   let { 
-    app: { agent  },
+    app : { apiMessage },
+    agent : { agent , user , oms },
     docs: { agentSignature },
-    omForm: { isSideFormInDB },
-    vehicle: { savedAuthorization, message, needsPdf ,vehicleTypes, vehicles, formDefaultValues, unimesVehicles, loader },
+    vehicle: { needsPdf ,vehicleTypes, vehicles, formDefaultValues, loader },
   } = useSelector((state) => state);
-
-
+  
   useEffect(() => {
-    if (isSideFormInDB) {
-      dispatch(clearSideForm());
-
-      if (!needsPdf) {
+    if (apiMessage.response && apiMessage.response.status === 200) {
+      setTimeout(() => {
         dispatch(clearMessage());
+      }, "950")
+      setTimeout(() => {
         navigate('/modifier-un-document/ordre-de-mission?etape=2&id='+ omId);
-      }
-      else {
-
-      }
+        
+      }, "1000")
     }
-  }, [isSideFormInDB])
+  }, [apiMessage]);
+
 
   useEffect(() => {
     reset(formDefaultValues);
   }, [formDefaultValues])
+  
+
+  let insuranceFilename = '';
+  let registrationFilename = '';
+  if (formDefaultValues.insuranceFile) {
+    insuranceFilename = getSavedFileName(formDefaultValues.insuranceFile);
+  }
+  if (formDefaultValues.registrationFile) {
+    registrationFilename = getSavedFileName(formDefaultValues.registrationFile);
+  }
   
   const {
     register,
@@ -71,108 +81,100 @@ const VehicleUseForm = () => {
     clearErrors,
     formState:
     { errors },
-  } = useForm({ defaultValues: formDefaultValues});
-  
-  const [showCarList, setShowCarList] = useState(true);
-  const [hasSavedInsurance, setSavedInsurance] = useState(false);
-  const [hasSavedRegistration, setSavedRegistration] = useState(false);
-  const [vehiclesList, setVehiclesList] = useState([]);
+  } = useForm({ defaultValues: {
+      ...formDefaultValues,
+  }});
 
   const [
     reasons,
     carType,
     externalSignature,
-    savedRegistration,
-    savedInsurance,
-    carRegistrationFile,
-    carInsuranceFile
-  ] = watch(['reasons', 'carType', 'externalSignature', 'savedRegistration', 'savedInsurance', 'carRegistrationFile', 'carInsuranceFile']);
-
-  useEffect(() => {
-    if (formDefaultValues.savedInsurance) {
-      setSavedInsurance(savedInsurance)
-    }
-    if (formDefaultValues.savedRegistration) {
-      setSavedRegistration(savedRegistration)
-    }
-
-  }, [savedRegistration, savedInsurance])
-  
-  useEffect(() => {
-    if (carType === 'company-car') {
-      setVehiclesList(unimesVehicles)
-      setShowCarList(true);
-    }
-    else if (carType === 'personal-car') {
-      setVehiclesList(vehicles)
-      setShowCarList(true);
-    }
-    else {
-      setShowCarList(false);
-    }
-  }, [carType])
+  ] = watch([
+    'reasons',
+    'carType',
+    'externalSignature',
+  ]);
   
   const onSubmit = (data) => {
-    console.log(data);
-    let countErrors = 0;
-    if (data.reasons.length === 0) {
-      setError('reasons', {type: 'custom', message : "Merci de justifier l'utilisation du véhicule."})
-      countErrors++;
-    }
+    let countErrors = validateDataInSubmit(data);
     
-    if (!data.savedRegistration && typeof data.carRegistrationFile !== 'object') {
-      setError('carRegistrationFile', {type: 'custom', message : "Merci de fournir la carte grise du véhicule."})
-      countErrors++;
-    }
-    
-    if (!data.savedInsurance && typeof data.carInsuranceFile !== 'object') {
-      setError('carInsuranceFile', {type: 'custom', message : "Merci de fournir l'attestation d'assurance du véhicule."})
-      countErrors++;
-    }
-    
-    if (countErrors === 0) {
-
-      if (data.externalSignature) {
-        dispatch(stayOnAuthorizationForm({reasons: data.reasons}))
-      }
-
-      if (!data.selectedVehicle || data.selectedVehicle === '0') {
+    if (countErrors === 0) {      
+      clearErrors();
+      
+      if ((!data.selectedVehicle || data.selectedVehicle === '0') && data.carType === 'personal-car') {
         
-        dispatch(createVehicle(data));
+        dispatch(uploadVehicleFiles({data: data, user: user, isUpdate: false}));
       }
       else {
-          const newDataFormat = {
-            omId: Number(data.omId),
-            vehicle_id: Number(data.selectedVehicle),
-            registration_document: data.carRegistrationFile,
-            externalSignature: [],
-            insurance: data.carInsuranceFile,
-            reasons: data.reasons,
-            type: data.carType,
-          };
+        const newDataFormat = {
+          docId: Number(data.docId),
+          vehicle_id: Number(data.selectedVehicle) === 0 ? null : Number(data.selectedVehicle),
+          registration_document: '',
+          externalSignature: null,
+          insurance: '',
+          reasons: data.reasons,
+          type: data.carType,
+          file: data.file,
+        };
 
-        if (data.carRegistrationFile instanceof File || data.carInsuranceFile instanceof File) {
-
+        if (newDataFormat.file instanceof File
+          || newDataFormat.insurance instanceof File
+          || newDataFormat.registration_document instanceof File)
+        {
           dispatch(uploadFile({data: newDataFormat, step: 'authorization', docType: 'authorization'}));
         }
         else {
-
           dispatch(requestVehicleAuthorization(newDataFormat));
         }
       }
     }
   };
 
-  useEffect(() => {
-    if (carRegistrationFile instanceof File) {
-      clearErrors('carRegistrationFile');
-      setValue('carRegistrationFile', carRegistrationFile);
+  const validateDataInSubmit = (data) => {
+    let countErrors = 0;
+    if (data.reasons.length === 0) {
+      setError('reasons', {type: 'custom', message : "Merci de justifier l'utilisation du véhicule."})
+      countErrors++;
     }
-    if (carInsuranceFile instanceof File) {
-      clearErrors('carInsuranceFile');
-      setValue('carInsuranceFile', carInsuranceFile);
+    if (!data.carType) {
+      setError('carType', {type: 'custom', message : "Merci de sélectionner l'option qui correspond à vore demande."})
+      countErrors++;
     }
-  }, [carRegistrationFile, carInsuranceFile])
+
+    if (data.carType === 'personal-car') {
+      if (!data.make) {
+        setError('make', {type: 'custom', message: "Veuillez indiquer la marque du véhicule."});
+        countErrors++;
+      }
+      if (!data.licensePlate) {
+        setError('licensePlate', {type: 'custom', message: "Veuillez indiquer la plaque d'immatriculation du véhicule."});
+        countErrors++;
+      }
+      if (!data.insurance) {
+        setError('insurance', {type: 'custom', message: "Veuillez indiquer la compagnie d'assurance qui assure le véhicule."});
+        countErrors++;
+      }
+      if (!data.police) {
+        setError('police', {type: 'custom', message: "Veuillez indiquer le n° de police."});
+        countErrors++;
+      }
+      if (!data.rating) {
+        setError('rating', {type: 'custom', message: "Veuillez indiquer la puissance fiscale du véhicule."});
+        countErrors++;
+      }
+      if (!data.insuranceFile) {
+        setError('insuranceFile', {type: 'custom', message: "Merci de fournir l'attestation d'assurance du véhicule."});
+        countErrors++;
+      }
+      if (!data.registrationFile) {
+        setError('registrationFile', {type: 'custom', message: "Merci de fournir la carte grise du véhicule."});
+        countErrors++;
+      }
+    }
+    
+
+    return countErrors;
+  }
 
   const staticReasons = [
     {
@@ -203,17 +205,12 @@ const VehicleUseForm = () => {
   const handleNewCar = (event) => {
     dispatch(displayVehicle(event.target.value));
   }
-
-  const generatePdf = () => {
-    dispatch(resetPdfNeed());
-    navigate('/modifier-un-document/ordre-de-mission?etape=2&id='+ omId);
-  }
   
   return (
     <div className="form-container form-container--vehicle">
       <PageTitle>Demande d'autorisation préalable d'utilisation d'un véhicule</PageTitle>
       {loader && <LoaderCircle />}
-      {!loader &&(
+      {!loader && (
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
           <div className="form__section">
             <FormSectionTitle>Voiture</FormSectionTitle>
@@ -239,19 +236,23 @@ const VehicleUseForm = () => {
                 register={register}
               />
             </div>
-            {showCarList && (
-              <SelectField 
-                register={register}
-                blankValue="Pas de véhicule enregistré"
-                data={vehiclesList}
-                id="vehicles-list"
-                handler={handleNewCar}
-                formField="selectedVehicle"
-                label="Sélectionner un véhicule déjà enregistré"
-              />
+            { errors.carType && <p className="form__section-field-error form__section-field-error--open">{errors.carType.message}</p>}
+
+            {carType === 'personal-car' && (
+              <>
+                <SelectField 
+                  register={register}
+                  blankValue="Pas de véhicule enregistré"
+                  data={vehicles}
+                  id="vehicles-list"
+                  handler={handleNewCar}
+                  formField="selectedVehicle"
+                  label="Sélectionner un véhicule déjà enregistré"
+                />
+                <VehicleData setValue={setValue} register={register} errors={errors} registrationFilename={registrationFilename} insuranceFilename={insuranceFilename} />
+                <p className="form__section-field-label form__section-field-label--infos" style={{marginBottom: '1rem'}}>(*) Produire obligatoirement la photocopie de la carte grise et de l'attestation d'assurance</p>
+              </>
             )}
-            <VehicleData register={register} errors={errors} />
-            <p className="form__section-field-label form__section-field-label--infos" style={{marginBottom: '1rem'}}>(*) Produire obligatoirement la photocopie de la carte grise et de l'attestation d'assurance</p>
           </div>
           <div className="form__section">
             <FormSectionTitle>Raison</FormSectionTitle>
@@ -274,53 +275,22 @@ const VehicleUseForm = () => {
                 handler={handleOtherReason}
               />
             </div>
-            <TextField
-              id="other-reason"
-              label="Autre raison"
-              formField="otherReason"
-              register={register}
-              isHidden
-            />
+            {reasons.indexOf('other') >= 0 && (
+              <TextField
+                id="other-reason"
+                label="Autre raison"
+                formField="otherReason"
+                register={register}
+              />
+            )}
             { errors.reasons && <p className="form__section-field-error form__section-field-error--open">{errors.reasons.message}</p>}
           </div>
-          <div className="form__section">
-            <FormSectionTitle>Documents</FormSectionTitle>
-            <FileOrSavedFile
-              register={register}
-              setValue={setValue}
-              id="registration"
-              label="Carte grise"
-              hasSavedDocument={hasSavedRegistration}
-              errors={errors}
-            />
-            <FileOrSavedFile
-              register={register}
-              setValue={setValue}
-              id="insurance"
-              label="Attestation d'assurance"
-              hasSavedDocument={hasSavedInsurance}
-              errors={errors}
-            />
-          </div>
-          {externalSignature && (
-            <div className="form__section">
-              <FormSectionTitle>Signatures</FormSectionTitle>
-              <FileField
-                register={register}
-                setValue={setValue}
-                formField="signature"
-                id="userSignature"
-                label="Signature"
-                pieces="Merci de fournir la signature de la personne à qui vous empruntez le véhicule."
-              />
-            </div>
-          )}
           <div className="form__section">
             <FormSectionTitle>Dernière étape</FormSectionTitle>
             <HiddenField
               value={omId}
               register={register}
-              id="omId"
+              id="docId"
             />
             {carType === 'personal-car' && (
               <div className="form__section-field">
@@ -332,62 +302,66 @@ const VehicleUseForm = () => {
                 />
               </div>
             )}
-            {externalSignature && (
-              <div className="form__section-field" id="external-signature-button">
-                <div className="form__section-field-button">
-                  {(!savedAuthorization.hasOwnProperty('reasons')) && (
-                    <ButtonElement 
-                      type="submit"
-                      label="Enregistrer la demande"
-                    />
-                  )}
-                  {(needsPdf && savedAuthorization.hasOwnProperty('reasons')) && (
-                    <BlobProvider document={<CarAuthorizationPdf reasons={staticReasons} agentSignature={agentSignature} agent={agent} data={savedAuthorization} vehicleTypes={vehicleTypes}/>}>
-                      {({ blob, url, loading, error }) => {
-          
-                        const file = new File([blob], new Date().toLocaleDateString() + '-demande-d-autorisation-de-véhicule', {type: 'pdf'});
-                        const fileUrl = URL.createObjectURL(file);
-                        
+            <div className="form__section-field" id="external-signature-button">
+              <div className="form__section-field-button">
+            
+                  <BlobProvider document={<CarAuthorizationPdf reasons={staticReasons} agentSignature={agentSignature} agent={agent} data={watch()} vehicleTypes={vehicleTypes}/>}>
+                    {({ blob }) => {
+        
+                      const { mission } = oms.find((om) => om.id == omId);
+                      const fileName = `${agent.lastname.toUpperCase()}-${new Date(mission.departure).toLocaleDateString().split('/').join('-')}-demande-d-autorisation-de-véhicule`
+                      const file = new File([blob], fileName, {type: 'application/pdf'});
+                      
+                      const fileUrl = URL.createObjectURL(file);
+                      
+                      if (externalSignature) {
+
                         return (
-                          <a href={fileUrl} download={new Date().toLocaleDateString() + '-demande-d-autorisation-de-véhicule.pdf'} style={{textAlign: 'center'}}>
-                            <button onClick={generatePdf} type="button">
+                          <a href={fileUrl} download={fileName} style={{textAlign: 'center'}}>
+                            <button onClick={() => { const data = watch(); data.file = 'pending'; onSubmit(data)}} type="button">
                               Générer le PDF de la demande
                             </button>
                           </a>
                         );
-                      }}
-                    </BlobProvider>
-                  )}
-                </div>
-                {needsPdf && <p className="form__section-field-label form__section-field-label--car-form">Veuillez télécharger le PDF de la demande et le faire signer aux personnes extérieures concernées</p>}
-                {message && (
-                  <div className="form__section-field">
-                    <p className={classNames('form__section-message', {'form__section-message--success': message.status === 200, 'form__section-message--error': message.status !== 200})}>
-                      {message.data}
-                    </p>
-                  </div>
-                )}
-                {needsPdf && <a href={'/modifier-un-document/ordre-de-mission?etape=2&id='+ omId}>Retourner au formulaire de l'ordre de mission</a>}
+                      }
+                      return (
+                        <>
+                          <button type="button" onClick={() => { const data = watch(); data.file = file; onSubmit(data)}}>
+                            Valider la demande
+                          </button>
+                          {/* <div style={{width:"100%", height:"100vh"}}>
+                            <PDFViewer>
+                              <CarAuthorizationPdf reasons={staticReasons} agentSignature={agentSignature} agent={agent} data={watch()} vehicleTypes={vehicleTypes}/>
+                            </PDFViewer>
+                          </div> */}
+                        </>
+                      );
+                    }}
+                  </BlobProvider>
               </div>
-            )} 
-            {!externalSignature && (
-              <div className="form__section-field">
-                <div className="form__section-field-button">
-                  <ButtonElement 
-                    type="submit"
-                    label="Valider la demande"
-                  />
-                </div>
-              </div>
-            )}
+              {externalSignature && <p className="form__section-container-text form__section-container-text--infos">Veuillez télécharger le PDF de la demande, le faire signer aux personnes extérieures concernées puis le redéposer dans l'application à l'étape Transports.</p>}
+            </div>
           </div>
         </form>
-      
       )}
-
-      </div>
-    );
-  };
+      
+      {/* {(!loader && !agentSignature) && (
+        <form className="form" onSubmit={handleSubmit(onSubmit)}>
+          <p className="form__section-message form__section-message--infos">
+            Attention, vous n'avez pas renseigné de signature dans vos pièces justificatives. Merci de bien vouloir la rajouter pour accéder au formulaire de demande de dérogation.
+            </p>
+          <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
+            <Link to={`/utilisateur/${user}/mes-documents`}>
+              <button type="button">
+                Rajouter ma signature dans mes pièces justificatives
+              </button>
+            </Link>          
+          </div>
+        </form>
+      )} */}
+    </div>
+  );
+};
 
 VehicleUseForm.propTypes = {
 

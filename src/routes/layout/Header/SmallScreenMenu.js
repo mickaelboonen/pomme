@@ -1,22 +1,24 @@
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { persistor } from "src/store";
 
 // Icons
 import { RiLogoutBoxRFill } from "react-icons/ri";
-import { FaHome, FaSun, FaMoon } from "react-icons/fa";
+import { FaHome, FaSun, FaMoon, FaQuestionCircle } from "react-icons/fa";
 
 // Selectors
-import { closeBurgerMenu,  } from 'src/selectors/domManipulators';
+import { logout } from 'src/reducer/agent';
+import { closeBurgerMenu  } from 'src/selectors/domManipulators';
 
 import './style.scss';
 
 const SmallScreenMenu = ({ cas, role = 'dev'}) => {
-  const { app : { user }} = useSelector((state) => state);
+  const { agent : { user }} = useSelector((state) => state);
 
   const location = useLocation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const openMenu = document.querySelector('.small-screen-menu--open');
@@ -69,29 +71,36 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
       {
         id: 'user-om',
         url: `/utilisateur/${user}/mes-ordres-de-mission`,
-        label: 'Mes ordres de Mission'
+        label: 'Mes Ordres de Mission'
       },
-      // {
-      //   id: 'user-ef',
-      //   url: `/utilisateur/${role}/mes-états-de-frais`,
-      //   label: 'Mes états de frais'
-      // },
+      {
+        id: 'user-ef',
+        url: `/utilisateur/${user}/${encodeURIComponent('mes-états-de-frais')}`,
+        label: 'Mes États de Frais'
+      },
       {
         id: 'user-files',
         url: `/utilisateur/${user}/mes-documents`,
-        label: 'Mes fichiers récurrents'
+        label: 'Mes Justificatifs'
+      },
+      {
+        id: 'user-traveller',
+        url: `/utilisateur/${user}/mes-documents`,
+        label: 'Mon Profil Voyageur'
       },
       {
         id: 'user-pref',
-        url: `/utilisateur/${user}/mes-préférences`,
-        label: 'Mes préférences'
+        url: `/utilisateur/${user}/${encodeURIComponent('mes-préférences')}`,
+        label: 'Mes Préférences'
       },
     ],
   };
 
   const handleLogOut = () => {
-    cas.logout("/");
+    localStorage.removeItem('persist:root');
+    dispatch(logout());
     persistor.purge();
+    cas.logout("/se-connecter");
   }
 
   const savedTheme = localStorage.getItem('theme');
@@ -138,6 +147,13 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
               className='small-screen-menu__section-icons-item small-screen-menu__section-icons-item--theme'
             />
           )}
+          <Link to="/assistance">
+            {/* <div className="header__menu-help"> */}
+              <FaQuestionCircle
+                className='small-screen-menu__section-icons-item'
+              />
+            {/* </div> */}
+          </Link>
         </ul>
       </div>
       <div className="small-screen-menu__section">

@@ -5,15 +5,15 @@ import { useLoaderData, useLocation, useNavigate, useParams } from 'react-router
 import classNames from 'classnames';
 
 // Components
-import Section from './Section';
 import NewSection from './NewSection';
 import Tabs from 'src/components/Tabs';
 import PageTitle from 'src/components/PageTitle';
 
-import { currentEFs , currentELs, pastELs } from 'src/data/fakeData';
-
 import { toggleModal } from 'src/reducer/app';
-import { addNewOM, clearOMTarget, selectData} from 'src/reducer/omForm';
+import { addNewOM, clearOMTarget, selectOmData} from 'src/reducer/omForm';
+import { selectEfData, clearEfTarget } from 'src/reducer/ef';
+
+import { selectDocumentsList } from 'src/reducer/agent';
 
 
 import './style.scss';
@@ -26,52 +26,52 @@ const MyDocuments = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const params = useParams();
-  const loaderData = useLoaderData();
+  
   
 
-  const { omForm: { currentOM, nextOMTarget, OMTabs, userOms, dataToSelect, omLoader },
-    efForm: { nextEFTarget, EFTabs },
-    app: { isModalOpen }
+  const { omForm: { currentOM, nextOMTarget, OMTabs, userOms, omLoader },
+    ef: { nextEfTarget, currentEf, efLoader, EFTabs },
+    app: { isModalOpen, apiMessage },
+    agent: { agent, user, documentsList, loader, currentDoc }
   } = useSelector((state) => state);
-
-  // useEffect(() => {
-  //   dispatch(selectData('ec'))
-  // }, [userOms])
-
+  
   useEffect(() => {
     if (nextOMTarget !== '') {
       dispatch(toggleModal());
       dispatch(clearOMTarget());
       navigate(nextOMTarget);
     }
-  }, [nextOMTarget])
+    else if (nextEfTarget !== '') {
+      dispatch(toggleModal());
+      dispatch(clearEfTarget());
+      navigate(nextEfTarget);
+
+    }
+  }, [nextOMTarget, nextEfTarget])
+
+  useEffect(() => {
+    dispatch(selectDocumentsList({id: location.pathname.includes('ordres') ? 'oms' : 'efs', target: 'ec'}))
+  }, [location])
   
   const pageData = (path, user) => {
     let pageData = {};
 
     if (path.includes('ordres-de-mission')) {
       pageData.isOm = true;
-      pageData.title = 'Ordres de Mission de ' + user;
+      pageData.title = 'Mes Ordres de Mission';
       pageData.slug = 'ordre-de-mission'
     }
     else {
       pageData.isOm = false;
-      pageData.title = `États de Frais de ${user}`;
+      pageData.title = 'Mes États de Frais';
       pageData.slug = 'état-de-frais'
     }
 
     return pageData;
   }
 
-  const { isOm, title, slug } = pageData(location.pathname, params.slug);
-
-  // TODO -----------------------------------------------------------------------------------------------------------------------------------------------------
-  const currentEF = JSON.parse(localStorage.getItem('newEf'));
-
-  if (currentEF !== null) {
-    currentEFs.push(currentEF);
-  }
-  // -----------------------------------------------------------------------------------------------------------------------------------------------------
+  const { isOm, title, slug } = pageData(location.pathname, user);
+  
   
 
   /**
@@ -79,48 +79,49 @@ const MyDocuments = () => {
    * @param object event 
    */
    const displayWantedSection = (event) => {
-    const id = isOm ? 'om' : 'ef';
-
-    dispatch(selectData(event.currentTarget.id))
-    const wantedSection = document.querySelector(`#${event.currentTarget.id}-${id}`);
-    const allSections = document.querySelectorAll('.my-documents__files');
-
-    allSections.forEach((currentSection) => {
-      if (currentSection === wantedSection) {
-        wantedSection.classList.add('my-documents__files--open');
-      }
-      else {
-        currentSection.classList.remove('my-documents__files--open');
-      }
-    })
+    dispatch(selectDocumentsList({id: location.pathname.includes('ordres') ? 'oms' : 'efs', target: event.currentTarget.id}))
   }
 
   const handleClickOnNewOM = () => {
     dispatch(toggleModal())
   }
 
-  const steps = [
+  let steps = [
     {
       name: 'mission',
-      status: (currentOM.hasOwnProperty('mission') && currentOM.mission.status) ? currentOM.mission.status : false
+      status: (currentDoc.hasOwnProperty('mission') && currentDoc.mission.status) ? currentDoc.mission.status : false
     },
     {
       name: 'transports',
-      status: (currentOM.hasOwnProperty('transports') && currentOM.transports.status) ? currentOM.transports.status : false
+      status: (currentDoc.hasOwnProperty('transports') && currentDoc.transports.status) ? currentDoc.transports.status : false
     },
     {
       name: 'hébergement',
-      status: (currentOM.hasOwnProperty('accomodations') && currentOM.accomodations.status) ? currentOM.accomodations.status : false
+      status: (currentDoc.hasOwnProperty('accomodations') && currentDoc.accomodations.status) ? currentDoc.accomodations.status : false
     },
     {
       name: 'avance',
-      status: (currentOM.hasOwnProperty('advance') && currentOM.advance.status) ? currentOM.advance.status : false
+      status: (currentDoc.hasOwnProperty('advance') && currentDoc.advance.status) ? currentDoc.advance.status : false
+    },
+    {
+      name: 'étapes',
+      status: null
     },
     {
       name: 'signature',
-      status: (currentOM.hasOwnProperty('signature') && currentOM.signature.status) ? currentOM.signature.status : false
+      status: (currentDoc.hasOwnProperty('signature') && currentDoc.signature.status) ? currentDoc.signature.status : false
     },
   ]
+
+  if (!isOm) {
+    steps = steps.filter((step) => step.name !== 'avance')
+  }
+  else {
+    
+    steps = steps.filter((step) => step.name !== 'étapes')
+  }
+
+  const omThatCanBeRefunded = userOms.filter((om) => om.status === 2);
 
   return (
     <main className="my-documents">
@@ -130,14 +131,10 @@ const MyDocuments = () => {
       </div>
       {isOm && <Tabs tabs={OMTabs} handler={displayWantedSection} />}
       {!isOm && <Tabs tabs={EFTabs} handler={displayWantedSection} />}
-      <NewSection data={dataToSelect} steps={steps} currentDoc={currentOM} loader={omLoader} />
-      {/* {isOm && <Section id={"ec-om"} data={currentOMs} isFirstSection />}
-      {isOm && <Section id={"ok-om"} data={pastOMs} />}
-      {!isOm && <Section id={"ec-ef"} data={currentEFs} isFirstSection />}
-      {!isOm && <Section id={"as-ef"} data={currentELs} />}
-      {!isOm && <Section id={"ok-ef"} data={pastELs} />} */}
+      <NewSection loader={loader} data={documentsList} user={user} steps={steps} currentDoc={currentDoc} isOm={isOm} />
+      {/* {!isOm && <NewSection data={documentsList} steps={steps} currentDoc={currentDoc} />} */}
       <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
-      {isModalOpen && <Modal target={slug.replace(/-/g, ' ')} user={params.slug} />}
+      {isModalOpen && <Modal target={slug.replace(/-/g, ' ')} user={params.slug} loader={loader} userOms={omThatCanBeRefunded} agent={agent} apiMessage={apiMessage} />}
     </main>
   );
 };

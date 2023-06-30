@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { PDFViewer } from '@react-pdf/renderer';
 
 import './style.scss';
-import MyPDF from 'src/components/PDF';
+import MyPDF from 'src/components/PDF/OmPdf';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'src/components/Modal';
 import { toggleModal } from 'src/reducer/app';
@@ -16,7 +16,8 @@ import './style.scss';
 
 const TestPDF = () =>   {
   const navigate = useNavigate();
-  const { app: { isModalOpen, user, isAuthenticated, agent},
+  const { app: { isModalOpen },
+    agent: { user, isAuthenticated, agent},
     omForm: { nextOMTarget, omForm, currentOM},
     vehicle: { vehicleTypes },
   } = useSelector((state) => state);
@@ -43,7 +44,7 @@ const TestPDF = () =>   {
         </PDFViewer>
       </section>
       <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
-      {isModalOpen && <Modal target={newTarget.replace(/-/g, ' ')} user={user} />}
+      {isModalOpen && <Modal target={newTarget.replace(/-/g, ' ')} user={user} loader={loader} />}
 
     </div>
   );
