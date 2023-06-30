@@ -6,7 +6,7 @@ import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
 
 import '../style.scss';
 
-import EfPDF from 'src/components/PDF/EfPDF';
+import EfPDF from 'src/components/PDF/EfPdf';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 
 import { uploadFile } from 'src/reducer/omForm'
