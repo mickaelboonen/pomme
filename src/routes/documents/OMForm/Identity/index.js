@@ -15,9 +15,8 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 
 // Selectors & actions
 import { uploadFile } from 'src/reducer/omForm';
-import { getDDMMYYDate, getHHMMTime } from 'src/selectors/dateFunctions';
 import {  defineValidationRulesForMission } from 'src/selectors/formValidationsFunctions';
-import { setValidationDate } from '../../../../selectors/pdfFunctions';
+import { setValidationDate } from 'src/selectors/pdfFunctions';
 
 
 const Identity = ({ isEfForm }) => {
@@ -38,6 +37,7 @@ const Identity = ({ isEfForm }) => {
     ...agentProfessionalAddress,
     ...agentPersonalAddress
   };
+  
   const {
     register,
     setValue,

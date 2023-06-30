@@ -100,15 +100,11 @@ const appMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse(error));
         });
       break;
-    case 'agent/fetchUserData':      
+    case 'agent/fetchUserData':
       api.post("/api/agent/get-data/full", action.payload)
         .then((response) => {
-          // if (response.data.length > 0) {
-            
-
             store.dispatch(saveUserData(response.data));
             store.dispatch(setLoader(false));
-          // }
         })
         .catch((error) => {
           console.error('get signature', error);

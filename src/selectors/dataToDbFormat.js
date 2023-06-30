@@ -330,14 +330,21 @@ export const turnAccomodationDataToDbFormat = (data) => {
 
 
 export const extractUserData = (data) => {
+  const { agent } = data;
+  let { categorie, title, llGrade } = agent;
+  
+  if (categorie === 'Z' && llGrade.includes('DOCTORANT')) {
+    categorie = 'A';
+    title = llGrade;
+  }
   return {
     employer:'unimes',
-    firstname:data.agent.prenom,
-    gender:data.agent.cCivilite === 'Mlle' ? 'Mme' : data.agent.cCivilite,
-    lastname:data.agent.nomAffichage,
-    unimesCategory:data.agent.categorie,
-    unimesStatus:data.agent.title,
-    unimesDepartment: data.agent.llStructure,
+    firstname:agent.prenom,
+    gender:agent.cCivilite === 'Mlle' ? 'Mme' : agent.cCivilite,
+    lastname:agent.nomAffichage,
+    unimesCategory: categorie,
+    unimesStatus: title,
+    unimesDepartment: agent.llStructure,
   }
 }
 

@@ -83,9 +83,6 @@ const OmPdf = ({ data, agent, vehicleTypes, validationDate, countries}) => {
   const freeMeals = maxMealsNumber - (accomodations.meals_paid_by_agent + accomodations.meals_in_admin_restaurants);
   
   const gestArray = ['%', 'UB', 'CR', 'Code Nacres', 'Code LOLF', 'Code Analytique'];
-  // console.log(mission);
-
-
 
   return (
   <Document>
