@@ -26,6 +26,10 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
       navigate(`/utilisateur/${user}/mes-documents/ajouter-un-${encodeURIComponent('véhicule')}` )
 
     }
+    else if (id === 'programs') {
+      navigate(`/utilisateur/${user}/mes-documents/profil-voyageur/ajouter-un-programme-de-transport` )
+
+    }
     else {
       
       dispatch(toggleDocModal({ action: 'add', type: id}));
@@ -43,7 +47,18 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
         navigate(`/utilisateur/${user}/mes-documents/modifier-un-${encodeURIComponent('véhicule')}/` + value)
       }
       else {
-        window.alert("Veuillez sélectionner un véhiculer à modifier.")
+        window.alert("Veuillez sélectionner un véhicule à modifier.")
+      }
+    }
+    else if (id === 'programs') {
+      const { value } = document.querySelector('select');
+      
+      if (!isNaN(value)) {
+        // dispatch(displayVehicle(value))
+        navigate(`/utilisateur/${user}/mes-documents/profil-voyageur/modifier-un-programme-de-transport/${value}`)
+      }
+      else {
+        window.alert("Veuillez sélectionner un programme à modifier.")
       }
     }
     else {
@@ -59,6 +74,18 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
     if (window.confirm("Voulez-vous supprimer ce document ?")) {
 
       if (id === 'cars') {
+        
+        const { value } = document.querySelector('select');
+        
+        if (!isNaN(value)) {
+          // TODO
+          dispatch(deleteVehicle(value));
+        }
+        else {
+          window.alert("Veuillez sélectionner un véhiculer à supprimer.")
+        }
+      }
+      else if (id === 'programs') {
         
         const { value } = document.querySelector('select');
         
@@ -101,7 +128,7 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
             )}
           {needsSelect && (
             <select className='file-displayer__select'>
-              <option>Aucun véhicule sélectionné</option>
+              <option>Aucun {needsSelect} sélectionné</option>
               {data.map((car) => <option key={car.id} value={car.id}>{car.name}</option>)}
             </select>
           )}

@@ -11,6 +11,8 @@ import RefusalNotification from "src/routes/utilisateur/MyAccount/RefusalNotific
 
 import { getVehicles, fetchVehicle} from "src/reducer/vehicle";
 import { findPermFilesByAgent } from "src/reducer/otherDocuments";
+import TravelInfo from "src/routes/utilisateur/MyAccount/TravelInfo";
+import AddProgram from "src/routes/utilisateur/MyAccount/TravelInfo/AddProgram";
 
 
 
@@ -55,6 +57,29 @@ export default {
         {
           path: 'refus-de-mission',
           element: <RefusalNotification />
+        },
+        {
+          path: 'profil-voyageur/',
+          children: [
+            {
+              index: true,
+              element: <TravelInfo />
+            },
+            {
+              path: 'ajouter-un-programme-de-transport',
+              element: <AddProgram />,
+            },
+            {
+              path: 'ajouter-un-programme-de-transport/:id',
+              element: <AddVehicle />,
+              loader: async ({ request }) => {
+                const url = new URL(request.url);
+    
+                // store.dispatch(fetchVehicle({id: url.pathname.split('/')[5]}))
+                
+              }
+            },
+          ]
         },
         {
           path: encodeURIComponent('état-liquidatif-à-signer'),

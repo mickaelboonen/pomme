@@ -334,6 +334,26 @@
         font-weight: 600;
       }
     }
+    &-list {
+      // border: 1px solid red;
+      padding: 0 1rem;
+
+      &-item {
+        // padding-bottom: 0.5rem ;
+        margin-bottom: 1rem ;
+        // border-bottom: 1px solid red;
+        display: flex;
+        align-items: center;
+
+        & svg {
+          margin-right: 1rem;
+        }
+        &:last-of-type {
+          margin: 0;
+          border: 0;
+        }
+      }
+    }
   }
 }
 

@@ -85,7 +85,7 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
       },
       {
         id: 'user-traveller',
-        url: `/utilisateur/${user}/mes-documents`,
+        url: `/utilisateur/${user}/mes-documents/profil-voyageur`,
         label: 'Mon Profil Voyageur'
       },
       {
