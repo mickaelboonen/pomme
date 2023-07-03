@@ -14,7 +14,7 @@ import FileManager from '../FileManager';
 import { useSelector } from 'react-redux';
 
 const TravelInfo = () => {
-  const { agent : { user }} = useSelector((state) => state);
+  const { agent : { user }, docs: { programs }} = useSelector((state) => state);
   const contacts =  [
     {
       id: 1,
@@ -47,16 +47,6 @@ const TravelInfo = () => {
       <div className='form'>
         <div className='form__section'>
           <FormSectionTitle>Abonnements & cartes de fidélité</FormSectionTitle>
-          {/* <SelectField
-            register={() => {}}
-            blankValue="Aucun programme sélectionné"
-            data={[]}
-            id="program-field"
-            formField="program"
-            label=""
-            handler={() => {}}
-            required
-          /> */}
           <FileManager
             icon={<FaUserCircle
               className='file-displayer__icon-container-icon'
@@ -67,7 +57,7 @@ const TravelInfo = () => {
             handler={null}
             user={user}
             needsSelect="programme"
-            data={[]}
+            data={programs}
           />
         </div>
         <div className='form__section'>

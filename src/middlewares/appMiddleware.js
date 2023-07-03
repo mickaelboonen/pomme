@@ -45,17 +45,6 @@ const appMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse(error));
         });
       break;
-    // case 'app/getSignature':
-    //   api.get("/api/perm-file/signature/" + action.payload)
-    //     .then((response) => {
-    //         if (response.data) {
-    //           store.dispatch(saveSignature(response.data))
-    //         }
-    //     })
-    //     .catch((error) => {
-    //       store.dispatch(setApiResponse(error));
-    //     });
-    //   break;
     case 'app/getDocument':
       api.get(`/api/perm-file/${action.payload.type}/${action.payload.id}`)
         .then((response) => {

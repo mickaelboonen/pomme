@@ -26,6 +26,7 @@ import efMiddleware from '../middlewares/efMiddleware';
 import fileMiddleware from '../middlewares/fileMiddleware';
 import appMiddleware from '../middlewares/appMiddleware';
 import vehicleMiddleware from '../middlewares/vehicleMiddleware';
+import travelProgramMiddleware from '../middlewares/travelProgramMiddleware';
 
 const persistConfig = {
   key: 'root',
@@ -55,7 +56,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(omMiddleware, efMiddleware, fileMiddleware, appMiddleware, vehicleMiddleware),
+    }).concat(omMiddleware, efMiddleware, fileMiddleware, appMiddleware, vehicleMiddleware, travelProgramMiddleware),
     devTools: process.env.NODE_ENV !== 'production',
 })
 

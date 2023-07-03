@@ -10,7 +10,7 @@ import TicketRequest from "src/routes/utilisateur/MyAccount/TicketRequest";
 import RefusalNotification from "src/routes/utilisateur/MyAccount/RefusalNotification";
 
 import { getVehicles, fetchVehicle} from "src/reducer/vehicle";
-import { findPermFilesByAgent } from "src/reducer/otherDocuments";
+import { findPermFilesByAgent, getAgentsPrograms, fetchProgram } from "src/reducer/otherDocuments";
 import TravelInfo from "src/routes/utilisateur/MyAccount/TravelInfo";
 import AddProgram from "src/routes/utilisateur/MyAccount/TravelInfo/AddProgram";
 
@@ -63,19 +63,25 @@ export default {
           children: [
             {
               index: true,
-              element: <TravelInfo />
+              element: <TravelInfo />,
+              loader: async ({ request }) => {
+                const { agent : { user } } = store.getState((state) => state);
+                console.log(user);
+                store.dispatch(getAgentsPrograms({agent: user}));
+              }
             },
             {
               path: 'ajouter-un-programme-de-transport',
               element: <AddProgram />,
             },
             {
-              path: 'ajouter-un-programme-de-transport/:id',
-              element: <AddVehicle />,
+              path: 'modifier-un-programme-de-transport/:id',
+              element: <AddProgram />,
               loader: async ({ request }) => {
                 const url = new URL(request.url);
-    
-                // store.dispatch(fetchVehicle({id: url.pathname.split('/')[5]}))
+                const urlArray = url.pathname.split('/');
+                
+                store.dispatch(fetchProgram({id: urlArray[urlArray.length - 1]}))
                 
               }
             },

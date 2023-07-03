@@ -7,7 +7,7 @@ import { FaDownload, FaUpload, FaTrash, FaEdit } from "react-icons/fa";
 import './style.scss';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { toggleDocModal, deletePermFile } from 'src/reducer/otherDocuments';
+import { toggleDocModal, deletePermFile, deleteProgram } from 'src/reducer/otherDocuments';
 import { displayVehicle, deleteVehicle  } from '../../../reducer/vehicle';
 
 const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) => {
@@ -91,7 +91,7 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
         
         if (!isNaN(value)) {
           // TODO
-          dispatch(deleteVehicle(value));
+          dispatch(deleteProgram(value));
         }
         else {
           window.alert("Veuillez sélectionner un véhiculer à supprimer.")

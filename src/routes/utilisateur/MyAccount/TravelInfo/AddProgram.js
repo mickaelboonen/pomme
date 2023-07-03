@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +14,7 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 import ButtonElement from 'src/components/Fields/ButtonElement';
 
 import { clearMessage } from 'src/reducer/app';
-import { displayVehicle  } from 'src/reducer/vehicle';
+import { createProgram, saveProgram, updateProgram } from 'src/reducer/otherDocuments';
 
 import './style.scss';
 
@@ -28,27 +28,27 @@ const AddProgram = () => {
 
   const { app: { apiMessage },
     agent: { user },
-    vehicle: { currentVehicle, loader }} = useSelector((state) => state)
+    docs: { currentProgram, loader }} = useSelector((state) => state)
   
-   
-  let defaultValues = {
+    let defaultValues = {
     sector: null,
     type: null,
-    number: null,
     name: null,
+    number: null,
     expiration: null,
   };
-  if (currentVehicle.hasOwnProperty('make')) {
-    defaultValues = currentVehicle;
+
+  if (currentProgram.hasOwnProperty('number')) {
+    defaultValues = currentProgram;
   }
-  
+
   if (areWeUpdating) {
     useEffect(() => {
       reset(defaultValues);
       
     }, [defaultValues])
   }
-  
+
   const {
     register,
     handleSubmit,
@@ -61,9 +61,14 @@ const AddProgram = () => {
 
   const onSubmit = (data) => {
     
-    console.log(data);
-    return;
+    if (areWeUpdating) {
+      dispatch(updateProgram(data));
+    }
+    else {
+      dispatch(createProgram(data));
+    }
     
+    return;
   };
 
   const handleGoBack = () =>  {
@@ -72,11 +77,12 @@ const AddProgram = () => {
       dispatch(clearMessage());
     }
     if (areWeUpdating) {
-      dispatch(displayVehicle());
+      dispatch(saveProgram({}));
     }
     
     navigate(`/utilisateur/${user}/mes-documents/profil-voyageur`);
-  }
+  };
+  
   return (
   <main className="form-page__container">
     <div className="form-page__title">
@@ -94,7 +100,8 @@ const AddProgram = () => {
             formField="sector"
             label="Secteur"
             handler={() => {}}
-            required
+            errors={errors.sector}
+            // required="Merci de renseigner le secteur d'activité auquel se raccroche votre programme."
           />
           <SelectField
             register={register}
@@ -104,7 +111,8 @@ const AddProgram = () => {
             formField="type"
             label="Abonnement ou carte de fidélité"
             handler={() => {}}
-            required
+            errors={errors.type}
+            // required="Merci de renseigner le type de programme."
           />
           <TextField
             id="card-number-field"
@@ -112,7 +120,8 @@ const AddProgram = () => {
             formField="number"
             register={register}
             error={errors.licensePlate}
-            required="Merci de renseigner le numéro d'immatriculation du véhicule."
+            // required="Merci de renseigner le numéro du programme / de votre carte."
+            errors={errors.number}
           />
           <TextField
             id="program-name-field"
@@ -120,7 +129,8 @@ const AddProgram = () => {
             formField="name"
             register={register}
             error={errors.rating}
-            required="Merci de renseigner la puisance fiscale du véhicule."
+            // required="Merci de renseigner le nom du programme choisi."
+            errors={errors.name}
           />
           <DateField
             id="expiration-date-field"
@@ -128,8 +138,8 @@ const AddProgram = () => {
             label="Date d'expiration"
             formField="expiration"
             register={register}
-            error={errors.insurance}
-            required="Merci de renseigner la compagnie qui assure le véhicule."
+            error={errors.expiration}
+            // required="Merci de renseigner la date d'expiration de votre programme."
           />
           <HiddenField
             id="user"
@@ -139,7 +149,7 @@ const AddProgram = () => {
           <div className="form__section-field-button" id="submit-vehicle">
             <ButtonElement
               type="submit"
-              label={`${areWeUpdating ? 'Modifier' : 'Ajouter'} le véhicule`}    
+              label={`${areWeUpdating ? 'Modifier' : 'Ajouter'} le programme`}    
             />
           </div>
 

@@ -6,6 +6,15 @@ const initialState = {
   type: '',
   agentDocs: [],
   agentSignature: null,
+  programs: [],
+  currentProgram: {
+    // sector: null,
+    // type: null,
+    // number: null,
+    // name: null,
+    // expiration: null,
+  },
+  loader: false
 };
 const otherDocsSlice = createSlice({
     name: 'other-documents',
@@ -41,9 +50,19 @@ const otherDocsSlice = createSlice({
       // saveAgentSignatureForPdf: (state, action) => {
       //   state.agentSignature = action.payload;
       // },
-      uploadVehicleFiles: () => {
-
+      uploadVehicleFiles: () => {},
+      createProgram: () => {},
+      updateProgram: () => {},
+      getAgentsPrograms: () => {},
+      saveAgentsPrograms: (state, action) => {
+        state.programs = action.payload;
       },
+      fetchProgram: (state) => { state.loader = true },
+      saveProgram: (state, action) => {
+        state.currentProgram = action.payload;
+        state.loader = false;
+      },
+      deleteProgram: () => {}
     },
 });
 
@@ -54,9 +73,14 @@ export const {
   editPermFile,
   findPermFilesByAgent,
   deletePermFile,
-  // fetchAgentSignatureForPdf,
-  // saveAgentSignatureForPdf,
+  createProgram,
+  updateProgram,
+  getAgentsPrograms,
+  saveAgentsPrograms,
   uploadVehicleFiles,
+  fetchProgram,
+  saveProgram,
+  deleteProgram
 } = otherDocsSlice.actions;
 
 export default otherDocsSlice.reducer;
