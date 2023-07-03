@@ -127,7 +127,7 @@ const MyDocuments = () => {
     <main className="my-documents">
       <PageTitle>{title}</PageTitle>
       <div className="my-documents__button">
-        <button type="button" onClick={handleClickOnNewOM}>NOUVEAU</button>
+        {(user === 'mboone01' || user === 'nathalie') && <button type="button" onClick={handleClickOnNewOM}>NOUVEAU</button>}
       </div>
       {isOm && <Tabs tabs={OMTabs} handler={displayWantedSection} />}
       {!isOm && <Tabs tabs={EFTabs} handler={displayWantedSection} />}

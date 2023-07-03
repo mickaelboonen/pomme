@@ -18,7 +18,7 @@ import LoaderCircle from 'src/components/LoaderCircle';
 import Mission from 'src/routes/documents/OMForm/Mission';
 import { clearMessage } from 'src/reducer/app';
 import { checkStepsStatus } from 'src/selectors/formDataGetters';
-import DocMissingStepsRecap from 'src/components/docMissingStepsRecap';
+import DocMissingStepsRecap from 'src/components/DocMissingStepsRecap';
 
 const EfForm = () => {      
 

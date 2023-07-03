@@ -36,13 +36,15 @@ const Transports = ({ step }) => {
 
   const filenames = setEfTranportsFilenames(defaultValues);
 
+  const  horsepower = (currentOM.transports.authorizations[0] && currentOM.transports.authorizations[0].vehicle) ? currentOM.transports.authorizations[0].vehicle.rating : ''
+
   const {
     register, handleSubmit, watch,
     setValue,  setError,
     formState: { errors },
   } = useForm({ defaultValues: {
     ...defaultValues,
-    horsepower: currentOM.transports.authorizations[0] ? currentOM.transports.authorizations[0].vehicle.rating : '',
+    horsepower: horsepower,
   }});
   
   const onSubmit = (data) => {    
