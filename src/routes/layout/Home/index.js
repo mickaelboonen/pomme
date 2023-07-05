@@ -1,5 +1,5 @@
 
-import classNames from 'classnames';
+// import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { IoMdAddCircle } from "react-icons/io";
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,14 +9,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import './style.scss';
 
 import HomepageTitle from './HomepageTitle';
-import Modal from 'src/components/Modal';
+// import Modal from 'src/components/Modal';
 import TitleH3 from 'src/components/TitleH3';
 
 
 import { toggleModal } from 'src/reducer/app';
 import { clearOMTarget } from 'src/reducer/omForm';
 import VideoPlayer from 'src/components/VideoPlayer';
-import Rules from 'src/components/Rules';
+// import Rules from 'src/components/Rules';
 import Presentation from 'src/assets/video/presentation-pom.mp4';
 
 const Home = () => {
@@ -37,20 +37,16 @@ const Home = () => {
 
   const dispatch = useDispatch();
     
-  const [newTarget, setNewTarget] = useState('');
+  // const [newTarget, setNewTarget] = useState('');
   
-  const handleClickOnNewDoc = (event) => {
-    
+  const handleClickOnNewDoc = () => {
     navigate(`/utilisateur/${user}/mes-ordres-de-mission`);
-    // dispatch(toggleModal());
-    // setNewTarget(event.currentTarget.id);
   }
 
   const handleClickOnNewEf = () => {
     navigate(`/utilisateur/${user}/${encodeURIComponent('mes-états-de-frais')}`);
   }
-
-  console.log(user);
+  
   return (
     <div className="home">
       <HomepageTitle />

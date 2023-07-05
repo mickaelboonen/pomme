@@ -108,9 +108,7 @@ const agentSlice = createSlice({
       },
       saveUserLightData: (state, action) => {
         const data = extractUserData(action.payload);
-        
         state.agent = data;
-        // state.appLoader = false;
       },
     },
 });
