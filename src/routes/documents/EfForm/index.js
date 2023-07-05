@@ -7,18 +7,20 @@ import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 import './style.scss';
 
 // Components 
-import Stages from './Stages';
 import Rib from './Rib';
+import Recap from './Recap';
+import Stages from './Stages';
 import Transports from './Transports';
 import Accomodations from './Accomodations';
-import Recap from './Recap';
 import PageTitle from 'src/components/PageTitle';
 import ThreadAsTabs from 'src/components/ThreadAsTabs';
 import LoaderCircle from 'src/components/LoaderCircle';
 import Mission from 'src/routes/documents/OMForm/Mission';
+import DocMissingStepsRecap from 'src/components/DocMissingStepsRecap';
+
+// Actions & Selectors
 import { clearMessage } from 'src/reducer/app';
 import { checkStepsStatus } from 'src/selectors/formDataGetters';
-import DocMissingStepsRecap from 'src/components/DocMissingStepsRecap';
 
 const EfForm = () => {      
 
