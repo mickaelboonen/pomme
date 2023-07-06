@@ -54,7 +54,6 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
   
   const onSubmit = (data) => {
     if (isOm) {
-      console.log(agent);
       const newOM = {
         name: `Ordre-de-mission-${agent.lastname.toUpperCase()}`,
         status: 1,

@@ -15,7 +15,7 @@ import { closeBurgerMenu  } from 'src/selectors/domManipulators';
 import './style.scss';
 
 const SmallScreenMenu = ({ cas, role = 'dev'}) => {
-  const { agent : { user }} = useSelector((state) => state);
+  const { agent : { user, agent }} = useSelector((state) => state);
 
   const location = useLocation();
   const dispatch = useDispatch();
@@ -168,7 +168,7 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
           ))}
         </ul>
       </div>
-      {user === 'mboone01' &&(
+      {(agent.roles && agent.roles.indexOf('GEST') >=0)  &&(
         <div className="small-screen-menu__section">
           <h3  className="small-screen-menu__section-title">{gestLinks.category}</h3>
           <ul className="small-screen-menu__section-list">
@@ -176,7 +176,7 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
           </ul>
         </div>
       )}
-      {user === 'mboone01' &&(
+      {(agent.roles && agent.roles.indexOf('DAF') >=0) &&(
         <div className="small-screen-menu__section">
           <h3  className="small-screen-menu__section-title">{dafcLinks.category}</h3>
           <ul className="small-screen-menu__section-list">

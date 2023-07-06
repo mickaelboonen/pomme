@@ -17,10 +17,7 @@ import { toggleBurgerMenu, toggleNavList } from 'src/selectors/domManipulators';
 
 const DesktopHeader = ({ cas, isAuthenticated}) => {
 
-  const dispatch = useDispatch();
-
-  const role = 'dev';
-  
+  const dispatch = useDispatch();  
   const { agent : { user, agent }} = useSelector((state) => state);
   
   const handleLogOut = () => {
@@ -42,24 +39,24 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
       {isAuthenticated && (
         <nav className="header__menu">
           <Preferences />
-          {user === 'mboone01' &&(
-            <>
-              <div className="header__menu-section" id="dafc" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
-                <p>DAFC</p>
-                <ul className="header__menu-section-list">
-                  <li><Link to="/dafc/ordres-de-mission">Ordres de Mission</Link></li>
-                  <li><Link to="/dafc/états-de-frais">États de Frais</Link></li>
-                </ul>
-              </div>
-              <div className="header__menu-section" id="gest" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
-                <p>GESTIONNAIRE</p>
-                <ul className="header__menu-section-list">
-                  <li><Link to="/gestionnaire/ordres-de-mission">Ordres de Mission</Link></li>
-                  <li><Link to={`/gestionnaire/${user}/${encodeURIComponent('mes-états-de-frais')}`}>États de Frais <span id="mes-efs"></span></Link></li>
-                  <li><Link to={`/gestionnaire/${user}/${encodeURIComponent('mes-préférences')}`}>Mes Préférences</Link></li>
-                </ul>
-              </div>
-            </>
+          {(agent.roles && agent.roles.indexOf('DAF') >=0) && (
+            <div className="header__menu-section" id="dafc" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
+              <p>DAFC</p>
+              <ul className="header__menu-section-list">
+                <li><Link to="/dafc/ordres-de-mission">Ordres de Mission</Link></li>
+                <li><Link to="/dafc/états-de-frais">États de Frais</Link></li>
+              </ul>
+            </div>
+          )}
+          {(agent.roles && agent.roles.indexOf('GEST') >=0) && (
+            <div className="header__menu-section" id="gest" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
+              <p>GESTIONNAIRE</p>
+              <ul className="header__menu-section-list">
+                <li><Link to="/gestionnaire/ordres-de-mission">Ordres de Mission</Link></li>
+                <li><Link to={`/gestionnaire/${user}/${encodeURIComponent('mes-états-de-frais')}`}>États de Frais <span id="mes-efs"></span></Link></li>
+                <li><Link to={`/gestionnaire/${user}/${encodeURIComponent('mes-préférences')}`}>Mes Préférences</Link></li>
+              </ul>
+            </div>
           )}
           <div className="header__menu-section" id="mon-compte" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
             <p>MON COMPTE</p>
