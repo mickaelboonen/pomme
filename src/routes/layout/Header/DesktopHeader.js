@@ -52,7 +52,7 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
             <div className="header__menu-section" id="gest" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
               <p>GESTIONNAIRE</p>
               <ul className="header__menu-section-list">
-                <li><Link to="/gestionnaire/ordres-de-mission">Ordres de Mission</Link></li>
+                <li><Link to={`/gestionnaire/${user}/documents-a-signer`}>Ordres de Mission</Link></li>
                 <li><Link to={`/gestionnaire/${user}/${encodeURIComponent('mes-états-de-frais')}`}>États de Frais <span id="mes-efs"></span></Link></li>
                 <li><Link to={`/gestionnaire/${user}/${encodeURIComponent('mes-préférences')}`}>Mes Préférences</Link></li>
               </ul>

@@ -6,10 +6,12 @@ import PageTitle from 'src/components/PageTitle';
 import Tabs from 'src/components/Tabs';
 import Section from 'src/routes/utilisateur/MyDocuments/Section';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Gestionnaires = () => {
 
-  const { omManager: { pendingDocs, loader }} = useSelector((state) => state);
+  const { omManager: { pendingDocs, loader },
+    agent: { user }} = useSelector((state) => state);
     
   const tabs = [
     {
@@ -45,7 +47,13 @@ const Gestionnaires = () => {
     <main className="my-documents">
       <PageTitle>Documents à valider</PageTitle>
       <Tabs tabs={tabs} handler={displayWantedSection} />
-      {!loader && <Section id={"om-section"} data={pendingDocs} isFirstSection hasLinks />}
+      {!loader && (
+        <div className='my-documents__files'>
+          {pendingDocs.map((doc) => (
+            <Link key={doc.id} to={`/gestionnaire/${user}/valider-un-document/ordre-de-mission?etape=1&id=${doc.id}`}>{doc.name}</Link>
+          ))}
+        </div>
+      )}
       {/* <Section id={"ef-section"} data={currentEFs} hasLinks /> */}
     </main>
 );}
