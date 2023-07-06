@@ -5,65 +5,23 @@ import './style.scss';
 import PageTitle from 'src/components/PageTitle';
 import Tabs from 'src/components/Tabs';
 import Section from 'src/routes/utilisateur/MyDocuments/Section';
+import { useSelector } from 'react-redux';
 
 const Gestionnaires = () => {
-  
-  // FAKE DATA
-  const currentEFs = [
-    {
-      id: 1,
-      name: 'EF_BOONEN_091022',
-      status: 8, 
-    },
-  ];
 
-  
-  // FAKE DATA
-  const currentOMs = [
-    {
-      id: 1,
-      name: 'OM_BOONEN_091022',
-      status: 8, 
-    },
-    {
-      id: 2,
-      name: 'OM_BOONENMICKAEL_121022',
-      status: 9, 
-    },
-    {
-      id: 3,
-      name: 'OM_BOONEN_2010222',
-      status: 6, 
-    },
-    {
-      id: 4,
-      name: 'OM_BOONEN_091022',
-      status: 8, 
-    },
-    {
-      id: 5,
-      name: 'OM_BOONENMICKAEL_121022',
-      status: 9, 
-    },
-    {
-      id: 6,
-      name: 'OM_BOONEN_2010222',
-      status: 6, 
-    },
-  ];
-  
+  const { omManager: { pendingDocs, loader }} = useSelector((state) => state);
+    
   const tabs = [
     {
       id: 'om',
       name: 'Ordres de Missions',
-      notification: currentOMs.length,
     },
     {
       id: 'ef',
       name: 'États de frais',
-      notification: currentEFs.length,
     }
   ]
+
   /**
    * Toggles the section according to the clicked tab
    * @param object event 
@@ -87,8 +45,8 @@ const Gestionnaires = () => {
     <main className="my-documents">
       <PageTitle>Documents à valider</PageTitle>
       <Tabs tabs={tabs} handler={displayWantedSection} />
-      <Section id={"om-section"} data={currentOMs} isFirstSection hasLinks />
-      <Section id={"ef-section"} data={currentEFs} hasLinks />
+      {!loader && <Section id={"om-section"} data={pendingDocs} isFirstSection hasLinks />}
+      {/* <Section id={"ef-section"} data={currentEFs} hasLinks /> */}
     </main>
 );}
 
