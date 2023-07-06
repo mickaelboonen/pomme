@@ -68,9 +68,9 @@ const OMForm = () => {
           status: (currentOM.hasOwnProperty('advance') && currentOM.advance.status) ? currentOM.advance.status : false
         },
         {
-          name: 'signature',
+          name: 'autre',
           step: 5,
-          status: (currentOM.hasOwnProperty('signature') && currentOM.signature.status) ? currentOM.signature.status : false
+          status: (currentOM.hasOwnProperty('more') && currentOM.more.status) ? currentOM.more.status : false
         },
       ];
       

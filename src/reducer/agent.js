@@ -108,6 +108,7 @@ const agentSlice = createSlice({
       },
       saveUserLightData: (state, action) => {
         const data = extractUserData(action.payload);
+        console.log("data after extractUserData = ",data);
         state.agent = data;
       },
     },
