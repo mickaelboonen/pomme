@@ -20,31 +20,15 @@ import FileHandler from '../FileHandler';
 import InputValueDisplayer from '../InputValueDisplayer';
 
 const MissionVal = ({ displayPdf, data, entity }) => {
-  console.log(data);
+  
   const loader = useLoaderData();
-  // const docId = loader.searchParams.get('id');
   
-  // const { 
-  //   ef: { isMissionFormDisabled }
-  // } = useSelector((state) => state);
-  
-  // Defining default values -----------------------------------------------------
   let defaultValues = null;
-  // let modificationsFilenames = '';
-
+  
   
   defaultValues = data;
   defaultValues = addAllAddressesFields(defaultValues);
   
-  // const {
-  //   register, formState: { errors }
-  // } = useForm({
-  //   defaultValues: {
-  //     ...defaultValues,
-  //     visa: defaultValues.visa ? 'visa-yes' : 'visa-no',
-  //   },
-  // });
-  // const { register, formState: { errors } } = useForm();
 
   const setAddressPart = (value) => {
     if (value !== '' && value !== 0) {
@@ -83,9 +67,7 @@ const MissionVal = ({ displayPdf, data, entity }) => {
           label="Motif de la mission"
           value={data.mission_purpose}
         />
-        {data.mission_purpose_file.map((file) => {
-          console.log(file);
-          return (
+        {data.mission_purpose_file.map((file) => (
           <FileHandler
             key={data.mission_purpose_file.indexOf(file)}
             label="Pièce.s justificative.s de la mission"
@@ -96,7 +78,7 @@ const MissionVal = ({ displayPdf, data, entity }) => {
             entityId={data.id}
             status={file.file.status}
           />
-        )})}
+        ))}
       </div>
         <FormSectionTitle>Départ et retour</FormSectionTitle>
         <div className="form__section form__section--split">

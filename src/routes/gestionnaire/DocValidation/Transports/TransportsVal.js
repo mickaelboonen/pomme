@@ -11,6 +11,7 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 
 
 const TransportsVal = ({ displayPdf, data, entity }) => {
+  console.log(data);
   let trainData = []
   let planeData = []
   let taxiData = []
@@ -44,7 +45,7 @@ const TransportsVal = ({ displayPdf, data, entity }) => {
   if (data.taxi) {
     otherTransports += 'Taxi. '
   }
-  
+  console.log(trainData,  planeData,  taxiData );
   return (
     <>
       <div className="form__section">

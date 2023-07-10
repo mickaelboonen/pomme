@@ -72,7 +72,7 @@
     width: 48%;
     flex-grow: 1;
     padding: 1rem;
-    height: calc(3rem + 600px);
+    max-height: calc(3rem + 600px);
     overflow: auto;
     margin-right: 2rem;
 
