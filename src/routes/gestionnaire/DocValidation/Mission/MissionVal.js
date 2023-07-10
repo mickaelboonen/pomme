@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
 import { useLoaderData } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,8 +19,8 @@ import { getDDMMYYDate, getHHMMTime } from 'src/selectors/dateFunctions';
 import FileHandler from '../FileHandler';
 import InputValueDisplayer from '../InputValueDisplayer';
 
-const MissionVal = ({ displayPdf, data }) => {
-
+const MissionVal = ({ displayPdf, data, entity }) => {
+  console.log(data);
   const loader = useLoaderData();
   // const docId = loader.searchParams.get('id');
   
@@ -72,7 +73,7 @@ const MissionVal = ({ displayPdf, data }) => {
     }
     return joinedAddress;
   })
-  console.log(data);
+  
   return (
     <>
       <div className="form__section">
@@ -82,22 +83,20 @@ const MissionVal = ({ displayPdf, data }) => {
           label="Motif de la mission"
           value={data.mission_purpose}
         />
-        {/* <TextField
-          id="motif"
-          formField="missionPurpose"
-          label="Motif de la mission"
-          register={() => {}}
-          value={data.mission_purpose}
-        /> */}
-        {data.mission_purpose_file.map((file) => (
+        {data.mission_purpose_file.map((file) => {
+          console.log(file);
+          return (
           <FileHandler
             key={data.mission_purpose_file.indexOf(file)}
             label="Pièce.s justificative.s de la mission"
-            data={file}
-            field='mission.mission_purpose_file'
+            dataLink={file.dataLink}
+            url={file.file.url}
             displayPdf={displayPdf}
+            entity={entity}
+            entityId={data.id}
+            status={file.file.status}
           />
-        ))}
+        )})}
       </div>
         <FormSectionTitle>Départ et retour</FormSectionTitle>
         <div className="form__section form__section--split">
@@ -111,19 +110,6 @@ const MissionVal = ({ displayPdf, data }) => {
               label="Lieu de départ"
               value={data.departure_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}
             />
-            {/* <TextField
-              id="motif"
-              formField="departure"
-              register={() => {}}
-            /> */}
-            
-            {/* <TextField
-              id="motif"
-              formField="departurePlace"
-              label="Lieu de départ"
-              register={() => {}}
-              value={data.departure_place}
-            /> */}
           </div>
           <div className="form__section-half form__section-half--separator" />
           <div className="form__section-half">
@@ -137,38 +123,15 @@ const MissionVal = ({ displayPdf, data }) => {
               value={data.comeback_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}
 
             />
-          {/* <TextField
-              id="motif"
-              formField="comback"
-              label="Date et heure de la fin de mission"
-              register={() => {}}
-              value={getDDMMYYDate(new Date(data.comeback)) + ' à ' + getHHMMTime(new Date(data.comeback))}
-            />
-            <TextField
-              id="motif"
-              formField="comebackPlace"
-              label="Lieu de retour"
-              register={() => {}}
-              value={data.comeback_place}
-              // required={errorMessages.missionPurpose}
-            /> */}
           </div>
         </div>
         <FormSectionTitle>Lieu de la mission</FormSectionTitle>
         {addresses.map((address) => (
-          
           <InputValueDisplayer
+            key={address.id}
             label="Adresse de la mission"
             value={address.value}
           />
-          // <TextField
-          //   key={address.id}
-          //   id={"mission-address-" + address.id}
-          //   formField="-"
-          //   label="Adresse de la mission"
-          //   register={() => {}}
-          //   value={address.value}
-          // />
         ))}
         
         <InputValueDisplayer
@@ -181,61 +144,24 @@ const MissionVal = ({ displayPdf, data }) => {
             value={data.planning}
           />
         )}
-        {/* <TextField
-          id="region"
-          formField="region"
-          label="Région de la mission"
-          register={() => {}}
-          value={data.region}
-        />
-        <TextareaField
-          id="planning"
-          formField="planning"
-          label="Planning de la mission"
-          register={() => {}}
-          value={data.planning}
-        /> */}
         <FormSectionTitle>Mission hors de la métropole</FormSectionTitle>
         
         <InputValueDisplayer
           label="Forfait de remboursement choisi"
           value={data.abroad_costs === 'per-diem' ? 'Per diem' : 'Frais réels'}
         />
-        {/* <TextField
-          id="region"
-          formField="abroadCosts"
-          label="Forfait de remboursement"
-          register={() => {}}
-          value={data.abroadCosts}
-        /> */}
         <div className="form__section form__section--documents">
           <div className="form__section-half">
-            {/* <TextField
-              id="motif"
-              formField="visa"
-              label="Visa"
-              register={() => {}}
-              value={data.visa}
-            /> */}
-            
             <InputValueDisplayer
               label="Visa"
               value={data.visa ? 'Oui' : 'Non'}
             />
           </div>
-          {/* <div className="form__section-half form__section-half--separator" /> */}
           <div className="form__section-half">
             <InputValueDisplayer
               label="Règlement du visa"
               value={data.visa_payment === "user" ? "Avancé par l'agent" : "Payé par Unîmes"}
             />
-          {/* <TextField
-              id="motif"
-              formField="visaPayment"
-              label="Règlement du visa"
-              register={() => {}}
-              value={data.visaPayment}
-            /> */}
           </div>
         </div>
         {data.region === 'étranger' && (
@@ -244,9 +170,12 @@ const MissionVal = ({ displayPdf, data }) => {
                 <FileHandler
                   key={data.maps.indexOf(file)}
                   label="Carte du pays de la mission"
-                  data={file}
-                  field='mission.maps'
+                  dataLink={file.dataLink}
+                  url={file.file.url}
                   displayPdf={displayPdf}
+                  entity={entity}
+                  entityId={data.id}
+                  status={file.file.status}
                 />
               ))}
           </div>
@@ -257,7 +186,7 @@ const MissionVal = ({ displayPdf, data }) => {
 };
 
 MissionVal.propTypes = {
-
+  entity: PropTypes.string.isRequired,
 };
 
 export default MissionVal;

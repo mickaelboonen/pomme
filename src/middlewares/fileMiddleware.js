@@ -394,6 +394,16 @@ const omMiddleware = (store) => (next) => (action) => {
       }
       break;
     // TODO -------------------------------------------------------
+    case 'omForm/changeFileStatus':
+      api.post("/api/files/update-status", action.payload)
+      .then((response) => {
+        store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
+
+      })
+      .catch((error) => {
+        store.dispatch(setApiResponse(error));
+      });
+      break;
     case 'other-documents/uploadVehicleFiles':
       
       const filesToUpload = [];

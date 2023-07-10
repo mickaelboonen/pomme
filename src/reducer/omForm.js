@@ -278,6 +278,7 @@ const omFormSlice = createSlice({
       },
       deleteAddress: () => {},
       createScientificEvent: () => {},
+      changeFileStatus: () => {}
     },
 });
 
@@ -316,33 +317,8 @@ export const {
   saveOmPdf,
   updateOm,
   deleteAddress,
-  createScientificEvent
+  createScientificEvent,
+  changeFileStatus,
 } = omFormSlice.actions;
 
 export default omFormSlice.reducer;
-
-// START TRANSACTION;
-// SET FOREIGN_KEY_CHECKS = 0;
-// DELETE FROM om WHERE id = 11;
-// DELETE FROM om_mission WHERE id = 10;
-// DELETE FROM om_transports WHERE id = 10;
-// DELETE FROM om_accomodations WHERE id = 10;
-// DELETE FROM om_advance WHERE id = 10;
-// DELETE FROM om_more WHERE id = 10;
-// DELETE FROM om_signature WHERE id = 10;
-// DELETE FROM om WHERE id = 12;
-// DELETE FROM om_mission WHERE id = 11;
-// DELETE FROM om_transports WHERE id = 11;
-// DELETE FROM om_accomodations WHERE id = 11;
-// DELETE FROM om_advance WHERE id = 11;
-// DELETE FROM om_more WHERE id = 11;
-// DELETE FROM om_signature WHERE id = 11;
-// DELETE FROM om WHERE id = 13;
-// DELETE FROM om_mission WHERE id = 12;
-// DELETE FROM om_transports WHERE id = 12;
-// DELETE FROM om_accomodations WHERE id = 12;
-// DELETE FROM om_advance WHERE id = 12;
-// DELETE FROM om_more WHERE id = 12;
-// DELETE FROM om_signature WHERE id = 12;
-// SET FOREIGN_KEY_CHECKS = 1;
-// COMMIT;

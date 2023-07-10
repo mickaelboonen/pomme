@@ -55,12 +55,12 @@ const OMForm = () => {
     
     return false;
   }
+
   const currentOM = pendingDocs.find((om) => om.id === id);
 
   const [docToShow, setDocToShow] = useState('');
 
   const displayPdf = (url) => {
-    console.log(url);
     setDocToShow(url);
   }
 
@@ -87,8 +87,8 @@ const OMForm = () => {
             url={loaderData}
           >
               <div className="form-layout__data">
-                {step === 1 && <Mission step={step} displayPdf={displayPdf} data={currentOM.mission} />}
-                {step === 2 && <Transports step={step} displayPdf={displayPdf} data={currentOM.transports} />}
+                {step === 1 && <Mission step={step} entity="OmMission" displayPdf={displayPdf} data={currentOM.mission} />}
+                {step === 2 && <Transports step={step} entity="OmTransports" displayPdf={displayPdf} data={currentOM.transports} />}
               </div>
               <div className={classNames("form-layout__viewer", { "form-layout__viewer--empty": docToShow === ''})}>
                 <div className='form-layout__viewer-pdf'>
