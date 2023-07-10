@@ -2,23 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import classNames from 'classnames';
 
-import { useLoaderData, useNavigate, Link, useLocation } from 'react-router-dom';
+import { useLoaderData, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 
+import Mission from './Mission';
+import Advance from './Advance';
+import Validation from './Validation';
 import FormLayout from './FormLayout';
-import Mission from './Mission/MissionVal';
-import Transports from './Transports/TransportsVal';
+import Transports from './Transports';
+import Accomodations from './Accomodations';
 import LoaderCircle from 'src/components/LoaderCircle';
 
 import PageTitle from 'src/components/PageTitle';
 import ThreadAsTabs from 'src/components/ThreadAsTabs';
-import TextareaField from 'src/components/Fields/TextareaField';
 
 import { clearMessage } from 'src/reducer/app';
 
 import './style.scss';
-import AccomodationsVal from './Accomodations/AccomodationsVal';
+import Other from './Other';
 
 const OMForm = () => {  
   const navigate = useNavigate();
@@ -81,36 +83,45 @@ const OMForm = () => {
             <LoaderCircle />
           </div>
         )}
-        <div className="form-page__container">
-          <FormLayout
-            step={step}
-            user={user}
-            url={loaderData}
-          >
-              <div className="form-layout__data">
-                {step === 1 && <Mission step={step} entity="OmMission" displayPdf={displayPdf} data={currentOM.mission} />}
-                {step === 2 && <Transports step={step} entity="OmTransports" displayPdf={displayPdf} data={currentOM.transports} />}
-                {step === 3 && <AccomodationsVal step={step} entity="OmAccomodations" displayPdf={displayPdf} data={currentOM.accomodations} />}
-              </div>
-              {step !== 3 && (
-                <div className={classNames("form-layout__viewer", { "form-layout__viewer--empty": docToShow === ''})}>
-                  <div className='form-layout__viewer-pdf'>
-                    <div className="form-layout__viewer-pdf__nav">
-                      <p className="form-layout__viewer-pdf__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer le PDF</p>
-                    </div>
-                    <embed
-                      className="form-layout__viewer-pdf__embed"
-                      src={docToShow}
-                      width="100%"
-                      height="600px"
-                      type="application/pdf"
-                    />
-                    <p className="form-layout__viewer-pdf__instruction">Veuillez sélectionner une pièce jointe à afficher.</p>
-                  </div>
+        {step < 6 && (
+          <div className="form-page__container">
+            <FormLayout
+              step={step}
+              user={user}
+              url={loaderData}
+            >
+                <div className="form-layout__data">
+                  {step === 1 && <Mission entity="OmMission" displayPdf={displayPdf} data={currentOM.mission} />}
+                  {step === 2 && <Transports entity="OmTransports" displayPdf={displayPdf} data={currentOM.transports} />}
+                  {step === 3 && <Accomodations data={currentOM.accomodations} />}
+                  {step === 4 && <Advance entity="OmAdvance" displayPdf={displayPdf} data={currentOM.advance} />}
+                  {step === 5 && <Other entity="OmMore" displayPdf={displayPdf} data={currentOM.more} />}
                 </div>
-              )}
-          </FormLayout>
-        </div>
+                {step !== 3 && (
+                  <div className={classNames("form-layout__viewer", { "form-layout__viewer--empty": docToShow === ''})}>
+                    <div className='form-layout__viewer-pdf'>
+                      <div className="form-layout__viewer-pdf__nav">
+                        <p className="form-layout__viewer-pdf__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer le PDF</p>
+                      </div>
+                      <embed
+                        className="form-layout__viewer-pdf__embed"
+                        src={docToShow}
+                        width="100%"
+                        height="600px"
+                        type="application/pdf"
+                      />
+                      <p className="form-layout__viewer-pdf__instruction">Veuillez sélectionner une pièce jointe à afficher.</p>
+                    </div>
+                  </div>
+                )}
+            </FormLayout>
+          </div>
+        )}
+        {step === 6 && (
+          <div className="form-page__container">
+            <Validation />
+          </div>
+        )}
         {/* {currentOM.status < 2 && (
           <div className="form-page__container">
             <div className='form'>

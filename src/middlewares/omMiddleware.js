@@ -156,7 +156,7 @@ const omMiddleware = (store) => (next) => (action) => {
       break;
     
     case 'omForm/updateMoreAndSignature':
-      api.post("/api/om/more-and-signature/update",  action.payload)
+      api.post("/api/om/more/update",  action.payload)
         .then((response) => {
           
             // store.dispatch(saveMoreAndSignature(response.data))
@@ -204,7 +204,7 @@ const omMiddleware = (store) => (next) => (action) => {
       break;
     
       case 'omForm/getMore':
-        api.get("/api/om/more-and-signature/find/" + action.payload)
+        api.get("/api/om/more/find/" + action.payload)
           .then((response) => {
             
               store.dispatch(saveMore(response.data))

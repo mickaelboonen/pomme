@@ -19,14 +19,16 @@ const FileHandler = ({ status, dataLink, label, displayPdf, url, entity, entityI
     dispatch(changeFileStatus({url: url, status: event.target.value, entity: entity, entityId: entityId}))
   };
   
+  const statusToShow = status ? '1' : status === false ? '0' : '';
+
   return (
   <div className='file-form'>
     <form className='file-form__head'>
       <p className='file-form__head-label'>{label}</p>
-      <select className='file-form__head-select' name="" id="" onChange={handleStatusChange}>
-        <option className='file-form__head-select-option' selected={status === null} value="">Non vérifié</option>
-        <option className='file-form__head-select-option' selected={status} value="1">Validé</option>
-        <option className='file-form__head-select-option' selected={status === false} value="0">Rejeté</option>
+      <select className='file-form__head-select' name="" id="file-status" onChange={handleStatusChange} value={statusToShow}>
+        <option className='file-form__head-select-option' value=''>Non vérifié</option>
+        <option className='file-form__head-select-option' value="1">Validé</option>
+        <option className='file-form__head-select-option' value="0">Rejeté</option>
       </select>
     </form>
     <div className='file-form__body'>

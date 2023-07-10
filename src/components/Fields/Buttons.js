@@ -201,8 +201,8 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
       }
       else {
         const infosFile = data.files.find((file) => file instanceof File);
-        if (data.agentSignature instanceof File || infosFile instanceof File) {
-          dispatch(uploadFile({ data: data, step: 'more-and-signature'}));
+        if (infosFile instanceof File) {
+          dispatch(uploadFile({ data: data, step: 'more'}));
         } 
         else {
           dispatch(update(data));

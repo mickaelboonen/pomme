@@ -72,7 +72,7 @@ const Other = ({ step }) => {
     //   data.agentSignature = userSignature;
       
       if (infosFile instanceof File) {
-        dispatch(uploadFile({ data: data, step: 'more-and-signature'}));
+        dispatch(uploadFile({ data: data, step: 'more'}));
       } 
       else {
         dispatch(updateMoreAndSignature(data));

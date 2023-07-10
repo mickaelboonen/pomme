@@ -66,15 +66,7 @@ const omMiddleware = (store) => (next) => (action) => {
             filesToUpload.push(rib);
           }
         }
-        else if (step === "more-and-signature") {
-          if (data.agentSignature instanceof File) {
-            const signature = {
-              docId: data.docId,
-              type: 'signature',
-              file: data.agentSignature,
-            }
-            filesToUpload.push(signature);
-          }
+        else if (step === "more") {
           data.files.forEach((file) => {
             if (file instanceof File) {
               const fileToUpload = {
@@ -214,7 +206,7 @@ const omMiddleware = (store) => (next) => (action) => {
 
           if (type === 'om') {
 
-            if (step === "more-and-signature") {
+            if (step === "more") {
               data.files = [];
             }
             else if (step === 'mission') {
@@ -278,7 +270,7 @@ const omMiddleware = (store) => (next) => (action) => {
               data.hotelQuotations = data.hotelQuotations.filter((file) => typeof file === 'string');
               store.dispatch(updateAdvance(data));
             }
-            else if (step === 'more-and-signature') {
+            else if (step === 'more') {
               store.dispatch(updateMoreAndSignature(data));
             }
             else if (step === 'mission') {
