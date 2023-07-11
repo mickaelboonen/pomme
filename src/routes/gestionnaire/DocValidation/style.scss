@@ -143,6 +143,7 @@
     
     &--empty {
       width: 30%;
+      height: calc(3rem + 600px);
       border: 2px solid rgba(var(--lightestThemeColor)); 
       outline: 1px solid rgba(var(--lightestThemeColor)); 
       outline-offset: -12px;

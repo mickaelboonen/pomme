@@ -6,6 +6,7 @@ import { declareCamelCaseKeys } from '../selectors/keyObjectService';
 const initialState = {
   loader: false,
   pendingDocs: [],
+  channels: [],
 };
 const omManagerSlice = createSlice({
     name: 'omManager',
@@ -17,13 +18,19 @@ const omManagerSlice = createSlice({
       savePendingOms: (state, action) => {
         state.pendingDocs = action.payload;
         state.loader = false;
+      },
+      fetchValidationChannels: () => {},
+      saveValidationChannels: (state, action) => {
+
       }
     }
 });
 
 export const {
   fetchPendingOms,
-  savePendingOms
+  savePendingOms,
+  fetchValidationChannels,
+  saveValidationChannels
 } = omManagerSlice.actions;
 
 export default omManagerSlice.reducer;

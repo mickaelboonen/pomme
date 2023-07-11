@@ -10,7 +10,8 @@ import { fetchOm } from "src/reducer/omForm";
 import { fetchUserData } from "src/reducer/agent";
 import { getDocument, fetchCountries } from "src/reducer/app";
 import { fetchOMs, fetchEfs } from "src/reducer/agent";
-import { fetchPendingOms } from "../reducer/omManager";
+import { fetchPendingOms, fetchValidationChannels } from "../reducer/omManager";
+import { setLoader } from "../reducer/omForm";
 
 export default {
   path: 'gestionnaire/:slug/',
@@ -35,34 +36,14 @@ export default {
           element: <DocValidation />,
           loader: async ({ request }) => {
             const url = new URL(request.url);
-            // const step = url.searchParams.get("etape");
-            // const id = url.searchParams.get("id");
-
-            // const {
-            //   agent : { user, agent },
-            //   app: { countries },
-            // } = store.getState((state) => state);
-          
-            // store.dispatch(fetchOm({id: id, handleLoader: false,}));
-
-
-            // if (step === '1') {
-            //   store.dispatch(fetchCountries());
-            // }
-            // else if (step === '4') {
-            //   store.dispatch(getDocument({id: user, type: 'rib'}));
-            // }
-            // else if (step === '6') {
-            //   if (countries.length === 0) {
-            //     store.dispatch(fetchCountries());
-            //   }
-              
-            //   store.dispatch(fetchUserData({ id: user}));
-
-            //   if (!agent.hasOwnProperty('lastname')) {
-            //     store.dispatch(fetchUserData({ id: user}));
-            //   }
-            // }
+            const step = url.searchParams.get("etape");
+            const id = url.searchParams.get("id");
+            
+            if (step === '6') {
+                store.dispatch(setLoader(true));
+                store.dispatch(fetchValidationChannels());
+                store.dispatch(fetchOm({id: id}));
+            }
             
           return url;  
           },

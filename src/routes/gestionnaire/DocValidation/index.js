@@ -119,7 +119,8 @@ const OMForm = () => {
         )}
         {step === 6 && (
           <div className="form-page__container">
-            <Validation />
+            {!omLoader && <Validation />}
+            {omLoader && <p>Loading</p>}
           </div>
         )}
         {/* {currentOM.status < 2 && (

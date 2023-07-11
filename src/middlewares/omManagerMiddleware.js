@@ -18,15 +18,23 @@ const omManagerMiddleware = (store) => (next) => (action) => {
         .then((response) => {
 
           console.log(response);
-          store.dispatch(savePendingOms(response.data))
+          // store.dispatch(savePendingOms(response.data))
         })
         .catch((error) => {
           store.dispatch(setApiResponse(error));;
         });
       break;
     
-    case 'vehicle/updateVehicle':
-      
+    case 'omManager/fetchValidationChannels':
+      api.get("/api/validation-channels/fetch")
+      .then((response) => {
+
+        console.log(response);
+        store.dispatch(savePendingOms(response.data))
+      })
+      .catch((error) => {
+        store.dispatch(setApiResponse(error));;
+      });
       break;
     case 'vehicle/deleteVehicle':
       
