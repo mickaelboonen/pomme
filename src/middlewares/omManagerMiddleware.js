@@ -1,9 +1,9 @@
-import { saveVehicles, saveVehicle, saveVehicleDocuments, requestVehicleAuthorization, saveAuthorization } from 'src/reducer/vehicle';
+
 import { savePendingOms } from 'src/reducer/omManager';
 
-import { api, setTokenOnApi } from './api';
-import { setMessage } from '../reducer/vehicle';
+import { api } from './api';
 import { setApiResponse } from '../reducer/app';
+import { saveValidationChannels } from '../reducer/omManager';
 
 
 api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -16,9 +16,7 @@ const omManagerMiddleware = (store) => (next) => (action) => {
     case 'omManager/fetchPendingOms':
       api.get("/api/manager/om/status/2")
         .then((response) => {
-
-          console.log(response);
-          // store.dispatch(savePendingOms(response.data))
+          store.dispatch(savePendingOms(response.data))
         })
         .catch((error) => {
           store.dispatch(setApiResponse(error));;
@@ -28,9 +26,7 @@ const omManagerMiddleware = (store) => (next) => (action) => {
     case 'omManager/fetchValidationChannels':
       api.get("/api/validation-channels/fetch")
       .then((response) => {
-
-        console.log(response);
-        store.dispatch(savePendingOms(response.data))
+        store.dispatch(saveValidationChannels(response.data))
       })
       .catch((error) => {
         store.dispatch(setApiResponse(error));;

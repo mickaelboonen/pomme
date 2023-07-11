@@ -20,7 +20,20 @@ import ButtonElement from 'src/components/Fields/ButtonElement';
 
 // import './style.scss';
 
-const ValidateOm = ({ register , errors, setValue, circuits}) => (
+const ValidateOm = ({ register , errors, setValue, circuits}) => {
+  const [validationActors, setValidationActors] = useState([]);
+  
+  const displayValidationActors = (event) => {
+    const { value } = event.target;
+    const selectedChannel = circuits.find((cir) => cir.id === Number(value));
+    
+    if (selectedChannel !== undefined) {
+      setValidationActors(selectedChannel.validationActors);
+    }
+  }
+
+
+  return (
   <>
     <div className="form__section">
       <FormSectionTitle>Imputations budgétaires</FormSectionTitle>
@@ -100,19 +113,19 @@ const ValidateOm = ({ register , errors, setValue, circuits}) => (
       <SelectField
         register={register}
         blankValue="Veuillez sélectionner un circuit de validation"
-        data={[]}
+        data={circuits}
         id="channel-field"
         formField="channel"
+        handler={displayValidationActors}
         label="Circuit"
         error={errors.channel}
         required="Veuillez sélectionner un circuit de validation."
       />
         <div className="form__section-field">
-          <p className="form__section-field-label">Autres</p>
-          <CheckboxInput id="taxi" formField="others" label="Taxi" register={register} />
-          <CheckboxInput id="parking" formField="others" label="Parking" register={register} />
-          <CheckboxInput id="toll" formField="others" label="Péage" register={register} />
-          <CheckboxInput id="ferry" formField="others" label="Ferry (bateau)" register={register} />
+          <p className="form__section-field-label">Acteurs de la validation</p>
+          {validationActors.map((actor) => (
+            <CheckboxInput key={actor.id} id={actor.cpt_login} formField="workflow" label={actor.role} register={register} />
+          ))}
         </div>
     </div>
     <div className="form__section-field">
@@ -122,7 +135,7 @@ const ValidateOm = ({ register , errors, setValue, circuits}) => (
       />
     </div>
   </>
-);
+)};
 
 ValidateOm.propTypes = {
 

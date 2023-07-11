@@ -21,7 +21,7 @@ const omManagerSlice = createSlice({
       },
       fetchValidationChannels: () => {},
       saveValidationChannels: (state, action) => {
-
+        state.channels = action.payload;
       }
     }
 });

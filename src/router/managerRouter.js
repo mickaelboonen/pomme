@@ -20,7 +20,6 @@ export default {
       path: 'documents-a-signer',
       element: <Gestionnaires />,
       loader: async ({ request }) => {
-        store.dispatch(fetchOm)
 
         // TODO : selon l'agent, récupérer tous les documents qu'iel doit vérifier.
           store.dispatch(fetchPendingOms());

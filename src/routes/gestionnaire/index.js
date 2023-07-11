@@ -42,7 +42,7 @@ const Gestionnaires = () => {
       }
     })
   };
-  
+    console.log(loader);
   return (
     <main className="my-documents">
       <PageTitle>Documents à valider</PageTitle>

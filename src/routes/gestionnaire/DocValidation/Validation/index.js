@@ -32,9 +32,9 @@ const Validation = ({  }) => {
   const loader = useLoaderData();
   const omId = loader.searchParams.get('id');
   
-  const { omForm: { omLoader, currentOM } } = useSelector((state) => state);
+  const { omForm: { omLoader, currentOM }, omManager: { channels } } = useSelector((state) => state);
   const { management } = currentOM;
-
+  
   const missionStatus = currentOM.mission ? currentOM.mission.status : null;
   const transportsStatus = currentOM.transports ? currentOM.transports.status : null;
   const accomodationsStatus = currentOM.accomodations ? currentOM.accomodations.status : null;
@@ -112,7 +112,7 @@ const Validation = ({  }) => {
             <RejectOm stepArray={statusArray} register={register} errors={errors} />
           )}
           {isValidated === 'validate' && (
-            <ValidateOm circuits={[]} register={register} errors={errors} setValue={setValue}  />
+            <ValidateOm circuits={channels} register={register} errors={errors} setValue={setValue} watch={watch}  />
           )}
         </div>  
       </form>
