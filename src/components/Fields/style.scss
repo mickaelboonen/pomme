@@ -284,6 +284,20 @@
       }
     }
 
+    &-select-help {
+      margin-top: -0.5rem;
+      margin-left: 0.5rem;
+      font-weight: bold;
+      font-style: italic;
+      font-size: 0.8em;
+      cursor: pointer;
+      color: rgba(var(--darkestThemeColor));
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
     &-radio {
       display: flex;
 

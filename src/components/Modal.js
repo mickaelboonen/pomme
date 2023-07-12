@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
 import { useDispatch } from 'react-redux';
@@ -14,6 +14,7 @@ import SwitchButton from 'src/components/SwitchButton';
 import SelectField from 'src/components/Fields/SelectField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import ButtonElement from 'src/components/Fields/ButtonElement';
+import RadioInput from 'src/components/Fields/RadioInput';
 
 // Actions
 import { toggleModal } from '../reducer/app';
@@ -30,10 +31,10 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
   if (target === 'ordre de mission' ) {
     isOm = true;
     defaultValues = {
-      duration: true,
-      withExpenses: true,
-      isTrainingCourse: false,
-      isResearch: false,
+      duration: 'ponctual',
+      expenses: 'with',
+      // isTrainingCourse: false,
+      // isResearch: false,
     }
   }
   else {
@@ -51,8 +52,30 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
   const refreshData = () => {
       dispatch(fetchOMs(user));
   };
-  
+
+  let omTypes = [
+    {
+      name: 'Mission de Recherche',
+      id: 'research'
+    },
+    {
+      name: "Mission d'enseignement",
+      id: 'deve'
+    },
+    {
+      name: 'Mission des personnels administratifs',
+      id: 'admin'
+    },
+    {
+      name: 'Mission de formation des personnels administratifs',
+      id: 'training'
+    }
+  ];
+  const departments = ['SA', 'DEG', 'PLLH', 'PAPSA'];
+  const services = ['DSIUN', 'Recherche', 'Comm'];
+
   const onSubmit = (data) => {
+    console.log(data);
     if (isOm) {
       const newOM = {
         name: `Ordre-de-mission-${agent.lastname.toUpperCase()}`,
@@ -60,11 +83,14 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
         url: 'path',
         missioner: user,
         comments: '',
-        expenses: data.withExpenses,
-        isPonctual: data.duration,
-        isTrainingCourse: data.isTrainingCourse,
-        isResearch: data.isResearch,
+        expenses: data.expenses === 'with' ? 1 : 0,
+        isPonctual: data.duration === 'ponctual' ? 1 : 0,
+        type:data.type + '-' + data.service,
+        isTrainingCourse: false,
+        isResearch: false,
       }
+      console.log(newOM);
+      return;
       dispatch(addNewOM(newOM)); 
     }
     else {
@@ -97,6 +123,21 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
       dispatch(toggleModal());
     }
   }, [])
+
+  const [service, setService] = useState([]);
+  const displayService = (event) => {
+    const { value } = event.target;
+    if (value === 'deve') {
+      setService(departments);
+    }
+    else if (value === "training" || value === "admin") {
+      setService(services);
+    }
+    else {
+      setService([]);
+    }
+  }
+  
   return (
     <div className='modal'>
         <form className="modal__form" onSubmit={handleSubmit(onSubmit)}>
@@ -104,7 +145,51 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
             <FormSectionTitle>Créer un nouvel {target} ?</FormSectionTitle>
             { target === 'ordre de mission' && (
               <div className="form__section-field">
-                <SwitchButton
+
+              <div className='form__section form__section--documents'>
+                <div className='form__section-half'>
+                  <label className="form__section-field-label" htmlFor="departure-place">Durée</label>
+                  
+                  <RadioInput
+                    id="ponctual"
+                    formField="duration"
+                    label="Ponctuel"
+                    register={register}
+                    required="Veuillez indiquer la durée de votre mission"
+                  />
+                  <RadioInput
+                    id="permanent"
+                    formField="duration"
+                    label="Permanent"
+                    register={register}
+                    required="Veuillez indiquer la durée de votre mission"
+                  />
+                </div>
+                <div className='form__section-half'>
+                  <label className="form__section-field-label" htmlFor="departure-place">Frais</label>
+                    
+                    <RadioInput
+                      id="with"
+                      formField="expenses"
+                      label="Avec frais"
+                      register={register}
+                      required="Veuillez indiquer si vore mission engendre des frais"
+                    />
+                    <RadioInput
+                      id="without"
+                      formField="expenses"
+                      label="Sans frais"
+                      register={register}
+                      required="Veuillez indiquer si vore mission engendre des frais"
+                    />
+                  </div>
+              </div>
+              <div>
+              {errors.duration && <p className="form__section-field-error form__section-field-error--open">{errors.duration.message}</p>}
+              {errors.expenses && <p className="form__section-field-error form__section-field-error--open">{errors.expenses.message}</p>}
+
+              </div>
+                {/* <SwitchButton
                   register={register}
                   isInForm
                   formField='duration'
@@ -115,8 +200,8 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
                   isInForm
                   formField='withExpenses'
                   label="Avec Frais :"
-                />
-                <div className="form__section-field-modal">
+                /> */}
+                {/* <div className="form__section-field-modal">
                   <SwitchButton
                     register={register}
                     isInForm
@@ -124,20 +209,57 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
                     label="Mission de Recherche :"
                   />
                   <FaQuestionCircle id="research-help" className="form__section-field-modal-icon" onClick={toggleHelp} />
-                </div>
-                <Help
+                </div> */}
+                {/* <Help
                   id="research"
                   message="Comprend les missions en rapport avec la Recherche, les événements scientifiques, colloques, séminaires, conférences et réunions, ainsi que les formations prises en charge par le Labo."
-                />
-                <div className="form__section-field-modal">
+                /> */}
+                {/* <div className="form__section-field-modal">
                   <SwitchButton
                     register={register}
                     isInForm
                     formField='isTrainingCourse'
                     label="Mission de formation des personnels :"
                   />
-                  {/* <FaQuestionCircle className="form__section-field-modal-icon" id="hr-help" onClick={toggleHelp} /> */}
+                  <FaQuestionCircle className="form__section-field-modal-icon" id="hr-help" onClick={toggleHelp} />
+                </div> */}
+                <div className="form__section-field">
+                  {/* <FaQuestionCircle className="form__section-field-modal-icon" id="hr-help" onClick={toggleHelp} />  */}
+                  <SelectField
+                      data={omTypes}
+                      register={register}
+                      formField="type"
+                      handler={displayService}
+                      id="om-type"
+                      label="Sélectionner le type d'OM"
+                      blankValue="--Veuillez sélectionner un type--"
+                      required="Merci de sélectionner le type d'ordre de mission"
+                      error={errors.type}
+                    />
+                    <p onClick={toggleHelp} id="research-help" className="form__section-field-select-help">Besoin d'aide ? Cliquez ici.</p>
                 </div>
+
+                  {/* {omTypes.map((type) => (
+                    <RadioInput key={type} id={type} formField="type" label={type} register={register} handler={displayService} />
+                  ))} */}
+                {service.length > 0 && (
+                  <SelectField
+                    data={service}
+                    register={register}
+                    formField="service"
+                    handler={() => {}}
+                    id="work-address-select"
+                    label="Sélectionner le département / service concerné"
+                    blankValue="--Veuillez sélectionner un département / service --"
+                    required="Merci de sélectionner le département ou service concerné"
+                    error={errors.service}
+                  />
+                )}
+                <Help
+                  id="research"
+                  title='Mission de Recherche'
+                  message="Les Missions de Recherche comprennent les missions en rapport avec la Recherche, les événements scientifiques, colloques, séminaires, conférences et réunions, ainsi que les formations prises en charge par le Labo."
+                />
                 {/* <Help
                   id="hr"
                   message="blablabl"
