@@ -20,19 +20,26 @@ import ButtonElement from 'src/components/Fields/ButtonElement';
 
 // import './style.scss';
 
-const ValidateOm = ({ register , errors, setValue, circuits}) => {
+const ValidateOm = ({ register, secondSelect, errors, setValue, circuits, displayServiceOrDepartment, services, departments, serviceOrDepartments}) => {
   const [validationActors, setValidationActors] = useState([]);
+  const [servicesToDisplay, setServicesToDisplay] = useState(secondSelect === "services" ? services : []);
+  const [departmentsToDisplay, setDepartmentsToDisplay] = useState(secondSelect === "departments" ? services : []);
+  // const [service, setService] = useState(services.find((s) => s.name.toLowerCase() === type[1]));
+  // console.log(type);
   
   const displayValidationActors = (event) => {
     const { value } = event.target;
     const selectedChannel = circuits.find((cir) => cir.id === Number(value));
     
     if (selectedChannel !== undefined) {
+      
       setValidationActors(selectedChannel.validationActors);
+      displayServiceOrDepartment(selectedChannel);
     }
+
   }
 
-
+  console.log("HERE = ", serviceOrDepartments);
   return (
   <>
     <div className="form__section">
@@ -99,17 +106,15 @@ const ValidateOm = ({ register , errors, setValue, circuits}) => {
       <FileField
         setValue={setValue}
         multiple
-        id="mission-goal"
-        formField="missionPurposeFile"
-        fileName={'fileName'}
+        id="files-field"
+        formField="files"
         register={register}
-        error={errors.missionPurposeFile}
-        pieces="Joindre impérativement convocation, mail ou tout autre document en attestant"
+        error={errors.files}
       
       />
     </div>
     <div className="form__section">
-      <FormSectionTitle>Circuit de signature</FormSectionTitle>
+      <FormSectionTitle>Circuit de validation</FormSectionTitle>
       <SelectField
         register={register}
         blankValue="Veuillez sélectionner un circuit de validation"
@@ -121,12 +126,38 @@ const ValidateOm = ({ register , errors, setValue, circuits}) => {
         error={errors.channel}
         required="Veuillez sélectionner un circuit de validation."
       />
-        <div className="form__section-field">
-          <p className="form__section-field-label">Acteurs de la validation</p>
-          {validationActors.map((actor) => (
-            <CheckboxInput key={actor.id} id={actor.cpt_login} formField="workflow" label={actor.role} register={register} />
-          ))}
-        </div>
+      {servicesToDisplay.length > 0 && (
+        <SelectField
+          register={register}
+          blankValue="Veuillez sélectionner le service ou département rattaché"
+          data={serviceOrDepartments}
+          id="service-field"
+          formField="service"
+          handler={displayValidationActors}
+          label="Service / Département"
+          error={errors.service}
+          required="Veuillez sélectionner le service ou département concerné."
+        />
+      )}
+      {departmentsToDisplay.length > 0 && (
+        <SelectField
+          register={register}
+          blankValue="Veuillez sélectionner le service ou département rattaché"
+          data={serviceOrDepartments}
+          id="service-field"
+          formField="service"
+          handler={displayValidationActors}
+          label="Service / Département"
+          error={errors.service}
+          required="Veuillez sélectionner le service ou département concerné."
+        />
+      )}
+      <div className="form__section-field">
+        <p className="form__section-field-label">Acteurs de la validation</p>
+        {validationActors.map((actor) => (
+          <CheckboxInput key={actor.id} id={actor.cpt_login} formField="workflow" label={actor.role} register={register} />
+        ))}
+      </div>
     </div>
     <div className="form__section-field">
       <ButtonElement

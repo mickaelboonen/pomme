@@ -55,6 +55,10 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
 
   let omTypes = [
     {
+      name: 'Mission test',
+      id: 'test'
+    },
+    {
       name: 'Mission de Recherche',
       id: 'research'
     },
@@ -75,7 +79,6 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
   const services = ['DSIUN', 'Recherche', 'Comm'];
 
   const onSubmit = (data) => {
-    console.log(data);
     if (isOm) {
       const newOM = {
         name: `Ordre-de-mission-${agent.lastname.toUpperCase()}`,
@@ -85,12 +88,11 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
         comments: '',
         expenses: data.expenses === 'with' ? 1 : 0,
         isPonctual: data.duration === 'ponctual' ? 1 : 0,
-        type:data.type + '-' + data.service,
+        type:data.type + (data.service ? '-' + data.service : ''),
         isTrainingCourse: false,
         isResearch: false,
       }
-      console.log(newOM);
-      return;
+      
       dispatch(addNewOM(newOM)); 
     }
     else {

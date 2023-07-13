@@ -32,9 +32,12 @@ const Validation = ({  }) => {
   const loader = useLoaderData();
   const omId = loader.searchParams.get('id');
   
-  const { omForm: { omLoader, currentOM }, omManager: { channels } } = useSelector((state) => state);
-  const { management } = currentOM;
-  
+  const {
+    omForm: { omLoader, currentOM },
+    omManager: { channels, unimes, deveDepartments }
+  } = useSelector((state) => state);
+
+    // console.log(currentOM);
   const missionStatus = currentOM.mission ? currentOM.mission.status : null;
   const transportsStatus = currentOM.transports ? currentOM.transports.status : null;
   const accomodationsStatus = currentOM.accomodations ? currentOM.accomodations.status : null;
@@ -56,6 +59,32 @@ const Validation = ({  }) => {
       }
     });
   }
+
+
+
+
+
+  //--------------------------------------------------------------------------------
+
+  const omType = currentOM.type.toLowerCase().split('-');
+
+  const chosenChannel = omType[0];
+  const relatedChannel = channels.find((channel) => channel.short_name === chosenChannel);
+  let secondSelectToDisplay = '';
+  let [serviceOrDepartments, setServiceOrDepartments] = useState([]);
+
+  if (chosenChannel === "deve") {
+    serviceOrDepartments = deveDepartments
+    secondSelectToDisplay = "departments";
+  }
+  else if (chosenChannel === "admin") {
+    serviceOrDepartments = unimes;
+    secondSelectToDisplay = "services";
+  }
+
+  const matchingServiceOrDep = serviceOrDepartments.find((service) => service.name.toLowerCase() === omType[1].toLowerCase());
+
+  //--------------------------------------------------------------------------------
   
   const {
     register,
@@ -68,9 +97,11 @@ const Validation = ({  }) => {
   } = useForm({ defaultValues: {
     validation: isOneStepRejected === undefined ? null : 'reject',
     rejectedFields: rejectedFields,
+    channel: channels.find((channel) => channel.short_name === omType[0]).id,
+    service: matchingServiceOrDep ? matchingServiceOrDep.id : null,
   }
   });
-
+  
   const onSubmit = (data) => {
     console.log(data);
   
@@ -79,6 +110,19 @@ const Validation = ({  }) => {
   const [isValidated, setIsValidated] = useState(isOneStepRejected === undefined ? null : 'reject')
   const handleValidation = (event) => {
     setIsValidated(event.target.value)
+  }
+
+  const displayServiceOrDepartment = (e) => {
+    const chosenChannel = e.short_name;
+    if (chosenChannel === "deve") {
+      setServiceOrDepartments(deveDepartments)
+    }
+    else if (chosenChannel === "admin") {
+      setServiceOrDepartments(unimes);
+    }
+    else {
+      setServiceOrDepartments([])
+    }
   }
   
   return (
@@ -112,7 +156,18 @@ const Validation = ({  }) => {
             <RejectOm stepArray={statusArray} register={register} errors={errors} />
           )}
           {isValidated === 'validate' && (
-            <ValidateOm circuits={channels} register={register} errors={errors} setValue={setValue} watch={watch}  />
+            <ValidateOm
+              circuits={channels}
+              register={register}
+              errors={errors}
+              setValue={setValue}
+              services={unimes}
+              departments={deveDepartments}
+              watch={watch}
+              secondSelect={secondSelectToDisplay}
+              serviceOrDepartments={serviceOrDepartments}
+              displayServiceOrDepartment={displayServiceOrDepartment}
+            />
           )}
         </div>  
       </form>
