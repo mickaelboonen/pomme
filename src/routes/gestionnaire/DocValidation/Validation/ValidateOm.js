@@ -32,14 +32,19 @@ const ValidateOm = ({ register, secondSelect, errors, setValue, circuits, displa
     const selectedChannel = circuits.find((cir) => cir.id === Number(value));
     
     if (selectedChannel !== undefined) {
-      
+      console.log(selectedChannel);
       setValidationActors(selectedChannel.validationActors);
       displayServiceOrDepartment(selectedChannel);
     }
 
   }
+  // console.log(servicesToDisplay, departmentsToDisplay, serviceOrDepartments);
 
-  console.log("HERE = ", serviceOrDepartments);
+  const uprOrDep = [];
+  // validationActors.fore
+
+
+
   return (
   <>
     <div className="form__section">
@@ -126,7 +131,7 @@ const ValidateOm = ({ register, secondSelect, errors, setValue, circuits, displa
         error={errors.channel}
         required="Veuillez sélectionner un circuit de validation."
       />
-      {servicesToDisplay.length > 0 && (
+      {/* {servicesToDisplay.length > 0 && (
         <SelectField
           register={register}
           blankValue="Veuillez sélectionner le service ou département rattaché"
@@ -138,8 +143,8 @@ const ValidateOm = ({ register, secondSelect, errors, setValue, circuits, displa
           error={errors.service}
           required="Veuillez sélectionner le service ou département concerné."
         />
-      )}
-      {departmentsToDisplay.length > 0 && (
+      )} */}
+      {/* {departmentsToDisplay.length > 0 && (
         <SelectField
           register={register}
           blankValue="Veuillez sélectionner le service ou département rattaché"
@@ -151,7 +156,7 @@ const ValidateOm = ({ register, secondSelect, errors, setValue, circuits, displa
           error={errors.service}
           required="Veuillez sélectionner le service ou département concerné."
         />
-      )}
+      )} */}
       <div className="form__section-field">
         <p className="form__section-field-label">Acteurs de la validation</p>
         {validationActors.map((actor) => (

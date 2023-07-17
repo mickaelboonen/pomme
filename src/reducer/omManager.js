@@ -2,6 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 import { turnTransportsDataToAppFormat } from '../selectors/dataToDbFormat';
 import { declareCamelCaseKeys } from '../selectors/keyObjectService';
 
+var lodash = require('lodash/collection');
+var lodashArray = require('lodash/array');
+
 
 const initialState = {
   loader: false,
@@ -80,6 +83,7 @@ const initialState = {
       name: 'PAPSA'
     },
   ],
+  uprOrDep: []
 };
 const omManagerSlice = createSlice({
     name: 'omManager',
@@ -94,6 +98,24 @@ const omManagerSlice = createSlice({
       },
       fetchValidationChannels: () => {},
       saveValidationChannels: (state, action) => {
+        action.payload.forEach((channel) => {
+          // console.log("---------------------:srs);
+          // const pouet = lodashArray.sortBy(channel.validationActors, ['circuit_order'])
+          channel.validationActors = lodash.sortBy(channel.validationActors, ['circuit_order'])
+          const x = [];
+          channel.validationActors.forEach((actor) => {
+            if (actor.role.includes('Directeur.rice UPR') || actor.role.includes('blabla')) {
+              x.push(actor);
+            }
+          })
+
+          if (x.length > 0) {
+            state.uprOrDep = x;
+          }
+          // console.log(pouet);
+          // console.log("-----------------------------------------------------------");
+        })
+        
         state.channels = action.payload;
       }
     }
