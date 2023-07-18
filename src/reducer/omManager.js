@@ -83,7 +83,8 @@ const initialState = {
       name: 'PAPSA'
     },
   ],
-  uprOrDep: []
+  uprOrDep: [], 
+  validationActorsToDisplay: [],
 };
 const omManagerSlice = createSlice({
     name: 'omManager',
@@ -99,24 +100,46 @@ const omManagerSlice = createSlice({
       fetchValidationChannels: () => {},
       saveValidationChannels: (state, action) => {
         action.payload.forEach((channel) => {
-          // console.log("---------------------:srs);
-          // const pouet = lodashArray.sortBy(channel.validationActors, ['circuit_order'])
           channel.validationActors = lodash.sortBy(channel.validationActors, ['circuit_order'])
-          const x = [];
-          channel.validationActors.forEach((actor) => {
-            if (actor.role.includes('Directeur.rice UPR') || actor.role.includes('blabla')) {
-              x.push(actor);
-            }
-          })
-
-          if (x.length > 0) {
-            state.uprOrDep = x;
-          }
-          // console.log(pouet);
-          // console.log("-----------------------------------------------------------");
         })
         
         state.channels = action.payload;
+        state.validationActorsToDisplay = [];
+        state.uprOrDep = [];
+      },
+      displayValidationActors: (state, action) => {
+        const { validationActors, name } = action.payload;
+        
+        const uprOrDep = validationActors.filter((actor) => actor.role.includes('Directeur.rice UPR') || actor.role.includes('Directeur.rice Département'));
+        const actors = validationActors.filter((actor) => !actor.role.includes('Directeur.rice UPR') && !actor.role.includes('Directeur.rice Département'));
+
+        if (uprOrDep.length > 0) {
+          if (name === 'Recherche') {
+            actors.push({
+              id: 2,
+              cpt_login: 'directeur.rice upr',
+              role: 'Directeur.rice UPR',
+              current_status: '3',
+              next_status: '4',
+              circuit_order: '2'
+            })
+          }
+          else if (name === 'Enseignement') {
+            actors.push({
+              id: 2,
+              cpt_login: 'directeur.rice dep',
+              role: 'Directeur.rice Département',
+              current_status: '3',
+              next_status: '4',
+              circuit_order: '1'
+            })
+          }
+          state.uprOrDep = uprOrDep;
+        }
+        else {
+          state.uprOrDep = [];
+        }
+        state.validationActorsToDisplay = lodash.sortBy(actors, ['circuit_order']);
       }
     }
 });
@@ -125,7 +148,8 @@ export const {
   fetchPendingOms,
   savePendingOms,
   fetchValidationChannels,
-  saveValidationChannels
+  saveValidationChannels,
+  displayValidationActors
 } = omManagerSlice.actions;
 
 export default omManagerSlice.reducer;

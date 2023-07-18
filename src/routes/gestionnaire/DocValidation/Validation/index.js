@@ -34,8 +34,10 @@ const Validation = ({  }) => {
   
   const {
     omForm: { omLoader, currentOM },
-    omManager: { channels, unimes, deveDepartments }
+    omManager: { channels, unimes, deveDepartments, uprOrDep, validationActorsToDisplay }
   } = useSelector((state) => state);
+
+  console.log("INDEX = ", validationActorsToDisplay);
 
     // console.log(currentOM);
   const missionStatus = currentOM.mission ? currentOM.mission.status : null;
@@ -70,16 +72,15 @@ const Validation = ({  }) => {
 
   const chosenChannel = omType[0];
   const relatedChannel = channels.find((channel) => channel.short_name === chosenChannel);
-  let secondSelectToDisplay = '';
+
+  
   let [serviceOrDepartments, setServiceOrDepartments] = useState([]);
 
   if (chosenChannel === "deve") {
     serviceOrDepartments = deveDepartments
-    secondSelectToDisplay = "departments";
   }
   else if (chosenChannel === "admin") {
     serviceOrDepartments = unimes;
-    secondSelectToDisplay = "services";
   }
 
   const matchingServiceOrDep = serviceOrDepartments.find((service) => service.name.toLowerCase() === omType[1].toLowerCase());
@@ -110,19 +111,6 @@ const Validation = ({  }) => {
   const [isValidated, setIsValidated] = useState(isOneStepRejected === undefined ? null : 'reject')
   const handleValidation = (event) => {
     setIsValidated(event.target.value)
-  }
-
-  const displayServiceOrDepartment = (e) => {
-    const chosenChannel = e.short_name;
-    if (chosenChannel === "deve") {
-      setServiceOrDepartments(deveDepartments)
-    }
-    else if (chosenChannel === "admin") {
-      setServiceOrDepartments(unimes);
-    }
-    else {
-      setServiceOrDepartments([])
-    }
   }
   
   return (
@@ -157,16 +145,14 @@ const Validation = ({  }) => {
           )}
           {isValidated === 'validate' && (
             <ValidateOm
-              circuits={channels}
+              uprOrDep={uprOrDep}
               register={register}
               errors={errors}
-              setValue={setValue}
-              services={unimes}
-              departments={deveDepartments}
               watch={watch}
-              secondSelect={secondSelectToDisplay}
-              serviceOrDepartments={serviceOrDepartments}
-              displayServiceOrDepartment={displayServiceOrDepartment}
+              setValue={setValue}
+              circuits={channels}
+              omType={omType}
+              validationActorsToDisplay={validationActorsToDisplay}
             />
           )}
         </div>  

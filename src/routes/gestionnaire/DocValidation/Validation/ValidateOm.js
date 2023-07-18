@@ -1,49 +1,78 @@
 import React, { useState, useEffect } from 'react';
-import { useForm } from "react-hook-form";
-import { useLoaderData, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
+import { useDispatch } from 'react-redux';
 
 // import '../style.scss';
 
 // Components
-// import OmPdf from 'src/components/PDF/OmPdf';
-import HiddenField from 'src/components/Fields/HiddenField';
 import FileField from 'src/components/Fields/FileField';
 import SelectField from 'src/components/Fields/SelectField';
 import TextField from 'src/components/Fields/TextField';
-import RadioInput from 'src/components/Fields/RadioInput';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import TextareaField from 'src/components/Fields/TextareaField';
 import ButtonElement from 'src/components/Fields/ButtonElement';
 
+import { displayValidationActors } from 'src/reducer/omManager';
 // import './style.scss';
 
-const ValidateOm = ({ register, secondSelect, errors, setValue, circuits, displayServiceOrDepartment, services, departments, serviceOrDepartments}) => {
-  const [validationActors, setValidationActors] = useState([]);
-  const [servicesToDisplay, setServicesToDisplay] = useState(secondSelect === "services" ? services : []);
-  const [departmentsToDisplay, setDepartmentsToDisplay] = useState(secondSelect === "departments" ? services : []);
-  // const [service, setService] = useState(services.find((s) => s.name.toLowerCase() === type[1]));
-  // console.log(type);
+const ValidateOm = ({
+  uprOrDep,
+  register,
+  errors,
+  setValue,
+  watch,
+  omType,
+  circuits,
+  validationActorsToDisplay
+}) => {
+  const dispatch = useDispatch();
   
-  const displayValidationActors = (event) => {
-    const { value } = event.target;
-    const selectedChannel = circuits.find((cir) => cir.id === Number(value));
+  
+  const handleChannelChange = (event) => {    
+    const selectedChannel = circuits.find((cir) => cir.id === Number(event.target.value));
     
     if (selectedChannel !== undefined) {
-      console.log(selectedChannel);
-      setValidationActors(selectedChannel.validationActors);
-      displayServiceOrDepartment(selectedChannel);
+      dispatch(displayValidationActors(selectedChannel));
     }
-
   }
-  // console.log(servicesToDisplay, departmentsToDisplay, serviceOrDepartments);
+  
+  const selectedActors = watch('workflow');
+  const [showUprOrDep, setShowUprOrDep] = useState(false);
 
-  const uprOrDep = [];
-  // validationActors.fore
+  useEffect(() => {
+    if (selectedActors && (selectedActors.indexOf('directeur.rice upr') >= 0 || selectedActors.indexOf('directeur.rice dep') >= 0)) {
+      setShowUprOrDep(true);
+    }
+    else {
+      setShowUprOrDep(false);
+    }
+  }, [selectedActors]);
+  
+  let firstPartActors = [];
+  let secondPartActors = [];
 
+  
 
+  if (uprOrDep.length > 0) {
+    if (uprOrDep[0].role.includes('Directeur.rice UPR')) {
+      firstPartActors = validationActorsToDisplay.slice(0,2);
+      secondPartActors = validationActorsToDisplay.slice(2);
+    }
+    else {
+      firstPartActors = validationActorsToDisplay.slice(0,1);
+      secondPartActors = validationActorsToDisplay.slice(1);
+    }
+  }
+  else {
+    firstPartActors = validationActorsToDisplay;
+  }
+
+  useEffect(() => {
+    const selectedChannel = circuits.find((cir) => cir.short_name === omType[0]);
+    
+    if (selectedChannel !== undefined) {
+      dispatch(displayValidationActors(selectedChannel));
+    }
+  }, [])
 
   return (
   <>
@@ -126,40 +155,24 @@ const ValidateOm = ({ register, secondSelect, errors, setValue, circuits, displa
         data={circuits}
         id="channel-field"
         formField="channel"
-        handler={displayValidationActors}
+        handler={handleChannelChange}
         label="Circuit"
         error={errors.channel}
         required="Veuillez sélectionner un circuit de validation."
       />
-      {/* {servicesToDisplay.length > 0 && (
-        <SelectField
-          register={register}
-          blankValue="Veuillez sélectionner le service ou département rattaché"
-          data={serviceOrDepartments}
-          id="service-field"
-          formField="service"
-          handler={displayValidationActors}
-          label="Service / Département"
-          error={errors.service}
-          required="Veuillez sélectionner le service ou département concerné."
-        />
-      )} */}
-      {/* {departmentsToDisplay.length > 0 && (
-        <SelectField
-          register={register}
-          blankValue="Veuillez sélectionner le service ou département rattaché"
-          data={serviceOrDepartments}
-          id="service-field"
-          formField="service"
-          handler={displayValidationActors}
-          label="Service / Département"
-          error={errors.service}
-          required="Veuillez sélectionner le service ou département concerné."
-        />
-      )} */}
       <div className="form__section-field">
         <p className="form__section-field-label">Acteurs de la validation</p>
-        {validationActors.map((actor) => (
+        {firstPartActors.map((actor) => (
+          <CheckboxInput key={actor.id} id={actor.cpt_login} formField="workflow" label={actor.role} register={register} />
+        ))}
+        {showUprOrDep && (
+          <div style={{margin: '0.5rem 1rem'}}>
+            {uprOrDep.map((actor) => (
+              <CheckboxInput key={actor.id} id={actor.cpt_login} formField="workflow" label={actor.role} register={register} />
+            ))}
+          </div>
+        )}
+        {secondPartActors.map((actor) => (
           <CheckboxInput key={actor.id} id={actor.cpt_login} formField="workflow" label={actor.role} register={register} />
         ))}
       </div>
