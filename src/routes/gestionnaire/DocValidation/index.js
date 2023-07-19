@@ -21,16 +21,17 @@ import { clearMessage } from 'src/reducer/app';
 
 import './style.scss';
 import Other from './Other';
+import PdfReader from '../PdfReader';
 
 const OMForm = () => {  
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const loaderData = useLoaderData();
 
-  const { omForm :{ omForm, steps, omLoader},
-    app: { appLoader, apiMessage },
-    agent: { user, agent },
+  const { omForm :{ steps, omLoader},
+    app: { apiMessage },
+    agent: { user },
     omManager: { pendingDocs }
   } = useSelector((state) => state);
   
@@ -40,24 +41,24 @@ const OMForm = () => {
     }
   }, [location.search])
 
-  const {
-    register, formState: { errors }
-  } = useForm();
+  // const {
+  //   register, formState: { errors }
+  // } = useForm();
 
   const step = Number(loaderData.searchParams.get('etape'));
   const id = Number(loaderData.searchParams.get('id'));
 
-  const showLastStep = (loader, unfinishedSteps, agent) => {
-    if (!loader) { // if the loader === false, we have the om data
-      if (unfinishedSteps.length === 0) { // if length === 0, all steps have been validated bu agent
-        if (agent.hasOwnProperty('lastname')) { // if true, agent's data has been fetched
-          return true;
-        }
-      }
-    }
+  // const showLastStep = (loader, unfinishedSteps, agent) => {
+  //   if (!loader) { // if the loader === false, we have the om data
+  //     if (unfinishedSteps.length === 0) { // if length === 0, all steps have been validated bu agent
+  //       if (agent.hasOwnProperty('lastname')) { // if true, agent's data has been fetched
+  //         return true;
+  //       }
+  //     }
+  //   }
     
-    return false;
-  }
+  //   return false;
+  // }
 
   const currentOM = pendingDocs.find((om) => om.id === id);
 
@@ -70,7 +71,7 @@ const OMForm = () => {
   const toggleViewer = () => {
     setDocToShow('')
   }
-
+  
   return (
     <>
       <ThreadAsTabs step={step} tabs={steps} isOm urlData={loaderData} />
@@ -89,6 +90,7 @@ const OMForm = () => {
               step={step}
               user={user}
               url={loaderData}
+              doc={currentOM}
             >
                 <div className="form-layout__data">
                   {step === 1 && <Mission entity="OmMission" displayPdf={displayPdf} data={currentOM.mission} />}
@@ -97,22 +99,14 @@ const OMForm = () => {
                   {step === 4 && <Advance entity="OmAdvance" displayPdf={displayPdf} data={currentOM.advance} />}
                   {step === 5 && <Other entity="OmMore" displayPdf={displayPdf} data={currentOM.more} />}
                 </div>
-                {step !== 3 && (
-                  <div className={classNames("form-layout__viewer", { "form-layout__viewer--empty": docToShow === ''})}>
-                    <div className='form-layout__viewer-pdf'>
-                      <div className="form-layout__viewer-pdf__nav">
-                        <p className="form-layout__viewer-pdf__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer le PDF</p>
-                      </div>
-                      <embed
-                        className="form-layout__viewer-pdf__embed"
-                        src={docToShow}
-                        width="100%"
-                        height="600px"
-                        type="application/pdf"
-                      />
-                      <p className="form-layout__viewer-pdf__instruction">Veuillez sélectionner une pièce jointe à afficher.</p>
-                    </div>
-                  </div>
+                {(step === 1 || step === 2)  && (
+                  <PdfReader docToShow={docToShow} toggleViewer={toggleViewer} />
+                )}
+                {(step === 4 && currentOM.advance.advance)  && (
+                  <PdfReader docToShow={docToShow} toggleViewer={toggleViewer} />
+                )}
+                {(step === 5 && currentOM.more.files.length > 0)  && (
+                  <PdfReader docToShow={docToShow} toggleViewer={toggleViewer} />
                 )}
             </FormLayout>
           </div>

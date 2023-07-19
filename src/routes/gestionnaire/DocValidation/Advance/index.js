@@ -24,74 +24,87 @@ const Advance = ({ displayPdf, data, entity }) => {
   
   return (
     <>
-    <div className="form__section">
-      <FormSectionTitle>Montants</FormSectionTitle>
-      {data.unknown_amount && (
-        <InputValueDisplayer
-          label="Règlement de l'hôtel"
-          value="Demande transmise au service financier pour qu'ils calculent l'avance."
-        />
-      )}
-      {!data.unknown_amount && (
+      {data.advance && (
         <>
-          <InputValueDisplayer
-            label="Montant de l'avance demandée"
-            value={data.advance_amount + '€'}
-          />
-          <InputValueDisplayer
-            label="Montant total estimé de la mission"
-            value={data.total_amount + '€'}
-          />
+          <div className="form__section">
+            <FormSectionTitle>Montants</FormSectionTitle>
+            {data.unknown_amount && (
+              <InputValueDisplayer
+                label="Règlement de l'hôtel"
+                value="Demande transmise au service financier pour qu'ils calculent l'avance."
+              />
+            )}
+            {!data.unknown_amount && (
+              <>
+                <InputValueDisplayer
+                  label="Montant de l'avance demandée"
+                  value={data.advance_amount + '€'}
+                />
+                <InputValueDisplayer
+                  label="Montant total estimé de la mission"
+                  value={data.total_amount + '€'}
+                />
+              </>
+            )}
+            
+
+          </div>
+          <div className="form__section">
+            <FormSectionTitle>Hébergement</FormSectionTitle>
+            <InputValueDisplayer
+              label="Nombre de nuits d'hôtel"
+              value={data.nights_number}
+            />
+            <InputValueDisplayer
+              label="Nombre de repas"
+              value={data.meals_number}
+            />
+            
+            {data.hotel_quotations.map((file) => (
+              <FileHandler
+                key={data.hotel_quotations.indexOf(file)}
+                label="Devis de l'hôtel"
+                dataLink={file.dataLink}
+                url={file.file.url}
+                displayPdf={displayPdf}
+                entity={entity}
+                entityId={data.id}
+                status={file.file.status}
+              />
+            ))}
+
+          </div>
+          <div className="form__section">
+            <FormSectionTitle>RIB</FormSectionTitle>
+            {data.agent_rib.file === null && (
+              <InputValueDisplayer
+                label="RIB"
+                value="Aucun RIB trouvé"
+              />
+            )}    
+            {data.agent_rib.file && (
+              <FileHandler
+                label="RIB"
+                dataLink={data.agent_rib.dataLink}
+                url={data.agent_rib.file.url}
+                displayPdf={displayPdf}
+                entity={entity}
+                entityId={data.id}
+                status={data.agent_rib.file.status}
+              />
+            )}
+          </div>
         </>
       )}
-      
-
-    </div>
-      <div className="form__section">
-        <FormSectionTitle>Hébergement</FormSectionTitle>
-        <InputValueDisplayer
-          label="Nombre de nuits d'hôtel"
-          value={data.nights_number}
-        />
-        <InputValueDisplayer
-          label="Nombre de repas"
-          value={data.meals_number}
-        />
-        
-        {data.hotel_quotations.map((file) => (
-          <FileHandler
-            key={data.hotel_quotations.indexOf(file)}
-            label="Devis de l'hôtel"
-            dataLink={file.dataLink}
-            url={file.file.url}
-            displayPdf={displayPdf}
-            entity={entity}
-            entityId={data.id}
-            status={file.file.status}
-          />
-        ))}
-
-      </div>
-        <FormSectionTitle>RIB</FormSectionTitle>
-        
-          {data.agent_rib.file === null && (
+      {!data.advance && (
+        <div className="form__section">
+          <FormSectionTitle>Avance</FormSectionTitle>
             <InputValueDisplayer
-              label="RIB"
-              value="Aucun RIB trouvé"
+              label="Demande d'avance"
+              value="Aucune demande d'avance."
             />
-          )}
-              
-          {data.agent_rib.file && (
-            <FileHandler
-              label="RIB"
-              dataLink={data.agent_rib.dataLink}
-              url={data.agent_rib.file.url}
-              displayPdf={displayPdf}
-              entity={entity}
-              entityId={data.id}
-              status={data.agent_rib.file.status}
-            />
-          )}
+        </div>
+      )}
     </>
     
   );

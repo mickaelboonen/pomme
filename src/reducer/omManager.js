@@ -140,7 +140,9 @@ const omManagerSlice = createSlice({
           state.uprOrDep = [];
         }
         state.validationActorsToDisplay = lodash.sortBy(actors, ['circuit_order']);
-      }
+      },
+      updateGestComments: () => {},
+      saveGestComments: () => {},
     }
 });
 
@@ -149,7 +151,9 @@ export const {
   savePendingOms,
   fetchValidationChannels,
   saveValidationChannels,
-  displayValidationActors
+  displayValidationActors,
+  updateGestComments,
+  saveGestComments
 } = omManagerSlice.actions;
 
 export default omManagerSlice.reducer;

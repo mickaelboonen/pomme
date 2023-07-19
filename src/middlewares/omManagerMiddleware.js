@@ -32,6 +32,17 @@ const omManagerMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse(error));;
       });
       break;
+    
+    case 'omManager/updateGestComments':
+      api.post("/api/om/update/comments", action.payload)
+      .then((response) => {
+        console.log(response);
+        // store.dispatch(saveValidationChannels(response.data))
+      })
+      .catch((error) => {
+        store.dispatch(setApiResponse(error));;
+      });
+      break;
     case 'vehicle/deleteVehicle':
       
       break;
