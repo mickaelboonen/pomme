@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import './style.scss';
-import PageTitle from 'src/components/PageTitle';
 import Tabs from 'src/components/Tabs';
-import Section from 'src/routes/utilisateur/MyDocuments/Section';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import PageTitle from 'src/components/PageTitle';
 
 const Gestionnaires = () => {
 
@@ -42,21 +41,20 @@ const Gestionnaires = () => {
       }
     })
   };
-    console.log(loader);
+  
   return (
     <main className="my-documents">
       <PageTitle>Documents à valider</PageTitle>
       <Tabs tabs={tabs} handler={displayWantedSection} />
-        <div className='my-documents__files form__section-field-buttons__row'>
+        <div className='my-documents__files'>
         {!loader && (
-          <div>
-            {pendingDocs.map((doc) => (
-              <Link key={doc.id} to={`/gestionnaire/${user}/valider-un-document/ordre-de-mission?etape=1&id=${doc.id}`}>{doc.name}</Link>
-            ))}
+          <div className='my-documents__files-buttons my-documents__files-buttons--menu'>
+          {pendingDocs.map((doc) => (
+            <Link key={doc.id} to={`/gestionnaire/${user}/valider-un-document/ordre-de-mission?etape=1&id=${doc.id}`}>{doc.name}</Link>
+          ))}
           </div>
         )}
         </div>
-      {/* <Section id={"ef-section"} data={currentEFs} hasLinks /> */}
     </main>
 );}
 

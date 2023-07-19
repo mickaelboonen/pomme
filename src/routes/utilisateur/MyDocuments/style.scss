@@ -71,7 +71,15 @@ $test : #{var(--first-color)};
       display: flex;
       align-items: center;
       width: 35%;
-        
+      }
+
+      &--menu {
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        & a {
+          width: 35%;
+        }
       }
 
       &--validation {
@@ -263,6 +271,16 @@ $test : #{var(--first-color)};
       &-buttons {
         & a {
           width: fit-content;
+        }
+        
+
+        &--menu {
+          flex-wrap: wrap;
+          justify-content: space-between;
+
+          & a {
+            width: 30%;
+          }
         }
       }
     }
