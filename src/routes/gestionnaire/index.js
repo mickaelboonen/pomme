@@ -47,13 +47,15 @@ const Gestionnaires = () => {
     <main className="my-documents">
       <PageTitle>Documents à valider</PageTitle>
       <Tabs tabs={tabs} handler={displayWantedSection} />
-      {!loader && (
-        <div className='my-documents__files'>
-          {pendingDocs.map((doc) => (
-            <Link key={doc.id} to={`/gestionnaire/${user}/valider-un-document/ordre-de-mission?etape=1&id=${doc.id}`}>{doc.name}</Link>
-          ))}
+        <div className='my-documents__files form__section-field-buttons__row'>
+        {!loader && (
+          <div>
+            {pendingDocs.map((doc) => (
+              <Link key={doc.id} to={`/gestionnaire/${user}/valider-un-document/ordre-de-mission?etape=1&id=${doc.id}`}>{doc.name}</Link>
+            ))}
+          </div>
+        )}
         </div>
-      )}
       {/* <Section id={"ef-section"} data={currentEFs} hasLinks /> */}
     </main>
 );}

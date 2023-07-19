@@ -85,6 +85,38 @@ const initialState = {
   ],
   uprOrDep: [], 
   validationActorsToDisplay: [],
+  omSteps: [
+    {
+      name: 'Mission',
+      property: 'mission',
+      id: 1,
+    },
+    {
+      name: 'Transports',
+      property: 'transports',
+      id: 2,
+    },
+    {
+      name: 'Hébergement & Repas',
+      property: 'accomodations',
+      id: 3,
+    },
+    {
+      name: 'Avance',
+      property: 'advance',
+      id: 4,
+    },
+    {
+      name: 'Autre',
+      property: 'signature',
+      id: 5,
+    },
+    {
+      name: 'Validation',
+      property: 'management',
+      id: 6,
+    },
+  ],
 };
 const omManagerSlice = createSlice({
     name: 'omManager',

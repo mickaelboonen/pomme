@@ -116,7 +116,7 @@ export const defineValidationRulesForMission = (isEfForm, isFormModified, isScie
  * @returns {integer} mealNumber
  */
 export const handlePartialDayMeals = (missionStep, hour, mealNumber) => {
-
+  
     if (missionStep === 'departure') {
       
       if (hour >= 21) {
@@ -149,13 +149,15 @@ export const handlePartialDayMeals = (missionStep, hour, mealNumber) => {
 }
 
 export const getMaxMealsAndNights = (data, forNights = false) => {
-  
+
     let maxMealNumber = 0;
+    
     const depart = new Date(data.departure);
     const comeback = new Date(data.comeback);
     
     const firstDay = depart.getDate();
     const lastDay = comeback.getDate();
+    
 
     const isSameMonth = depart.getMonth() === comeback.getMonth();
 
@@ -172,6 +174,7 @@ export const getMaxMealsAndNights = (data, forNights = false) => {
     else {
       const diffInTime = comeback.getTime() - depart.getTime();
       let diffInDays = ( diffInTime / (1000 * 3600 * 24) );
+      diffInDays = Math.floor(diffInDays);
 
         if (forNights) {
           return diffInDays;
@@ -184,11 +187,14 @@ export const getMaxMealsAndNights = (data, forNights = false) => {
       maxMealNumber += (diffInDays * 2);
 
     }
-
-    const timeToDepart = depart.getHours();
-    const timeToLeave = comeback.getHours();
+    
+    // const timeToDepart = depart.getHours();
+    // const timeToLeave = comeback.getHours();
+    const timeToDepart = String(depart.getUTCHours()).padStart(2, "0");
+    const timeToLeave = String(comeback.getUTCHours()).padStart(2, "0");
+    
     maxMealNumber = handlePartialDayMeals('departure', timeToDepart, maxMealNumber);
     maxMealNumber = handlePartialDayMeals('return', timeToLeave, maxMealNumber);
-
+    
     return maxMealNumber;
 }

@@ -1,38 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { useForm } from "react-hook-form";
-import classNames from 'classnames';
-
-import { useLoaderData, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { useLoaderData, useLocation } from 'react-router-dom';
 
+import './style.scss';
 
+// Components
+import Other from './Other';
 import Mission from './Mission';
 import Advance from './Advance';
+import PdfReader from '../PdfReader';
 import Validation from './Validation';
 import FormLayout from './FormLayout';
 import Transports from './Transports';
 import Accomodations from './Accomodations';
-import LoaderCircle from 'src/components/LoaderCircle';
-
 import PageTitle from 'src/components/PageTitle';
 import ThreadAsTabs from 'src/components/ThreadAsTabs';
+import LoaderCircle from 'src/components/LoaderCircle';
 
+// Actions
 import { clearMessage } from 'src/reducer/app';
 
-import './style.scss';
-import Other from './Other';
-import PdfReader from '../PdfReader';
-
 const OMForm = () => {  
-  // const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const loaderData = useLoaderData();
 
-  const { omForm :{ steps, omLoader},
+  const { omForm : { omLoader},
     app: { apiMessage },
     agent: { user },
-    omManager: { pendingDocs }
+    omManager: { pendingDocs, omSteps}
   } = useSelector((state) => state);
   
   useEffect(() => {
@@ -41,27 +37,10 @@ const OMForm = () => {
     }
   }, [location.search])
 
-  // const {
-  //   register, formState: { errors }
-  // } = useForm();
-
   const step = Number(loaderData.searchParams.get('etape'));
   const id = Number(loaderData.searchParams.get('id'));
 
-  // const showLastStep = (loader, unfinishedSteps, agent) => {
-  //   if (!loader) { // if the loader === false, we have the om data
-  //     if (unfinishedSteps.length === 0) { // if length === 0, all steps have been validated bu agent
-  //       if (agent.hasOwnProperty('lastname')) { // if true, agent's data has been fetched
-  //         return true;
-  //       }
-  //     }
-  //   }
-    
-  //   return false;
-  // }
-
   const currentOM = pendingDocs.find((om) => om.id === id);
-
   const [docToShow, setDocToShow] = useState('');
 
   const displayPdf = (url) => {
@@ -74,7 +53,7 @@ const OMForm = () => {
   
   return (
     <>
-      <ThreadAsTabs step={step} tabs={steps} isOm urlData={loaderData} />
+      <ThreadAsTabs step={step} tabs={omSteps} isOm urlData={loaderData} />
       <div className='form-container'>
         <div className="form-page__title">
           <PageTitle>{currentOM.name}</PageTitle>
@@ -117,21 +96,6 @@ const OMForm = () => {
             {omLoader && <p>Loading</p>}
           </div>
         )}
-        {/* {currentOM.status < 2 && (
-          <div className="form-page__container">
-            <div className='form'>
-              <p className='form__text'>Cet Ordre de Mission n'a pas encore été terminé par l'agent. Vous ne pouvez pas encore le contrôler. </p>
-              <div className='form__section-container-button' style={{textAlign: 'center', width: 'fit-content', margin: 'auto'}}>
-              <ButtonElement
-                type
-                label="Retourner au menu des Ordres de Mission"
-                isLink
-                link={`/utilisateur/${user}/mes-ordres-de-mission`}
-              />
-              </div>
-            </div>
-          </div>
-        )} */}
       </div>
     </>
   );
