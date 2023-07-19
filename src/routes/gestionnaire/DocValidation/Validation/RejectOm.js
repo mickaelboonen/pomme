@@ -35,7 +35,7 @@ const RejectOm = ({ stepArray, register, errors}) => (
       register={register}
       placeholder="plop"
     />
-    <div className="form__section-field">
+    {/* <div className="form__section-field">
       <label className="form__section-field-label" htmlFor="departure-place">Annuler définitivement l'ordre de mission</label>
       <RadioInput
         id="cancel"
@@ -52,7 +52,7 @@ const RejectOm = ({ stepArray, register, errors}) => (
         // required={errorMessages.cancellation}
       />
       {errors.comebackPlace && <p className="form__section-field-error form__section-field-error--open">{errors.comebackPlace.message}</p>}
-    </div>
+    </div> */}
     <div className="form__section-field">
       <ButtonElement
       type="submit"

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
-import { useLoaderData } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useLoaderData } from 'react-router-dom';
 
 import '../style.scss';
 
@@ -23,7 +23,7 @@ const Validation = () => {
   
   const {
     omForm: { omLoader, currentOM },
-    omManager: { channels, unimes, deveDepartments, uprOrDep, validationActorsToDisplay }
+    omManager: { channels, uprOrDep, validationActorsToDisplay }
   } = useSelector((state) => state);
   
   const missionStatus = currentOM.mission ? currentOM.mission.status : null;
@@ -48,42 +48,20 @@ const Validation = () => {
     });
   }
 
-
-  //--------------------------------------------------------------------------------
-
   const omType = currentOM.type.toLowerCase().split('-');
 
-  const chosenChannel = omType[0];
-
-  
-  let [serviceOrDepartments, setServiceOrDepartments] = useState([]);
-
-  if (chosenChannel === "deve") {
-    serviceOrDepartments = deveDepartments
-  }
-  else if (chosenChannel === "admin") {
-    serviceOrDepartments = unimes;
-  }
-
-  const matchingServiceOrDep = serviceOrDepartments.find((service) => service.name.toLowerCase() === omType[1].toLowerCase());
-
-  //--------------------------------------------------------------------------------
-  
   const {
     register,
     setValue,
     watch,
     handleSubmit,
-    getValues,
     formState:
       { errors }
   } = useForm({ defaultValues: {
     validation: isOneStepRejected === undefined ? null : 'reject',
     rejectedFields: rejectedFields,
     channel: channels.find((channel) => channel.short_name === omType[0]).id,
-    service: matchingServiceOrDep ? matchingServiceOrDep.id : null,
-    comments: currentOM.comments,
-    cancellation: "don't-cancel"
+    comments: currentOM.comments
   }
   });
   
