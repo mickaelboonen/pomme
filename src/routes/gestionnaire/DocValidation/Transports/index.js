@@ -12,32 +12,6 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 
 const TransportsVal = ({ displayPdf, data, entity }) => {
   
-  let trainData = []
-  let planeData = []
-  let taxiData = []
-  let trainCategory = '';
-  let trainPayment = '';
-  let planeCategory = '';
-  let planePayment = '';
-
-  data.dispensations.forEach((dis) => {
-    if (dis.type.includes('taxi')) {
-      taxiData.push(dis);
-    }
-    else if (dis.type.includes('avion')) {
-      planeData.push(dis);
-      planeCategory = data.transport_class.find((payment) => payment.includes('eco') || payment.includes('business')).includes('business') ? 'Classe affaire' : 'Classe économique';
-      planePayment = data.transport_payment.find((payment) => payment.includes('plane')).includes('agent') ? "Avancé par l'agent" : "Payé par Unîmes";
-
-    }
-    else if (dis.type.includes('train')) {
-      trainData.push(dis);
-      trainCategory = data.transport_class.find((payment) => payment.includes('first') || payment.includes('second')).includes('first') ? 'Première classe' : 'Deuxième classe';
-      trainPayment = data.transport_payment.find((payment) => payment.includes('train')).includes('agent') ? "Avancé par l'agent" : "Payé par Unîmes";
-
-    }
-  })
-  
   let otherTransports = '';
   if (data.ferry) {
     otherTransports += 'Ferry. '
@@ -46,86 +20,127 @@ const TransportsVal = ({ displayPdf, data, entity }) => {
     otherTransports += 'Taxi. '
   }
   
+
+  const getTransportsData = (data, type) => {
+
+    const { transport_type, transport_class, transport_payment, dispensations } = data;
+    const transport = {
+      file: []
+    };
+
+    if (type === 'train' && transport_type.indexOf(type) >= 0) {
+      
+      transport.category = transport_class.find((payment) => payment.includes('first') || payment.includes('second')).includes('first') ? 'Première classe' : 'Deuxième classe';
+      transport.payment = transport_payment.find((payment) => payment.includes(type)).includes('agent') ? "Avancé par l'agent" : "Payé par Unîmes";
+
+      dispensations.forEach((dis) => {
+        if (dis.type.includes(type)) {
+          transport.file.push(dis);
+        }
+      });
+    }
+    else if (type === 'plane' && transport_type.indexOf(type) >= 0) {      
+      transport.category  = data.transport_class.find((payment) => payment.includes('eco') || payment.includes('business')).includes('business') ? 'Classe affaire' : 'Classe économique';
+      transport.payment = data.transport_payment.find((payment) => payment.includes(type)).includes('agent') ? "Avancé par l'agent" : "Payé par Unîmes";
+
+      dispensations.forEach((dis) => {
+        if (dis.type.includes('avion')) {
+          transport.file.push(dis);
+        }
+      });
+    }
+    else if (type === 'taxi') {
+      dispensations.forEach((dis) => {
+        if (dis.type.includes(type)) {
+          transport.file.push(dis);
+        }
+      })
+    }
+    return transport;
+  }
+
+  const planeData = getTransportsData(data, 'plane');
+  const trainData = getTransportsData(data, 'train');
+  const taxiData = getTransportsData(data, 'taxi');
+  console.log(data);
   return (
     <>
-      <div className="form__section">
-        {trainData.length > 0 && (
-          <>
-            <FormSectionTitle>Train</FormSectionTitle>
-            <InputValueDisplayer
-              label="Classe du transport"
-              value={trainCategory}
-            />
-            <InputValueDisplayer
-              label="Règlement du train"
-              value={trainPayment}
-            />
-            {trainData.map((file) => (
-              <FileHandler
-                key={trainData.indexOf(file) + '-train'}
-                label="Demande de dérogation pour le train"
-                dataLink={file.dataFile}
-                displayPdf={displayPdf}
-                url={file.file}
-                entity={entity}
-                entityId={data.id}
-                status={file.status}
-                
-              />
-            ))}
-          </>
-        )}
-      </div>
-      <div className="form__section">
-        {planeData.length > 0 && (
-          <>
-            <FormSectionTitle>Avion</FormSectionTitle>
-            <InputValueDisplayer
-              label="Classe du transport"
-              value={planeCategory}
-            />
-            <InputValueDisplayer
-              label="Règlement du transport"
-              value={planePayment}
-            />
-            {planeData.map((file) => (
-              <FileHandler
-                key={planeData.indexOf(file) + '-plane'}
-                label="Demande de dérogation pour l'avion"
-                dataLink={file.dataFile}
-                displayPdf={displayPdf}
-                url={file.file}
-                entity={entity}
-                entityId={data.id}
-                status={file.status}
-              />
-            ))}
-          </>
-        )}
-      </div>
-      <div className="form__section">
-        <FormSectionTitle>Véhicule</FormSectionTitle>
-        {data.authorizations.map((file) => (
-          <FileHandler
-            key={data.authorizations.indexOf(file) + '-car'}
-            label="Demande préalable d'utilisation d'un véhicule"
-            dataLink={file.dataFile}
-            url={file.file}
-            displayPdf={displayPdf}
-            entity={entity}
-            entityId={data.id}
-            status={file.status}
+      {trainData.hasOwnProperty('category') && (
+        <div className="form__section">
+          <FormSectionTitle>Train</FormSectionTitle>
+          <InputValueDisplayer
+            label="Classe du transport"
+            value={trainData.category}
           />
-        ))}
-        <InputValueDisplayer
-          label="Parking"
-          value={data.parking ? 'Oui' : 'Non'}
-        />
-        <InputValueDisplayer
-          label="Péage"
-          value={data.toll ? 'Oui' : 'Non'}
-        />
-      </div>
+          <InputValueDisplayer
+            label="Règlement du train"
+            value={trainData.payment}
+          />
+          {trainData.file.map((file) => (
+            <FileHandler
+              key={trainData.file.indexOf(file) + '-train'}
+              label="Demande de dérogation pour le train"
+              dataLink={file.dataFile}
+              displayPdf={displayPdf}
+              url={file.file}
+              entity={entity}
+              entityId={data.id}
+              status={file.status}
+              
+            />
+          ))}
+        </div>
+      )}
+      {planeData.hasOwnProperty('category') && (
+        <div className="form__section">
+          <FormSectionTitle>Avion</FormSectionTitle>
+          <InputValueDisplayer
+            label="Classe du transport"
+            value={planeData.category}
+          />
+          <InputValueDisplayer
+            label="Règlement du transport"
+            value={planeData.payment}
+          />
+          {planeData.file.map((file) => (
+            <FileHandler
+              key={planeData.file.indexOf(file) + '-plane'}
+              label="Demande de dérogation pour l'avion"
+              dataLink={file.dataFile}
+              displayPdf={displayPdf}
+              url={file.file}
+              entity={entity}
+              entityId={data.id}
+              status={file.status}
+            />
+          ))}
+        </div>
+      )}
+      {data.authorizations.length > 0 && (
+        <div className="form__section">
+          <FormSectionTitle>Véhicule</FormSectionTitle>
+          {data.authorizations.map((file) => (
+            <FileHandler
+              key={data.authorizations.indexOf(file) + '-car'}
+              label="Demande préalable d'utilisation d'un véhicule"
+              dataLink={file.dataFile}
+              url={file.file}
+              displayPdf={displayPdf}
+              entity={entity}
+              entityId={data.id}
+              status={file.status}
+            />
+          ))}
+          <InputValueDisplayer
+            label="Parking"
+            value={data.parking ? 'Oui' : 'Non'}
+          />
+          <InputValueDisplayer
+            label="Péage"
+            value={data.toll ? 'Oui' : 'Non'}
+          />
+        </div>
+      )}
       <div className="form__section">
         <FormSectionTitle>Déplacement durant la mission</FormSectionTitle>
             
@@ -137,9 +152,9 @@ const TransportsVal = ({ displayPdf, data, entity }) => {
           label="Autres types de transports"
           value={otherTransports}
         />
-        {taxiData.map((file) => (
+        {taxiData.file.map((file) => (
           <FileHandler
-            key={taxiData.indexOf(file) + '-taxi'}
+            key={taxiData.file.indexOf(file) + '-taxi'}
             label="Demande de dérogation"
             dataLink={file.dataFile}
             displayPdf={displayPdf}
