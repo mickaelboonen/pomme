@@ -28,7 +28,7 @@ const initialState = {
     },
     {
       name: 'Mission de formation des personnels administratifs',
-      id: 'training'
+      id: 'formation'
     }
   ],
   unimes: [

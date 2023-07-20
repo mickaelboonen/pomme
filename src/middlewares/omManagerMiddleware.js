@@ -14,7 +14,7 @@ const omManagerMiddleware = (store) => (next) => (action) => {
   const { agent : { user } } = store.getState();
   switch (action.type) {
     case 'omManager/fetchPendingOms':
-      api.get("/api/manager/om/status/2")
+      api.post("/api/manager/pending-oms/fetch", action.payload)
         .then((response) => {
           store.dispatch(savePendingOms(response.data))
         })

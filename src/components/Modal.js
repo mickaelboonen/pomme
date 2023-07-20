@@ -72,7 +72,7 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
     },
     {
       name: 'Mission de formation des personnels administratifs',
-      id: 'training'
+      id: 'formation'
     }
   ];
   const departments = ['SA', 'DEG', 'PLLH', 'PAPSA'];
@@ -132,7 +132,7 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
     if (value === 'deve') {
       setService(departments);
     }
-    else if (value === "training" || value === "admin") {
+    else if (value === "formation" || value === "admin") {
       setService(services);
     }
     else {

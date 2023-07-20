@@ -17,7 +17,7 @@ const ButtonElement = ({ type, label, handler, isLink, link, hasLoader}) => {
         event.currentTarget.querySelector('span').textContent = '';
       }
     }
-    handler();
+    handler(event);
   }
   if (isLink) {
     Button = <Link to={link} className="button" type={type}>{label}</Link>;

@@ -73,9 +73,19 @@ $test : #{var(--first-color)};
       width: 35%;
       }
 
-      &--menu {
-        flex-wrap: wrap;
+      &--links-menu {
         justify-content: space-between;
+        border-bottom: 1px solid rgba(var(--darkestThemeColor));
+        padding-bottom: 1rem;
+
+      }
+
+      &--buttons-menu {
+        justify-content: center;
+      }
+
+      &--buttons-menu, &--links-menu {
+        flex-wrap: wrap;
 
         & a {
           width: 35%;
@@ -110,6 +120,10 @@ $test : #{var(--first-color)};
 
     &--open {
       display: flex;
+    }
+
+    &-message {
+      margin: 2rem auto;
     }
 
     &-container {

@@ -341,7 +341,7 @@ export const extractUserData = (data) => {
     categorie = 'A';
     title = llGrade;
   }
-  
+    
   return {
     employer:'unimes',
     firstname:agent.prenom,
@@ -351,6 +351,7 @@ export const extractUserData = (data) => {
     unimesStatus: title,
     unimesDepartment: agent.llStructure,
     roles: data.agent.roles ?? [],
+    channel: data.agent.channel ?? '',
   }
 }
 

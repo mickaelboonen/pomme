@@ -14,6 +14,7 @@ import BurgerIcon from './BurgerIcon';
 // Actions and selectors
 import { logout } from 'src/reducer/agent';
 import { toggleBurgerMenu, toggleNavList } from 'src/selectors/domManipulators';
+import { checkAuthentication } from "src/reducer/agent";
 
 const DesktopHeader = ({ cas, isAuthenticated}) => {
 
@@ -26,6 +27,11 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
     persistor.purge();
     cas.logout("/se-connecter");
   }
+
+  const test = () => {
+    
+    dispatch(checkAuthentication({username : 'ajumilly', password: 'fsdf'}))
+  }
   
   return (
   <div className="header">
@@ -33,6 +39,7 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
         <Link to="/" className="header__identity-logo">
           <p>POM</p>
         </Link>
+        <button onClick={test}>test</button>
         {agent.firstname && <p className="header__identity-user">Bonjour {agent.firstname}</p>}
       </div>
       {isAuthenticated && <BurgerIcon handler={toggleBurgerMenu} />}

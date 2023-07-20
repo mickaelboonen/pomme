@@ -5,7 +5,6 @@ const defaultUser = process.env.NODE_ENV === 'development' ? process.env.DEFAULT
 
 const initialState = {
   user: defaultUser,
-  userSignature: null,
   token: '',
   oms: [],
   efs: [],
