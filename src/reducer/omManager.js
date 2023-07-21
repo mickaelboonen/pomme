@@ -136,6 +136,7 @@ const omManagerSlice = createSlice({
       saveDepartments: (state, action) => {
         state.departments = action.payload;
       },
+      manageOm: () => {},
     }
 });
 
@@ -150,6 +151,7 @@ export const {
   fetchServicesAndDepartments,
   saveServices,
   saveDepartments,
+  manageOm
 } = omManagerSlice.actions;
 
 export default omManagerSlice.reducer;

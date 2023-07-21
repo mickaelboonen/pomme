@@ -66,7 +66,7 @@ const ValidateOm = ({
 
   useEffect(() => {
     const selectedChannel = circuits.find((cir) => cir.short_name === omType[0]);
-    
+
     if (selectedChannel !== undefined) {
       dispatch(displayValidationActors(selectedChannel));
     }
@@ -106,7 +106,7 @@ const ValidateOm = ({
         <div className='form__section-half'>
           <TextField
             id="nacres-field"
-            formField="nacres"
+            formField="code_nacres"
             label="Code Nacres"
             register={register}
           />
@@ -117,7 +117,7 @@ const ValidateOm = ({
         <div className='form__section-half'>
           <TextField
             id="lolf-field"
-            formField="lolf"
+            formField="code_lolf"
             label="Code LOLF"
             register={register}
           /> 
@@ -125,7 +125,7 @@ const ValidateOm = ({
         <div className='form__section-half'>
           <TextField
             id="analytic-field"
-            formField="analytic"
+            formField="code_analytique"
             label="Code analytique"
             register={register}
           />
@@ -173,6 +173,8 @@ const ValidateOm = ({
         {secondPartActors.map((actor) => (
           <CheckboxInput key={actor.id} id={actor.cpt_login} formField="workflow" label={actor.role} register={register} />
         ))}
+        {errors.workflow && <p className="form__section-field-error form__section-field-error--open">{errors.workflow.message}</p>}
+
       </div>
     </div>
     <div className="form__section-field">

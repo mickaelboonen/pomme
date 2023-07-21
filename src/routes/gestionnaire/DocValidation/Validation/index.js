@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLoaderData } from 'react-router-dom';
 
 import '../style.scss';
 
 // Components
+import RejectOm from './RejectOm';
+import ValidateOm from './ValidateOm';
 import HiddenField from 'src/components/Fields/HiddenField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 
 // Selectors & actions
-import RejectOm from './RejectOm';
-import ValidateOm from './ValidateOm';
+import { manageOm } from 'src/reducer/omManager';
 
 
 const Validation = () => {
   
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const loader = useLoaderData();
   const omId = loader.searchParams.get('id');
   
@@ -54,6 +55,7 @@ const Validation = () => {
     register,
     setValue,
     watch,
+    setError,
     handleSubmit,
     formState:
       { errors }
@@ -67,6 +69,37 @@ const Validation = () => {
   
   const onSubmit = (data) => {
     console.log(data);
+    let errorCount;
+
+    if (data.validation === 'validate') {
+      if (!data.workflow || data.workflow.length === 0) {
+        setError('workflow', {type: 'custom', message: "Merci de sélectionner au moins un agent pour valider l'ordre de mission."})
+        errorCount++;
+      }
+
+      if (errorCount > 0) {
+        return;
+      }
+
+      const file = Array.from(data.files).find((file) => file instanceof File)
+      if (file) {
+        // TODO
+        // dispatch(uploadFile({data: data, step: 'management'}));
+      }
+      else {
+        data.files = [];
+        dispatch(manageOm(data));
+      }
+
+
+
+
+
+
+    }
+    else {
+
+    }
   
   };
   

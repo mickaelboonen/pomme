@@ -30,7 +30,7 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
 
   const test = () => {
     
-    dispatch(checkAuthentication({username : '', password: 'fsdf'}))
+    dispatch(checkAuthentication({username : 'emonte01', password: 'fsdf'}))
   }
   
   return (
@@ -39,7 +39,7 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
         <Link to="/" className="header__identity-logo">
           <p>POM</p>
         </Link>
-        {/* <button onClick={test}>test</button> */}
+        <button onClick={test}>test</button>
         {agent.firstname && <p className="header__identity-user">Bonjour {agent.firstname}</p>}
       </div>
       {isAuthenticated && <BurgerIcon handler={toggleBurgerMenu} />}
