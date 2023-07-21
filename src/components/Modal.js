@@ -59,6 +59,10 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
       id: 'test'
     },
     {
+      name: 'Mission Doctorants',
+      id: 'doctorants'
+    },
+    {
       name: 'Mission de Recherche',
       id: 'research'
     },
@@ -135,6 +139,19 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
     else if (value === "formation" || value === "admin") {
       setService(services);
     }
+    else if (value === "doctorants") {
+      
+      setService([
+        {
+          name: 'Prise en charge par Unîmes',
+          id:'unimes'
+        },
+        {
+          name: "Prise en charge par l'École Doctorale",
+          id:'ed'
+        }
+      ]);
+    }
     else {
       setService([]);
     }
@@ -191,42 +208,7 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
               {errors.expenses && <p className="form__section-field-error form__section-field-error--open">{errors.expenses.message}</p>}
 
               </div>
-                {/* <SwitchButton
-                  register={register}
-                  isInForm
-                  formField='duration'
-                  label="Ponctuel :"
-                />
-                <SwitchButton
-                  register={register}
-                  isInForm
-                  formField='withExpenses'
-                  label="Avec Frais :"
-                /> */}
-                {/* <div className="form__section-field-modal">
-                  <SwitchButton
-                    register={register}
-                    isInForm
-                    formField='isResearch'
-                    label="Mission de Recherche :"
-                  />
-                  <FaQuestionCircle id="research-help" className="form__section-field-modal-icon" onClick={toggleHelp} />
-                </div> */}
-                {/* <Help
-                  id="research"
-                  message="Comprend les missions en rapport avec la Recherche, les événements scientifiques, colloques, séminaires, conférences et réunions, ainsi que les formations prises en charge par le Labo."
-                /> */}
-                {/* <div className="form__section-field-modal">
-                  <SwitchButton
-                    register={register}
-                    isInForm
-                    formField='isTrainingCourse'
-                    label="Mission de formation des personnels :"
-                  />
-                  <FaQuestionCircle className="form__section-field-modal-icon" id="hr-help" onClick={toggleHelp} />
-                </div> */}
                 <div className="form__section-field">
-                  {/* <FaQuestionCircle className="form__section-field-modal-icon" id="hr-help" onClick={toggleHelp} />  */}
                   <SelectField
                       data={omTypes}
                       register={register}
@@ -240,10 +222,6 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
                     />
                     <p onClick={toggleHelp} id="research-help" className="form__section-field-select-help">Besoin d'aide ? Cliquez ici.</p>
                 </div>
-
-                  {/* {omTypes.map((type) => (
-                    <RadioInput key={type} id={type} formField="type" label={type} register={register} handler={displayService} />
-                  ))} */}
                 {service.length > 0 && (
                   <SelectField
                     data={service}
@@ -262,10 +240,6 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
                   title='Mission de Recherche'
                   message="Les Missions de Recherche comprennent les missions en rapport avec la Recherche, les événements scientifiques, colloques, séminaires, conférences et réunions, ainsi que les formations prises en charge par le Labo."
                 />
-                {/* <Help
-                  id="hr"
-                  message="blablabl"
-                /> */}
               </div>
             )}
             { target === 'état de frais' && (

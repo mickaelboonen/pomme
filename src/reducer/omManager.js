@@ -15,6 +15,10 @@ const initialState = {
       id: 'test'
     },
     {
+      name: 'Mission Doctorants',
+      id: 'doctorants'
+    },
+    {
       name: 'Mission de Recherche',
       id: 'research'
     },
