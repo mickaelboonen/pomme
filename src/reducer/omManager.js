@@ -35,58 +35,8 @@ const initialState = {
       id: 'formation'
     }
   ],
-  unimes: [
-    {
-      id: 1,
-      name: 'DSIUN'
-    },
-    {
-      id: 2,
-      name: 'Recherche'
-    },
-    {
-      id: 3,
-      name: 'Présidence'
-    },
-    {
-      id: 4,
-      name: 'SNAP'
-    },
-    {
-      id: 5,
-      name: 'Communication'
-    },
-    {
-      id: 6,
-      name: 'DRH'
-    },
-    {
-      id: 7,
-      name: 'DAF'
-    },
-    {
-      id: 8,
-      name: 'Pilotage'
-    },
-  ],
-  deveDepartments: [
-    {
-      id: 1,
-      name: 'SA'
-    },
-    {
-      id: 2,
-      name: 'DEG'
-    },
-    {
-      id: 3,
-      name: 'PLLH'
-    },
-    {
-      id: 4,
-      name: 'PAPSA'
-    },
-  ],
+  services: [],
+  departments: [],
   uprOrDep: [], 
   validationActorsToDisplay: [],
   omSteps: [
@@ -179,6 +129,13 @@ const omManagerSlice = createSlice({
       },
       updateGestComments: () => {},
       saveGestComments: () => {},
+      fetchServicesAndDepartments: () => {},
+      saveServices: (state, action) => {
+        state.services = action.payload;
+      },
+      saveDepartments: (state, action) => {
+        state.departments = action.payload;
+      },
     }
 });
 
@@ -189,7 +146,10 @@ export const {
   saveValidationChannels,
   displayValidationActors,
   updateGestComments,
-  saveGestComments
+  saveGestComments,
+  fetchServicesAndDepartments,
+  saveServices,
+  saveDepartments,
 } = omManagerSlice.actions;
 
 export default omManagerSlice.reducer;

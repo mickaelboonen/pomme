@@ -87,11 +87,6 @@ const initialState = {
       step: 'signature',
       data: {},
     }, 
-    // {
-    //   id: 6,
-    //   step: 'more',
-    //   data: {},
-    // }, 
   ],
   omPdf: "null",
   currentOM: {},
@@ -113,14 +108,9 @@ const initialState = {
   userOms: [],
   dataToSelect: [],
   omLoader: false,
-  refusal: '',
-  adresses: [
-    'adresse Vauban', 
-    'adresse Carmes', 
-    'adresse Hoche', 
-    'adresse XYZ', 
-  ],
   isSideFormInDB: false,
+  services: [],
+  departments: [],
 };
 const omFormSlice = createSlice({
     name: 'omForm',

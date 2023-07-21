@@ -3,7 +3,7 @@ import { savePendingOms } from 'src/reducer/omManager';
 
 import { api } from './api';
 import { setApiResponse } from '../reducer/app';
-import { saveValidationChannels } from '../reducer/omManager';
+import { saveDepartments, saveServices, saveValidationChannels } from '../reducer/omManager';
 
 
 api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -43,20 +43,21 @@ const omManagerMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse(error));;
       });
       break;
-    case 'vehicle/deleteVehicle':
-      
-      break;
-    case 'vehicle/getVehicles':
-        
-      break;
-    case 'vehicle/fetchVehicle':
-          
-      break;
-    case 'vehicle/getVehicleDocuments':
-      
-      break;
-    case 'vehicle/requestVehicleAuthorization':
-      
+    case 'omManager/fetchServicesAndDepartments':      
+      api.get("/api/services/fetch/all")
+        .then((response) => {
+          store.dispatch(saveServices(response.data));
+        })
+        .catch((error) => {
+          store.dispatch(setApiResponse(error));
+        });    
+      api.get("/api/departments/fetch/all")
+        .then((response) => {
+          store.dispatch(saveDepartments(response.data));
+        })
+        .catch((error) => {
+          store.dispatch(setApiResponse(error));
+        });
       break;
 
   

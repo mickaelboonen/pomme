@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { MdRefresh } from 'react-icons/md'
@@ -7,7 +6,6 @@ import { MdRefresh } from 'react-icons/md'
 import './style.scss';
 import Tabs from 'src/components/Tabs';
 import PageTitle from 'src/components/PageTitle';
-import LoaderCircle from 'src/components/LoaderCircle';
 
 import { fetchPendingOms } from "src/reducer/omManager";
 import classNames from 'classnames';
@@ -16,8 +14,7 @@ const Gestionnaires = () => {
 
   const dispatch = useDispatch();
 
-  const { omManager: { pendingDocs, loader },
-    agent: { user, agent }} = useSelector((state) => state);
+  const { omManager: { pendingDocs, loader }, agent: { user, agent }} = useSelector((state) => state);
     
   const tabs = [
     {
@@ -48,11 +45,16 @@ const Gestionnaires = () => {
       }
     })
   };
+  
   const refreshList = () => {
     dispatch(fetchPendingOms({type: agent.channel[0], status: 2}));
   }
+
+  /**
+   * When a manager has many roles, they need to fetch different om lists
+   * @param {*} event 
+   */
   const fetchNewPendingOms = (event) => {
-    console.log(event);
     dispatch(fetchPendingOms({type: event.target.textContent, status: 2}));
   }
   
@@ -71,13 +73,6 @@ const Gestionnaires = () => {
           )}
           </div>
         )}
-        {/* {loader && (
-          <>
-            <div style={{display: 'flex', justifyContent: 'center'}}>
-              <LoaderCircle />
-            </div>
-          </>
-        )} */}
         <div className={classNames('my-documents__files-buttons', {'my-documents__files-buttons--buttons-menu': agent.channel.length > 1})}>
           {agent.channel.length === 1 && (
             <button style={{width: 'fit-content'}} onClick={refreshList}>
@@ -87,15 +82,9 @@ const Gestionnaires = () => {
           {agent.channel.length > 1 && (
             <>
               {agent.channel.map((button) => (
-                
                 <button style={{width: 'fit-content'}} onClick={fetchNewPendingOms}>
                   <MdRefresh className={classNames('my-documents__files-buttons-icon', {'my-documents__files-buttons-icon--animated': loader})} />  {!loader ? button : ''}
                 </button>
-                // <ButtonElement
-                //   type='button'
-                //   label={button}
-                //   handler={fetchNewPendingOms}
-                // />
               ))}
             </>
           )}
@@ -103,9 +92,5 @@ const Gestionnaires = () => {
       </div>
     </main>
 );}
-
-Gestionnaires.propTypes = {
-
-};
 
 export default Gestionnaires;

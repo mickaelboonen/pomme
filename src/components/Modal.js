@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { MdRefresh } from 'react-icons/md'
 import { FaQuestionCircle } from 'react-icons/fa'
 import classNames from 'classnames';
@@ -28,13 +28,13 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
   let isOm = false;
   let defaultValues = {};
 
+  const { omManager : { services, departments }} = useSelector((state) => state);
+
   if (target === 'ordre de mission' ) {
     isOm = true;
     defaultValues = {
       duration: 'ponctual',
       expenses: 'with',
-      // isTrainingCourse: false,
-      // isResearch: false,
     }
   }
   else {
@@ -79,9 +79,20 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
       id: 'formation'
     }
   ];
-  const departments = ['SA', 'DEG', 'PLLH', 'PAPSA'];
-  const services = ['DSIUN', 'Recherche', 'Comm'];
 
+  const departmentsToShow = departments.map((dep) => {
+    return {
+      id: dep.short_name,
+      name: dep.name,
+    }
+  })
+  let servicesToShow = services.map((service) => {
+    return {
+      id: service.short_name,
+      name: service.name,
+    }
+  })
+  servicesToShow = servicesToShow.filter((service) => !service.name.includes('POM'))
   const onSubmit = (data) => {
     if (isOm) {
       const newOM = {
@@ -93,8 +104,6 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
         expenses: data.expenses === 'with' ? 1 : 0,
         isPonctual: data.duration === 'ponctual' ? 1 : 0,
         type:data.type + (data.service ? '-' + data.service : ''),
-        isTrainingCourse: false,
-        isResearch: false,
       }
       
       dispatch(addNewOM(newOM)); 
@@ -134,22 +143,22 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
   const displayService = (event) => {
     const { value } = event.target;
     if (value === 'deve') {
-      setService(departments);
+      setService(departmentsToShow);
     }
     else if (value === "formation" || value === "admin") {
-      setService(services);
+      setService(servicesToShow);
     }
     else if (value === "doctorants") {
       
       setService([
         {
-          name: 'Prise en charge par Unîmes',
-          id:'unimes'
-        },
-        {
           name: "Prise en charge par l'École Doctorale",
           id:'ed'
-        }
+        },
+        {
+          name: 'Prise en charge par le Collège Doctoral',
+          id:'cd'
+        },
       ]);
     }
     else {

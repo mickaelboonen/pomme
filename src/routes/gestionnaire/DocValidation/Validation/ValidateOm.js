@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-// import '../style.scss';
-
 // Components
 import FileField from 'src/components/Fields/FileField';
-import SelectField from 'src/components/Fields/SelectField';
 import TextField from 'src/components/Fields/TextField';
-import CheckboxInput from 'src/components/Fields/CheckboxInput';
+import SelectField from 'src/components/Fields/SelectField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
+import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import ButtonElement from 'src/components/Fields/ButtonElement';
 
+// Actions
 import { displayValidationActors } from 'src/reducer/omManager';
-// import './style.scss';
 
 const ValidateOm = ({
   uprOrDep,
