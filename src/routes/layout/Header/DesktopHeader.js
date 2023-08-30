@@ -30,7 +30,7 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
 
   const test = () => {
     
-    dispatch(checkAuthentication({username : 'emonte01', password: 'fsdf'}))
+    dispatch(checkAuthentication({username : 'nathalie', password: 'fsdf'}))
   }
   
   return (

@@ -80,6 +80,25 @@ const Validation = () => {
       if (errorCount > 0) {
         return;
       }
+      
+      const actors = [];
+      validationActorsToDisplay.forEach((actor) => {
+
+        if (actor.cptLogin === 'directeur.rice upr' || actor.cptLogin === 'directeur.rice dep') {
+          uprOrDep.forEach((dir) => {
+            if (data.workflow.indexOf(dir.cptLogin) !== -1) {
+              actors.push(dir)
+            }
+          })
+        }
+        else {
+          if (data.workflow.indexOf(actor.cptLogin) !== -1) {
+            actors.push(actor)
+          }
+        }
+      })
+
+      data.workflow = actors;
 
       const file = Array.from(data.files).find((file) => file instanceof File)
       if (file) {
@@ -90,12 +109,6 @@ const Validation = () => {
         data.files = [];
         dispatch(manageOm(data));
       }
-
-
-
-
-
-
     }
     else {
 

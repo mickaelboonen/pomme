@@ -103,7 +103,7 @@ const omManagerSlice = createSlice({
           if (name === 'Recherche') {
             actors.push({
               id: 2,
-              cpt_login: 'directeur.rice upr',
+              cptLogin: 'directeur.rice upr',
               role: 'Directeur.rice UPR',
               current_status: '3',
               next_status: '4',
@@ -113,7 +113,7 @@ const omManagerSlice = createSlice({
           else if (name === 'Enseignement') {
             actors.push({
               id: 2,
-              cpt_login: 'directeur.rice dep',
+              cptLogin: 'directeur.rice dep',
               role: 'Directeur.rice Département',
               current_status: '3',
               next_status: '4',

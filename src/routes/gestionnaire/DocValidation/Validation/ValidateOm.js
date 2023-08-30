@@ -11,6 +11,7 @@ import ButtonElement from 'src/components/Fields/ButtonElement';
 
 // Actions
 import { displayValidationActors } from 'src/reducer/omManager';
+import { first } from 'lodash';
 
 const ValidateOm = ({
   uprOrDep,
@@ -63,7 +64,7 @@ const ValidateOm = ({
   else {
     firstPartActors = validationActorsToDisplay;
   }
-
+  
   useEffect(() => {
     const selectedChannel = circuits.find((cir) => cir.short_name === omType[0]);
 
@@ -71,6 +72,8 @@ const ValidateOm = ({
       dispatch(displayValidationActors(selectedChannel));
     }
   }, [])
+
+  // console.log(watch('workflow'));
 
   return (
   <>
@@ -106,7 +109,7 @@ const ValidateOm = ({
         <div className='form__section-half'>
           <TextField
             id="nacres-field"
-            formField="code_nacres"
+            formField="codeNacres"
             label="Code Nacres"
             register={register}
           />
@@ -117,7 +120,7 @@ const ValidateOm = ({
         <div className='form__section-half'>
           <TextField
             id="lolf-field"
-            formField="code_lolf"
+            formField="codeLolf"
             label="Code LOLF"
             register={register}
           /> 
@@ -125,7 +128,7 @@ const ValidateOm = ({
         <div className='form__section-half'>
           <TextField
             id="analytic-field"
-            formField="code_analytique"
+            formField="codeAnalytique"
             label="Code analytique"
             register={register}
           />
@@ -161,17 +164,17 @@ const ValidateOm = ({
       <div className="form__section-field">
         <p className="form__section-field-label">Acteurs de la validation</p>
         {firstPartActors.map((actor) => (
-          <CheckboxInput key={actor.id} id={actor.cpt_login} formField="workflow" label={actor.role} register={register} />
+          <CheckboxInput key={actor.id} id={actor.cptLogin} formField="workflow" label={actor.role} register={register} />
         ))}
         {showUprOrDep && (
           <div style={{margin: '0.5rem 1rem'}}>
             {uprOrDep.map((actor) => (
-              <CheckboxInput key={actor.id} id={actor.cpt_login} formField="workflow" label={actor.role} register={register} />
+              <CheckboxInput key={actor.id} id={actor.cptLogin} formField="workflow" label={actor.role} register={register} />
             ))}
           </div>
         )}
         {secondPartActors.map((actor) => (
-          <CheckboxInput key={actor.id} id={actor.cpt_login} formField="workflow" label={actor.role} register={register} />
+          <CheckboxInput key={actor.id} id={actor.cptLogin} formField="workflow" label={actor.role} register={register} />
         ))}
         {errors.workflow && <p className="form__section-field-error form__section-field-error--open">{errors.workflow.message}</p>}
 
