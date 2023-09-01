@@ -62,7 +62,7 @@ const Validation = () => {
   } = useForm({ defaultValues: {
     validation: isOneStepRejected === undefined ? null : 'reject',
     rejectedFields: rejectedFields,
-    channel: channels.find((channel) => channel.short_name === omType[0]).id,
+    channel: channels.find((channel) => channel.shortName === omType[0]).id,
     comments: currentOM.comments
   }
   });

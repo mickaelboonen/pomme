@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import './style.scss';
 
 const ApiResponse = ({ apiResponse, updateForm }) => {
-  
   const { response, message } = apiResponse;
   
   return (

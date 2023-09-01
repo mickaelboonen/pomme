@@ -63,10 +63,11 @@ const omManagerMiddleware = (store) => (next) => (action) => {
     case 'omManager/manageOm':
       api.post("/api/om/manage", action.payload)
       .then((response) => {
-        console.log(response);
+        store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         // store.dispatch(saveValidationChannels(response.data))
       })
       .catch((error) => {
+        console.log("ERROR : ", error);
         store.dispatch(setApiResponse(error));;
       });
       break;

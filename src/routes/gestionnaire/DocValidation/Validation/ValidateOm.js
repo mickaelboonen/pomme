@@ -66,7 +66,7 @@ const ValidateOm = ({
   }
   
   useEffect(() => {
-    const selectedChannel = circuits.find((cir) => cir.short_name === omType[0]);
+    const selectedChannel = circuits.find((cir) => cir.shortName === omType[0]);
 
     if (selectedChannel !== undefined) {
       dispatch(displayValidationActors(selectedChannel));
