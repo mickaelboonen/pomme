@@ -71,6 +71,25 @@ const initialState = {
       id: 6,
     },
   ],
+  tabs: [
+    {
+      id: 'admin',
+      name: 'Mission des Agents',
+      status: 2,
+    },
+    {
+      id: 'deve',
+      name: 'Mission des Enseignants',
+    },
+    {
+      id: 'research',
+      name: 'Visa de Validation',
+    },
+    {
+      id: 'formation',
+      name: 'Visa de Validation',
+    }
+  ]
 };
 const omManagerSlice = createSlice({
     name: 'omManager',

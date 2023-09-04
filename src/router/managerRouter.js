@@ -16,11 +16,13 @@ export default {
       path: 'documents-a-signer',
       element: <Gestionnaires />,
       loader: async ({ request }) => {
-        const { agent: { agent} } = store.getState((state) => state);
-        const { channel } = agent;
-        
+        const { agent: { agent, user} } = store.getState((state) => state);
+        // console.log(agent);
+        const agentData = {
+          roles: agent.roles,
+        }
         // TODO : selon l'agent, récupérer tous les documents qu'iel doit vérifier.
-          store.dispatch(fetchPendingOms({type: channel[0], status: 2}));
+          store.dispatch(fetchPendingOms({cptLogin: user, roles: agent.roles, channel: agent.channel}));
           // fetch
       },
     },

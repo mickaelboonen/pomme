@@ -20,12 +20,15 @@ const Tabs = ({ handler, tabs}) => {
     })
     handler(event);
   }
+
+  const tabsNumber = tabs.length;
+  
   return (
     <div className='tabs'>
       {tabs.map((tab) => (
         <div
           onClick={handleClick}
-          className={classNames('tabs__item', {'tabs__item--open': tab.id === firstId})}
+          className={classNames('tabs__item', {'tabs__item--open': tab.id === firstId, 'tabs__item--solo': tabsNumber === 1})}
           id={tab.id}
           key={tab.id}
         >

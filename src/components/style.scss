@@ -286,6 +286,12 @@
 
 
     }
+
+    &--solo {
+      width: 100%;
+
+
+    }
     &--open &-notification {
         background-color: var(--third-color);
         // box-shadow: 1px 1px 1px #1a1a1a;

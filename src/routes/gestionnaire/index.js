@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { MdRefresh } from 'react-icons/md'
@@ -14,58 +14,83 @@ const Gestionnaires = () => {
 
   const dispatch = useDispatch();
 
-  const { omManager: { pendingDocs, loader }, agent: { user, agent }} = useSelector((state) => state);
-    
-  const tabs = [
-    {
-      id: 'om',
-      name: 'Ordres de Missions',
-    },
-    {
-      id: 'ef',
-      name: 'États de frais',
+  const { omManager: { pendingDocs, loader, tabs }, agent: { user, agent }} = useSelector((state) => state);
+
+  const types = [];
+
+  pendingDocs.forEach((doc) => {
+    if (types.indexOf(doc.type) === -1) {
+      types.push(doc.type);
     }
-  ]
+  })
+  
+  const tabsToShow = [];
+  if (types.length > 1) {
+    tabsToShow.push({id: 'all', name: 'Tous les documents'})
+  }
+  
+  types.forEach((tab) => {
+    
+    const tabData = tabs.find((channel) => tab.includes(channel.id));
+    const newLabel = `${tabData.name} (${pendingDocs.filter((doc) => doc.type === tab).length})`;
+
+    tabsToShow.push({id: tabData.id, name: newLabel});
+  })
+
+  if (types.length === 0) {
+    tabsToShow.push({id: 'none', name: 'Documents à valider'})
+  }
+
+  console.log();
+
+  const [docsToShow, setDocsToShow] = useState(pendingDocs);
 
   /**
-   * Toggles the section according to the clicked tab
+   * Toggles the data accordingly to the clicked tab
    * @param object event 
    */
   const displayWantedSection = (event) => {
 
-    const wantedSection = document.querySelector(`#${event.currentTarget.id}-section`);
-    const allSections = document.querySelectorAll('.my-documents__files');
+    const { id } = event.currentTarget;
 
-    allSections.forEach((currentSection) => {
-      if (currentSection === wantedSection) {
-        wantedSection.classList.add('my-documents__files--open');
-      }
-      else {
-        currentSection.classList.remove('my-documents__files--open');
-      }
-    })
+    if (types.indexOf(id) > -1) {
+      
+      setDocsToShow(pendingDocs.filter((docs) => docs.type === id));
+    }
+    else if (id === 'all') {
+      setDocsToShow(pendingDocs);
+    }
+    else {
+      types.forEach((type) => {
+        if (type.includes(id)) {
+          setDocsToShow(pendingDocs.filter((docs) => docs.type === type));
+
+        }
+      })
+    }
   };
   
   const refreshList = () => {
-    dispatch(fetchPendingOms({type: agent.channel[0], status: 2}));
+    dispatch(fetchPendingOms({cptLogin: user, roles: agent.roles, channel: agent.channel}));
+
   }
 
-  /**
-   * When a manager has many roles, they need to fetch different om lists
-   * @param {*} event 
-   */
-  const fetchNewPendingOms = (event) => {
-    dispatch(fetchPendingOms({type: event.target.textContent, status: 2}));
-  }
+  // /**
+  //  * When a manager has many roles, they need to fetch different om lists
+  //  * @param {*} event 
+  //  */
+  // const fetchNewPendingOms = (event) => {
+  //   // dispatch(fetchPendingOms({type: event.target.textContent, status: 2}));
+  // }
   
   return (
     <main className="my-documents">
       <PageTitle>Documents à valider</PageTitle>
-      <Tabs tabs={tabs} handler={displayWantedSection} />
+      <Tabs tabs={tabsToShow} handler={displayWantedSection} />
         <div className='my-documents__files'>
         {!loader && (
           <div className='my-documents__files-buttons my-documents__files-buttons--links-menu'>
-          {pendingDocs.map((doc) => (
+          {docsToShow.map((doc) => (
             <Link key={doc.id} to={`/gestionnaire/${user}/valider-un-document/ordre-de-mission?etape=1&id=${doc.id}`}>{doc.name}</Link>
           ))}
           {pendingDocs.length === 0 && (
@@ -74,12 +99,12 @@ const Gestionnaires = () => {
           </div>
         )}
         <div className={classNames('my-documents__files-buttons', {'my-documents__files-buttons--buttons-menu': agent.channel.length > 1})}>
-          {agent.channel.length === 1 && (
+          {/* {agent.channel.length === 1 && ( */}
             <button style={{width: 'fit-content'}} onClick={refreshList}>
               <MdRefresh className={classNames('my-documents__files-buttons-icon', {'my-documents__files-buttons-icon--animated': loader})} />  {!loader ? 'Rafraîchir la liste' : ''}
             </button>
-          )}
-          {agent.channel.length > 1 && (
+          {/* )} */}
+          {/* {agent.channel.length > 1 && (
             <>
               {agent.channel.map((button) => (
                 <button style={{width: 'fit-content'}} onClick={fetchNewPendingOms}>
@@ -87,7 +112,7 @@ const Gestionnaires = () => {
                 </button>
               ))}
             </>
-          )}
+          )} */}
         </div>
       </div>
     </main>
