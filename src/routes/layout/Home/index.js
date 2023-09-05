@@ -56,12 +56,14 @@ const Home = () => {
           <h4 className="form__section-container-title" id={'id' + '-title'}>
             Fermeture de POM
           </h4>
-          <div style={{padding: '1rem', textAlign: 'justify'}}>
-            <p style={{marginBottom: '1rem'}}>POM est momentannément fermé afin de continuer le développement de l'application et de vous garantir une expérience optimisée. Votre Profil et les Ordres de Mission que vous avez déjà créés restent toutefois disponibles sur l'application.</p>
-            <p style={{marginBottom: '1rem'}}>Vous pouvez retrouver tous les documents PDF nécessaires aux Ordres de Mission sur la page <Link style={{fontWeight: 'bold', }} to='/assistance'>assistance</Link>, onglet "LES ANCIENS PDFS". </p>
-            <p style={{marginBottom: '1rem'}}>Nous vous préviendrons par email lorsque l'application sera de nouveau disponible et nous vous prions de bien vouloir nous excuser pour la gêne occasionnée. Merci pour votre compréhension.</p>
-            <p style={{marginBottom: '1rem'}}>A bientôt sur POM. </p>
-          </div>
+          {user !== 'mboone01' || user !== 'nathalie' || user !== 'ymarti01' && (
+            <div style={{padding: '1rem', textAlign: 'justify'}}>
+              <p style={{marginBottom: '1rem'}}>POM est momentannément fermé afin de continuer le développement de l'application et de vous garantir une expérience optimisée. Votre Profil et les Ordres de Mission que vous avez déjà créés restent toutefois disponibles sur l'application.</p>
+              <p style={{marginBottom: '1rem'}}>Vous pouvez retrouver tous les documents PDF nécessaires aux Ordres de Mission sur la page <Link style={{fontWeight: 'bold', }} to='/assistance'>assistance</Link>, onglet "LES ANCIENS PDFS". </p>
+              <p style={{marginBottom: '1rem'}}>Nous vous préviendrons par email lorsque l'application sera de nouveau disponible et nous vous prions de bien vouloir nous excuser pour la gêne occasionnée. Merci pour votre compréhension.</p>
+              <p style={{marginBottom: '1rem'}}>A bientôt sur POM. </p>
+            </div>
+          )}
         </div>
       </section>
       {(user === 'mboone01' || user === 'nathalie') && (

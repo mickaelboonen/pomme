@@ -4,6 +4,7 @@ import store from 'src/store';
 import Gestionnaires from "src/routes/gestionnaire";
 import DocRefusalForm from "src/routes/gestionnaire/DocRefusal";
 import DocValidation from "src/routes/gestionnaire/DocValidation";
+import Delegation from "src/routes/gestionnaire/Delegation";
 
 import { fetchOm } from "src/reducer/omForm";
 import { fetchPendingOms, fetchValidationChannels } from "src/reducer/omManager";
@@ -51,6 +52,16 @@ export default {
     {
       path: 'refuser-un-ordre-de-mission/:id',
       element: <DocRefusalForm />,
+    },
+    {
+      path: 'viser-un-document/',
+      children: [
+        {
+          path: 'ordre-de-mission',
+          element: <Delegation />,
+          loader: async ({ request }) => new URL(request.url),
+        }
+      ],
     },
   ]
 };

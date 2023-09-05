@@ -82,7 +82,7 @@ const Gestionnaires = () => {
   // const fetchNewPendingOms = (event) => {
   //   // dispatch(fetchPendingOms({type: event.target.textContent, status: 2}));
   // }
-  
+  console.log(pendingDocs);
   return (
     <main className="my-documents">
       <PageTitle>Documents à valider</PageTitle>
@@ -90,9 +90,17 @@ const Gestionnaires = () => {
         <div className='my-documents__files'>
         {!loader && (
           <div className='my-documents__files-buttons my-documents__files-buttons--links-menu'>
-          {docsToShow.map((doc) => (
-            <Link key={doc.id} to={`/gestionnaire/${user}/valider-un-document/ordre-de-mission?etape=1&id=${doc.id}`}>{doc.name}</Link>
-          ))}
+          {docsToShow.map((doc) => {
+            let link = '';
+            if (doc.status === 2 ) {
+              link = `/gestionnaire/${user}/valider-un-document/ordre-de-mission?etape=1&id=${doc.id}`;
+            }
+            else {
+              link = `/gestionnaire/${user}/viser-un-document/ordre-de-mission?id=${doc.id}`;
+            }
+            return (
+            <Link key={doc.id} to={link}>{doc.name}</Link>
+          )})}
           {pendingDocs.length === 0 && (
             <p className='my-documents__files-message'>Aucun Ordre de Mission en attente</p>
           )}
@@ -101,6 +109,7 @@ const Gestionnaires = () => {
         <div className={classNames('my-documents__files-buttons', {'my-documents__files-buttons--buttons-menu': agent.channel.length > 1})}>
           {/* {agent.channel.length === 1 && ( */}
             <button style={{width: 'fit-content'}} onClick={refreshList}>
+
               <MdRefresh className={classNames('my-documents__files-buttons-icon', {'my-documents__files-buttons-icon--animated': loader})} />  {!loader ? 'Rafraîchir la liste' : ''}
             </button>
           {/* )} */}
