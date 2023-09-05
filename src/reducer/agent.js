@@ -51,11 +51,6 @@ const agentSlice = createSlice({
       },
       fetchAgentAppDocuments: () => {},
       savegentAppDocuments: () => {},
-      saveUserData: (state, action) => {
-        state.agentProfessionalAddress = extractAgentProfessionalAddress(action.payload.professionalAddress);
-        state.agentPersonalAddress = extractAgentPersonalAddress(action.payload.personalAddress);
-        state.agent = extractUserData(action.payload);
-      },
       fetchOMs: (state) => {
         state.loader = true
         state.currentDoc = {};
@@ -108,6 +103,11 @@ const agentSlice = createSlice({
       saveUserLightData: (state, action) => {
         const data = extractUserData(action.payload);
         state.agent = data;
+      },
+      saveUserData: (state, action) => {
+        state.agentProfessionalAddress = extractAgentProfessionalAddress(action.payload.professionalAddress);
+        state.agentPersonalAddress = extractAgentPersonalAddress(action.payload.personalAddress);
+        state.agent = extractUserData(action.payload);
       },
     },
 });

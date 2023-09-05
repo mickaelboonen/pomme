@@ -108,8 +108,8 @@ const MyDocuments = () => {
       status: null
     },
     {
-      name: 'signature',
-      status: (currentDoc.hasOwnProperty('signature') && currentDoc.signature.status) ? currentDoc.signature.status : false
+      name: 'autre',
+      status: (currentDoc.hasOwnProperty('more') && currentDoc.more.status) ? currentDoc.more.status : false
     },
   ]
 

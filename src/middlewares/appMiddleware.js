@@ -83,7 +83,7 @@ const appMiddleware = (store) => (next) => (action) => {
     case 'agent/fetchUserLightData':      
       api.post("/api/agent/get-data/light", action.payload)
         .then((response) => {
-            store.dispatch(saveUserLightData({agent: response.data}));
+            store.dispatch(saveUserLightData(response.data));
         })
         .catch((error) => {
           store.dispatch(setApiResponse(error));

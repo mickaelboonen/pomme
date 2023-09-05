@@ -23,11 +23,15 @@ export default {
         const id = url.searchParams.get("id");
 
         const {
-          agent : { user, agent },
+          agent : { user, agentProfessionalAddress, agentPersonalAddress},
           app: { countries },
         } = store.getState((state) => state);
       
         store.dispatch(fetchOm({id: id, handleLoader: false,}));
+
+        if (!agentProfessionalAddress.hasOwnProperty('streetNamePro') || !agentPersonalAddress.hasOwnProperty('streetName') ) {
+          store.dispatch(fetchUserData({ id: user}));
+        }
 
 
         if (step === '1') {
@@ -39,13 +43,7 @@ export default {
         else if (step === '6') {
           if (countries.length === 0) {
             store.dispatch(fetchCountries());
-          }
-          
-          store.dispatch(fetchUserData({ id: user}));
-
-          if (!agent.hasOwnProperty('lastname')) {
-            store.dispatch(fetchUserData({ id: user}));
-          }
+          }          
         }
         
       return url;  

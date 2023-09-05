@@ -250,7 +250,7 @@ $test : #{var(--first-color)};
       }
 
       &:last-child {
-        margin-right: 0;
+        // margin-right: 0;
       }
     }
   }
@@ -348,10 +348,12 @@ $test : #{var(--first-color)};
 
   .om-status {
     &__steps {
-      flex-wrap: nowrap;
+      // flex-wrap: nowrap;
+      // padding-left: 1rem ;:
 
       &-step {
-        margin-right: 1rem;
+        width: 30%;
+        // margin-right: 1rem;
       }
     }
   }
