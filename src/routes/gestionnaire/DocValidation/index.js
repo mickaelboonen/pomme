@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useLoaderData, useLocation } from 'react-router-dom';
+import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 
 import './style.scss';
 
@@ -19,17 +19,36 @@ import LoaderCircle from 'src/components/LoaderCircle';
 
 // Actions
 import { clearMessage } from 'src/reducer/app';
+import { resetOmsOnDisplay } from 'src/reducer/omManager';
 
 const OMForm = () => {  
   const location = useLocation();
   const dispatch = useDispatch();
   const loaderData = useLoaderData();
+  const navigate = useNavigate();
+
 
   const { omForm : { omLoader},
     app: { apiMessage },
     agent: { user },
     omManager: { pendingDocs, omSteps}
   } = useSelector((state) => state);
+
+  
+  
+  useEffect(() => {
+    if (apiMessage.response && apiMessage.response.status === 200) {
+      setTimeout(() => {
+        dispatch(clearMessage());
+        dispatch(resetOmsOnDisplay());
+      }, "950")
+      setTimeout(() => {
+        const explodedUrl =  loaderData.pathname.split('/');
+        navigate(`/${explodedUrl[1]}/${explodedUrl[2]}/documents-a-signer`);
+        
+      }, "1000")
+    }
+  }, [apiMessage]);
   
   useEffect(() => {
     if (apiMessage.response) {
@@ -56,9 +75,9 @@ const OMForm = () => {
       <ThreadAsTabs step={step} tabs={omSteps} isOm urlData={loaderData} />
       <div className='form-container'>
         <div className="form-page__title">
-          <PageTitle>{currentOM.name}</PageTitle>
+          <PageTitle>{currentOM !== undefined ? currentOM.name : 'Document validé'}</PageTitle>
         </div>
-        {(!currentOM.hasOwnProperty('status')  && omLoader) && (
+        {(currentOM && !currentOM.hasOwnProperty('status')  && omLoader) && (
           <div className="form-page__container">
             <LoaderCircle />
           </div>

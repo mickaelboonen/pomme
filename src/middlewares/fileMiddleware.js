@@ -396,6 +396,23 @@ const omMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse(error));
       });
       break;
+    case 'omManager/addOmMonitoringPdf':
+      
+      const pdf = {
+        file: action.payload.data.file,
+        docId: action.payload.data.docId
+      }
+      
+      fileApi.post('/api/om/monitoring-file', pdf)
+        .then((response) => {
+          console.log(response);
+          store.dispatch(manageOm(action.payload));
+
+        })
+        .catch((error) => {
+          store.dispatch(setApiResponse(error));
+        });
+      break;
     case 'other-documents/uploadVehicleFiles':
       
       const filesToUpload = [];
@@ -490,31 +507,6 @@ const omMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse(error));
       });
       break;
-
-    // case 'other-documents/fetchAgentSignatureForPdf':
-    //   fileApi.post('/api/agent/signature', action.payload)
-    //     .then((response) => {
-    //       store.dispatch(saveAgentSignatureForPdf(response.data));
-    //     })
-    //     .catch((error) => {
-          
-    //       if (error.response.data.includes('Aucune signature trouvée pour ' + action.payload.agent) && !action.payload.stopHere) {
-    //         api.post('/api/om/signature/fetch', action.payload)
-    //           .then((response) => {
-    //             store.dispatch(saveAgentSignatureForPdf(response.data));
-    //           })
-    //           .catch((error) => {
-    //             store.dispatch(setApiResponse(error));
-    //           });
-    //       }
-    //       else if (action.payload.stopHere) {
-            
-    //       }
-    //       else {
-    //         store.dispatch(setApiResponse(error));
-    //       }
-    //     });
-    //   break;
     default:
   }
   next(action);

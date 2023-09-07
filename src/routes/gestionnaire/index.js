@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React  from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { MdRefresh } from 'react-icons/md'
@@ -9,12 +9,14 @@ import PageTitle from 'src/components/PageTitle';
 
 import { fetchPendingOms } from "src/reducer/omManager";
 import classNames from 'classnames';
+import PdfMessage from './PdfMessage';
+import { displayWantedDocs } from '../../reducer/omManager';
 
 const Gestionnaires = () => {
 
   const dispatch = useDispatch();
 
-  const { omManager: { pendingDocs, loader, tabs }, agent: { user, agent }} = useSelector((state) => state);
+  const { omManager: { pendingDocs, loader, tabs, docsToDisplay }, agent: { user, agent }} = useSelector((state) => state);
 
   const types = [];
 
@@ -40,8 +42,6 @@ const Gestionnaires = () => {
     tabsToShow.push({id: 'none', name: 'Documents à valider'})
   }
 
-  const [docsToShow, setDocsToShow] = useState(pendingDocs);
-
   /**
    * Toggles the data accordingly to the clicked tab
    * @param object event 
@@ -51,17 +51,15 @@ const Gestionnaires = () => {
     const { id } = event.currentTarget;
 
     if (types.indexOf(id) > -1) {
-      
-      setDocsToShow(pendingDocs.filter((docs) => docs.type === id));
+      dispatch(displayWantedDocs(pendingDocs.filter((docs) => docs.type === id)))
     }
     else if (id === 'all') {
-      setDocsToShow(pendingDocs);
+      dispatch(displayWantedDocs(pendingDocs))
     }
     else {
       types.forEach((type) => {
         if (type.includes(id)) {
-          setDocsToShow(pendingDocs.filter((docs) => docs.type === type));
-
+          dispatch(displayWantedDocs(pendingDocs.filter((docs) => docs.type === type)))
         }
       })
     }
@@ -72,16 +70,14 @@ const Gestionnaires = () => {
 
   }
   
-  console.log("loader = ", loader);
-  console.log("pendingDocs = ", pendingDocs);
   return (
-    <main className="my-documents">
+    <main className="my-documents" style={{position: 'relative'}}>
       <PageTitle>Documents à valider</PageTitle>
       <Tabs tabs={tabsToShow} handler={displayWantedSection} />
-        <div className='my-documents__files'>
+      <div className='my-documents__files'>
         {!loader && (
           <div className='my-documents__files-buttons my-documents__files-buttons--links-menu'>
-            {docsToShow.map((doc) => {
+            {docsToDisplay.map((doc) => {
               let link = '';
               if (doc.status === 2 ) {
                 link = `/gestionnaire/${user}/valider-un-document/ordre-de-mission?etape=1&id=${doc.id}`;
@@ -98,12 +94,16 @@ const Gestionnaires = () => {
           )}
           </div>
         )}
+        {loader && (
+          <p>Chargement des données</p>
+        )}
         <div className={classNames('my-documents__files-buttons', {'my-documents__files-buttons--buttons-menu': agent.channel.length > 1})}>
-            <button style={{width: 'fit-content'}} onClick={refreshList}>
-              <MdRefresh className={classNames('my-documents__files-buttons-icon', {'my-documents__files-buttons-icon--animated': loader})} />  {!loader ? 'Rafraîchir la liste' : ''}
-            </button>
+          <button style={{width: 'fit-content'}} onClick={refreshList}>
+            <MdRefresh className={classNames('my-documents__files-buttons-icon', {'my-documents__files-buttons-icon--animated': loader})} />  {!loader ? 'Rafraîchir la liste' : ''}
+          </button>
         </div>
       </div>
+      {/* {showPdfMessage && <PdfMessage />} */}
     </main>
 );}
 

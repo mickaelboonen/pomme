@@ -11,9 +11,12 @@ import ValidateOm from './ValidateOm';
 import HiddenField from 'src/components/Fields/HiddenField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import FormSectionTitle from 'src/components/FormSectionTitle';
+import PdfMessage from 'src/routes/gestionnaire/PdfMessage'
+import TextareaField from 'src/components/Fields/TextareaField';
 
 // Selectors & actions
 import { manageOm } from 'src/reducer/omManager';
+import { addOmMonitoringPdf } from 'src/reducer/omManager';
 
 
 const Validation = () => {
@@ -24,9 +27,10 @@ const Validation = () => {
   
   const {
     omForm: { omLoader, currentOM },
-    omManager: { channels, uprOrDep, validationActorsToDisplay }
+    omManager: { channels, uprOrDep, validationActorsToDisplay, showPdfMessage },
+    agent: { agent }
   } = useSelector((state) => state);
-  
+
   const missionStatus = currentOM.mission ? currentOM.mission.status : null;
   const transportsStatus = currentOM.transports ? currentOM.transports.status : null;
   const accomodationsStatus = currentOM.accomodations ? currentOM.accomodations.status : null;
@@ -50,6 +54,7 @@ const Validation = () => {
   }
 
   const omType = currentOM.type.toLowerCase().split('-');
+  const currentChannel = channels.find((channel) => channel.shortName === omType[0]);
 
   const {
     register,
@@ -62,13 +67,14 @@ const Validation = () => {
   } = useForm({ defaultValues: {
     validation: isOneStepRejected === undefined ? null : 'reject',
     rejectedFields: rejectedFields,
-    channel: channels.find((channel) => channel.shortName === omType[0]).id,
+    channel: currentChannel.id,
     comments: currentOM.comments
   }
   });
   
   const onSubmit = (data) => {
     console.log(data);
+    // return;
     let errorCount;
 
     if (data.validation === 'validate') {
@@ -99,16 +105,16 @@ const Validation = () => {
       })
 
       data.workflow = actors;
-
+      
       const file = Array.from(data.files).find((file) => file instanceof File)
-      if (file) {
-        // TODO
-        // dispatch(uploadFile({data: data, step: 'management'}));
-      }
-      else {
+      if (!file) {
         data.files = [];
-        dispatch(manageOm(data));
       }
+        dispatch(addOmMonitoringPdf({data: data}));
+      // else {
+        // data.files = [];
+        // dispatch(manageOm(data));
+      // }
     }
     else {
 
@@ -148,6 +154,12 @@ const Validation = () => {
             <HiddenField id="docId" value={omId} register={register} />
             {errors.validation && <p className="form__section-field-error form__section-field-error--open">{errors.validation.message}</p>}
           </div>
+          <TextareaField 
+            id="comments-field"
+            label="Commentaires du gestionnaire"
+            formField="comments"
+            register={register}
+          />
           {isValidated === "reject" && (
             <RejectOm stepArray={statusArray} register={register} errors={errors} />
           )}
@@ -161,11 +173,15 @@ const Validation = () => {
               circuits={channels}
               omType={omType}
               validationActorsToDisplay={validationActorsToDisplay}
+              om={currentOM}
+              agent={agent}
+              submitFunction={onSubmit}
             />
           )}
         </div>  
       </form>
     )}
+    {/* <PdfMessage om={currentOM} /> */}
     </>
   );
 };

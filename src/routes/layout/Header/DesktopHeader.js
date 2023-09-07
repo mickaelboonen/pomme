@@ -31,11 +31,11 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
   const test = () => {
     
     // dispatch(checkAuthentication({username : 'emonte01', password: 'fsdf'}))
-    // dispatch(checkAuthentication({username : 'ymarti01', password: 'fsdf'}))
+    dispatch(checkAuthentication({username : 'ymarti01', password: 'fsdf'}))
     // dispatch(checkAuthentication({username : 'nathalie', password: 'fsdf'}))
     // dispatch(checkAuthentication({username : 'mdeni', password: 'fsdf'}))
     // dispatch(checkAuthentication({username : 'clegalla', password: 'fsdf'}))
-    dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))
+    // dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))
   }
   
   return (

@@ -9,6 +9,7 @@ var lodashArray = require('lodash/array');
 const initialState = {
   loader: false,
   pendingDocs: [],
+  docsToDisplay: [],
   channels: [
     {
       name: 'Mission test',
@@ -74,22 +75,23 @@ const initialState = {
   tabs: [
     {
       id: 'admin',
-      name: 'Mission des Agents',
+      name: 'OM à contrôler',
       status: 2,
     },
     {
       id: 'deve',
-      name: 'Mission des Enseignants',
+      name: 'OM à contrôler',
     },
     {
       id: 'research',
-      name: 'Visa de Validation',
+      name: 'OM à viser',
     },
     {
       id: 'formation',
-      name: 'Visa de Validation',
+      name: 'OM à viser',
     }
-  ]
+  ],
+  showPdfMessage: true,
 };
 const omManagerSlice = createSlice({
     name: 'omManager',
@@ -100,6 +102,7 @@ const omManagerSlice = createSlice({
       },
       savePendingOms: (state, action) => {
         state.pendingDocs = action.payload;
+        state.docsToDisplay = action.payload;
         state.loader = false;
       },
       fetchValidationChannels: () => {},
@@ -157,6 +160,15 @@ const omManagerSlice = createSlice({
       },
       manageOm: () => {},
       stampOm: () => {},
+      setPdfMessage: (state) => {state.showPdfMessage = true},
+      updateMonitorPdf: () => {},
+      resetOmsOnDisplay: (state) => {
+        state.pendingDocs = [];
+      },
+      displayWantedDocs: (state, action) => {
+        state.docsToDisplay = action.payload;
+      },
+      addOmMonitoringPdf: () => {},
     }
 });
 
@@ -173,6 +185,11 @@ export const {
   saveDepartments,
   manageOm,
   stampOm,
+  setPdfMessage,
+  resetOmsOnDisplay,
+  updateMonitorPdf,
+  displayWantedDocs,
+  addOmMonitoringPdf,
 } = omManagerSlice.actions;
 
 export default omManagerSlice.reducer;

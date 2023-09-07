@@ -28,13 +28,13 @@ const RejectOm = ({ stepArray, register, errors}) => (
         <CheckboxInput key={step.step} id={step.step} formField="rejectedFields" label={step.label} register={register} />
       ))}
     </div>
-    <TextareaField 
+    {/* <TextareaField 
       id="comments-field"
       label="Justifier le refus (facultatif)"
       formField="comments"
       register={register}
       placeholder="plop"
-    />
+    /> */}
     {/* <div className="form__section-field">
       <label className="form__section-field-label" htmlFor="departure-place">Annuler définitivement l'ordre de mission</label>
       <RadioInput
