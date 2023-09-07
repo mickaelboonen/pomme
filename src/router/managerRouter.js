@@ -9,6 +9,7 @@ import Delegation from "src/routes/gestionnaire/Delegation";
 import { fetchOm } from "src/reducer/omForm";
 import { fetchPendingOms, fetchValidationChannels } from "src/reducer/omManager";
 import { setLoader } from "src/reducer/omForm";
+import SuiviPdf from "../routes/gestionnaire/SuiviPdf";
 
 export default {
   path: 'gestionnaire/:slug/',
@@ -52,6 +53,10 @@ export default {
     {
       path: 'refuser-un-ordre-de-mission/:id',
       element: <DocRefusalForm />,
+    },
+    {
+      path: 'suivi-pdf',
+      element: <SuiviPdf />,
     },
     {
       path: 'viser-un-document/',
