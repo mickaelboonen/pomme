@@ -18,7 +18,7 @@ import ValidationMonitoringPdf from 'src/components/PDF/ValidationMonitoringPdf'
 
 // Actions
 import { stampOm } from 'src/reducer/omManager';
-import { addOmMonitoringPdf } from 'src/reducer/omManager';
+import { addOmMonitoringPdf, rejectVisaOm } from 'src/reducer/omManager';
 
 const OmVisa = ({ data, user, agent }) => {
 
@@ -34,7 +34,21 @@ const OmVisa = ({ data, user, agent }) => {
   const submitFunction = (data) => {
 
     console.log(data);
-    dispatch(addOmMonitoringPdf({data: data, task: 'replace'}));
+    // return;
+
+    if (data.action === 'validate') {
+      dispatch(addOmMonitoringPdf({data: data, task: 'replace'}));
+    }
+    else {
+      dispatch(rejectVisaOm(data))
+      // TODO : 
+      // Rejeter l'OM (donc le repasser en statut 1)
+      // Email a l'agent et au gestionnaire
+      // OM_VALIDATION_STEPS ? 
+      // Les garder pour un historique ou repartir à zéro.
+      // Si on garde, il faut le traduire sur le PDF
+    }
+    
     // dispatch(stampOm(data))
   };
 

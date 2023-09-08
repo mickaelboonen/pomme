@@ -169,6 +169,7 @@ const omManagerSlice = createSlice({
         state.docsToDisplay = action.payload;
       },
       addOmMonitoringPdf: () => {},
+      rejectVisaOm: () => {},
     }
 });
 
@@ -189,6 +190,7 @@ export const {
   resetOmsOnDisplay,
   updateMonitorPdf,
   displayWantedDocs,
+  rejectVisaOm,
   addOmMonitoringPdf,
 } = omManagerSlice.actions;
 

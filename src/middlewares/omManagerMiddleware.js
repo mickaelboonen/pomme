@@ -85,7 +85,20 @@ const omManagerMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse(error));;
       });
       break;
-  
+    case 'omManager/rejectVisaOm':
+      api.post("/api/om/reject-visa", action.payload)
+      .then((response) => {
+        console.log(response.data);
+        // store.dispatch(setPdfMessage())
+        // store.dispatch(resetOmsOnDisplay(response.data));
+        store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
+        // store.dispatch(saveValidationChannels(response.data))
+      })
+      .catch((error) => {
+        console.log("ERROR : ", error);
+        store.dispatch(setApiResponse(error));;
+      });
+      break;
     default:
   }
   next(action);
