@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
 import { useLoaderData } from 'react-router-dom';
 import { FaEye, FaDownload, FaEyeSlash } from 'react-icons/fa';
+import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
 
 import '../style.scss';
 
@@ -13,24 +14,30 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 import RadioInput from 'src/components/Fields/RadioInput';
 import HiddenField from 'src/components/Fields/HiddenField';
 import { useDispatch } from 'react-redux';
+import ValidationMonitoringPdf from 'src/components/PDF/ValidationMonitoringPdf';
 
 // Actions
 import { stampOm } from 'src/reducer/omManager';
+import { addOmMonitoringPdf } from 'src/reducer/omManager';
 
-const OmVisa = ({ data, user }) => {
+const OmVisa = ({ data, user, agent }) => {
 
   const dispatch = useDispatch();
   const {
     register,
+    watch,
     handleSubmit,
     formState:
     { errors },
   } = useForm();
 
+  // const { }
+  console.log(data);
   const onSubmit = (data) => {
 
     console.log(data);
-    dispatch(stampOm(data))
+    dispatch(addOmMonitoringPdf({data: data}));
+    // dispatch(stampOm(data))
   };
 
   const [viewer, setViewer] = useState('');
@@ -47,6 +54,18 @@ const OmVisa = ({ data, user }) => {
       formElement.style = "";
     }
     
+  }
+
+  const [isPdfVisible, setIsPdfVisible] = useState(false)
+
+  const toggleViewer = (event) => {
+
+    if (event.target.id.includes('closer')) {
+      setIsPdfVisible(false);
+    }
+    else {
+      setIsPdfVisible(true);
+    }
   }
 
   return (
@@ -112,7 +131,42 @@ const OmVisa = ({ data, user }) => {
             type="button"
             label="Retour"
           />
-          {/* < */}
+          <div className="form__section-field">
+            {/* <ButtonElement
+              type="submit"
+              label="Valider l'ordre de mission"
+            /> */}
+            <BlobProvider document={<ValidationMonitoringPdf om={data} agent={agent} isGest={false} gestData={watch('comments')} />}>
+              {({ blob }) => {          
+                const file = new File([blob], "blol", {type: 'pdf'});
+                
+                const fileUrl = URL.createObjectURL(file);
+                const data = watch();
+                data.file = file;
+                
+                return (
+                  <>
+                    <button type="button" onClick={() => { const data = watch(); data.file = file; submitFunction(data)}}>
+                      Valider la demande
+                    </button>
+                    <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
+                      Visualiser <br /> le document
+                    </button>
+                  </>
+                );
+              }}
+            </BlobProvider>
+          </div>
+          {isPdfVisible && (
+            <div className="pdf-viewer" style={{height:'100vh'}}>
+              <div className="pdf-viewer__nav">
+                <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer la fenêtre</p>
+              </div>
+              <PDFViewer className='form__section-recap'>
+                <ValidationMonitoringPdf om={data} agent={agent} isGest={false} gestData={watch('comments')} user={user}/>
+              </PDFViewer>
+            </div>
+          )}
         </div>
       </div>
     </form>    

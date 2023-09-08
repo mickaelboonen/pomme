@@ -63,7 +63,6 @@ const omManagerMiddleware = (store) => (next) => (action) => {
     case 'omManager/manageOm':
       api.post("/api/om/manage", action.payload)
       .then((response) => {
-        store.dispatch(setPdfMessage())
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         // store.dispatch(saveValidationChannels(response.data))
       })
@@ -76,7 +75,7 @@ const omManagerMiddleware = (store) => (next) => (action) => {
       api.post("/api/om/stamp", action.payload)
       .then((response) => {
         console.log(response.data);
-        store.dispatch(setPdfMessage())
+        // store.dispatch(setPdfMessage())
         // store.dispatch(resetOmsOnDisplay(response.data));
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         // store.dispatch(saveValidationChannels(response.data))

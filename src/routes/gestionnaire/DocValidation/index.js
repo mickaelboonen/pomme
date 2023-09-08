@@ -37,6 +37,7 @@ const OMForm = () => {
   
   
   useEffect(() => {
+    console.log(apiMessage);
     if (apiMessage.response && apiMessage.response.status === 200) {
       setTimeout(() => {
         dispatch(clearMessage());
@@ -112,7 +113,7 @@ const OMForm = () => {
         {step === 6 && (
           <div className="form-page__container">
             {!omLoader && <Validation />}
-            {omLoader && <p>Loading</p>}
+            {omLoader && <p>Données en cours de chargement</p>}
           </div>
         )}
       </div>

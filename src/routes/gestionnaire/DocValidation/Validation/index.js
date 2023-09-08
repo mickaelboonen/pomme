@@ -28,7 +28,7 @@ const Validation = () => {
   const {
     omForm: { omLoader, currentOM },
     omManager: { channels, uprOrDep, validationActorsToDisplay, showPdfMessage },
-    agent: { agent }
+    agent: { agent, user }
   } = useSelector((state) => state);
 
   const missionStatus = currentOM.mission ? currentOM.mission.status : null;
@@ -73,8 +73,7 @@ const Validation = () => {
   });
   
   const onSubmit = (data) => {
-    console.log(data);
-    // return;
+    
     let errorCount;
 
     if (data.validation === 'validate') {
@@ -87,7 +86,15 @@ const Validation = () => {
         return;
       }
       
-      const actors = [];
+      const actors = [
+        {
+          cptLogin: user,
+          role: agent.position,
+          comment: data.comments,
+          current_status: 2,
+          next_status: 3
+        }
+      ];
       validationActorsToDisplay.forEach((actor) => {
 
         if (actor.cptLogin === 'directeur.rice upr' || actor.cptLogin === 'directeur.rice dep') {

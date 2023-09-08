@@ -18,7 +18,7 @@ const Delegation = () => {
   const id = Number(useLoaderData().searchParams.get('id'));
   const url = useLoaderData();
   
-  const { app: { apiMessage }, agent: { user }, omManager: { pendingDocs, showPdfMessage } } = useSelector((state) => state);
+  const { app: { apiMessage }, agent: { agent, user }, omManager: { pendingDocs, showPdfMessage } } = useSelector((state) => state);
   const currentOM = pendingDocs.find((om) => om.id === id);
   
   useEffect(() => {
@@ -39,7 +39,7 @@ const Delegation = () => {
       <div className="form-page__title">
         <PageTitle>{currentOM !== undefined ? currentOM.name : 'OM validé'}</PageTitle>
       </div>
-      <OmVisa user={user} data={currentOM} />
+      <OmVisa user={user} data={currentOM} agent={agent} />
       {/* {showPdfMessage && <PdfMessage om={currentOM} />} */}
     </div>
   );

@@ -6,7 +6,7 @@ import { requestVehicleAuthorization, updateVehicle, createVehicle } from 'src/r
 import { toggleDocModal, saveAllPermDocs, saveAgentSignatureForPdf} from 'src/reducer/otherDocuments';
 import { updateEfAccomodations, updateEfSignature, updateEf, updateEfMission, updateEfTransports } from 'src/reducer/ef';
 import { createDispensation, updateOm, updateTransports, updateAdvance, updateMoreAndSignature, updateMission, createScientificEvent } from 'src/reducer/omForm';
-
+import { manageOm } from 'src/reducer/omManager';
 
 fileApi.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 fileApi.defaults.headers['Content-Type'] = 'multipart/form-data';
@@ -406,7 +406,7 @@ const omMiddleware = (store) => (next) => (action) => {
       fileApi.post('/api/om/monitoring-file', pdf)
         .then((response) => {
           console.log(response);
-          store.dispatch(manageOm(action.payload));
+          // store.dispatch(manageOm(action.payload.data));
 
         })
         .catch((error) => {
