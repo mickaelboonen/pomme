@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLoaderData, useNavigate, useNavigation } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate, useNavigation } from 'react-router-dom';
 
 import './style.scss';
 
 // Components
 import PageTitle from 'src/components/PageTitle';
-import PdfMessage from '../PdfMessage';
 import OmVisa from './OmVisa';
 import { clearMessage } from 'src/reducer/app';
 import { resetOmsOnDisplay } from 'src/reducer/omManager'
@@ -15,8 +14,11 @@ const Delegation = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const id = Number(useLoaderData().searchParams.get('id'));
   const url = useLoaderData();
+  const id = Number(url.searchParams.get('id'));
+  const explodedUrl = url.pathname.split('/');
+  const returnLink = `/${explodedUrl[1]}/${explodedUrl[2]}/documents-a-signer`;
+  // console.log(returnLink);
   
   const { app: { apiMessage }, agent: { agent, user }, omManager: { pendingDocs, showPdfMessage } } = useSelector((state) => state);
   const currentOM = pendingDocs.find((om) => om.id === id);
@@ -28,19 +30,19 @@ const Delegation = () => {
         dispatch(resetOmsOnDisplay())
       }, "950")
       setTimeout(() => {
-        const explodedUrl =  url.pathname.split('/');
-        navigate(`/${explodedUrl[1]}/${explodedUrl[2]}/documents-a-signer`);
+        navigate(returnLink);
         
       }, "1000")
     }
   }, [apiMessage]);
+
   return (
     <div className='form-container'>
       <div className="form-page__title">
-        <PageTitle>{currentOM !== undefined ? currentOM.name : 'OM validé'}</PageTitle>
+        <PageTitle>{currentOM !== undefined ? currentOM.name : "OM non trouvé"}</PageTitle>
       </div>
-      <OmVisa user={user} data={currentOM} agent={agent} />
-      {/* {showPdfMessage && <PdfMessage om={currentOM} />} */}
+      {pendingDocs.length > 0 && <OmVisa user={user} data={currentOM} agent={agent} />}
+      {pendingDocs.length === 0 && <Link to={returnLink}>Veuillez retourner sur le menu des ordres de mission</Link>}
     </div>
   );
 };

@@ -7,6 +7,7 @@ import { toggleDocModal, saveAllPermDocs, saveAgentSignatureForPdf} from 'src/re
 import { updateEfAccomodations, updateEfSignature, updateEf, updateEfMission, updateEfTransports } from 'src/reducer/ef';
 import { createDispensation, updateOm, updateTransports, updateAdvance, updateMoreAndSignature, updateMission, createScientificEvent } from 'src/reducer/omForm';
 import { manageOm } from 'src/reducer/omManager';
+import { stampOm } from '../reducer/omManager';
 
 fileApi.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 fileApi.defaults.headers['Content-Type'] = 'multipart/form-data';
@@ -397,16 +398,23 @@ const omMiddleware = (store) => (next) => (action) => {
       });
       break;
     case 'omManager/addOmMonitoringPdf':
-      
+      const { task } = action.payload; 
       const pdf = {
         file: action.payload.data.file,
-        docId: action.payload.data.docId
+        docId: action.payload.data.docId,
+        task: task ?? 'add'
       }
       
       fileApi.post('/api/om/monitoring-file', pdf)
         .then((response) => {
           console.log(response);
-          // store.dispatch(manageOm(action.payload.data));
+          if (task) {
+            store.dispatch(stampOm(action.payload.data));
+          }
+          else {
+            store.dispatch(manageOm(action.payload.data));
+          }
+          
 
         })
         .catch((error) => {

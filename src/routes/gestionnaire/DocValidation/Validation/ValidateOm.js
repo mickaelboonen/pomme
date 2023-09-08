@@ -210,10 +210,6 @@ const ValidateOm = ({
         {({ blob }) => {          
           const file = new File([blob], "blol", {type: 'pdf'});
           
-          const fileUrl = URL.createObjectURL(file);
-          const data = watch();
-          data.file = file;
-          
           return (
             <>
               <button type="button" onClick={() => { const data = watch(); data.file = file; submitFunction(data)}}>
@@ -227,7 +223,7 @@ const ValidateOm = ({
         }}
       </BlobProvider>
     </div>
-    {isPdfVisible && (
+    {/* {isPdfVisible && (
       <div className="pdf-viewer">
         <div className="pdf-viewer__nav">
           <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer la fenêtre</p>
@@ -236,7 +232,7 @@ const ValidateOm = ({
           <ValidationMonitoringPdf om={om} agent={agent} isGest={true} gestData={watch('comments')}/>
         </PDFViewer>
       </div>
-    )}
+    )} */}
   </>
 )};
 

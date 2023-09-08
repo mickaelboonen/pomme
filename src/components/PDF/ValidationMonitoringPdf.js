@@ -13,7 +13,7 @@ Font.register({ family: 'Radjhani', src: RadjhaniFont });
 import { styles } from './pdfStyles';
 
 const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user }) => {
-  console.log(om.management.workflow);
+  console.log("**************************", user, om.management.workflow);
   return (
   <Document>
     <Page size="A4" style={styles.page}>
@@ -52,12 +52,12 @@ const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user }) => {
         {om.management.workflow.map((gest) => (
           <View key={gest.agent} style={{display: 'flex', flexDirection: 'row', flexWrap: "wrap", borderTop: '1px solid #1f1f1f'}}>
             <View style={{width: '20%', borderLeft: '1px solid #1f1f1f', borderRight: '1px solid #1f1f1f', padding: '5', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-              <Text>{gest.agent}</Text>
+              <Text>{gest.name}</Text>
               <Text>{gest.role}</Text>
             </View>
             <View style={{width: '20%', borderRight: '1px solid #1f1f1f', padding: '5', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             {gest.validation_date !== null && <Text>{getDDMMYYDate(new Date(gest.validation_date))}</Text>}
-            {/* <Text>{getDDMMYYDate(new Date(gest.validation_date))}</Text> */}
+            {user === gest.agent && <Text>{getDDMMYYDate(new Date())}</Text>}
             </View>
             <View style={{width: '60%',borderRight: '1px solid #1f1f1f', padding: '5', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
               {gest.validation !== null && (
@@ -65,34 +65,16 @@ const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user }) => {
                   <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>
                   <Text style={{fontSize: "10", marginTop: '5'}}>{gest.comment}</Text>
                 </>
+              )}              
+              {user === gest.agent && (
+                <>
+                  <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>
+                  <Text style={{fontSize: "10", marginTop: '5'}}>{gestData}</Text>
+                </>
               )}
             </View>
           </View>
         ))}
-        {!isGest && (
-          <>
-            {om.management.workflow.map((gest) => (
-              <View key={gest.agent} style={{display: 'flex', flexDirection: 'row', flexWrap: "wrap", borderTop: '1px solid #1f1f1f'}}>
-                <View style={{width: '20%', borderLeft: '1px solid #1f1f1f', borderRight: '1px solid #1f1f1f', padding: '5', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                  <Text>{gest.name}</Text>
-                  <Text>{gest.role}</Text>
-                </View>
-                <View style={{width: '20%', borderRight: '1px solid #1f1f1f', padding: '5', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                {gest.validation_date !== null && <Text>{getDDMMYYDate(new Date(gest.validation_date))}</Text>}
-                {/* <Text>{getDDMMYYDate(new Date(gest.validation_date))}</Text> */}
-                </View>
-                <View style={{width: '60%',borderRight: '1px solid #1f1f1f', padding: '5', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                  {gest.validation !== null && (
-                    <>
-                      <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>
-                      <Text style={{fontSize: "10", marginTop: '5'}}>{gest.comment}</Text>
-                    </>
-                  )}
-                </View>
-              </View>
-            ))}
-          </>
-        )}
         <View style={{borderTop: '1px solid #1f1f1f'}} />
       </View>
     </Page>
