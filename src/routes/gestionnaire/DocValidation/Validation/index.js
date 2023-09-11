@@ -11,12 +11,10 @@ import ValidateOm from './ValidateOm';
 import HiddenField from 'src/components/Fields/HiddenField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import PdfMessage from 'src/routes/gestionnaire/PdfMessage'
 import TextareaField from 'src/components/Fields/TextareaField';
 
 // Selectors & actions
-import { manageOm } from 'src/reducer/omManager';
-import { addOmMonitoringPdf } from 'src/reducer/omManager';
+import { addOmMonitoringPdf, rejectOm } from 'src/reducer/omManager';
 
 
 const Validation = () => {
@@ -27,7 +25,7 @@ const Validation = () => {
   
   const {
     omForm: { omLoader, currentOM },
-    omManager: { channels, uprOrDep, validationActorsToDisplay, showPdfMessage },
+    omManager: { channels, uprOrDep, validationActorsToDisplay },
     agent: { agent, user }
   } = useSelector((state) => state);
 
@@ -75,6 +73,17 @@ const Validation = () => {
   const onSubmit = (data) => {
     
     let errorCount;
+    
+    const actors = [
+      {
+        cptLogin: user,
+        name: agent.firstname + ' ' + agent.lastname,
+        role: agent.position,
+        comment: data.comments,
+        current_status: 2,
+        next_status: 3
+      }
+    ];
 
     if (data.validation === 'validate') {
       if (!data.workflow || data.workflow.length === 0) {
@@ -86,15 +95,6 @@ const Validation = () => {
         return;
       }
       
-      const actors = [
-        {
-          cptLogin: user,
-          role: agent.position,
-          comment: data.comments,
-          current_status: 2,
-          next_status: 3
-        }
-      ];
       validationActorsToDisplay.forEach((actor) => {
 
         if (actor.cptLogin === 'directeur.rice upr' || actor.cptLogin === 'directeur.rice dep') {
@@ -117,16 +117,17 @@ const Validation = () => {
       if (!file) {
         data.files = [];
       }
-        dispatch(addOmMonitoringPdf({data: data}));
-      // else {
-        // data.files = [];
-        // dispatch(manageOm(data));
-      // }
+      
+      dispatch(addOmMonitoringPdf({data: data, task: 'add', nextAction: 'manageOm'}));
+    
     }
     else {
-
+      data.workflow = actors;
+      delete data.channel;
+      delete data.validation;
+      
+      dispatch(rejectOm(data));
     }
-  
   };
   
   const [isValidated, setIsValidated] = useState(isOneStepRejected === undefined ? null : 'reject')
@@ -188,7 +189,6 @@ const Validation = () => {
         </div>  
       </form>
     )}
-    {/* <PdfMessage om={currentOM} /> */}
     </>
   );
 };

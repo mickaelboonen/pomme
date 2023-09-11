@@ -61,10 +61,20 @@ const omManagerMiddleware = (store) => (next) => (action) => {
       break;
 
     case 'omManager/manageOm':
-      api.post("/api/om/manage", action.payload)
+      api.post("/api/om/management/validate", action.payload)
       .then((response) => {
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         // store.dispatch(saveValidationChannels(response.data))
+      })
+      .catch((error) => {
+        console.log("ERROR : ", error);
+        store.dispatch(setApiResponse(error));;
+      });
+      break;
+    case 'omManager/rejectOm':
+      api.post("/api/om/management/reject", action.payload)
+      .then((response) => {
+        store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })
       .catch((error) => {
         console.log("ERROR : ", error);
@@ -74,11 +84,7 @@ const omManagerMiddleware = (store) => (next) => (action) => {
     case 'omManager/stampOm':
       api.post("/api/om/stamp", action.payload)
       .then((response) => {
-        console.log(response.data);
-        // store.dispatch(setPdfMessage())
-        // store.dispatch(resetOmsOnDisplay(response.data));
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
-        // store.dispatch(saveValidationChannels(response.data))
       })
       .catch((error) => {
         console.log("ERROR : ", error);
@@ -88,11 +94,7 @@ const omManagerMiddleware = (store) => (next) => (action) => {
     case 'omManager/rejectVisaOm':
       api.post("/api/om/reject-visa", action.payload)
       .then((response) => {
-        console.log(response.data);
-        // store.dispatch(setPdfMessage())
-        // store.dispatch(resetOmsOnDisplay(response.data));
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
-        // store.dispatch(saveValidationChannels(response.data))
       })
       .catch((error) => {
         console.log("ERROR : ", error);

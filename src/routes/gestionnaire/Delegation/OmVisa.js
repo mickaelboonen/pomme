@@ -34,22 +34,8 @@ const OmVisa = ({ data, user, agent }) => {
   const submitFunction = (data) => {
 
     console.log(data);
-    // return;
-
-    if (data.action === 'validate') {
-      dispatch(addOmMonitoringPdf({data: data, task: 'replace'}));
-    }
-    else {
-      dispatch(rejectVisaOm(data))
-      // TODO : 
-      // Rejeter l'OM (donc le repasser en statut 1)
-      // Email a l'agent et au gestionnaire
-      // OM_VALIDATION_STEPS ? 
-      // Les garder pour un historique ou repartir à zéro.
-      // Si on garde, il faut le traduire sur le PDF
-    }
+    dispatch(addOmMonitoringPdf({data: data, task: 'replace', nextAction: data.action === 'validate' ? 'stampOm' : 'rejectVisaOm'}));
     
-    // dispatch(stampOm(data))
   };
 
   const [viewer, setViewer] = useState('');
@@ -135,7 +121,7 @@ const OmVisa = ({ data, user, agent }) => {
         <HiddenField id="actor" value={user} register={register} />
 
         <div className="form__section-field-buttons" style={{textAlign: 'center'}}>
-          <BlobProvider document={<ValidationMonitoringPdf om={data} user={user} agent={agent} isGest={false} gestData={watch('comments')} />}>
+          <BlobProvider document={<ValidationMonitoringPdf om={data} user={user} agent={agent} isGest={false} gestData={watch()} />}>
             {({ blob }) => (
 //           const file = new File([blob], 'currentOM.name', {type: 'pdf'});
 //           const fileUrl = URL.createObjectURL(new File([blob], 'currentOM.name', {type: 'pdf'}));
@@ -166,7 +152,7 @@ const OmVisa = ({ data, user, agent }) => {
             <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer la fenêtre</p>
           </div>
           <PDFViewer>
-          <ValidationMonitoringPdf om={data} user={user} agent={agent} isGest={false} gestData={watch('comments')} />
+          <ValidationMonitoringPdf om={data} user={user} agent={agent} isGest={false} gestData={watch()} />
           </PDFViewer>
         </div>
       )}

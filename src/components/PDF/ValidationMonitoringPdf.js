@@ -13,7 +13,9 @@ Font.register({ family: 'Radjhani', src: RadjhaniFont });
 import { styles } from './pdfStyles';
 
 const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user }) => {
-  console.log("**************************", user, om.management.workflow);
+  // console.log("**************************", user, om.management.workflow);
+  console.log(gestData);
+  
   return (
   <Document>
     <Page size="A4" style={styles.page}>
@@ -33,6 +35,38 @@ const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user }) => {
             <Text>ANNOTATION</Text>
           </View>
         </View>
+        {om.management.workflow.length > 0 && (
+          <>
+            {om.management.workflow.map((gest) => (
+              <View key={gest.agent} style={{display: 'flex', flexDirection: 'row', flexWrap: "wrap", borderTop: '1px solid #1f1f1f'}}>
+                <View style={{width: '20%', borderLeft: '1px solid #1f1f1f', borderRight: '1px solid #1f1f1f', padding: '5', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                  <Text>{gest.name}</Text>
+                  <Text>{gest.role}</Text>
+                </View>
+                <View style={{width: '20%', borderRight: '1px solid #1f1f1f', padding: '5', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                {gest.validation_date !== null && <Text>{getDDMMYYDate(new Date(gest.validation_date))}</Text>}
+                {user === gest.agent && <Text>{getDDMMYYDate(new Date())}</Text>}
+                </View>
+                <View style={{width: '60%',borderRight: '1px solid #1f1f1f', padding: '5', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                  {gest.validation !== null && (
+                    <>
+                      {gest.validation && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
+                      {!gest.validation && <Text>ACTION : ORDRE DE MISSION REJETÉ</Text>}
+                      <Text style={{fontSize: "10", marginTop: '5'}}>{gest.comment}</Text>
+                    </>
+                  )}              
+                  {user === gest.agent && (
+                    <>
+                      {gestData.action === 'validate' && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
+                      {gestData.action === 'reject' && <Text>ACTION : ORDRE DE MISSION REJETÉ</Text>}
+                      <Text style={{fontSize: "10", marginTop: '5'}}>{gestData.comments}</Text>
+                    </>
+                  )}
+                </View>
+              </View>
+            ))}
+          </>
+        )}
         {isGest && (
         <View style={{display: 'flex', flexDirection: 'row', flexWrap: "wrap", borderTop: '1px solid #1f1f1f' }}>
           <View style={{width: '20%', borderLeft: '1px solid #1f1f1f', borderRight: '1px solid #1f1f1f', padding: '5', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
@@ -44,12 +78,44 @@ const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user }) => {
           </View>
           <View style={{width: '60%', borderRight: '1px solid #1f1f1f', padding: '5', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
             <Text>ACTION : VISA</Text>
-            <Text style={{fontSize: "10", marginTop: '5'}}>{gestData}
+            <Text style={{fontSize: "10", marginTop: '5'}}>{gestData.comments}
             </Text>
           </View>
         </View>
         )}
-        {om.management.workflow.map((gest) => (
+        {om.management.workflow.length === 0 && (
+          <>
+          {om.management.workflow.map((gest) => (
+            <View key={gest.agent} style={{display: 'flex', flexDirection: 'row', flexWrap: "wrap", borderTop: '1px solid #1f1f1f'}}>
+              <View style={{width: '20%', borderLeft: '1px solid #1f1f1f', borderRight: '1px solid #1f1f1f', padding: '5', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                <Text>{gest.name}</Text>
+                <Text>{gest.role}</Text>
+              </View>
+              <View style={{width: '20%', borderRight: '1px solid #1f1f1f', padding: '5', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+              {gest.validation_date !== null && <Text>{getDDMMYYDate(new Date(gest.validation_date))}</Text>}
+              {user === gest.agent && <Text>{getDDMMYYDate(new Date())}</Text>}
+              </View>
+              <View style={{width: '60%',borderRight: '1px solid #1f1f1f', padding: '5', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                {gest.validation !== null && (
+                  <>
+                    {gest.validation && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
+                    {!gest.validation && <Text>ACTION : ORDRE DE MISSION REJETÉ</Text>}
+                    <Text style={{fontSize: "10", marginTop: '5'}}>{gest.comment}</Text>
+                  </>
+                )}              
+                {user === gest.agent && (
+                  <>
+                    {gestData.action === 'validate' && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
+                    {gestData.action === 'reject' && <Text>ACTION : ORDRE DE MISSION REJETÉ</Text>}
+                    <Text style={{fontSize: "10", marginTop: '5'}}>{gestData.comments}</Text>
+                  </>
+                )}
+              </View>
+            </View>
+          ))}
+          </>
+        )}
+        {/* {om.management.workflow.map((gest) => (
           <View key={gest.agent} style={{display: 'flex', flexDirection: 'row', flexWrap: "wrap", borderTop: '1px solid #1f1f1f'}}>
             <View style={{width: '20%', borderLeft: '1px solid #1f1f1f', borderRight: '1px solid #1f1f1f', padding: '5', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
               <Text>{gest.name}</Text>
@@ -62,19 +128,21 @@ const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user }) => {
             <View style={{width: '60%',borderRight: '1px solid #1f1f1f', padding: '5', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
               {gest.validation !== null && (
                 <>
-                  <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>
+                  {gest.validation && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
+                  {!gest.validation && <Text>ACTION : ORDRE DE MISSION REJETÉ</Text>}
                   <Text style={{fontSize: "10", marginTop: '5'}}>{gest.comment}</Text>
                 </>
               )}              
               {user === gest.agent && (
                 <>
-                  <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>
-                  <Text style={{fontSize: "10", marginTop: '5'}}>{gestData}</Text>
+                  {gestData.action === 'validate' && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
+                  {gestData.action === 'reject' && <Text>ACTION : ORDRE DE MISSION REJETÉ</Text>}
+                  <Text style={{fontSize: "10", marginTop: '5'}}>{gestData.comments}</Text>
                 </>
               )}
             </View>
           </View>
-        ))}
+        ))} */}
         <View style={{borderTop: '1px solid #1f1f1f'}} />
       </View>
     </Page>

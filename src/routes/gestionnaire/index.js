@@ -1,16 +1,17 @@
 import React  from 'react';
+import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { MdRefresh } from 'react-icons/md'
+import { useDispatch, useSelector } from 'react-redux';
 
 import './style.scss';
+
+// Components
 import Tabs from 'src/components/Tabs';
 import PageTitle from 'src/components/PageTitle';
 
-import { fetchPendingOms } from "src/reducer/omManager";
-import classNames from 'classnames';
-import PdfMessage from './PdfMessage';
-import { displayWantedDocs } from '../../reducer/omManager';
+// Action
+import { fetchPendingOms, displayWantedDocs } from "src/reducer/omManager";
 
 const Gestionnaires = () => {
 
@@ -103,7 +104,6 @@ const Gestionnaires = () => {
           </button>
         </div>
       </div>
-      {/* {showPdfMessage && <PdfMessage />} */}
     </main>
 );}
 

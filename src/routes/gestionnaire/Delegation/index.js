@@ -20,7 +20,7 @@ const Delegation = () => {
   const returnLink = `/${explodedUrl[1]}/${explodedUrl[2]}/documents-a-signer`;
   // console.log(returnLink);
   
-  const { app: { apiMessage }, agent: { agent, user }, omManager: { pendingDocs, showPdfMessage } } = useSelector((state) => state);
+  const { app: { apiMessage }, agent: { agent, user }, omManager: { pendingDocs } } = useSelector((state) => state);
   const currentOM = pendingDocs.find((om) => om.id === id);
   
   useEffect(() => {

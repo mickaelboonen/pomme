@@ -90,8 +90,7 @@ const initialState = {
       id: 'formation',
       name: 'OM à viser',
     }
-  ],
-  showPdfMessage: true,
+  ]
 };
 const omManagerSlice = createSlice({
     name: 'omManager',
@@ -160,7 +159,6 @@ const omManagerSlice = createSlice({
       },
       manageOm: () => {},
       stampOm: () => {},
-      setPdfMessage: (state) => {state.showPdfMessage = true},
       updateMonitorPdf: () => {},
       resetOmsOnDisplay: (state) => {
         state.pendingDocs = [];
@@ -170,6 +168,7 @@ const omManagerSlice = createSlice({
       },
       addOmMonitoringPdf: () => {},
       rejectVisaOm: () => {},
+      rejectOm: () => {},
     }
 });
 
@@ -186,12 +185,12 @@ export const {
   saveDepartments,
   manageOm,
   stampOm,
-  setPdfMessage,
   resetOmsOnDisplay,
   updateMonitorPdf,
   displayWantedDocs,
   rejectVisaOm,
   addOmMonitoringPdf,
+  rejectOm,
 } = omManagerSlice.actions;
 
 export default omManagerSlice.reducer;

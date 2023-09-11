@@ -81,21 +81,17 @@ const ValidateOm = ({
     }
   }, [])
   
-  const handleSubmit = (data) => {
-    console.log(data);
-  }
+  // const [isPdfVisible, setIsPdfVisible] = useState(false)
 
-  const [isPdfVisible, setIsPdfVisible] = useState(false)
+  // const toggleViewer = (event) => {
 
-  const toggleViewer = (event) => {
-
-    if (event.target.id.includes('closer')) {
-      setIsPdfVisible(false);
-    }
-    else {
-      setIsPdfVisible(true);
-    }
-  }
+  //   if (event.target.id.includes('closer')) {
+  //     setIsPdfVisible(false);
+  //   }
+  //   else {
+  //     setIsPdfVisible(true);
+  //   }
+  // }
   return (
   <>
     <div className="form__section">
@@ -202,17 +198,13 @@ const ValidateOm = ({
       </div>
     </div>
     <div className="form__section-field">
-      {/* <ButtonElement
-        type="submit"
-        label="Valider l'ordre de mission"
-      /> */}
-      <BlobProvider document={<ValidationMonitoringPdf om={om} agent={agent} isGest={true} gestData={watch('comments')} />}>
+      <BlobProvider document={<ValidationMonitoringPdf om={om} agent={agent} isGest={true} gestData={watch()} />}>
         {({ blob }) => {          
           const file = new File([blob], "blol", {type: 'pdf'});
           
           return (
             <>
-              <button type="button" onClick={() => { const data = watch(); data.file = file; submitFunction(data)}}>
+              <button style={{margin: 'auto'}}type="button" onClick={() => { const data = watch(); data.file = file; submitFunction(data)}}>
                 Valider la demande
               </button>
               {/* <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
