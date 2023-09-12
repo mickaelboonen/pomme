@@ -7,7 +7,7 @@ import {
   saveUserData,
   fetchUserLightData,
   saveUserLightData,
-  // saveSignature,
+  saveAgentPreferences,
 } from 'src/reducer/agent';
 
 import { api, setTokenOnApi } from './api';
@@ -145,6 +145,28 @@ const appMiddleware = (store) => (next) => (action) => {
         });
       break;
   
+    case 'agent/getAgentPreferences':  
+      api.get("/api/agent/preferences/" + action.payload)
+        .then((response) => {
+          console.log(response);
+          store.dispatch(saveAgentPreferences(response.data));
+        })
+        .catch((error) => {
+          store.dispatch(setApiResponse(error));
+        });
+      break;
+        
+    case 'agent/updateAgentPreferences':
+      const { cptLogin } = action.payload;
+      delete action.payload.cptLogin;
+      api.post("/api/agent/preferences/" + cptLogin, action.payload)
+        .then((response) => {
+          store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
+        })
+        .catch((error) => {
+          store.dispatch(setApiResponse(error));
+        });
+      break;
     default:
   }
   next(action);

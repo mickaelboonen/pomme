@@ -35,7 +35,7 @@ const SelectField = ({
       disabled={disabled}
       onChange={handleChange}
     >
-      <option value="">{blankValue}</option>
+      {blankValue && <option value="">{blankValue}</option>}
       {data.map((item) => {
         if (typeof(item) === 'string') {
           return <option key={item} value={item}>{item}</option>;
@@ -55,9 +55,10 @@ SelectField.propTypes = {
 
 SelectField.dafaultProptypes = {
   isHidden: null,
-  handler: null,
+  handler: () => {},
   disabled: false,
   validators: null,
+  blankValue: false,
 };
 
 export default SelectField;

@@ -10,6 +10,10 @@ import { fetchOm } from "src/reducer/omForm";
 import { fetchPendingOms, fetchValidationChannels } from "src/reducer/omManager";
 import { setLoader } from "src/reducer/omForm";
 import SuiviPdf from "../routes/gestionnaire/SuiviPdf";
+import Preferences from "../routes/gestionnaire/Preferences";
+import { useSelector } from "react-redux";
+
+import { getAgentPreferences } from 'src/reducer/agent';
 
 export default {
   path: 'gestionnaire/:slug/',
@@ -57,6 +61,17 @@ export default {
     {
       path: 'suivi-pdf',
       element: <SuiviPdf />,
+    },
+    {
+      path: encodeURIComponent('mes-préférences'),
+      element: <Preferences />,
+      loader: async ({ request }) => {
+        
+        const { agent: { user }} = store.getState();
+        // console.log(agent);
+        store.dispatch(getAgentPreferences(user));
+        
+      },
     },
     {
       path: 'viser-un-document/',

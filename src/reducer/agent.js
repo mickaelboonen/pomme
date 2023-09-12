@@ -15,6 +15,7 @@ const initialState = {
   agentPersonalAddress: {},
   loader: false,
   currentDoc: {},
+  agentPreferences: {}
 };
 
 const agentSlice = createSlice({
@@ -42,9 +43,6 @@ const agentSlice = createSlice({
         state.loader = false;
         state.currentDoc = {};
       },
-      // saveSignature: (state, action) => {
-      //   state.userSignature = action.payload.url;
-      // },
       validateAuthentication: (state, action) => {
         state.isAuthenticated= true;
         state.user = action.payload.user;
@@ -109,12 +107,16 @@ const agentSlice = createSlice({
         state.agentPersonalAddress = extractAgentPersonalAddress(action.payload.personalAddress);
         state.agent = extractUserData(action.payload);
       },
+      getAgentPreferences: () => {},
+      saveAgentPreferences: (state, action) => {
+        state.agentPreferences = action.payload;
+      },
+      updateAgentPreferences: () => {}
     },
 });
 
 export const {
   validateAuthentication,
-  // saveSignature,
   checkAuthentication,
   saveUserData,
   fetchOMs,
@@ -129,7 +131,10 @@ export const {
   logout,
   fetchAgentAppDocuments,
   savegentAppDocuments,
-  addOmToList
+  addOmToList,
+  getAgentPreferences,
+  saveAgentPreferences,
+  updateAgentPreferences
 } = agentSlice.actions;
 
 export default agentSlice.reducer;
