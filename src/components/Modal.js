@@ -82,13 +82,13 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
 
   const departmentsToShow = departments.map((dep) => {
     return {
-      id: dep.short_name,
+      id: dep.shortName,
       name: dep.name,
     }
   })
   let servicesToShow = services.map((service) => {
     return {
-      id: service.short_name,
+      id: service.shortName,
       name: service.name,
     }
   })
@@ -105,8 +105,8 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
         isPonctual: data.duration === 'ponctual' ? 1 : 0,
         type:data.type + (data.service ? '-' + data.service : ''),
       }
-      
-      dispatch(addNewOM(newOM)); 
+      console.log(data);
+      // dispatch(addNewOM(newOM)); 
     }
     else {
       const splitName = userOms.find((om) => om.id === Number(data.om)).name.split('-');
@@ -165,7 +165,7 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
       setService([]);
     }
   }
-  
+  console.log(service);
   return (
     <div className='modal'>
         <form className="modal__form" onSubmit={handleSubmit(onSubmit)}>
