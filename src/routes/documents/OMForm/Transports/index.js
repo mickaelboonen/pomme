@@ -85,7 +85,17 @@ const Transports = ({ step }) => {
         setError('taxiDispensation', { type: 'custom', message: "Merci de fournir la demande de dérogation signée par le Président ou d'en faire la demande." });
         countErrors++;
       }
-      
+
+      if (data.trainClass !== null && data.trainPayment === null) {
+        setError('trainPayment', { type: 'custom', message: "Merci de sélectionner le règlement de votre transport." });
+        countErrors++;
+      }
+
+      if (data.planeClass !== null && data.planePayment === null) {
+        setError('planePayment', { type: 'custom', message: "Merci de sélectionner le règlement de votre transport." });
+        countErrors++;
+      }
+            
       // If there are no errors, we go on
       if (countErrors === 0) {
         if (data.authorizations.length > 0) {
