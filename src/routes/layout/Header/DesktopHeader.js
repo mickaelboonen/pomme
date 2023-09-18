@@ -62,6 +62,7 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
             <div className="header__menu-section" id="dafc" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
               <p>DAFC</p>
               <ul className="header__menu-section-list">
+                <li><Link to="/dafc/demandes-d-avance">Demandes d'avance</Link></li>
                 <li><Link to="/dafc/ordres-de-mission">Ordres de Mission</Link></li>
                 <li><Link to="/dafc/états-de-frais">États de Frais</Link></li>
               </ul>

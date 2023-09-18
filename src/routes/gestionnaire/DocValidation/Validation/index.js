@@ -79,7 +79,7 @@ const Validation = () => {
         cptLogin: user,
         name: agent.firstname + ' ' + agent.lastname,
         role: agent.position,
-        comment: data.comments,
+        comments: data.comments,
         current_status: 2,
         next_status: 3
       }

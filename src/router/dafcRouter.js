@@ -5,6 +5,7 @@ import OmToGFC from "src/routes/dafc/OmToGFC";
 import EfControl from "src/routes/dafc/EfControl";
 import EfValidation from "src/routes/dafc/EfValidation";
 import MyDocuments from "src/routes/utilisateur/MyDocuments";
+import OmMenu from "../routes/dafc/OmMenu";
 
 export default {
   path: 'dafc/',
@@ -63,6 +64,13 @@ export default {
     {
       path: 'états-de-frais',
       element: <MyDocuments />
+    },
+    {
+      path: 'demandes-d-avance',
+      element: <OmMenu />,
+      loader: ({ request }) => {
+
+      },
     },
   ]
 };

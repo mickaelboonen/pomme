@@ -89,6 +89,10 @@ const initialState = {
     {
       id: 'formation',
       name: 'OM à viser',
+    },
+    {
+      id: 'test',
+      name: 'OM à viser',
     }
   ]
 };

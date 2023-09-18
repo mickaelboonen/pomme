@@ -34,6 +34,7 @@ const Gestionnaires = () => {
   
   types.forEach((tab) => {
     const tabData = tabs.find((channel) => tab.includes(channel.id));
+    console.log(tabs, tab);
     const newLabel = `${tabData.name} (${pendingDocs.filter((doc) => doc.type === tab).length})`;
 
     tabsToShow.push({id: tabData.id, name: newLabel});
