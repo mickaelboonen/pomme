@@ -110,7 +110,7 @@ const Avance = ({ step }) => {
       }
       
       data.status = 1;
-      const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);  
+      const dataToBeSubmitted = turnAdvanceDataToDbFormat(data);
       
       if ( dataToBeSubmitted.agentRib instanceof File || dataToBeSubmitted.hotelQuotations.find((file) => file instanceof File)) {
 

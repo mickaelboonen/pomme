@@ -240,7 +240,6 @@ export const turnTransportsDataToAppFormat = (data) => {
  * @returns object that is to be sent to the API
  */
 export const turnAdvanceDataToDbFormat = (data) => {
-
   const {
     docId, status, advance,
     mealsNumber, nightsNumber,
@@ -249,6 +248,7 @@ export const turnAdvanceDataToDbFormat = (data) => {
     otherExpensesAmount, otherExpensesJustification,
   } = data;
 
+  console.log(advance);
   const dataToBeSubmitted = {
     docId: docId,
     advance: advance,

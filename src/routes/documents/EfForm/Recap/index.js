@@ -19,6 +19,7 @@ const Recap = () => {
   const dispatch = useDispatch();
   const loaderData = useLoaderData();
   const id = Number(loaderData.searchParams.get('id'));
+  const omId = Number(loaderData.searchParams.get('om'));
 
   const { ef: { currentEf },
     app: { countries },
@@ -26,7 +27,7 @@ const Recap = () => {
     docs: { agentSignature },
     agent: { agent, user, oms, agentProfessionalAddress, agentPersonalAddress},
   } = useSelector((state) => state);
-  
+  console.log(currentEf);
   const { mission, transports, accomodations, stages } = currentEf;
   
   const { setValue, getValues } = useForm({ defaultValues: agent });
@@ -214,7 +215,7 @@ const Recap = () => {
             <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
               <BlobProvider document={<EfPDF
                   agentSignature={agentSignature}
-                  om={oms.find((om) => om.id == id)}
+                  om={oms.find((om) => om.id == omId)}
                   data={dataForThePdf}
                   agent={fullAgentData}
                   meals={mealsExpenses}
@@ -250,7 +251,7 @@ const Recap = () => {
           <PDFViewer className='form__section-recap'>
             <EfPDF
               agentSignature={agentSignature}
-              om={oms.find((om) => om.id == id)}
+              om={oms.find((om) => om.id == omId)}
               data={dataForThePdf}
               agent={fullAgentData}
               meals={mealsExpenses}

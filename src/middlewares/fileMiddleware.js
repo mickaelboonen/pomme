@@ -267,7 +267,6 @@ const omMiddleware = (store) => (next) => (action) => {
               store.dispatch(updateTransports(data));
             }
             else if (step === 'advance') {
-              delete data.advance;
               data.hotelQuotations = data.hotelQuotations.filter((file) => typeof file === 'string');
               store.dispatch(updateAdvance(data));
             }
