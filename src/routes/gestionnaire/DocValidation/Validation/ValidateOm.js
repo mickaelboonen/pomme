@@ -57,22 +57,34 @@ const ValidateOm = ({
   let firstPartActors = [];
   let secondPartActors = [];
 
+  const advanceRequested = om.advance.advance;
+
+  const actorsToDisplay = validationActorsToDisplay.map((actor) => {
+    if (!advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) {
+      return null;
+    }
+    return actor;
+  }).filter((actor) => actor !== null);
   
 
+  
   if (uprOrDep.length > 0) {
+    let middle;
+
     if (uprOrDep[0].role.includes('Directeur.rice UPR')) {
-      firstPartActors = validationActorsToDisplay.slice(0,2);
-      secondPartActors = validationActorsToDisplay.slice(2);
+      middle = 2;
     }
     else {
-      firstPartActors = validationActorsToDisplay.slice(0,1);
-      secondPartActors = validationActorsToDisplay.slice(1);
+      middle = 1;
     }
+
+    firstPartActors = actorsToDisplay.slice(0, middle);
+    secondPartActors = actorsToDisplay.slice(middle);
   }
   else {
-    firstPartActors = validationActorsToDisplay;
+    firstPartActors = actorsToDisplay;
   }
-  
+
   useEffect(() => {
     const selectedChannel = circuits.find((cir) => cir.shortName === omType[0]);
 
@@ -80,6 +92,8 @@ const ValidateOm = ({
       dispatch(displayValidationActors(selectedChannel));
     }
   }, [])
+
+
   
   // const [isPdfVisible, setIsPdfVisible] = useState(false)
 
@@ -92,6 +106,7 @@ const ValidateOm = ({
   //     setIsPdfVisible(true);
   //   }
   // }
+  
   return (
   <>
     <div className="form__section">
@@ -181,7 +196,15 @@ const ValidateOm = ({
       <div className="form__section-field">
         <p className="form__section-field-label">Acteurs de la validation</p>
         {firstPartActors.map((actor) => (
-          <CheckboxInput key={actor.id} id={actor.cptLogin} formField="workflow" label={actor.role} register={register} />
+          <CheckboxInput
+            key={actor.id}
+            id={actor.cptLogin}
+            formField="workflow"
+            label={actor.role}
+            register={register}
+            checked={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : null}
+            disabled={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : false}
+          />
         ))}
         {showUprOrDep && (
           <div style={{margin: '0.5rem 1rem'}}>
@@ -191,7 +214,15 @@ const ValidateOm = ({
           </div>
         )}
         {secondPartActors.map((actor) => (
-          <CheckboxInput key={actor.id} id={actor.cptLogin} formField="workflow" label={actor.role} register={register} />
+          <CheckboxInput
+            key={actor.id}
+            id={actor.cptLogin}
+            formField="workflow"
+            label={actor.role}
+            register={register}
+            checked={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : null}
+            disabled={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : false}
+          />
         ))}
         {errors.workflow && <p className="form__section-field-error form__section-field-error--open">{errors.workflow.message}</p>}
 
@@ -200,7 +231,7 @@ const ValidateOm = ({
     <div className="form__section-field">
       <BlobProvider document={<ValidationMonitoringPdf om={om} agent={agent} isGest={true} gestData={watch()} />}>
         {({ blob }) => {          
-          const file = new File([blob], "blol", {type: 'pdf'});
+          const file = new File([blob], "monitoring-om-" + om.id, {type: 'pdf'});
           
           return (
             <>

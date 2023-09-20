@@ -74,12 +74,14 @@ const Validation = () => {
     
     let errorCount;
     
+    const isAdvanceRequested = currentOM.advance.advance;
+
     const actors = [
       {
         cptLogin: user,
         name: agent.firstname + ' ' + agent.lastname,
         role: agent.position,
-        comments: data.comments,
+        comments: data.comments === null ? '' : data.comments,
         current_status: 2,
         next_status: 3
       }
@@ -97,7 +99,10 @@ const Validation = () => {
       
       validationActorsToDisplay.forEach((actor) => {
 
-        if (actor.cptLogin === 'directeur.rice upr' || actor.cptLogin === 'directeur.rice dep') {
+        if (isAdvanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) {
+          actors.push(actor);
+        }
+        else if (actor.cptLogin === 'directeur.rice upr' || actor.cptLogin === 'directeur.rice dep') {
           uprOrDep.forEach((dir) => {
             if (data.workflow.indexOf(dir.cptLogin) !== -1) {
               actors.push(dir)
