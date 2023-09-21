@@ -9,11 +9,11 @@ import LoaderCircle from 'src/components/LoaderCircle';
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={<LoaderCircle />} persistor={persistor}  >
         <AppWithRouter />
       </PersistGate>
     </Provider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

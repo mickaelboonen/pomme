@@ -21,7 +21,7 @@ const FormLayout = ({ step, children, user, url, doc }) => {
     register, watch, formState: { errors }
   } = useForm({
     defaultValues: {
-      comments: doc.comments
+      comments: doc ? doc.comments : null
     }
   });
 

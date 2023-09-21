@@ -3,7 +3,7 @@ import { savePendingOms } from 'src/reducer/omManager';
 
 import { api } from './api';
 import { setApiResponse } from '../reducer/app';
-import { saveDepartments, saveServices, saveValidationChannels, resetOmsOnDisplay} from '../reducer/omManager';
+import { saveDepartments, saveServices, saveValidationChannels, resetOmsOnDisplay, savePendingEfs} from '../reducer/omManager';
 
 
 api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -22,6 +22,16 @@ const omManagerMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse(error));;
         });
       break;
+    case 'omManager/fetchPendingEfs':
+      api.post("/api/manager/pending-efs/fetch", action.payload)
+        .then((response) => {
+          store.dispatch(savePendingEfs(response.data))
+        })
+        .catch((error) => {
+          store.dispatch(setApiResponse(error));;
+        });
+      break;
+      
     
     case 'omManager/fetchValidationChannels':
       api.get("/api/validation-channels/fetch")

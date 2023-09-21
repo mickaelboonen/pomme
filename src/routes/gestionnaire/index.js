@@ -11,9 +11,9 @@ import Tabs from 'src/components/Tabs';
 import PageTitle from 'src/components/PageTitle';
 
 // Action
-import { fetchPendingOms, displayWantedDocs } from "src/reducer/omManager";
+import { fetchPendingOms, displayWantedDocs, fetchPendingEfs } from "src/reducer/omManager";
 
-const Gestionnaires = () => {
+const Gestionnaires = ({ isOm }) => {
 
   const dispatch = useDispatch();
 
@@ -33,8 +33,8 @@ const Gestionnaires = () => {
   }
   
   types.forEach((tab) => {
+    console.log(tab);
     const tabData = tabs.find((channel) => tab.includes(channel.id));
-    console.log(tabs, tab);
     const newLabel = `${tabData.name} (${pendingDocs.filter((doc) => doc.type === tab).length})`;
 
     tabsToShow.push({id: tabData.id, name: newLabel});
@@ -67,11 +67,14 @@ const Gestionnaires = () => {
     }
   };
   
+  const target = isOm ? 'ordre-de-mission' : encodeURIComponent('état-de-frais')
+  
   const refreshList = () => {
-    dispatch(fetchPendingOms({cptLogin: user, roles: agent.roles, channel: agent.channel}));
+    const data = {cptLogin: user, roles: agent.roles, channel: agent.channel};
+    isOm ? dispatch(fetchPendingOms(data)) : dispatch(fetchPendingEfs(data));
 
   }
-  
+
   return (
     <main className="my-documents" style={{position: 'relative'}}>
       <PageTitle>Documents à valider</PageTitle>
@@ -82,10 +85,10 @@ const Gestionnaires = () => {
             {docsToDisplay.map((doc) => {
               let link = '';
               if (doc.status === 2 ) {
-                link = `/gestionnaire/${user}/valider-un-document/ordre-de-mission?etape=1&id=${doc.id}`;
+                link = `/gestionnaire/${user}/valider-un-document/${target}?etape=1&id=${doc.id}${!isOm ? '&om=' + doc.om.id : ''}`;
               }
               else {
-                link = `/gestionnaire/${user}/viser-un-document/ordre-de-mission?id=${doc.id}`;
+                link = `/gestionnaire/${user}/viser-un-document/${target}?id=${doc.id}`;
               }
               return (
                 <Link key={doc.id} to={link}>{doc.name}</Link>
@@ -108,4 +111,8 @@ const Gestionnaires = () => {
     </main>
 );}
 
+
+Gestionnaires.defaultProps = {
+  isOm: true,
+}
 export default Gestionnaires;

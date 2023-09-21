@@ -20,7 +20,7 @@ export default {
   path: 'gestionnaire/:slug/',
   children: [
     {
-      path: 'om-a-signer',
+      path: encodeURIComponent('ordres-de-mission-à-signer'),
       element: <Gestionnaires />,
       loader: async ({ request }) => {
         const { agent: { agent, user} } = store.getState((state) => state);
@@ -34,8 +34,8 @@ export default {
       },
     },
     {
-      path: 'ef-a-signer',
-      element: <Gestionnaires />,
+      path: encodeURIComponent('états-de-frais-à-signer'),
+      element: <Gestionnaires isOm={false} />,
       loader: async ({ request }) => {
         const { agent: { agent, user} } = store.getState((state) => state);
         
@@ -54,6 +54,11 @@ export default {
             const url = new URL(request.url);
             const step = url.searchParams.get("etape");
             const id = url.searchParams.get("id");
+
+            const { omManager: { pendingDocs }, agent: { agent, user}  } = store.getState((state) => state);
+            if (pendingDocs.length === 0) {
+              store.dispatch(fetchPendingOms({cptLogin: user, roles: agent.roles, channel: agent.channel}));
+            }
             
             if (step === '6') {
                 store.dispatch(setLoader(true));
@@ -71,11 +76,22 @@ export default {
             const url = new URL(request.url);
             const step = url.searchParams.get("etape");
             const id = url.searchParams.get("id");
+            const omId = url.searchParams.get("om");
+            
+            const { omManager: { pendingDocs }, agent: { agent, user}  } = store.getState((state) => state);
+
+            if (pendingDocs.length === 0) {
+              store.dispatch(fetchPendingEfs({cptLogin: user, roles: agent.roles, channel: agent.channel}));
+            }
+
+            if (step === '1') {
+                // store.dispatch(setLoader(true));
+                store.dispatch(fetchOm({id: omId}));
+            }
             
             if (step === '6') {
                 store.dispatch(setLoader(true));
-                store.dispatch(fetchValidationChannels());
-                store.dispatch(fetchOm({id: id}));
+                // store.dispatch(fetchValidationChannels());
             }
             
           return url;  

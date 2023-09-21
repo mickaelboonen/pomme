@@ -28,13 +28,12 @@ const OMForm = () => {
   const navigate = useNavigate();
 
 
-  const { omForm : { omLoader},
+  const { omForm : { omLoader, currentOM},
     app: { apiMessage },
     agent: { user },
     omManager: { pendingDocs, omSteps}
   } = useSelector((state) => state);
 
-  
   
   useEffect(() => {
     console.log(apiMessage);
@@ -60,7 +59,7 @@ const OMForm = () => {
   const step = Number(loaderData.searchParams.get('etape'));
   const id = Number(loaderData.searchParams.get('id'));
 
-  const currentOM = pendingDocs.find((om) => om.id === id);
+  const currentEf = pendingDocs.find((ef) => ef.id === id);
   const [docToShow, setDocToShow] = useState('');
 
   const displayPdf = (url) => {
@@ -76,35 +75,35 @@ const OMForm = () => {
       <ThreadAsTabs step={step} tabs={omSteps} isOm urlData={loaderData} />
       <div className='form-container'>
         <div className="form-page__title">
-          <PageTitle>{currentOM !== undefined ? currentOM.name : 'Document validé'}</PageTitle>
+          <PageTitle>{currentEf !== undefined ? currentEf.name : 'Document validé'}</PageTitle>
         </div>
-        {(currentOM && !currentOM.hasOwnProperty('status')  && omLoader) && (
+        {(currentEf && !currentEf.hasOwnProperty('status')  && omLoader) && (
           <div className="form-page__container">
             <LoaderCircle />
           </div>
         )}
-        {step < 6 && (
+        {(step < 6 && !omLoader )&& (
           <div className="form-page__container">
             <FormLayout
               step={step}
               user={user}
               url={loaderData}
-              doc={currentOM}
+              doc={currentEf}
             >
                 <div className="form-layout__data">
-                  {step === 1 && <Mission entity="OmMission" displayPdf={displayPdf} data={currentOM.mission} />}
-                  {step === 2 && <Transports entity="OmTransports" displayPdf={displayPdf} data={currentOM.transports} />}
-                  {step === 3 && <Accomodations data={currentOM.accomodations} />}
-                  {step === 4 && <Advance entity="OmAdvance" displayPdf={displayPdf} data={currentOM.advance} />}
-                  {step === 5 && <Other entity="OmMore" displayPdf={displayPdf} data={currentOM.more} />}
+                  {step === 1 && <Mission entity="OmMission" displayPdf={displayPdf} data={currentEf.mission} omData={currentEf.om.mission} />}
+                  {/* {step === 2 && <Transports entity="OmTransports" displayPdf={displayPdf} data={currentEf.transports} />}
+                  {step === 3 && <Accomodations data={currentEf.accomodations} />}
+                  {step === 4 && <Advance entity="OmAdvance" displayPdf={displayPdf} data={currentEf.advance} />}
+                  {step === 5 && <Other entity="OmMore" displayPdf={displayPdf} data={currentEf.more} />} */}
                 </div>
                 {(step === 1 || step === 2)  && (
                   <PdfReader docToShow={docToShow} toggleViewer={toggleViewer} />
                 )}
-                {(step === 4 && currentOM.advance.advance)  && (
+                {(step === 4 && currentEf.advance.advance)  && (
                   <PdfReader docToShow={docToShow} toggleViewer={toggleViewer} />
                 )}
-                {(step === 5 && currentOM.more.files.length > 0)  && (
+                {(step === 5 && currentEf.more.files.length > 0)  && (
                   <PdfReader docToShow={docToShow} toggleViewer={toggleViewer} />
                 )}
             </FormLayout>

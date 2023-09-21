@@ -50,7 +50,8 @@ const omMiddleware = (store) => (next) => (action) => {
       api.get("/api/om/find/" + action.payload.id)
         .then((response) => {
           
-          store.dispatch(saveOm(response.data))
+          store.dispatch(saveOm(response.data));
+          
           if (action.payload.handleLoader) {
             store.dispatch(setLoader(false));
           }

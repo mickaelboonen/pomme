@@ -19,15 +19,68 @@ import { getDDMMYYDate, getHHMMTime } from 'src/selectors/dateFunctions';
 import FileHandler from '../FileHandler';
 import InputValueDisplayer from '../InputValueDisplayer';
 
-const MissionVal = ({ displayPdf, data, entity }) => {
+const MissionVal = ({ displayPdf, data, entity, omData }) => {
   
+  // console.log(data, omData);
   const loader = useLoaderData();
   
-  let defaultValues = null;
+  // const omDataArray = Object.entries(omData);
+  // const efDataArray = Object.entries(data);
+
+  // console.log(omDataArray, efDataArray);
+  // const differences = {};
+  // efDataArray.forEach((entry) => {
+    
+  //   if (entry[0] !== 'id') {
+
+  //     const matchingEntry = omDataArray.find((omEntry) => omEntry[1] !== entry[1]);
+
+  //       console.log("MATCHING ENTRY =", matchingEntry);
+  //     if (matchingEntry && matchingEntry !== null) {
+  //       differences[matchingEntry[0]] = matchingEntry[1];
+  //     }
+  //   }
+  // })
+  
+  function trouverDifferences(objet1, objet2) {
+    const differences = {};
+  
+    for (const champ in objet1) {
+      if (objet1[champ] !== objet2[champ]) {
+        differences[champ] = [objet1[champ], objet2[champ]];
+      }
+    }
+
+    delete differences.id;
+    delete differences.modification_files;
+    delete differences.modifications;
+
+    if (differences.maps[0].length === 0 && differences.maps[1].length === 0) {
+      delete differences.maps;
+    }
+
+    if (differences.mission_purpose_file) {
+     if (differences.mission_purpose_file[0][0].file.name === differences.mission_purpose_file[1][0].file.name) {
+      delete differences.mission_purpose_file;
+     }
+    }
+  
+    return differences;
+  }
+  const differences = trouverDifferences(data, omData);
+  // console.log(differences);
+
+  const differencesArray = Object.entries(differences);
+  console.log(differences);
+  // let defaultValues = null;
+
+  differencesArray.forEach((diff) => {
+
+  })
   
   
-  defaultValues = data;
-  defaultValues = addAllAddressesFields(defaultValues);
+  // defaultValues = data;
+  // defaultValues = addAllAddressesFields(omData);
   
 
   const setAddressPart = (value) => {
@@ -39,7 +92,7 @@ const MissionVal = ({ displayPdf, data, entity }) => {
     }
     return value;
   }
-  const addresses = data.addresses.map((address) => {
+  const addresses = omData.addresses.map((address) => {
 
     const { streetName, streetNumber, streetType, bis, postCode, city, countryCode } = address;
     let combinedAddress = '';
@@ -57,9 +110,26 @@ const MissionVal = ({ displayPdf, data, entity }) => {
     }
     return joinedAddress;
   })
-  
+
+
+  // console.log("LOOK AT ME = ", data);
   return (
     <>
+    <div className="form__section">
+      <FormSectionTitle>Raison de la mission</FormSectionTitle>
+
+      <InputValueDisplayer
+        label="Motif de la mission"
+        value={data.mission_purpose}
+      />
+      {/* {differencesArray.map((diff) => (
+        <InputValueDisplayer
+          key={diff[0]}
+          label="Motif de la mission"
+          value={data.mission_purpose}
+        />
+      ))} */}
+    </div>
       <div className="form__section">
         <FormSectionTitle>Raison de la mission</FormSectionTitle>
 
@@ -96,14 +166,21 @@ const MissionVal = ({ displayPdf, data, entity }) => {
           <div className="form__section-half form__section-half--separator" />
           <div className="form__section-half">
             
-            <InputValueDisplayer
+          <InputValueDisplayer
               label="Date et heure de la fin de mission"
               value={getDDMMYYDate(new Date(data.comeback)) + ' à ' + getHHMMTime(new Date(data.comeback))}
             />
+            
+            {differences.comeback && (
+              <InputValueDisplayer
+                label="Ancienne date prévue"
+                value={getDDMMYYDate(new Date(differences.comeback[1])) + ' à ' + getHHMMTime(new Date(differences.comeback[1]))}
+                plop={"truc de fou"}
+              />
+            )}
             <InputValueDisplayer
               label="Lieu de retour"
-              value={data.comeback_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}
-
+              value={data.comeback_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}s
             />
           </div>
         </div>

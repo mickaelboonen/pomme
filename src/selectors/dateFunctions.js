@@ -1,9 +1,10 @@
 const getDay = (date) => {
-
-  let day = date.getDate();
+  // console.log(date);
+  let day = date.getUTCDate();
   if (day.toString().length === 1) {
     day = '0' + day;
   }
+  // console.log(day);
   return day;
 }
 const getMonth = (date) => {
@@ -35,6 +36,7 @@ const getMinutes = (date) => {
 
 
 export const getDDMMYYDate = (date, separator = '/') => {
+  
   let dateToString = getDay(date) + separator;
   dateToString += getMonth(date) + separator;
   dateToString += getYear(date);

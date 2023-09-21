@@ -173,8 +173,14 @@ const omManagerSlice = createSlice({
       addOmMonitoringPdf: () => {},
       rejectVisaOm: () => {},
       rejectOm: () => {},
-      fetchPendingEfs: () => {},
-      savePendingEfs: () => {},
+      fetchPendingEfs: (state,) => {
+        state.loader = true
+      },
+      savePendingEfs: (state, action) => {
+        state.pendingDocs = action.payload;
+        state.docsToDisplay = action.payload;
+        state.loader = false;
+      },
     }
 });
 
