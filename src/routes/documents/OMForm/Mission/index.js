@@ -133,7 +133,7 @@ const Mission = ({ step, isEfForm }) => {
           return;
         }
         data.status = 1;
-
+        console.log("DATA TO BE SENT = ", data);
         if (data.modificationFiles.length > 0) {
           dispatch(uploadFile({data: data, step: 'mission', docType: 'ef'}));
         }

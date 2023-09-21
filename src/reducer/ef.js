@@ -299,7 +299,7 @@ const efSlice = createSlice({
       updateEfTransports: () => {},
       updateEfAccomodations: () => {},
       getEfAccomodations: () => {},
-      updateEfSignature: () => {},
+      updateEfRib: () => {},
       updateEf: () => {},
       saveMissionFormData: (state, action) => {
         
@@ -374,7 +374,7 @@ export const {
   saveEf,
   getEfAccomodations,
   saveEfAccomodations,
-  updateEfSignature,
+  updateEfRib,
   clearEfTarget,
   updateEf
 } = efSlice.actions;

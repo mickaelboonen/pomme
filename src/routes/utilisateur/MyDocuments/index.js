@@ -99,26 +99,32 @@ const MyDocuments = () => {
       name: 'hébergement',
       status: (currentDoc.hasOwnProperty('accomodations') && currentDoc.accomodations.status) ? currentDoc.accomodations.status : false
     },
-    {
-      name: 'avance',
-      status: (currentDoc.hasOwnProperty('advance') && currentDoc.advance.status) ? currentDoc.advance.status : false
-    },
-    {
-      name: 'étapes',
-      status: null
-    },
-    {
-      name: 'autre',
-      status: (currentDoc.hasOwnProperty('more') && currentDoc.more.status) ? currentDoc.more.status : false
-    },
   ]
 
+  
   if (!isOm) {
-    steps = steps.filter((step) => step.name !== 'avance')
+    steps = steps.concat([
+      {
+        name: 'étapes',
+        status: null
+      },
+      {
+        name: 'rib',
+        status: (currentDoc.hasOwnProperty('rib') && currentDoc.rib.status) ? currentDoc.rib.status : false
+      },
+    ])
   }
   else {
-    
-    steps = steps.filter((step) => step.name !== 'étapes')
+    steps = steps.concat([
+      {
+        name: 'avance',
+        status: (currentDoc.hasOwnProperty('advance') && currentDoc.advance.status) ? currentDoc.advance.status : false
+      },
+      {
+        name: 'autre',
+        status: (currentDoc.hasOwnProperty('more') && currentDoc.more.status) ? currentDoc.more.status : false
+      },
+    ])
   }
 
   const omThatCanBeRefunded = userOms.filter((om) => om.status === 2);

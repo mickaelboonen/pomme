@@ -83,7 +83,8 @@ export const checkStepsStatus = (step, currentDoc) => {
   let docState = {};
 
   if (step ===6) {
-    const omStepsWithStatus = [
+    console.log(currentDoc);
+    const efStepsWithStatus = [
       {
         name: 'mission',
         step: 1,
@@ -99,14 +100,14 @@ export const checkStepsStatus = (step, currentDoc) => {
         step: 3,
         status: (currentDoc.hasOwnProperty('accomodations') && currentDoc.accomodations.status) ? currentDoc.accomodations.status : false
       },
-      // {
-      //   name: 'signature',
-      //   step: 5,
-      //   status: (currentDoc.hasOwnProperty('signature') && currentDoc.signature.status) ? currentDoc.signature.status : false
-      // },
+      {
+        name: 'rib',
+        step: 3,
+        status: (currentDoc.hasOwnProperty('rib') && currentDoc.rib.status) ? currentDoc.rib.status : false
+      },
     ];
     
-    const unfinishedStep = omStepsWithStatus.filter((step) => !step.status);
+    const unfinishedStep = efStepsWithStatus.filter((step) => !step.status);
 
     if (!unfinishedStep) {
       docState.isFinished = true

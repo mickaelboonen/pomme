@@ -4,7 +4,7 @@ import { setApiResponse } from 'src/reducer/app';
 import { handleEfFilesUploadPayload } from 'src/selectors/fileFunctions';
 import { requestVehicleAuthorization, updateVehicle, createVehicle } from 'src/reducer/vehicle';
 import { toggleDocModal, saveAllPermDocs, saveAgentSignatureForPdf} from 'src/reducer/otherDocuments';
-import { updateEfAccomodations, updateEfSignature, updateEf, updateEfMission, updateEfTransports } from 'src/reducer/ef';
+import { updateEfAccomodations, updateEfRib, updateEf, updateEfMission, updateEfTransports } from 'src/reducer/ef';
 import { createDispensation, updateOm, updateTransports, updateAdvance, updateMoreAndSignature, updateMission, createScientificEvent } from 'src/reducer/omForm';
 // import { manageOm } from 'src/reducer/omManager';
 import { rejectVisaOm, stampOm, manageOm } from 'src/reducer/omManager';
@@ -328,7 +328,7 @@ const omMiddleware = (store) => (next) => (action) => {
               store.dispatch(updateEfAccomodations(data));
             }
             else if (step === 'signature') {
-              store.dispatch(updateEfSignature(data));
+              store.dispatch(updateEfRib(data));
             }
             else if (step === 'ef') {
               delete data.file;

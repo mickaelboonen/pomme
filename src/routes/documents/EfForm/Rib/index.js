@@ -12,7 +12,7 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
 
 import { uploadFile } from 'src/reducer/omForm';
-import { updateEfSignature } from 'src/reducer/ef';
+import { updateEfRib } from 'src/reducer/ef';
 import { getSavedFileName } from 'src/selectors/formDataGetters';
 
 const Rib = ({ step }) => {
@@ -27,19 +27,17 @@ const Rib = ({ step }) => {
   
   const { register, clearErrors, handleSubmit, watch, setError, setValue, formState: { errors } } = useForm({
     defaultValues: {
-      savedSignature: userSignature && userSignature.length > 1 ? true : false,
       savedRib: agentDocuments.hasOwnProperty('rib') && agentDocuments.rib.length > 1 ? true : false,
     }
   });
 
   const ribFilename = currentEf.signature.agent_rib ? getSavedFileName(currentEf.signature.agent_rib) : '';
-  const signatureFilemane = currentEf.signature.agent_signature ? getSavedFileName(currentEf.signature.agent_signature) : '';
 
 
   const onSubmit = (data) => {
     
     let errorCount = 0;
-    
+    console.log(data);
     if (data.savedRib) {
       if (agentDocuments.rib === undefined) {
         setError('agentRib', {type: 'custom', message:"Vous n'avez pas de RIB enregistré dans votre profil."})
@@ -52,14 +50,6 @@ const Rib = ({ step }) => {
     }
     else if (data.agentRib.length === 0) {
       setError('agentRib', {type: 'custom', message:"Veuillez fournir un RIB pour pouvoir être remboursé."})
-      errorCount++;
-    }
-    
-    if (data.savedSignature) {
-      data.agentSignature = userSignature;
-    }
-    else if (data.agentSignature.length === 0) {
-      setError('agentSignature', {type: 'custom', message:"Veuillez signer la demande de remboursement."});
       errorCount++;
     }
 
@@ -75,11 +65,11 @@ const Rib = ({ step }) => {
       dispatch(uploadFile({data: data, step: 'signature', docType: 'ef'}));
     }
     else {
-      dispatch(updateEfSignature(data))
+      dispatch(updateEfRib(data))
     }
   };
 
-  const [savedSignature, savedRib] = watch(['savedSignature', 'savedRib']);
+  const savedRib = watch('savedRib');
 
   const handleRibCheckbox = () => {
     clearErrors('agentRib');
@@ -88,29 +78,6 @@ const Rib = ({ step }) => {
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <StatusChecker status={currentEf.signature.status} />
-      {/* <div className="form__section">
-        <FormSectionTitle>Signature</FormSectionTitle>
-        <div className="form__section-field">
-          <CheckboxInput
-            register={register}
-            formField="savedSignature"
-            id="saved-signature-field"
-            label="Utiliser la signature enregistrée dans mon profil"
-          />
-        </div>
-        {!savedSignature && (
-          <FileField 
-            register={register}
-            formField="agentSignature"
-            id="agentSignature"
-            accept="image/*"
-            label="Signature de l'agent (au format .jpg, .jpeg ou .png)"
-            error={errors.agentSignature}
-            setValue={setValue}
-            fileName={signatureFilemane}
-          />
-        )}
-      </div> */}
       <div className="form__section">
         <FormSectionTitle>RIB</FormSectionTitle>
         <div className="form__section-field">
@@ -140,7 +107,7 @@ const Rib = ({ step }) => {
         url={loader}
         watch={watch}
         type="ef"
-        update={updateEfSignature}
+        update={updateEfRib}
       />
     </form>
     

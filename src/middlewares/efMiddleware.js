@@ -68,8 +68,8 @@ const efMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse(error));
       });
     break;
-  case 'ef/updateEfSignature':
-    api.post("/api/ef/signature/update", action.payload)
+  case 'ef/updateEfRib':
+    api.post("/api/ef/rib/update", action.payload)
       .then((response) => {
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })

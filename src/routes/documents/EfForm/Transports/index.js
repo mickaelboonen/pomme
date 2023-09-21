@@ -75,35 +75,36 @@ const Transports = ({ step }) => {
         }
       }
     })
-
-    console.log(dataWithoutEmptyFields);
     
+    // Past handling of km, horsepower, etc
+    // // Handling personalCar-related properties
+    // if (data.personalCar > 0) {
 
-    // Handling personalCar-related properties
-    if (data.personalCar > 0) {
+    //   dataWithoutEmptyFields.personalCar = data.personalCar;
+    //   if (data.km === '') {
+    //     setError('km', { type: 'custom', message: "Veuillez renseigner le kilométrage."})
+    //     errors++;
+    //   }
+    //   else {
+    //     dataWithoutEmptyFields.km = data.km;
+    //   }
 
-      dataWithoutEmptyFields.personalCar = data.personalCar;
-      if (data.km === '') {
-        setError('km', { type: 'custom', message: "Veuillez renseigner le kilométrage."})
-        errors++;
-      }
-      else {
-        dataWithoutEmptyFields.km = data.km;
-      }
+    //   if (data.horsepower === '') {
+    //     setError('horsepower', { type: 'custom', message: "Veuillez renseigner les chevaux fiscaux."})
+    //     errors++;
+    //   }
+    //   else {
+    //     dataWithoutEmptyFields.horsepower = data.horsepower;
+    //   }
+    // }
 
-      if (data.horsepower === '') {
-        setError('horsepower', { type: 'custom', message: "Veuillez renseigner les chevaux fiscaux."})
-        errors++;
-      }
-      else {
-        dataWithoutEmptyFields.horsepower = data.horsepower;
-      }
-    }
-
+    dataWithoutEmptyFields.km = data.km;
+    dataWithoutEmptyFields.horsepower = data.horsepower;
+    
     if (errors > 0) {
       return ;
     }
-
+    
     dataWithoutEmptyFields.status = 1;
     dataWithoutEmptyFields.docId = data.docId;
 
