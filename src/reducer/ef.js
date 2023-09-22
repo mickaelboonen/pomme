@@ -99,7 +99,8 @@ const initialState = {
     ],
     transportsFieldsBis: [
       {
-        id: 'plane', 
+        id: 'plane',
+        label: 'Avion',
         fields: [
           {
             formField: 'plane',
@@ -113,6 +114,7 @@ const initialState = {
       },
       {
         id: 'train', 
+        label: 'Train',
         fields: [
           {
             formField: 'train',
@@ -126,6 +128,7 @@ const initialState = {
       },
       {
         id: 'vehicles', 
+        label: 'Véhicules',
         fields: [
           {
             formField: 'rentCar',
@@ -174,6 +177,7 @@ const initialState = {
       },
       {
         id: 'others', 
+        label: 'Autres moyens de transport',
         fields: [
           {
             formField: 'visa',
