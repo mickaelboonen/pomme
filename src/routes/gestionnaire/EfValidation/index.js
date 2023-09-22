@@ -7,7 +7,7 @@ import './style.scss';
 // Components
 import Other from './Other';
 import Mission from './Mission';
-import Advance from './Advance';
+import StagesAndRib from './StagesAndRib';
 import PdfReader from '../PdfReader';
 import Validation from './Validation';
 import FormLayout from './FormLayout';
@@ -22,7 +22,7 @@ import { clearMessage } from 'src/reducer/app';
 import { resetOmsOnDisplay } from 'src/reducer/omManager';
 
 
-const OMForm = () => {  
+const EfValidation = () => {  
   const location = useLocation();
   const dispatch = useDispatch();
   const loaderData = useLoaderData();
@@ -32,7 +32,7 @@ const OMForm = () => {
   const { omForm : { omLoader, currentOM},
     app: { apiMessage },
     agent: { user },
-    omManager: { pendingDocs, omSteps, loader}
+    omManager: { pendingDocs, efSteps, loader}
   } = useSelector((state) => state);
 
   
@@ -59,7 +59,7 @@ const OMForm = () => {
 
   const step = Number(loaderData.searchParams.get('etape'));
   const id = Number(loaderData.searchParams.get('id'));
-  console.log(pendingDocs, id);
+  // console.log(pendingDocs, id);
   const currentEf = pendingDocs.find((ef) => ef.id === id);
   const [docToShow, setDocToShow] = useState('');
 
@@ -70,11 +70,11 @@ const OMForm = () => {
   const toggleViewer = () => {
     setDocToShow('')
   }
-  console.log(step, loader);
+  // console.log(currentEf);
   
   return (
     <>
-      <ThreadAsTabs step={step} tabs={omSteps} urlData={loaderData} />
+      <ThreadAsTabs step={step} tabs={efSteps} urlData={loaderData} />
       <div className='form-container'>
         <div className="form-page__title">
           <PageTitle>{currentEf !== undefined ? currentEf.name : 'Document validé'}</PageTitle>
@@ -84,7 +84,7 @@ const OMForm = () => {
             <LoaderCircle />
           </div>
         )}
-        {(step < 6 && !loader )&& (
+        {(step < 5 && !loader )&& (
           <div className="form-page__container">
             <FormLayout
               step={step}
@@ -95,26 +95,20 @@ const OMForm = () => {
                 <div className="form-layout__data">
                   {step === 1 && <Mission entity="EfMission" displayPdf={displayPdf} ef={currentEf}  />}
                   {step === 2 && <Transports entity="EfTransports" displayPdf={displayPdf} data={currentEf.transports} />}
-                  {/* {step === 3 && <Accomodations data={currentEf.accomodations} />}
-                  {step === 4 && <Advance entity="OmAdvance" displayPdf={displayPdf} data={currentEf.advance} />}
-                  {step === 5 && <Other entity="OmMore" displayPdf={displayPdf} data={currentEf.more} />} */}
+                  {step === 3 && <Accomodations entity="EfAccomodations" displayPdf={displayPdf} missionRegion={currentEf.mission.region} data={currentEf.accomodations} />}
+                  {step === 4 && <StagesAndRib entity="EfRib" displayPdf={displayPdf} rib={currentEf.rib} stages={currentEf.stages}  />}
+                  {/* {step === 5 && <Other entity="OmMore" displayPdf={displayPdf} data={currentEf.more} />} */}
                 </div>
-                {(step === 1 || step === 2)  && (
-                  <PdfReader docToShow={docToShow} toggleViewer={toggleViewer} />
-                )}
-                {(step === 4 && currentEf.advance.advance)  && (
-                  <PdfReader docToShow={docToShow} toggleViewer={toggleViewer} />
-                )}
-                {(step === 5 && currentEf.more.files.length > 0)  && (
+                {[1, 2, 3, 4].indexOf(step) > -1  && (
                   <PdfReader docToShow={docToShow} toggleViewer={toggleViewer} />
                 )}
             </FormLayout>
           </div>
         )}
-        {step === 6 && (
+        {step === 5 && (
           <div className="form-page__container">
-            {!omLoader && <Validation />}
-            {omLoader && <p>Données en cours de chargement</p>}
+            {!loader && <Validation />}
+            {loader && <p>Données en cours de chargement</p>}
           </div>
         )}
       </div>
@@ -122,4 +116,4 @@ const OMForm = () => {
   );
 };
 
-export default OMForm;
+export default EfValidation;

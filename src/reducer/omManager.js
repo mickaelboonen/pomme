@@ -72,6 +72,33 @@ const initialState = {
       id: 6,
     },
   ],
+  efSteps: [
+    {
+      name: 'Mission',
+      property: 'mission',
+      id: 1,
+    },
+    {
+      name: 'Transports',
+      property: 'transports',
+      id: 2,
+    },
+    {
+      name: 'Hébergement & Repas',
+      property: 'accomodations',
+      id: 3,
+    },
+    {
+      name: 'RIB & Étapes',
+      property: 'advance',
+      id: 4,
+    },
+    {
+      name: 'Validation',
+      property: 'management',
+      id: 5,
+    },
+  ],
   tabs: [
     {
       id: 'admin',

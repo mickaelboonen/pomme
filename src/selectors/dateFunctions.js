@@ -47,7 +47,7 @@ export const getDDMMYYDate = (date, separator = '/') => {
 export const getHHMMTime = (date) => {
   
   const frDate = date.toUTCString('fr-FR', { timeZone: 'Europe/Paris' });
-  const splitDate = frDate.split(' ')
+  const splitDate = frDate.split(' ');
   const timeToString = splitDate[4].slice(0, 5);
 
   return timeToString;

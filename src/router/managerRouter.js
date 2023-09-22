@@ -81,11 +81,11 @@ export default {
             
             const { omManager: { pendingDocs }, agent: { agent, user}  } = store.getState((state) => state);
 
-            if (pendingDocs.length === 0) {
+            // if (pendingDocs.length === 0) {
               // store.dispatch(setLoader(true));
               store.dispatch(setManagerLoader(true));
               store.dispatch(fetchPendingEfs({cptLogin: user, roles: agent.roles, channel: agent.channel}));
-            }
+            // }
 
             if (step === '1') {
                 // store.dispatch(setLoader(true));

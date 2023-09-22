@@ -35,7 +35,7 @@ const persistConfig = {
   version: 1,
   storage,
   whitelist: ['agent', 'app', 'omManager'],
-  blacklist: ['docs', 'omForm', 'ef', '_persist', 'app.apiMessage', 'app.agentDocuments'],
+  blacklist: ['docs', 'omForm', 'ef', '_persist', 'app.apiMessage', 'app.agentDocuments', 'omManager.pendingDocs'],
   stateReconciler: autoMergeLevel2 // ADDED
 };
 
