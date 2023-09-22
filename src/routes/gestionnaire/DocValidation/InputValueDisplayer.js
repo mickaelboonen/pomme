@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './style.scss';
 import classNames from 'classnames';
 
-const InputValueDisplayer = ({ label, value, plop = false}) => {
+const InputValueDisplayer = ({ label, value, plop}) => {
   console.log(plop);
   return (
   <div className="form__section-field">
@@ -19,8 +19,8 @@ InputValueDisplayer.propTypes = {
   
 };
 
-// InputValueDisplayer.defaultProps = {
-//   alert: false,
-// }
+InputValueDisplayer.defaultProps = {
+  plop: false,
+}
 
 export default InputValueDisplayer;

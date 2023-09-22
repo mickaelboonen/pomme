@@ -100,6 +100,9 @@ const omManagerSlice = createSlice({
     name: 'omManager',
     initialState,
     reducers: {
+      setManagerLoader: (state, action) => {
+        state.loader = action.payload
+      },
       fetchPendingOms: (state,) => {
         state.loader = true
       },
@@ -185,6 +188,7 @@ const omManagerSlice = createSlice({
 });
 
 export const {
+  setManagerLoader,
   fetchPendingOms,
   savePendingOms,
   fetchPendingEfs,

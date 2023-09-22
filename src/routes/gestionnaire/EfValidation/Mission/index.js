@@ -10,38 +10,23 @@ import '../style.scss';
 import TextareaField from 'src/components/Fields/TextareaField';
 import TextField from 'src/components/Fields/TextField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
+import Rules from 'src/components/Rules';
 
 // Selectors 
-import { addAllAddressesFields } from 'src/selectors/keyObjectService';
+// import { addAllAddressesFields } from 'src/selectors/keyObjectService';
 
 // Reducer
 import { getDDMMYYDate, getHHMMTime } from 'src/selectors/dateFunctions';
 import FileHandler from '../FileHandler';
 import InputValueDisplayer from '../InputValueDisplayer';
 
-const MissionVal = ({ displayPdf, data, entity, omData }) => {
+const MissionVal = ({ displayPdf, entity, ef }) => {
   
-  // console.log(data, omData);
+  console.log(ef);
+  const data = ef.mission;
+  const omData = ef.om.mission;
   const loader = useLoaderData();
-  
-  // const omDataArray = Object.entries(omData);
-  // const efDataArray = Object.entries(data);
-
-  // console.log(omDataArray, efDataArray);
-  // const differences = {};
-  // efDataArray.forEach((entry) => {
     
-  //   if (entry[0] !== 'id') {
-
-  //     const matchingEntry = omDataArray.find((omEntry) => omEntry[1] !== entry[1]);
-
-  //       console.log("MATCHING ENTRY =", matchingEntry);
-  //     if (matchingEntry && matchingEntry !== null) {
-  //       differences[matchingEntry[0]] = matchingEntry[1];
-  //     }
-  //   }
-  // })
-  
   function trouverDifferences(objet1, objet2) {
     const differences = {};
   
@@ -68,19 +53,6 @@ const MissionVal = ({ displayPdf, data, entity, omData }) => {
     return differences;
   }
   const differences = trouverDifferences(data, omData);
-  // console.log(differences);
-
-  const differencesArray = Object.entries(differences);
-  console.log(differences);
-  // let defaultValues = null;
-
-  differencesArray.forEach((diff) => {
-
-  })
-  
-  
-  // defaultValues = data;
-  // defaultValues = addAllAddressesFields(omData);
   
 
   const setAddressPart = (value) => {
@@ -111,24 +83,123 @@ const MissionVal = ({ displayPdf, data, entity, omData }) => {
     return joinedAddress;
   })
 
+  // console.log(data);
+  const plop = Object.entries(differences);
+  // console.log(plop);
+  console.log(differences)
 
-  // console.log("LOOK AT ME = ", data);
+
+  const x = {
+    "departure": {
+      label: "Date et heure du début de mission",
+      oldValue: differences.departure ? getDDMMYYDate(new Date(differences.departure[1])) + ' à ' + getHHMMTime(new Date(differences.departure[1])) : '',
+      newValue: getDDMMYYDate(new Date(data.departure)) + ' à ' + getHHMMTime(new Date(data.departure)),
+    },
+    "region": {
+      label: "Région de la mission",
+      oldValue: differences.region ? differences.region[1] : '',
+      newValue: data.region,
+    },
+    "comeback": {
+      label: "Date et heure de la fin de mission",
+      oldValue: differences.comeback ? getDDMMYYDate(new Date(differences.comeback[1])) + ' à ' + getHHMMTime(new Date(differences.comeback[1])) : '',
+      newValue: getDDMMYYDate(new Date(data.comeback)) + ' à ' + getHHMMTime(new Date(data.comeback)),
+    },
+    // "science": null,
+    "visa": {
+      label: "Visa",
+      oldValue: differences.visa !== null ? (differences.visa[1] ? 'Visa demandé' : 'Visa non demandé') : '',
+      newValue: data.visa ? 'Oui' : 'Non',
+    },
+    "visa_payment": {
+      label: "Règlement du visa",
+      // oldValue: differences.visa_payment !== null ? (differences.visa_payment[1] ? 'Oui' : 'Non') : '',
+      oldValue: differences.visa_payment[1] === null ? 'Pas de visa demandé ' : (differences.visa_payment[1] === 'user' ? "Avancé par l'agent" : "Payé par Unîmes" ),
+      newValue: data.visa_payment === null ? 'Pas de visa demandé ' : (data.visa_payment === 'user' ? "Avancé par l'agent" : "Payé par Unîmes" ),
+    },
+    "planning": {
+      label: "Planning de la mission",
+      oldValue: differences.planning ? differences.planning[1] : '',
+      newValue: data.planning,
+    },
+    "departure_place": {
+      label: "Lieu de départ",
+      oldValue: differences.departure_place && differences.departure_place[1].includes('home') ? 'Résidence familiale' : 'Résidence administrative' ,
+      newValue: data.departure_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative',
+    },
+    "comeback_place": {
+      label: "Lieu de départ",
+      oldValue: differences.comeback_place && differences.comeback_place[1].includes('home') ? 'Résidence familiale' : 'Résidence administrative' ,
+      newValue: data.comeback_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative',
+    },
+    "abroad_costs": {
+      label: "Forfait de remboursement choisi",
+      oldValue: differences.abroad_costs && differences.abroad_costs[1] === 'per-diem' ? 'Per diem' : 'Frais réels' ,
+      newValue: data.abroad_costs === 'per-diem' ? 'Per diem' : 'Frais réels',
+    },
+    // "maps": [],
+    // // "mission_purpose": "Formation Java",
+    // "mission_purpose_file": [
+
+    // ],
+}
+
+console.log(x);
   return (
     <>
     <div className="form__section">
+      <>
+        <FormSectionTitle>Modification de la mission</FormSectionTitle>
+        <div className='rules' id="mission-modification">
+          {/* <p className="rules__body-text"><span className='rules__body-text__span'>MODIFICATIONS DE LA MISSION </span></p> */}
+          <p className="rules__body-text" style={{marginTop: '0'}}>Cet encart apparaît car la mission a été modifiée par l'agent. Vous trouverez ci-dessous les champs modifiés ainsi que les justificatifs fournis par l'agent.</p>
+        </div>
+        {data.modification_files.map((file) => (
+          <FileHandler
+            key={data.modification_files.indexOf(file)}
+            label="Pièce.s justificative.s de la modification"
+            dataLink={file.dataLink}
+            url={file.file.url}
+            displayPdf={displayPdf}
+            entity={entity}
+            entityId={data.id}
+            status={file.file.status}
+          />
+        ))}
+        <InputValueDisplayer
+          label="Modifications renseignées"
+          value={data.modifications}
+          alert={true}
+        />
+        <div className="form__section form__section--split">
+          <div className="form__section-half">
+            {plop.map((plo) => (
+              <InputValueDisplayer
+                key={"old-" + plo[0]}
+                label={"Ancien.ne " + x[plo[0]].label}
+                value={x[plo[0]].oldValue}
+                plop={true}
+              />
+            ))}
+          </div>
+          <div className="form__section-half form__section-half--separator" />
+          <div className="form__section-half">
+            {plop.map((plo) => (
+              <InputValueDisplayer
+              key={"new-" + plo[0]}
+              label={x[plo[0]].label + " modifé.e"}
+              value={x[plo[0]].newValue}
+              />
+            ))}
+          </div>
+        </div>
+      </>
       <FormSectionTitle>Raison de la mission</FormSectionTitle>
 
       <InputValueDisplayer
         label="Motif de la mission"
         value={data.mission_purpose}
       />
-      {/* {differencesArray.map((diff) => (
-        <InputValueDisplayer
-          key={diff[0]}
-          label="Motif de la mission"
-          value={data.mission_purpose}
-        />
-      ))} */}
     </div>
       <div className="form__section">
         <FormSectionTitle>Raison de la mission</FormSectionTitle>
@@ -166,18 +237,10 @@ const MissionVal = ({ displayPdf, data, entity, omData }) => {
           <div className="form__section-half form__section-half--separator" />
           <div className="form__section-half">
             
-          <InputValueDisplayer
+            <InputValueDisplayer
               label="Date et heure de la fin de mission"
               value={getDDMMYYDate(new Date(data.comeback)) + ' à ' + getHHMMTime(new Date(data.comeback))}
             />
-            
-            {differences.comeback && (
-              <InputValueDisplayer
-                label="Ancienne date prévue"
-                value={getDDMMYYDate(new Date(differences.comeback[1])) + ' à ' + getHHMMTime(new Date(differences.comeback[1]))}
-                plop={"truc de fou"}
-              />
-            )}
             <InputValueDisplayer
               label="Lieu de retour"
               value={data.comeback_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}s
@@ -203,41 +266,45 @@ const MissionVal = ({ displayPdf, data, entity, omData }) => {
             value={data.planning}
           />
         )}
-        <FormSectionTitle>Mission hors de la métropole</FormSectionTitle>
-        
-        <InputValueDisplayer
-          label="Forfait de remboursement choisi"
-          value={data.abroad_costs === 'per-diem' ? 'Per diem' : 'Frais réels'}
-        />
-        <div className="form__section form__section--documents">
-          <div className="form__section-half">
+        {data.region !== "métropole" && (
+          <>
+            <FormSectionTitle>Mission hors de la métropole</FormSectionTitle>
+            
             <InputValueDisplayer
-              label="Visa"
-              value={data.visa ? 'Oui' : 'Non'}
+              label="Forfait de remboursement choisi"
+              value={data.abroad_costs === 'per-diem' ? 'Per diem' : 'Frais réels'}
             />
-          </div>
-          <div className="form__section-half">
-            <InputValueDisplayer
-              label="Règlement du visa"
-              value={data.visa_payment === "user" ? "Avancé par l'agent" : "Payé par Unîmes"}
-            />
-          </div>
-        </div>
-        {data.region === 'étranger' && (
-          <div>
-              {data.maps.map((file) => (
-                <FileHandler
-                  key={data.maps.indexOf(file)}
-                  label="Carte du pays de la mission"
-                  dataLink={file.dataLink}
-                  url={file.file.url}
-                  displayPdf={displayPdf}
-                  entity={entity}
-                  entityId={data.id}
-                  status={file.file.status}
+            <div className="form__section form__section--documents">
+              <div className="form__section-half">
+                <InputValueDisplayer
+                  label="Visa"
+                  value={data.visa ? 'Oui' : 'Non'}
                 />
-              ))}
-          </div>
+              </div>
+              <div className="form__section-half">
+                <InputValueDisplayer
+                  label="Règlement du visa"
+                  value={data.visa_payment === "user" ? "Avancé par l'agent" : "Payé par Unîmes"}
+                />
+              </div>
+            </div>
+            {data.region === 'étranger' && (
+              <div>
+                  {data.maps.map((file) => (
+                    <FileHandler
+                      key={data.maps.indexOf(file)}
+                      label="Carte du pays de la mission"
+                      dataLink={file.dataLink}
+                      url={file.file.url}
+                      displayPdf={displayPdf}
+                      entity={entity}
+                      entityId={data.id}
+                      status={file.file.status}
+                    />
+                  ))}
+              </div>
+            )}
+          </>
         )}
     </>
     

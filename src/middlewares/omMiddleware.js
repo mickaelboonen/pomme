@@ -14,6 +14,7 @@ import { saveOMs, addOmToList } from 'src/reducer/agent';
 import { setApiResponse } from 'src/reducer/app';
 import { setEfLoader, fetchEf } from 'src/reducer/ef';
 import { api, setTokenOnApi } from './api';
+import { setManagerLoader } from '../reducer/omManager';
 // import { api } from './newApi';
 
 
@@ -57,6 +58,9 @@ const omMiddleware = (store) => (next) => (action) => {
           }
           if (action.payload.handleEfLoader) {
             store.dispatch(setEfLoader(false));
+          }
+          if (action.payload.handleManagerLoader) {
+            store.dispatch(setManagerLoader(false));
           }
 
           if (action.payload.workflow === 'ef') {

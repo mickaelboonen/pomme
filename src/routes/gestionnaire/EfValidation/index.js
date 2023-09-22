@@ -21,6 +21,7 @@ import LoaderCircle from 'src/components/LoaderCircle';
 import { clearMessage } from 'src/reducer/app';
 import { resetOmsOnDisplay } from 'src/reducer/omManager';
 
+
 const OMForm = () => {  
   const location = useLocation();
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const OMForm = () => {
   const { omForm : { omLoader, currentOM},
     app: { apiMessage },
     agent: { user },
-    omManager: { pendingDocs, omSteps}
+    omManager: { pendingDocs, omSteps, loader}
   } = useSelector((state) => state);
 
   
@@ -58,7 +59,7 @@ const OMForm = () => {
 
   const step = Number(loaderData.searchParams.get('etape'));
   const id = Number(loaderData.searchParams.get('id'));
-
+  console.log(pendingDocs, id);
   const currentEf = pendingDocs.find((ef) => ef.id === id);
   const [docToShow, setDocToShow] = useState('');
 
@@ -69,20 +70,21 @@ const OMForm = () => {
   const toggleViewer = () => {
     setDocToShow('')
   }
+  console.log(step, loader);
   
   return (
     <>
-      <ThreadAsTabs step={step} tabs={omSteps} isOm urlData={loaderData} />
+      <ThreadAsTabs step={step} tabs={omSteps} urlData={loaderData} />
       <div className='form-container'>
         <div className="form-page__title">
           <PageTitle>{currentEf !== undefined ? currentEf.name : 'Document validé'}</PageTitle>
         </div>
-        {(currentEf && !currentEf.hasOwnProperty('status')  && omLoader) && (
+        {(currentEf && !currentEf.hasOwnProperty('status')  && loader) && (
           <div className="form-page__container">
             <LoaderCircle />
           </div>
         )}
-        {(step < 6 && !omLoader )&& (
+        {(step < 6 && !loader )&& (
           <div className="form-page__container">
             <FormLayout
               step={step}
@@ -91,9 +93,9 @@ const OMForm = () => {
               doc={currentEf}
             >
                 <div className="form-layout__data">
-                  {step === 1 && <Mission entity="OmMission" displayPdf={displayPdf} data={currentEf.mission} omData={currentEf.om.mission} />}
-                  {/* {step === 2 && <Transports entity="OmTransports" displayPdf={displayPdf} data={currentEf.transports} />}
-                  {step === 3 && <Accomodations data={currentEf.accomodations} />}
+                  {step === 1 && <Mission entity="EfMission" displayPdf={displayPdf} ef={currentEf}  />}
+                  {step === 2 && <Transports entity="EfTransports" displayPdf={displayPdf} data={currentEf.transports} />}
+                  {/* {step === 3 && <Accomodations data={currentEf.accomodations} />}
                   {step === 4 && <Advance entity="OmAdvance" displayPdf={displayPdf} data={currentEf.advance} />}
                   {step === 5 && <Other entity="OmMore" displayPdf={displayPdf} data={currentEf.more} />} */}
                 </div>

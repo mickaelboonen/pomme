@@ -15,6 +15,7 @@ import Preferences from "../routes/gestionnaire/Preferences";
 import { useSelector } from "react-redux";
 
 import { getAgentPreferences } from 'src/reducer/agent';
+import { setManagerLoader } from "../reducer/omManager";
 
 export default {
   path: 'gestionnaire/:slug/',
@@ -81,12 +82,14 @@ export default {
             const { omManager: { pendingDocs }, agent: { agent, user}  } = store.getState((state) => state);
 
             if (pendingDocs.length === 0) {
+              // store.dispatch(setLoader(true));
+              store.dispatch(setManagerLoader(true));
               store.dispatch(fetchPendingEfs({cptLogin: user, roles: agent.roles, channel: agent.channel}));
             }
 
             if (step === '1') {
                 // store.dispatch(setLoader(true));
-                store.dispatch(fetchOm({id: omId}));
+                store.dispatch(fetchOm({id: omId, handleManagerLoader: true}));
             }
             
             if (step === '6') {
