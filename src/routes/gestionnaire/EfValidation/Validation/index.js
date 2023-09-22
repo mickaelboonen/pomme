@@ -15,10 +15,11 @@ import TextareaField from 'src/components/Fields/TextareaField';
 
 // Selectors & actions
 import { addOmMonitoringPdf, rejectOm } from 'src/reducer/omManager';
+// import { current } from '@reduxjs/toolkit';
 
 
 const Validation = ({ data }) => {
-  console.log("IN VALIDATION", data);
+  
   const dispatch = useDispatch();
   const loader = useLoaderData();
   const omId = loader.searchParams.get('id');
@@ -50,10 +51,10 @@ const Validation = ({ data }) => {
       }
     });
   }
-  console.log(channels);
+  
   const efType = data.type.toLowerCase().split('-');
   const currentChannel = channels.find((channel) => channel.shortName === efType[0]);
-
+  
   const {
     register,
     setValue,
@@ -147,7 +148,7 @@ const Validation = ({ data }) => {
         <div className="form__section">
           <FormSectionTitle>Validation</FormSectionTitle>
           <div className="form__section-field">
-            <label className="form__section-field-label" htmlFor="departure-place">Valider l'ordre de mission</label>
+            <label className="form__section-field-label" htmlFor="departure-place">Valider l'état de frais</label>
             <RadioInput
               id="validate"
               formField="validation"

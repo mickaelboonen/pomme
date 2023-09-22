@@ -70,7 +70,6 @@ const EfValidation = () => {
   const toggleViewer = () => {
     setDocToShow('')
   }
-  console.log("IN CONTAINER", currentEf);
   
   return (
     <>

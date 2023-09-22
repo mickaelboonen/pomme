@@ -25,9 +25,9 @@ const ValidateOm = ({
   errors,
   setValue,
   watch,
-  omType,
+  efType,
   circuits,
-  om,
+  ef,
   submitFunction,
   agent,
   validationActorsToDisplay
@@ -57,15 +57,26 @@ const ValidateOm = ({
   let firstPartActors = [];
   let secondPartActors = [];
 
-  const advanceRequested = om.advance.advance;
+  // const advanceRequested = ef.advance.advance;
 
-  const actorsToDisplay = validationActorsToDisplay.map((actor) => {
-    if (!advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) {
-      return null;
+  const actorsToDisplay = [];
+  const dafActors = [];
+  validationActorsToDisplay.forEach((actor) => {
+    if (actor.cptLogin === 'gest_daf'
+    || actor.role === 'Agent Comptable'
+    || actor.role === 'DGS'
+    || actor.role === 'Président.e') {
+      dafActors.push(actor);
     }
-    return actor;
-  }).filter((actor) => actor !== null);
+    else {
+      actorsToDisplay.push(actor);
+    }
+    
+  });
+  // TODO : rajouter le gest_daf avant l'AC dans la liste
+  // TODO : puis concat les arrays
   
+  console.log(actorsToDisplay, dafActors)
 
   
   if (uprOrDep.length > 0) {
@@ -85,8 +96,11 @@ const ValidateOm = ({
     firstPartActors = actorsToDisplay;
   }
 
+
+// console.log(actorsToDisplay, firstPartActors, secondPartActors);
+
   useEffect(() => {
-    const selectedChannel = circuits.find((cir) => cir.shortName === omType[0]);
+    const selectedChannel = circuits.find((cir) => cir.shortName === efType[0]);
 
     if (selectedChannel !== undefined) {
       dispatch(displayValidationActors(selectedChannel));
@@ -109,7 +123,7 @@ const ValidateOm = ({
   
   return (
   <>
-    <div className="form__section">
+    {/* <div className="form__section">
       <FormSectionTitle>Imputations budgétaires</FormSectionTitle>
       <div className='form__section form__section--documents'>
         <div className='form__section-half'>
@@ -167,8 +181,8 @@ const ValidateOm = ({
         </div>
         
       </div>
-    </div>
-    <div className="form__section">
+    </div> */}
+    {/* <div className="form__section">
       <FormSectionTitle>Rajouter des documents</FormSectionTitle>
       <FileField
         setValue={setValue}
@@ -179,7 +193,7 @@ const ValidateOm = ({
         error={errors.files}
       
       />
-    </div>
+    </div> */}
     <div className="form__section">
       <FormSectionTitle>Circuit de validation</FormSectionTitle>
       <SelectField
@@ -202,8 +216,8 @@ const ValidateOm = ({
             formField="workflow"
             label={actor.role}
             register={register}
-            checked={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : null}
-            disabled={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : false}
+            // checked={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : null}
+            // disabled={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : false}
           />
         ))}
         {showUprOrDep && (
@@ -220,8 +234,8 @@ const ValidateOm = ({
             formField="workflow"
             label={actor.role}
             register={register}
-            checked={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : null}
-            disabled={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : false}
+            // checked={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : null}
+            // disabled={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : false}
           />
         ))}
         {errors.workflow && <p className="form__section-field-error form__section-field-error--open">{errors.workflow.message}</p>}
@@ -229,22 +243,23 @@ const ValidateOm = ({
       </div>
     </div>
     <div className="form__section-field">
-      <BlobProvider document={<ValidationMonitoringPdf om={om} agent={agent} isGest={true} gestData={watch()} />}>
+      <button type='button'>WAITING</button>
+      {/* <BlobProvider document={<ValidationMonitoringPdf om={ef} agent={agent} isGest={true} gestData={watch()} />}>
         {({ blob }) => {          
-          const file = new File([blob], "monitoring-om-" + om.id, {type: 'pdf'});
+          const file = new File([blob], "monitoring-om-" + ef.id, {type: 'pdf'});
           
           return (
             <>
               <button style={{margin: 'auto'}}type="button" onClick={() => { const data = watch(); data.file = file; submitFunction(data)}}>
                 Valider la demande
               </button>
-              {/* <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
+              <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
                 Visualiser <br /> le document
-              </button> */}
+              </button>
             </>
           );
         }}
-      </BlobProvider>
+      </BlobProvider> */}
     </div>
     {/* {isPdfVisible && (
       <div className="pdf-viewer">
