@@ -17,8 +17,8 @@ import TextareaField from 'src/components/Fields/TextareaField';
 import { addOmMonitoringPdf, rejectOm } from 'src/reducer/omManager';
 
 
-const Validation = () => {
-  
+const Validation = ({ data }) => {
+  console.log("IN VALIDATION", data);
   const dispatch = useDispatch();
   const loader = useLoaderData();
   const omId = loader.searchParams.get('id');
@@ -32,13 +32,13 @@ const Validation = () => {
   const missionStatus = currentOM.mission ? currentOM.mission.status : null;
   const transportsStatus = currentOM.transports ? currentOM.transports.status : null;
   const accomodationsStatus = currentOM.accomodations ? currentOM.accomodations.status : null;
-  const advanceStatus = currentOM.advance ? currentOM.advance.status : null;
+  const ribStatus = currentOM.rib ? currentOM.rib.status : null;
 
   const statusArray = [
     {step: 'mission', status: missionStatus, label: 'Mission'},
     {step: 'transports', status: transportsStatus, label: 'Transports'},
     {step: 'accomodations', status: accomodationsStatus, label: 'Hébergement & repas'},
-    {step: 'advance', status: advanceStatus, label: 'Avance'}
+    {step: 'rib', status: ribStatus, label: 'RIB'}
   ];
   const isOneStepRejected = statusArray.find((e) => e.status === false);
 
@@ -50,9 +50,9 @@ const Validation = () => {
       }
     });
   }
-
-  const omType = currentOM.type.toLowerCase().split('-');
-  const currentChannel = channels.find((channel) => channel.shortName === omType[0]);
+  console.log(channels);
+  const efType = data.type.toLowerCase().split('-');
+  const currentChannel = channels.find((channel) => channel.shortName === efType[0]);
 
   const {
     register,
@@ -184,7 +184,7 @@ const Validation = () => {
               watch={watch}
               setValue={setValue}
               circuits={channels}
-              omType={omType}
+              efType={efType}
               validationActorsToDisplay={validationActorsToDisplay}
               om={currentOM}
               agent={agent}

@@ -70,7 +70,7 @@ const EfValidation = () => {
   const toggleViewer = () => {
     setDocToShow('')
   }
-  // console.log(currentEf);
+  console.log("IN CONTAINER", currentEf);
   
   return (
     <>
@@ -79,7 +79,7 @@ const EfValidation = () => {
         <div className="form-page__title">
           <PageTitle>{currentEf !== undefined ? currentEf.name : 'Document validé'}</PageTitle>
         </div>
-        {(currentEf && !currentEf.hasOwnProperty('status')  && loader) && (
+        {(currentEf === undefined  || loader) && (
           <div className="form-page__container">
             <LoaderCircle />
           </div>
@@ -92,22 +92,19 @@ const EfValidation = () => {
               url={loaderData}
               doc={currentEf}
             >
-                <div className="form-layout__data">
-                  {step === 1 && <Mission entity="EfMission" displayPdf={displayPdf} ef={currentEf}  />}
-                  {step === 2 && <Transports entity="EfTransports" displayPdf={displayPdf} data={currentEf.transports} />}
-                  {step === 3 && <Accomodations entity="EfAccomodations" displayPdf={displayPdf} missionRegion={currentEf.mission.region} data={currentEf.accomodations} />}
-                  {step === 4 && <StagesAndRib entity="EfRib" displayPdf={displayPdf} rib={currentEf.rib} stages={currentEf.stages}  />}
-                  {/* {step === 5 && <Other entity="OmMore" displayPdf={displayPdf} data={currentEf.more} />} */}
-                </div>
-                {[1, 2, 3, 4].indexOf(step) > -1  && (
-                  <PdfReader docToShow={docToShow} toggleViewer={toggleViewer} />
-                )}
+              <div className="form-layout__data">
+                {step === 1 && <Mission entity="EfMission" displayPdf={displayPdf} ef={currentEf}  />}
+                {step === 2 && <Transports entity="EfTransports" displayPdf={displayPdf} data={currentEf.transports} />}
+                {step === 3 && <Accomodations entity="EfAccomodations" displayPdf={displayPdf} missionRegion={currentEf.mission.region} data={currentEf.accomodations} />}
+                {step === 4 && <StagesAndRib entity="EfRib" displayPdf={displayPdf} rib={currentEf.rib} stages={currentEf.stages}  />}
+              </div>
+              <PdfReader docToShow={docToShow} toggleViewer={toggleViewer} />
             </FormLayout>
           </div>
         )}
         {step === 5 && (
           <div className="form-page__container">
-            {!loader && <Validation />}
+            {!loader && <Validation data={currentEf} />}
             {loader && <p>Données en cours de chargement</p>}
           </div>
         )}

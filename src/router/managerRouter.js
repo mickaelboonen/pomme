@@ -92,10 +92,10 @@ export default {
                 store.dispatch(fetchOm({id: omId, handleManagerLoader: true}));
             }
             
-            if (step === '6') {
-                store.dispatch(setLoader(true));
-                // store.dispatch(fetchValidationChannels());
-            }
+            // if (step === '6') {
+            //     store.dispatch(setLoader(true));
+            //     // store.dispatch(fetchValidationChannels());
+            // }
             
           return url;  
           },
