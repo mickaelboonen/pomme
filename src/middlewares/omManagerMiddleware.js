@@ -111,6 +111,49 @@ const omManagerMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse(error));;
       });
       break;
+
+
+
+    case 'omManager/manageEf':
+      api.post("/api/ef/management/validate", action.payload)
+      .then((response) => {
+        store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
+      })
+      .catch((error) => {
+        console.log("ERROR : ", error);
+        store.dispatch(setApiResponse(error));;
+      });
+      break;
+    case 'omManager/rejectEf':
+      api.post("/api/ef/management/reject", action.payload)
+      .then((response) => {
+        store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
+      })
+      .catch((error) => {
+        console.log("ERROR : ", error);
+        store.dispatch(setApiResponse(error));;
+      });
+      break;
+    case 'omManager/stampEf':
+      api.post("/api/ef/stamp", action.payload)
+      .then((response) => {
+        store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
+      })
+      .catch((error) => {
+        console.log("ERROR : ", error);
+        store.dispatch(setApiResponse(error));;
+      });
+      break;
+    case 'omManager/rejectVisaEf':
+      api.post("/api/ef/reject-visa", action.payload)
+      .then((response) => {
+        store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
+      })
+      .catch((error) => {
+        console.log("ERROR : ", error);
+        store.dispatch(setApiResponse(error));;
+      });
+      break;
     default:
   }
   next(action);

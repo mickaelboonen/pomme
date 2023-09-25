@@ -14,7 +14,7 @@ import { styles } from './pdfStyles';
 
 const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user }) => {
   // console.log("**************************", user, om.management.workflow);
-  console.log(gestData);
+  console.log(om);
   
   return (
   <Document>

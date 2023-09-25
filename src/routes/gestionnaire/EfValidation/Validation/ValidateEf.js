@@ -18,8 +18,9 @@ import ValidationMonitoringPdf from 'src/components/PDF/ValidationMonitoringPdf'
 
 // Actions
 import { displayValidationActors } from 'src/reducer/omManager';
+import { divideValidationActorsArray } from '../../../../selectors/gestFunctions';
 
-const ValidateOm = ({
+const ValidateEf = ({
   uprOrDep,
   register,
   errors,
@@ -54,50 +55,35 @@ const ValidateOm = ({
     }
   }, [selectedActors]);
   
-  let firstPartActors = [];
-  let secondPartActors = [];
-
-  // const advanceRequested = ef.advance.advance;
-
+  // let firstPartActors = [];
+  // let secondPartActors = [];
   const actorsToDisplay = [];
-  const dafActors = [];
+  
   validationActorsToDisplay.forEach((actor) => {
-    if (actor.cptLogin === 'gest_daf'
-    || actor.role === 'Agent Comptable'
-    || actor.role === 'DGS'
-    || actor.role === 'Président.e') {
-      dafActors.push(actor);
-    }
-    else {
+    if (actor.cptLogin !== 'gest_daf' && actor.role !== 'Agent Comptable') {
       actorsToDisplay.push(actor);
     }
-    
   });
-  // TODO : rajouter le gest_daf avant l'AC dans la liste
-  // TODO : puis concat les arrays
   
-  console.log(actorsToDisplay, dafActors)
+  // if (uprOrDep.length > 0) {
+  //   let middle;
 
-  
-  if (uprOrDep.length > 0) {
-    let middle;
+  //   if (uprOrDep[0].role.includes('Directeur.rice UPR')) {
+  //     middle = 2;
+  //   }
+  //   else {
+  //     middle = 1;
+  //   }
 
-    if (uprOrDep[0].role.includes('Directeur.rice UPR')) {
-      middle = 2;
-    }
-    else {
-      middle = 1;
-    }
+  //   firstPartActors = actorsToDisplay.slice(0, middle);
+  //   secondPartActors = actorsToDisplay.slice(middle);
 
-    firstPartActors = actorsToDisplay.slice(0, middle);
-    secondPartActors = actorsToDisplay.slice(middle);
-  }
-  else {
-    firstPartActors = actorsToDisplay;
-  }
+  // }
+  // else {
+  //   firstPartActors = actorsToDisplay;
+  // }
 
-
-// console.log(actorsToDisplay, firstPartActors, secondPartActors);
+  const [firstPartActors, secondPartActors] = divideValidationActorsArray(uprOrDep, actorsToDisplay);
 
   useEffect(() => {
     const selectedChannel = circuits.find((cir) => cir.shortName === efType[0]);
@@ -123,77 +109,6 @@ const ValidateOm = ({
   
   return (
   <>
-    {/* <div className="form__section">
-      <FormSectionTitle>Imputations budgétaires</FormSectionTitle>
-      <div className='form__section form__section--documents'>
-        <div className='form__section-half'>
-          <TextField
-              id="percent-field"
-              formField="percent"
-              label="%"
-              register={register}
-            /> 
-          </div>
-          <div className='form__section-half'>
-            <TextField
-              id="ub-field"
-              formField="ub"
-              label="UB"
-              register={register}
-            />
-          </div>
-      </div>
-      <div className='form__section form__section--documents'>
-        <div className='form__section-half'>
-          <TextField
-            id="rc-field"
-            formField="cr"
-            label="CR"
-            register={register}
-          /> 
-        </div>
-        <div className='form__section-half'>
-          <TextField
-            id="nacres-field"
-            formField="codeNacres"
-            label="Code Nacres"
-            register={register}
-          />
-        </div>
-        
-      </div>
-      <div className='form__section form__section--documents'>
-        <div className='form__section-half'>
-          <TextField
-            id="lolf-field"
-            formField="codeLolf"
-            label="Code LOLF"
-            register={register}
-          /> 
-        </div>
-        <div className='form__section-half'>
-          <TextField
-            id="analytic-field"
-            formField="codeAnalytique"
-            label="Code analytique"
-            register={register}
-          />
-        </div>
-        
-      </div>
-    </div> */}
-    {/* <div className="form__section">
-      <FormSectionTitle>Rajouter des documents</FormSectionTitle>
-      <FileField
-        setValue={setValue}
-        multiple
-        id="files-field"
-        formField="files"
-        register={register}
-        error={errors.files}
-      
-      />
-    </div> */}
     <div className="form__section">
       <FormSectionTitle>Circuit de validation</FormSectionTitle>
       <SelectField
@@ -216,8 +131,6 @@ const ValidateOm = ({
             formField="workflow"
             label={actor.role}
             register={register}
-            // checked={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : null}
-            // disabled={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : false}
           />
         ))}
         {showUprOrDep && (
@@ -234,8 +147,6 @@ const ValidateOm = ({
             formField="workflow"
             label={actor.role}
             register={register}
-            // checked={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : null}
-            // disabled={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : false}
           />
         ))}
         {errors.workflow && <p className="form__section-field-error form__section-field-error--open">{errors.workflow.message}</p>}
@@ -243,23 +154,22 @@ const ValidateOm = ({
       </div>
     </div>
     <div className="form__section-field">
-      <button type='button'>WAITING</button>
-      {/* <BlobProvider document={<ValidationMonitoringPdf om={ef} agent={agent} isGest={true} gestData={watch()} />}>
+      <BlobProvider document={<ValidationMonitoringPdf om={ef} agent={agent} isGest={true} gestData={watch()} />}>
         {({ blob }) => {          
-          const file = new File([blob], "monitoring-om-" + ef.id, {type: 'pdf'});
+          const file = new File([blob], "monitoring-ef-" + ef.id, {type: 'pdf'});
           
           return (
             <>
               <button style={{margin: 'auto'}}type="button" onClick={() => { const data = watch(); data.file = file; submitFunction(data)}}>
                 Valider la demande
               </button>
-              <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
+              {/* <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
                 Visualiser <br /> le document
-              </button>
+              </button> */}
             </>
           );
         }}
-      </BlobProvider> */}
+      </BlobProvider>
     </div>
     {/* {isPdfVisible && (
       <div className="pdf-viewer">
@@ -267,15 +177,15 @@ const ValidateOm = ({
           <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer la fenêtre</p>
         </div>
         <PDFViewer className='form__section-recap'>
-          <ValidationMonitoringPdf om={om} agent={agent} isGest={true} gestData={watch('comments')}/>
+          <ValidationMonitoringPdf om={ef} agent={agent} isGest={true} gestData={watch()}/>
         </PDFViewer>
       </div>
     )} */}
   </>
 )};
 
-ValidateOm.propTypes = {
+ValidateEf.propTypes = {
 
 };
 
-export default ValidateOm;
+export default ValidateEf;

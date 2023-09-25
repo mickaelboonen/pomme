@@ -6,15 +6,15 @@ import { useLoaderData } from 'react-router-dom';
 import '../style.scss';
 
 // Components
-import RejectOm from './RejectOm';
-import ValidateOm from './ValidateOm';
+import RejectEf from './RejectEf';
+import ValidateEf from './ValidateEf';
 import HiddenField from 'src/components/Fields/HiddenField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import TextareaField from 'src/components/Fields/TextareaField';
 
 // Selectors & actions
-import { addOmMonitoringPdf, rejectOm } from 'src/reducer/omManager';
+import { addEfMonitoringPdf, rejectEf } from 'src/reducer/omManager';
 // import { current } from '@reduxjs/toolkit';
 
 
@@ -74,8 +74,6 @@ const Validation = ({ data }) => {
   const onSubmit = (data) => {
     
     let errorCount;
-    
-    const isAdvanceRequested = currentOM.advance.advance;
 
     const actors = [
       {
@@ -98,17 +96,28 @@ const Validation = ({ data }) => {
         return;
       }
       
+      let dafActors = [];
       validationActorsToDisplay.forEach((actor) => {
 
-        if (isAdvanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) {
-          actors.push(actor);
-        }
-        else if (actor.cptLogin === 'directeur.rice upr' || actor.cptLogin === 'directeur.rice dep') {
+        if (actor.cptLogin === 'directeur.rice upr' || actor.cptLogin === 'directeur.rice dep') {
           uprOrDep.forEach((dir) => {
             if (data.workflow.indexOf(dir.cptLogin) !== -1) {
               actors.push(dir)
             }
           })
+        }
+        else if (actor.cptLogin === 'gest_daf') {
+          dafActors.push(actor);
+        }
+        else if (actor.role === 'DGS' || actor.role === 'Président.e') {
+          if (data.workflow.indexOf(actor.cptLogin) !== -1) {
+            dafActors.push(actor)
+          }
+        }
+        else if (actor.role === 'Agent Comptable') {
+          const gest = validationActorsToDisplay.find((actor) => actor.cptLogin === 'gest_daf');
+          dafActors.push(gest);
+          dafActors.push(actor);
         }
         else {
           if (data.workflow.indexOf(actor.cptLogin) !== -1) {
@@ -117,14 +126,10 @@ const Validation = ({ data }) => {
         }
       })
 
-      data.workflow = actors;
+      data.workflow = actors.concat(dafActors);
+      console.log(data.workflow);
       
-      const file = Array.from(data.files).find((file) => file instanceof File)
-      if (!file) {
-        data.files = [];
-      }
-      
-      dispatch(addOmMonitoringPdf({data: data, task: 'add', nextAction: 'manageOm'}));
+      dispatch(addEfMonitoringPdf({data: data, task: 'add', nextAction: 'manageEf'}));
     
     }
     else {
@@ -132,7 +137,8 @@ const Validation = ({ data }) => {
       delete data.channel;
       delete data.validation;
       
-      dispatch(rejectOm(data));
+      console.log(data);
+      dispatch(rejectEf(data));
     }
   };
   
@@ -175,10 +181,17 @@ const Validation = ({ data }) => {
             register={register}
           />
           {isValidated === "reject" && (
-            <RejectOm stepArray={statusArray} register={register} errors={errors} />
+            <RejectEf
+              stepArray={statusArray}
+              watch={watch}
+              register={register}
+              errors={errors}
+              ef={data}
+              agent={agent}
+            />
           )}
           {isValidated === 'validate' && (
-            <ValidateOm
+            <ValidateEf
               uprOrDep={uprOrDep}
               register={register}
               errors={errors}
@@ -187,7 +200,7 @@ const Validation = ({ data }) => {
               circuits={channels}
               efType={efType}
               validationActorsToDisplay={validationActorsToDisplay}
-              om={currentOM}
+              ef={data}
               agent={agent}
               submitFunction={onSubmit}
             />

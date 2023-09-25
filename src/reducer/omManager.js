@@ -200,9 +200,15 @@ const omManagerSlice = createSlice({
       displayWantedDocs: (state, action) => {
         state.docsToDisplay = action.payload;
       },
+      manageEf: () => {},
+      stampEf: () => {},
       addOmMonitoringPdf: () => {},
+      addEfMonitoringPdf: () => {},
       rejectVisaOm: () => {},
       rejectOm: () => {},
+      addEfMonitoringPdf: () => {},
+      rejectVisaEf: () => {},
+      rejectEf: () => {},
       fetchPendingEfs: (state,) => {
         state.loader = true
       },
@@ -230,12 +236,17 @@ export const {
   saveDepartments,
   manageOm,
   stampOm,
+  manageEf,
+  stampEf,
   resetOmsOnDisplay,
   updateMonitorPdf,
   displayWantedDocs,
   rejectVisaOm,
+  rejectVisaEf,
   addOmMonitoringPdf,
+  addEfMonitoringPdf,
   rejectOm,
+  rejectEf,
 } = omManagerSlice.actions;
 
 export default omManagerSlice.reducer;

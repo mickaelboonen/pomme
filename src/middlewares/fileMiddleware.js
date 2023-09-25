@@ -3,11 +3,11 @@ import { fileApi, api, setTokenOnApi } from './api';
 import { setApiResponse } from 'src/reducer/app';
 import { handleEfFilesUploadPayload } from 'src/selectors/fileFunctions';
 import { requestVehicleAuthorization, updateVehicle, createVehicle } from 'src/reducer/vehicle';
-import { toggleDocModal, saveAllPermDocs, saveAgentSignatureForPdf} from 'src/reducer/otherDocuments';
+import { toggleDocModal, saveAllPermDocs } from 'src/reducer/otherDocuments';
 import { updateEfAccomodations, updateEfRib, updateEf, updateEfMission, updateEfTransports } from 'src/reducer/ef';
 import { createDispensation, updateOm, updateTransports, updateAdvance, updateMoreAndSignature, updateMission, createScientificEvent } from 'src/reducer/omForm';
 // import { manageOm } from 'src/reducer/omManager';
-import { rejectVisaOm, stampOm, manageOm } from 'src/reducer/omManager';
+import { rejectVisaOm, stampOm, manageOm, rejectVisaEf, stampEf, manageEf } from 'src/reducer/omManager';
 
 fileApi.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 fileApi.defaults.headers['Content-Type'] = 'multipart/form-data';
@@ -428,6 +428,39 @@ const omMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse(error));
         });
       break;
+    case 'omManager/addEfMonitoringPdf':{
+      const { task, nextAction } = action.payload; 
+      const pdf = {
+        file: action.payload.data.file,
+        docId: action.payload.data.docId,
+        task: task ?? 'add'
+      }
+      
+      fileApi.post('/api/ef/monitoring-file', pdf)
+        .then((response) => {
+          console.log(response);
+          if (task) {            
+            if (nextAction === "stampEf") {
+              store.dispatch(stampEf(action.payload.data))
+            }
+            else if (nextAction === "manageEf") {
+              store.dispatch(manageEf(action.payload.data))
+            }
+            else if (nextAction === "rejectVisaEf") {
+              store.dispatch(rejectVisaEf(action.payload.data))
+            }
+          }
+          else {
+            store.dispatch(manageOm(action.payload.data));
+          }
+          
+
+        })
+        .catch((error) => {
+          store.dispatch(setApiResponse(error));
+        });
+      break;
+    }
     case 'other-documents/uploadVehicleFiles':
       
       const filesToUpload = [];
