@@ -1,13 +1,20 @@
 
-import { fileApi, api, setTokenOnApi } from './api';
 import { setApiResponse } from 'src/reducer/app';
+import { fileApi, api, setTokenOnApi } from './api';
 import { handleEfFilesUploadPayload } from 'src/selectors/fileFunctions';
-import { requestVehicleAuthorization, updateVehicle, createVehicle } from 'src/reducer/vehicle';
 import { toggleDocModal, saveAllPermDocs } from 'src/reducer/otherDocuments';
-import { updateEfAccomodations, updateEfRib, updateEf, updateEfMission, updateEfTransports } from 'src/reducer/ef';
-import { createDispensation, updateOm, updateTransports, updateAdvance, updateMoreAndSignature, updateMission, createScientificEvent } from 'src/reducer/omForm';
-// import { manageOm } from 'src/reducer/omManager';
+import { requestVehicleAuthorization, updateVehicle, createVehicle } from 'src/reducer/vehicle';
 import { rejectVisaOm, stampOm, manageOm, rejectVisaEf, stampEf, manageEf } from 'src/reducer/omManager';
+import { updateEfAccomodations, updateEfRib, updateEf, updateEfMission, updateEfTransports } from 'src/reducer/ef';
+import {
+  createDispensation,
+  updateOm,
+  updateTransports,
+  updateAdvance,
+  updateMoreAndSignature,
+  updateMission,
+  createScientificEvent
+} from 'src/reducer/omForm';
 
 fileApi.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 fileApi.defaults.headers['Content-Type'] = 'multipart/form-data';

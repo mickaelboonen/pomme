@@ -67,7 +67,7 @@ const Validation = ({ data }) => {
     validation: isOneStepRejected === undefined ? null : 'reject',
     rejectedFields: rejectedFields,
     channel: currentChannel.id,
-    comments: currentOM.comments
+    comments: data.comments
   }
   });
   

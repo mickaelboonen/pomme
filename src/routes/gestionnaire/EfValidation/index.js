@@ -45,7 +45,7 @@ const EfValidation = () => {
       }, "950")
       setTimeout(() => {
         const explodedUrl =  loaderData.pathname.split('/');
-        navigate(`/${explodedUrl[1]}/${explodedUrl[2]}/documents-a-signer`);
+        navigate(`/${explodedUrl[1]}/${explodedUrl[2]}/${encodeURIComponent('états-de-frais-à-signer')}`);
         
       }, "1000")
     }

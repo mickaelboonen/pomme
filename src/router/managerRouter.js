@@ -126,7 +126,12 @@ export default {
       children: [
         {
           path: 'ordre-de-mission',
-          element: <Delegation />,
+          element: <Delegation isOm={true} />,
+          loader: async ({ request }) => new URL(request.url),
+        },
+        {
+          path: encodeURIComponent('état-de-frais'),
+          element: <Delegation isOm={false} />,
           loader: async ({ request }) => new URL(request.url),
         }
       ],

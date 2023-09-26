@@ -17,10 +17,9 @@ import { useDispatch } from 'react-redux';
 import ValidationMonitoringPdf from 'src/components/PDF/ValidationMonitoringPdf';
 
 // Actions
-import { stampOm } from 'src/reducer/omManager';
-import { addOmMonitoringPdf, rejectVisaOm } from 'src/reducer/omManager';
+import {  addEfMonitoringPdf } from 'src/reducer/omManager';
 
-const OmVisa = ({ data, user, agent }) => {
+const OmVisa = ({ data, user, agent, isOm }) => {
 
   const dispatch = useDispatch();
   const {
@@ -34,31 +33,22 @@ const OmVisa = ({ data, user, agent }) => {
   const submitFunction = (data) => {
 
     console.log(data);
-    dispatch(addOmMonitoringPdf({data: data, task: 'replace', nextAction: data.action === 'validate' ? 'stampOm' : 'rejectVisaOm'}));
+    dispatch(addEfMonitoringPdf({data: data, task: 'replace', nextAction: data.action === 'validate' ? 'stampEf' : 'rejectVisaEf'}));
     
   };
 
   const [viewer, setViewer] = useState('');
-    
+  const isFileTooLong = data.file.length > 2000000 ? true : false;
+
   const handleClick = () => {
-    const formElement = document.querySelector('.form-layout__data');
-    if (viewer === '') {
-      setViewer(data.file)
-    formElement.style = "";
-    formElement.style.width= '1400px'
-    }
-    else {
-      setViewer('')
-      formElement.style = "";
-    }
-    
+    viewer === '' ? setViewer(data.file) : setViewer('');
   }
   
   
   const [isPdfVisible, setIsPdfVisible] = useState(false)
 
   const toggleViewer = (event) => {
-
+    
     if (event.target.id.includes('closer')) {
       setIsPdfVisible(false);
     }
@@ -69,18 +59,20 @@ const OmVisa = ({ data, user, agent }) => {
   return (
     <form className='form'>
       <FormSectionTitle>Viser le document</FormSectionTitle>
-
       <div className="form__section">
-        <div className="form__section-field" style={{display: 'flex'}}>
+        <div className="form__section-field">
           <div className='my-documents__files-buttons'>
-            <button onClick={handleClick} type="button">
-              <FaEye className='my-documents__files-buttons-icon'/>
-              <p>Voir le document</p>
-            </button>
+            {!isFileTooLong && (
+              <button onClick={handleClick} type="button">
+                <FaEye className='my-documents__files-buttons-icon'/>
+                <p>Voir le document</p>
+              </button>
+            )}
             <a  href={data.file} download={`${data.name}.pdf`} >
               <FaDownload className='my-documents__files-buttons-icon' /> Télécharger le document
             </a>
           </div>
+          {isFileTooLong && <p style={{textAlign: 'center', marginBottom: '1rem'}}>Le fichier est trop lourd pour être visualisé dans le navigateur. Veuillez le télécharger.</p>}
         </div>
         {viewer !== '' && (
           <div style={{height: '600px', marginBottom: '1rem'}}>
@@ -121,17 +113,15 @@ const OmVisa = ({ data, user, agent }) => {
         <HiddenField id="actor" value={user} register={register} />
 
         <div className="form__section-field-buttons" style={{textAlign: 'center'}}>
-          <BlobProvider document={<ValidationMonitoringPdf om={data} user={user} agent={agent} isGest={false} gestData={watch()} />}>
+          <BlobProvider document={<ValidationMonitoringPdf om={data} user={user} agent={agent} isGest={false} gestData={watch()} isOm={isOm} />}>
             {({ blob }) => (
-//           const file = new File([blob], 'currentOM.name', {type: 'pdf'});
-//           const fileUrl = URL.createObjectURL(new File([blob], 'currentOM.name', {type: 'pdf'}));
               <>
                 <button type="button" onClick={() => { const data = watch(); data.file = new File([blob], data.name, {type: 'pdf'}); submitFunction(data);}}>
                 {/* <button type="button" onClick={() => { const data = watch(); data.file = new File([blob], data.name, {type: 'pdf'}); handleSubmit(onSubmit);submitFunction(data)}}> */}
                   Valider le document
                 </button>
-                 <a href={URL.createObjectURL(new File([blob], 'currentOM.name', {type: 'pdf'}))} download={'currentOM.name' + '.pdf'} style={{textAlign: 'center'}}>
-                   <button type='button' files={new File([blob], 'currentOM.name', {type: 'pdf'})} onClick={() => {}}>DOWNLOAD</button>
+                 <a href={URL.createObjectURL(new File([blob], data.name, {type: 'pdf'}))} download={'currentOM.name' + '.pdf'} style={{textAlign: 'center'}}>
+                   <button type='button' files={new File([blob], data.name, {type: 'pdf'})} onClick={() => {}}>DOWNLOAD</button>
                  </a>
                 <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
                   VOIR
@@ -152,7 +142,7 @@ const OmVisa = ({ data, user, agent }) => {
             <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer la fenêtre</p>
           </div>
           <PDFViewer>
-          <ValidationMonitoringPdf om={data} user={user} agent={agent} isGest={false} gestData={watch()} />
+            <ValidationMonitoringPdf om={data} user={user} agent={agent} isGest={false} gestData={watch()} />
           </PDFViewer>
         </div>
       )}

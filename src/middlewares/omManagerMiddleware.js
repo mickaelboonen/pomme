@@ -135,7 +135,7 @@ const omManagerMiddleware = (store) => (next) => (action) => {
       });
       break;
     case 'omManager/stampEf':
-      api.post("/api/ef/stamp", action.payload)
+      api.post("/api/ef/management/stamp", action.payload)
       .then((response) => {
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })
@@ -145,7 +145,7 @@ const omManagerMiddleware = (store) => (next) => (action) => {
       });
       break;
     case 'omManager/rejectVisaEf':
-      api.post("/api/ef/reject-visa", action.payload)
+      api.post("/api/ef/management/reject-visa", action.payload)
       .then((response) => {
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })

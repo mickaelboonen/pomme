@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLoaderData, useNavigate, useNavigation } from 'react-router-dom';
 
@@ -10,14 +11,15 @@ import OmVisa from './OmVisa';
 import { clearMessage } from 'src/reducer/app';
 import { resetOmsOnDisplay } from 'src/reducer/omManager'
 
-const Delegation = () => {  
+const Delegation = ({ isOm }) => {  
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const url = useLoaderData();
   const id = Number(url.searchParams.get('id'));
   const explodedUrl = url.pathname.split('/');
-  const returnLink = `/${explodedUrl[1]}/${explodedUrl[2]}/documents-a-signer`;
+  const endpoint = encodeURIComponent((isOm ? 'ordres-de-mission' : 'états-de-frais') + '-à-signer');
+  const returnLink = `/${explodedUrl[1]}/${explodedUrl[2]}/${endpoint}`;
   // console.log(returnLink);
   
   const { app: { apiMessage }, agent: { agent, user }, omManager: { pendingDocs } } = useSelector((state) => state);
@@ -39,12 +41,16 @@ const Delegation = () => {
   return (
     <div className='form-container'>
       <div className="form-page__title">
-        <PageTitle>{currentOM !== undefined ? currentOM.name : "OM non trouvé"}</PageTitle>
+        <PageTitle>{currentOM !== undefined ? currentOM.name : "Document non trouvé"}</PageTitle>
       </div>
-      {pendingDocs.length > 0 && <OmVisa user={user} data={currentOM} agent={agent} />}
+      {pendingDocs.length > 0 && <OmVisa user={user} data={currentOM} agent={agent} isOm={isOm} />}
       {pendingDocs.length === 0 && <Link to={returnLink}>Veuillez retourner sur le menu des ordres de mission</Link>}
     </div>
   );
 };
+
+Delegation.propTypes = {
+  isOm: PropTypes.bool.isRequired,
+}
 
 export default Delegation;

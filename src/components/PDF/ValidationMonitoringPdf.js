@@ -12,7 +12,7 @@ Font.register({ family: 'Radjhani', src: RadjhaniFont });
 
 import { styles } from './pdfStyles';
 
-const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user }) => {
+const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user, isOm}) => {
   // console.log("**************************", user, om.management.workflow);
   console.log(om);
   
@@ -38,7 +38,7 @@ const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user }) => {
         {om.management.workflow.length > 0 && (
           <>
             {om.management.workflow.map((gest) => (
-              <View key={gest.agent} style={{display: 'flex', flexDirection: 'row', flexWrap: "wrap", borderTop: '1px solid #1f1f1f'}}>
+              <View key={gest.agent + '-' + om.management.workflow.indexOf(gest)} style={{display: 'flex', flexDirection: 'row', flexWrap: "wrap", borderTop: '1px solid #1f1f1f'}}>
                 <View style={{width: '20%', borderLeft: '1px solid #1f1f1f', borderRight: '1px solid #1f1f1f', padding: '5', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                   <Text>{gest.name}</Text>
                   <Text>{gest.role}</Text>
@@ -51,14 +51,14 @@ const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user }) => {
                   {gest.validation !== null && (
                     <>
                       {gest.validation && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
-                      {!gest.validation && <Text>ACTION : ORDRE DE MISSION REJETÉ</Text>}
+                      {!gest.validation && <Text>ACTION : {isOm ? 'ORDRE DE MISSION' : 'ÉTAT DE FRAIS'} REJETÉ</Text>}
                       <Text style={{fontSize: "10", marginTop: '5'}}>{gest.comment}</Text>
                     </>
                   )}              
                   {user === gest.agent && (
                     <>
                       {gestData.action === 'validate' && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
-                      {gestData.action === 'reject' && <Text>ACTION : ORDRE DE MISSION REJETÉ</Text>}
+                      {gestData.action === 'reject' && <Text>ACTION : {isOm ? 'ORDRE DE MISSION' : 'ÉTAT DE FRAIS'} REJETÉ</Text>}
                       <Text style={{fontSize: "10", marginTop: '5'}}>{gestData.comments}</Text>
                     </>
                   )}
@@ -99,14 +99,14 @@ const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user }) => {
                 {gest.validation !== null && (
                   <>
                     {gest.validation && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
-                    {!gest.validation && <Text>ACTION : ORDRE DE MISSION REJETÉ</Text>}
+                    {!gest.validation && <Text>ACTION : {isOm ? 'ORDRE DE MISSION' : 'ÉTAT DE FRAIS'} REJETÉ</Text>}
                     <Text style={{fontSize: "10", marginTop: '5'}}>{gest.comment}</Text>
                   </>
                 )}              
                 {user === gest.agent && (
                   <>
                     {gestData.action === 'validate' && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
-                    {gestData.action === 'reject' && <Text>ACTION : ORDRE DE MISSION REJETÉ</Text>}
+                    {gestData.action === 'reject' && <Text>ACTION : {isOm ? 'ORDRE DE MISSION' : 'ÉTAT DE FRAIS'} REJETÉ</Text>}
                     <Text style={{fontSize: "10", marginTop: '5'}}>{gestData.comments}</Text>
                   </>
                 )}
@@ -129,14 +129,14 @@ const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user }) => {
               {gest.validation !== null && (
                 <>
                   {gest.validation && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
-                  {!gest.validation && <Text>ACTION : ORDRE DE MISSION REJETÉ</Text>}
+                  {!gest.validation && <Text>ACTION : {isOm ? 'ORDRE DE MISSION' : 'ÉTAT DE FRAIS'} REJETÉ</Text>}
                   <Text style={{fontSize: "10", marginTop: '5'}}>{gest.comment}</Text>
                 </>
               )}              
               {user === gest.agent && (
                 <>
                   {gestData.action === 'validate' && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
-                  {gestData.action === 'reject' && <Text>ACTION : ORDRE DE MISSION REJETÉ</Text>}
+                  {gestData.action === 'reject' && <Text>ACTION : {isOm ? 'ORDRE DE MISSION' : 'ÉTAT DE FRAIS'} REJETÉ</Text>}
                   <Text style={{fontSize: "10", marginTop: '5'}}>{gestData.comments}</Text>
                 </>
               )}
