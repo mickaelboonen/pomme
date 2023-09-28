@@ -105,8 +105,8 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
         isPonctual: data.duration === 'ponctual' ? 1 : 0,
         type:data.type + (data.service ? '-' + data.service : ''),
       }
-      console.log(data);
-      // dispatch(addNewOM(newOM)); 
+      // console.log(data);
+      dispatch(addNewOM(newOM)); 
     }
     else {
       const splitName = userOms.find((om) => om.id === Number(data.om)).name.split('-');

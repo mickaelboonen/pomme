@@ -45,12 +45,13 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
           <p>POM</p>
         </Link>
         <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
-          <button onClick={() => {dispatch(checkAuthentication({username : 'emonte01', password: 'fsdf'}))}}>Estelle</button>
-          <button onClick={() => {dispatch(checkAuthentication({username : 'ymarti01', password: 'fsdf'}))}}>Yannick</button>
+          {/* <button onClick={() => {dispatch(checkAuthentication({username : 'emonte01', password: 'fsdf'}))}}>Estelle</button>
+          <button onClick={() => {dispatch(checkAuthentication({username : 'ymarti01', password: 'fsdf'}))}}>Yannick</button> */}
           <button onClick={() => {dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))}}>Moi</button>
-          {/* <button onClick={() => {dispatch(checkAuthentication({username : 'nathalie', password: 'fsdf'}))}}>Nathalie</button> */}
-          <button onClick={() => {dispatch(checkAuthentication({username : 'acadie02', password: 'fsdf'}))}}>Axelle</button>
-          <button onClick={() => {dispatch(checkAuthentication({username : 'clegalla', password: 'fsdf'}))}}>Corinne</button>
+          <button onClick={() => {dispatch(checkAuthentication({username : 'nathalie', password: 'fsdf'}))}}>Nathalie</button>
+          {/* <button onClick={() => {dispatch(checkAuthentication({username : 'mdeni', password: 'fsdf'}))}}>Axelle</button> */}
+          {/* <button onClick={() => {dispatch(checkAuthentication({username : 'clegalla', password: 'fsdf'}))}}>Corinne</button> */}
+          <button onClick={() => {dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))}}>S. Seddouki</button>
         </div>
         {agent.firstname && <p className="header__identity-user">Bonjour {agent.firstname}</p>}
       </div>
@@ -68,7 +69,7 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
               </ul>
             </div>
           )}
-          {(agent.roles && agent.roles.indexOf('GEST') >=0) && (
+          {(agent.roles && (agent.roles.indexOf('GEST') >=0 || agent.roles.indexOf('MANAGER') >=0)) && (
             <div className="header__menu-section" id="gest" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
               <p>GESTIONNAIRE</p>
               <ul className="header__menu-section-list">

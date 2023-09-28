@@ -17,7 +17,7 @@ import { useDispatch } from 'react-redux';
 import ValidationMonitoringPdf from 'src/components/PDF/ValidationMonitoringPdf';
 
 // Actions
-import {  addEfMonitoringPdf } from 'src/reducer/omManager';
+import {  addEfMonitoringPdf,addOmMonitoringPdf } from 'src/reducer/omManager';
 
 const OmVisa = ({ data, user, agent, isOm }) => {
 
@@ -33,7 +33,13 @@ const OmVisa = ({ data, user, agent, isOm }) => {
   const submitFunction = (data) => {
 
     console.log(data);
-    dispatch(addEfMonitoringPdf({data: data, task: 'replace', nextAction: data.action === 'validate' ? 'stampEf' : 'rejectVisaEf'}));
+    if (isOm) {
+      dispatch(addOmMonitoringPdf({data: data, task: 'replace', nextAction: data.action === 'validate' ? 'stampOm' : 'rejectVisaOm'}));
+    }
+    else {
+          dispatch(addEfMonitoringPdf({data: data, task: 'replace', nextAction: data.action === 'validate' ? 'stampEf' : 'rejectVisaEf'}));
+    }
+
     
   };
 
