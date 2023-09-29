@@ -27,32 +27,24 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
     persistor.purge();
     cas.logout("/se-connecter");
   }
-
-  const test = () => {
     
-    dispatch(checkAuthentication({username : 'emonte01', password: 'fsdf'}))
-    // dispatch(checkAuthentication({username : 'ymarti01', password: 'fsdf'}))
-    // dispatch(checkAuthentication({username : 'nathalie', password: 'fsdf'}))
-    // dispatch(checkAuthentication({username : 'acadie02', password: 'fsdf'}))
-    // dispatch(checkAuthentication({username : 'clegalla', password: 'fsdf'}))
-    // dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))
-  }
-  
   return (
   <div className="header">
       <div className="header__identity">
         <Link to="/" className="header__identity-logo">
           <p>POM</p>
         </Link>
-        <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
-          {/* <button onClick={() => {dispatch(checkAuthentication({username : 'emonte01', password: 'fsdf'}))}}>Estelle</button>
-          <button onClick={() => {dispatch(checkAuthentication({username : 'ymarti01', password: 'fsdf'}))}}>Yannick</button> */}
-          <button onClick={() => {dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))}}>Moi</button>
-          <button onClick={() => {dispatch(checkAuthentication({username : 'nathalie', password: 'fsdf'}))}}>Nathalie</button>
-          {/* <button onClick={() => {dispatch(checkAuthentication({username : 'mdeni', password: 'fsdf'}))}}>Axelle</button> */}
-          {/* <button onClick={() => {dispatch(checkAuthentication({username : 'clegalla', password: 'fsdf'}))}}>Corinne</button> */}
-          <button onClick={() => {dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))}}>S. Seddouki</button>
-        </div>
+        {(user === 'mboone01' || user === 'emonte01' ||user === 'ymarti01' ||user === 'nathalie' ||user === 'mdeni' ||user === 'clegalla' ||user === 'sseddo01' ) && (
+          <div style={{height: '100%', display: 'flex', flexDirection: 'column', zIndex: '999'}}>
+            <button onClick={() => {dispatch(checkAuthentication({username : 'emonte01', password: 'fsdf'}))}}>Estelle</button>
+            <button onClick={() => {dispatch(checkAuthentication({username : 'ymarti01', password: 'fsdf'}))}}>Yannick</button>
+            <button onClick={() => {dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))}}>Moi</button>
+            <button onClick={() => {dispatch(checkAuthentication({username : 'nathalie', password: 'fsdf'}))}}>Nathalie</button>
+            <button onClick={() => {dispatch(checkAuthentication({username : 'mdeni', password: 'fsdf'}))}}>Axelle</button>
+            <button onClick={() => {dispatch(checkAuthentication({username : 'clegalla', password: 'fsdf'}))}}>Corinne</button>
+            <button onClick={() => {dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))}}>S. Seddouki</button>
+          </div>
+        )}
         {agent.firstname && <p className="header__identity-user">Bonjour {agent.firstname}</p>}
       </div>
       {isAuthenticated && <BurgerIcon handler={toggleBurgerMenu} />}
