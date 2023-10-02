@@ -38,6 +38,8 @@ const Layout = ({ cas }) => {
   useEffect(() => {
   if (apiMessage.hasOwnProperty('response')) {
     if (apiMessage.response.status !== 200
+      && apiMessage.response.status !== 202
+      && apiMessage.response.status !== 100
       && (apiMessage.response.data.message === 'JWT Token not found'
       || apiMessage.response.data.message === 'Expired JWT Token')) {
       localStorage.removeItem('persist:root');

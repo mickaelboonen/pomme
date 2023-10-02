@@ -29,20 +29,22 @@ const ErrorDisplayer = ({ response }) => {
     dispatch(clearMessage());
   
   }
+
+  const htmlSuccessCodes = [200, 202, 100];
   return (
-  <div className={classNames('sidebar-notification', {'sidebar-notification--success': response.response.status === 200, 'sidebar-notification--error': response.response.status !== 200})}>
+  <div className={classNames('sidebar-notification', {'sidebar-notification--success': htmlSuccessCodes.indexOf(response.response.status) > -1, 'sidebar-notification--error': htmlSuccessCodes.indexOf(response.response.status) === -1})}>
     <div className='sidebar-notification__header' onClick={showError}>
       <RxDoubleArrowLeft className='sidebar-notification__header-icon sidebar-notification__header-icon--visible' id="left-icon" />
-      <p>{response.response.status === 200 ? 'Succès' : 'Erreur'}</p>
+      <p>{htmlSuccessCodes.indexOf(response.response.status) > -1 ? 'Succès' : 'Erreur'}</p>
       <RxDoubleArrowRight className='sidebar-notification__header-icon' id="right-icon" />
     </div>
     <div className='sidebar-notification__body'>
       <ApiResponse apiResponse={response} updateForm={false} />
-      {response.response.status !== 200 && (
+      {/* {response.response.status !== 200 && ( */}
         <div className='sidebar-notification__body-icon' onClick={hideError}>
-          <BiHide/> Ne plus afficher l'erreur
+          <BiHide/> Ne plus afficher le message
         </div>
-      )}
+      {/* )} */}
     </div>
   </div>
 );}

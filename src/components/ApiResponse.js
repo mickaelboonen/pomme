@@ -8,7 +8,7 @@ const ApiResponse = ({ apiResponse, updateForm }) => {
   
   return (
     <div className='api-response'>
-      {(response.status && response.status !== 200 && response.status !== 202) && (
+      {(response.status && response.status !== 200 && response.status !== 202 && response.status !== 100) && (
         <div className="api-response__error">
           <p className='api-response__error-details'>
             <span>Merci de contacter l'assistance informatique via</span> <a className='api-response__error-details__link' href='https://glpi.unimes.fr/front/helpdesk.public.php?create_ticket=1'>GLPI</a> et d'expliquer ce que vous faisiez lorque l'erreur est survenue, en fournissant une capture d'écran de l'erreur <span>avec toutes les informations ci-dessous</span>.
@@ -26,10 +26,10 @@ const ApiResponse = ({ apiResponse, updateForm }) => {
           <div className="api-response__error-separator" />
         </div>
       )}
-      {(response.status === 200 || response.status === 202) && (
+      {(response.status === 200 || response.status === 202 || response.status === 100) && (
         <p className="form__section-message form__section-message--success">
           {message} <br />
-          {!updateForm && <span style={{fontStyle: 'italic'}}>Vous allez être redirigé dans quelques instants.</span>}
+          {/* {!updateForm && <span style={{fontStyle: 'italic'}}>Vous allez être redirigé dans quelques instants.</span>} */}
         </p>
         )}
     </div>
