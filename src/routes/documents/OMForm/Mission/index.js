@@ -243,21 +243,22 @@ const Mission = ({ step, isEfForm }) => {
   const setAddressesErrors = (errors) => {
     
     const errorsArray = Object.getOwnPropertyNames(errors);
-    const addressProperties = ['postCode', 'city'];
+    // const addressProperties = ['postCode', 'city'];
     let errorMessage = 'Vous avez des erreurs aux adresses numéros : ';
     
     if (errorsArray.length === 0) {
       errorMessage = '';
     }
     else {
+      const addressesNumberArray = [];
       errorsArray.forEach((error) => {
-        const property = error.slice(0, error.length - 1);
         const number = error.slice(error.length - 1);
 
-        if (addressProperties.indexOf(property)) {
-          errorMessage += number + ' - ' ;
+        if (addressesNumberArray.indexOf(number) === -1 && !isNaN(number)) {
+          addressesNumberArray.push(number);
         }
       });
+      errorMessage += addressesNumberArray.toString();
     }
     return errorMessage;
   }

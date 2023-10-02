@@ -42,7 +42,7 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
             <button onClick={() => {dispatch(checkAuthentication({username : 'nathalie', password: 'fsdf'}))}}>Nathalie</button>
             <button onClick={() => {dispatch(checkAuthentication({username : 'mdeni', password: 'fsdf'}))}}>Axelle</button>
             <button onClick={() => {dispatch(checkAuthentication({username : 'clegalla', password: 'fsdf'}))}}>Corinne</button>
-            <button onClick={() => {dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))}}>S. Seddouki</button>
+            <button onClick={() => {dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))}}>S. Seddoukki</button>
           </div>
         )}
         {agent.firstname && <p className="header__identity-user">Bonjour {agent.firstname}</p>}
