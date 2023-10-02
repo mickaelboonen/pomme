@@ -9,7 +9,7 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import ButtonElement from 'src/components/Fields/ButtonElement';
 
-
+import {  getAllFilenamesForProperty } from 'src/selectors/formDataGetters';
 
 import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
 import ValidationMonitoringPdf from 'src/components/PDF/ValidationMonitoringPdf';
@@ -33,6 +33,19 @@ const ValidateOm = ({
   validationActorsToDisplay
 }) => {
   const dispatch = useDispatch();
+
+  
+  let filesnames = getAllFilenamesForProperty(om.management.management_files);
+  // if (om.management.management_files > 0) {
+  //   om.management.management_filess.forEach((file) => {
+
+  //     filesnames += getSavedFileName(file);
+
+  //     if (om.management.management_files > 1) {
+  //       filesnames += ' - ';
+  //     }
+  //   })
+  // }
 
   const handleChannelChange = (event) => {    
     const selectedChannel = circuits.find((cir) => cir.id === Number(event.target.value));
@@ -174,9 +187,10 @@ const ValidateOm = ({
         setValue={setValue}
         multiple
         id="files-field"
-        formField="files"
+        formField="managementFiles"
+        fileName={filesnames}
         register={register}
-        error={errors.files}
+        error={errors.managementFiles}
       
       />
     </div>

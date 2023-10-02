@@ -15,6 +15,7 @@ import TextareaField from 'src/components/Fields/TextareaField';
 
 // Selectors & actions
 import { addOmMonitoringPdf, rejectOm } from 'src/reducer/omManager';
+import { uploadFile } from 'src/reducer/omForm';
 
 
 const Validation = () => {
@@ -54,6 +55,7 @@ const Validation = () => {
   const omType = currentOM.type.toLowerCase().split('-');
   const currentChannel = channels.find((channel) => channel.shortName === omType[0]);
 
+  console.log(currentOM.management);
   const {
     register,
     setValue,
@@ -66,9 +68,12 @@ const Validation = () => {
     validation: isOneStepRejected === undefined ? null : 'reject',
     rejectedFields: rejectedFields,
     channel: currentChannel.id,
-    comments: currentOM.comments
-  }
-  });
+    comments: currentOM.comments,
+    codeLolf: currentOM.management.code_lolf,
+    codeNacres: currentOM.management.code_nacres,
+    codeAnalytique: currentOM.management.code_analytique,
+    ...currentOM.management
+  }});
   
   const onSubmit = (data) => {
     
@@ -118,12 +123,17 @@ const Validation = () => {
 
       data.workflow = actors;
       
-      const file = Array.from(data.files).find((file) => file instanceof File)
+      const file = Array.from(data.managementFiles).find((file) => file instanceof File)
       if (!file) {
-        data.files = [];
+        // data.managementFiles = [];
+        dispatch(addOmMonitoringPdf({data: data, task: 'add', nextAction: 'manageOm'}));
+
+      }
+      else {
+        dispatch(uploadFile({data: data, step: 'management', docType: 'om'}));
       }
       
-      dispatch(addOmMonitoringPdf({data: data, task: 'add', nextAction: 'manageOm'}));
+      
     
     }
     else {

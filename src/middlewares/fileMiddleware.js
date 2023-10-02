@@ -4,7 +4,7 @@ import { fileApi, api, setTokenOnApi } from './api';
 import { handleEfFilesUploadPayload } from 'src/selectors/fileFunctions';
 import { toggleDocModal, saveAllPermDocs } from 'src/reducer/otherDocuments';
 import { requestVehicleAuthorization, updateVehicle, createVehicle } from 'src/reducer/vehicle';
-import { rejectVisaOm, stampOm, manageOm, rejectVisaEf, stampEf, manageEf } from 'src/reducer/omManager';
+import { rejectVisaOm, stampOm, manageOm, rejectVisaEf, stampEf, manageEf, addOmMonitoringPdf } from 'src/reducer/omManager';
 import { updateEfAccomodations, updateEfRib, updateEf, updateEfMission, updateEfTransports } from 'src/reducer/ef';
 import {
   createDispensation,
@@ -114,6 +114,17 @@ const omMiddleware = (store) => (next) => (action) => {
               }
             })
           }
+        }
+        else if (step === 'management') {
+          data.managementFiles.forEach((file) => {
+            if (file instanceof File) {
+              filesToUpload.push({
+                docId: data.docId,
+                type: 'management',
+                file: file,
+              });
+            }
+          })
         }
 
       }
@@ -252,8 +263,8 @@ const omMiddleware = (store) => (next) => (action) => {
               else if (file.type === 'map') {
                 data.maps.push(file.file.url);
               }
-              else if (file.type === 'signature') {
-                data.agentSignature = file.file.url;
+              else if (file.type === 'management') {
+                data.managementFiles.push(file.file.url);
               }
               else if (file.type === 'externalSignature') {
                 data.externalSignature.push(file.file.url);
@@ -276,6 +287,10 @@ const omMiddleware = (store) => (next) => (action) => {
             else if (step === 'advance') {
               data.hotelQuotations = data.hotelQuotations.filter((file) => typeof file === 'string');
               store.dispatch(updateAdvance(data));
+            }
+            else if (step === 'management') {
+              data.managementFiles = data.managementFiles.filter((file) => typeof file === 'string');
+              store.dispatch(addOmMonitoringPdf({data: data, task: 'add', nextAction: 'manageOm', files: data.managementFiles}));
             }
             else if (step === 'more') {
               store.dispatch(updateMoreAndSignature(data));
@@ -408,7 +423,8 @@ const omMiddleware = (store) => (next) => (action) => {
       const pdf = {
         file: action.payload.data.file,
         docId: action.payload.data.docId,
-        task: task ?? 'add'
+        task: task ?? 'add',
+        files: action.payload.files ?? []
       }
       
       fileApi.post('/api/om/monitoring-file', pdf)
