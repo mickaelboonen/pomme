@@ -268,7 +268,8 @@ const omFormSlice = createSlice({
       },
       deleteAddress: () => {},
       createScientificEvent: () => {},
-      changeFileStatus: () => {}
+      changeFileStatus: () => {},
+      deleteOm: () => {},
     },
 });
 
@@ -309,6 +310,7 @@ export const {
   deleteAddress,
   createScientificEvent,
   changeFileStatus,
+  deleteOm
 } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

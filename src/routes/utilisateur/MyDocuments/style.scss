@@ -63,14 +63,14 @@ $test : #{var(--first-color)};
 
 
       & a, & button  {
-      @include vars.button;
-      margin-bottom: 0.5rem;
-      
-      font-size: 0.7em;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      width: 35%;
+        @include vars.button;
+        margin-bottom: 0.5rem;
+        
+        font-size: 0.7em;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        width: 35%;
       }
 
       &--links-menu {

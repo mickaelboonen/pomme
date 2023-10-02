@@ -356,7 +356,8 @@ const efSlice = createSlice({
       },
       clearEfTarget: (state) => {
         state.nextEfTarget = '';
-      }
+      },
+      deleteEf: () => {},
     },
 });
 
@@ -380,7 +381,8 @@ export const {
   saveEfAccomodations,
   updateEfRib,
   clearEfTarget,
-  updateEf
+  updateEf,
+  deleteEf
 } = efSlice.actions;
 
 export default efSlice.reducer;

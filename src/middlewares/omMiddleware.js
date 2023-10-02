@@ -261,6 +261,15 @@ const omMiddleware = (store) => (next) => (action) => {
             store.dispatch(setApiResponse(error));
           });
         break;
+      case 'omForm/deleteOm':
+        api.delete("/api/om/delete/" + action.payload)
+          .then((response) => {
+            store.dispatch(setApiResponse({message: response.data, response: { status: 202}}));
+          })
+          .catch((error) => {
+            store.dispatch(setApiResponse(error));
+          });
+        break;
     
   
     default:
