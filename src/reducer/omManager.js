@@ -156,8 +156,16 @@ const omManagerSlice = createSlice({
       displayValidationActors: (state, action) => {
         const { validationActors, name } = action.payload;
         
-        const uprOrDep = validationActors.filter((actor) => actor.role.includes('Directeur.rice UPR') || actor.role.includes('Directeur.rice Département'));
-        const actors = validationActors.filter((actor) => !actor.role.includes('Directeur.rice UPR') && !actor.role.includes('Directeur.rice Département'));
+        const teachersRoles = ['Directrice UPR', 'Directeur UPR', 'Directeur Département', 'Directrice Département']
+        const uprOrDep = validationActors.filter((actor) => actor.role.includes('UPR') || actor.role.includes('Département'));
+        let actors = [];
+
+        if (name === 'Administratif') {
+          actors = validationActors;
+        }
+        else {
+          actors = validationActors.filter((actor) => !actor.role.includes('Directeur.rice UPR') && !actor.role.includes('Directeur.rice Département'));
+        }
 
         if (uprOrDep.length > 0) {
           if (name === 'Recherche') {

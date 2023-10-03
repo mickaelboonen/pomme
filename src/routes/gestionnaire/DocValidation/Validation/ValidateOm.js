@@ -34,18 +34,7 @@ const ValidateOm = ({
 }) => {
   const dispatch = useDispatch();
 
-  
   let filesnames = getAllFilenamesForProperty(om.management.management_files);
-  // if (om.management.management_files > 0) {
-  //   om.management.management_filess.forEach((file) => {
-
-  //     filesnames += getSavedFileName(file);
-
-  //     if (om.management.management_files > 1) {
-  //       filesnames += ' - ';
-  //     }
-  //   })
-  // }
 
   const handleChannelChange = (event) => {    
     const selectedChannel = circuits.find((cir) => cir.id === Number(event.target.value));
@@ -55,36 +44,31 @@ const ValidateOm = ({
     }
   }
   
-  const selectedActors = watch('workflow');
-  const [showUprOrDep, setShowUprOrDep] = useState(false);
-
-  useEffect(() => {
-    if (selectedActors && (selectedActors.indexOf('directeur.rice upr') >= 0 || selectedActors.indexOf('directeur.rice dep') >= 0)) {
-      setShowUprOrDep(true);
-    }
-    else {
-      setShowUprOrDep(false);
-    }
-  }, [selectedActors]);
   
   let firstPartActors = [];
   let secondPartActors = [];
 
   const advanceRequested = om.advance.advance;
-
+  
+  // Setting the array for actors to be displayed in the list
   const actorsToDisplay = validationActorsToDisplay.map((actor) => {
+
+    // Removing the DAF gest and the accountant when there is no advance requested
     if (!advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) {
+      return null;
+    }
+
+    // Removing the VP and the PAPSA director if it's not an OM for the SUAPS
+    if (om.type !== 'admin-suaps' && (actor.role === 'Directrice Département (PAPSA)' || actor.role === 'Vice-Président Formation')) {
       return null;
     }
     return actor;
   }).filter((actor) => actor !== null);
   
-
-  
   if (uprOrDep.length > 0) {
     let middle;
 
-    if (uprOrDep[0].role.includes('Directeur.rice UPR')) {
+    if (uprOrDep[0].role.includes('Directeur.rice UPR')|| uprOrDep[0].role.includes('Département')) {
       middle = 2;
     }
     else {
@@ -98,13 +82,25 @@ const ValidateOm = ({
     firstPartActors = actorsToDisplay;
   }
 
+
   useEffect(() => {
     const selectedChannel = circuits.find((cir) => cir.shortName === omType[0]);
-
     if (selectedChannel !== undefined) {
       dispatch(displayValidationActors(selectedChannel));
     }
   }, [])
+
+  const selectedActors = watch('workflow');
+  const [showUprOrDep, setShowUprOrDep] = useState(false);
+
+  useEffect(() => {
+    if (selectedActors && (selectedActors.indexOf('directeur.rice upr') >= 0 || selectedActors.indexOf('directeur.rice dep') >= 0)) {
+      setShowUprOrDep(true);
+    }
+    else {
+      setShowUprOrDep(false);
+    }
+  }, [selectedActors]);
 
 
   
