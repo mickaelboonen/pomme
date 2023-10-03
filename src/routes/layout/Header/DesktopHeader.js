@@ -34,14 +34,16 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
         <Link to="/" className="header__identity-logo">
           <p>POM</p>
         </Link>
-        {(user === 'mboone01' || user === 'emonte01' ||user === 'ymarti01' ||user === 'nathalie' ||user === 'mdeni' ||user === 'clegalla' ||user === 'sseddo01' ) && (
+        {(user === 'mboone01' || user === 'ajumil01'  || user === 'emonte01' ||user === 'ymarti01' ||user === 'nathalie' ||user === 'sjorge' ||user === 'mdeni' ||user === 'clegalla' ||user === 'sseddo01' ) && (
           <div style={{height: '100%', display: 'flex', flexDirection: 'column', zIndex: '999'}}>
             <button onClick={() => {dispatch(checkAuthentication({username : 'emonte01', password: 'fsdf'}))}}>Estelle</button>
-            <button onClick={() => {dispatch(checkAuthentication({username : 'ymarti01', password: 'fsdf'}))}}>Yannick</button>
+            <button onClick={() => {dispatch(checkAuthentication({username : 'ajumil01', password: 'fsdf'}))}}>Anais</button>
+            {/* <button onClick={() => {dispatch(checkAuthentication({username : 'ymarti01', password: 'fsdf'}))}}>Yannick</button> */}
             <button onClick={() => {dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))}}>Moi</button>
-            <button onClick={() => {dispatch(checkAuthentication({username : 'nathalie', password: 'fsdf'}))}}>Nathalie</button>
-            <button onClick={() => {dispatch(checkAuthentication({username : 'mdeni', password: 'fsdf'}))}}>Axelle</button>
-            <button onClick={() => {dispatch(checkAuthentication({username : 'clegalla', password: 'fsdf'}))}}>Corinne</button>
+            {/* <button onClick={() => {dispatch(checkAuthentication({username : 'nathalie', password: 'fsdf'}))}}>Nathalie</button> */}
+            <button onClick={() => {dispatch(checkAuthentication({username : 'sjorge', password: 'fsdf'}))}}>Suzanne</button>
+            {/* <button onClick={() => {dispatch(checkAuthentication({username : 'mdeni', password: 'fsdf'}))}}>Axelle</button> */}
+            {/* <button onClick={() => {dispatch(checkAuthentication({username : 'clegalla', password: 'fsdf'}))}}>Corinne</button> */}
             <button onClick={() => {dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))}}>S. Seddoukki</button>
           </div>
         )}

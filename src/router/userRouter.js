@@ -10,7 +10,7 @@ import TicketRequest from "src/routes/utilisateur/MyAccount/TicketRequest";
 import RefusalNotification from "src/routes/utilisateur/MyAccount/RefusalNotification";
 
 import { getVehicles, fetchVehicle} from "src/reducer/vehicle";
-import { fetchServicesAndDepartments } from "src/reducer/omManager";
+import { fetchAllOmTypes } from "src/reducer/omManager";
 import { findPermFilesByAgent, getAgentsPrograms, fetchProgram } from "src/reducer/otherDocuments";
 import TravelInfo from "src/routes/utilisateur/MyAccount/TravelInfo";
 import AddProgram from "src/routes/utilisateur/MyAccount/TravelInfo/AddProgram";
@@ -24,7 +24,7 @@ export default {
       path: 'mes-ordres-de-mission',
       element: <MyDocuments />,
       loader: async () => {
-        store.dispatch(fetchServicesAndDepartments())
+        store.dispatch(fetchAllOmTypes())
       }
     },
     {

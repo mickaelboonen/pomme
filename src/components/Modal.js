@@ -28,7 +28,8 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
   let isOm = false;
   let defaultValues = {};
 
-  const { omManager : { services, departments }} = useSelector((state) => state);
+  const { omManager : { services, departments, missionTypes }} = useSelector((state) => state);
+  const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: defaultValues });
 
   if (target === 'ordre de mission' ) {
     isOm = true;
@@ -42,7 +43,6 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
       isTeaching: agent.unimesStatus === "VACATAIRE",
     }
   }
-  const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: defaultValues });
 
   const close = () => {
     dispatch(toggleModal());
@@ -57,6 +57,10 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
     {
       name: 'Mission test',
       id: 'test'
+    },
+    {
+      name: "Chargés de Mission",
+      id: 'cdm'
     },
     {
       name: 'Mission Doctorants',
@@ -86,13 +90,21 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
       name: dep.name,
     }
   })
+  const missionTypesToShow = missionTypes.map((dep) => {
+    return {
+      id: dep.shortName,
+      name: dep.name,
+    }
+  })
   let servicesToShow = services.map((service) => {
     return {
       id: service.shortName,
       name: service.name,
     }
   })
+
   servicesToShow = servicesToShow.filter((service) => !service.name.includes('POM'))
+  
   const onSubmit = (data) => {
     if (isOm) {
       const newOM = {
@@ -147,6 +159,9 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
     }
     else if (value === "formation" || value === "admin") {
       setService(servicesToShow);
+    }
+    else if (value === "cdm") {
+      setService(missionTypesToShow);
     }
     else if (value === "doctorants") {
       

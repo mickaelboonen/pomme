@@ -3,7 +3,7 @@ import { savePendingOms } from 'src/reducer/omManager';
 
 import { api } from './api';
 import { setApiResponse } from '../reducer/app';
-import { saveDepartments, saveServices, saveValidationChannels, resetOmsOnDisplay, savePendingEfs} from '../reducer/omManager';
+import { saveDepartments, saveServices, saveValidationChannels, resetOmsOnDisplay, savePendingEfs, saveOmTypes } from '../reducer/omManager';
 
 
 api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -53,23 +53,16 @@ const omManagerMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse(error));;
       });
       break;
-    case 'omManager/fetchServicesAndDepartments':      
-      api.get("/api/services/fetch/all")
+    case 'omManager/fetchAllOmTypes':      
+      api.get("/api/om/types/fetch/all")
         .then((response) => {
-          store.dispatch(saveServices(response.data));
-        })
-        .catch((error) => {
-          store.dispatch(setApiResponse(error));
-        });    
-      api.get("/api/departments/fetch/all")
-        .then((response) => {
-          store.dispatch(saveDepartments(response.data));
+          console.log(response.data);
+          store.dispatch(saveOmTypes(response.data));
         })
         .catch((error) => {
           store.dispatch(setApiResponse(error));
         });
       break;
-
     case 'omManager/manageOm':
       api.post("/api/om/management/validate", action.payload)
       .then((response) => {

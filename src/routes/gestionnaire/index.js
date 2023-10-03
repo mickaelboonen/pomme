@@ -1,4 +1,4 @@
-import React  from 'react';
+import React, { useEffect }  from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { MdRefresh } from 'react-icons/md'
@@ -33,11 +33,12 @@ const Gestionnaires = ({ isOm }) => {
   }
   
   types.forEach((tab) => {
-    console.log(tab);
     const tabData = tabs.find((channel) => tab.includes(channel.id));
+    // console.log(tabData);
     const newLabel = `${tabData.name} (${pendingDocs.filter((doc) => doc.type === tab).length})`;
 
     tabsToShow.push({id: tabData.id, name: newLabel});
+
   })
 
   if (types.length === 0) {

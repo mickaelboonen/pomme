@@ -38,6 +38,7 @@ const initialState = {
   ],
   services: [],
   departments: [],
+  missionTypes: [],
   uprOrDep: [], 
   validationActorsToDisplay: [],
   omSteps: [
@@ -118,6 +119,10 @@ const initialState = {
       name: 'OM à viser',
     },
     {
+      id: 'cdm',
+      name: 'OM à contrôler',
+    },
+    {
       id: 'test',
       name: 'OM à viser',
     }
@@ -184,7 +189,7 @@ const omManagerSlice = createSlice({
       },
       updateGestComments: () => {},
       saveGestComments: () => {},
-      fetchServicesAndDepartments: () => {},
+      fetchAllOmTypes: () => {},
       saveServices: (state, action) => {
         state.services = action.payload;
       },
@@ -217,6 +222,12 @@ const omManagerSlice = createSlice({
         state.docsToDisplay = action.payload;
         state.loader = false;
       },
+      saveOmTypes: (state, action) => {
+
+        state.departments = action.payload.departments;
+        state.services = action.payload.services;
+        state.missionTypes = action.payload.missionTypes;
+      },
     }
 });
 
@@ -231,7 +242,7 @@ export const {
   displayValidationActors,
   updateGestComments,
   saveGestComments,
-  fetchServicesAndDepartments,
+  fetchAllOmTypes,
   saveServices,
   saveDepartments,
   manageOm,
@@ -247,6 +258,7 @@ export const {
   addEfMonitoringPdf,
   rejectOm,
   rejectEf,
+  saveOmTypes,
 } = omManagerSlice.actions;
 
 export default omManagerSlice.reducer;
