@@ -99,7 +99,7 @@ const AddVehicle = () => {
       dispatch(displayVehicle());
     }
     
-    navigate(`/utilisateur/${user}/mes-documents`);
+    navigate(`/utilisateur/mes-documents`);
   }
   return (
   <main className="form-page__container">

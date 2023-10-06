@@ -103,6 +103,10 @@ const initialState = {
     {
       id: 'ok',
       name: 'Validés',
+    },
+    {
+      id: 'perm',
+      name: 'Permanents',
     }
   ],
   userOms: [],

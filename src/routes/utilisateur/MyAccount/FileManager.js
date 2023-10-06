@@ -23,11 +23,11 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
     const { id } = event.currentTarget.dataset;
 
     if (id === 'cars') {
-      navigate(`/utilisateur/${user}/mes-documents/ajouter-un-${encodeURIComponent('véhicule')}` )
+      navigate(`/utilisateur/mes-documents/ajouter-un-${encodeURIComponent('véhicule')}` )
 
     }
     else if (id === 'programs') {
-      navigate(`/utilisateur/${user}/mes-documents/profil-voyageur/ajouter-un-programme-de-transport` )
+      navigate(`/utilisateur/mes-documents/profil-voyageur/ajouter-un-programme-de-transport` )
 
     }
     else {
@@ -44,7 +44,7 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
       
       if (!isNaN(value)) {
         dispatch(displayVehicle(value))
-        navigate(`/utilisateur/${user}/mes-documents/modifier-un-${encodeURIComponent('véhicule')}/` + value)
+        navigate(`/utilisateur/mes-documents/modifier-un-${encodeURIComponent('véhicule')}/` + value)
       }
       else {
         window.alert("Veuillez sélectionner un véhicule à modifier.")
@@ -55,7 +55,7 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
       
       if (!isNaN(value)) {
         // dispatch(displayVehicle(value))
-        navigate(`/utilisateur/${user}/mes-documents/profil-voyageur/modifier-un-programme-de-transport/${value}`)
+        navigate(`/utilisateur/mes-documents/profil-voyageur/modifier-un-programme-de-transport/${value}`)
       }
       else {
         window.alert("Veuillez sélectionner un programme à modifier.")

@@ -40,11 +40,11 @@ const Home = () => {
   // const [newTarget, setNewTarget] = useState('');
   
   const handleClickOnNewDoc = () => {
-    navigate(`/utilisateur/${user}/mes-ordres-de-mission`);
+    navigate(`/utilisateur/mes-ordres-de-mission`);
   }
 
   const handleClickOnNewEf = () => {
-    navigate(`/utilisateur/${user}/${encodeURIComponent('mes-états-de-frais')}`);
+    navigate(`/utilisateur/${encodeURIComponent('mes-états-de-frais')}`);
   }
   
   return (

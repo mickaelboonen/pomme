@@ -351,7 +351,7 @@ const VehicleUseForm = () => {
             Attention, vous n'avez pas renseigné de signature dans vos pièces justificatives. Merci de bien vouloir la rajouter pour accéder au formulaire de demande de dérogation.
             </p>
           <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
-            <Link to={`/utilisateur/${user}/mes-documents`}>
+            <Link to={`/utilisateur/mes-documents`}>
               <button type="button">
                 Rajouter ma signature dans mes pièces justificatives
               </button>

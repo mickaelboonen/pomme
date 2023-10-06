@@ -225,7 +225,7 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
           <button type="submit">Valider la saisie définitive</button>
         </div>
         <div className="form__section-field-buttons__row">
-          <Link to={step === 1 ? `/utilisateur/${user}/mes-ordres-de-mission` : url.pathname + setNewSearch(url, backStep)}>{'<<'}</Link>
+          <Link to={step === 1 ? `/utilisateur/mes-ordres-de-mission` : url.pathname + setNewSearch(url, backStep)}>{'<<'}</Link>
           <Link to={url.pathname + setNewSearch(url, nextStep)}>{'>>'}</Link>
         </div>
       </div>

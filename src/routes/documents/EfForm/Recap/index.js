@@ -238,7 +238,7 @@ const Recap = () => {
                 }}
               </BlobProvider>
             </div>
-            <Link to={"/utilisateur/" + user + "/mes-ordres-de-mission"} style={{display: 'block', marginBottom: '2rem', textAlign: 'center'}}>Retour au menu des États de Frais</Link>
+            <Link to={"/utilisateur/mes-ordres-de-mission"} style={{display: 'block', marginBottom: '2rem', textAlign: 'center'}}>Retour au menu des États de Frais</Link>
           </div>
       </div>
       {isPdfVisible && (

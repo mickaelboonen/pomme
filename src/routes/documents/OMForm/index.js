@@ -173,7 +173,7 @@ const OMForm = () => {
                 type
                 label="Retourner au menu des Ordres de Mission"
                 isLink
-                link={`/utilisateur/${user}/mes-ordres-de-mission`}
+                link={`/utilisateur/mes-ordres-de-mission`}
               />
               </div>
             </div>

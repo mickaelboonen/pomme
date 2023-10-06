@@ -124,7 +124,7 @@ const Identity = ({ isEfForm }) => {
             countries={countries}
             stepNumber='Pro'
           />
-          {missingData && <p className="form__section-field-error form__section-field-error--open" style={{margin: '1rem'}}>Les informations concernant votre adresse personnelle n'ont pas pu être récupérées. Veuillez vous rapprocher de la DSI ou de la DRH.</p>}
+          {missingData && <p className="form__section-field-error form__section-field-error--open" style={{margin: '1rem', lineHeight: '120%'}}>Les informations concernant votre adresse personnelle n'ont pas pu être récupérées. Veuillez actualiser la page. Si le problème persiste, merci de faire un ticket sur GLPI en précisant l'identifiant de l'ordre de mission (OM n° {omId}).</p>}
         </div>
         <div className="form__section">
           <FormSectionTitle>Personnel</FormSectionTitle>
@@ -243,7 +243,7 @@ const Identity = ({ isEfForm }) => {
               </BlobProvider>
             </div>
           )}
-          <Link to={"/utilisateur/" + user + "/mes-ordres-de-mission"} style={{display: 'block', margin: '2rem auto', textAlign: 'center'}}>Retour au menu des Ordres de Mission</Link>
+          <Link to={"/utilisateur/mes-ordres-de-mission"} style={{display: 'block', margin: '2rem auto', textAlign: 'center'}}>Retour au menu des Ordres de Mission</Link>
         </div>
       </form>
       {isPdfVisible && (

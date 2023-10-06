@@ -73,19 +73,26 @@ const agentSlice = createSlice({
 
         let status = 1;
         if (target === 'ec') {
-          status = 1;
+          // status = 1;
+          state.documentsList = state[id].filter((doc) => doc.status === 1);
         }
         else if (target === 'as') {
           status = 2;
+          state.documentsList = state[id].filter((doc) => doc.status === status);
         }
         else if (target === 'sub') {
-          status = 2;
+          // status = 2;
+          const statusesToIgnore = [0, 1, 9, 10, 11, 12];
+          state.documentsList = state[id].filter((doc) => statusesToIgnore.indexOf(doc.status) === -1);
         }
         else if (target === 'ok') {
-          status = 8;
+          // status = 8;
+          state.documentsList = state[id].filter((doc) => doc.status >= 9 && doc.is_ponctual);
+        }
+        else if (target === 'perm') {
+          state.documentsList = state[id].filter((doc) => doc.is_ponctual === false);
         }
 
-        state.documentsList = state[id].filter((doc) => doc.status === status);
         state.currentDoc = {};
       },
       showDocStatus: (state, action) => {

@@ -18,7 +18,7 @@ import AddProgram from "src/routes/utilisateur/MyAccount/TravelInfo/AddProgram";
 
 
 export default {
-  path: 'utilisateur/:slug/',
+  path: 'utilisateur/',
   children: [
     {
       path: 'mes-ordres-de-mission',

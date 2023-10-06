@@ -80,7 +80,7 @@ const AddProgram = () => {
       dispatch(saveProgram({}));
     }
     
-    navigate(`/utilisateur/${user}/mes-documents/profil-voyageur`);
+    navigate(`/utilisateur/mes-documents/profil-voyageur`);
   };
   
   return (

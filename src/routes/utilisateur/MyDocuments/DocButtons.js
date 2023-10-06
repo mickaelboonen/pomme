@@ -10,7 +10,7 @@ import { deleteOm } from 'src/reducer/omForm';
 import { deleteEf } from 'src/reducer/ef';
 
 const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isOm}) => {
-  const downloadFileStatusArray = [2, 8];
+  
   let buttons = [];
   const dispatch = useDispatch();
   
@@ -29,28 +29,16 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
         status: [1],
       },
       {
-        name: 'transport-request',
-        link: "#",
-        label: 'Faire une demande de déplacement',
-        status: [8],
-      },
-      {
         name: 'delete',
         link: "#",
         label: 'Prendre connaissance du refus et supprimer',
         status: [0],
       },
       // {
-      //   name: 'delete',
-      //   link: "#",
-      //   label: "Supprimer le document",
-      //   status: [1],
-      // },
-      // {
-      //   name: 'delete',
-      //   link: "#",
-      //   label: 'Prendre connaissance du refus et supprimer',
-      //   status: [0],
+      //   name: 'ef',
+      //   link: `/utilisateur/${encodeURIComponent('mes-états-de-frais')}`,
+      //   label: "Créer l'état de frais",
+      //   status: [9, 10],
       // },
     ];
   }
@@ -70,7 +58,35 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
       },
     ];
   };
+  
+  if (transports.transport_type.indexOf('plane') !== -1 || transports.transport_type.indexOf('train') !== -1) {
+    buttons.push({
+        name: 'transports',
+        link: "#",
+        label: 'Faire une demande de billets',
+        status: [9],
+      });
+  }
+  if (transports.authorizations) {
+    try {
 
+      transports.authorizations.forEach((auth) => {
+        if (auth.type === 'company-car') {
+          const x = {
+            name: 'demat-car',
+            link: "https://demat.unimes.fr/direction-du-patrimoine/reservation-de-vehicule/ticket?sector=1&service=2",
+            label: 'Faire une demande de véhicule de service',
+            status: [9, 10],
+          };
+          buttons.push(x);
+          throw new Error("Break the loop.")
+        }
+      })
+    }
+    catch(error) {
+
+    }
+  }
   const handleClickOnDelete = () => {
     if (window.confirm("Confirmez-vous la suppression de l'ordre de mission " + name + " ? ")) {
       if (isOm) {
@@ -91,7 +107,17 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
 
         if (button.status.indexOf(status) >= 0) {
           if (button.name !== "submit" || (button.name === "submit" && isDocFinished)) {
-
+            if (button.link.slice(0, 8) === 'https://') {
+              return (
+                <a
+                  href={button.link}
+                  target="_blank"
+                >
+                  {button.label} Dérogation au GDM
+                </a>
+              );
+              
+            }
             return (
               <Link key={button.name} to={button.link}>
                 {button.label}
@@ -100,19 +126,17 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
           }
         }
       })}
-      {downloadFileStatusArray.indexOf(status) >= 0 && <a href={file} download={name + '.pdf'} style={{textAlign: 'center'}}> <FaDownload className='my-documents__files-buttons-icon' /> {isOm ? 'Ordre de Mission' : 'État de Frais'}</a>}
-      {isOm && downloadFileStatusArray.indexOf(status) >= 0 && transports.dispensations.map((dispensation) => (
+      {status > 1 && <a href={file} download={name + '.pdf'} style={{textAlign: 'center'}}> <FaDownload className='my-documents__files-buttons-icon' /> {isOm ? 'Ordre de Mission' : 'État de Frais'}</a>}
+      {(isOm && status >= 1 )&& transports.dispensations.map((dispensation) => (
         <a
-          // key={dispensation.id}
           href={dispensation.file}
           download="dérogation.pdf"
         >
           <FaDownload className='my-documents__files-buttons-icon' /> Dérogation au GDM
         </a>
       ))}
-      {isOm && downloadFileStatusArray.indexOf(status) >= 0 && transports.authorizations.length > 0 && transports.authorizations[0].file !== "pending" && (
+      {(isOm && status >= 1 && transports.authorizations.length > 0 && transports.authorizations[0].file !== "pending") && (
         <a
-          // key={transports.authorizations[0].id}
           href={transports.authorizations[0].file}
           download="demande-d-utilisation-de-vehicule.pdf"
         >

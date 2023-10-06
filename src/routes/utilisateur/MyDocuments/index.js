@@ -127,7 +127,7 @@ const MyDocuments = () => {
     ])
   }
 
-  const omThatCanBeRefunded = userOms.filter((om) => om.status === 2);
+  const omThatCanBeRefunded = userOms.filter((om) => om.status === 9 || om.status === 10);
 
   return (
     <main className="my-documents">
@@ -138,9 +138,8 @@ const MyDocuments = () => {
       {isOm && <Tabs tabs={OMTabs} handler={displayWantedSection} />}
       {!isOm && <Tabs tabs={EFTabs} handler={displayWantedSection} />}
       <NewSection loader={loader} data={documentsList} user={user} steps={steps} currentDoc={currentDoc} isOm={isOm} />
-      {/* {!isOm && <NewSection data={documentsList} steps={steps} currentDoc={currentDoc} />} */}
       <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
-      {isModalOpen && <Modal target={slug.replace(/-/g, ' ')} user={params.slug} loader={loader} userOms={omThatCanBeRefunded} agent={agent} apiMessage={apiMessage} />}
+      {isModalOpen && <Modal target={slug.replace(/-/g, ' ')} user={user} loader={loader} userOms={omThatCanBeRefunded} agent={agent} apiMessage={apiMessage} />}
     </main>
   );
 };

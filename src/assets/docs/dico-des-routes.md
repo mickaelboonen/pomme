@@ -5,14 +5,14 @@
 | Url | Méthode | Cible | Commentaire |
 |--|--|--|--|
 |/||Page d'accueil|Toutes les pages sont protégées et nécessitent une authentification|
-|/utilisateur/{slug}/mes-ordres-de-mission|||Le slug correspont à l'identifiant unimes de l'utilisateur (donc une string)|
-|/utilisateur/{slug}/mes-documents||| Page des pièces justificatives|
-|/utilisateur/{slug}/mes-états-de-frais|||Liste des États de frais et liquidatifs|
-|/utilisateur/{slug}/mes-documents/refus-de-mission|||Notification de refus définitif d'OM|
-|/utilisateur/{slug}/mes-documents/ajouter-un-véhicule|||Ajouter un véhicule aux informations personnelles|
-|/utilisateur/{slug}/mes-documents/modifier-un-véhicule/{id}|||Modifier un véhicule dans les informations personnelles|
-|/utilisateur/{slug}/mes-documents/état-liquidatif-à-signer|||Formulaire de signature de l'état liquidatif|
-|/utilisateur/{slug}/mes-documents/demander-un-déplacement/{id}|||Faire une demande de déplacement au service financier|
+|/utilisateur/mes-ordres-de-mission|||Le slug correspont à l'identifiant unimes de l'utilisateur (donc une string)|
+|/utilisateur/mes-documents||| Page des pièces justificatives|
+|/utilisateur/mes-états-de-frais|||Liste des États de frais et liquidatifs|
+|/utilisateur/mes-documents/refus-de-mission|||Notification de refus définitif d'OM|
+|/utilisateur/mes-documents/ajouter-un-véhicule|||Ajouter un véhicule aux informations personnelles|
+|/utilisateur/mes-documents/modifier-un-véhicule/{id}|||Modifier un véhicule dans les informations personnelles|
+|/utilisateur/mes-documents/état-liquidatif-à-signer|||Formulaire de signature de l'état liquidatif|
+|/utilisateur/mes-documents/demander-un-déplacement/{id}|||Faire une demande de déplacement au service financier|
 |/||||
 |/||||
 |/||||
