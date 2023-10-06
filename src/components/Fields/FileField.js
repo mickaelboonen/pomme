@@ -89,7 +89,7 @@ FileField.defaultProps = {
   link: '',
   isHidden: false,
   placeholder: '',
-  accept: '',
+  accept: '.jpg, .jpeg, .png, .pdf',
   // label: `Pièce${multiple ? 's' : ''} justificative${multiple ? 's' : ''}`,
 }
 
