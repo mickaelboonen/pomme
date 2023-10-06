@@ -26,12 +26,11 @@ const Identity = ({ isEfForm }) => {
   const omId = loader.searchParams.get('id');
   
   const { app: { countries },
-    agent: { agent, agentProfessionalAddress, agentPersonalAddress, user},
+    agent: { agent, agentProfessionalAddress, agentPersonalAddress, user, missingData},
     omForm: { currentOM },
-    docs: { agentSignature },
     vehicle: { vehicleTypes },
   } = useSelector((state) => state);
-  
+  console.log(agentPersonalAddress);
   const agentFullData = {
     ...agent,
     ...agentProfessionalAddress,
@@ -77,7 +76,7 @@ const Identity = ({ isEfForm }) => {
     const file = getValues('om');
     dispatch(uploadFile({ data: {docId: omId , file: file, date: validationDate, agent: user}, step: 'om'}))
   }
-
+  
   return (
     <>
       <form className="form">
@@ -125,6 +124,7 @@ const Identity = ({ isEfForm }) => {
             countries={countries}
             stepNumber='Pro'
           />
+          {missingData && <p className="form__section-field-error form__section-field-error--open" style={{margin: '1rem'}}>Les informations concernant votre adresse personnelle n'ont pas pu être récupérées. Veuillez vous rapprocher de la DSI ou de la DRH.</p>}
         </div>
         <div className="form__section">
           <FormSectionTitle>Personnel</FormSectionTitle>
@@ -217,29 +217,33 @@ const Identity = ({ isEfForm }) => {
           </p>
         </div>
         <div className="form__section">
-          <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
-            <BlobProvider document={<OmPdf validationDate={validationDate} countries={countries} agentSignature={agentSignature} data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />}>
-              {({ blob }) => {
+          {!missingData && (
+            <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
+              <BlobProvider document={<OmPdf validationDate={validationDate} countries={countries} data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />}>
+                {({ blob }) => {
 
-                const file = new File([blob], currentOM.name, {type: 'pdf'});
-                const fileUrl = URL.createObjectURL(file);
-                
-                setValue('om', file);
+                  const file = new File([blob], currentOM.name, {type: 'pdf'});
+                  const fileUrl = URL.createObjectURL(file);
+                  
+                  setValue('om', file);
 
-                return (
-                  <>
-                    <a href={fileUrl} download={currentOM.name + '.pdf'} style={{textAlign: 'center'}}>
-                      <button type='button' files={file} onClick={generatePDF}>Valider les données <br /> et télécharger <br /> l'Ordre de Mission</button>
-                    </a>
-                    <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
-                      Visualiser <br /> le document
-                    </button>
-                  </>
-                );
-              }}
-            </BlobProvider>
-          </div>
-          <Link to={"/utilisateur/" + user + "/mes-ordres-de-mission"} style={{display: 'block', marginBottom: '2rem', textAlign: 'center'}}>Retour au menu des Ordres de Mission</Link>
+                  return (
+                    <>
+                      {!missingData && (
+                        <a href={fileUrl} download={currentOM.name + '.pdf'} style={{textAlign: 'center'}}>
+                          <button type='button' files={file} onClick={generatePDF}>Valider les données <br /> et télécharger <br /> l'Ordre de Mission</button>
+                        </a>
+                      )}
+                      <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
+                        Visualiser <br /> le document
+                      </button>
+                    </>
+                  );
+                }}
+              </BlobProvider>
+            </div>
+          )}
+          <Link to={"/utilisateur/" + user + "/mes-ordres-de-mission"} style={{display: 'block', margin: '2rem auto', textAlign: 'center'}}>Retour au menu des Ordres de Mission</Link>
         </div>
       </form>
       {isPdfVisible && (
@@ -248,7 +252,7 @@ const Identity = ({ isEfForm }) => {
             <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer la fenêtre</p>
           </div>
           <PDFViewer>
-            <OmPdf validationDate={validationDate} countries={countries} agentSignature={agentSignature} data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />
+            <OmPdf validationDate={validationDate} countries={countries}  data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />
           </PDFViewer>
         </div>
       )}

@@ -15,7 +15,8 @@ const initialState = {
   agentPersonalAddress: {},
   loader: false,
   currentDoc: {},
-  agentPreferences: {}
+  agentPreferences: {},
+  missingData: true
 };
 
 const agentSlice = createSlice({
@@ -106,6 +107,13 @@ const agentSlice = createSlice({
         state.agentProfessionalAddress = extractAgentProfessionalAddress(action.payload.professionalAddress);
         state.agentPersonalAddress = extractAgentPersonalAddress(action.payload.personalAddress);
         state.agent = extractUserData(action.payload);
+
+        if (action.payload.personalAddress === null) {
+          state.missingData = true;
+        }
+        else {
+          state.missingData = false;
+        }
       },
       getAgentPreferences: () => {},
       saveAgentPreferences: (state, action) => {

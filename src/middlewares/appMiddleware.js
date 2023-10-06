@@ -96,7 +96,7 @@ const appMiddleware = (store) => (next) => (action) => {
             store.dispatch(setLoader(false));
         })
         .catch((error) => {
-          console.error('get signature', error);
+          console.error('get agent full data', error);
           // store.dispatch(showTicketCreationResponse(error.response))
 
           // TODO : Temporary solution to fetch user Data after the first fail
