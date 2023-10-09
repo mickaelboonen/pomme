@@ -1,6 +1,10 @@
-export const bisArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+export const bisArray = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
   
 export const streetType = [
+  {
+    id: '',
+    name: "",
+  },
   {
     id: 'R',
     name: "Rue",
@@ -68,9 +72,5 @@ export const streetType = [
   {
     id: 'SQ',
     name: "Square",
-  },
-  {
-    id: '',
-    name: "",
-  },
+  }
 ];

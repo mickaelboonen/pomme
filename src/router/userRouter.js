@@ -39,9 +39,10 @@ export default {
           element: <MyAccount />,
           loader: async ({ request }) => {
             const url = new URL(request.url);
+            const { agent : { user } } = store.getState((state) => state);
             
-            store.dispatch(findPermFilesByAgent({agent: url.pathname.split('/')[2]}))
-            store.dispatch(getVehicles({agent: url.pathname.split('/')[2]}));
+            store.dispatch(findPermFilesByAgent({agent: user}))
+            store.dispatch(getVehicles({agent: user}));
           }
         },
         {

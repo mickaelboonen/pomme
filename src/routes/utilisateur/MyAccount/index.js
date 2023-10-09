@@ -31,15 +31,15 @@ const MyAccount = () => {
   const dispatch = useDispatch();
 
   const {docs: { isModalOpen, agentDocs },
-  agent: { user },
+  agent: { user, agent },
     vehicle: { vehicles },
   } = useSelector((state) => state);
-
+  // console.log(agent);
 
   const docs = {
     cni: agentDocs.find((doc) => doc.type === 'cni'),
     passport: agentDocs.find((doc) => doc.type === 'passport'),
-    // signature: agentDocs.find((doc) => doc.type === 'signature'),
+    signature: agentDocs.find((doc) => doc.type === 'signature'),
     rib: agentDocs.find((doc) => doc.type === 'rib'),
     drivingLicense: agentDocs.find((doc) => doc.type === 'driving-license'),
     insurance: agentDocs.find((doc) => doc.type === 'insurance'),
@@ -93,16 +93,18 @@ const MyAccount = () => {
           handler={null}
           user={user}
         />
-        {/* <FileManager
-          icon={<FaSignature
-            className='file-displayer__icon-container-icon'
-          />}
-          id="signature"
-          label="Signature"
-          file={docs.signature}
-          handler={null}
-          user={user}
-        /> */}
+        {agent.roles.indexOf('MANAGER') >= 0 && (
+          <FileManager
+            icon={<FaSignature
+              className='file-displayer__icon-container-icon'
+            />}
+            id="signature"
+            label="Signature"
+            file={docs.signature}
+            handler={null}
+            user={user}
+          />
+        )}
         <FileManager
           icon={<FaCreditCard
             className='file-displayer__icon-container-icon'
