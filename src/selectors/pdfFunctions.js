@@ -1,13 +1,14 @@
-import { getDDMMYYDate } from "./dateFunctions";
+import { getDDMMYYDate, getHHMMTime } from "./dateFunctions";
 
 /**
  * 
  * @returns string
  */
 export const setValidationDate = () =>  {
+
   const nowTimestamp = Date.now();
   const now = new Date(nowTimestamp);
-  const date = getDDMMYYDate(now, '-');
+  const date = getDDMMYYDate(now , '-');
   const splitDate = now.toString().split(' ');
     
   return date + ' ' + splitDate[4];

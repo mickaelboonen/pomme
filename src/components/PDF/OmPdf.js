@@ -19,9 +19,11 @@ Font.register({ family: 'Radjhani', src: RadjhaniFont });
 
 import { styles } from './pdfStyles';
 import { setValidationDateForPdf } from '../../selectors/pdfFunctions';
+import { useSelector } from 'react-redux';
 
-const OmPdf = ({ data, agent, vehicleTypes, validationDate, countries}) => {
+const OmPdf = ({ data, agent, creationDate, validationDate, vehicleTypes, countries, manager, signature}) => {
   
+  // const { vehicle: {  }} = useSelector((state) => state);
   const {mission, transports, accomodations, advance, more} = data;
   
   const dep = new Date(mission.departure);
@@ -83,36 +85,38 @@ const OmPdf = ({ data, agent, vehicleTypes, validationDate, countries}) => {
   const maxMealsNumber = getMaxMealsAndNights(mission);
   const freeMeals = maxMealsNumber - (accomodations.meals_paid_by_agent + accomodations.meals_in_admin_restaurants);
   
-  const gestArray = ['%', 'UB', 'CR', 'Code Nacres', 'Code LOLF', 'Code Analytique'];
-  const test = [
+  const budget = [
     {
-      cat: '%',
+      name: '%',
       property: 'percent'
     },
     {
-      cat: 'UB',
+      name: 'UB',
       property: 'ub'
     },
     {
-      cat: 'CR',
+      name: 'CR',
       property: 'cr'
     },
     {
-      cat: 'Code Nacres',
+      name: 'Code Nacres',
       property: 'code_nacres'
     },
     {
-      cat: 'Code LOLF',
+      name: 'Code LOLF',
       property: 'code_lolf'
     },
     {
-      cat: 'Code Analytique',
+      name: 'Code Analytique',
       property: 'code_analytique'
     },
   ]
+
+  // console.log(data.management.workflow);
+  // console.log(manager);
   
   return (
-    <Document>
+    // <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.header} fixed>
           <Image
@@ -133,10 +137,10 @@ const OmPdf = ({ data, agent, vehicleTypes, validationDate, countries}) => {
         <View style={styles.section} wrap={false}>
             <Text style={styles.section.title}>SERVICE OU DÉPARTEMENT</Text>
             <View style={{display: 'flex', width: '100%', flexDirection: 'row', borderBottom: '1px solid #1a1a1a', borderRight: '1px solid #1a1a1a'}}>
-              {test.map((cat) => (
-                <View key={cat.cat} style={[styles.section.gest, { width: '17%', display: 'block'}]}>
+              {budget.map((cat) => (
+                <View key={cat.name} style={[styles.section.gest, { width: '17%', display: 'block'}]}>
                   <View style={{fontWeight: 800, textAlign: 'center', backgroundColor: '#c1c1c1'}}>
-                    <Text>{cat.cat}</Text>
+                    <Text>{cat.name}</Text>
                   </View>
                   <View style={{borderTop: '1px solid #1a1a1a'}}>
                     <Text style={{ textAlign: 'center', minHeight: 16}}>{data.management ? data.management[cat.property]: '' }</Text>
@@ -245,20 +249,32 @@ const OmPdf = ({ data, agent, vehicleTypes, validationDate, countries}) => {
         <View style={styles.section} wrap={false}>
           <Text style={styles.section.title} wrap={false}>SIGNATURE</Text>
           <View style={[styles.section.subsection, {height: 150, padding: 5}]}>
-              <Text style={styles.section.text}>Ordre de Mission créé par {agent.lastname.toUpperCase()} {agent.firstname}, le {setValidationDateForPdf(validationDate)}.</Text>
+              <Text style={styles.section.text}>Ordre de Mission créé par {agent.lastname.toUpperCase()} {agent.firstname}, le {setValidationDateForPdf(creationDate)}.</Text>
               <Text style={styles.section.text} />
               <Text style={styles.section.text} />
-              <Text style={styles.section.text}>Validé à Nîmes, le __/__/____.</Text>
+              <Text style={styles.section.text}>Validé à Nîmes, le {validationDate ? setValidationDateForPdf(validationDate) : '__/__/____'}.</Text>
               <Text style={styles.section.text}>Signature de l'ordonnateur.rice (Président, DGS, VP) :</Text>
+              {signature !== '' && (
+                <Image
+                  src={signature}
+                  style={styles.header.image}
+                />
+              )}
           </View>
         </View>
       </Page>
-    </Document>
+    // </Document>
   );
 };
 
 OmPdf.propTypes = {
-
+  
 };
+
+OmPdf.defaultProps = {
+  signature: '',
+  // handler: null
+}
+
 
 export default OmPdf;

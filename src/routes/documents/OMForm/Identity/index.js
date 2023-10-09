@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useLoaderData, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
+import { BlobProvider, Document, PDFViewer } from '@react-pdf/renderer';
 
 import '../style.scss';
 
@@ -70,11 +70,11 @@ const Identity = ({ isEfForm }) => {
     }
   }
   
-  const validationDate = setValidationDate();
+  const creationDate = setValidationDate(currentOM.created_at);
   
   const generatePDF = () => {
     const file = getValues('om');
-    dispatch(uploadFile({ data: {docId: omId , file: file, date: validationDate, agent: user}, step: 'om'}))
+    dispatch(uploadFile({ data: {docId: omId , file: file, date: creationDate, agent: user}, step: 'om'}))
   }
   
   return (
@@ -219,7 +219,11 @@ const Identity = ({ isEfForm }) => {
         <div className="form__section">
           {!missingData && (
             <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
-              <BlobProvider document={<OmPdf validationDate={validationDate} countries={countries} data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />}>
+              <BlobProvider document={
+                <Document>
+                  <OmPdf creationDate={creationDate} countries={countries} data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />
+                </Document>
+              }>
                 {({ blob }) => {
 
                   const file = new File([blob], currentOM.name, {type: 'pdf'});
@@ -252,7 +256,9 @@ const Identity = ({ isEfForm }) => {
             <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer la fenêtre</p>
           </div>
           <PDFViewer>
-            <OmPdf validationDate={validationDate} countries={countries}  data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />
+            <Document>
+              <OmPdf creationDate={creationDate} countries={countries}  data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />
+            </Document>
           </PDFViewer>
         </div>
       )}

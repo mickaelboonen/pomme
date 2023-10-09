@@ -7,8 +7,8 @@ const initialState = {
   agent: {},
   agentProfessionalAddress: {},
   agentPersonalAddress: {},
-  loader: false,
-  signature: ''
+  loader: true,
+  signature: null
 };
 
 const agentSlice = createSlice({

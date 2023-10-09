@@ -44,8 +44,8 @@ const OMForm = () => {
         dispatch(resetOmsOnDisplay());
       }, "950")
       setTimeout(() => {
-        const explodedUrl =  loaderData.pathname.split('/');
-        navigate(`/${explodedUrl[1]}/${explodedUrl[2]}/${encodeURIComponent('ordres-de-mission-à-signer')}`);
+        // const explodedUrl =  loaderData.pathname.split('/');
+        navigate(`/gestionnaire/${encodeURIComponent('ordres-de-mission-à-signer')}`);
         
       }, "1000")
     }

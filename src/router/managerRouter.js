@@ -133,13 +133,10 @@ export default {
             const url = new URL(request.url);
             const id = Number(url.searchParams.get("id"));
     
-            const { agent: { user }, omManager: { pendingDocs }} = store.getState();
-            // store.dispatch(getDocument({type: 'signature', id: user}));
+            const { agent: { user }, omManager: { pendingDocs }} = store.getState();   
             store.dispatch(fetchTmpSignature({id: user}));
-            // const id = Number(request.url.searchParams.get('id'));
 
             const currentOM = pendingDocs.find((om) => om.id === id);
-            console.log(pendingDocs, id);
             store.dispatch(fetchTmpUserData({id: currentOM.missioner}))
             return url},
         },

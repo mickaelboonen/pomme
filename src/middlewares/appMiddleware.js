@@ -43,7 +43,10 @@ const appMiddleware = (store) => (next) => (action) => {
           store.dispatch(saveTmpSignature(response.data))
         })
         .catch((error) => {
-          store.dispatch(setApiResponse(error));
+          // console.log(error);
+          if (error.response.status !== 404) {
+            store.dispatch(setApiResponse(error));
+          }
         });
       break;
     case 'app/getDocument':

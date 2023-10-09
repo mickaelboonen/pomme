@@ -11,7 +11,7 @@ import ButtonElement from 'src/components/Fields/ButtonElement';
 
 import {  getAllFilenamesForProperty } from 'src/selectors/formDataGetters';
 
-import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
+import { BlobProvider, Document, PDFViewer } from '@react-pdf/renderer';
 import ValidationMonitoringPdf from 'src/components/PDF/ValidationMonitoringPdf';
 
 // import './style.scss';
@@ -239,7 +239,11 @@ const ValidateOm = ({
       </div>
     </div>
     <div className="form__section-field">
-      <BlobProvider document={<ValidationMonitoringPdf om={om} agent={agent} isGest={true} gestData={watch()} />}>
+      <BlobProvider document={
+        <Document>
+          <ValidationMonitoringPdf om={om} agent={agent} isGest={true} gestData={watch()} />
+        </Document>
+      }>
         {({ blob }) => {          
           const file = new File([blob], "monitoring-om-" + om.id, {type: 'pdf'});
           

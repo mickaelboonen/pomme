@@ -354,7 +354,6 @@ export const extractUserData = (data) => {
 }
 
 export const extractAgentPersonalAddress = (data) => {
-  console.log("IN extractAgentPersonalAddress = ", data);
   if (data === null) {
     return {
       bis: '',

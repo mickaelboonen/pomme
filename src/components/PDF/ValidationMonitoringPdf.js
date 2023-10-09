@@ -14,10 +14,10 @@ import { styles } from './pdfStyles';
 
 const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user, isOm}) => {
   // console.log("**************************", user, om.management.workflow);
-  console.log(om);
+  // console.log(om);
   
   return (
-  <Document>
+  // <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.section}>
         <Text style={{textAlign: 'center', fontSize: "30"}}>BORDEREAU DE SIGNATURE</Text>
@@ -146,7 +146,7 @@ const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user, isOm}) => 
         <View style={{borderTop: '1px solid #1f1f1f'}} />
       </View>
     </Page>
-  </Document>
+  // </Document>
 );}
 
 ValidationMonitoringPdf.propTypes = {
