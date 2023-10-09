@@ -15,6 +15,7 @@ import CasClient, { constant } from "react-cas-client";
 import { setLoader } from '../reducer/omForm';
 import { fetchUserData, setApiResponse } from '../reducer/app';
 import { saveEf } from 'src/reducer/ef';
+import { saveTmpUserData, saveTmpSignature } from 'src/reducer/tmpReducer';
 
 
 let casEndpoint = "cas.unimes.fr";
@@ -35,11 +36,11 @@ const appMiddleware = (store) => (next) => (action) => {
   // setTokenOnApi(token);
 
   switch (action.type) {
-    case 'app/fetchUserSignature':
-        api.get("/api/agent/get-data", action.payload)
+    case 'tmp/fetchTmpSignature':
+        api.post("/api/agent/signature", action.payload)
         .then((response) => {
           
-          store.dispatch(saveSignature(response.data))
+          store.dispatch(saveTmpSignature(response.data))
         })
         .catch((error) => {
           store.dispatch(setApiResponse(error));
@@ -107,6 +108,17 @@ const appMiddleware = (store) => (next) => (action) => {
           }
         });
       break;
+      case 'tmp/fetchTmpUserData':
+        api.post("/api/agent/get-data/full", action.payload)
+          .then((response) => {
+              store.dispatch(saveTmpUserData(response.data));
+              store.dispatch(setLoader(false));
+          })
+          .catch((error) => {
+            console.error('get agent full data', error);
+          });
+        break;
+  
     case 'app/fetchCountries':      
       api.get("/api/countries/list")
         .then((response) => {

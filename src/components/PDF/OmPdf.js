@@ -84,6 +84,32 @@ const OmPdf = ({ data, agent, vehicleTypes, validationDate, countries}) => {
   const freeMeals = maxMealsNumber - (accomodations.meals_paid_by_agent + accomodations.meals_in_admin_restaurants);
   
   const gestArray = ['%', 'UB', 'CR', 'Code Nacres', 'Code LOLF', 'Code Analytique'];
+  const test = [
+    {
+      cat: '%',
+      property: 'percent'
+    },
+    {
+      cat: 'UB',
+      property: 'ub'
+    },
+    {
+      cat: 'CR',
+      property: 'cr'
+    },
+    {
+      cat: 'Code Nacres',
+      property: 'code_nacres'
+    },
+    {
+      cat: 'Code LOLF',
+      property: 'code_lolf'
+    },
+    {
+      cat: 'Code Analytique',
+      property: 'code_analytique'
+    },
+  ]
   
   return (
     <Document>
@@ -107,17 +133,17 @@ const OmPdf = ({ data, agent, vehicleTypes, validationDate, countries}) => {
         <View style={styles.section} wrap={false}>
             <Text style={styles.section.title}>SERVICE OU DÉPARTEMENT</Text>
             <View style={{display: 'flex', width: '100%', flexDirection: 'row', borderBottom: '1px solid #1a1a1a', borderRight: '1px solid #1a1a1a'}}>
-              {gestArray.map((cat) => (
-                <View key={cat} style={[styles.section.gest, { width: '17%', display: 'block'}]}>
+              {test.map((cat) => (
+                <View key={cat.cat} style={[styles.section.gest, { width: '17%', display: 'block'}]}>
                   <View style={{fontWeight: 800, textAlign: 'center', backgroundColor: '#c1c1c1'}}>
-                    <Text>{cat}</Text>
+                    <Text>{cat.cat}</Text>
                   </View>
                   <View style={{borderTop: '1px solid #1a1a1a'}}>
-                    <Text style={{ textAlign: 'center', minHeight: 16}}></Text>
+                    <Text style={{ textAlign: 'center', minHeight: 16}}>{data.management ? data.management[cat.property]: '' }</Text>
                   </View>
-                  <View style={{borderTop: '1px solid #1a1a1a'}}>
-                    <Text style={{ textAlign: 'center', minHeight: 16}}></Text>
-                  </View>
+                  {/* <View style={{borderTop: '1px solid #1a1a1a'}}> */}
+                    {/* <Text style={{ textAlign: 'center', minHeight: 16}}></Text> */}
+                  {/* </View> */}
                 </View>
               ))}
 

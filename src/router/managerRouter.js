@@ -16,9 +16,11 @@ import { useSelector } from "react-redux";
 
 import { getAgentPreferences } from 'src/reducer/agent';
 import { setManagerLoader } from "../reducer/omManager";
+import { getDocument } from "../reducer/app";
+import { fetchTmpSignature, fetchTmpUserData } from "../reducer/tmpReducer";
 
 export default {
-  path: 'gestionnaire/:slug/',
+  path: 'gestionnaire/',
   children: [
     {
       path: encodeURIComponent('ordres-de-mission-à-signer'),
@@ -127,7 +129,19 @@ export default {
         {
           path: 'ordre-de-mission',
           element: <Delegation isOm={true} />,
-          loader: async ({ request }) => new URL(request.url),
+          loader: async ({ request }) => {
+            const url = new URL(request.url);
+            const id = Number(url.searchParams.get("id"));
+    
+            const { agent: { user }, omManager: { pendingDocs }} = store.getState();
+            // store.dispatch(getDocument({type: 'signature', id: user}));
+            store.dispatch(fetchTmpSignature({id: user}));
+            // const id = Number(request.url.searchParams.get('id'));
+
+            const currentOM = pendingDocs.find((om) => om.id === id);
+            console.log(pendingDocs, id);
+            store.dispatch(fetchTmpUserData({id: currentOM.missioner}))
+            return url},
         },
         {
           path: encodeURIComponent('état-de-frais'),

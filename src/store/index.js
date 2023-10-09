@@ -29,13 +29,14 @@ import appMiddleware from '../middlewares/appMiddleware';
 import vehicleMiddleware from '../middlewares/vehicleMiddleware';
 import omManagerMiddleware from '../middlewares/omManagerMiddleware';
 import travelProgramMiddleware from '../middlewares/travelProgramMiddleware';
+import tmpReducer from '../reducer/tmpReducer';
 
 const persistConfig = {
   key: 'root',
   version: 1,
   storage,
   whitelist: ['agent', 'app', 'omManager'],
-  blacklist: ['docs', 'omForm', 'ef', '_persist', 'app.apiMessage', 'app.agentDocuments', 'omManager.pendingDocs'],
+  blacklist: ['docs', 'omForm', 'ef', '_persist', 'app.apiMessage', 'app.agentDocuments', 'omManager.pendingDocs', 'tmp'],
   stateReconciler: autoMergeLevel2 // ADDED
 };
 
@@ -48,6 +49,7 @@ const reducers = combineReducers({
   docs: otherDocsReducer,
   vehicle: vehicleReducer,
   omManager: omManagerReducer,
+  tmp: tmpReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers);

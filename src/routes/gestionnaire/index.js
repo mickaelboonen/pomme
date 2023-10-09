@@ -86,10 +86,10 @@ const Gestionnaires = ({ isOm }) => {
             {docsToDisplay.map((doc) => {
               let link = '';
               if (doc.status === 2 ) {
-                link = `/gestionnaire/${user}/valider-un-document/${target}?etape=1&id=${doc.id}${!isOm ? '&om=' + doc.om.id : ''}`;
+                link = `/gestionnaire/valider-un-document/${target}?etape=1&id=${doc.id}${!isOm ? '&om=' + doc.om.id : ''}`;
               }
               else {
-                link = `/gestionnaire/${user}/viser-un-document/${target}?id=${doc.id}`;
+                link = `/gestionnaire/viser-un-document/${target}?id=${doc.id}`;
               }
               return (
                 <Link key={doc.id} to={link}>{doc.name}</Link>

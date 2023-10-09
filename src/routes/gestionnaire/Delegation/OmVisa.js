@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
-import { useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 import { FaEye, FaDownload, FaEyeSlash } from 'react-icons/fa';
 import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
 
@@ -10,29 +10,67 @@ import '../style.scss';
 // Components
 import TextareaField from 'src/components/Fields/TextareaField';
 import ButtonElement from 'src/components/Fields/ButtonElement';
+import FileField from 'src/components/Fields/FileField';
+import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import RadioInput from 'src/components/Fields/RadioInput';
 import HiddenField from 'src/components/Fields/HiddenField';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ValidationMonitoringPdf from 'src/components/PDF/ValidationMonitoringPdf';
+import OmPdf from 'src/components/PDF/OmPdf';
+
+import { setValidationDate } from 'src/selectors/pdfFunctions';
 
 // Actions
+import { getSavedFileName } from 'src/selectors/formDataGetters';
 import {  addEfMonitoringPdf,addOmMonitoringPdf } from 'src/reducer/omManager';
 
-const OmVisa = ({ data, user, agent, isOm }) => {
+const OmVisa = ({ data, user, gest, isOm, om}) => {
 
   const dispatch = useDispatch();
+  const { app: { agentDocuments, countries },
+  vehicle: { vehicleTypes },
+  tmp: { agent, agentProfessionalAddress, agentPersonalAddress, loader}
+} = useSelector((state) => state);
+
   const {
     register,
     watch,
     handleSubmit,
+    setValue,
+    clearErrors,
     formState:
     { errors },
-  } = useForm();
-  
+  } = useForm({
+    defaultValues: {
+      savedSignature: agentDocuments.hasOwnProperty('signature') && agentDocuments.signature.length > 1 ? true : false,}
+  });
+  //---------------------------------------------------------------------------
+
+  const validationDate = setValidationDate();
+
+  const agentFullData = {
+    ...agent,
+    ...agentProfessionalAddress,
+    ...agentPersonalAddress
+  };
+
+
+  console.log(agentFullData);
+  //---------------------------------------------------------------------------
   const submitFunction = (data) => {
 
+    if (data.savedSignature) {
+      delete data.savedSignature;
+      data.signature = agentDocuments.signature;
+    }
     console.log(data);
+    console.log(data.file);
+    // data.file = new File([<BlobProvider document={<ValidationMonitoringPdf om={data} user={user} agent={agent} isGest={false} gestData={data} isOm={isOm} />} />], om.name, {type: 'pdf'})
+    data.file = new File([<BlobProvider document={<OmPdf validationDate={validationDate} countries={countries} data={om} agent={agentFullData} vehicleTypes={vehicleTypes} />} />], om.name, {type: 'pdf'})
+
+    console.log(data.file);
+    // return;
     if (isOm) {
       dispatch(addOmMonitoringPdf({data: data, task: 'replace', nextAction: data.action === 'validate' ? 'stampOm' : 'rejectVisaOm'}));
     }
@@ -42,6 +80,7 @@ const OmVisa = ({ data, user, agent, isOm }) => {
 
     
   };
+  let signatureFilename = agentDocuments.signature ? getSavedFileName(agentDocuments.signature) : '';
 
   const [viewer, setViewer] = useState('');
   const isFileTooLong = data.file.length > 2000000 ? true : false;
@@ -49,6 +88,7 @@ const OmVisa = ({ data, user, agent, isOm }) => {
   const handleClick = () => {
     viewer === '' ? setViewer(data.file) : setViewer('');
   }
+  const savedSignature = watch('savedSignature');
   
   
   const [isPdfVisible, setIsPdfVisible] = useState(false)
@@ -61,6 +101,10 @@ const OmVisa = ({ data, user, agent, isOm }) => {
     else {
       setIsPdfVisible(true);
     }
+  }
+  
+  const handleSignatureCheckbox = () => {
+    clearErrors('signature');
   }
   return (
     <form className='form'>
@@ -117,38 +161,99 @@ const OmVisa = ({ data, user, agent, isOm }) => {
         </div>
         <HiddenField id="docId" value={data.id} register={register} />
         <HiddenField id="actor" value={user} register={register} />
+      </div>
+      <div className="form__section">
+        <FormSectionTitle>SIGNATURE</FormSectionTitle>
+        <div className="form__section-field">
+          <CheckboxInput
+            register={register}
+            formField="savedSignature"
+            handler={handleSignatureCheckbox}
+            id="saved-signature-field"
+            label="Utiliser la signature enregistrée dans mon profil"
+          />
+        </div>
 
+        {!savedSignature && (
+          <FileField 
+            register={register}
+            formField="signature"
+            id="signature-field"
+            error={errors.signature}
+            setValue={setValue}
+            fileName={signatureFilename}
+          />
+        )}
+      </div>
+      <div className='form__section'>
         <div className="form__section-field-buttons" style={{textAlign: 'center'}}>
-          <BlobProvider document={<ValidationMonitoringPdf om={data} user={user} agent={agent} isGest={false} gestData={watch()} isOm={isOm} />}>
+          <BlobProvider document={<ValidationMonitoringPdf om={data} user={user} agent={gest} isGest={false} gestData={watch()} isOm={isOm} />}>
             {({ blob }) => (
               <>
                 <button type="button" onClick={() => { const data = watch(); data.file = new File([blob], data.name, {type: 'pdf'}); submitFunction(data);}}>
                 {/* <button type="button" onClick={() => { const data = watch(); data.file = new File([blob], data.name, {type: 'pdf'}); handleSubmit(onSubmit);submitFunction(data)}}> */}
                   Valider le document
                 </button>
-                 <a href={URL.createObjectURL(new File([blob], data.name, {type: 'pdf'}))} download={'currentOM.name' + '.pdf'} style={{textAlign: 'center'}}>
-                   <button type='button' files={new File([blob], data.name, {type: 'pdf'})} onClick={() => {}}>DOWNLOAD</button>
-                 </a>
-                <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
-                  VOIR
-                </button>
+                {gest.roles.indexOf('MANAGER') && (
+                  <>
+                    <a href={URL.createObjectURL(new File([blob], data.name, {type: 'pdf'}))} download={'currentOM.name' + '.pdf'} style={{textAlign: 'center'}}>
+                       <button type='button' files={new File([blob], data.name, {type: 'pdf'})} onClick={() => {}}>DOWNLOAD</button>
+                     </a>
+                    <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
+                      VOIR
+                    </button>
+                  </>
+                )}
               </>
             )}
           </BlobProvider>
-          <ButtonElement
+          { !loader &&(
+          <BlobProvider document={<OmPdf validationDate={validationDate} countries={countries} data={om} agent={agentFullData} vehicleTypes={vehicleTypes} />}>
+            {({ blob }) => (
+              <>
+                <button type="button" onClick={() => { const data = watch(); data.file = new File([blob], data.name, {type: 'pdf'}); submitFunction(data);}}>
+                {/* <button type="button" onClick={() => { const data = watch(); data.file = new File([blob], data.name, {type: 'pdf'}); handleSubmit(onSubmit);submitFunction(data)}}> */}
+                  Valider le document
+                </button>
+                {gest.roles.indexOf('MANAGER') && (
+                  <>
+                    <a href={URL.createObjectURL(new File([blob], data.name, {type: 'pdf'}))} download={'currentOM.name' + '.pdf'} style={{textAlign: 'center'}}>
+                       <button type='button' files={new File([blob], data.name, {type: 'pdf'})} onClick={() => {}}>DOWNLOAD</button>
+                     </a>
+                    <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
+                      VOIR
+                    </button>
+                  </>
+                )}
+              </>
+            )}
+          </BlobProvider>
+          )}
+
+          {/* <ButtonElement
             type="button"
+            label="Retour"
+          /> */}
+        </div>
+
+      </div>
+      <div className="form__section">
+        <div className='form__section-field-buttons form__section-field-buttons--solo'>
+          <ButtonElement
+            // type="button"
+            isLink
+            link={"/gestionnaire/" + encodeURIComponent(isOm ? 'ordres-de-mission-à-signer' : 'états-de-frais-à-signer')}
             label="Retour"
           />
         </div>
       </div>
-      
       {isPdfVisible && (
         <div className="pdf-viewer">
           <div className="pdf-viewer__nav">
             <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer la fenêtre</p>
           </div>
           <PDFViewer>
-            <ValidationMonitoringPdf om={data} user={user} agent={agent} isGest={false} gestData={watch()} />
+            <ValidationMonitoringPdf om={data} user={user} agent={gest} isGest={false} gestData={watch()} />
           </PDFViewer>
         </div>
       )}

@@ -17,14 +17,15 @@ const Delegation = ({ isOm }) => {
   const navigate = useNavigate()
   const url = useLoaderData();
   const id = Number(url.searchParams.get('id'));
-  const explodedUrl = url.pathname.split('/');
+  // const explodedUrl = url.pathname.split('/');
   const endpoint = encodeURIComponent((isOm ? 'ordres-de-mission' : 'états-de-frais') + '-à-signer');
-  const returnLink = `/${explodedUrl[1]}/${explodedUrl[2]}/${endpoint}`;
+  const returnLink = `/gestionnaire/${endpoint}`;
   // console.log(returnLink);
   
   const { app: { apiMessage }, agent: { agent, user }, omManager: { pendingDocs } } = useSelector((state) => state);
   const currentOM = pendingDocs.find((om) => om.id === id);
   
+  console.log(agent);
   useEffect(() => {
     if (apiMessage.response && apiMessage.response.status === 200) {
       setTimeout(() => {
@@ -43,7 +44,7 @@ const Delegation = ({ isOm }) => {
       <div className="form-page__title">
         <PageTitle>{currentOM !== undefined ? currentOM.name : "Document non trouvé"}</PageTitle>
       </div>
-      {pendingDocs.length > 0 && <OmVisa user={user} data={currentOM} agent={agent} isOm={isOm} />}
+      {pendingDocs.length > 0 && <OmVisa user={user} data={currentOM} gest={agent} isOm={isOm} om={currentOM}/>}
       {pendingDocs.length === 0 && <Link to={returnLink}>Veuillez retourner sur le menu des ordres de mission</Link>}
     </div>
   );
