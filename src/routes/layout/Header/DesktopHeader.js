@@ -34,11 +34,12 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
         <Link to="/" className="header__identity-logo">
           <p>POM</p>
         </Link>
-        {(user === 'mboone01' || user === 'nathalie' || user === 'sseddo01' ) && (
+        {(user === 'mboone01' || user === 'fjacquet' || user === 'nathalie' || user === 'sseddo01' ) && (
           <div style={{height: '100%', display: 'flex', flexDirection: 'column', zIndex: '999'}}>
             <button onClick={() => {dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))}}>Moi</button>
             <button onClick={() => {dispatch(checkAuthentication({username : 'nathalie', password: 'fsdf'}))}}>Nathalie</button>
             <button onClick={() => {dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))}}>S. Seddoukki</button>
+            <button onClick={() => {dispatch(checkAuthentication({username : 'fjacquet', password: 'fsdf'}))}}>Fabrice</button>
           </div>
         )}
         {(user === 'mboone01' || user === 'nathalie' || user === 'emonte01' ||user === 'ymarti01' || user === 'acadie02' ||user === 'clegalla' ||user === 'sseddo01' ) && (

@@ -4,7 +4,7 @@ import { extractUserData, extractAgentPersonalAddress, extractAgentProfessionalA
 const defaultUser = process.env.NODE_ENV === 'development' ? process.env.DEFAULT_USER : '';
 
 const initialState = {
-  agent: {},
+  tmpAgent: {},
   agentProfessionalAddress: {},
   agentPersonalAddress: {},
   loader: true,
@@ -21,7 +21,7 @@ const agentSlice = createSlice({
       saveTmpUserData: (state, action) => {
         state.agentProfessionalAddress = extractAgentProfessionalAddress(action.payload.professionalAddress);
         state.agentPersonalAddress = extractAgentPersonalAddress(action.payload.personalAddress);
-        state.agent = extractUserData(action.payload);
+        state.tmpAgent = extractUserData(action.payload);
         state.loader = false;
         if (action.payload.personalAddress === null) {
           state.missingData = true;

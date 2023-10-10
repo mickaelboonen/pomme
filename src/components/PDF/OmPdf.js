@@ -18,10 +18,19 @@ import { getMaxMealsAndNights } from 'src/selectors/formValidationsFunctions';
 Font.register({ family: 'Radjhani', src: RadjhaniFont });
 
 import { styles } from './pdfStyles';
-import { setValidationDateForPdf } from '../../selectors/pdfFunctions';
+import { setValidationDateForPdf, setValidationDate } from '../../selectors/pdfFunctions';
 import { useSelector } from 'react-redux';
 
-const OmPdf = ({ data, agent, creationDate, validationDate, vehicleTypes, countries, manager, signature}) => {
+const OmPdf = ({
+  data,
+  agent,
+  // creationDate,
+  // validationDate,
+  vehicleTypes,
+  countries,
+  manager,
+  signature
+}) => {
   
   // const { vehicle: {  }} = useSelector((state) => state);
   const {mission, transports, accomodations, advance, more} = data;
@@ -113,8 +122,9 @@ const OmPdf = ({ data, agent, creationDate, validationDate, vehicleTypes, countr
   ]
 
   // console.log(data.management.workflow);
-  // console.log(manager);
-  
+  // console.log("MANAGER = ", manager);
+  const creationDate = setValidationDate(data.created_at);
+  const validationDate = signature ? setValidationDate() : null;
   return (
     // <Document>
       <Page size="A4" style={styles.page}>
@@ -143,7 +153,8 @@ const OmPdf = ({ data, agent, creationDate, validationDate, vehicleTypes, countr
                     <Text>{cat.name}</Text>
                   </View>
                   <View style={{borderTop: '1px solid #1a1a1a'}}>
-                    <Text style={{ textAlign: 'center', minHeight: 16}}>{data.management ? data.management[cat.property]: '' }</Text>
+                    {manager && <Text style={{ textAlign: 'center', minHeight: 16}}>{manager[cat.property]}</Text>}
+                    {!manager && <Text style={{ textAlign: 'center', minHeight: 16}}>{data.management ? data.management[cat.property]: '' }</Text>}
                   </View>
                   {/* <View style={{borderTop: '1px solid #1a1a1a'}}> */}
                     {/* <Text style={{ textAlign: 'center', minHeight: 16}}></Text> */}

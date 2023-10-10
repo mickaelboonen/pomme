@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Components
 import FileField from 'src/components/Fields/FileField';
@@ -13,6 +13,8 @@ import {  getAllFilenamesForProperty } from 'src/selectors/formDataGetters';
 
 import { BlobProvider, Document, PDFViewer } from '@react-pdf/renderer';
 import ValidationMonitoringPdf from 'src/components/PDF/ValidationMonitoringPdf';
+import OmPdf from 'src/components/PDF/OmPdf';
+import OmAdvancePdf from 'src/components/PDF/OmAdvancePdf';
 
 // import './style.scss';
 
@@ -20,24 +22,38 @@ import ValidationMonitoringPdf from 'src/components/PDF/ValidationMonitoringPdf'
 import { displayValidationActors } from 'src/reducer/omManager';
 
 const ValidateOm = ({
-  uprOrDep,
+  // uprOrDep,
   register,
   errors,
   setValue,
-  watch,
+  watch, 
   omType,
-  circuits,
+  // channels,
   om,
   submitFunction,
-  agent,
-  validationActorsToDisplay
+  // agent,
+  // validationActorsToDisplay
 }) => {
   const dispatch = useDispatch();
+  const {
+    // omForm: { omLoader, currentOM },
+    omManager: { channels, uprOrDep, validationActorsToDisplay },
+    agent: { agent, user },
+    app: { countries },
+    vehicle: { vehicleTypes },
+    tmp: { tmpAgent, agentProfessionalAddress, agentPersonalAddress }
+  } = useSelector((state) => state)
+
+  const agentFullData = {
+    ...tmpAgent,
+    ...agentProfessionalAddress,
+    ...agentPersonalAddress
+  };
 
   let filesnames = getAllFilenamesForProperty(om.management.management_files);
 
   const handleChannelChange = (event) => {    
-    const selectedChannel = circuits.find((cir) => cir.id === Number(event.target.value));
+    const selectedChannel = channels.find((cir) => cir.id === Number(event.target.value));
     
     if (selectedChannel !== undefined) {
       dispatch(displayValidationActors(selectedChannel));
@@ -84,7 +100,7 @@ const ValidateOm = ({
 
 
   useEffect(() => {
-    const selectedChannel = circuits.find((cir) => cir.shortName === omType[0]);
+    const selectedChannel = channels.find((cir) => cir.shortName === omType[0]);
     if (selectedChannel !== undefined) {
       dispatch(displayValidationActors(selectedChannel));
     }
@@ -104,17 +120,17 @@ const ValidateOm = ({
 
 
   
-  // const [isPdfVisible, setIsPdfVisible] = useState(false)
-
-  // const toggleViewer = (event) => {
-
-  //   if (event.target.id.includes('closer')) {
-  //     setIsPdfVisible(false);
-  //   }
-  //   else {
-  //     setIsPdfVisible(true);
-  //   }
-  // }
+  const [isPdfVisible, setIsPdfVisible] = useState(false)
+ 
+  const toggleViewer = (event) => {
+ 
+    if (event.target.id.includes('closer')) {
+      setIsPdfVisible(false);
+    }
+    else {
+      setIsPdfVisible(true);
+    }
+  }
   
   return (
   <>
@@ -195,7 +211,7 @@ const ValidateOm = ({
       <SelectField
         register={register}
         blankValue="Veuillez sélectionner un circuit de validation"
-        data={circuits}
+        data={channels}
         id="channel-field"
         formField="channel"
         handler={handleChannelChange}
@@ -241,7 +257,34 @@ const ValidateOm = ({
     <div className="form__section-field">
       <BlobProvider document={
         <Document>
-          <ValidationMonitoringPdf om={om} agent={agent} isGest={true} gestData={watch()} />
+          <ValidationMonitoringPdf
+            om={om}
+            user={user}
+            agent={agent}
+            isGest={true}
+            gestData={watch()}
+            isOm={true}
+          />
+          <OmPdf
+            // creationDate={creationDate}
+            // validationDate={validationDate}
+            countries={countries}
+            data={om}
+            agent={agentFullData}
+            vehicleTypes={vehicleTypes}
+            manager={watch()}
+            signature={''}
+          />
+          {om.advance.advance && (
+            <OmAdvancePdf
+              data={om.advance}
+              // validationDate={validationDate}
+              agent={agentFullData}
+              // creationDate={creationDate}
+              gest={om.management.workflow.find((actor) => actor.current_status === 3)}
+              signature={''}
+            />
+          )}
         </Document>
       }>
         {({ blob }) => {          
@@ -252,24 +295,53 @@ const ValidateOm = ({
               <button style={{margin: 'auto'}}type="button" onClick={() => { const data = watch(); data.file = file; submitFunction(data)}}>
                 Valider la demande
               </button>
-              {/* <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
+              <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
                 Visualiser <br /> le document
-              </button> */}
+              </button>
             </>
           );
         }}
       </BlobProvider>
     </div>
-    {/* {isPdfVisible && (
+    {isPdfVisible && (
       <div className="pdf-viewer">
         <div className="pdf-viewer__nav">
           <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer la fenêtre</p>
         </div>
         <PDFViewer className='form__section-recap'>
-          <ValidationMonitoringPdf om={om} agent={agent} isGest={true} gestData={watch('comments')}/>
+        <Document>
+              <ValidationMonitoringPdf
+                om={om}
+                user={user}
+                agent={agent}
+                isGest={true}
+                gestData={watch()}
+                isOm={true}
+              />
+              <OmPdf
+                // creationDate={creationDate}
+                // validationDate={validationDate}
+                countries={countries}
+                data={om}
+                agent={agentFullData}
+                vehicleTypes={vehicleTypes}
+                manager={watch()}
+                signature={''}
+              />
+              {om.advance.advance && (
+                <OmAdvancePdf
+                  data={om.advance}
+                  // validationDate={validationDate}
+                  agent={agentFullData}
+                  // creationDate={creationDate}
+                  gest={om.management.workflow.find((actor) => actor.current_status === 3)}
+                  signature={''}
+                />
+              )}
+            </Document>
         </PDFViewer>
       </div>
-    )} */}
+    )}
   </>
 )};
 

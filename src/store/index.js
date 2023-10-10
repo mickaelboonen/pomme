@@ -20,6 +20,8 @@ import omFormReducer from 'src/reducer/omForm';
 import vehicleReducer from 'src/reducer/vehicle';
 import omManagerReducer from 'src/reducer/omManager';
 import otherDocsReducer from 'src/reducer/otherDocuments';
+import tmpReducer from '../reducer/tmpReducer';
+import dafcReducer from '../reducer/dafc';
 
 // Middlewares
 import omMiddleware from '../middlewares/omMiddleware';
@@ -29,7 +31,7 @@ import appMiddleware from '../middlewares/appMiddleware';
 import vehicleMiddleware from '../middlewares/vehicleMiddleware';
 import omManagerMiddleware from '../middlewares/omManagerMiddleware';
 import travelProgramMiddleware from '../middlewares/travelProgramMiddleware';
-import tmpReducer from '../reducer/tmpReducer';
+import dafcMiddleware from '../middlewares/dafcMiddleware';
 
 const persistConfig = {
   key: 'root',
@@ -49,7 +51,8 @@ const reducers = combineReducers({
   docs: otherDocsReducer,
   vehicle: vehicleReducer,
   omManager: omManagerReducer,
-  tmp: tmpReducer
+  tmp: tmpReducer,
+  dafc: dafcReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers);
@@ -61,7 +64,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(omMiddleware, efMiddleware, fileMiddleware, appMiddleware, vehicleMiddleware, omManagerMiddleware, travelProgramMiddleware),
+    }).concat(omMiddleware, efMiddleware, fileMiddleware, appMiddleware, vehicleMiddleware, omManagerMiddleware, travelProgramMiddleware, dafcMiddleware),
     devTools: process.env.NODE_ENV !== 'production',
 })
 

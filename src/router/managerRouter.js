@@ -56,7 +56,7 @@ export default {
           loader: async ({ request }) => {
             const url = new URL(request.url);
             const step = url.searchParams.get("etape");
-            const id = url.searchParams.get("id");
+            const id = Number(url.searchParams.get("id"));
 
             const { omManager: { pendingDocs }, agent: { agent, user}  } = store.getState((state) => state);
             if (pendingDocs.length === 0) {
@@ -64,9 +64,13 @@ export default {
             }
             
             if (step === '6') {
-                store.dispatch(setLoader(true));
-                store.dispatch(fetchValidationChannels());
-                store.dispatch(fetchOm({id: id}));
+              const currentOM = pendingDocs.find((om) => om.id === id);
+              // console.log(currentOM);
+              store.dispatch(fetchTmpUserData({id: currentOM.missioner}))
+  
+              store.dispatch(setLoader(true));
+              store.dispatch(fetchValidationChannels());
+              store.dispatch(fetchOm({id: id}));
             }
             
           return url;  

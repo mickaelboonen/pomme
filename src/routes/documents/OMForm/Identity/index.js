@@ -8,6 +8,7 @@ import '../style.scss';
 
 // Components
 import OmPdf from 'src/components/PDF/OmPdf';
+import OmAdvancePdf from 'src/components/PDF/OmAdvancePdf';
 import Address from 'src/components/Fields/Address';
 import TextField from 'src/components/Fields/TextField';
 import RadioInput from 'src/components/Fields/RadioInput';
@@ -222,6 +223,16 @@ const Identity = ({ isEfForm }) => {
               <BlobProvider document={
                 <Document>
                   <OmPdf creationDate={creationDate} countries={countries} data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />
+                  { currentOM.advance.advance &&(
+                    <OmAdvancePdf
+                      data={currentOM.advance}
+                      // validationDate={validationDate}
+                      agent={agentFullData}
+                      // creationDate={creationDate}
+                      gest={currentOM.management.workflow.find((actor) => actor.current_status === 3)}
+                      signature={''}
+                    />
+                  )}
                 </Document>
               }>
                 {({ blob }) => {
@@ -258,6 +269,17 @@ const Identity = ({ isEfForm }) => {
           <PDFViewer>
             <Document>
               <OmPdf creationDate={creationDate} countries={countries}  data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />
+              {currentOM.advance.advance &&(
+                <OmAdvancePdf
+                  data={currentOM.advance}
+                  // validationDate={validationDate}
+                  agent={agentFullData}
+                  // creationDate={creationDate}
+                  gest={currentOM.management.workflow.find((actor) => actor.current_status === 3)}
+                  signature={''}
+                />
+              )}
+
             </Document>
           </PDFViewer>
         </div>

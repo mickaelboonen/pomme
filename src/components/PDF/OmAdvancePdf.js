@@ -1,28 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Font, Document, Page, Text, View, Image, PDFViewer } from '@react-pdf/renderer';
-import { PDFDocument, StandardFonts, PDFPage } from 'pdf-lib';
+import { Font, Page, Text, View, Image, PDFViewer } from '@react-pdf/renderer';
 
-import Test from 'src/assets/docs/old-pdf/ef.pdf'
 
 // Assets
 import Logo from 'src/assets/images/logo.png'
 import RadjhaniFont from 'src/assets/fonts/Rajdhani-Medium.ttf';
-import ValidationMonitoringPdf from 'src/components/PDF/ValidationMonitoringPdf';
 
-import { streetType } from 'src/data/addressData';
 
 // Selectors
-import { getMaxMealsAndNights } from 'src/selectors/formValidationsFunctions';
+import { setValidationDateForPdf, setValidationDate } from 'src/selectors/pdfFunctions';
 
 Font.register({ family: 'Radjhani', src: RadjhaniFont });
-
 import { styles } from './pdfStyles';
-import { setValidationDateForPdf } from '../../selectors/pdfFunctions';
-import { useSelector } from 'react-redux';
 
-const OmAdvancePdf = ({ data, agent,creationDate, signature, validationDate, gest, acSignature, acValidationDate }) => {
+const OmAdvancePdf = ({
+  data,
+  agent,
+  // creationDate,
+  signature,
+  // validationDate,
+  gest,
+  acSignature,
+  // acValidationDate
+}) => {
   const dafGest = gest ? (gest.agent.slice(0,1) + '.' + gest.agent.slice(1,2)).toUpperCase() : '';
+  const creationDate = setValidationDate(data.created_at);
+  const validationDate = signature ? setValidationDate() : null;
+  const acValidationDate = signature ? setValidationDate() : null;
+  // const validationDate = setValidationDate();
+
   return (
     // <Document>
       <Page size="A4" style={styles.page}>
@@ -35,21 +42,22 @@ const OmAdvancePdf = ({ data, agent,creationDate, signature, validationDate, ges
         </View>
         <View style={styles.section}>
           <Text style={styles.section.title} wrap={false}>MISSIONNAIRE</Text>
-          <Text style={styles.section.text}>Je soussigné{agent.gender !== 'M.' ? 'e' : '' }, {agent.lastname.toUpperCase()} {agent.firstname}, demande que soit accordée une avance de {data.advance_amount} euros, montant qui correspond à 75% du montant total de la mission, soit {data.total_amount} euros. </Text>
+          {data.unknown_amount && <Text style={styles.section.text} >Je soussigné{agent.gender !== 'M.' ? 'e' : '' }, {agent.lastname.toUpperCase()} {agent.firstname}, déclare faire une demande d'avance auprès du service financier sans connaître le montant total de la mission. Je laisse le soin au service financier de calculer à ma place le montant total et de procéder à une avance de 75% dudit montant. </Text>}
+          {!data.unknown_amount && <Text style={styles.section.text}>Je soussigné{agent.gender !== 'M.' ? 'e' : '' }, {agent.lastname.toUpperCase()} {agent.firstname}, demande que soit accordée une avance de {data.advance_amount} euros, montant qui correspond à 75% du montant total de la mission, soit {data.total_amount} euros. </Text>}
           <Text style={[styles.section.text, {textAlign: 'right'}]}>Fait à Nîmes le {setValidationDateForPdf(creationDate)}.</Text>
         </View>
         <View style={styles.section} wrap={false}>
           <Text style={styles.section.title} wrap={false}>DÉTAILS ÉTAT PRÉVISIONNEL DES FRAIS</Text>
           <Text style={styles.section.text}> Nombre de nuits : {data.nights_number} </Text>
           <Text style={styles.section.text}> Nombre de repas : {data.meals_number} </Text>
-          <Text style={styles.section.text}> Montant des autres frais : {data.other_expenses_number} </Text>
+          <Text style={styles.section.text}> Montant des autres frais : {data.other_expenses_amount} </Text>
           <Text style={styles.section.text}> Justification des autres frais : {data.other_expenses_justification} </Text>
         </View>
         <View style={styles.section} wrap={false}>
           <Text style={styles.section.title} wrap={false}>PARTIE GESTIONNAIRE DAF</Text>
           
-          <Text style={styles.section.text}> Le demande d'avance {gest.validation ? 'a été' : "n'a pas été"} validée par {dafGest}.</Text>
-          <Text style={styles.section.text}> Commentaires : {gest.comment} </Text>
+          {gest !== undefined && <Text style={styles.section.text}> Le demande d'avance {gest.validation ? 'a été' : "n'a pas été"} validée par {dafGest}.</Text>}
+          {gest !== undefined && <Text style={styles.section.text}> Commentaires : {gest.comment} </Text>}
         </View>
         <View style={styles.section} wrap={false}>
           <Text style={styles.section.title} wrap={false}>SIGNATURE</Text>

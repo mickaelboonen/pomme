@@ -5,7 +5,7 @@ import { Link, useLoaderData } from 'react-router-dom';
 import { FaEye, FaDownload, FaEyeSlash } from 'react-icons/fa';
 import { BlobProvider, Document, PDFViewer } from '@react-pdf/renderer';
 
-import '../style.scss';
+// import '../style.scss';
 
 // Components
 import TextareaField from 'src/components/Fields/TextareaField';

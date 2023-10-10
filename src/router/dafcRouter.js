@@ -1,11 +1,18 @@
 import React from "react";
+import store from 'src/store';
 
 import DAFC from "src/routes/dafc";
 import OmToGFC from "src/routes/dafc/OmToGFC";
 import EfControl from "src/routes/dafc/EfControl";
 import EfValidation from "src/routes/dafc/EfValidation";
 import MyDocuments from "src/routes/utilisateur/MyDocuments";
-import OmMenu from "../routes/dafc/OmMenu";
+import AdvanceMenu from "../routes/dafc/AdvanceMenu";
+
+import { fetchPendingsAdvances } from 'src/reducer/dafc';
+import AcAdvance from "../routes/dafc/AcAdvance";
+
+// Sélecteurs
+import { fetchTmpSignature, fetchTmpUserData } from "../reducer/tmpReducer";
 
 export default {
   path: 'dafc/',
@@ -67,10 +74,34 @@ export default {
     },
     {
       path: 'demandes-d-avance',
-      element: <OmMenu />,
-      loader: ({ request }) => {
-
+      element: <AdvanceMenu />,
+      loader: async ({ request }) => {
+        const { agent: { agent, user} } = store.getState((state) => state);
+        // console.log(agent);
+        const agentData = {
+          roles: agent.roles,
+        }
+        // TODO : selon l'agent, récupérer tous les documents qu'iel doit vérifier.
+          store.dispatch(fetchPendingsAdvances());
+          // fetch
       },
     },
+    {
+      path: 'demandes-d-avance/' + encodeURIComponent('demande-à-signer'),
+      element: <AcAdvance />,
+      loader: async ({ request }) => {
+        const url = new URL(request.url);
+        const id = Number(url.searchParams.get("id"));
+
+        const { agent: { user }, dafc: { pendingDocs }} = store.getState();   
+        store.dispatch(fetchTmpSignature({id: user}));
+
+        const om = pendingDocs.find((om) => om.id === id);
+        // console.log(advance);
+        store.dispatch(fetchTmpUserData({id:om.missioner}))
+        return url;
+      },
+    },
+
   ]
 };

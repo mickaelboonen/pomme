@@ -52,10 +52,10 @@ const Validation = () => {
     });
   }
 
-  const omType = currentOM.type.toLowerCase().split('-');
+  // console.log(currentOM);
+  const omType = currentOM.type ? currentOM.type.toLowerCase().split('-') : '';
   const currentChannel = channels.find((channel) => channel.shortName === omType[0]);
 
-  console.log(validationActorsToDisplay);
   const {
     register,
     setValue,
@@ -126,7 +126,7 @@ const Validation = () => {
       const file = Array.from(data.managementFiles).find((file) => file instanceof File)
       if (!file) {
         // data.managementFiles = [];
-        dispatch(addOmMonitoringPdf({data: data, task: 'add', nextAction: 'manageOm'}));
+        dispatch(addOmMonitoringPdf({data: data, task: 'replace', nextAction: 'manageOm'}));
 
       }
       else {
@@ -188,14 +188,14 @@ const Validation = () => {
           )}
           {isValidated === 'validate' && (
             <ValidateOm
-              uprOrDep={uprOrDep}
+              // uprOrDep={uprOrDep}
               register={register}
               errors={errors}
               watch={watch}
               setValue={setValue}
-              circuits={channels}
+              // circuits={channels}
               omType={omType}
-              validationActorsToDisplay={validationActorsToDisplay}
+              // validationActorsToDisplay={validationActorsToDisplay}
               om={currentOM}
               agent={agent}
               submitFunction={onSubmit}
