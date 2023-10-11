@@ -8,7 +8,6 @@ import { BlobProvider, Document, PDFViewer } from '@react-pdf/renderer';
 // import '../style.scss';
 
 // Components
-import TextareaField from 'src/components/Fields/TextareaField';
 import ButtonElement from 'src/components/Fields/ButtonElement';
 import FileField from 'src/components/Fields/FileField';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
@@ -20,25 +19,23 @@ import ValidationMonitoringPdf from 'src/components/PDF/ValidationMonitoringPdf'
 import OmPdf from 'src/components/PDF/OmPdf';
 import OmAdvancePdf from 'src/components/PDF/OmAdvancePdf';
 
-import { setValidationDate } from 'src/selectors/pdfFunctions';
+import { setValidationDate, setExistingValidationDate } from 'src/selectors/pdfFunctions';
 
 // Actions
-import { getSavedFileName } from 'src/selectors/formDataGetters';
-import {  addEfMonitoringPdf,addOmMonitoringPdf } from 'src/reducer/omManager';
-import { getDDMMYYDate } from '../../../selectors/dateFunctions';
+import { addOmMonitoringPdf } from 'src/reducer/omManager';
 
-const OmVisa = ({ data, user, gest, isOm, om}) => {
+const AdvanceVisa = ({ data, user, gest, isOm, om}) => {
 
   const dispatch = useDispatch();
+
   const { app: { countries },
     vehicle: { vehicleTypes },
     tmp: { tmpAgent, agentProfessionalAddress, agentPersonalAddress, loader, signature}
   } = useSelector((state) => state);
-  // console.log(signature);
+
   const {
     register,
     watch,
-    handleSubmit,
     setValue,
     clearErrors,
     setError,
@@ -49,18 +46,6 @@ const OmVisa = ({ data, user, gest, isOm, om}) => {
       savedSignature: (signature && signature.hasOwnProperty('link')) ? true : false
     }
   });
-  //---------------------------------------------------------------------------
-
-  const validationDate = setValidationDate();
-  // console.log(validationDate);
-  const nowTimestamp = Date(om.created_at);
-  const now = new Date(om.created_at);
-  const date = getDDMMYYDate(now, '-');
-  const splitDate = now.toString().split(' ');
-  const creationDate = date + ' ' + splitDate[4];
-  // console.log("HERE  = ", date + ' ' + splitDate[4]);
-    
-  // return date + ' ' + splitDate[4];
 
   const agentFullData = {
     ...tmpAgent,
@@ -69,8 +54,6 @@ const OmVisa = ({ data, user, gest, isOm, om}) => {
   };
 
 
-  // console.log(agentFullData);
-  //---------------------------------------------------------------------------
   const submitFunction = (data) => {
 
     if (data.savedSignature) {
@@ -83,12 +66,7 @@ const OmVisa = ({ data, user, gest, isOm, om}) => {
       data.signature = signature;
     }
 
-    if (isOm) {
-      dispatch(addOmMonitoringPdf({data: data, task: 'replace', nextAction: data.action === 'validate' ? 'stampOm' : 'rejectVisaOm'}));
-    }
-    else {
-      dispatch(addEfMonitoringPdf({data: data, task: 'replace', nextAction: data.action === 'validate' ? 'stampEf' : 'rejectVisaEf'}));
-    }
+    dispatch(addOmMonitoringPdf({data: data, task: 'replace', nextAction: data.action === 'validate' ? 'validateAcAdvance' : 'rejectAcAdvance'}));
 
     
   };
@@ -118,6 +96,7 @@ const OmVisa = ({ data, user, gest, isOm, om}) => {
   const handleSignatureCheckbox = () => {
     clearErrors('signature');
   }
+
   return (
     <form className='form'>
       <FormSectionTitle>Viser le document</FormSectionTitle>
@@ -147,12 +126,12 @@ const OmVisa = ({ data, user, gest, isOm, om}) => {
             />
           </div>
         )}
-        <TextareaField 
+        {/* <TextareaField
           id="comments-field"
           label="Commentaires"
           formField="comments"
           register={register}
-        />
+        />  */}
         <HiddenField id="docId" value={data.id} register={register} />
         <HiddenField id="actor" value={user} register={register} />
       </div>
@@ -187,20 +166,20 @@ const OmVisa = ({ data, user, gest, isOm, om}) => {
       <div className="form__section">
         <FormSectionTitle>DÉCISION FINALE</FormSectionTitle>
         <div className="form__section-field">
-          <label className="form__section-field-label" htmlFor="action">Valider de l'Ordre de Mission</label>
+          <label className="form__section-field-label" htmlFor="action">Valider de la demande d'avance</label>
           <RadioInput
             id="validate"
             formField="action"
             label="Oui"
             register={register}
-            required="Veuillez valider ou non l'Ordre de Mission."
+            required="Veuillez valider ou non la demande d'avance."
           />
           <RadioInput
             id="reject"
             formField="action"
             label="Non"
             register={register}
-            required="Veuillez valider ou non l'Ordre de Mission."
+            required="Veuillez valider ou non la demande d'avance."
           />
           {errors.action && <p className="form__section-field-error form__section-field-error--open">{errors.action.message}</p>}
         </div>
@@ -221,8 +200,6 @@ const OmVisa = ({ data, user, gest, isOm, om}) => {
                   isOm={isOm}
                 />
                 <OmPdf
-                  creationDate={creationDate}
-                  validationDate={validationDate}
                   countries={countries}
                   data={om}
                   agent={agentFullData}
@@ -233,11 +210,11 @@ const OmVisa = ({ data, user, gest, isOm, om}) => {
                 {data.advance.advance && (
                   <OmAdvancePdf
                     data={data.advance}
-                    validationDate={validationDate}
+                    acValidationDate={setValidationDate()}
+                    validationDate={setExistingValidationDate(data.management.workflow.find((actor) => data.management.workflow.indexOf(actor) === data.management.workflow.length - 2).validation_date)}
                     agent={agentFullData}
-                    creationDate={creationDate}
                     gest={om.management.workflow.find((actor) => actor.current_status === 3)}
-                    signature={signature.link}
+                    acSignature={signature ? signature.link : ''}
                   />
                 )}
               </Document>
@@ -280,34 +257,14 @@ const OmVisa = ({ data, user, gest, isOm, om}) => {
           </div>
           <PDFViewer>
             <Document>
-              <ValidationMonitoringPdf
-                om={data}
-                user={user}
-                agent={gest}
-                isGest={false}
-                gestData={watch()}
-                isOm={isOm}
-              />
-              <OmPdf
-                creationDate={creationDate}
-                validationDate={validationDate}
-                countries={countries}
-                data={om}
+              <OmAdvancePdf
+                data={data.advance}
+                acValidationDate={setValidationDate()}
+                validationDate={setExistingValidationDate(data.management.workflow.find((actor) => data.management.workflow.indexOf(actor) === data.management.workflow.length - 2).validation_date)}
                 agent={agentFullData}
-                vehicleTypes={vehicleTypes}
-                manager={om.management}
-                signature={signature ? signature.link : ''}
+                gest={om.management.workflow.find((actor) => actor.current_status === 3)}
+                acSignature={signature ? signature.link : ''}
               />
-              {data.advance.advance && (
-                <OmAdvancePdf
-                  data={data.advance}
-                  validationDate={validationDate}
-                  agent={agentFullData}
-                  creationDate={creationDate}
-                  gest={om.management.workflow.find((actor) => actor.current_status === 3)}
-                  signature={signature ? signature.link : ''}
-                  />
-              )}
             </Document>
           </PDFViewer>
         </div>
@@ -316,7 +273,7 @@ const OmVisa = ({ data, user, gest, isOm, om}) => {
   );
 };
 
-OmVisa.propTypes = {
+AdvanceVisa.propTypes = {
 };
 
-export default OmVisa;
+export default AdvanceVisa;

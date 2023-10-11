@@ -19,15 +19,20 @@ const OmAdvancePdf = ({
   agent,
   // creationDate,
   signature,
-  // validationDate,
+  validationDate,
   gest,
   acSignature,
   // acValidationDate
 }) => {
+  console.log(validationDate);
   const dafGest = gest ? (gest.agent.slice(0,1) + '.' + gest.agent.slice(1,2)).toUpperCase() : '';
   const creationDate = setValidationDate(data.created_at);
-  const validationDate = signature ? setValidationDate() : null;
-  const acValidationDate = signature ? setValidationDate() : null;
+  let validationDateToDisplay = null;
+  if (validationDate) {
+    console.log(validationDate);
+    validationDateToDisplay = signature ? setValidationDate() : validationDate;
+  }
+  const acValidationDate = acSignature ? setValidationDate() : null;
   // const validationDate = setValidationDate();
 
   return (
@@ -66,7 +71,7 @@ const OmAdvancePdf = ({
               <Text style={[styles.section.text, {textTransform: 'uppercase', textAlign: 'center'}]}>L'ordonnateur.rice</Text>
               <Text style={styles.section.text} />
               <Text style={styles.section.text} />
-              <Text style={styles.section.text}>Validé à Nîmes, le {validationDate ? setValidationDateForPdf(validationDate) : '__/__/____'}.</Text>
+              <Text style={styles.section.text}>Validé à Nîmes, le {validationDateToDisplay ? setValidationDateForPdf(validationDateToDisplay) : '__/__/____'}.</Text>
               <Text style={styles.section.text}>Signature :</Text>
               {signature !== '' && (
                 <Image

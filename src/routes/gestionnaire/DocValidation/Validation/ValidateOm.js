@@ -327,6 +327,7 @@ const ValidateOm = ({
                 vehicleTypes={vehicleTypes}
                 manager={watch()}
                 signature={''}
+                isGest
               />
               {om.advance.advance && (
                 <OmAdvancePdf

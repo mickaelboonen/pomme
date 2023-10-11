@@ -208,9 +208,9 @@ const Mission = ({ step, isEfForm }) => {
 
   const [region , modificationSwitch] = watch(['region',  'modificationSwitch' ]);
   
-  const [isMissionAScienceEvent, setIsMissionAScienceEvent] = useState(defaultValues.science);
+  const [isMissionAScienceEvent, setIsMissionAScienceEvent] = useState(defaultValues.type === 'research');
   const [isVisaNeeded, setIsVisaNeeded] = useState(defaultValues.visa);
-  
+
   useEffect(() => {
     if (region === 'étranger') {
 
@@ -278,7 +278,7 @@ const Mission = ({ step, isEfForm }) => {
           error={errors.missionPurpose}
           required={errorMessages.missionPurpose}
         />
-        {currentOM.is_research && (
+        {currentOM.type === "research" && (
           <SwitchButton
             register={register}
             handler={toggleScienceForm}

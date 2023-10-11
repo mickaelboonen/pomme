@@ -29,7 +29,8 @@ const OmPdf = ({
   vehicleTypes,
   countries,
   manager,
-  signature
+  signature,
+  isGest
 }) => {
   
   // const { vehicle: {  }} = useSelector((state) => state);
@@ -109,20 +110,20 @@ const OmPdf = ({
     },
     {
       name: 'Code Nacres',
-      property: 'code_nacres'
+      property: isGest ? 'codeNacres' : 'code_nacres'
     },
     {
       name: 'Code LOLF',
-      property: 'code_lolf'
+      property: isGest ? 'codeLolf' : 'code_lolf'
     },
     {
       name: 'Code Analytique',
-      property: 'code_analytique'
+      property: isGest ? 'codeAnalytique' : 'code_analytique'
     },
   ]
 
   // console.log(data.management.workflow);
-  // console.log("MANAGER = ", manager);
+  console.log("MANAGER = ", manager);
   const creationDate = setValidationDate(data.created_at);
   const validationDate = signature ? setValidationDate() : null;
   return (
@@ -284,6 +285,7 @@ OmPdf.propTypes = {
 
 OmPdf.defaultProps = {
   signature: '',
+  isGest: false,
   // handler: null
 }
 

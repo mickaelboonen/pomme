@@ -94,11 +94,11 @@ export default {
         const id = Number(url.searchParams.get("id"));
 
         const { agent: { user }, dafc: { pendingDocs }} = store.getState();   
+        
         store.dispatch(fetchTmpSignature({id: user}));
 
         const om = pendingDocs.find((om) => om.id === id);
-        // console.log(advance);
-        store.dispatch(fetchTmpUserData({id:om.missioner}))
+        om ? store.dispatch(fetchTmpUserData({id:om.missioner})): null ; 
         return url;
       },
     },
