@@ -57,7 +57,8 @@ const MissionVal = ({ displayPdf, data, entity }) => {
     }
     return joinedAddress;
   })
-  
+  console.log(data.science);
+  console.log(data.scientificEvents);
   return (
     <>
       <div className="form__section">
@@ -80,6 +81,77 @@ const MissionVal = ({ displayPdf, data, entity }) => {
           />
         ))}
       </div>
+      {data.science && (
+        <div className="form__section">
+          <FormSectionTitle>Événement.s scientifique.s</FormSectionTitle>
+          {data.scientificEvents.map((event) => (
+            <React.Fragment key={event.id}>
+              <p style={{marginTop: '0.5rem', textDecoration: 'underline'}}>Événement scientifique N°{data.scientificEvents.indexOf(event) + 1}</p>
+              <div className="form__section form__section--split">
+                <div className="form__section-half">
+
+                  <InputValueDisplayer
+                    label="Type de présentation"
+                    value={event.presentation.map((type) => type + ' - ')}
+                  />
+                  <InputValueDisplayer
+                    label="Date limite de paiement"
+                    value={getDDMMYYDate(new Date(event.deadline))}
+                  />
+                  <InputValueDisplayer
+                    label="Date limite de paiement"
+                    value={getDDMMYYDate(new Date(event.deadline))}
+                  />
+                </div>
+                <div className="form__section-half form__section-half--separator" />
+                <div className="form__section-half">
+
+                  <InputValueDisplayer
+                    label="Coût de l'événement"
+                    value={event.cost}
+                  />
+                  <InputValueDisplayer
+                    label="Budget ou contrat concerné"
+                    value={event.budget}
+                  />
+                  <InputValueDisplayer
+                    label="Règlement de l'événement"
+                    value={event.payment === "unimes" ? "Payé par Unîmes" : "Avancé par l'agent"}
+                  />
+                </div>
+              </div>
+              <InputValueDisplayer
+                label="Éventuels commentaires"
+                value={data.comment}
+              />
+              {event.pdf.map((file) => (
+                <FileHandler
+                  key={event.pdf.indexOf(file)}
+                  label="Pièce.s justificative.s de la mission"
+                  dataLink={file.dataLink}
+                  url={file.file.url}
+                  displayPdf={displayPdf}
+                  entity={entity}
+                  entityId={data.id}
+                  status={file.file.status}
+                />
+              ))}
+              {event.files.map((file) => (
+                <FileHandler
+                  key={event.files.indexOf(file)}
+                  label="Pièce.s justificative.s de la mission"
+                  dataLink={file.dataLink}
+                  url={file.file.url}
+                  displayPdf={displayPdf}
+                  entity={entity}
+                  entityId={data.id}
+                  status={file.file.status}
+                />
+              ))}
+            </React.Fragment>
+          ))}
+        </div>
+      )}
         <FormSectionTitle>Départ et retour</FormSectionTitle>
         <div className="form__section form__section--split">
           <div className="form__section-half">
