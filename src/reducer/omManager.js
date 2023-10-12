@@ -164,7 +164,7 @@ const omManagerSlice = createSlice({
           actors = validationActors;
         }
         else {
-          actors = validationActors.filter((actor) => !actor.role.includes('Directeur.rice UPR') && !actor.role.includes('Directeur.rice Département'));
+          actors = validationActors.filter((actor) => !actor.role.includes('UPR') && !actor.role.includes('Département'));
         }
 
         if (uprOrDep.length > 0) {

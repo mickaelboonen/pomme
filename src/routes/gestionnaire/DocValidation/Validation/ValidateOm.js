@@ -22,21 +22,16 @@ import OmAdvancePdf from 'src/components/PDF/OmAdvancePdf';
 import { displayValidationActors } from 'src/reducer/omManager';
 
 const ValidateOm = ({
-  // uprOrDep,
   register,
   errors,
   setValue,
   watch, 
   omType,
-  // channels,
   om,
   submitFunction,
-  // agent,
-  // validationActorsToDisplay
 }) => {
   const dispatch = useDispatch();
   const {
-    // omForm: { omLoader, currentOM },
     omManager: { channels, uprOrDep, validationActorsToDisplay },
     agent: { agent, user },
     app: { countries },
@@ -61,67 +56,53 @@ const ValidateOm = ({
   }
   
   
-  let firstPartActors = [];
-  let secondPartActors = [];
 
   const advanceRequested = om.advance.advance;
   
-  // Setting the array for actors to be displayed in the list
-  const actorsToDisplay = validationActorsToDisplay.map((actor) => {
+  // TODO : export ------------------------------------------------------------
+  const selectActorsToDisplay = (actors, type, isAdvanceRequested) => {
+    // Setting the array for actors to be displayed in the list
+    return actors.map((actor) => {
 
-    // Removing the DAF gest and the accountant when there is no advance requested
-    if (!advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) {
-      return null;
-    }
+      // Removing the DAF gest and the accountant when there is no advance requested
+      if (!isAdvanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) {
+        return null;
+      }
 
-    // Removing the VP and the PAPSA director if it's not an OM for the SUAPS
-    if (om.type !== 'admin-suaps' && (actor.role === 'Directrice Département (PAPSA)' || actor.role === 'Vice-Président Formation')) {
-      return null;
-    }
-    return actor;
-  }).filter((actor) => actor !== null);
+      // Removing the VP and the PAPSA director if it's not an OM for the SUAPS
+      if (type !== 'admin-suaps' && (actor.role === 'Directrice Département (PAPSA)' || actor.role === 'Vice-Président Formation')) {
+        return null;
+      }
+      return actor;
+    }).filter((actor) => actor !== null);
+
+  }
+  const divideActors = (actors, directors) => {
+    let firstPartActors = [];
+    let secondPartActors = [];
+
+    if (directors.length > 0) {
+      let middle;
   
-  if (uprOrDep.length > 0) {
-    let middle;
-
-    if (uprOrDep[0].role.includes('Directeur.rice UPR')|| uprOrDep[0].role.includes('Département')) {
-      middle = 2;
+      if (directors[0].role.includes('UPR')) {
+        middle = 4;
+      }
+      else if ( directors[0].role.includes('Département')) {
+        middle = 3;
+      }
+      else {
+        middle = 1;
+      }
+  
+      firstPartActors = actors.slice(0, middle);
+      secondPartActors = actors.slice(middle);
     }
     else {
-      middle = 1;
+      firstPartActors = actors;
     }
 
-    firstPartActors = actorsToDisplay.slice(0, middle);
-    secondPartActors = actorsToDisplay.slice(middle);
+    return [firstPartActors, secondPartActors];
   }
-  else {
-    firstPartActors = actorsToDisplay;
-  }
-
-
-  useEffect(() => {
-    const selectedChannel = channels.find((cir) => cir.shortName === omType[0]);
-    if (selectedChannel !== undefined) {
-      dispatch(displayValidationActors(selectedChannel));
-    }
-  }, [])
-
-  const selectedActors = watch('workflow');
-  const [showUprOrDep, setShowUprOrDep] = useState(false);
-
-  useEffect(() => {
-    if (selectedActors && (selectedActors.indexOf('directeur.rice upr') >= 0 || selectedActors.indexOf('directeur.rice dep') >= 0)) {
-      setShowUprOrDep(true);
-    }
-    else {
-      setShowUprOrDep(false);
-    }
-  }, [selectedActors]);
-
-
-  
-  const [isPdfVisible, setIsPdfVisible] = useState(false)
- 
   const toggleViewer = (event) => {
  
     if (event.target.id.includes('closer')) {
@@ -131,6 +112,30 @@ const ValidateOm = ({
       setIsPdfVisible(true);
     }
   }
+  // TODO : export ------------------------------------------------------------
+
+  const actorsToDisplay = selectActorsToDisplay(validationActorsToDisplay, om.type, advanceRequested);
+  const [firstPartActors, secondPartActors] = divideActors(actorsToDisplay, uprOrDep);
+
+  useEffect(() => {
+    const selectedChannel = channels.find((cir) => cir.shortName === omType[0]);
+    if (selectedChannel !== undefined) {
+      dispatch(displayValidationActors(selectedChannel));
+    }
+  }, [])
+
+  const selectedWorkflow = watch('workflow');
+  const [showUprOrDep, setShowUprOrDep] = useState(false);
+  const [isPdfVisible, setIsPdfVisible] = useState(false)
+
+  useEffect(() => {
+    if (selectedWorkflow && (selectedWorkflow.indexOf('directeur.rice upr') >= 0 || selectedWorkflow.indexOf('directeur.rice dep') >= 0)) {
+      setShowUprOrDep(true);
+    }
+    else {
+      setShowUprOrDep(false);
+    }
+  }, [selectedWorkflow]);
   
   return (
   <>
