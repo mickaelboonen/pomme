@@ -59,7 +59,7 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
     ];
   };
   
-  if (transports.transport_type.indexOf('plane') !== -1 || transports.transport_type.indexOf('train') !== -1) {
+  if (isOm && (transports.transport_type.indexOf('plane') !== -1 || transports.transport_type.indexOf('train') !== -1)) {
     buttons.push({
         name: 'transports',
         link: "#",

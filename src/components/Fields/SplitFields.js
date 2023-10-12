@@ -4,6 +4,7 @@ import './style.scss';
 import RadioInput from 'src/components/Fields/RadioInput';
 import DateField from 'src/components/Fields/DateField';
 
+// TODO : non utilisé, à vérifier et supprimer
 const SplitFields = ({ register }) => {
   const handleClickonRadio = (event) => {
     const departureFromWork = document.querySelector('#departure-work');

@@ -9,6 +9,8 @@ import DateField from 'src/components/Fields/DateField';
 import RadioInput from 'src/components/Fields/RadioInput';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
 
+
+// TODO : à verifier si utile sinon supprimer
 const ScientificEvent = ({ setValue, register, errors, filename, isEfForm, isMissionFormDisabled }) => {
   return (
     <div className="form__section">

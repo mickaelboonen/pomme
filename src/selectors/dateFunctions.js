@@ -52,3 +52,19 @@ export const getHHMMTime = (date) => {
 
   return timeToString;
 }
+
+export const getDateForInput = (date) => {
+  if (date) {
+    return date.split('T')[0];
+  }
+  return '';
+}
+
+export const getHourForInput = (date) => {
+  // TODO 
+  if (date) {
+    const splitDate = date.split('T')[1];
+    return splitDate.split('+')[0];
+  }
+  return ''; 
+}

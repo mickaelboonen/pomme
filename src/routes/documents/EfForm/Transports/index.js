@@ -177,7 +177,7 @@ const Transports = ({ step }) => {
                     id={field.id}
                     label={field.label}
                     error={errors[field.formField]}
-                    placeholder="Montant"
+                    placeholder="Montant en euros"
                     isAmount
                   />
                 </div>
@@ -210,7 +210,7 @@ const Transports = ({ step }) => {
                     id={field.id}
                     label={field.label}
                     error={errors[field.formField]}
-                    placeholder="Montant"
+                    placeholder="Montant en euros"
                     isAmount
                   />
                 </div>
@@ -244,7 +244,7 @@ const Transports = ({ step }) => {
                     id={field.id}
                     label={field.label}
                     error={errors[field.formField]}
-                    placeholder="Montant"
+                    placeholder="Montant en euros"
                     isAmount
                   />
                 </div>
