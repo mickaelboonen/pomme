@@ -21,7 +21,6 @@ const Rib = ({ step }) => {
   const efId = loader.searchParams.get('id');
 
   const { app: { agentDocuments },
-    agent: { userSignature },
     ef: { currentEf }
   } = useSelector((state) => state);
   
@@ -31,7 +30,7 @@ const Rib = ({ step }) => {
     }
   });
 
-  const ribFilename = currentEf.signature.agent_rib ? getSavedFileName(currentEf.signature.agent_rib) : '';
+  const ribFilename = currentEf.rib.agent_rib ? getSavedFileName(currentEf.rib.agent_rib) : '';
 
 
   const onSubmit = (data) => {
@@ -61,7 +60,7 @@ const Rib = ({ step }) => {
     delete data.savedRib;
     delete data.savedSignature;
 
-    if (data.agentSignature instanceof File || data.agentRib instanceof File) {
+    if (data.agentRib instanceof File) {
       dispatch(uploadFile({data: data, step: 'signature', docType: 'ef'}));
     }
     else {
@@ -77,7 +76,7 @@ const Rib = ({ step }) => {
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
-      <StatusChecker status={currentEf.signature.status} />
+      <StatusChecker status={currentEf.rib.status} />
       <div className="form__section">
         <FormSectionTitle>RIB</FormSectionTitle>
         <div className="form__section-field">
