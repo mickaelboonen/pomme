@@ -35,6 +35,7 @@ const Accomodations = ({ step }) => {
   
   let defaultValues = null;
   if (accomodations !== undefined) {
+    console.log("ACCOMODATIONS = ", accomodations);
     defaultValues = declareCamelCaseKeys(accomodations);
   }
 
@@ -179,18 +180,27 @@ const Accomodations = ({ step }) => {
           />
         </div>
         <div className='form__section-half'>
-          <FileField
+          <NumberField 
+            isAmount
+            id="nights-number-field"
+            formField="nightsNumber"
             register={register}
-            setValue={setValue}
-            formField="hotelFiles"
-            id="hotel-files-field"
-            multiple
-            label="Facture.s nominative.s acquittée.s"
-            error={errors.hotelFiles}
-            fileName={hotelFileNames}
+            label="Nombre de nuits à rembourser"
+            placeholder="Ne pas déclarer les nuits gratuites"
+            error={errors.nightsNumber}
           />
         </div>
       </div>
+      <FileField
+        register={register}
+        setValue={setValue}
+        formField="hotelFiles"
+        id="hotel-files-field"
+        multiple
+        label="Facture.s nominative.s acquittée.s"
+        error={errors.hotelFiles}
+        fileName={hotelFileNames}
+      />
       <FormSectionTitle>Repas</FormSectionTitle>
       <Rules
         id="meals-rules"

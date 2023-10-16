@@ -5,6 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 
 import './style.scss';
+var lodash = require('lodash/collection');
 
 // Components 
 import Rib from './Rib';
@@ -80,10 +81,10 @@ const EfForm = () => {
       name: 'Hébergements & repas',
       id: 3,
     },
-    {
-      name: 'Étapes',
-      id: 4,
-    },
+    // {
+    //   name: 'Étapes',
+    //   id: 4,
+    // },
     {
       name: 'RIB',
       id: 5,
@@ -94,9 +95,12 @@ const EfForm = () => {
     },
   ];
 
-  // if (!currentEf.has_steps && !currentEf.is_teaching) {
-  //   tabs = tabs.filter((tab) => tab.id !== 4);
-  // }
+  if (currentEf.has_steps || currentEf.is_teaching) {
+    // tabs = tabs.filter((tab) => tab.id !== 4);
+    tabs.push({ name: 'Étapes', id: 4 });
+    tabs = lodash.sortBy(tabs, 'id');
+  }
+
   return (
     <div className='form-root'>
       <ThreadAsTabs step={step} tabs={tabs} urlData={loaderData} />

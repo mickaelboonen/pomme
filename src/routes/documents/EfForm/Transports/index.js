@@ -36,7 +36,7 @@ const Transports = ({ step }) => {
 
   const filenames = setEfTranportsFilenames(defaultValues);
 
-  const  horsepower = (currentOM.transports.authorizations[0] && currentOM.transports.authorizations[0].vehicle) ? currentOM.transports.authorizations[0].vehicle.rating : ''
+  const  horsepower = (currentOM.transports.authorizations[0] && currentOM.transports.authorizations[0].vehicle) ? currentOM.transports.authorizations[0].vehicle.rating : null
 
   const {
     register, handleSubmit, watch,

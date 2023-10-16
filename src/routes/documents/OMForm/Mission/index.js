@@ -76,6 +76,7 @@ const Mission = ({ step, isEfForm }) => {
     }
     else {
       defaultValues =  declareCamelCaseKeys(currentOM.mission);
+      defaultValues.status = currentEf.mission.status;
     };
   }
   else {
@@ -84,25 +85,24 @@ const Mission = ({ step, isEfForm }) => {
   }
   
   const userAgent = window.navigator.userAgent;
-  let browserName;
   let isDatetimeLocalSupported = true;
-  // console.log(userAgent);
+
   if (userAgent.match(/Chrome/i) || userAgent.match(/Chromium/i)) {
-    browserName = "Chrome";
+    // browserName = "Chrome";
   } else if (userAgent.match(/Firefox/i)) {
-    browserName = "Firefox";
+    // browserName = "Firefox";
     isDatetimeLocalSupported = false;
   } else if (userAgent.match(/Safari/i)) {
-    browserName = "Safari";
+    // browserName = "Safari";
     isDatetimeLocalSupported = false;
   } else if (userAgent.match(/Edge/i)) {
-    browserName = "Edge";
+    // browserName = "Edge";
   } else if (userAgent.match(/Opera/i)) {
-    browserName = "Opera";
+    // browserName = "Opera";
   } else if (userAgent.match(/MSIE/i) || userAgent.match(/Trident/i)) {
-    browserName = "Internet Explorer";
+    // browserName = "Internet Explorer";
   } else {
-    browserName = "Unknown";
+    // browserName = "Unknown";
   }
 
   if (!isDatetimeLocalSupported) {

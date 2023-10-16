@@ -1,5 +1,5 @@
-export const ADMIN_MEALS_AMOUNT = 7.63;
-export const OTHER_MEALS_AMOUNT = 17.50;
+export const OTHER_MEALS_AMOUNT = 20.00;
+export const ADMIN_MEALS_AMOUNT = OTHER_MEALS_AMOUNT / 2;
 
 export const floatAddition = (floatArray) => {
   let floatTotal = 0;
