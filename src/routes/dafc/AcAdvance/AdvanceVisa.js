@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
-import { Link, useLoaderData } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+// import { Link, useLoaderData } from 'react-router-dom';
 import { FaEye, FaDownload, FaEyeSlash } from 'react-icons/fa';
 import { BlobProvider, Document, PDFViewer } from '@react-pdf/renderer';
 
@@ -9,12 +10,12 @@ import { BlobProvider, Document, PDFViewer } from '@react-pdf/renderer';
 
 // Components
 import ButtonElement from 'src/components/Fields/ButtonElement';
+import TextareaField from 'src/components/Fields/TextareaField';
 import FileField from 'src/components/Fields/FileField';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import RadioInput from 'src/components/Fields/RadioInput';
 import HiddenField from 'src/components/Fields/HiddenField';
-import { useDispatch, useSelector } from 'react-redux';
 import ValidationMonitoringPdf from 'src/components/PDF/ValidationMonitoringPdf';
 import OmPdf from 'src/components/PDF/OmPdf';
 import OmAdvancePdf from 'src/components/PDF/OmAdvancePdf';
@@ -66,7 +67,7 @@ const AdvanceVisa = ({ data, user, gest, isOm, om}) => {
       data.signature = signature;
     }
 
-    dispatch(addOmMonitoringPdf({data: data, task: 'replace', nextAction: data.action === 'validate' ? 'validateAcAdvance' : 'rejectAcAdvance'}));
+    dispatch(addOmMonitoringPdf({data: data, task: 'replace', nextAction: data.action === 'validate' ? 'stampOm' : 'rejectAcAdvance'}));
 
     
   };
@@ -126,12 +127,12 @@ const AdvanceVisa = ({ data, user, gest, isOm, om}) => {
             />
           </div>
         )}
-        {/* <TextareaField
+        <TextareaField
           id="comments-field"
           label="Commentaires"
           formField="comments"
           register={register}
-        />  */}
+        />
         <HiddenField id="docId" value={data.id} register={register} />
         <HiddenField id="actor" value={user} register={register} />
       </div>
@@ -205,13 +206,13 @@ const AdvanceVisa = ({ data, user, gest, isOm, om}) => {
                   agent={agentFullData}
                   vehicleTypes={vehicleTypes}
                   manager={om.management}
-                  signature={signature.link}
+                  signature={''}
                 />
                 {data.advance.advance && (
                   <OmAdvancePdf
                     data={data.advance}
                     acValidationDate={setValidationDate()}
-                    validationDate={setExistingValidationDate(data.management.workflow.find((actor) => data.management.workflow.indexOf(actor) === data.management.workflow.length - 2).validation_date)}
+                    validationDate={''}
                     agent={agentFullData}
                     gest={om.management.workflow.find((actor) => actor.current_status === 3)}
                     acSignature={signature ? signature.link : ''}
@@ -257,10 +258,27 @@ const AdvanceVisa = ({ data, user, gest, isOm, om}) => {
           </div>
           <PDFViewer>
             <Document>
+            <ValidationMonitoringPdf
+                  om={data}
+                  user={user}
+                  agent={gest}
+                  isGest={false}
+                  gestData={watch()}
+                  docType='advance'
+                />
+                <OmPdf
+                  countries={countries}
+                  data={om}
+                  agent={agentFullData}
+                  vehicleTypes={vehicleTypes}
+                  manager={om.management}
+                  signature={''}
+                />
+
               <OmAdvancePdf
                 data={data.advance}
                 acValidationDate={setValidationDate()}
-                validationDate={setExistingValidationDate(data.management.workflow.find((actor) => data.management.workflow.indexOf(actor) === data.management.workflow.length - 2).validation_date)}
+                validationDate={''}
                 agent={agentFullData}
                 gest={om.management.workflow.find((actor) => actor.current_status === 3)}
                 acSignature={signature ? signature.link : ''}

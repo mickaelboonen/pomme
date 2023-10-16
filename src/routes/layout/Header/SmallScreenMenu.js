@@ -32,9 +32,9 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
     category: 'DAFC',
     links: [
       {
-        id: 'dafc-om',
-        url: '/dafc/ordres-de-mission',
-        label: 'Ordres de Mission'
+        id: 'dafc-advance',
+        url: '/dafc/demandes-d-avance',
+        label: "Demandes d'avance"
       },
       {
         id: 'dafc-ef',
@@ -49,17 +49,17 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
     links: [
       {
         id: 'gest-om',
-        url: `/gestionnaire/${role}/documents-a-signer`,
+        url: `/gestionnaire/${encodeURIComponent('ordres-de-mission-à-signer')}`,
         label: 'Ordres de Mission'
       },
       {
         id: 'gest-ef',
-        url: `/gestionnaire/${role}/documents-a-signer`,
+        url: `/gestionnaire/${encodeURIComponent('états-de-frais-à-signer')}`,
         label: 'États de frais'
       },
       {
         id: 'gest-pref',
-        url: `/gestionnaire/${user}/mes-préférences`,
+        url: `/gestionnaire/${encodeURIComponent('préférences-de-gestionnaire')}`,
         label: 'Mes préférences'
       },
     ],
@@ -168,7 +168,7 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
           ))}
         </ul>
       </div>
-      {(agent.roles && agent.roles.indexOf('GEST') >=0)  &&(
+      {(agent.roles && (agent.roles.indexOf('GEST') >=0 || agent.roles.indexOf('VALIDATOR') || agent.roles.indexOf('MANAGER') >=0))  &&(
         <div className="small-screen-menu__section">
           <h3  className="small-screen-menu__section-title">{gestLinks.category}</h3>
           <ul className="small-screen-menu__section-list">

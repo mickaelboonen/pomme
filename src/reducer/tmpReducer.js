@@ -8,7 +8,8 @@ const initialState = {
   agentProfessionalAddress: {},
   agentPersonalAddress: {},
   loader: true,
-  signature: null
+  signature: null,
+  acSignature: null,
 };
 
 const agentSlice = createSlice({
@@ -35,7 +36,14 @@ const agentSlice = createSlice({
       },
       saveTmpSignature: (state, action) => {
         state.signature = action.payload;
-      }
+      },
+      fetchTmpAcSignature: () => {
+
+      },
+      saveTmpAcSignature: (state, action) => {
+        state.acSignature = action.payload;
+      },
+      
     },
 });
 
@@ -43,7 +51,9 @@ export const {
   fetchTmpUserData,
   saveTmpUserData,
   fetchTmpSignature,
-  saveTmpSignature
+  saveTmpSignature,
+  fetchTmpAcSignature,
+  saveTmpAcSignature
 } = agentSlice.actions;
 
 export default agentSlice.reducer;

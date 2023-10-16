@@ -6,3 +6,4 @@ Thumbs.db
 
 yarn-error.log
 .env
+.env.local

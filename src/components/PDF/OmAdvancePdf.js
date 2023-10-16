@@ -22,17 +22,22 @@ const OmAdvancePdf = ({
   validationDate,
   gest,
   acSignature,
-  // acValidationDate
+  acValidationDate
 }) => {
-  console.log(validationDate);
+
+  console.log("HERE = ", acValidationDate);
   const dafGest = gest ? (gest.agent.slice(0,1) + '.' + gest.agent.slice(1,2)).toUpperCase() : '';
   const creationDate = setValidationDate(data.created_at);
   let validationDateToDisplay = null;
+  let acValidationDateToDisplay = null;
+
   if (validationDate) {
-    console.log(validationDate);
     validationDateToDisplay = signature ? setValidationDate() : validationDate;
   }
-  const acValidationDate = acSignature ? setValidationDate() : null;
+  if (acValidationDate) {
+    acValidationDateToDisplay = acSignature ? setValidationDate() : acValidationDate;
+  }
+  // const acValidationDate = acSignature ? setValidationDate() : null;
   // const validationDate = setValidationDate();
 
   return (
@@ -76,7 +81,7 @@ const OmAdvancePdf = ({
               {signature !== '' && (
                 <Image
                   src={signature}
-                  style={styles.header.image}
+                  // style={styles.header.image}
                 />
               )}
             </View>

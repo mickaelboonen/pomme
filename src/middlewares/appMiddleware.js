@@ -15,7 +15,7 @@ import CasClient, { constant } from "react-cas-client";
 import { setLoader } from '../reducer/omForm';
 import { fetchUserData, setApiResponse } from '../reducer/app';
 import { saveEf } from 'src/reducer/ef';
-import { saveTmpUserData, saveTmpSignature } from 'src/reducer/tmpReducer';
+import { saveTmpUserData, saveTmpSignature, saveTmpAcSignature } from 'src/reducer/tmpReducer';
 
 
 let casEndpoint = "cas.unimes.fr";
@@ -41,6 +41,19 @@ const appMiddleware = (store) => (next) => (action) => {
         .then((response) => {
           
           store.dispatch(saveTmpSignature(response.data))
+        })
+        .catch((error) => {
+          // console.log(error);
+          if (error.response.status !== 404) {
+            store.dispatch(setApiResponse(error));
+          }
+        });
+      break;
+      case 'tmp/fetchTmpAcSignature':
+        api.post("/api/agent/signature", action.payload)
+        .then((response) => {
+          
+          store.dispatch(saveTmpAcSignature(response.data))
         })
         .catch((error) => {
           // console.log(error);

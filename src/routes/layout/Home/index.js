@@ -51,7 +51,7 @@ const Home = () => {
     <div className="home">
       <HomepageTitle />
       <VideoPlayer link={Presentation} />
-      <section className="home__new">
+      {/* <section className="home__new">
         <div className='form__section-container' id={'id'} style={{width: '50%', margin: 'auto', padding: '1rem'}}>
           <h4 className="form__section-container-title" id={'id' + '-title'}>
             Fermeture de POM
@@ -65,8 +65,8 @@ const Home = () => {
             </div>
           )}
         </div>
-      </section>
-      {(user === 'mboone01' || user === 'nathalie') && (
+      </section> */}
+      {/* {(user === 'mboone01' || user === 'nathalie') && ( */}
         <section className="home__new">
           <TitleH3>Nouveau document</TitleH3>
           <div className="home__new-buttons">
@@ -84,10 +84,7 @@ const Home = () => {
             </div>
           </div>
         </section>
-      )}
-      {/* <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} /> */}
-      {/* {isModalOpen && <Modal target={newTarget.replace(/-/g, ' ')} user={user} agent={agent} loader={loader} apiMessage={apiMessage} />} */}
-
+      {/* )} */}
     </div>
   );
 };

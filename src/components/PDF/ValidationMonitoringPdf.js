@@ -12,9 +12,23 @@ Font.register({ family: 'Radjhani', src: RadjhaniFont });
 
 import { styles } from './pdfStyles';
 
-const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user, isOm}) => {
+const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user, docType}) => {
   // console.log("**************************", user, om.management.workflow);
   // console.log(agent);
+  const types = [
+    {
+      id: 'om',
+      label: 'ORDRE DE MISSION'
+    },
+    {
+      id: 'ef',
+      label: 'ÉTAT DE FRAIS'
+    },
+    {
+      id: 'advance',
+      label: "DEMANDE D'AVANCE"
+    }
+  ];
   
   return (
   // <Document>
@@ -50,15 +64,17 @@ const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user, isOm}) => 
                 <View style={{width: '60%',borderRight: '1px solid #1f1f1f', padding: '5', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
                   {gest.validation !== null && (
                     <>
-                      {gest.validation && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
-                      {!gest.validation && <Text>ACTION : {isOm ? 'ORDRE DE MISSION' : 'ÉTAT DE FRAIS'} REJETÉ</Text>}
+                      {(gest.validation && gest.role === 'Agent Comptable') && <Text>ACTION : SIGNATURE DEMANDE D'AVANCE</Text>}
+                      {(!gest.validation && gest.role === 'Agent Comptable') && <Text>ACTION : REFUS DE LA DEMANDE D'AVANCE</Text>}
+                      {(gest.validation && gest.role !== 'Agent Comptable') && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
+                      {!gest.validation && <Text>ACTION : {types.find((type) => type.id === docType).label} REJETÉ{docType === 'advance' ? 'E' : ''}</Text>}
                       <Text style={{fontSize: "10", marginTop: '5'}}>{gest.comment}</Text>
                     </>
                   )}              
                   {user === gest.agent && (
                     <>
-                      {gestData.action === 'validate' && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
-                      {gestData.action === 'reject' && <Text>ACTION : {isOm ? 'ORDRE DE MISSION' : 'ÉTAT DE FRAIS'} REJETÉ</Text>}
+                      {gestData.action === 'validate' && <Text>ACTION : {(gest.role === 'DGS' || gest.role === 'Agent Comptable') ? 'SIGNATURE' : 'VISA'}</Text>}
+                      {gestData.action === 'reject' && <Text>ACTION : {types.find((type) => type.id === docType).label} REJETÉ{docType === 'advance' ? 'E' : ''}</Text>}
                       <Text style={{fontSize: "10", marginTop: '5'}}>{gestData.comments}</Text>
                     </>
                   )}
@@ -98,15 +114,17 @@ const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user, isOm}) => 
               <View style={{width: '60%',borderRight: '1px solid #1f1f1f', padding: '5', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
                 {gest.validation !== null && (
                   <>
-                    {gest.validation && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
-                    {!gest.validation && <Text>ACTION : {isOm ? 'ORDRE DE MISSION' : 'ÉTAT DE FRAIS'} REJETÉ</Text>}
+                    {(gest.validation && gest.role === 'Agent Comptable') && <Text>ACTION : SIGNATURE DEMANDE D'AVANCE</Text>}
+                    {(!gest.validation && gest.role === 'Agent Comptable') && <Text>ACTION : REFUS DE LA DEMANDE D'AVANCE</Text>}
+                    {(gest.validation && gest.role !== 'Agent Comptable') && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
+                    {!gest.validation && <Text>ACTION : {types.find((type) => type.id === docType).label} REJETÉ{docType === 'advance' ? 'E' : ''}</Text>}
                     <Text style={{fontSize: "10", marginTop: '5'}}>{gest.comment}</Text>
                   </>
                 )}              
                 {user === gest.agent && (
                   <>
-                    {gestData.action === 'validate' && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
-                    {gestData.action === 'reject' && <Text>ACTION : {isOm ? 'ORDRE DE MISSION' : 'ÉTAT DE FRAIS'} REJETÉ</Text>}
+                    {gestData.action === 'validate' && <Text>ACTION : {(gest.role === 'DGS' || gest.role === 'Agent Comptable')? 'SIGNATURE' : 'VISA'}</Text>}
+                    {gestData.action === 'reject' && <Text>ACTION : {types.find((type) => type.id === docType).label} REJETÉ{docType === 'advance' ? 'E' : ''}</Text>}
                     <Text style={{fontSize: "10", marginTop: '5'}}>{gestData.comments}</Text>
                   </>
                 )}
@@ -129,14 +147,14 @@ const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user, isOm}) => 
               {gest.validation !== null && (
                 <>
                   {gest.validation && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
-                  {!gest.validation && <Text>ACTION : {isOm ? 'ORDRE DE MISSION' : 'ÉTAT DE FRAIS'} REJETÉ</Text>}
+                  {!gest.validation && <Text>ACTION : {types.find((type) => type.id === docType).label} REJETÉ{docType === 'advance' ? 'E' : ''}</Text>}
                   <Text style={{fontSize: "10", marginTop: '5'}}>{gest.comment}</Text>
                 </>
               )}              
               {user === gest.agent && (
                 <>
                   {gestData.action === 'validate' && <Text>ACTION : {gest.role === 'DGS' ? 'SIGNATURE' : 'VISA'}</Text>}
-                  {gestData.action === 'reject' && <Text>ACTION : {isOm ? 'ORDRE DE MISSION' : 'ÉTAT DE FRAIS'} REJETÉ</Text>}
+                  {gestData.action === 'reject' && <Text>ACTION : {types.find((type) => type.id === docType).label} REJETÉ{docType === 'advance' ? 'E' : ''}</Text>}
                   <Text style={{fontSize: "10", marginTop: '5'}}>{gestData.comments}</Text>
                 </>
               )}
@@ -152,5 +170,9 @@ const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user, isOm}) => 
 ValidationMonitoringPdf.propTypes = {
 
 };
+
+ValidationMonitoringPdf.defaultProps = {
+  docType: 'om'
+}
 
 export default ValidationMonitoringPdf;

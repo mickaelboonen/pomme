@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MdRefresh } from 'react-icons/md'
 import { FaQuestionCircle } from 'react-icons/fa'
 import classNames from 'classnames';
+var lodash = require('lodash/collection');
 
 import './modalStyle.scss';
 
@@ -248,7 +249,7 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
                 </div>
                 {service.length > 0 && (
                   <SelectField
-                    data={service}
+                    data={lodash.sortBy(service, ['name'])}
                     register={register}
                     formField="service"
                     handler={() => {}}

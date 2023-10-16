@@ -20,7 +20,7 @@ import ValidationMonitoringPdf from 'src/components/PDF/ValidationMonitoringPdf'
 import OmPdf from 'src/components/PDF/OmPdf';
 import OmAdvancePdf from 'src/components/PDF/OmAdvancePdf';
 
-import { setValidationDate } from 'src/selectors/pdfFunctions';
+import { setValidationDate, setExistingValidationDate} from 'src/selectors/pdfFunctions';
 
 // Actions
 import { getSavedFileName } from 'src/selectors/formDataGetters';
@@ -32,7 +32,7 @@ const OmVisa = ({ data, user, gest, isOm, om}) => {
   const dispatch = useDispatch();
   const { app: { countries },
     vehicle: { vehicleTypes },
-    tmp: { tmpAgent, agentProfessionalAddress, agentPersonalAddress, loader, signature}
+    tmp: { tmpAgent, agentProfessionalAddress, agentPersonalAddress, loader, signature, acSignature}
   } = useSelector((state) => state);
   // console.log(signature);
   const {
@@ -49,19 +49,12 @@ const OmVisa = ({ data, user, gest, isOm, om}) => {
       savedSignature: (signature && signature.hasOwnProperty('link')) ? true : false
     }
   });
-  //---------------------------------------------------------------------------
 
-  const validationDate = setValidationDate();
-  // console.log(validationDate);
-  const nowTimestamp = Date(om.created_at);
-  const now = new Date(om.created_at);
-  const date = getDDMMYYDate(now, '-');
-  const splitDate = now.toString().split(' ');
-  const creationDate = date + ' ' + splitDate[4];
-  // console.log("HERE  = ", date + ' ' + splitDate[4]);
-    
-  // return date + ' ' + splitDate[4];
+const currentActor = om.management.workflow.find((actor) => actor.agent === user);
+const needsSignature = om.management.workflow.indexOf(currentActor) === om.management.workflow.length - 1;
+//---------------------------------------------------------------------------
 
+  console.log("needs signatuer = ", needsSignature);
   const agentFullData = {
     ...tmpAgent,
     ...agentProfessionalAddress,
@@ -156,7 +149,7 @@ const OmVisa = ({ data, user, gest, isOm, om}) => {
         <HiddenField id="docId" value={data.id} register={register} />
         <HiddenField id="actor" value={user} register={register} />
       </div>
-      {gest.roles.indexOf('MANAGER') && (
+      {needsSignature && (
         <div className="form__section">
         <FormSectionTitle>SIGNATURE</FormSectionTitle>
         <div className="form__section-field">
@@ -221,24 +214,26 @@ const OmVisa = ({ data, user, gest, isOm, om}) => {
                   isOm={isOm}
                 />
                 <OmPdf
-                  creationDate={creationDate}
-                  validationDate={validationDate}
+                  // creationDate={creationDate}
+                  // validationDate={validationDate}
                   countries={countries}
                   data={om}
                   agent={agentFullData}
                   vehicleTypes={vehicleTypes}
                   manager={om.management}
-                  signature={signature.link}
+                  signature={signature ? signature.link : ''}
                 />
                 {data.advance.advance && (
                   <OmAdvancePdf
                     data={data.advance}
-                    validationDate={validationDate}
+                    validationDate={needsSignature ? setValidationDate() : ''}
                     agent={agentFullData}
-                    creationDate={creationDate}
+                    // creationDate={creationDate}
                     gest={om.management.workflow.find((actor) => actor.current_status === 3)}
-                    signature={signature.link}
-                  />
+                    signature={signature ? signature.link : ''}
+                    acSignature={acSignature ? acSignature.link : ''}
+                    acValidationDate={setExistingValidationDate(om.management.workflow.find((actor) => actor.role === "Agent Comptable").validation_date)}
+                    />
                 )}
               </Document>
             }>
@@ -289,8 +284,8 @@ const OmVisa = ({ data, user, gest, isOm, om}) => {
                 isOm={isOm}
               />
               <OmPdf
-                creationDate={creationDate}
-                validationDate={validationDate}
+                // creationDate={creationDate}
+                // validationDate={validationDate}
                 countries={countries}
                 data={om}
                 agent={agentFullData}
@@ -301,11 +296,13 @@ const OmVisa = ({ data, user, gest, isOm, om}) => {
               {data.advance.advance && (
                 <OmAdvancePdf
                   data={data.advance}
-                  validationDate={validationDate}
+                  validationDate={needsSignature ? setValidationDate() : ''}
                   agent={agentFullData}
-                  creationDate={creationDate}
+                  // creationDate={creationDate}
                   gest={om.management.workflow.find((actor) => actor.current_status === 3)}
                   signature={signature ? signature.link : ''}
+                  acSignature={acSignature ? acSignature.link : ''}
+                  acValidationDate={setExistingValidationDate(om.management.workflow.find((actor) => actor.role === "Agent Comptable").validation_date)}
                   />
               )}
             </Document>

@@ -66,17 +66,17 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
       {isAuthenticated && (
         <nav className="header__menu">
           <Preferences />
-          {(agent.roles && agent.roles.indexOf('DAF') >=0) && (
+          {(agent.roles && agent.roles.indexOf('DAF_AC') >=0) && (
             <div className="header__menu-section" id="dafc" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
               <p>DAFC</p>
               <ul className="header__menu-section-list">
                 <li><Link to="/dafc/demandes-d-avance">Demandes d'avance</Link></li>
-                <li><Link to="/dafc/ordres-de-mission">Ordres de Mission</Link></li>
-                <li><Link to="/dafc/états-de-frais">États de Frais</Link></li>
+                {/* <li><Link to="/dafc/ordres-de-mission">Ordres de Mission</Link></li> */}
+                {/* <li><Link to="/dafc/états-de-frais">États de Frais</Link></li> */}
               </ul>
             </div>
           )}
-          {(agent.roles && (agent.roles.indexOf('GEST') >=0 || agent.roles.indexOf('MANAGER') >=0)) && (
+          {(agent.roles && (agent.roles.indexOf('GEST') >=0 || agent.roles.indexOf('VALIDATOR') || agent.roles.indexOf('MANAGER') >=0)) && (
             <div className="header__menu-section" id="gest" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
               <p>GESTIONNAIRE</p>
               <ul className="header__menu-section-list">
@@ -89,10 +89,10 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
           <div className="header__menu-section" id="mon-compte" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
             <p>MON COMPTE</p>
             <ul className="header__menu-section-list">
-              <li><Link to={`/utilisateur/mes-ordres-de-mission`}>Mes Ordres de Mission {/*<span id="mes-oms">1</span>*/}</Link></li>
-              <li><Link to={`/utilisateur/${encodeURIComponent('mes-états-de-frais')}`}>Mes États de Frais <span id="mes-efs"></span></Link></li>
+              <li><Link to={`/utilisateur/mes-ordres-de-mission`}>Mes Ordres de Mission</Link></li>
+              <li><Link to={`/utilisateur/${encodeURIComponent('mes-états-de-frais')}`}>Mes États de Frais</Link></li>
               <li><Link to={`/utilisateur/mes-documents`}>Mes Justificatifs</Link></li>
-              {user === 'mboone01' &&(<li><Link to={`/utilisateur/mes-documents/profil-voyageur`}>Mon Profil Voyageur</Link></li>)}
+              <li><Link to={`/utilisateur/mes-documents/profil-voyageur`}>Mon Profil Voyageur</Link></li>
               <li><Link to={`/utilisateur/${encodeURIComponent('mes-préférences')}`}>Mes Préférences</Link></li>
               <li><a onClick={handleLogOut}>Se déconnecter</a></li>
             </ul>

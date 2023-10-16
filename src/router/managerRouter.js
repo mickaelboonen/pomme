@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";
 import { getAgentPreferences } from 'src/reducer/agent';
 import { setManagerLoader } from "../reducer/omManager";
 import { getDocument } from "../reducer/app";
-import { fetchTmpSignature, fetchTmpUserData } from "../reducer/tmpReducer";
+import { fetchTmpSignature, fetchTmpUserData, fetchTmpAcSignature } from "../reducer/tmpReducer";
 
 export default {
   path: 'gestionnaire/',
@@ -117,7 +117,7 @@ export default {
       element: <SuiviPdf />,
     },
     {
-      path: encodeURIComponent('mes-préférences'),
+      path: encodeURIComponent('préférences-de-gestionnaire'),
       element: <Preferences />,
       loader: async ({ request }) => {
         
@@ -137,11 +137,19 @@ export default {
             const url = new URL(request.url);
             const id = Number(url.searchParams.get("id"));
     
-            const { agent: { user }, omManager: { pendingDocs }} = store.getState();   
-            store.dispatch(fetchTmpSignature({id: user}));
+            const { agent: { user, agent }, omManager: { pendingDocs }} = store.getState();
+            // console.log("in router : ", agent);
+            // store.dispatch(fetchTmpSignature({id: user}));
 
-            const currentOM = pendingDocs.find((om) => om.id === id);
-            store.dispatch(fetchTmpUserData({id: currentOM.missioner}))
+            const { missioner } = pendingDocs.find((om) => om.id === id);
+
+            // console.log('om in router : ', currentOM);
+            if (agent.roles.indexOf('MANAGER') > -1) {
+              // console.log('here');
+              store.dispatch(fetchTmpSignature({id: user}));
+              store.dispatch(fetchTmpAcSignature({id: process.env.AC_CPT_LOGIN}));
+            }
+            store.dispatch(fetchTmpUserData({id: missioner}))
             return url},
         },
         {
