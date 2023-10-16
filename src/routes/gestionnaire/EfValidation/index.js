@@ -44,9 +44,7 @@ const EfValidation = () => {
         dispatch(resetOmsOnDisplay());
       }, "950")
       setTimeout(() => {
-        const explodedUrl =  loaderData.pathname.split('/');
-        navigate(`/${explodedUrl[1]}/${explodedUrl[2]}/${encodeURIComponent('états-de-frais-à-signer')}`);
-        
+        navigate(`/gestionnaire/${encodeURIComponent('états-de-frais-à-signer')}`);
       }, "1000")
     }
   }, [apiMessage]);

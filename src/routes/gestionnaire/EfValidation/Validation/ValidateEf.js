@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Components
 import FileField from 'src/components/Fields/FileField';
@@ -11,29 +11,37 @@ import ButtonElement from 'src/components/Fields/ButtonElement';
 
 
 
-import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
+import { BlobProvider, PDFViewer, Document } from '@react-pdf/renderer';
 import ValidationMonitoringPdf from 'src/components/PDF/ValidationMonitoringPdf';
 
 // import './style.scss';
 
 // Actions
 import { displayValidationActors } from 'src/reducer/omManager';
-import { divideValidationActorsArray } from '../../../../selectors/gestFunctions';
+import { selectActorsToDisplay, divideActors } from 'src/selectors/gestFunctions';
 
 const ValidateEf = ({
-  uprOrDep,
   register,
   errors,
-  setValue,
   watch,
   efType,
   circuits,
   ef,
   submitFunction,
-  agent,
-  validationActorsToDisplay
 }) => {
   const dispatch = useDispatch();
+  const {
+    omManager: { uprOrDep, validationActorsToDisplay },
+    agent: { agent },
+    tmp: { tmpAgent, agentProfessionalAddress, agentPersonalAddress }
+  } = useSelector((state) => state)
+
+  const agentFullData = {
+    ...tmpAgent,
+    ...agentProfessionalAddress,
+    ...agentPersonalAddress
+  };
+
 
   const handleChannelChange = (event) => {    
     const selectedChannel = circuits.find((cir) => cir.id === Number(event.target.value));
@@ -55,35 +63,9 @@ const ValidateEf = ({
     }
   }, [selectedActors]);
   
-  // let firstPartActors = [];
-  // let secondPartActors = [];
-  const actorsToDisplay = [];
-  
-  validationActorsToDisplay.forEach((actor) => {
-    if (actor.cptLogin !== 'gest_daf' && actor.role !== 'Agent Comptable') {
-      actorsToDisplay.push(actor);
-    }
-  });
-  
-  // if (uprOrDep.length > 0) {
-  //   let middle;
 
-  //   if (uprOrDep[0].role.includes('Directeur.rice UPR')) {
-  //     middle = 2;
-  //   }
-  //   else {
-  //     middle = 1;
-  //   }
-
-  //   firstPartActors = actorsToDisplay.slice(0, middle);
-  //   secondPartActors = actorsToDisplay.slice(middle);
-
-  // }
-  // else {
-  //   firstPartActors = actorsToDisplay;
-  // }
-
-  const [firstPartActors, secondPartActors] = divideValidationActorsArray(uprOrDep, actorsToDisplay);
+  const actorsToDisplay = selectActorsToDisplay(validationActorsToDisplay, ef.type);
+  const [firstPartActors, secondPartActors] = divideActors(actorsToDisplay, uprOrDep, false);
 
   useEffect(() => {
     const selectedChannel = circuits.find((cir) => cir.shortName === efType[0]);
@@ -95,17 +77,17 @@ const ValidateEf = ({
 
 
   
-  // const [isPdfVisible, setIsPdfVisible] = useState(false)
-
-  // const toggleViewer = (event) => {
-
-  //   if (event.target.id.includes('closer')) {
-  //     setIsPdfVisible(false);
-  //   }
-  //   else {
-  //     setIsPdfVisible(true);
-  //   }
-  // }
+  const [isPdfVisible, setIsPdfVisible] = useState(false)
+// 
+  const toggleViewer = (event) => {
+// 
+    if (event.target.id.includes('closer')) {
+      setIsPdfVisible(false);
+    }
+    else {
+      setIsPdfVisible(true);
+    }
+  }
   
   return (
   <>
@@ -154,7 +136,11 @@ const ValidateEf = ({
       </div>
     </div>
     <div className="form__section-field">
-      <BlobProvider document={<ValidationMonitoringPdf om={ef} agent={agent} isGest={true} gestData={watch()} />}>
+      <BlobProvider document={
+        <Document>
+          <ValidationMonitoringPdf om={ef} agent={agent} isGest={true} gestData={watch()} />
+        </Document>
+      }>
         {({ blob }) => {          
           const file = new File([blob], "monitoring-ef-" + ef.id, {type: 'pdf'});
           
@@ -163,24 +149,26 @@ const ValidateEf = ({
               <button style={{margin: 'auto'}}type="button" onClick={() => { const data = watch(); data.file = file; submitFunction(data)}}>
                 Valider la demande
               </button>
-              {/* <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
+              <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
                 Visualiser <br /> le document
-              </button> */}
+              </button>
             </>
           );
         }}
       </BlobProvider>
     </div>
-    {/* {isPdfVisible && (
+    {isPdfVisible && (
       <div className="pdf-viewer">
         <div className="pdf-viewer__nav">
           <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer la fenêtre</p>
         </div>
         <PDFViewer className='form__section-recap'>
-          <ValidationMonitoringPdf om={ef} agent={agent} isGest={true} gestData={watch()}/>
+          <Document>
+            <ValidationMonitoringPdf om={ef} agent={agent} isGest={true} gestData={watch()}/>
+          </Document>
         </PDFViewer>
       </div>
-    )} */}
+    )}
   </>
 )};
 

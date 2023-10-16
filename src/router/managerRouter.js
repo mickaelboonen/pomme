@@ -6,6 +6,7 @@ import DocRefusalForm from "src/routes/gestionnaire/DocRefusal";
 import DocValidation from "src/routes/gestionnaire/DocValidation";
 import EfValidation from "src/routes/gestionnaire/EfValidation";
 import Delegation from "src/routes/gestionnaire/Delegation";
+import EfDelegation from 'src/routes/gestionnaire/EfDelegation'
 
 import { fetchOm } from "src/reducer/omForm";
 import { fetchPendingOms, fetchValidationChannels, fetchPendingEfs } from "src/reducer/omManager";
@@ -157,8 +158,19 @@ export default {
         },
         {
           path: encodeURIComponent('état-de-frais'),
-          element: <Delegation isOm={false} />,
-          loader: async ({ request }) => new URL(request.url),
+          element: <EfDelegation isOm={false} />,
+          loader: async ({ request }) => {
+            const url = new URL(request.url);
+            const id = Number(url.searchParams.get("id"));
+    
+            const { agent: { user, agent }, omManager: { pendingDocs }} = store.getState();
+            const { missioner } = pendingDocs.find((om) => om.id === id);
+
+            if (agent.roles.indexOf('MANAGER') > -1) {
+              store.dispatch(fetchTmpSignature({id: user}));
+            }
+            store.dispatch(fetchTmpUserData({id: missioner}))
+            return url},
         }
       ],
     },

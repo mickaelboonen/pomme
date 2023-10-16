@@ -81,7 +81,7 @@ const Validation = ({ data }) => {
         name: agent.firstname + ' ' + agent.lastname,
         role: agent.position,
         comments: data.comments === null ? '' : data.comments,
-        current_status: 2,
+        ef_current_status: 2,
         next_status: 3
       }
     ];
@@ -97,6 +97,7 @@ const Validation = ({ data }) => {
       }
       
       let dafActors = [];
+
       validationActorsToDisplay.forEach((actor) => {
 
         if (actor.cptLogin === 'directeur.rice upr' || actor.cptLogin === 'directeur.rice dep') {
@@ -115,9 +116,6 @@ const Validation = ({ data }) => {
           }
         }
         else if (actor.role === 'Agent Comptable') {
-          const gest = validationActorsToDisplay.find((actor) => actor.cptLogin === 'gest_daf');
-          dafActors.push(gest);
-          dafActors.push(actor);
         }
         else {
           if (data.workflow.indexOf(actor.cptLogin) !== -1) {
@@ -125,10 +123,13 @@ const Validation = ({ data }) => {
           }
         }
       })
+      if (dafActors.find((daf) => daf.role === 'DGS') === undefined) {
+        dafActors.push(validationActorsToDisplay.find((actor) => actor.role === 'DGS'));
+      }
+      dafActors.push(validationActorsToDisplay.find((actor) => actor.cptLogin === 'gest_daf'));
 
       data.workflow = actors.concat(dafActors);
-      console.log(data.workflow);
-      
+
       dispatch(addEfMonitoringPdf({data: data, task: 'add', nextAction: 'manageEf'}));
     
     }

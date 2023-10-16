@@ -12,13 +12,14 @@ import { streetType } from 'src/data/addressData';
 // Selectors
 import { getMaxMealsAndNights } from 'src/selectors/formValidationsFunctions';
 import EfSteps from './EfSteps';
+import { setValidationDateForPdf, setValidationDate } from '../../selectors/pdfFunctions';
 
 Font.register({ family: 'Radjhani', src: RadjhaniFont });
 
 import { styles } from './pdfStyles';
 
-const EfPdf = ({ data, agent, agentSignature, country, om}) => {
-  
+const EfPdf = ({ data, agent, signature, country, om, gest}) => {
+
   const { mission, transports, accomodations, stages } = data;
   const { mission: { addresses, planning }} = om;
   
@@ -106,6 +107,9 @@ const EfPdf = ({ data, agent, agentSignature, country, om}) => {
   accomodationsExpenses = filterArrays(accomodationsExpenses);
   otherExpenses = filterArrays(otherExpenses);
   
+
+  const validationDate = signature ? setValidationDate() : null;
+
   return (
   <Page size="A4" style={styles.page}>
     <View style={styles.header} fixed>
@@ -223,8 +227,12 @@ const EfPdf = ({ data, agent, agentSignature, country, om}) => {
     <View style={styles.section} wrap={false}>
       <Text style={styles.section.title} wrap={false}>SIGNATURE</Text>
       <View style={[styles.section.subsection, {height: 150, padding: 5}]}>
-        <Text style={styles.section.text}>Validé à Nîmes, le __/__/____.</Text>
-        <Text style={styles.section.text}>Signature de l'ordonnateur.rice (Président, DGS, VP) :</Text>
+        <Text style={styles.section.text}>Validé à Nîmes, le {validationDate ? setValidationDateForPdf(validationDate) : '__/__/____'}.</Text>
+        {gest === null && <Text style={styles.section.text}>Signature de l'ordonnateur.'rice (Président, DGS, VP)</Text>}
+        {(gest && gest.position === "DGS" ) && <Text style={styles.section.text}>Ordonnat{gest ? (gest.gender === "M." ? 'eur' : 'rice'): 'eur.rice (Président, DGS, VP)'} : {gest ? gest.gender + ' ' + gest.lastname : ''}</Text>}
+        {(gest && gest.position === "DGS" ) && <Text style={styles.section.text}>Direction Générale des Services</Text>}
+        {(gest && gest.position === "DGS" ) && <Text style={styles.section.text}>Signature :</Text>}
+        {signature !== '' && <Image src={signature}  style={{width: '50%'}}/>}
       </View>
     </View>
     {stages.length > 1 && <EfSteps steps={stages} isTeaching={data.is_teaching}/>}
