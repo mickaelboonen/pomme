@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 
 import { getAgentPreferences } from 'src/reducer/agent';
 import { setManagerLoader } from "../reducer/omManager";
-import { getDocument } from "../reducer/app";
+import { fetchCountries, getDocument } from "../reducer/app";
 import { fetchTmpSignature, fetchTmpUserData, fetchTmpAcSignature } from "../reducer/tmpReducer";
 
 export default {
@@ -85,7 +85,7 @@ export default {
             const id = url.searchParams.get("id");
             const omId = url.searchParams.get("om");
             
-            const { omManager: { pendingDocs }, agent: { agent, user}  } = store.getState((state) => state);
+            const { omManager: { pendingDocs }, agent: { agent, user}, app: { countries } } = store.getState((state) => state);
 
             // if (pendingDocs.length === 0) {
               // store.dispatch(setLoader(true));
@@ -95,6 +95,9 @@ export default {
 
             if (step === '1') {
                 // store.dispatch(setLoader(true));
+                if (countries.length === 0) {
+                  store.dispatch(fetchCountries());
+                }
                 store.dispatch(fetchOm({id: omId, handleManagerLoader: true}));
             }
             

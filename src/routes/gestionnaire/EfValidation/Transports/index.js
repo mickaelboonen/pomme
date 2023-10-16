@@ -15,59 +15,74 @@ const TransportsVal = ({ displayPdf, data, entity }) => {
   
   const { ef: { transportsFieldsBis }} = useSelector((state) => state);
 
+  const categoriesToDisplay = [];
+
+  transportsFieldsBis.forEach((category) => {
+
+    const fieldsToDisplay = [];
+
+    category.fields.forEach((field) => {
+      let checkedField = '';
+      if (field.formField === 'rentCar' ) {
+        checkedField = 'rent_car';
+      }
+      else if (field.formField === 'publicTransports') {
+        checkedField = 'public_transports';
+      }
+      else {
+        checkedField = field.formField;
+      }
+
+      const fileField = checkedField + '_files';
+
+      if (data[checkedField] !== null) {
+        fieldsToDisplay.push({
+          ...field,
+          checkedField : checkedField,
+          fileField: fileField
+        });
+      }
+
+    })
+    if (fieldsToDisplay.length > 0) {
+      categoriesToDisplay.push({
+        ...category,
+        fields: fieldsToDisplay
+      })
+    }
+  })
+
   return (
     <>
-      {transportsFieldsBis.map((category) => (
+      {categoriesToDisplay.map((category) => (
         <React.Fragment key={category.id}>
           <FormSectionTitle>{category.label}</FormSectionTitle>
-          {category.fields.map((field) => {
-          
-            let checkedField = '';
-            if (field.formField === 'rentCar' ) {
-              checkedField = 'rent_car';
-            }
-            else if (field.formField === 'publicTransports') {
-              checkedField = 'public_transports';
-            }
-            else {
-              checkedField = field.formField;
-            }
-            
-            const fileField = checkedField + '_files';
-
-            if (data[checkedField] === null) {
-              return;
-            }
-            return (
-              <div className="form__section form__section--split">
-                <div className="form__section-half">
-                    <InputValueDisplayer
-                      key={field.id}
-                      label={field.label}
-                      value={data[checkedField]}
-                    />
-                </div>
-                <div className="form__section-half form__section-half--separator" />
-                <div className="form__section-half">
-                  {data[fileField] && (
-                      <>
-                        {data[fileField].map((file) => (
-                          <FileHandler
-                            key={data[fileField].indexOf(file)}
-                            label={field.filelabel}
-                            dataLink={file.dataLink}
-                            url={file.file.url}
-                            displayPdf={displayPdf}
-                            entity={entity}
-                            entityId={data.id}
-                            status={file.file.status}
-                          />
-                        ))}
-                      </>
-                    )}
-                </div>
+          {category.fields.map((field) => (
+            <div key={field.id} className="form__section form__section--split">
+              <div className="form__section-half">
+                  <InputValueDisplayer
+                    key={field.id}
+                    label={field.label}
+                    value={data[field.checkedField]}
+                  />
               </div>
-          )})}
+              <div className="form__section-half form__section-half--separator" />
+              <div className="form__section-half">
+                {data[field.fileField] && data[field.fileField].map((file) => (
+                  <FileHandler
+                    key={data[field.fileField].indexOf(file)}
+                    label={field.filelabel}
+                    dataLink={file.dataLink}
+                    url={file.file.url}
+                    displayPdf={displayPdf}
+                    entity={entity}
+                    entityId={data.id}
+                    status={file.file.status}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
         </React.Fragment>
       ))}
     </>

@@ -211,14 +211,18 @@ const Recap = () => {
         {/* {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />} */}
           <div className="form__section">
             <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
-              <BlobProvider document={<EfPDF
-                  agentSignature={agentSignature}
-                  om={oms.find((om) => om.id == omId)}
-                  data={dataForThePdf}
-                  agent={fullAgentData}
-                  meals={mealsExpenses}
-                  country={missionCountry}
-                />}>
+              <BlobProvider document={
+                <Document>
+                  <EfPDF
+                    agentSignature={agentSignature}
+                    om={oms.find((om) => om.id == omId)}
+                    data={dataForThePdf}
+                    agent={fullAgentData}
+                    meals={mealsExpenses}
+                    country={missionCountry}
+                  />
+                </Document>
+                }>
                 {({ blob }) => {
 
                   const file = new File([blob], currentEf.name, {type: 'pdf'});
@@ -247,14 +251,16 @@ const Recap = () => {
             <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer la fenêtre</p>
           </div>
           <PDFViewer className='form__section-recap'>
-            <EfPDF
-              agentSignature={agentSignature}
-              om={oms.find((om) => om.id == omId)}
-              data={dataForThePdf}
-              agent={fullAgentData}
-              meals={mealsExpenses}
-              country={missionCountry}
-            />
+            <Document>
+              <EfPDF
+                agentSignature={agentSignature}
+                om={oms.find((om) => om.id == omId)}
+                data={dataForThePdf}
+                agent={fullAgentData}
+                meals={mealsExpenses}
+                country={missionCountry}
+              />
+            </Document>
           </PDFViewer>
         </div>
       )}
