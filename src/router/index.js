@@ -16,6 +16,7 @@ import managerRouter from "./managerRouter";
 import modifyDocumentsRouter from "./modifyDocumentsRouter";
 import newDocumentsRouter from "./newDocumentsRouter";
 import userRouter from "./userRouter";
+import presidenceRouter from "./presidenceRouter";
 import Assistance from "../routes/help";
 
 
@@ -93,6 +94,8 @@ const AppWithRouter = () => (
         managerRouter,
         // routes starting with 'dafc/'
         dafcRouter,
+        // routes starting with 'presidence/'
+        presidenceRouter,
       ],
     },
   ])} />

@@ -67,6 +67,14 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
       {isAuthenticated && (
         <nav className="header__menu">
           <Preferences />
+          {(agent.roles && agent.roles.indexOf('PRESIDENCE') >=0) && (
+            <div className="header__menu-section" id="dafc" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
+              <p>PRESIDENCE</p>
+              <ul className="header__menu-section-list">
+                <li><Link to="/presidence">Menu de la présidence</Link></li>
+              </ul>
+            </div>
+          )}
           {(agent.roles && agent.roles.indexOf('DAF_AC') >=0) && (
             <div className="header__menu-section" id="dafc" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
               <p>DAFC</p>
