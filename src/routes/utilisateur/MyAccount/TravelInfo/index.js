@@ -61,10 +61,10 @@ const TravelInfo = () => {
           />
         </div>
         <div className='form__section'>
-          <FormSectionTitle>Mes contatcs</FormSectionTitle>
+          <FormSectionTitle>Mes contacts</FormSectionTitle>
           <ul className='form__section-list'>
             {contacts.map((contact) => (
-              <li className='form__section-list-item' key={contact.id}> {contact.icon} {contact.name} - {contact.phone}</li>
+              <li className='form__section-list-item' key={contact.id}> {contact.icon} {contact.name}{contacts.indexOf(contact) !== contacts.length -1 ? ' - ' + contact.phone : ''}</li>
             ))}
           </ul>
         </div>

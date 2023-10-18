@@ -187,7 +187,7 @@ const VehicleUseForm = () => {
     },
     {
       id: "materials-transporting",
-      label: "Obligation de transport de matériel lourd, encombrat, fragile",
+      label: "Obligation de transport de matériel lourd, encombrant, fragile",
     },
     {
       id: "handicap",
@@ -286,21 +286,23 @@ const VehicleUseForm = () => {
             { errors.reasons && <p className="form__section-field-error form__section-field-error--open">{errors.reasons.message}</p>}
           </div>
           <div className="form__section">
-            <FormSectionTitle>Dernière étape</FormSectionTitle>
             <HiddenField
               value={omId}
               register={register}
               id="docId"
             />
             {carType === 'personal-car' && (
-              <div className="form__section-field">
-                <SwitchButton
-                  formField="externalSignature"
-                  isInForm
-                  register={register}
-                  label="Est-ce qu'une personne extérieure doit signer le document ?"
-                />
-              </div>
+              <>
+                <FormSectionTitle>Dernière étape</FormSectionTitle>
+                <div className="form__section-field">
+                  <SwitchButton
+                    formField="externalSignature"
+                    isInForm
+                    register={register}
+                    label="Est-ce qu'une personne extérieure doit signer le document ?"
+                  />
+                </div>
+              </>
             )}
             <div className="form__section-field" id="external-signature-button">
               <div className="form__section-field-button">

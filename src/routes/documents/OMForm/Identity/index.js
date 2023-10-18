@@ -31,7 +31,7 @@ const Identity = ({ isEfForm }) => {
     omForm: { currentOM },
     vehicle: { vehicleTypes },
   } = useSelector((state) => state);
-  console.log(agentPersonalAddress);
+
   const agentFullData = {
     ...agent,
     ...agentProfessionalAddress,

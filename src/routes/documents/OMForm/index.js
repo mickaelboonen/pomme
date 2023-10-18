@@ -76,10 +76,10 @@ const OMForm = () => {
       
       const unfinishedStep = omStepsWithStatus.filter((step) => !step.status);
       
-      if (currentOM.transports && currentOM.transports.vehicle_authorization === 'pending') {
-        const transportsStep = unfinishedStep.find((step) => step.name === 'transports');
-        transportsStep.name = 'transports (autorisation de véhicule signée manquante)'
-      }
+      // if (currentOM.transports && currentOM.transports.vehicle_authorization === 'pending') {
+        // const transportsStep = unfinishedStep.find((step) => step.name === 'transports');
+        // transportsStep.name = 'transports (autorisation de véhicule signée manquante)'
+      // }
       if (!unfinishedStep) {
         docState.isFinished = true
       }

@@ -34,9 +34,10 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
         <Link to="/" className="header__identity-logo">
           <p>POM</p>
         </Link>
-        {(user === 'mboone01' || user === 'fjacquet' || user === 'nathalie' || user === 'sseddo01' ) && (
+        {(user === 'mboone01' || user === 'fjacquet' || user === 'nathalie' || user === 'sseddo01' || user === 'dbriglia') && (
           <div style={{height: '100%', display: 'flex', flexDirection: 'column', zIndex: '999'}}>
             <button onClick={() => {dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))}}>Moi</button>
+            <button onClick={() => {dispatch(checkAuthentication({username : 'dbriglia', password: 'fsdf'}))}}>Delphine</button>
             <button onClick={() => {dispatch(checkAuthentication({username : 'nathalie', password: 'fsdf'}))}}>Nathalie</button>
             <button onClick={() => {dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))}}>S. Seddoukki</button>
             <button onClick={() => {dispatch(checkAuthentication({username : 'fjacquet', password: 'fsdf'}))}}>Fabrice</button>
@@ -76,7 +77,7 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
               </ul>
             </div>
           )}
-          {(agent.roles && (agent.roles.indexOf('GEST') >=0 || agent.roles.indexOf('VALIDATOR') || agent.roles.indexOf('MANAGER') >=0)) && (
+          {(agent.roles && (agent.roles.indexOf('GEST') >=0 || agent.roles.indexOf('VALIDATOR') >=0 || agent.roles.indexOf('MANAGER') >=0)) && (
             <div className="header__menu-section" id="gest" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
               <p>GESTIONNAIRE</p>
               <ul className="header__menu-section-list">

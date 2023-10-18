@@ -151,7 +151,7 @@ const Preferences = () => {
     <div className='my-preferences'>
       <PageTitle>Mes préférences</PageTitle>
       <form className='theme'>
-        <FormSectionTitle>Thème de l'application</FormSectionTitle>
+        <FormSectionTitle>Thèmes de l'application</FormSectionTitle>
         <div className='theme__container'>
           {themes.map((theme) => (
             <div className='theme__container-theme' key={theme.id}>

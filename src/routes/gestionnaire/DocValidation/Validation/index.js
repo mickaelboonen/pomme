@@ -87,7 +87,7 @@ const Validation = () => {
         name: agent.firstname + ' ' + agent.lastname,
         role: agent.position,
         comments: data.comments === null ? '' : data.comments,
-        current_status: 2,
+        om_current_status: 2,
         next_status: 3
       }
     ];
