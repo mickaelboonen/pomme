@@ -270,7 +270,12 @@
       display: flex;
       align-items: center;
 
-
+      &--required::after {
+        content: '*';
+        color: var(--third-color);
+        margin: 0 0.5rem;
+        font-weight: bold;
+      }
 
       &--infos {
         font-style: italic;

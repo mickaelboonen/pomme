@@ -74,8 +74,13 @@ const Avance = ({ step }) => {
   const onSubmit = (data) => {
     
     if (data.advance) {
-
       let errorCount = 0;
+
+      if (!data.totalAmount && !data.unknownAmount) {
+        setError('totalAmount', { type: 'custom', message: "Si vous connaissez le montant total estimé de la mission, veuillez le renseigner pour calculer votre droit d'avance. Si non, veuillez cocher la case 'Je ne connais pas le montant total de la mission' ci-dessus."})
+        errorCount++;
+      }
+
       if (!data.hotelQuotations || data.hotelQuotations.length === 0) {
         setError('hotelQuotations', { type: 'custom', message: "Merci de fournir le devis de l'hôtel." });
         errorCount++;

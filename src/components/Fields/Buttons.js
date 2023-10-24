@@ -73,7 +73,17 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
         if (dataToBeSubmitted.missionPurposeFile) {
           fileObject = dataToBeSubmitted.missionPurposeFile.find((file) => file instanceof File);
         }
-        
+
+        if (dataToBeSubmitted.departureDay) {
+          dataToBeSubmitted.departure = dataToBeSubmitted.departureDay + 'T' + dataToBeSubmitted.departureHour ; 
+          dataToBeSubmitted.comeback = dataToBeSubmitted.comebackDay + 'T' + dataToBeSubmitted.comebackHour ;
+          delete dataToBeSubmitted.departureDay;
+          delete dataToBeSubmitted.departureHour;
+          delete dataToBeSubmitted.comebackDay;
+          delete dataToBeSubmitted.comebackHour;
+    
+        }
+
         if (fileObject) {
           dispatch(uploadFile({data: dataToBeSubmitted, step: 'mission', docType: 'om'}));
         }
@@ -221,8 +231,8 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
     <div className="form__section">
       <div className="form__section-field-buttons">
         <div className="form__section-field-buttons__row">
-          <button type="button" id="previous-button" onClick={handleClick}>Enregistrer la saisie en cours</button>
-          <button type="submit">Valider la saisie définitive</button>
+          <button type="button" id="previous-button" onClick={handleClick}>Enregistrer pour reprendre plus tard</button>
+          <button type="submit">Valider</button>
         </div>
         <div className="form__section-field-buttons__row">
           <Link to={step === 1 ? `/utilisateur/mes-ordres-de-mission` : url.pathname + setNewSearch(url, backStep)}>{'<<'}</Link>

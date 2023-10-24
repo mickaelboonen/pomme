@@ -18,6 +18,7 @@ import newDocumentsRouter from "./newDocumentsRouter";
 import userRouter from "./userRouter";
 import presidenceRouter from "./presidenceRouter";
 import Assistance from "../routes/help";
+import { fetchCountries } from "../reducer/app";
 
 
 let casEndpoint = "cas.unimes.fr";
@@ -35,6 +36,12 @@ const AppWithRouter = () => (
       path: "/",
       element: <Layout cas={casClient} />,
       loader: async ({ request }) =>  {
+        const { app: { countries } } = store.getState()
+
+          if (countries.length === 0) {
+            store.dispatch(fetchCountries())
+
+          }
         return new URL(request.url);
       },
       errorElement: <ErrorPage />,

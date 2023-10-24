@@ -30,8 +30,8 @@ const Advance = ({ displayPdf, data, entity }) => {
             <FormSectionTitle>Montants</FormSectionTitle>
             {data.unknown_amount && (
               <InputValueDisplayer
-                label="Règlement de l'hôtel"
-                value="Demande transmise au service financier pour qu'ils calculent l'avance."
+                label="État de la demande d'avance"
+                value="La demande sera transmise au service financier pour qu'ils calculent l'avance après votre validation."
               />
             )}
             {!data.unknown_amount && (

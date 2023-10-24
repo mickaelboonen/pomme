@@ -116,10 +116,14 @@ const Accomodations = ({ step }) => {
             >
               <p className="rules__body-text">Les frais d’hébergement sont remboursés au réel sur production de justificatifs de dépenses, dans la limite de :</p>
               <ul className="rules__body-list">
-                <li>80 € pour la province pour les villes de – de 200.000 habitants, et pour la Martinique, la Guadeloupe, la Guyane, La Réunion, Saint-Barthélemy, Saint-Pierre-et-Miquelon, Saint-Martin,</li>
-                <li>90 € pour la province pour les villes de + de 200.000 habitants et pour la Nouvelle-Calédonie, les îles Wallis et Futuna, la Polynésie française,</li>
-                <li>110 € pour Paris, l’Ile de France et pour Mayotte,</li>
-                <li>120 € pour les agents reconnus.</li>
+                <li>90 € pour la province pour les villes de moins de 200.000 habitants</li>
+                <li>120 € pour la province pour les villes de plus de 200.000 habitants</li>
+                <li>140 € pour Paris, l’Ile de France</li>
+                <li>120 € pour les agents reconnu en qualité de travailleurs handicapés et en situation de mobilité réduite.</li>
+
+                <li style={{marginTop: '1rem'}}>120 € pour la Martinique, la Guadeloupe, la Guyane, La Réunion, Saint-Barthélemy, Saint-Pierre-et-Miquelon, Saint-Martin et Mayotte</li>
+                <li>120 € ou 14 320 F.CFP pour la Nouvelle-Calédonie, les îles Wallis et Futuna, la Polynésie française,</li>
+
               </ul>
               <div className="rules__body-separator" />
               <p className="rules__body-text"><span className='rules__body-text__span'>CAS PARTICULIER DES MISSIONS REALISEES DANS LE CADRE DES

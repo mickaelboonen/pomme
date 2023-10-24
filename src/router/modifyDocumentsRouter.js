@@ -29,12 +29,13 @@ export default {
       
         store.dispatch(fetchOm({id: id, handleLoader: false,}));
 
-        if (!agentProfessionalAddress.hasOwnProperty('streetNamePro') || !agentPersonalAddress.hasOwnProperty('streetName') ) {
+        // if (!agentProfessionalAddress.hasOwnProperty('streetNamePro') || !agentPersonalAddress.hasOwnProperty('streetName') ) {
           store.dispatch(fetchUserData({ id: user}));
-        }
+        // }
 
 
-        if (step === '1') {
+        if (step === '1' && countries.length === 0) {
+
           store.dispatch(fetchCountries());
         }
         else if (step === '4') {
@@ -63,7 +64,7 @@ export default {
         store.dispatch(setEfLoader(true));
         store.dispatch(fetchOm({id: om, workflow: 'ef', data: {id: id, step: step}}));
 
-        if (step === '1') {
+        if (step === '1' && countries.length === 0) {
           store.dispatch(fetchCountries());
         }
         else if (step === '5') {

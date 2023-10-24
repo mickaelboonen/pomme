@@ -73,7 +73,7 @@ const Address2 = ({ countries, watch, data, register, errors, disabled, errorMes
       <div className="form__section-field-buttons" style={{marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
         <ButtonElement
           type="button"
-          label="Ajouter une mission"
+          label="Ajouter une adresse"
           handler={addNewAddress}
         />
       </div>

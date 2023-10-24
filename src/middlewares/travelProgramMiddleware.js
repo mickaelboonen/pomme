@@ -64,31 +64,7 @@ const travelProgramMiddleware = (store) => (next) => (action) => {
         .catch((error) => {
           store.dispatch(setApiResponse(error));
         });
-      break;
-    case 'vehicle/getVehicleDocuments':
-      api.get("/api/perm-file/vehicle/" + action.payload)
-        .then((response) => {
-          if (response.data.length > 0) {
-            store.dispatch(saveVehicleDocuments(response.data))
-          }
-        })
-        .catch((error) => {
-          store.dispatch(setApiResponse(error));
-        });
-      break;
-    case 'vehicle/requestVehicleAuthorization':
-      api.post("/api/vehicle/authorization/add", action.payload)
-        .then((response) => {
-          
-          store.dispatch(saveAuthorization(response.data.authorization));
-          store.dispatch(setApiResponse({message: response.data.message, response: { status: 200}}));
-        })
-        .catch((error) => {
-          store.dispatch(setApiResponse(error));
-        });
-      break;
-
-  
+      break; 
     default:
   }
   next(action);

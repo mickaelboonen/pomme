@@ -104,12 +104,13 @@ const EfPdf = ({ data, agent, signature, country, om, gest}) => {
     },
   ];
   transportsExpenses = filterArrays(transportsExpenses);
+  // console.log(transportsExpenses);
   accomodationsExpenses = filterArrays(accomodationsExpenses);
   otherExpenses = filterArrays(otherExpenses);
   
 
   const validationDate = signature ? setValidationDate() : null;
-
+  // console.log("gest = ", gest);
   return (
   <Page size="A4" style={styles.page}>
     <View style={styles.header} fixed>
@@ -201,14 +202,16 @@ const EfPdf = ({ data, agent, signature, country, om, gest}) => {
           </View>
         </View>
       ))}
-      <View style={styles.section.efArray} >
-        <View style={styles.section.efArray.first}>
-          <Text style={styles.section.efArray.title}>Autres frais</Text>
+      {otherExpenses.length > 0 && (
+        <View style={styles.section.efArray} >
+          <View style={styles.section.efArray.first}>
+            <Text style={styles.section.efArray.title}>Autres frais</Text>
+          </View>
+          <View style={styles.section.efArray.second}>
+            <Text style={styles.section.efArray.title}>Montant</Text>
+          </View>
         </View>
-        <View style={styles.section.efArray.second}>
-          <Text style={styles.section.efArray.title}>Montant</Text>
-        </View>
-      </View>
+      )}
       {otherExpenses.map((row) => (
         <View key={row.name} style={styles.section.efArray} >
           <View style={styles.section.efArray.first}>
@@ -224,18 +227,22 @@ const EfPdf = ({ data, agent, signature, country, om, gest}) => {
       {mission.region === 'dom-tom' && <Text>Mission dans les DOM-TOM : {mission.abroad_costs === "per-diem" ? 'Forfait per diem.' : 'Frais réels dans la limite du forfait.'}</Text>}
       {mission.region === 'étranger' &&  <Text>Mission dans le pays : {country.name.toUpperCase()}, avec un {mission.abroad_costs === "per-diem" ? 'Forfait per diem.' : 'Frais réels dans la limite du forfait.'}</Text>}
     </View>
+    {stages.length > 1 && <EfSteps steps={stages} isTeaching={data.is_teaching}/>}
     <View style={styles.section} wrap={false}>
       <Text style={styles.section.title} wrap={false}>SIGNATURE</Text>
       <View style={[styles.section.subsection, {height: 150, padding: 5}]}>
         <Text style={styles.section.text}>Validé à Nîmes, le {validationDate ? setValidationDateForPdf(validationDate) : '__/__/____'}.</Text>
-        {gest === null && <Text style={styles.section.text}>Signature de l'ordonnateur.'rice (Président, DGS, VP)</Text>}
-        {(gest && gest.position === "DGS" ) && <Text style={styles.section.text}>Ordonnat{gest ? (gest.gender === "M." ? 'eur' : 'rice'): 'eur.rice (Président, DGS, VP)'} : {gest ? gest.gender + ' ' + gest.lastname : ''}</Text>}
-        {(gest && gest.position === "DGS" ) && <Text style={styles.section.text}>Direction Générale des Services</Text>}
-        {(gest && gest.position === "DGS" ) && <Text style={styles.section.text}>Signature :</Text>}
-        {signature !== '' && <Image src={signature}  style={{width: '50%'}}/>}
+        {!gest && <Text style={styles.section.text}>Signature de l'ordonnateur.rice (Président, DGS, VP)</Text>}
+        {(gest && gest.position === "DGS" ) && (
+          <>
+            <Text style={styles.section.text}>Ordonnat{gest ? (gest.gender === "M." ? 'eur' : 'rice'): 'eur.rice (Président, DGS, VP)'} : {gest ? gest.gender + ' ' + gest.lastname : ''}</Text>
+            <Text style={styles.section.text}>Direction Générale des Services</Text>
+            <Text style={styles.section.text}>Signature :</Text>
+          </>
+        )}
+        {(signature && signature !== '') && <Image src={signature}  style={{width: '50%'}}/>}
       </View>
     </View>
-    {stages.length > 1 && <EfSteps steps={stages} isTeaching={data.is_teaching}/>}
   </Page>
 );}
 

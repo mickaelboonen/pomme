@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useLoaderData, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
+import { BlobProvider, Document, PDFViewer } from '@react-pdf/renderer';
 
 import '../style.scss';
 
@@ -27,15 +27,18 @@ const Recap = () => {
     docs: { agentSignature },
     agent: { agent, user, oms, agentProfessionalAddress, agentPersonalAddress},
   } = useSelector((state) => state);
-  console.log(currentEf);
+  // console.log(currentEf);
   const { mission, transports, accomodations, stages } = currentEf;
   
   const { setValue, getValues } = useForm({ defaultValues: agent });
 
-  let transportsFields = Object.entries(transports).filter((transport) => !transport[0].includes('_files') && transport[1]);
+  const x = Object.entries(transports);
+  console.log(x);
+  let transportsFields = Object.entries(transports).filter((transport) => (!transport[0].includes('_files') && transport[0] !== 'km' && transport[0] !== 'horsepower' ) && transport[1]);
   transportsFields = transportsFields.filter((transport) => transport[0] !== 'id' && transport[0] !== 'status');
 
   const transportsAmountsArray = transportsFields.map((t) => t[1]);
+  console.log(transportsAmountsArray);
   const totalTransportsExpenses = floatAddition(transportsAmountsArray);
 
   //------------------------------------------------------------------------------------------------
@@ -91,17 +94,6 @@ const Recap = () => {
   return (
     <>
       <div className="form">  
-            {/* <div style={{height: "80vh"}}>
-              <PDFViewer className='form__section-recap'>
-                <EfPDF
-                  agentSignature={agentSignature}
-                  data={dataForThePdf}
-                  agent={fullAgentData}
-                  meals={mealsExpenses}
-                  country={missionCountry}
-                />
-              </PDFViewer>
-            </div>  */}
         <div className="form__section" style={{marginBottom: '1rem'}}>
           <FormSectionTitle>Transports</FormSectionTitle>
           <p className='form__section-recap'>Total des frais de transports déclarés pour la mission : <span>{totalTransportsExpenses}€</span>.</p>
@@ -117,7 +109,7 @@ const Recap = () => {
             {transports.public_transports && <p className='form__section-recap'>Montant des frais de transports en commun : <span>{transports.public_transports}€</span>.</p>}
             {transports.rent_car && <p className='form__section-recap'>Montant de la facture du véhicule de location : <span>{transports.rent_car}€</span>.</p>}
 
-            {transports.km && <p className='form__section-recap'>Utilisation d'un véhicule personnel : <span>{transports.km}</span>km.</p>}
+            {transports.km && <p className='form__section-recap'>Utilisation d'un véhicule personnel ( <span>{transports.horsepower}</span> chevaux ) : <span>{transports.km}</span> km.</p>}
 
           </div>
         </div>

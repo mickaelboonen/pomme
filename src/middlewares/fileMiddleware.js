@@ -4,7 +4,7 @@ import { fileApi, api, setTokenOnApi } from './api';
 import { handleEfFilesUploadPayload } from 'src/selectors/fileFunctions';
 import { toggleDocModal, saveAllPermDocs } from 'src/reducer/otherDocuments';
 import { requestVehicleAuthorization, updateVehicle, createVehicle } from 'src/reducer/vehicle';
-import { rejectVisaOm, stampOm, manageOm, rejectVisaEf, stampEf, manageEf, addOmMonitoringPdf } from 'src/reducer/omManager';
+import { rejectVisaOm, stampOm, manageOm, rejectVisaEf, stampEf, manageEf, addOmMonitoringPdf, manageOmFormation} from 'src/reducer/omManager';
 import { updateEfAccomodations, updateEfRib, updateEf, updateEfMission, updateEfTransports } from 'src/reducer/ef';
 import {
   createDispensation,
@@ -376,7 +376,6 @@ const omMiddleware = (store) => (next) => (action) => {
                 data.file = file.file.url;
               }
             })
-            
             store.dispatch(requestVehicleAuthorization(data));
           }
           else if (type === 'dispensation') {
@@ -439,6 +438,9 @@ const omMiddleware = (store) => (next) => (action) => {
             }
             else if (nextAction === "rejectVisaOm") {
               store.dispatch(rejectVisaOm(action.payload.data))
+            }
+            else if (nextAction === "manageOmFormation") {
+              store.dispatch(manageOmFormation(action.payload.data))
             }
           }
           else {

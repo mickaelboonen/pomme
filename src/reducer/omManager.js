@@ -205,6 +205,7 @@ const omManagerSlice = createSlice({
         state.departments = action.payload;
       },
       manageOm: () => {},
+      manageOmFormation: () => {},
       stampOm: () => {},
       updateMonitorPdf: () => {},
       resetOmsOnDisplay: (state) => {
@@ -254,6 +255,7 @@ export const {
   saveServices,
   saveDepartments,
   manageOm,
+  manageOmFormation,
   stampOm,
   manageEf,
   stampEf,

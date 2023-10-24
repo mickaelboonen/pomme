@@ -53,12 +53,19 @@ const RejectOm = ({ stepArray, register, errors}) => (
       />
       {errors.comebackPlace && <p className="form__section-field-error form__section-field-error--open">{errors.comebackPlace.message}</p>}
     </div> */}
-    <div className="form__section-field">
-      <ButtonElement
-      type="submit"
-      label="Refuser l'ordre de mission"
-      />
+    <div className="form__section">
+      <div className="form__section-field-buttons">
+        <div className="form__section-field-buttons__row">
+        <ButtonElement
+          type="submit"
+          label="Refuser l'ordre de mission"
+        />
+        </div>
+      </div>
     </div>
+
+    {/* <div className="form__section-field"> */}
+    {/* </div> */}
   </>
 );
 

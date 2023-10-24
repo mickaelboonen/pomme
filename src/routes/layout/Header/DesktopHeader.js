@@ -34,33 +34,6 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
         <Link to="/" className="header__identity-logo">
           <p>POM</p>
         </Link>
-        {(user === 'mboone01' || user === 'fjacquet' || user === 'nathalie' || user === 'sseddo01' || user === 'dbriglia') && (
-          <div style={{height: '100%', display: 'flex', flexDirection: 'column', zIndex: '999'}}>
-            <button onClick={() => {dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))}}>Moi</button>
-            <button onClick={() => {dispatch(checkAuthentication({username : 'dbriglia', password: 'fsdf'}))}}>Delphine</button>
-            <button onClick={() => {dispatch(checkAuthentication({username : 'nathalie', password: 'fsdf'}))}}>Nathalie</button>
-            <button onClick={() => {dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))}}>S. Seddoukki</button>
-            <button onClick={() => {dispatch(checkAuthentication({username : 'fjacquet', password: 'fsdf'}))}}>Fabrice</button>
-          </div>
-        )}
-        {(user === 'mboone01' || user === 'nathalie' || user === 'emonte01' ||user === 'ymarti01' || user === 'acadie02' ||user === 'clegalla' ||user === 'sseddo01' ) && (
-          <div style={{height: '100%', display: 'flex', flexDirection: 'column', zIndex: '999'}}>
-          <button onClick={() => {dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))}}>Moi</button>
-            <button onClick={() => {dispatch(checkAuthentication({username : 'emonte01', password: 'fsdf'}))}}>Estelle</button>
-            <button onClick={() => {dispatch(checkAuthentication({username : 'ymarti01', password: 'fsdf'}))}}>Yannick</button>
-            <button onClick={() => {dispatch(checkAuthentication({username : 'acadie02', password: 'fsdf'}))}}>Axelle</button>
-            <button onClick={() => {dispatch(checkAuthentication({username : 'clegalla', password: 'fsdf'}))}}>Corinne</button>
-            <button onClick={() => {dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))}}>S. Seddoukki</button>
-          </div>
-        )}
-        {(user === 'mboone01' || user === 'nathalie' || user === 'solivi01'  || user === 'sjorge' ||user === 'sseddo01' ) && (
-          <div style={{height: '100%', display: 'flex', flexDirection: 'column', zIndex: '999'}}>
-          <button onClick={() => {dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))}}>Moi</button>
-            <button onClick={() => {dispatch(checkAuthentication({username : 'sjorge', password: 'fsdf'}))}}>Suzanne</button>
-            <button onClick={() => {dispatch(checkAuthentication({username : 'solivi01', password: 'fsdf'}))}}>Sylvain</button>
-            <button onClick={() => {dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))}}>S. Seddoukki</button>
-          </div>
-        )}
         {agent.firstname && <p className="header__identity-user">Bonjour {agent.firstname}</p>}
       </div>
       {isAuthenticated && <BurgerIcon handler={toggleBurgerMenu} />}
@@ -71,7 +44,61 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
             <div className="header__menu-section" id="dafc" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
               <p>PRESIDENCE</p>
               <ul className="header__menu-section-list">
-                <li><Link to="/presidence">Menu de la présidence</Link></li>
+                <li><Link to={`/${encodeURIComponent('présidence')}`}>Menu de la présidence</Link></li>
+              </ul>
+            </div>
+          )}
+          {(agent.roles && (agent.roles.indexOf('GEST') >=0 || agent.roles.indexOf('VALIDATOR') >=0)) && (
+            <div className="header__menu-section" id="dafc" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
+              <p>IDENTITÉ</p>
+              <ul className="header__menu-section-list">
+                <li>ADMIN DSIUN</li>
+                {(user === 'mboone01' || user === 'fjacquet' || user === 'nathalie' || user === 'sseddo01' || user === 'broig' || user === 'xmoulin') && (
+                  <div style={{height: '100%', display: 'flex', flexDirection: 'column', zIndex: '999'}}>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))}}>Moi</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'nathalie', password: 'fsdf'}))}}>Nathalie</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'xmoulin', password: 'fsdf'}))}}>Xavier</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'fjacquet', password: 'fsdf'}))}}>Fabrice</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))}}>M. Seddouki</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'broig', password: 'fsdf'}))}}>M. Roig</button>
+                  </div>
+                )}
+                <li>RECHERCHE</li>
+
+                {(user === 'mboone01' || user === 'nathalie' || user === 'emonte01' ||user === 'ymarti01' || user === 'acadie02' ||user === 'clegalla' ||user === 'sseddo01' ) && (
+                  <div style={{height: '100%', display: 'flex', flexDirection: 'column', zIndex: '999'}}>
+                  <button onClick={() => {dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))}}>Moi</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'emonte01', password: 'fsdf'}))}}>Estelle</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'ymarti01', password: 'fsdf'}))}}>Yannick</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'acadie02', password: 'fsdf'}))}}>Axelle</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'clegalla', password: 'fsdf'}))}}>Corinne</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))}}>M. Seddouki</button>
+                  </div>
+                )}
+                <li>FORMATION</li>
+
+                {(user === 'mboone01' || user === 'csanch10' || user === 'atourre'  || user === 'nduboi01' ||user === 'sseddo01' ) && (
+                  <div style={{height: '100%', display: 'flex', flexDirection: 'column', zIndex: '999'}}>
+                  <button onClick={() => {dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))}}>Moi</button>
+                
+                  <button onClick={() => {dispatch(checkAuthentication({username : 'csanch10', password: 'fsdf'}))}}>Clément</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'atourre', password: 'fsdf'}))}}>Audrey</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'nduboi01', password: 'fsdf'}))}}>Nelly</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))}}>S. Seddouki</button>
+                  </div>
+                )}
+                                <li>ENSEIGNEMENT</li>
+                
+                {(user === 'mboone01' || user === 'agimen01' || user === 'vcompan'  || user === 'solivi01' ||user === 'sseddo01' ) && (
+                  <div style={{height: '100%', display: 'flex', flexDirection: 'column', zIndex: '999'}}>
+                  <button onClick={() => {dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))}}>Moi</button>
+                
+                  <button onClick={() => {dispatch(checkAuthentication({username : 'agimen01', password: 'fsdf'}))}}>Audrey Gimenz</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'vcompan', password: 'fsdf'}))}}>V. Compan</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'solivi01', password: 'fsdf'}))}}>S. Olivier</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))}}>S. Seddouki</button>
+                  </div>
+                )}
               </ul>
             </div>
           )}
@@ -107,8 +134,8 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
             </ul>
           </div>
           <Link to={`/assistance`}>
-            <div className="header__menu-section header__menu-section--help">
-              <FaQuestionCircle />
+            <div className="header__menu-section">
+              ASSISTANCE <FaQuestionCircle style={{marginLeft: '1rem'}}/>
             </div>
           </Link>
         </nav>  

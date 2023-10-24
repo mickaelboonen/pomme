@@ -18,7 +18,6 @@ export const setValidationDate = () =>  {
  * @returns string
  */
 export const setExistingValidationDate = (givenDate) =>  {
-
   const splitGivenDate = givenDate.split('T');
   const splitDate = splitGivenDate[0].split('-');
 

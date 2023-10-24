@@ -119,8 +119,8 @@ const VehicleUseForm = () => {
 
         if (newDataFormat.file instanceof File
           || newDataFormat.insurance instanceof File
-          || newDataFormat.registration_document instanceof File)
-        {
+          || newDataFormat.registration_document instanceof File
+        ) {
           dispatch(uploadFile({data: newDataFormat, step: 'authorization', docType: 'authorization'}));
         }
         else {

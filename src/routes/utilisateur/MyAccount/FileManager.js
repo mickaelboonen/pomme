@@ -10,24 +10,26 @@ import { useDispatch } from 'react-redux';
 import { toggleDocModal, deletePermFile, deleteProgram } from 'src/reducer/otherDocuments';
 import { displayVehicle, deleteVehicle  } from '../../../reducer/vehicle';
 
-const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) => {
+const FileManager = ({ icon, file, label, id, needsSelect, data, forPresidency, user = '' }) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // const handleDownload = (event) => {
-  //   const { id } = event.currentTarget.dataset;
-  // };
+  let baseUrl = "/utilisateur/mes-documents";
+
+  if (forPresidency) {
+    baseUrl = `/${encodeURIComponent('présidence')}`;
+  }
 
   const handleUpload = (event) => {
     const { id } = event.currentTarget.dataset;
 
     if (id === 'cars') {
-      navigate(`/utilisateur/mes-documents/ajouter-un-${encodeURIComponent('véhicule')}` )
+      navigate(`${baseUrl}/ajouter-un-${encodeURIComponent('véhicule')}` )
 
     }
     else if (id === 'programs') {
-      navigate(`/utilisateur/mes-documents/profil-voyageur/ajouter-un-programme-de-transport` )
+      navigate(`${baseUrl}/profil-voyageur/ajouter-un-programme-de-transport` )
 
     }
     else {
@@ -40,11 +42,11 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
     const { id } = event.currentTarget.dataset;
     if (id === 'cars') {
       
-      const { value } = document.querySelector('select');
-      
+      const { value } = document.querySelector('select.file-displayer__select');
+
       if (!isNaN(value)) {
         dispatch(displayVehicle(value))
-        navigate(`/utilisateur/mes-documents/modifier-un-${encodeURIComponent('véhicule')}/` + value)
+        navigate(`${baseUrl}/modifier-un-${encodeURIComponent('véhicule')}/` + value)
       }
       else {
         window.alert("Veuillez sélectionner un véhicule à modifier.")
@@ -55,7 +57,7 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
       
       if (!isNaN(value)) {
         // dispatch(displayVehicle(value))
-        navigate(`/utilisateur/mes-documents/profil-voyageur/modifier-un-programme-de-transport/${value}`)
+        navigate(`${baseUrl}/profil-voyageur/modifier-un-programme-de-transport/${value}`)
       }
       else {
         window.alert("Veuillez sélectionner un programme à modifier.")
@@ -75,7 +77,7 @@ const FileManager = ({ icon, file, label, id, needsSelect, data, user = '' }) =>
 
       if (id === 'cars') {
         
-        const { value } = document.querySelector('select');
+        const { value } = document.querySelector('select.file-displayer__select');
         
         if (!isNaN(value)) {
           // TODO
@@ -191,6 +193,7 @@ FileManager.propTypes = {
 FileManager.defaultProps = {
   needsSelect: false,
   data: null,
+  forPresidency: false
 };
 
 export default FileManager;

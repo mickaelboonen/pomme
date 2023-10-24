@@ -14,7 +14,14 @@ const vehicleMiddleware = (store) => (next) => (action) => {
   const { agent : { user } } = store.getState();
   switch (action.type) {
     case 'vehicle/createVehicle':
-      api.post("/api/vehicle/add/" + user, action.payload)
+
+      let owner = user;
+      if (action.payload.owner) {
+        owner = action.payload.owner;
+        delete action.payload.owner;
+      }
+      // return;
+      api.post("/api/vehicle/add/" + owner, action.payload)
         .then((response) => {
           
           const newDataFormat = {
@@ -47,6 +54,7 @@ const vehicleMiddleware = (store) => (next) => (action) => {
       break;
     
     case 'vehicle/updateVehicle':
+      delete data.owner;
       api.post("/api/vehicle/update/" + action.payload.id, action.payload)
         .then((response) => {
            

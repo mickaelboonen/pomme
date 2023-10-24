@@ -110,7 +110,7 @@ const Validation = ({ data }) => {
         else if (actor.cptLogin === 'gest_daf') {
           dafActors.push(actor);
         }
-        else if (actor.role === 'DGS' || actor.role === 'Président.e') {
+        else if (actor.role === 'DGS' || actor.role === 'Président' || actor.role === 'Présidente') {
           if (data.workflow.indexOf(actor.cptLogin) !== -1) {
             dafActors.push(actor)
           }
@@ -123,11 +123,20 @@ const Validation = ({ data }) => {
           }
         }
       })
-      if (dafActors.find((daf) => daf.role === 'DGS') === undefined) {
+
+      // If the DGS or the President have not been selected, we force the DGS as the manager
+      if (
+        dafActors.find((daf) => daf.role === 'DGS') === undefined
+        && dafActors.find((daf) => daf.role === 'Président') === undefined
+        && dafActors.find((daf) => daf.role === 'Présidente') === undefined
+      ) {
         dafActors.push(validationActorsToDisplay.find((actor) => actor.role === 'DGS'));
       }
+
+      // Then we push another DAF validation post manager validation
       dafActors.push(validationActorsToDisplay.find((actor) => actor.cptLogin === 'gest_daf'));
 
+      // And then we concat both the array of actors and daf actors to have the full workflow
       data.workflow = actors.concat(dafActors);
 
       dispatch(addEfMonitoringPdf({data: data, task: 'add', nextAction: 'manageEf'}));

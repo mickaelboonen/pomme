@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
 import { useLoaderData } from 'react-router-dom';
@@ -52,7 +52,7 @@ const Validation = () => {
     });
   }
 
-  // console.log(currentOM);
+  console.log('currentOM = ', currentOM);
   const omType = currentOM.type ? currentOM.type.toLowerCase().split('-') : '';
   const currentChannel = channels.find((channel) => channel.shortName === omType[0]);
 
@@ -67,11 +67,11 @@ const Validation = () => {
   } = useForm({ defaultValues: {
     validation: isOneStepRejected === undefined ? null : 'reject',
     rejectedFields: rejectedFields,
-    channel: currentChannel.id,
+    channel: currentChannel ? currentChannel.id : null,
     comments: currentOM.comments,
-    codeLolf: currentOM.management.code_lolf,
-    codeNacres: currentOM.management.code_nacres,
-    codeAnalytique: currentOM.management.code_analytique,
+    lolf: currentOM.management.lolf,
+    nacres: currentOM.management.nacres,
+    analytique: currentOM.management.analytique,
     ...currentOM.management
   }});
   
@@ -126,7 +126,15 @@ const Validation = () => {
       const file = Array.from(data.managementFiles).find((file) => file instanceof File)
       if (!file) {
         // data.managementFiles = [];
-        dispatch(addOmMonitoringPdf({data: data, task: 'replace', nextAction: 'manageOm'}));
+        if (currentOM.status === 2) {
+          dispatch(addOmMonitoringPdf({data: data, task: 'replace', nextAction: 'manageOm'}));
+        }
+        else if (currentOM.status === 5 && currentOM.type.includes('formation')){
+          dispatch(addOmMonitoringPdf({data: data, task: 'replace', nextAction: 'manageOmFormation'}))
+        }
+        else {
+          window.alert('Nothing happened.')
+        }
 
       }
       else {
@@ -149,6 +157,12 @@ const Validation = () => {
   const handleValidation = (event) => {
     setIsValidated(event.target.value)
   }
+
+  useEffect(() => {
+    if (currentChannel) {
+      setValue('channel', currentChannel.id)
+    }
+  }, [currentChannel])
   
   return (
     <>

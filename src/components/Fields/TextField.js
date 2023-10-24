@@ -22,7 +22,7 @@ const TextField = ({
   isHidden,
   formField,
   placeholder,
-  // helpFunction,
+  isRequired
 }) => {
   // const type = isNumber ? 'number' : 'text';
   // const handleClick = (event) => {
@@ -33,8 +33,8 @@ const TextField = ({
 
   return (
     <div className={classNames("form__section-field", { "form__section-field--hidden": isHidden })} id={formField}>
-      <label className="form__section-field-label" htmlFor={id}>{label}</label>
-      {/* {hasHelp && (
+      <label className={classNames("form__section-field-label", {"form__section-field-label--required" : isRequired})} htmlFor={id}>{label}</label>
+      {/* {hasHelp && ({classNames("form__section-field-input", {"form__section-field-input--required" : isRequired})}
         <div style={{display: 'flex'}}>
           <input
             id={id}
@@ -84,7 +84,7 @@ TextField.defaultProptypes = {
   // isNumber: false,
   isHidden: false,
   disabled: false,
-  // hasHelp: false,
+  isRequired: false,
   // helpFunction: null,
   // min: '',
   // max: '',

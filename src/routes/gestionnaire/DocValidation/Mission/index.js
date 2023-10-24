@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
 import { useLoaderData } from 'react-router-dom';
+import { streetType as streetArray} from 'src/data/addressData';
 import { useDispatch, useSelector } from 'react-redux';
 
 import '../style.scss';
@@ -45,7 +46,7 @@ const MissionVal = ({ displayPdf, data, entity }) => {
     let combinedAddress = '';
     combinedAddress += setAddressPart(streetNumber);
     combinedAddress += setAddressPart(bis);
-    combinedAddress += setAddressPart(streetType);
+    combinedAddress += setAddressPart(streetArray.find((type) => type.id === streetType).name.toLowerCase());
     combinedAddress += setAddressPart(streetName);
     combinedAddress += setAddressPart(postCode);
     combinedAddress += setAddressPart(city);
@@ -108,7 +109,7 @@ const MissionVal = ({ displayPdf, data, entity }) => {
 
                   <InputValueDisplayer
                     label="Coût de l'événement"
-                    value={event.cost}
+                    value={event.cost + "€"}
                   />
                   <InputValueDisplayer
                     label="Budget ou contrat concerné"
@@ -122,12 +123,12 @@ const MissionVal = ({ displayPdf, data, entity }) => {
               </div>
               <InputValueDisplayer
                 label="Éventuels commentaires"
-                value={data.comment}
+                value={data.comment ?? ''}
               />
               {event.pdf.map((file) => (
                 <FileHandler
                   key={event.pdf.indexOf(file)}
-                  label="Pièce.s justificative.s de la mission"
+                  label="PDF de la demande"
                   dataLink={file.dataLink}
                   url={file.file.url}
                   displayPdf={displayPdf}
@@ -198,41 +199,41 @@ const MissionVal = ({ displayPdf, data, entity }) => {
             value={data.planning}
           />
         )}
-        <FormSectionTitle>Mission hors de la métropole</FormSectionTitle>
-        
-        <InputValueDisplayer
-          label="Forfait de remboursement choisi"
-          value={data.abroad_costs === 'per-diem' ? 'Per diem' : 'Frais réels'}
-        />
-        <div className="form__section form__section--documents">
-          <div className="form__section-half">
+        { data.region !== 'métropole' && (
+          <>
+            <FormSectionTitle>Mission hors de la métropole</FormSectionTitle>
+
+            <InputValueDisplayer
+              label="Forfait de remboursement choisi"
+              value={data.abroad_costs === 'per-diem' ? 'Per diem' : 'Frais réels'}
+            />
             <InputValueDisplayer
               label="Visa"
               value={data.visa ? 'Oui' : 'Non'}
             />
-          </div>
-          <div className="form__section-half">
-            <InputValueDisplayer
-              label="Règlement du visa"
-              value={data.visa_payment === "user" ? "Avancé par l'agent" : "Payé par Unîmes"}
-            />
-          </div>
-        </div>
-        {data.region === 'étranger' && (
-          <div>
-              {data.maps.map((file) => (
-                <FileHandler
-                  key={data.maps.indexOf(file)}
-                  label="Carte du pays de la mission"
-                  dataLink={file.dataLink}
-                  url={file.file.url}
-                  displayPdf={displayPdf}
-                  entity={entity}
-                  entityId={data.id}
-                  status={file.file.status}
-                />
-              ))}
-          </div>
+            {data.visa && (
+              <InputValueDisplayer
+                label="Règlement du visa"
+                value={data.visa_payment === 'user' ? "Avancé par l'agent": "Payé par Unîmes"}
+              />
+            )}
+            {data.region === 'étranger' && (
+              <div>
+                  {data.maps.map((file) => (
+                    <FileHandler
+                      key={data.maps.indexOf(file)}
+                      label="Carte du pays de la mission"
+                      dataLink={file.dataLink}
+                      url={file.file.url}
+                      displayPdf={displayPdf}
+                      entity={entity}
+                      entityId={data.id}
+                      status={file.file.status}
+                    />
+                  ))}
+              </div>
+            )}
+          </>
         )}
     </>
     

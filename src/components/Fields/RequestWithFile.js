@@ -37,7 +37,7 @@ const RequestWithFile = ({
 
   }
   else if (id === 'vehicleAuthorizationFile') {
-    title = "Demande d'autorisation préalable d'utilisation d'un véhicule'"
+    title = "Demande d'autorisation préalable d'utilisation d'un véhicule"
 
   }
   else if (id === 'scientificEvent') {

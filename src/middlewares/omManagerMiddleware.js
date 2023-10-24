@@ -63,18 +63,29 @@ const omManagerMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse(error));
         });
       break;
-    case 'omManager/manageOm':
-      api.post("/api/om/management/validate", action.payload)
-      .then((response) => {
-        store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
-        // store.dispatch(saveValidationChannels(response.data))
-      })
-      .catch((error) => {
-        console.log("ERROR : ", error);
-        store.dispatch(setApiResponse(error));;
-      });
-      break;
-    case 'omManager/rejectOm':
+      case 'omManager/manageOm':
+        api.post("/api/om/management/validate", action.payload)
+        .then((response) => {
+          store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
+          // store.dispatch(saveValidationChannels(response.data))
+        })
+        .catch((error) => {
+          console.log("ERROR : ", error);
+          store.dispatch(setApiResponse(error));;
+        });
+        break;
+      case 'omManager/manageOmFormation':
+        api.post("/api/om/management/formation/validate", action.payload)
+        .then((response) => {
+          store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
+          // store.dispatch(saveValidationChannels(response.data))
+        })
+        .catch((error) => {
+          console.log("ERROR : ", error);
+          store.dispatch(setApiResponse(error));;
+        });
+        break;
+      case 'omManager/rejectOm':
       api.post("/api/om/management/reject", action.payload)
       .then((response) => {
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));

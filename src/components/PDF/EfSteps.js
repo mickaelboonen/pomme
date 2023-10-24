@@ -12,7 +12,8 @@ Font.register({ family: 'Radjhani', src: RadjhaniFont });
 // Create styles
 import { styles } from './pdfStyles';
 
-const EfSteps = ({ steps, isTeaching }) => (
+const EfSteps = ({ steps, isTeaching }) => {
+  return (
   <View style={styles.section} wrap={false}>
     <Text style={styles.section.title} wrap={false}>ÉTAPES</Text>
     <View style={styles.section.row}>
@@ -82,6 +83,7 @@ const EfSteps = ({ steps, isTeaching }) => (
     <View style={{borderTop: '1px solid #1a1a1a'}} />
   </View>
 );
+}
 
 EfSteps.propTypes = {
 

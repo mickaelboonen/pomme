@@ -143,9 +143,9 @@ const Mission = ({ step, isEfForm }) => {
   }
   
   const onSubmit = (data) => {
-    
+
     data = turnFieldsToAddressEntity(data);
-    
+
     if (data.science) {
       if (data.scientificEvents.length === 0) {
         setError('scientificEvents', { type: 'custom', message: 'Merci de remplir le formulaire de participation à un événement scientifique.'});

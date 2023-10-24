@@ -77,7 +77,7 @@ const ValidateOm = ({
     }).filter((actor) => actor !== null);
 
   }
-  const divideActors = (actors, directors) => {
+  const divideActors = (actors, directors, isAdvanceRequested = false) => {
     let firstPartActors = [];
     let secondPartActors = [];
 
@@ -88,7 +88,7 @@ const ValidateOm = ({
         middle = 4;
       }
       else if ( directors[0].role.includes('Département')) {
-        middle = 3;
+        middle = isAdvanceRequested ? 3 : 1;
       }
       else {
         middle = 1;
@@ -115,7 +115,7 @@ const ValidateOm = ({
   // TODO : export ------------------------------------------------------------
 
   const actorsToDisplay = selectActorsToDisplay(validationActorsToDisplay, om.type, advanceRequested);
-  const [firstPartActors, secondPartActors] = divideActors(actorsToDisplay, uprOrDep);
+  const [firstPartActors, secondPartActors] = divideActors(actorsToDisplay, uprOrDep, om.advance.advance);
 
   useEffect(() => {
     const selectedChannel = channels.find((cir) => cir.shortName === omType[0]);
@@ -171,7 +171,7 @@ const ValidateOm = ({
         <div className='form__section-half'>
           <TextField
             id="nacres-field"
-            formField="codeNacres"
+            formField="nacres"
             label="Code Nacres"
             register={register}
           />
@@ -182,7 +182,7 @@ const ValidateOm = ({
         <div className='form__section-half'>
           <TextField
             id="lolf-field"
-            formField="codeLolf"
+            formField="lolf"
             label="Code LOLF"
             register={register}
           /> 
@@ -190,7 +190,7 @@ const ValidateOm = ({
         <div className='form__section-half'>
           <TextField
             id="analytic-field"
-            formField="codeAnalytique"
+            formField="analytique"
             label="Code analytique"
             register={register}
           />
@@ -211,55 +211,59 @@ const ValidateOm = ({
       
       />
     </div>
-    <div className="form__section">
-      <FormSectionTitle>Circuit de validation</FormSectionTitle>
-      <SelectField
-        register={register}
-        blankValue="Veuillez sélectionner un circuit de validation"
-        data={channels}
-        id="channel-field"
-        formField="channel"
-        handler={handleChannelChange}
-        label="Circuit"
-        error={errors.channel}
-        required="Veuillez sélectionner un circuit de validation."
-      />
-      <div className="form__section-field">
-        <p className="form__section-field-label">Acteurs de la validation</p>
-        {firstPartActors.map((actor) => (
-          <CheckboxInput
-            key={actor.id}
-            id={actor.cptLogin}
-            formField="workflow"
-            label={actor.role}
-            register={register}
-            checked={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : null}
-            disabled={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : false}
-          />
-        ))}
-        {showUprOrDep && (
-          <div style={{margin: '0.5rem 1rem'}}>
-            {uprOrDep.map((actor) => (
-              <CheckboxInput key={actor.id} id={actor.cptLogin} formField="workflow" label={actor.role} register={register} />
-            ))}
-          </div>
-        )}
-        {secondPartActors.map((actor) => (
-          <CheckboxInput
-            key={actor.id}
-            id={actor.cptLogin}
-            formField="workflow"
-            label={actor.role}
-            register={register}
-            checked={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : null}
-            disabled={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : false}
-          />
-        ))}
-        {errors.workflow && <p className="form__section-field-error form__section-field-error--open">{errors.workflow.message}</p>}
+    {om.status === 2 && (
 
+      <div className="form__section">
+        <FormSectionTitle>Circuit de validation</FormSectionTitle>
+        <SelectField
+          register={register}
+          blankValue="Veuillez sélectionner un circuit de validation"
+          data={channels}
+          id="channel-field"
+          formField="channel"
+          handler={handleChannelChange}
+          label="Circuit"
+          error={errors.channel}
+          required="Veuillez sélectionner un circuit de validation."
+        />
+        <div className="form__section-field">
+          <p className="form__section-field-label">Acteurs de la validation</p>
+          {firstPartActors.map((actor) => (
+        <CheckboxInput
+          key={actor.id}
+          id={actor.cptLogin}
+          formField="workflow"
+          label={actor.role}
+          register={register}
+          checked={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : null}
+          disabled={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : false}
+        />
+          ))}
+          {showUprOrDep && (
+        <div style={{margin: '0.5rem 1rem'}}>
+          {uprOrDep.map((actor) => (
+            <CheckboxInput key={actor.id} id={actor.cptLogin} formField="workflow" label={actor.role} register={register} />
+          ))}
+        </div>
+          )}
+          {secondPartActors.map((actor) => (
+        <CheckboxInput
+          key={actor.id}
+          id={actor.cptLogin}
+          formField="workflow"
+          label={actor.role}
+          register={register}
+          checked={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : null}
+          disabled={(advanceRequested && (actor.cptLogin === 'gest_daf' || actor.role === 'Agent Comptable')) ? true : false}
+        />
+          ))}
+          {errors.workflow && <p className="form__section-field-error form__section-field-error--open">{errors.workflow.message}</p>}
+          
+        </div>
       </div>
-    </div>
-    <div className="form__section-field">
+    )}
+
+    <div className="form__section-field-buttons">
       <BlobProvider document={
         <Document>
           <ValidationMonitoringPdf
@@ -296,14 +300,14 @@ const ValidateOm = ({
           const file = new File([blob], "monitoring-om-" + om.id, {type: 'pdf'});
           
           return (
-            <>
+            <div className="form__section-field-buttons__row">
               <button style={{margin: 'auto'}}type="button" onClick={() => { const data = watch(); data.file = file; submitFunction(data)}}>
                 Valider la demande
               </button>
-              <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
-                Visualiser <br /> le document
-              </button>
-            </>
+              {/* <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}> */}
+                {/* Visualiser <br /> le document */}
+              {/* </button> */}
+            </div>
           );
         }}
       </BlobProvider>

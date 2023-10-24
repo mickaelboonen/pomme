@@ -108,6 +108,8 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
   
   const onSubmit = (data) => {
     if (isOm) {
+      const omType =  (data.type === 'doctorants' ? 'admin' : data.type) + (data.service ? '-' + data.service : '');
+
       const newOM = {
         name: `Ordre-de-mission-${agent.lastname.toUpperCase()}`,
         status: 1,
@@ -116,9 +118,9 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
         comments: '',
         expenses: data.expenses === 'with' ? 1 : 0,
         isPonctual: data.duration === 'ponctual' ? 1 : 0,
-        type:data.type + (data.service ? '-' + data.service : ''),
+        type: omType,
       }
-      // console.log(data);
+
       dispatch(addNewOM(newOM)); 
     }
     else {
@@ -168,7 +170,7 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
       
       setService([
         {
-          name: "Prise en charge par l'École Doctorale",
+          name: "Prise en charge par l'École Doctorale / l'UPR",
           id:'ed'
         },
         {

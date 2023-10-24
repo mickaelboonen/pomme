@@ -96,6 +96,17 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
     ],
   };
 
+  const presidencyLinks = {
+    category: 'PRESIDENCE',
+    links: [
+      {
+        id: 'presidency-index',
+        url: `/${encodeURIComponent('présidence')}`,
+        label: 'Menu de la Présidence'
+      },
+    ],
+  };
+
   const handleLogOut = () => {
     localStorage.removeItem('persist:root');
     dispatch(logout());
@@ -168,11 +179,19 @@ const SmallScreenMenu = ({ cas, role = 'dev'}) => {
           ))}
         </ul>
       </div>
-      {(agent.roles && (agent.roles.indexOf('GEST') >=0 || agent.roles.indexOf('VALIDATOR') || agent.roles.indexOf('MANAGER') >=0))  &&(
+      {(agent.roles && (agent.roles.indexOf('GEST') >=0 || agent.roles.indexOf('VALIDATOR') >=0 || agent.roles.indexOf('MANAGER') >=0))  &&(
         <div className="small-screen-menu__section">
           <h3  className="small-screen-menu__section-title">{gestLinks.category}</h3>
           <ul className="small-screen-menu__section-list">
             {gestLinks.links.map((li) => <Link to={li.url} key={li.id}><li className="small-screen-menu__section-list-item">{li.label} {/*<span id="mes-oms"></span>*/}</li></Link>)}
+          </ul>
+        </div>
+      )}
+      {agent.roles && (agent.roles.indexOf('PRESIDENCE') >=0)  &&(
+        <div className="small-screen-menu__section">
+          <h3  className="small-screen-menu__section-title">{presidencyLinks.category}</h3>
+          <ul className="small-screen-menu__section-list">
+            {presidencyLinks.links.map((li) => <Link to={li.url} key={li.id}><li className="small-screen-menu__section-list-item">{li.label} {/*<span id="mes-oms"></span>*/}</li></Link>)}
           </ul>
         </div>
       )}

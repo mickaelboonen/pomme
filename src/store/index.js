@@ -20,25 +20,27 @@ import omFormReducer from 'src/reducer/omForm';
 import vehicleReducer from 'src/reducer/vehicle';
 import omManagerReducer from 'src/reducer/omManager';
 import otherDocsReducer from 'src/reducer/otherDocuments';
-import tmpReducer from '../reducer/tmpReducer';
-import dafcReducer from '../reducer/dafc';
+import tmpReducer from 'src/reducer/tmpReducer';
+import dafcReducer from 'src/reducer/dafc';
+import presidencyReducer from 'src/reducer/presidency';
 
 // Middlewares
-import omMiddleware from '../middlewares/omMiddleware';
-import efMiddleware from '../middlewares/efMiddleware';
-import fileMiddleware from '../middlewares/fileMiddleware';
-import appMiddleware from '../middlewares/appMiddleware';
-import vehicleMiddleware from '../middlewares/vehicleMiddleware';
-import omManagerMiddleware from '../middlewares/omManagerMiddleware';
-import travelProgramMiddleware from '../middlewares/travelProgramMiddleware';
-import dafcMiddleware from '../middlewares/dafcMiddleware';
+import omMiddleware from 'src/middlewares/omMiddleware';
+import efMiddleware from 'src/middlewares/efMiddleware';
+import fileMiddleware from 'src/middlewares/fileMiddleware';
+import appMiddleware from 'src/middlewares/appMiddleware';
+import vehicleMiddleware from 'src/middlewares/vehicleMiddleware';
+import omManagerMiddleware from 'src/middlewares/omManagerMiddleware';
+import travelProgramMiddleware from 'src/middlewares/travelProgramMiddleware';
+import dafcMiddleware from 'src/middlewares/dafcMiddleware';
+import presidencyMiddleware from 'src/middlewares/presidencyMiddleware';
 
 const persistConfig = {
   key: 'root',
   version: 1,
   storage,
   whitelist: ['agent', 'app', 'omManager'],
-  blacklist: ['docs', 'omForm', 'ef', '_persist', 'app.apiMessage', 'app.agentDocuments', 'omManager.pendingDocs', 'tmp'],
+  blacklist: ['presidency', 'docs', 'omForm', 'ef', '_persist', 'app.apiMessage', 'app.agentDocuments', 'omManager.pendingDocs', 'tmp'],
   stateReconciler: autoMergeLevel2 // ADDED
 };
 
@@ -52,7 +54,8 @@ const reducers = combineReducers({
   vehicle: vehicleReducer,
   omManager: omManagerReducer,
   tmp: tmpReducer,
-  dafc: dafcReducer
+  dafc: dafcReducer,
+  presidency: presidencyReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers);
@@ -64,7 +67,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(omMiddleware, efMiddleware, fileMiddleware, appMiddleware, vehicleMiddleware, omManagerMiddleware, travelProgramMiddleware, dafcMiddleware),
+    }).concat(omMiddleware, efMiddleware, fileMiddleware, appMiddleware, vehicleMiddleware, omManagerMiddleware, travelProgramMiddleware, dafcMiddleware, presidencyMiddleware),
     devTools: process.env.NODE_ENV !== 'production',
 })
 

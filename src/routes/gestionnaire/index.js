@@ -85,7 +85,7 @@ const Gestionnaires = ({ isOm }) => {
           <div className='my-documents__files-buttons my-documents__files-buttons--links-menu'>
             {docsToDisplay.map((doc) => {
               let link = '';
-              if (doc.status === 2 ) {
+              if ((doc.type.includes('formation') && doc.status === 5) || doc.status === 2) {
                 link = `/gestionnaire/valider-un-document/${target}?etape=1&id=${doc.id}${!isOm ? '&om=' + doc.om.id : ''}`;
               }
               else {

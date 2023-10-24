@@ -25,7 +25,6 @@ const OmAdvancePdf = ({
   acValidationDate
 }) => {
 
-  console.log("HERE = ", acValidationDate);
   const dafGest = gest ? (gest.agent.slice(0,1) + '.' + gest.agent.slice(1,2)).toUpperCase() : '';
   const creationDate = setValidationDate(data.created_at);
   let validationDateToDisplay = null;

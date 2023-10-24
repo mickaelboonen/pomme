@@ -128,6 +128,7 @@ const Address = ({
             register={register}
             error={errors['postCode' + stepNumber]}
             required={errorMessages.postCode}
+            isRequired
           />
           <TextField
             id="city-field"
@@ -137,6 +138,7 @@ const Address = ({
             register={register}
             required={errorMessages.city}
             error={errors['city' + stepNumber]}
+            isRequired
           />
         </div>
         <div className="address__section">
@@ -145,7 +147,7 @@ const Address = ({
             <label className="form__section-field-label" htmlFor="country">Pays de la Mission</label>
             <select
               id="country"
-              className="form__section-field-input"
+              className="form__section-field-input form__section-field-input--required"
               {...register("countryCode" + stepNumber, {
                 required: errorMessages.countryCode
               })}

@@ -50,7 +50,7 @@ const FormLayout = ({ step, children, user, url, doc }) => {
         label="Commentaires"
         formField="comments"
         register={register}
-        placeholder="plop"
+        placeholder="Facultatif"
       />
       <HiddenField
         value={omId}

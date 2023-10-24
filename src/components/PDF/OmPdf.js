@@ -110,20 +110,19 @@ const OmPdf = ({
     },
     {
       name: 'Code Nacres',
-      property: isGest ? 'codeNacres' : 'code_nacres'
+      property: 'nacres'
     },
     {
       name: 'Code LOLF',
-      property: isGest ? 'codeLolf' : 'code_lolf'
+      property: 'lolf'
     },
     {
       name: 'Code Analytique',
-      property: isGest ? 'codeAnalytique' : 'code_analytique'
+      property: 'analytique'
     },
   ]
 
   // console.log(data.management.workflow);
-  console.log("MANAGER = ", manager);
   const creationDate = setValidationDate(data.created_at);
   const validationDate = signature ? setValidationDate() : null;
   return (
