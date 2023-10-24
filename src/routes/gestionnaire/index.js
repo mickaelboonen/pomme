@@ -17,27 +17,36 @@ const Gestionnaires = ({ isOm }) => {
 
   const dispatch = useDispatch();
 
-  const { omManager: { pendingDocs, loader, tabs, docsToDisplay }, agent: { user, agent }} = useSelector((state) => state);
+  const { omManager: { pendingDocs, loader, docsToDisplay }, agent: { user, agent }} = useSelector((state) => state);
 
   const types = [];
 
   pendingDocs.forEach((doc) => {
-    if (types.indexOf(doc.type) === -1) {
-      types.push(doc.type);
+    if (types.indexOf(doc.status) === -1) {
+      types.push(doc.status);
     }
   })
-  
+
   const tabsToShow = [];
   if (types.length > 1) {
     tabsToShow.push({id: 'all', name: 'Tous les documents'})
   }
   
   types.forEach((tab) => {
-    const tabData = tabs.find((channel) => tab.includes(channel.id));
-    // console.log(tabData);
-    const newLabel = `${tabData.name} (${pendingDocs.filter((doc) => doc.type === tab).length})`;
-
-    tabsToShow.push({id: tabData.id, name: newLabel});
+    let id, name;
+    if (tab === 2) {
+        id = 'control',
+        name= 'OM à contrôler'
+    }
+    else if (tab === 8 || tab === 9) {
+      id = 'sign',
+      name= 'OM à signer'
+    }
+    else {
+      id = 'visa',
+      name= 'OM à viser'
+    }
+    tabsToShow.push({id: id, name: name});
 
   })
 

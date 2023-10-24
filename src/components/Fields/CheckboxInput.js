@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './style.scss';
 import classNames from 'classnames';
 
-const CheckboxInput = ({ register, disabled, formField, id, label, handler, columnDisplay, required, checked}) => (
+const CheckboxInput = ({ register, disabled, formField, id, label, handler, columnDisplay, required, checked, hasInfo }) => (
   <div className={classNames("form__section-field-checkbox", {"form__section-field-checkbox--column": columnDisplay})} >
     <input
       type="checkbox"
@@ -17,7 +17,7 @@ const CheckboxInput = ({ register, disabled, formField, id, label, handler, colu
         required: required,
       })}
     />
-    <label className="form__section-field-label" htmlFor={id}>{label}</label>
+    <label className={classNames("form__section-field-label", {"form__section-field-label--required": hasInfo})} htmlFor={id}>{label}</label>
   </div>
 );
 
@@ -31,6 +31,7 @@ CheckboxInput.defaulProps = {
   disabled: false,
   checked: false,
   required: null,
+  hasInfo: false
 };
 
 export default CheckboxInput;

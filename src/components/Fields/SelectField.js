@@ -16,7 +16,8 @@ const SelectField = ({
   disabled,
   validators,
   error,
-  required
+  required,
+  isRequired
 }) => {
   const handleChange = (event) => {
     handler(event);
@@ -24,7 +25,7 @@ const SelectField = ({
   
   return (
   <div className={classNames("form__section-field", { "form__section-field--hidden": isHidden })} id={formField}>
-    <label className="form__section-field-label" htmlFor={id}>{label}</label>
+    <label className={classNames("form__section-field-label", {"form__section-field-label--required": isRequired })} htmlFor={id}>{label}</label>
     <select
       id={id}
       className="form__section-field-input"

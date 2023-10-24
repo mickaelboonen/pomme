@@ -54,7 +54,7 @@ const currentActor = om.management.workflow.find((actor) => actor.agent === user
 const needsSignature = om.management.workflow.indexOf(currentActor) === om.management.workflow.length - 1;
 //---------------------------------------------------------------------------
 
-  console.log("needs signatuer = ", needsSignature);
+  // console.log("errors = ", errors);
   const agentFullData = {
     ...tmpAgent,
     ...agentProfessionalAddress,
@@ -65,15 +65,35 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
   // console.log(agentFullData);
   //---------------------------------------------------------------------------
   const submitFunction = (data) => {
-
+    console.log("I AM HERE");
+    let errorCount = 0;
+    console.log(data);
+    // return;
     if (data.savedSignature) {
       if (signature === "") {
         setError('signature', { type: 'custom', message: 'Aucune signature enregistrée dans le profil.'})
         setValue('savedSignature', false)
-        return;
+        errorCount++;
       }
       delete data.savedSignature;
       data.signature = signature;
+    }
+    else {
+      if (data.signature instanceof File === false) {
+        setError('signature', { type: 'custom', message: "Aucune signature n'a été fournie pour valider l'OM."})
+        errorCount++;
+      }
+    };
+
+    if (data.action === null) {
+      setError('action', { type: 'custom', message: "Veuillez valider ou rejeter l'ordre de mission."})
+      errorCount++;
+    }
+
+    console.log("errorCount = ", errorCount);
+    if (errorCount > 0) {
+      console.log("here ? ");
+      return;
     }
 
     if (isOm) {
@@ -84,7 +104,8 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
     }
 
     
-  };
+
+}
   let signatureFilename = signature !== null ? signature.name : '';
 
   const [viewer, setViewer] = useState('');

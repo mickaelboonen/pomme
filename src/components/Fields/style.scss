@@ -166,6 +166,14 @@
     margin-bottom: 1rem;
     width: 100%;
 
+    &--infos-container {
+      border-top: 1px solid var(--second-color);
+      padding-top: 0.2rem;
+      width: 80%;
+      margin: 2rem auto 0;
+      @include vars.centeredFlex;
+    }
+
     &-modal {
       display: flex;
       // justify-content: space-between;
@@ -343,6 +351,13 @@
         flex-direction: column-reverse;
         margin: 0;
         margin-bottom: 0.3rem;
+      }
+
+      &--info::after {
+        content: '*';
+        color: var(--third-color);
+        margin: 0 0.5rem;
+        font-weight: bold;
       }
     }
 

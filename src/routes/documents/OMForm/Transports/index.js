@@ -217,7 +217,7 @@ const Transports = ({ step }) => {
       setNeedsAuthorization(false);
     }
   }
-  
+  console.log("errors = ", errors);
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <StatusChecker status={currentOM.transports.status} />
@@ -230,8 +230,9 @@ const Transports = ({ step }) => {
             <RadioInput
               id="first-class"
               formField="trainClass"
-              label="Première classe (*)"
+              label="Première classe"
               register={register}
+              hasInfo
             />
             <RadioInput
               id="second-class"
@@ -271,7 +272,8 @@ const Transports = ({ step }) => {
             <RadioInput
               id="business-class"
               formField="planeClass"
-              label="Classe Affaires (*)"
+              label="Classe Affaires"
+              hasInfo
               register={register}
             />
             <RadioInput
@@ -318,6 +320,7 @@ const Transports = ({ step }) => {
         id="vehicle-select"
         label="Véhicule utilisé"
         blankValue={"Pas de véhicule sélectionné"}
+        isRequired
       />
       {needsAuthorization && (
         <RequestWithFile
@@ -346,11 +349,9 @@ const Transports = ({ step }) => {
         </div>
         <div className="form__section-field">
           <p className="form__section-field-label">Autres</p>
-          <CheckboxInput id="taxi" formField="others" label="Taxi" register={register} />
+          <CheckboxInput id="taxi" formField="others" label="Taxi" register={register} hasInfo />
           <CheckboxInput id="parking" formField="others" label="Parking" register={register} />
-          {/* TODO : to create errors */}
           <CheckboxInput id="toll" formField="others" label="Péage" register={register} />
-          {/* <CheckboxInput id="troll" formField="others" label="Troll" register={register} /> */}
           <CheckboxInput id="ferry" formField="others" label="Ferry (bateau)" register={register} />
         </div>
         {needsTaxiDispensation && (
@@ -371,6 +372,9 @@ const Transports = ({ step }) => {
       </div>
       {errors.transports && <p className="form__section-field-error form__section-field-error--open">{errors.transports.message}</p>}
       {/* {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={areWeUpdatingData} />} */}
+      <div className='form__section-field form__section-field--infos-container'>
+        <p className="form__section-field-label form__section-field-label--infos" style={{marginBottom: '0', textAlign: 'center'}}><span className='form__section-field-label--required'></span>: Soumis à dérogation</p>
+      </div>
       <Buttons
         step={step}
         id={omId}

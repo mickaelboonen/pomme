@@ -25,6 +25,8 @@ const MissionVal = ({ displayPdf, data, entity }) => {
   const loader = useLoaderData();
   
   let defaultValues = null;
+
+  const { countries } = useSelector((state) => state.app);
   
   
   defaultValues = data;
@@ -50,7 +52,7 @@ const MissionVal = ({ displayPdf, data, entity }) => {
     combinedAddress += setAddressPart(streetName);
     combinedAddress += setAddressPart(postCode);
     combinedAddress += setAddressPart(city);
-    combinedAddress += setAddressPart(countryCode);
+    combinedAddress += setAddressPart(countries.find((country) => country.code === countryCode).name);
     
     const joinedAddress = {
       id: address.id,

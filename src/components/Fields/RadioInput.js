@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import './style.scss';
 
@@ -11,7 +12,8 @@ const RadioInput = ({
   label,
   register,
   handler,
-  disabled
+  disabled,
+  hasInfo
 }) => (
   <div className="form__section-field-radio" id={formField}>
     <input
@@ -27,7 +29,7 @@ const RadioInput = ({
       onClick={handler}
       
     />
-    <label className="form__section-field-label" htmlFor={id}>{label}</label>
+    <label className={classNames("form__section-field-label", {"form__section-field-label--required": hasInfo})} htmlFor={id}>{label}</label>
   </div>
 );
 

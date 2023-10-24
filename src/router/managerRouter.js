@@ -142,18 +142,21 @@ export default {
             const id = Number(url.searchParams.get("id"));
     
             const { agent: { user, agent }, omManager: { pendingDocs }} = store.getState();
-            // console.log("in router : ", agent);
             // store.dispatch(fetchTmpSignature({id: user}));
 
-            const { missioner } = pendingDocs.find((om) => om.id === id);
+            if (pendingDocs.length > 0) {
+              const { missioner, advance } = pendingDocs.find((om) => om.id === id);
 
-            // console.log('om in router : ', currentOM);
-            if (agent.roles.indexOf('MANAGER') > -1) {
-              // console.log('here');
-              store.dispatch(fetchTmpSignature({id: user}));
-              store.dispatch(fetchTmpAcSignature({id: process.env.AC_CPT_LOGIN}));
+              // console.log('om in router : ', currentOM);
+              if (agent.roles.indexOf('MANAGER') > -1) {
+                // console.log('here');
+                store.dispatch(fetchTmpSignature({id: user}));
+                if (advance.advance) {
+                  store.dispatch(fetchTmpAcSignature({id: process.env.AC_CPT_LOGIN}));
+                }
+              }
+              store.dispatch(fetchTmpUserData({id: missioner}))
             }
-            store.dispatch(fetchTmpUserData({id: missioner}))
             return url},
         },
         {
