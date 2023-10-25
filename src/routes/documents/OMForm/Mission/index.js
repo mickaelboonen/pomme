@@ -120,8 +120,10 @@ const Mission = ({ step, isEfForm }) => {
   const fileName = getAllFilenamesForProperty(defaultValues.missionPurposeFile);
   const mapsFileName = getAllFilenamesForProperty(defaultValues.maps);
   
+  console.log('down here');
+  console.log(defaultValues);
   defaultValues = addAllAddressesFields(defaultValues);
-  
+  console.log(defaultValues);
   const {
     register, handleSubmit, watch, clearErrors,
     setError, setValue, formState: { errors }

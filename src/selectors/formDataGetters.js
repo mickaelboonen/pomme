@@ -50,10 +50,12 @@ export const turnFieldsToAddressEntity = (data) => {
   for (let i = 1; i <= addressesNumber; i++) {
     const missionAddress = {
       id: data['addressId' + i],
-      streetNumber: data['streetNumber' + i],
-      bis: data['bis' + i],
-      streetType: data['streetType' + i],
-      streetName: data['streetName' + i],
+      // streetNumber: data['streetNumber' + i],
+      // bis: data['bis' + i],
+      // streetType: data['streetType' + i],
+      // streetName: data['streetName' + i],
+      address: data['address' + i],
+      address2: data['address2' + i],
       postCode: data['postCode' + i],
       city: data['city' + i],
       countryCode: data['countryCode' + i] === 0 && isMissionInFrance ? 100 : data['countryCode' + i]
@@ -68,6 +70,8 @@ export const turnFieldsToAddressEntity = (data) => {
     delete data['bis' + i];
     delete data['streetType' + i];
     delete data['streetName' + i];
+    delete data['address' + i];
+    delete data['address2' + i];
     delete data['postCode' + i];
     delete data['city' + i];
     delete data['countryCode' + i];

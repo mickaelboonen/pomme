@@ -77,7 +77,7 @@ const Address = ({
         value=""
       />
       <div className={classNames('address', {'address--open': stepNumber === 1})}>
-        <div className="address__section">
+        {/* <div className="address__section">
           <NumberField
             id="street-number-field"
             disabled={disabled}
@@ -104,11 +104,10 @@ const Address = ({
             id="street-type-field"
             formField={"streetType" + stepNumber}
             label="Type de voie"
-            // required={errorMessages.streetType}
             error={errors['streetType' + stepNumber]}
           />
-        </div>
-        <div className="address__section">
+        </div> */}
+        {/* <div className="address__section">
           <TextField
             id="street-name-field"
             disabled={disabled}
@@ -116,7 +115,27 @@ const Address = ({
             label="Nom de la rue"
             register={register}
             error={errors['streetName' + stepNumber]}
-            // required={errorMessages.streetName}
+          />
+        </div> */}
+        <div className="address__section">
+          <TextField
+            id="street-name-field"
+            disabled={disabled}
+            formField={"address" + stepNumber}
+            label="Adresse (1ère ligne)"
+            register={register}
+            error={errors['streetName' + stepNumber]}
+          />
+        </div>
+        <div className="address__section">
+          <TextField
+            id="street-name-field"
+            disabled={disabled}
+            formField={"address2" + stepNumber}
+            label="Adresse (2ème ligne)"
+            placeholder="2ème ligne si besoin"
+            register={register}
+            error={errors['streetName' + stepNumber]}
           />
         </div>
         <div className="address__section">
