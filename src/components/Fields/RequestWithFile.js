@@ -88,7 +88,7 @@ const RequestWithFile = ({
               <CheckboxInput
                 id={id + '-for-validation-field'}
                 formField={id + 'ForValidation'}
-                label="Demande en cours"
+                label="En cours de signature du prêteur"
                 register={register}
                 columnDisplay
               />
