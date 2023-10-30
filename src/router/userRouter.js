@@ -14,6 +14,7 @@ import { fetchAllOmTypes } from "src/reducer/omManager";
 import { findPermFilesByAgent, getAgentsPrograms, fetchProgram } from "src/reducer/otherDocuments";
 import TravelInfo from "src/routes/utilisateur/MyAccount/TravelInfo";
 import AddProgram from "src/routes/utilisateur/MyAccount/TravelInfo/AddProgram";
+import Tickets from "../routes/documents/Tickets";
 
 
 
@@ -106,6 +107,13 @@ export default {
     {
       path: encodeURIComponent('mes-préférences'),
       element: <Preferences />
+    },
+    {
+      path: 'demande-de-transports',
+      element: <Tickets />,
+      loader: async ({ request }) => {
+        return new URL(request.url);
+      }
     },
   ]
 };

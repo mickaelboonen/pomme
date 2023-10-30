@@ -62,7 +62,7 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
   if (isOm && (transports.transport_type.indexOf('plane') !== -1 || transports.transport_type.indexOf('train') !== -1)) {
     buttons.push({
         name: 'transports',
-        link: "#",
+        link: "/utilisateur/demande-de-transports?om=" + id,
         label: 'Faire une demande de billets',
         status: [9],
       });
