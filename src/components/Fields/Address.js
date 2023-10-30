@@ -15,6 +15,7 @@ import NumberField from './NumberField';
 const Address = ({
   register,
   errors,
+  watch,
   disabled,
   errorMessages,
   suffixe,
@@ -58,6 +59,10 @@ const Address = ({
   
   const frenchRegions = countries.filter((country) => country.nationality === 'Français' || country.nationality === 'FRANCAIS(E)');
 
+  // const x = watch();
+  // console.log(title);
+
+  // const { }
   return (
     <div className={classNames('step', {'step--open': stepNumber === 1})} id={"step-" + stepNumber}>
       <div className='step__title step__title--down' onClick={toggleStep} id={"step-down-" + stepNumber}>

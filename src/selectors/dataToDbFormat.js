@@ -364,6 +364,12 @@ export const extractAgentPersonalAddress = (data) => {
       streetType: '',
     };
   }
+  return { 
+    address: data.adrAdresse1,
+    address2: '',
+    city:data.ville,
+    postCode:data.codePostal,
+  }
   return {
     bis:data.bisTer,
     city:data.ville,
@@ -375,6 +381,13 @@ export const extractAgentPersonalAddress = (data) => {
 }
 
 export const extractAgentProfessionalAddress = (data) => {
+  return {
+    addressPro: data.adrAdresse2,
+    address2Pro: data.adrAdresse1,
+    cityPro: data.ville,
+    postCodePro: data.codePostal,
+
+  }
   return {
     bisPro:data.bisTer,
     cityPro:data.ville,

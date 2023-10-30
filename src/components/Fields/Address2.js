@@ -38,6 +38,7 @@ const Address2 = ({ countries, watch, data, register, errors, disabled, errorMes
     setAddressesNumber(newArray);
   }
 
+
   return (
     <>
       <p className='form__section-message form__section-message--infos'>Dans le cas où votre OM comporterait plusieurs destinations, merci de les rajouter en cliquant sur le bouton <span>AJOUTER UNE MISSION</span>.</p>
@@ -55,6 +56,7 @@ const Address2 = ({ countries, watch, data, register, errors, disabled, errorMes
             deleteAddress={handleDeleteAddress}
             title={`Adresse n° ${step}`}
             countries={countries}
+            // watch={watch}
           />
         ))}
       </div>
