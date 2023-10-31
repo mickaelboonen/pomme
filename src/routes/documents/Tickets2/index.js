@@ -10,6 +10,7 @@ import LoaderCircle from 'src/components/LoaderCircle';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
 import FileField from 'src/components/Fields/FileField';
 import TextareaField from 'src/components/Fields/TextareaField';
+import SelectField from 'src/components/Fields/SelectField';
 
 import { getSavedFileName } from 'src/selectors/formDataGetters';
 
@@ -18,6 +19,7 @@ import { clearMessage } from 'src/reducer/app';
 import './style.scss';
 
 import { getDDMMYYDate, getHHMMTime } from 'src/selectors/dateFunctions';
+import AddProgram from './AddProgram';
 // import  { getDDMMYY }from 'src/selectors/dateFunctions';
 
 const Tickets2 = () => {  
@@ -28,14 +30,15 @@ const Tickets2 = () => {
 
   const { omForm :{ omLoader},
     app: { apiMessage },
-    agent: { oms },
-    docs: {currentPassport, loader}
+    agent: { oms, user },
+    docs: {currentPassport, programs, loader}
   } = useSelector((state) => state);
+  
   const id = Number(url.searchParams.get('om'));
 
   const { transports, mission } = oms.find((om) => om.id === id);
 
-  console.log(currentPassport);
+  console.log(programs);
   const {
     register, handleSubmit, watch,
     setValue,  setError, clearErrors,
@@ -85,7 +88,10 @@ const Tickets2 = () => {
   })
 
 
-  
+  const [addProgram, setAddProgram] = useState(false);
+  const handleAddProgram = () => {
+    setAddProgram(true)
+  }
 
   const filename = currentPassport ? getSavedFileName(currentPassport.url) : '';
   const savedPassport = watch('savedPassport');
@@ -93,6 +99,8 @@ const Tickets2 = () => {
   const handlePassport = () => {
     clearErrors('passport');
   }
+
+  const programsToDisplay = [{id: 0, name: "Veuillez sélectionner un abonnement"}].concat(programs)
 
   return (
     <>
@@ -165,6 +173,20 @@ const Tickets2 = () => {
             )}
           </div>
         )}
+        <div className='form__section'>
+          <FormSectionTitle>Programme de fidélité</FormSectionTitle>
+          <SelectField
+            register={register}
+            data={programsToDisplay}
+            id="programs-field"
+            formField="program"
+            label="Choisir un programme de fidélité"
+            handler={() => {}}
+            error={errors.programs}
+          />
+          <button type="button" onClick={handleAddProgram}>Ajouter un program</button>
+          {addProgram && <AddProgram register={register} errors={errors} user={user} />}
+        </div>
         <div>
           <button>Valider</button>
         </div>

@@ -129,7 +129,7 @@ export default {
         if (currentOm.mission !== 'métropole') {
           store.dispatch(fetchUserPassport({ id: user }))
         }
-        store.dispatch(fetchProgram({id: user}))
+        store.dispatch(getAgentsPrograms({agent: user}))
         return url;
       }
     },
