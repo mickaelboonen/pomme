@@ -16,6 +16,7 @@ import { setLoader } from '../reducer/omForm';
 import { fetchUserData, setApiResponse } from '../reducer/app';
 import { saveEf } from 'src/reducer/ef';
 import { saveTmpUserData, saveTmpSignature, saveTmpAcSignature } from 'src/reducer/tmpReducer';
+import { saveTmpUserPhoneMail } from '../reducer/tmpReducer';
 
 
 let casEndpoint = "cas.unimes.fr";
@@ -106,24 +107,42 @@ const appMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse(error));
         });
       break;
-    case 'agent/fetchUserData':
-      api.post("/api/agent/get-data/full", action.payload)
-        .then((response) => {
-            store.dispatch(saveUserData(response.data));
-            store.dispatch(setLoader(false));
-        })
-        .catch((error) => {
-          console.error('get agent full data', error);
-          // store.dispatch(showTicketCreationResponse(error.response))
-
-          // TODO : Temporary solution to fetch user Data after the first fail
-          // Since the Hydrate only happens after fetchUserData is called, meaning the payload for the action above === { id = ""}
-          if (error.response.data.detail === "Call to a member function getPersId() on null") {
-            const { agent : { user }} = store.getState((state) => state)
-            store.dispatch(fetchUserData({id: user}))
-          }
-        });
-      break;
+      case 'agent/fetchUserData':
+        api.post("/api/agent/get-data/full", action.payload)
+          .then((response) => {
+              store.dispatch(saveUserData(response.data));
+              store.dispatch(setLoader(false));
+          })
+          .catch((error) => {
+            console.error('get agent full data', error);
+            // store.dispatch(showTicketCreationResponse(error.response))
+  
+            // TODO : Temporary solution to fetch user Data after the first fail
+            // Since the Hydrate only happens after fetchUserData is called, meaning the payload for the action above === { id = ""}
+            if (error.response.data.detail === "Call to a member function getPersId() on null") {
+              const { agent : { user }} = store.getState((state) => state)
+              store.dispatch(fetchUserData({id: user}))
+            }
+          });
+        break;
+      case 'agent/fetchTmpUserPhoneMail':
+        api.post("/api/agent/get-data/data-for-travelling", action.payload)
+          .then((response) => {
+              store.dispatch(saveTmpUserPhoneMail(response.data));
+              // store.dispatch(setLoader(false));
+          })
+          .catch((error) => {
+            console.error('get agent full data', error);
+            // store.dispatch(showTicketCreationResponse(error.response))
+  
+            // TODO : Temporary solution to fetch user Data after the first fail
+            // Since the Hydrate only happens after fetchUserData is called, meaning the payload for the action above === { id = ""}
+            if (error.response.data.detail === "Call to a member function getPersId() on null") {
+              const { agent : { user }} = store.getState((state) => state)
+              store.dispatch(fetchUserData({id: user}))
+            }
+          });
+        break;
       case 'tmp/fetchTmpUserData':
         api.post("/api/agent/get-data/full", action.payload)
           .then((response) => {

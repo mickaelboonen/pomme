@@ -16,6 +16,8 @@ import TravelInfo from "src/routes/utilisateur/MyAccount/TravelInfo";
 import AddProgram from "src/routes/utilisateur/MyAccount/TravelInfo/AddProgram";
 import Tickets from "../routes/documents/Tickets";
 import Tickets2 from "../routes/documents/Tickets2";
+import { fetchTmpUserPhoneMail } from "../reducer/tmpReducer";
+import { fetchUserData } from "../reducer/agent";
 
 
 
@@ -75,6 +77,8 @@ export default {
                 const { agent : { user } } = store.getState((state) => state);
                 console.log(user);
                 store.dispatch(getAgentsPrograms({agent: user}));
+                store.dispatch(fetchUserData({id: user}))
+                
               }
             },
             {

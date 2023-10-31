@@ -43,6 +43,10 @@ const agentSlice = createSlice({
       saveTmpAcSignature: (state, action) => {
         state.acSignature = action.payload;
       },
+      fetchTmpUserPhoneMail: () => {},
+      saveTmpUserPhoneMail: (state, action) => {
+        state.tmpAgent = action.payload;
+      },
       
     },
 });
@@ -53,7 +57,10 @@ export const {
   fetchTmpSignature,
   saveTmpSignature,
   fetchTmpAcSignature,
-  saveTmpAcSignature
+  saveTmpAcSignature,
+  fetchTmpUserPhoneMail,
+  saveTmpUserPhoneMail
+
 } = agentSlice.actions;
 
 export default agentSlice.reducer;

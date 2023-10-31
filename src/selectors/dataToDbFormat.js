@@ -331,14 +331,14 @@ export const turnAccomodationDataToDbFormat = (data) => {
 
 export const extractUserData = (data) => {
   
-  let { agent, position } = data;
+  let { agent, position, telephone, email } = data;
   let { categorie, title, llGrade } = agent;
   
   if (categorie === 'Z' && llGrade.includes('DOCTORANT')) {
     categorie = 'A';
     title = llGrade;
   }
-  
+
   return {
     employer:'unimes',
     firstname:agent.prenom,
@@ -350,6 +350,9 @@ export const extractUserData = (data) => {
     unimesDepartment: agent.llStructure,
     roles: data.roles ?? [],
     channel: data.channel ?? '',
+    telephone: telephone,
+    email: email,
+    birthday: agent.dateNaissance
   }
 }
 

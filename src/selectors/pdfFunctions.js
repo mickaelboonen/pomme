@@ -32,3 +32,13 @@ export const setExistingValidationDate = (givenDate) =>  {
 export const setValidationDateForPdf = (date) =>  {
  return date.split(' ')[0] + ' à ' + date.split(' ')[1]; 
 }
+
+export const toggleViewer = (event, setter) => {
+ 
+  if (event.target.id.includes('closer')) {
+    setter(false);
+  }
+  else {
+    setter(true);
+  }
+}

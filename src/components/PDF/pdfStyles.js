@@ -50,6 +50,24 @@ export const styles = StyleSheet.create({
       border: '1px solid #1a1a1a',
       padding:'8'
     },
+    programSubtitle: {
+      border: '1px solid #1a1a1a',
+      // borderTop: 0,
+      backgroundColor: '#e1e1e1',
+      textAlign: 'center',
+      padding:'2',
+
+    },
+    program: {
+      padding: 5,
+      column: {
+        border:'1px solid #1a1a1a',
+        borderBottom:0,
+        borderRight:0,
+        width: '200',
+        padding: 2
+      }
+    },
     text: {
       marginBottom: '4',
     },
