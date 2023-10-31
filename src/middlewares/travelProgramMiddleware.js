@@ -4,7 +4,7 @@ import { uploadFile, validateSideForm } from 'src/reducer/omForm';
 import { api, setTokenOnApi } from './api';
 import { setMessage } from '../reducer/vehicle';
 import { setApiResponse } from '../reducer/app';
-import { saveAgentsPrograms, saveProgram } from '../reducer/otherDocuments';
+import { saveAgentsPrograms, saveProgram, saveUserPassport } from '../reducer/otherDocuments';
 
 
 api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -64,7 +64,17 @@ const travelProgramMiddleware = (store) => (next) => (action) => {
         .catch((error) => {
           store.dispatch(setApiResponse(error));
         });
+      break;
+    case 'other-documents/fetchUserPassport':
+      api.get("/api/perm-file/passport/"+ action.payload.id)
+        .then((response) => {
+          store.dispatch(saveUserPassport(response.data))
+        })
+        .catch((error) => {
+          store.dispatch(setApiResponse(error));
+        });
       break; 
+  
     default:
   }
   next(action);

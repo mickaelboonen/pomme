@@ -4,7 +4,17 @@ import PropTypes from 'prop-types';
 import './style.scss';
 import classNames from 'classnames';
 
-const TextareaField = ({ id, label, formField, register, placeholder, isHidden, rows, required, error }) => {
+const TextareaField = ({
+  id,
+  label,
+  formField,
+  register,
+  placeholder,
+  isHidden,
+  rows,
+  required,
+  error
+}) => {
   return (
   <div id={id} className={classNames("form__section-field", {"form__section-field--hidden": isHidden})}>
     <label className="form__section-field-label" htmlFor={id}>{label}</label>

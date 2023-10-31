@@ -14,6 +14,7 @@ const initialState = {
     // name: null,
     // expiration: null,
   },
+  currentPassport: {},
   loader: false
 };
 const otherDocsSlice = createSlice({
@@ -62,6 +63,11 @@ const otherDocsSlice = createSlice({
         state.currentProgram = action.payload;
         state.loader = false;
       },
+      fetchUserPassport: (state) => { state.loader = true },
+      saveUserPassport: (state, action) => {
+        state.currentPassport = action.payload;
+        state.loader = false;
+      },
       deleteProgram: () => {}
     },
 });
@@ -80,7 +86,9 @@ export const {
   uploadVehicleFiles,
   fetchProgram,
   saveProgram,
-  deleteProgram
+  deleteProgram,
+  fetchUserPassport,
+  saveUserPassport
 } = otherDocsSlice.actions;
 
 export default otherDocsSlice.reducer;

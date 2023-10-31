@@ -46,11 +46,11 @@ const Step = ({ register, stepNumber, errors, step, deleteStep, isAr }) => {
                 <DateField 
                   register={register}
                   id="departure-date-field"
-                  label="Date de retour"
+                  label="Date de départ"
                   type="date"
-                  formField={"comeback" + stepNumber}
+                  formField={"departure" + stepNumber}
                   required="Veuillez renseigner la date."
-                  error={errors["comeback" + stepNumber]}
+                  error={errors["departure" + stepNumber]}
                 />
               )}
           </div>
@@ -58,10 +58,10 @@ const Step = ({ register, stepNumber, errors, step, deleteStep, isAr }) => {
               <TextField
                 register={register}
                 id="a"
-                formField={"arrivalPlace" + stepNumber}
+                formField={"departurePlace" + stepNumber}
                 label="Aéroport d'arrivée :"
                 required="Veuillez renseigner la commune."
-                error={errors["arrivalPlace" + stepNumber]}
+                error={errors["departurePlace" + stepNumber]}
               />
 
               <DateField 
@@ -77,22 +77,26 @@ const Step = ({ register, stepNumber, errors, step, deleteStep, isAr }) => {
                 <DateField 
                   register={register}
                   id="departure-date-field"
-                  label="Heure de retour"
-                  type="time"
-                  formField={"comebackHour" + stepNumber}
+                  label="Date de départ"
+                  type="date"
+                  formField={"departure" + stepNumber}
                   required="Veuillez renseigner la date."
-                  error={errors["comebackHour" + stepNumber]}
+                  error={errors["departure" + stepNumber]}
                 />
               )}
 
 
           </div>
-          {!isAr && (
-            <div className='trip__fields-column trip__fields-column--delete'>
-              <FaTrash onClick={handleDeleteStep} />
-            </div>
-          )}
+          <div className='trip__fields-column trip__fields-column--delete'>
+              <button type="button">Delete</button>
+          </div>
         </div>
+        {!isAr && (
+          <div className='step__container-fields step__container-fields--delete'>
+            <FaTrash onClick={handleDeleteStep} />
+            <p onClick={handleDeleteStep}>Supprimer cette étape</p>
+          </div>
+        )}
       </div>
   );
 }
