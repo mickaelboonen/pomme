@@ -8,13 +8,7 @@ const initialState = {
   agentSignature: null,
   programs: [],
   pv: null,
-  currentProgram: {
-    // sector: null,
-    // type: null,
-    // number: null,
-    // name: null,
-    // expiration: null,
-  },
+  currentProgram: {},
   currentPassport: {},
   loader: false
 };
@@ -73,7 +67,9 @@ const otherDocsSlice = createSlice({
         state.currentPassport = action.payload;
         state.loader = false;
       },
-      deleteProgram: () => {}
+      deleteProgram: () => {},
+      requestTickets: () => {}
+
     },
 });
 
@@ -93,7 +89,8 @@ export const {
   saveProgram,
   deleteProgram,
   fetchUserPassport,
-  saveUserPassport
+  saveUserPassport,
+  requestTickets
 } = otherDocsSlice.actions;
 
 export default otherDocsSlice.reducer;

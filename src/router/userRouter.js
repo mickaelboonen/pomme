@@ -127,6 +127,9 @@ export default {
         const url = new URL(request.url);
         const id = Number(url.searchParams.get('om'));
 
+        if (id === 0) {
+          // TODO : 
+        }
         const { agent: { oms, user } } = store.getState((state) => state);
         const currentOm = oms.find((om) => om.id === id)
 

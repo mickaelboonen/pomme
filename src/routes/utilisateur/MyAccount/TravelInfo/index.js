@@ -144,7 +144,7 @@ const TravelInfo = () => {
                       <button
                         className='file-manager__buttons-button'
                         type="button"
-                        // onMouseLeave={handleHoverOut}
+                        onMouseLeave={handleHoverOut}
                         onMouseEnter={handleHover}
                         id="viewer-opener"
                         onClick={handleShowDoc}

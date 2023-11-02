@@ -1,7 +1,7 @@
 import { saveVehicles, saveVehicle, saveVehicleDocuments, requestVehicleAuthorization, saveAuthorization } from 'src/reducer/vehicle';
 import { uploadFile, validateSideForm } from 'src/reducer/omForm';
 
-import { api, setTokenOnApi } from './api';
+import { api, fileApi, setTokenOnApi } from './api';
 import { setMessage } from '../reducer/vehicle';
 import { setApiResponse } from '../reducer/app';
 import { saveAgentsProgramsAndPV, saveProgram, saveUserPassport } from '../reducer/otherDocuments';
@@ -10,6 +10,9 @@ import { saveAgentsProgramsAndPV, saveProgram, saveUserPassport } from '../reduc
 api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 api.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 api.defaults.headers['Content-Type'] = 'application/json';
+
+fileApi.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
+fileApi.defaults.headers['Content-Type'] = 'multipart/form-data';
 
 const travelProgramMiddleware = (store) => (next) => (action) => {
   
@@ -74,7 +77,26 @@ const travelProgramMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse(error));
         });
       break; 
-  
+      case 'other-documents/requestTickets':
+        api.post("/api/tickets/request/without", action.payload)
+          .then((response) => {
+            console.log(response);
+            // store.dispatch(saveUserPassport(response.data))
+          })
+          .catch((error) => {
+            store.dispatch(setApiResponse(error));
+          });
+      case 'other-documents/requestTicketsWithFile':
+        apiFile.post("/api/tickets/request/with", action.payload)
+          .then((response) => {
+            console.log(response);
+            // store.dispatch(saveUserPassport(response.data))
+          })
+          .catch((error) => {
+            store.dispatch(setApiResponse(error));
+          });
+    
+      break; 
     default:
   }
   next(action);
