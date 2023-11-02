@@ -60,6 +60,10 @@ export const styles = StyleSheet.create({
     },
     program: {
       padding: 5,
+      display: 'flex',
+      flexDirection: 'column',
+      // justifyContent: 'center',
+      alignItems: 'center',
       column: {
         border:'1px solid #1a1a1a',
         borderBottom:0,

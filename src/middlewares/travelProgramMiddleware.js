@@ -4,7 +4,7 @@ import { uploadFile, validateSideForm } from 'src/reducer/omForm';
 import { api, setTokenOnApi } from './api';
 import { setMessage } from '../reducer/vehicle';
 import { setApiResponse } from '../reducer/app';
-import { saveAgentsPrograms, saveProgram, saveUserPassport } from '../reducer/otherDocuments';
+import { saveAgentsProgramsAndPV, saveProgram, saveUserPassport } from '../reducer/otherDocuments';
 
 
 api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -47,10 +47,10 @@ const travelProgramMiddleware = (store) => (next) => (action) => {
           store.dispatch(setApiResponse(error));
         });
       break;
-      case 'other-documents/getAgentsPrograms':
+      case 'other-documents/getAgentsProgramsAndPV':
         api.get("/api/travel-program/find-by-agent/" + action.payload.agent)
           .then((response) => {
-            store.dispatch(saveAgentsPrograms(response.data))
+            store.dispatch(saveAgentsProgramsAndPV(response.data))
           })
           .catch((error) => {
             store.dispatch(setApiResponse(error));

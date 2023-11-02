@@ -7,6 +7,7 @@ const initialState = {
   agentDocs: [],
   agentSignature: null,
   programs: [],
+  pv: null,
   currentProgram: {
     // sector: null,
     // type: null,
@@ -54,9 +55,13 @@ const otherDocsSlice = createSlice({
       uploadVehicleFiles: () => {},
       createProgram: () => {},
       updateProgram: () => {},
-      getAgentsPrograms: () => {},
-      saveAgentsPrograms: (state, action) => {
-        state.programs = action.payload;
+      getAgentsProgramsAndPV: () => {},
+      saveAgentsProgramsAndPV: (state, action) => {
+        state.programs = action.payload.programs;
+        state.pv = action.payload.pv
+        if (action.payload.file !== '') {
+          state.pv.file = action.payload.file
+        }
       },
       fetchProgram: (state) => { state.loader = true },
       saveProgram: (state, action) => {
@@ -81,8 +86,8 @@ export const {
   deletePermFile,
   createProgram,
   updateProgram,
-  getAgentsPrograms,
-  saveAgentsPrograms,
+  getAgentsProgramsAndPV,
+  saveAgentsProgramsAndPV,
   uploadVehicleFiles,
   fetchProgram,
   saveProgram,

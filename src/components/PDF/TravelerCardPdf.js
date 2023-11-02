@@ -41,12 +41,14 @@ const TravelerCardPdf = ({ data, agent, contacts, agentAddress, programs}) => {
       </View>
       <View style={styles.section}>
         <Text style={styles.section.title} wrap={false}>INFORMATIONS GÉNÉRALES</Text>
+
         <Text style={[styles.section.text, {paddingRight: 10, paddingLeft: 10, textAlign: 'justify'}]}>Nom de la société : Université de Nîmes</Text>
         <Text style={[styles.section.text, {paddingRight: 10, paddingLeft: 10, textAlign: 'justify'}]}>Adresse : 5 rue du Docteur Georges Salan 30021 NÎMES Cedex 1</Text>
         <Text style={styles.section.text} />
-        <Text style={[styles.section.text, {paddingRight: 10, paddingLeft: 10, textAlign: 'justify'}]}>Contacts administratifs : </Text>
+        <Text style={styles.section.programSubtitle}>CONTACTS ADMINISTRATIFS</Text>
+        <Text style={styles.section.text} />
         {contacts.map((c) => (
-          <Text key={c.id} style={[styles.section.text, {paddingRight: 15, paddingLeft: 15, textAlign: 'justify'}]}>{c.icon} {c.name}{c.phone !== '' ? ' - 04.66.36.' :''}{c.phone} </Text>
+          <Text key={c.id} style={[styles.section.text, {paddingRight: 10, paddingLeft: 10, textAlign: 'justify'}]}>{c.icon} {c.name}{c.phone !== '' ? ' - 04.66.36.' :''}{c.phone} </Text>
         ))}
       </View>
       <View style={styles.section}>
@@ -61,7 +63,7 @@ const TravelerCardPdf = ({ data, agent, contacts, agentAddress, programs}) => {
 
       <View style={styles.section} wrap={false}>
         <Text style={[styles.section.title, {marginBottom: 0, borderBottom: 0}]} wrap={false}>INFORMATIONS DE TRANSPORTS</Text>
-        <Text style={styles.section.programSubtitle}>FERROVIAIRE</Text>
+        {sortedPrograms.train.length > 0 && <Text style={styles.section.programSubtitle}>FERROVIAIRE</Text>}
         {sortedPrograms.train.map((p) => (
           <View style={styles.section.program} key={p.id}>
             <View style={{display: 'flex', flexDirection: 'row'}}>
@@ -78,23 +80,23 @@ const TravelerCardPdf = ({ data, agent, contacts, agentAddress, programs}) => {
             </View>
           </View>
         ))}
-        <Text style={styles.section.programSubtitle}>AERIEN</Text>
+        {sortedPrograms.plane.length > 0 && <Text style={styles.section.programSubtitle}>AERIEN</Text>}
         {sortedPrograms.plane.map((p) => (
           <View style={styles.section.program} key={p.id}>
-          <View style={{display: 'flex', flexDirection: 'row'}}>
-            <Text style={styles.section.program.column}>N° carte {p.type === 'Abonnement' ? "d'abonnement" : 'de fidélité' } :</Text>
-            <Text style={[styles.section.program.column, { borderRight: '1px solid #1a1a1a'}]}>{p.number}</Text>
+            <View style={{display: 'flex', flexDirection: 'row'}}>
+              <Text style={styles.section.program.column}>N° carte {p.type === 'Abonnement' ? "d'abonnement" : 'de fidélité' } :</Text>
+              <Text style={[styles.section.program.column, { borderRight: '1px solid #1a1a1a'}]}>{p.number}</Text>
+            </View>
+            <View style={{display: 'flex', flexDirection: 'row'}}>
+              <Text style={styles.section.program.column}>Type : </Text>
+              <Text style={[styles.section.program.column, { borderRight: '1px solid #1a1a1a'}]}>{p.name}</Text>
+            </View>
+            <View style={{display: 'flex', flexDirection: 'row'}}>
+              <Text style={[styles.section.program.column, { borderBottom: '1px solid #1a1a1a'}]}>Date d'expiration :</Text>
+              <Text style={[styles.section.program.column, { borderBottom: '1px solid #1a1a1a', borderRight: '1px solid #1a1a1a'}]}>{reverseDate(p.expiration)}</Text>
+            </View>
           </View>
-          <View style={{display: 'flex', flexDirection: 'row'}}>
-            <Text style={styles.section.program.column}>Type : </Text>
-            <Text style={[styles.section.program.column, { borderRight: '1px solid #1a1a1a'}]}>{p.name}</Text>
-          </View>
-          <View style={{display: 'flex', flexDirection: 'row'}}>
-            <Text style={[styles.section.program.column, { borderBottom: '1px solid #1a1a1a'}]}>Date d'expiration :</Text>
-            <Text style={[styles.section.program.column, { borderBottom: '1px solid #1a1a1a', borderRight: '1px solid #1a1a1a'}]}>{reverseDate(p.expiration)}</Text>
-          </View>
-        </View>
-      ))}
+        ))}
       </View>
     </Page>
 );}

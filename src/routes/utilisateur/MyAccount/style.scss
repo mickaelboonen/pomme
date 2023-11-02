@@ -176,4 +176,19 @@
     }
 
   }
+
+  &__message {
+    border: 1px solid rgba(var(--darkestThemeColor));
+    font-size: 0.8em;
+    font-weight: bold;
+    font-style: italic;
+    margin: 0.5rem auto 2rem;
+    padding: 0.5rem;
+    // margin: auto;
+    text-align: center;
+    color: rgba(var(--darkestThemeColor));
+    width: fit-content;
+    border-radius: vars.$radius;
+    background-color: var(--lighter-first-color);
+  }
 }

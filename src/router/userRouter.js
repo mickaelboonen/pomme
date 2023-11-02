@@ -11,7 +11,7 @@ import RefusalNotification from "src/routes/utilisateur/MyAccount/RefusalNotific
 
 import { getVehicles, fetchVehicle} from "src/reducer/vehicle";
 import { fetchAllOmTypes } from "src/reducer/omManager";
-import { findPermFilesByAgent, getAgentsPrograms, fetchProgram, fetchUserPassport} from "src/reducer/otherDocuments";
+import { findPermFilesByAgent, getAgentsProgramsAndPV, fetchProgram, fetchUserPassport} from "src/reducer/otherDocuments";
 import TravelInfo from "src/routes/utilisateur/MyAccount/TravelInfo";
 import AddProgram from "src/routes/utilisateur/MyAccount/TravelInfo/AddProgram";
 import Tickets from "../routes/documents/Tickets";
@@ -76,7 +76,7 @@ export default {
               loader: async ({ request }) => {
                 const { agent : { user } } = store.getState((state) => state);
                 console.log(user);
-                store.dispatch(getAgentsPrograms({agent: user}));
+                store.dispatch(getAgentsProgramsAndPV({agent: user}));
                 store.dispatch(fetchUserData({id: user}))
                 
               }
@@ -133,7 +133,7 @@ export default {
         if (currentOm.mission !== 'métropole') {
           store.dispatch(fetchUserPassport({ id: user }))
         }
-        store.dispatch(getAgentsPrograms({agent: user}))
+        store.dispatch(getAgentsProgramsAndPV({agent: user}))
         return url;
       }
     },

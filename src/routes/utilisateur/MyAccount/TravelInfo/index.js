@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { BlobProvider, Document, PDFViewer } from '@react-pdf/renderer';
+import { FaDownload, FaEye, FaFilePdf } from "react-icons/fa";
+import { MdRefresh } from "react-icons/md";
+
 
 import PageTitle from 'src/components/PageTitle';
 import SelectField from 'src/components/Fields/SelectField';
@@ -12,12 +15,34 @@ import {
 
 import './style.scss';
 import FileManager from '../FileManager';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleViewer } from 'src/selectors/pdfFunctions';
-import TravelerCardPdf from '../../../../components/PDF/TravelerCardPdf';
+import TravelerCardPdf from 'src/components/PDF/TravelerCardPdf';
+import { useForm } from 'react-hook-form';
+import InputValueDisplayer from 'src/routes/gestionnaire/DocValidation/InputValueDisplayer';
+
+import { getDDMMYYDate, getHHMMTime } from 'src/selectors/dateFunctions';
+import { addPermFile, editPermFile } from 'src/reducer/otherDocuments';
+// import { split } from 'lodash';
 
 const TravelInfo = () => {
-  const { agent : { user, agent, agentPersonalAddress}, docs: { programs }} = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const { watch, formState: { errors } } = useForm();
+  const { agent : { user, agent, agentPersonalAddress}, docs: { programs, pv }} = useSelector((state) => state);
+
+  const onSubmit = (data) => {
+    console.log("IN SUBMIT = ", data);
+    // return;
+
+    if (pv) {
+      dispatch(editPermFile({data: data, type: 'pv', user: user, id: pv.id}));
+    }
+    else {
+      dispatch(addPermFile({data: data, type: 'pv', user: user}));
+    }
+
+
+  }
   
   const [isPdfVisible, setIsPdfVisible] = useState(false)
 
@@ -51,6 +76,35 @@ const TravelInfo = () => {
   const handleShowDoc = (event) => {
     toggleViewer(event, setIsPdfVisible)
   }
+
+  const getDateFromName = (name) => {
+    const fullDate = name.slice(12, 26);
+    const splitDate = fullDate.split('T');
+    return splitDate[0].replaceAll('-', '/') + ' à ' + splitDate[1].replace('-', 'H');
+  }
+
+  const pvMessage = pv ? `Dernier profil voyageur généré le ${getDateFromName(pv.name)}` : "Aucun PDF n'a été généré pour le Profil Voyageur";
+
+
+  const [message, setMessage] = useState('');
+  const handleHover = (event) => {
+    const { id } = event.target.firstChild;
+    let message = '';
+    if (id === 'show') {
+      message = 'Simuler un nouveau profil voyageur';
+    }
+    else if (id === 'generate') {
+      message = 'Générer ' + (pv ? 'un nouveau' : 'votre') + ' profil voyageur';
+
+    } else if (id === 'download') {
+      message = 'Télécharger votre profil voyageur existant';
+    }
+
+    setMessage(message)
+  }
+  const handleHoverOut = () => {
+    setMessage('')
+  }
   return (
     <>
       <main className="my-documents">
@@ -58,52 +112,62 @@ const TravelInfo = () => {
         <div className='form'>
           <div className='form__section'>
             <FormSectionTitle>Mon Profil Voyageur</FormSectionTitle>
-
-
-
-
-            <div className="form__section-field-buttons">
+            <InputValueDisplayer
+              label="Profil Voyageur en format PDF"
+              value={pvMessage}
+            />
+            <div className="file-manager">
               <BlobProvider document={
                 <Document>
                   <TravelerCardPdf agent={agent} contacts={contacts} agentAddress={agentPersonalAddress} programs={programs} />
-
                 </Document>
               }>
-                {({ blob }) => {          
-                  const file = new File([blob], "monitoring-om-" +' om.id', {type: 'pdf'});
+              {({ blob }) => {
+                  const dateObj = new Date();   
+                  const date = getDDMMYYDate(dateObj);
+                  const time = getHHMMTime(dateObj);
+                  const file = new File([blob], "pv_" + user + '_' + date.replaceAll('/','-') + 'T' + time, {type: 'pdf'});
 
                   return (
-                    <div className="form__section-field-buttons__row">
-                      <button style={{margin: 'auto'}}type="button" onClick={() => { const data = watch(); data.file = file; submitFunction(data)}}>
-                        Valider la demande
+                    <>
+                    <div className='file-manager__buttons'>
+                      {pv && pv.file && (
+                        <button
+                          className='file-manager__buttons-button'
+                          type="button"
+                          onMouseLeave={handleHoverOut}
+                          onMouseEnter={handleHover}
+                        >
+                          <a download href={pv.file} id="download"><FaDownload /></a>
+                        </button>
+                      )}
+                      <button
+                        className='file-manager__buttons-button'
+                        type="button"
+                        // onMouseLeave={handleHoverOut}
+                        onMouseEnter={handleHover}
+                        id="viewer-opener"
+                        onClick={handleShowDoc}
+                      >
+                        <FaEye id="show"/>
                       </button>
-                      <button type="button" id="viewer-opener" onClick={handleShowDoc} style={{marginLeft: '1rem'}}>
-                        Visualiser <br /> le document
+                      <button
+                        className='file-manager__buttons-button'
+                        type="button"
+                        onMouseLeave={handleHoverOut}
+                        onMouseEnter={handleHover}
+                        onClick={() => { const data = watch(); data.file = file; onSubmit(data)}}
+                      >
+                        <FaFilePdf id="generate"/>
+                         {/* {!pv ? 'Générer' : 'Mettre  à jour'} le Profil Voyageur */}
                       </button>
                     </div>
+                    {message !== '' && <p className='file-manager__message'>{message}</p>}
+                    </>                    
                   );
-                }}
-              </BlobProvider>
-            </div>
-
-
-
-
-
-
-
-          <FileManager
-            icon={<FaUserCircle
-              className='file-displayer__icon-container-icon'
-            />}
-            id="programs"
-            label="Liste des cartes d'abonnement ou de fidélité"
-            filename=""
-            handler={null}
-            user={user}
-            needsSelect="programme"
-            data={programs}
-          />
+              }}
+            </BlobProvider>
+          </div>
         </div>
         <div className='form__section'>
           <FormSectionTitle>Abonnements & cartes de fidélité</FormSectionTitle>
@@ -133,7 +197,7 @@ const TravelInfo = () => {
         {isPdfVisible && (
           <div className="pdf-viewer">
             <div className="pdf-viewer__nav">
-              <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer la fenêtre</p>
+              <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={handleShowDoc}>Fermer la fenêtre</p>
             </div>
             <PDFViewer className='form__section-recap'>
               <Document>
