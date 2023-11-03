@@ -593,3 +593,14 @@
     }
   }
 }
+
+.editor-container {
+  background-color: #fff;
+  border-radius: vars.$radius;
+  overflow: hidden;
+  margin-bottom: 1rem;
+
+  & .ql-container {
+    height: 200px;
+  }
+}

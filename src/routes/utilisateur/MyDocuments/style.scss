@@ -115,6 +115,18 @@ $test : #{var(--first-color)};
           margin-left: 0.5rem;
           animation: spin 1s infinite linear;
         }
+
+        &--colored {
+          color: rgba(var(--darkestThemeColor));
+          margin: 0 0.2rem;
+          cursor: pointer;
+        }
+      }
+
+      &-label {
+        display: flex;
+          cursor: pointer;
+          align-items: center;
       }
     }
 

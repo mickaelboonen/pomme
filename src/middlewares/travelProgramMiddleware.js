@@ -87,7 +87,7 @@ const travelProgramMiddleware = (store) => (next) => (action) => {
             store.dispatch(setApiResponse(error));
           });
       case 'other-documents/requestTicketsWithFile':
-        apiFile.post("/api/tickets/request/with", action.payload)
+        fileApi.post("/api/tickets/request/with", action.payload)
           .then((response) => {
             console.log(response);
             // store.dispatch(saveUserPassport(response.data))

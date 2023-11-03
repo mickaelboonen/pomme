@@ -68,7 +68,8 @@ const otherDocsSlice = createSlice({
         state.loader = false;
       },
       deleteProgram: () => {},
-      requestTickets: () => {}
+      requestTickets: () => {},
+      requestTicketsWithFile: () => {},
 
     },
 });
@@ -90,7 +91,8 @@ export const {
   deleteProgram,
   fetchUserPassport,
   saveUserPassport,
-  requestTickets
+  requestTickets,
+  requestTicketsWithFile
 } = otherDocsSlice.actions;
 
 export default otherDocsSlice.reducer;
