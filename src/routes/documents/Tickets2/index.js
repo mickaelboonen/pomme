@@ -64,6 +64,9 @@ const Tickets2 = () => {
 
     // console.log(currentPassport)
     data.transports = setTransportsForEmail(data.transportsMeans)
+    data.user = user;
+    data.agent = agent.firstname + ' ' + agent.lastname.toUppercase();
+    data.om = id;
 
     if (data.savedPassport) {
       data.passport = currentPassport.id;
@@ -137,30 +140,38 @@ const Tickets2 = () => {
         {loader && <LoaderCircle />}
         {(!loader && pv) && (
           <form className="form" style={{width: '100%'}} onSubmit={handleSubmit(onSubmit)}>
-            <div style={{backgroundColor: '#fff', padding: '1rem', margin: '1rem'}}>
-              <FormSectionTitle>En-tête</FormSectionTitle>
-              <p>Bonjour Madame, Monsieur</p>
-              <p></p>
-              <p>Dans l'éventualité où les billets de train en première classe seraient moins chers que ceux de la seconde classe, merci de privilégier les billets de la première classe sans tenir compte de la classe renseignée dans les modalités de la mission.</p>
+            <div className='form__section'>
+              <FormSectionTitle>Profil Voyageur</FormSectionTitle>
+              <HiddenField
+                register={register}
+                id="pv"
+                value={pv.id}
+              />
+              <div style={{display: 'flex'}}>
+                <p>Controler le profil Voyageur :</p>
+                {viewer === '' && <FaEye onClick={handleClick} style={{cursor: 'pointer'}} className='my-documents__files-buttons-icon'/>}
+                {viewer !== '' && <FaEyeSlash onClick={handleClick} style={{cursor: 'pointer'}} className='my-documents__files-buttons-icon'/>}
+              </div>
+              <p className='file-manager__message'>Dans le cas où les informations du Profil Voyageur ne seraient plus correctes. Merci de mettre à jour votre profil en cliquant sur ce lien : <Link to="/utilisateur/mes-documents/profil-voyageur"><span style={{textDecoration: 'underline', display: 'block', marginTop: '0.5rem'}}>Aller sur le profil voyageur</span></Link></p>
+              {viewer !== '' && (
+                <div style={{height: '600px', marginBottom: '1rem'}}>
+                  <embed
+                    className="form-layout__viewer-pdf__embed"
+                    src={viewer}
+                    width="100%"
+                    height="1200px"
+                    type="application/pdf"
+                  />
+                </div>
+              )}
             </div>
-            <div style={{backgroundColor: '#fff', padding: '1rem', margin: '1rem'}}>
-              <FormSectionTitle>Modalité de la mission validée par l'ordonnateur</FormSectionTitle>
-              <p>Transports demandés pour la mission : </p>
-              <ul>
-                {type.map((t) => (
-                  <li key={t}>{t}</li>
-                ))}
-              </ul>
-              <p style={{marginTop: '1rem'}}>Dates de la mission : </p>
-              <p>du {getDDMMYYDate(new Date(mission.departure))} au {getDDMMYYDate(new Date(mission.comeback))}</p>
-              <p style={{marginTop: '1rem'}}>Lieu{mission.addresses.length > 1 ? 'x': ''} de la mission :</p>
-              <ul>
-                {mission.addresses.map((a) => (
-                  <li key={a.id}>{a.city}</li>
-                ))}
-              </ul>
-            </div>
-            <div style={{backgroundColor: '#fff', padding: '1rem', margin: '1rem'}}>
+            {/* <div style={{backgroundColor: '#fff', padding: '1rem', margin: '1rem'}}> */}
+              {/* <FormSectionTitle>En-tête</FormSectionTitle> */}
+              {/* <p>Bonjour Madame, Monsieur</p> */}
+              {/* <p></p> */}
+              {/* <p>Dans l'éventualité où les billets de train en première classe seraient moins chers que ceux de la seconde classe, merci de privilégier les billets de la première classe sans tenir compte de la classe renseignée dans les modalités de la mission.</p> */}
+            {/* </div> */}
+            <div className='form__section'>
               <FormSectionTitle>Faites votre demande</FormSectionTitle>
               <div className="form__section-field">
                 <label>Type.s de transports voulus</label>
@@ -194,17 +205,35 @@ const Tickets2 = () => {
                 label="Format à respecter pour les billets (une ligne par billet svp) :"
                 value="Départ …………………  le …../…../2023 à …..h…… arrivée à …………….."
               />
-              <HiddenField
-                id='agent'
-                register={register}
-                value={agent.firstname + ' ' + agent.lastname}
-              />
-              <HiddenField
-                id='om'
-                register={register}
-                value={id}
-              />
+              {/* <HiddenField
+                // id='agent'
+                // register={register}
+                // value={agent.firstname + ' ' + agent.lastname.toUppercase()}
+              // /> */}
+              {/* <HiddenField
+                // id='om'
+                // register={register}
+                // value={id}
+              // /> */}
             </div>
+            <div className='form__section'>
+              <FormSectionTitle>Rappel des Modalités de la mission validée par l'ordonnateur</FormSectionTitle>
+              <p>Transports demandés pour la mission : </p>
+              <ul>
+                {type.map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+              </ul>
+              <p style={{marginTop: '1rem'}}>Dates de la mission : </p>
+              <p>du {getDDMMYYDate(new Date(mission.departure))} au {getDDMMYYDate(new Date(mission.comeback))}</p>
+              <p style={{marginTop: '1rem'}}>Lieu{mission.addresses.length > 1 ? 'x': ''} de la mission :</p>
+              <ul>
+                {mission.addresses.map((a) => (
+                  <li key={a.id}>{a.city}</li>
+                ))}
+              </ul>
+            </div>
+
             {mission.region !== 'métropole' && (
               <div className="form__section">
                 <FormSectionTitle>Passeport</FormSectionTitle>
@@ -229,33 +258,7 @@ const Tickets2 = () => {
                 )}
               </div>
             )}
-            <div className='form__section'>
-              <FormSectionTitle>Profil Voyageur</FormSectionTitle>
-              <HiddenField
-                register={register}
-                id="pv"
-                value={pv.id}
-              />
 
-              <div style={{display: 'flex'}}>
-                <p>Controler le profil Voyageur :</p>
-                {viewer === '' && <FaEye onClick={handleClick} style={{cursor: 'pointer'}} className='my-documents__files-buttons-icon'/>}
-                {viewer !== '' && <FaEyeSlash onClick={handleClick} style={{cursor: 'pointer'}} className='my-documents__files-buttons-icon'/>}
-              </div>
-              <p className='file-manager__message'>Dans le cas où les informations du Profil Voyageur ne seraient plus correctes. Merci de vous mettre à jour votre profil en cliquant sur ce lien : <Link to="/utilisateur/mes-documents/profil-voyageur"><span style={{textDecoration: 'underline', display: 'block', marginTop: '0.5rem'}}>Aller sur le profil voyageur</span></Link></p>
-
-              {viewer !== '' && (
-                <div style={{height: '600px', marginBottom: '1rem'}}>
-                  <embed
-                    className="form-layout__viewer-pdf__embed"
-                    src={viewer}
-                    width="100%"
-                    height="1200px"
-                    type="application/pdf"
-                  />
-                </div>
-              )}
-            </div>
             <div>
               <button>Valider</button>
             </div>
