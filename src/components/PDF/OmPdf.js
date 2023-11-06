@@ -172,8 +172,8 @@ const OmPdf = ({
           <Text style={styles.section.text}>Service / Département : {agent.unimesDepartment}</Text>
           <Text style={styles.section.subtitle}>Adresses du missionnaire :</Text>
           <View style={styles.section.subsection}>
-            <Text style={styles.section.text}>Adresse familiale : {agent.streetNumber} {agent.bis} {streetType.find((type) => agent.streetType === type.id).name} {agent.streetName} {agent.postCode} {agent.city}</Text>
-            <Text style={styles.section.text}>Adresse administrative : Université de Nîmes {agent.streetNumberPro} {agent.bisPro} {streetType.find((type) => agent.streetTypePro === type.id).name} {agent.streetNamePro} {agent.postCodePro} {agent.cityPro}</Text>
+            <Text style={styles.section.text}>Adresse familiale : {agent.address} {agent.address2} {agent.postCode} {agent.city}</Text>
+            <Text style={styles.section.text}>Adresse administrative : {agent.addressPro} {agent.address2Pro} {agent.postCodePro} {agent.cityPro}</Text>
           </View>
         </View>
         <View style={styles.section}>
@@ -197,8 +197,8 @@ const OmPdf = ({
             {/* <View style={styles.separator} /> */}
               <Text style={[styles.section.text, {marginTop: '8'}]}>ÉTAPES DE LA MISSION</Text>
             {mission.addresses.map((address) => (
-              <Text style={[styles.section.text, {paddingLeft: '10'}]} key={address.streetName}>
-                Adresse n° {mission.addresses.indexOf(address) + 1} : {address.streetNumber === 0 ? '' : address.streetNumber} {address.bis} {streetType.find((type) => address.streetType === type.id).name} {address.streetName} {address.postCode} {address.city}
+              <Text style={[styles.section.text, {paddingLeft: '10'}]} key={address.city}>
+                Adresse n° {mission.addresses.indexOf(address) + 1} : {address.address} {address.address2} {address.postCode} {address.city}
               </Text>
             ))}
             {mission.planning && (

@@ -11,26 +11,39 @@ import Tabs from 'src/components/Tabs';
 import PageTitle from 'src/components/PageTitle';
 
 // Action
-import { fetchPendingOms, displayWantedDocs } from "src/reducer/omManager";
+import { fetchPendingsAdvances } from 'src/reducer/dafc';
 
 
 const OmMenu = () => {
 
-  const { dafc: { pendingDocs } } = useSelector((state) => state)
+  const dispatch = useDispatch();
+  const { dafc: { pendingDocs, loader } } = useSelector((state) => state)
   // const target = isOm ? 'ordre-de-mission' : encodeURIComponent('état-de-frais')
+  const tab = [
+    {
+      id: 'daf',
+      name : "Demandes d'avance"
+    }
+  ];
+
+  const handleRefresh = () => {
+    dispatch(fetchPendingsAdvances())
+  }
 
   return (
     <main className="my-documents">
-      <PageTitle>Documents à valider</PageTitle>
-      {/* <Tabs tabs={tabsToShow} handler={displayWantedSection} /> */}
+      <PageTitle>Demandes d'Avance à signer</PageTitle>
+      <Tabs tabs={tab} handler={() => {}} />
       <div className='my-documents__files'>
 
-        <div className={classNames('my-documents__files-buttons', {'my-documents__files-buttons--buttons-menu': true})}>
+      <div className={classNames('my-documents__files-buttons', {'my-documents__files-buttons--buttons-menu': loader})}>
           {pendingDocs.map((doc) => (
             <Link key={doc.id} to={`/dafc/demandes-d-avance/${encodeURIComponent('demande-à-signer')}?id=${doc.id}`}>Avance n°{doc.id}</Link>
           ))}
-          <button style={{width: 'fit-content'}} onClick={() => {}}>
-            <MdRefresh className={classNames('my-documents__files-buttons-icon', {'my-documents__files-buttons-icon--animated': true})} />  {false ? 'Rafraîchir la liste' : ''}
+        </div>
+        <div className='my-documents__files-buttons'>
+          <button style={{width: 'fit-content'}} onClick={handleRefresh}>
+            <MdRefresh className={classNames('my-documents__files-buttons-icon', {'my-documents__files-buttons-icon--animated': loader})} />  {!loader ? 'Rafraîchir la liste' : ''}
           </button>
         </div>
       </div>

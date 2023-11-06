@@ -11,9 +11,13 @@ const dafcSlice = createSlice({
     name: 'dafc',
     initialState,
     reducers: {
-      fetchPendingsAdvances: () => {},
+      fetchPendingsAdvances: (state) => {
+        state.loader= true;
+      },
       savePendingAdvances: (state, action) => {
-        state.pendingDocs = action.payload
+        state.pendingDocs = action.payload;
+        state.loader= false;
+
       },
     }
 });

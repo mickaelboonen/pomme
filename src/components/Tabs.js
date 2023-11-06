@@ -22,7 +22,7 @@ const Tabs = ({ handler, tabs}) => {
   }
 
   const tabsNumber = tabs.length;
-  
+
   return (
     <div className='tabs'>
       {tabs.map((tab) => (

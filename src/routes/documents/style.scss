@@ -6,7 +6,7 @@ $test : #{var(--first-color)};
   width:100%;
   margin: auto;
   height: 90vh;
-  background-color: var(--lighter-first-color);
+  // background-color: var(--lighter-first-color);
   padding-top: 1rem;
 
   &__title {
@@ -75,7 +75,7 @@ $test : #{var(--first-color)};
 
   .my-documents {
     width: 80%;
-    background-color: #fff;
+    // background-color: #fff;
     
     &__button {
       width: 100%;

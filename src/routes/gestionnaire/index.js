@@ -87,7 +87,7 @@ const Gestionnaires = ({ isOm }) => {
 
   return (
     <main className="my-documents" style={{position: 'relative'}}>
-      <PageTitle>Documents à valider</PageTitle>
+      <PageTitle>Ordres de mission à valider</PageTitle>
       <Tabs tabs={tabsToShow} handler={displayWantedSection} />
       <div className='my-documents__files'>
         {!loader && (
