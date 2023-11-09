@@ -195,7 +195,7 @@ const appMiddleware = (store) => (next) => (action) => {
     case 'agent/getAgentPreferences':  
       api.get("/api/agent/preferences/" + action.payload)
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           store.dispatch(saveAgentPreferences(response.data));
         })
         .catch((error) => {

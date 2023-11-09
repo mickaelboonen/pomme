@@ -36,7 +36,7 @@ const Login = ({ cas }) => {
           dispatch(checkAuthentication({username : response.user, password: 'fsdf'}))
         })
         .catch((response) => {
-          console.log(response);
+       // console.log(response);
           dispatch(setApiResponse({
             response : {
               status: 500,

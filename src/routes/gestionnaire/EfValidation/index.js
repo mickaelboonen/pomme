@@ -37,7 +37,7 @@ const EfValidation = () => {
 
   
   useEffect(() => {
-    console.log(apiMessage);
+ // console.log(apiMessage);
     if (apiMessage.response && apiMessage.response.status === 200) {
       setTimeout(() => {
         dispatch(clearMessage());

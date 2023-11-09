@@ -42,26 +42,23 @@ const MissionVal = ({ displayPdf, data, entity }) => {
     }
     return value;
   }
-  const addresses = data.addresses.map((address) => {
-
-    const { streetName, streetNumber, streetType, bis, postCode, city, countryCode } = address;
+  const addresses = data.addresses.map((currentAddress) => {
+    console.log(countries);
+    const { address, address2, postCode, city, countryCode } = currentAddress;
     let combinedAddress = '';
-    combinedAddress += setAddressPart(streetNumber);
-    combinedAddress += setAddressPart(bis);
-    combinedAddress += setAddressPart(streetArray.find((type) => type.id === streetType).name.toLowerCase());
-    combinedAddress += setAddressPart(streetName);
+    combinedAddress += setAddressPart(address);
+    combinedAddress += setAddressPart(address2);
     combinedAddress += setAddressPart(postCode);
     combinedAddress += setAddressPart(city);
     combinedAddress += setAddressPart(countries.find((country) => country.code === countryCode).name);
     
     const joinedAddress = {
-      id: address.id,
+      id: currentAddress.id,
       value: combinedAddress
     }
     return joinedAddress;
   })
-  console.log(data.science);
-  console.log(data.scientificEvents);
+
   return (
     <>
       <div className="form__section">

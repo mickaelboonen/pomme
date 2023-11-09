@@ -48,7 +48,7 @@ const Presidence = () => {
     setIsMemberSelected(event.target.value);
   
     if (event.target.value !== '') {
-      console.log('want cars');
+   // console.log('want cars');
       dispatch(fetchPresidencyVehicles({agent: event.target.value}))
     }
 }

@@ -31,7 +31,7 @@ const TravelInfo = () => {
   const { agent : { user, agent, agentPersonalAddress}, docs: { programs, pv }} = useSelector((state) => state);
 
   const onSubmit = (data) => {
-    console.log("IN SUBMIT = ", data);
+ // console.log("IN SUBMIT = ", data);
     // return;
 
     if (pv) {

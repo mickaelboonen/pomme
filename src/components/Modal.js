@@ -55,14 +55,14 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
   };
 
   let omTypes = [
-    {
-      name: 'Mission test',
-      id: 'test'
-    },
-    {
-      name: "Chargés de Mission",
-      id: 'cdm'
-    },
+    // {
+      // name: 'Mission test',
+      // id: 'test'
+    // },
+    // {
+      // name: "Chargés de Mission",
+      // id: 'cdm'
+    // },
     {
       name: 'Mission Doctorants',
       id: 'doctorants'
@@ -71,18 +71,18 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
       name: 'Mission de Recherche',
       id: 'research'
     },
-    {
-      name: "Mission d'enseignement",
-      id: 'deve'
-    },
-    {
-      name: 'Mission des personnels administratifs',
-      id: 'admin'
-    },
-    {
-      name: 'Mission de formation des personnels administratifs',
-      id: 'formation'
-    }
+    // {
+      // name: "Mission d'enseignement",
+      // id: 'deve'
+    // },
+    // {
+      // name: 'Mission des personnels administratifs',
+      // id: 'admin'
+    // },
+    // {
+      // name: 'Mission de formation des personnels administratifs',
+      // id: 'formation'
+    // }
   ];
 
   const departmentsToShow = departments.map((dep) => {
@@ -173,17 +173,17 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
           name: "Prise en charge par l'École Doctorale / l'UPR",
           id:'ed'
         },
-        {
-          name: 'Prise en charge par le Collège Doctoral',
-          id:'cd'
-        },
+        // {
+          // name: 'Prise en charge par le Collège Doctoral',
+          // id:'cd'
+        // },
       ]);
     }
     else {
       setService([]);
     }
   }
-  console.log(service);
+
   return (
     <div className='modal'>
         <form className="modal__form" onSubmit={handleSubmit(onSubmit)}>

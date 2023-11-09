@@ -20,7 +20,7 @@ const travelProgramMiddleware = (store) => (next) => (action) => {
     case 'other-documents/createProgram':
       api.post("/api/travel-program/add", action.payload)
         .then((response) => {
-          console.log(response);
+       // console.log(response);
           store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
         })
         .catch((error) => {
@@ -80,7 +80,7 @@ const travelProgramMiddleware = (store) => (next) => (action) => {
       case 'other-documents/requestTickets':
         api.post("/api/tickets/request/without", action.payload)
           .then((response) => {
-            console.log(response);
+         // console.log(response);
             // store.dispatch(saveUserPassport(response.data))
           })
           .catch((error) => {
@@ -89,7 +89,7 @@ const travelProgramMiddleware = (store) => (next) => (action) => {
       case 'other-documents/requestTicketsWithFile':
         fileApi.post("/api/tickets/request/with", action.payload)
           .then((response) => {
-            console.log(response);
+         // console.log(response);
             // store.dispatch(saveUserPassport(response.data))
           })
           .catch((error) => {

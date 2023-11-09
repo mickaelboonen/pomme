@@ -65,9 +65,9 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
   // console.log(agentFullData);
   //---------------------------------------------------------------------------
   const submitFunction = (data) => {
-    console.log("I AM HERE");
+ // console.log("I AM HERE");
     let errorCount = 0;
-    console.log(data);
+ // console.log(data);
     // return;
     if (data.savedSignature) {
       if (signature === "") {
@@ -90,9 +90,9 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
       errorCount++;
     }
 
-    console.log("errorCount = ", errorCount);
+ // console.log("errorCount = ", errorCount);
     if (errorCount > 0) {
-      console.log("here ? ");
+   // console.log("here ? ");
       return;
     }
 

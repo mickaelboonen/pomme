@@ -87,7 +87,7 @@ export const checkStepsStatus = (step, currentDoc) => {
   let docState = {};
 
   if (step ===6) {
-    console.log(currentDoc);
+ // console.log(currentDoc);
     const efStepsWithStatus = [
       {
         name: 'mission',

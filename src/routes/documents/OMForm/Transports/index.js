@@ -68,7 +68,7 @@ const Transports = ({ step }) => {
     else {
       // We initialize the error count
       let countErrors = 0;
-      console.log(data);
+   // console.log(data);
       // If first class train or business class plane has been selected but no dispensation was submitted or given
       if ((data.trainClass === "first-class" || data.planeClass === "business-class") && !data.dispensationForValidation && (!data.dispensation || data.dispensation.length === 0) ) {
         setError('dispensation', { type: 'custom', message: "Merci de fournir la dérogation signée par le Président ou d'en faire la demande." });

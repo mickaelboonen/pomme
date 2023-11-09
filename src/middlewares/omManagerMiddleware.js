@@ -46,7 +46,7 @@ const omManagerMiddleware = (store) => (next) => (action) => {
     case 'omManager/updateGestComments':
       api.post("/api/om/update/comments", action.payload)
       .then((response) => {
-        console.log(response);
+     // console.log(response);
         // store.dispatch(saveValidationChannels(response.data))
       })
       .catch((error) => {
@@ -56,7 +56,7 @@ const omManagerMiddleware = (store) => (next) => (action) => {
     case 'omManager/fetchAllOmTypes':      
       api.get("/api/om/types/fetch/all")
         .then((response) => {
-          console.log(response.data);
+       // console.log(response.data);
           store.dispatch(saveOmTypes(response.data));
         })
         .catch((error) => {
@@ -70,7 +70,7 @@ const omManagerMiddleware = (store) => (next) => (action) => {
           // store.dispatch(saveValidationChannels(response.data))
         })
         .catch((error) => {
-          console.log("ERROR : ", error);
+       // console.log("ERROR : ", error);
           store.dispatch(setApiResponse(error));;
         });
         break;
@@ -81,7 +81,7 @@ const omManagerMiddleware = (store) => (next) => (action) => {
           // store.dispatch(saveValidationChannels(response.data))
         })
         .catch((error) => {
-          console.log("ERROR : ", error);
+       // console.log("ERROR : ", error);
           store.dispatch(setApiResponse(error));;
         });
         break;
@@ -91,7 +91,7 @@ const omManagerMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })
       .catch((error) => {
-        console.log("ERROR : ", error);
+     // console.log("ERROR : ", error);
         store.dispatch(setApiResponse(error));;
       });
       break;
@@ -101,7 +101,7 @@ const omManagerMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })
       .catch((error) => {
-        console.log("ERROR : ", error);
+     // console.log("ERROR : ", error);
         store.dispatch(setApiResponse(error));;
       });
       break;
@@ -111,7 +111,7 @@ const omManagerMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })
       .catch((error) => {
-        console.log("ERROR : ", error);
+     // console.log("ERROR : ", error);
         store.dispatch(setApiResponse(error));;
       });
       break;
@@ -124,7 +124,7 @@ const omManagerMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })
       .catch((error) => {
-        console.log("ERROR : ", error);
+     // console.log("ERROR : ", error);
         store.dispatch(setApiResponse(error));;
       });
       break;
@@ -134,7 +134,7 @@ const omManagerMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })
       .catch((error) => {
-        console.log("ERROR : ", error);
+     // console.log("ERROR : ", error);
         store.dispatch(setApiResponse(error));;
       });
       break;
@@ -144,7 +144,7 @@ const omManagerMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })
       .catch((error) => {
-        console.log("ERROR : ", error);
+     // console.log("ERROR : ", error);
         store.dispatch(setApiResponse(error));;
       });
       break;
@@ -154,7 +154,7 @@ const omManagerMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
       })
       .catch((error) => {
-        console.log("ERROR : ", error);
+     // console.log("ERROR : ", error);
         store.dispatch(setApiResponse(error));;
       });
       break;

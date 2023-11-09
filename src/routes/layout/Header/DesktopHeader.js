@@ -65,13 +65,15 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
                 )}
                 <li>RECHERCHE</li>
 
-                {(user === 'mboone01' || user === 'nathalie' || user === 'emonte01' ||user === 'ymarti01' || user === 'acadie02' ||user === 'clegalla' ||user === 'sseddo01' ) && (
+                {(user === 'mboone01' || user === 'nathalie' || user === 'emonte01' || user === 'mevandil' || user === 'fjacquet' ||user === 'ymarti01' || user === 'acadie02' ||user === 'clegalla' ||user === 'sseddo01' ) && (
                   <div style={{height: '100%', display: 'flex', flexDirection: 'column', zIndex: '999'}}>
                   <button onClick={() => {dispatch(checkAuthentication({username : 'mboone01', password: 'fsdf'}))}}>Moi</button>
-                    <button onClick={() => {dispatch(checkAuthentication({username : 'emonte01', password: 'fsdf'}))}}>Estelle</button>
+                  <button onClick={() => {dispatch(checkAuthentication({username : 'emonte01', password: 'fsdf'}))}}>Estelle</button>
+                  <button onClick={() => {dispatch(checkAuthentication({username : 'mevandil', password: 'fsdf'}))}}>Marion</button>
                     <button onClick={() => {dispatch(checkAuthentication({username : 'ymarti01', password: 'fsdf'}))}}>Yannick</button>
                     <button onClick={() => {dispatch(checkAuthentication({username : 'acadie02', password: 'fsdf'}))}}>Axelle</button>
                     <button onClick={() => {dispatch(checkAuthentication({username : 'clegalla', password: 'fsdf'}))}}>Corinne</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'fjacquet', password: 'fsdf'}))}}>Fabrice</button>
                     <button onClick={() => {dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))}}>M. Seddouki</button>
                   </div>
                 )}

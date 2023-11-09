@@ -16,7 +16,7 @@ import { styles } from './pdfStyles';
 
 const TravelerCardPdf = ({ data, agent, contacts, agentAddress, programs}) => {
   
-  console.log(programs);
+  // console.log(programs);
   const {address, address2, city, postCode } = agentAddress;
   const fullAddress = `${address} ${address2} ${postCode} ${city}`
 

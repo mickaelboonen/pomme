@@ -96,7 +96,7 @@ const Tickets2 = () => {
     }
 
     if (window.confirm('You sure ?')) {
-      console.log('data = ', data);
+   // console.log('data = ', data);
 
       if (data.passport instanceof File) {
         dispatch(requestTicketsWithFile(data))

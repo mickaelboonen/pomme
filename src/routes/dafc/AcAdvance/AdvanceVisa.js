@@ -106,9 +106,19 @@ const AdvanceVisa = ({ data, user, gest, isOm, om}) => {
           <div className='my-documents__files-buttons'>
             {!isFileTooLong && (
               <button onClick={handleClick} type="button">
-                <FaEye className='my-documents__files-buttons-icon'/>
-                <p>Voir le document</p>
-              </button>
+                {viewer === '' && (
+                  <>
+                    <FaEye className='my-documents__files-buttons-icon'/>
+                    <p>Voir le document</p>
+                  </>
+                )}
+                {viewer !== '' && (
+                  <>
+                    <FaEyeSlash className='my-documents__files-buttons-icon'/>
+                    <p>Cacher le document</p>
+                  </>
+                )}
+                </button>
             )}
             <a  href={data.file} download={`${data.name}.pdf`} >
               <FaDownload className='my-documents__files-buttons-icon' /> Télécharger le document

@@ -221,7 +221,7 @@ const omMiddleware = (store) => (next) => (action) => {
         .then((response) => {
 
           const { data } = action.payload;
-          console.log(`FILECONTROLLER RESPONSE IS : `, response.data)
+          // console.log(`FILECONTROLLER RESPONSE IS : `, response.data)
 
           if (type === 'om') {
 
@@ -428,7 +428,7 @@ const omMiddleware = (store) => (next) => (action) => {
       
       fileApi.post('/api/om/monitoring-file', pdf)
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           if (task) {            
             if (nextAction === "stampOm") {
               store.dispatch(stampOm(action.payload.data))
@@ -463,7 +463,7 @@ const omMiddleware = (store) => (next) => (action) => {
       
       fileApi.post('/api/ef/monitoring-file', pdf)
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           if (task) {            
             if (nextAction === "stampEf") {
               store.dispatch(stampEf(action.payload.data))

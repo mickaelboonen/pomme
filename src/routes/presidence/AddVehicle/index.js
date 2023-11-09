@@ -35,7 +35,7 @@ const AddPresidencyVehicle = () => {
     vehicle: { currentVehicle, loader },
     presidency : { presidencyUsers }} = useSelector((state) => state)
   
-    console.log(currentVehicle);
+ // console.log(currentVehicle);
    
   let defaultValues = {
     make: null,

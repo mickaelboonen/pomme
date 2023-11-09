@@ -25,7 +25,7 @@ const MissionVal = ({ displayPdf, entity, ef }) => {
     
   function findDifferencesBetweenOmAndEf(objet1, objet2) {
     const differences = {};
-    console.log(objet1, objet2), "-----------------------------------------------------------------------------------------";
+ // console.log(objet1, objet2), "-----------------------------------------------------------------------------------------";
     for (const champ in objet1) {
       if (objet1[champ] !== objet2[champ]) {
         differences[champ] = [objet1[champ], objet2[champ]];
@@ -41,7 +41,7 @@ const MissionVal = ({ displayPdf, entity, ef }) => {
     }
 
     if (differences.mission_purpose_file) {
-      console.log(differences.mission_purpose_file);
+   // console.log(differences.mission_purpose_file);
      if (differences.mission_purpose_file[0][0].file.name === differences.mission_purpose_file[1][0].file.name) {
       delete differences.mission_purpose_file;
      }

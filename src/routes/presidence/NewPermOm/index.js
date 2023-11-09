@@ -50,7 +50,7 @@ const NewPermOm = () => {
   const { presidency: { loader, presidencyUsers, presidencyVehicles }} = useSelector((state) => state);
 
   const onSubmit = (data) => {
-    console.log(data);
+ // console.log(data);
   }
   const handleClickForVehicles = () => {
     // console.log(member);
@@ -150,7 +150,7 @@ const NewPermOm = () => {
               {errors.presentation && <p className="form__section-field-error form__section-field-error--open">{errors.presentation.message}</p>}
               {/* </div> */}
             </div>
-          <div className="form__section">
+          {/* <div className="form__section">
             <FormSectionTitle>Imputations budgétaires</FormSectionTitle>
             <div className='form__section form__section--documents'>
               <div className='form__section-half'>
@@ -206,7 +206,7 @@ const NewPermOm = () => {
                 />
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="form__section">
             <div className="form__section-field-buttons"  style={{margin: '1rem'}}>
               <div className="form__section-field-buttons__row">

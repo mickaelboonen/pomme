@@ -120,10 +120,10 @@ const Mission = ({ step, isEfForm }) => {
   const fileName = getAllFilenamesForProperty(defaultValues.missionPurposeFile);
   const mapsFileName = getAllFilenamesForProperty(defaultValues.maps);
   
-  console.log('down here');
-  console.log(defaultValues);
+  //console.log('down here');
+  //console.log(defaultValues);
   defaultValues = addAllAddressesFields(defaultValues);
-  console.log(defaultValues);
+  //console.log(defaultValues);
   const {
     register, handleSubmit, watch, clearErrors,
     setError, setValue, formState: { errors }
@@ -182,7 +182,7 @@ const Mission = ({ step, isEfForm }) => {
           return;
         }
         data.status = 1;
-        console.log("DATA TO BE SENT = ", data);
+     // console.log("DATA TO BE SENT = ", data);
         if (data.modificationFiles.length > 0) {
           dispatch(uploadFile({data: data, step: 'mission', docType: 'ef'}));
         }

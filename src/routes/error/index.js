@@ -38,7 +38,7 @@ const Error = () => {
       )}
       { !isRouteErrorResponse(error) && (
         <main className='error'>
-          <PageTitle>Internal Server Error</PageTitle>
+          <PageTitle>Oups, une erreur est survenue</PageTitle>
           <div className='error__container'>
             <p className='error__container-message'>Une erreur est survenue lors du chargement de la page. Veuillez réessayer ce que vous faisiez, rafraîchir la page ou revenir plus tard.</p>
             <p className='error__container-message'>Si l'erreur persiste, merci de contacter l'assistance informatique via <a className='error__container-link' href='https://glpi.unimes.fr/front/helpdesk.public.php?create_ticket=1'>GLPI</a> et d'expliquer ce que vous faisiez lorque l'erreur est survenue.</p>

@@ -75,7 +75,7 @@ export default {
               element: <TravelInfo />,
               loader: async ({ request }) => {
                 const { agent : { user } } = store.getState((state) => state);
-                console.log(user);
+             // console.log(user);
                 store.dispatch(getAgentsProgramsAndPV({agent: user}));
                 store.dispatch(fetchUserData({id: user}))
                 

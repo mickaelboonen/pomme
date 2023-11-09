@@ -165,7 +165,7 @@ const Derogation = () => {
               <div className="form__section-field-button">
                 <BlobProvider document={<DispensationPdf agentSignature={agentSignature} agent={agent} data={watch()}/>}>
                   {({ blob }) => {
-                    console.log(oms);
+                 // console.log(oms);
                     const om = oms.find((om) => om.id == omId);
                     
                     const fileName = `${agent.lastname.toUpperCase()}-${new Date(om.mission.departure).toLocaleDateString().split('/').join('-')}-${dispensationTitle.split(' ').join('-')}`

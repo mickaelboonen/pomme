@@ -147,7 +147,7 @@ const Validation = ({ data }) => {
       delete data.channel;
       delete data.validation;
       
-      console.log(data);
+   // console.log(data);
       dispatch(rejectEf(data));
     }
   };

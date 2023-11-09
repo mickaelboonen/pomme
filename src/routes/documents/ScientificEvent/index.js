@@ -74,7 +74,7 @@ const ScientificEvent = () => {
   
   const onSubmit = (data) => {
 
-    console.log("DATA = ", data);
+ // console.log("DATA = ", data);
     
     const errorNumber = handleErrorsOnSubmit(data);
     

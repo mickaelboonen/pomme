@@ -35,7 +35,7 @@ const Accomodations = ({ step }) => {
   
   let defaultValues = null;
   if (accomodations !== undefined) {
-    console.log("ACCOMODATIONS = ", accomodations);
+ // console.log("ACCOMODATIONS = ", accomodations);
     defaultValues = declareCamelCaseKeys(accomodations);
   }
 

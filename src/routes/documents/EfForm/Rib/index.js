@@ -36,7 +36,7 @@ const Rib = ({ step }) => {
   const onSubmit = (data) => {
     
     let errorCount = 0;
-    console.log(data);
+ // console.log(data);
     if (data.savedRib) {
       if (agentDocuments.rib === undefined) {
         setError('agentRib', {type: 'custom', message:"Vous n'avez pas de RIB enregistré dans votre profil."})

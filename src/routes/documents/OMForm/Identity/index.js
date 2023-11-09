@@ -37,7 +37,7 @@ const Identity = ({ isEfForm }) => {
     ...agentProfessionalAddress,
     ...agentPersonalAddress
   };
-  console.log(agentFullData);
+
   const {
     register,
     setValue,
@@ -220,40 +220,40 @@ const Identity = ({ isEfForm }) => {
         <div className="form__section">
           {!missingData && (
             <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
-              {/* <BlobProvider document={ */}
-                {/* <Document> */}
-                  {/* <OmPdf creationDate={creationDate} countries={countries} data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} /> */}
-                  {/* { currentOM.advance.advance &&( */}
-                    {/* <OmAdvancePdf
-                      {/* data={currentOM.advance}
-                      {/* agent={agentFullData}
-                      {/* gest={currentOM.management.workflow.find((actor) => actor.current_status === 3)}
-                      {/* signature={''}
-                    {/* />
-                  {/* )}
-                {/* </Document> */}
-              {/* }>
-                {/* {({ blob }) => { */}
-{/* 
-                  {/* const file = new File([blob], currentOM.name, {type: 'pdf'});
-                  {/* const fileUrl = URL.createObjectURL(file);
-                  {/* 
-                  {/* setValue('om', file);
-{/* 
-                  {/* return (
-                    {/* <>
-                      {/* {!missingData && ( */}
-                        {/* <a href={fileUrl} download={currentOM.name + '.pdf'} style={{textAlign: 'center'}}>
-                          {/* <button type='button' files={file} onClick={generatePDF}>Valider les données <br /> et télécharger <br /> l'Ordre de Mission</button> */}
-                        {/* </a> */}
-                      {/* )}
-                      {/* <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}> */}
-                        {/* Visualiser <br /> le document */}
-                      {/* </button> */}
-                    {/* </> */}
-                  {/* );
-                {/* }}
-              {/* </BlobProvider> */}
+              <BlobProvider document={
+                <Document>
+                  <OmPdf creationDate={creationDate} countries={countries} data={currentOM} agent={agentFullData} vehicleTypes={vehicleTypes} />
+                  { currentOM.advance.advance &&(
+                    <OmAdvancePdf
+                      data={currentOM.advance}
+                      agent={agentFullData}
+                      gest={currentOM.management.workflow.find((actor) => actor.current_status === 3)}
+                      signature={''}
+                    />
+                  )}
+                </Document>
+              }>
+                {({ blob }) => {
+
+                  const file = new File([blob], currentOM.name, {type: 'pdf'});
+                  const fileUrl = URL.createObjectURL(file);
+                  
+                  setValue('om', file);
+
+                  return (
+                    <>
+                      {!missingData && (
+                        <a href={fileUrl} download={currentOM.name + '.pdf'} style={{textAlign: 'center'}}>
+                          <button type='button' files={file} onClick={generatePDF}>Valider les données <br /> et télécharger <br /> l'Ordre de Mission</button>
+                        </a>
+                      )}
+                      <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
+                        Visualiser <br /> le document
+                      </button>
+                    </>
+                  );
+                }}
+              </BlobProvider>
             </div>
           )}
           <Link to={"/utilisateur/mes-ordres-de-mission"} style={{display: 'block', margin: '2rem auto', textAlign: 'center'}}>Retour au menu des Ordres de Mission</Link>

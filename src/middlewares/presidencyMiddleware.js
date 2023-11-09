@@ -21,7 +21,7 @@ const presidencyMiddleware = (store) => (next) => (action) => {
     case 'presidency/fetchPresidencyVehicles':
       api.post("/api/vehicles/" + action.payload.agent)
       .then((response) => {
-        console.log(response.data);
+     // console.log(response.data);
         store.dispatch(savePresidencyVehicles(response.data))
       })
       .catch((error) => {
