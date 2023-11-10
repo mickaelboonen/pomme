@@ -67,30 +67,32 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
   const submitFunction = (data) => {
  // console.log("I AM HERE");
     let errorCount = 0;
- // console.log(data);
+    console.log(data, needsSignature);
     // return;
-    if (data.savedSignature) {
-      if (signature === "") {
-        setError('signature', { type: 'custom', message: 'Aucune signature enregistrée dans le profil.'})
-        setValue('savedSignature', false)
-        errorCount++;
+    if (needsSignature) {
+      if (data.savedSignature) {
+        if (signature === "") {
+          setError('signature', { type: 'custom', message: 'Aucune signature enregistrée dans le profil.'})
+          setValue('savedSignature', false)
+          errorCount++;
+        }
+        delete data.savedSignature;
+        data.signature = signature;
       }
-      delete data.savedSignature;
-      data.signature = signature;
+      else {
+        if (data.signature instanceof File === false) {
+          setError('signature', { type: 'custom', message: "Aucune signature n'a été fournie pour valider l'OM."})
+          errorCount++;
+        }
+      };
+  
     }
-    else {
-      if (data.signature instanceof File === false) {
-        setError('signature', { type: 'custom', message: "Aucune signature n'a été fournie pour valider l'OM."})
-        errorCount++;
-      }
-    };
 
     if (data.action === null) {
       setError('action', { type: 'custom', message: "Veuillez valider ou rejeter l'ordre de mission."})
       errorCount++;
     }
 
- // console.log("errorCount = ", errorCount);
     if (errorCount > 0) {
    // console.log("here ? ");
       return;
@@ -138,12 +140,20 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
       <div className="form__section">
         <div className="form__section-field">
           <div className='my-documents__files-buttons'>
-            {!isFileTooLong && (
-              <button onClick={handleClick} type="button">
-                <FaEye className='my-documents__files-buttons-icon'/>
-                <p>Voir le document</p>
-              </button>
-            )}
+            <button onClick={handleClick} type="button">
+              {viewer === '' && (
+                <>
+                  <FaEye className='my-documents__files-buttons-icon'/>
+                  <p>Voir le document</p>
+                </>
+              )}
+              {viewer !== '' && (
+                <>
+                  <FaEyeSlash className='my-documents__files-buttons-icon'/>
+                  <p>Cacher le document</p>
+                </>
+              )}
+            </button>
             <a  href={data.file} download={`${data.name}.pdf`} >
               <FaDownload className='my-documents__files-buttons-icon' /> Télécharger le document
             </a>
@@ -235,8 +245,6 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
                   isOm={isOm}
                 />
                 <OmPdf
-                  // creationDate={creationDate}
-                  // validationDate={validationDate}
                   countries={countries}
                   data={om}
                   agent={agentFullData}
@@ -249,7 +257,6 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
                     data={data.advance}
                     validationDate={needsSignature ? setValidationDate() : ''}
                     agent={agentFullData}
-                    // creationDate={creationDate}
                     gest={om.management.workflow.find((actor) => actor.current_status === 3)}
                     signature={signature ? signature.link : ''}
                     acSignature={acSignature ? acSignature.link : ''}
@@ -263,16 +270,16 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
                   <button type="button" onClick={() => { const data = watch(); data.file = new File([blob], data.name, {type: 'pdf'}); submitFunction(data);}}>
                     Valider le document
                   </button>
-                  {gest.roles.indexOf('MANAGER') && (
+                  {/* {gest.roles.indexOf('MANAGER') && (
                     <>
-                      {/* <a href={URL.createObjectURL(new File([blob], data.name, {type: 'pdf'}))} download={om.name + '.pdf'} style={{textAlign: 'center'}}> */}
-                        {/* <button type='button' files={new File([blob], data.name, {type: 'pdf'})}>DOWNLOAD</button> */}
-                      {/* </a> */}
+                      <a href={URL.createObjectURL(new File([blob], data.name, {type: 'pdf'}))} download={om.name + '.pdf'} style={{textAlign: 'center'}}>
+                        <button type='button' files={new File([blob], data.name, {type: 'pdf'})}>DOWNLOAD</button>
+                      </a>
                       <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
                         VOIR
                       </button>
                     </>
-                  )}
+                  )} */}
                 </>
               )}
             </BlobProvider>
@@ -305,8 +312,6 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
                 isOm={isOm}
               />
               <OmPdf
-                // creationDate={creationDate}
-                // validationDate={validationDate}
                 countries={countries}
                 data={om}
                 agent={agentFullData}
@@ -319,7 +324,6 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
                   data={data.advance}
                   validationDate={needsSignature ? setValidationDate() : ''}
                   agent={agentFullData}
-                  // creationDate={creationDate}
                   gest={om.management.workflow.find((actor) => actor.current_status === 3)}
                   signature={signature ? signature.link : ''}
                   acSignature={acSignature ? acSignature.link : ''}

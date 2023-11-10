@@ -11,7 +11,7 @@ import RefusalNotification from "src/routes/utilisateur/MyAccount/RefusalNotific
 
 import { getVehicles, fetchVehicle} from "src/reducer/vehicle";
 import { fetchAllOmTypes } from "src/reducer/omManager";
-import { findPermFilesByAgent, getAgentsProgramsAndPV, fetchProgram, fetchUserPassport} from "src/reducer/otherDocuments";
+import { findPermFilesByAgent, getAgentsProgramsAndPV, fetchProgram, fetchUserIdPapers } from "src/reducer/otherDocuments";
 import TravelInfo from "src/routes/utilisateur/MyAccount/TravelInfo";
 import AddProgram from "src/routes/utilisateur/MyAccount/TravelInfo/AddProgram";
 import Tickets from "../routes/documents/Tickets";
@@ -115,13 +115,6 @@ export default {
     },
     {
       path: 'demande-de-transports',
-      element: <Tickets />,
-      loader: async ({ request }) => {
-        return new URL(request.url);
-      }
-    },
-    {
-      path: 'demande-de-transports-2',
       element: <Tickets2 />,
       loader: async ({ request }) => {
         const url = new URL(request.url);
@@ -134,9 +127,17 @@ export default {
         const currentOm = oms.find((om) => om.id === id)
 
         if (currentOm.mission !== 'métropole') {
-          store.dispatch(fetchUserPassport({ id: user }))
+          store.dispatch(fetchUserIdPapers({ id: user }))
         }
         store.dispatch(getAgentsProgramsAndPV({agent: user}))
+        return url;
+      }
+    },
+    {
+      path: 'demande-de-transports-2',
+      element: <Tickets />,
+      loader: async ({ request }) => {
+        const url = new URL(request.url);
         return url;
       }
     },

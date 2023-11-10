@@ -25,7 +25,6 @@ const Delegation = ({ isOm }) => {
   const { app: { apiMessage }, agent: { agent, user }, omManager: { pendingDocs }, tmp: { loader } } = useSelector((state) => state);
   const currentOM = pendingDocs.find((om) => om.id === id);
   
-  console.log(agent);
   useEffect(() => {
     if (apiMessage.response && apiMessage.response.status === 200) {
       setTimeout(() => {
@@ -56,26 +55,3 @@ Delegation.propTypes = {
 }
 
 export default Delegation;
-
-// START TRANSACTION; 
-// UPDATE `om` SET `type` = 'formation' WHERE id = 32;
-// UPDATE `om` SET `type` = 'formation' WHERE id = 33;
-// UPDATE `om` SET `type` = 'formation' WHERE id = 34;
-// UPDATE `om` SET `type` = 'formation' WHERE id = 86;
-// UPDATE `om` SET `type` = 'formation' WHERE id = 104;
-// UPDATE `om` SET `type` = 'formation' WHERE id = 105;
-// UPDATE `om` SET `type` = 'formation' WHERE id = 116;
-// UPDATE `om` SET `type` = 'formation' WHERE id = 118;
-// UPDATE `om` SET `type` = 'formation' WHERE id = 119;
-// UPDATE `om` SET `type` = 'formation' WHERE id = 134;
-// UPDATE `om` SET `type` = 'formation' WHERE id = 134;
-// UPDATE `om` SET `type` = 'formation' WHERE id = 144;
-// UPDATE `om` SET `type` = 'formation' WHERE id = 151;
-// UPDATE `om` SET `type` = 'formation' WHERE id = 153;
-// UPDATE `om` SET `type` = 'formation' WHERE id = 154;
-// UPDATE `om` SET `type` = 'formation' WHERE id = 155;
-// UPDATE `om` SET `type` = 'formation' WHERE id = 156;
-// UPDATE `om` SET `type` = 'formation' WHERE id = 157;
-// UPDATE `om` SET `type` = 'formation' WHERE id = 158;
-// COMMIT ;
-

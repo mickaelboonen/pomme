@@ -11,7 +11,7 @@ import PageTitle from 'src/components/PageTitle';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import LoaderCircle from 'src/components/LoaderCircle';
 import CheckboxInput from 'src/components/Fields/CheckboxInput';
-import FileField from 'src/components/Fields/FileField';
+import TextField from 'src/components/Fields/TextField';
 import TextareaField from 'src/components/Fields/TextareaField';
 import InputValueDisplayer from 'src/routes/gestionnaire/DocValidation/InputValueDisplayer';
 import HiddenField from 'src/components/Fields/HiddenField';
@@ -27,6 +27,7 @@ import { getDDMMYYDate, getHHMMTime } from 'src/selectors/dateFunctions';
 
 import TextEditor from '../../../components/TextEditor';
 import Rules from 'src/components/Rules'
+import IdDocuments from './IdDocuments';
 // -------------------------------------
 
 const Tickets2 = () => {  
@@ -37,7 +38,7 @@ const Tickets2 = () => {
   const { omForm :{ omLoader},
     app: { apiMessage },
     agent: { oms, user, agent },
-    docs: {currentPassport, programs, loader, pv}
+    docs: {currentPassport, currentCni, programs, loader, pv}
   } = useSelector((state) => state);
   
   const id = Number(url.searchParams.get('om'));
@@ -50,22 +51,29 @@ const Tickets2 = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      transportsMeans: []
+      transportsMeans: [],
+      region: [],
+      format: "[AVION/TRAIN] - [ALLER/RETOUR] - [CLASSE]: Départ de ______ le __/__/____ à __h__. Arrivée à _______."
     }
   });
 
 
   useEffect(() => {
-    if (currentPassport.hasOwnProperty('url')) {
+    console.log([currentPassport, currentCni]);
+    if (currentPassport && currentPassport.hasOwnProperty('url')) {
       setValue('savedPassport', true)
     }
-  }, [currentPassport])
+    if (currentCni && currentCni.hasOwnProperty('url')) {
+      setValue('savedCni', true)
+    }
+  }, [currentPassport, currentCni])
 
 
   const onSubmit = (data) => {
 
     let errorCount = 0;
     // console.log(currentPassport)
+    delete data.format;
     data.transports = setTransportsForEmail(data.transportsMeans);
     data.user = user;
     data.pv = pv.id;
@@ -95,10 +103,10 @@ const Tickets2 = () => {
       delete data.savedPassport;
     }
 
-    if (window.confirm('You sure ?')) {
+    if (window.confirm("Confirmez vous la demande de billets ? Veuillez noter que votre demande part directement à l'agence de voyage et n'est plus gérée par votre gestionnaire, merci donc de faire attention au contenu de votre demande. Cliquer sur annuler si vous souhaitez faire une modification ou si c'est une erreur.")) {
    // console.log('data = ', data);
 
-      if (data.passport instanceof File) {
+      if (data.passport instanceof File || data.cni instanceof File) {
         dispatch(requestTicketsWithFile(data))
 
       }
@@ -133,13 +141,13 @@ const Tickets2 = () => {
 
   })
 
-  const filename = currentPassport ? getSavedFileName(currentPassport.url) : '';
-  const savedPassport = watch('savedPassport');
-
-  const handlePassport = () => {
-    clearErrors('passport');
-  }
-
+  // const filename = currentPassport ? getSavedFileName(currentPassport.url) : '';
+  // const savedPassport = watch('savedPassport');
+// 
+  // const handlePassport = () => {
+    // clearErrors('passport');
+  // }
+// 
   const setTransportsForEmail = (transports) => {
     let train = '';
     let plane = '';
@@ -201,12 +209,15 @@ const Tickets2 = () => {
                   label="Avion"
                 />  
               </div>
-              <InputValueDisplayer
+              <TextField
+                id="format-field"
                 label="Format à respecter pour les billets (une ligne par billet svp) :"
-                value="[AVION/TRAIN] - [ALLER/RETOUR] : Départ de ______ le __/__/____ à __h__. Arrivée à _______."
+                formField="format"
+                disabled={true}
+                register={register}
               />
 
-              <p className='form__section-field-label'>Demande de billets</p>
+              <p className='form__section-field-label'>Demande de billets (à destination de l'Agence)</p>
               <TextEditor clearErrors={clearErrors} error={errors} />
               <p className='file-manager__message'>Dans l'éventualité où les billets de train en première classe seraient moins chers que ceux de la seconde classe, merci de privilégier les billets de la première classe sans tenir compte de la classe renseignée dans les modalités de la mission. Une demande de dérogation sera générée automatiquement lors de la validation de la commande.</p>
               {errors.tickets && <p className='form__section-field-error form__section-field-error--open' id='tickets-message'>{errors.tickets.message}</p>}
@@ -221,31 +232,23 @@ const Tickets2 = () => {
 
             {mission.region !== 'métropole' && (
               <div className="form__section">
-                <FormSectionTitle>Passeport</FormSectionTitle>
-                <div className="form__section-field">
-                  <CheckboxInput
-                    register={register}
-                    formField="savedPassport"
-                    handler={handlePassport}
-                    id="saved-rib-field"
-                    label="Utiliser le passeport enregistré dans mon profil"
-                  />
-                </div>
-                {!savedPassport && (
-                  <FileField 
-                    register={register}
-                    formField="passport"
-                    id="rib-field"
-                    error={errors.passport}
-                    setValue={setValue}
-                    fileName={filename}
-                  />
-                )}
+                <IdDocuments
+                  {...useForm}
+                  currentPassport={currentPassport}
+                  currentCni={currentCni}
+                  register={register}
+                  watch={watch}
+                  setValue={setValue}
+                  errors={errors}
+                  clearErrors={clearErrors}
+                />
               </div>
             )}
 
-            <div>
-              <button>Valider</button>
+            <div className='form__section'>
+              <div className="form__section-field-buttons" style={{textAlign: 'center'}}>
+                <button>Envoyer la demande de billets</button>
+              </div>
             </div>
           </form>
         )}

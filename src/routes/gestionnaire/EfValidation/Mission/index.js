@@ -65,18 +65,15 @@ const MissionVal = ({ displayPdf, entity, ef }) => {
     }
     return value;
   }
-  const addresses = omData.addresses.map((address) => {
+  const addresses = omData.addresses.map((currentAddress) => {
 
-    const { streetName, streetNumber, streetType, bis, postCode, city, countryCode } = address;
+    const { address, address2, postCode, city, countryCode } = currentAddress;
     let combinedAddress = '';
-
-    combinedAddress += setAddressPart(streetNumber);
-    combinedAddress += setAddressPart(bis);
-    combinedAddress += setAddressPart(streetArray.find((type) => type.id === streetType).name.toLowerCase());
-    combinedAddress += setAddressPart(streetName);
+    combinedAddress += setAddressPart(address);
+    combinedAddress += setAddressPart(address2);
     combinedAddress += setAddressPart(postCode);
     combinedAddress += setAddressPart(city);
-    combinedAddress += setAddressPart(countries.find((country) => country.code === Number(countryCode)).name);
+    combinedAddress += setAddressPart(countries.find((country) => country.code === countryCode).name);
     
     const joinedAddress = {
       id: address.id,

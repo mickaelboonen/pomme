@@ -10,6 +10,7 @@ const initialState = {
   pv: null,
   currentProgram: {},
   currentPassport: {},
+  currentCni: {},
   loader: false
 };
 const otherDocsSlice = createSlice({
@@ -70,7 +71,14 @@ const otherDocsSlice = createSlice({
       deleteProgram: () => {},
       requestTickets: () => {},
       requestTicketsWithFile: () => {},
+      fetchUserIdPapers: (state) => { state.loader = true },
+      saveUserIdPapers: (state, action) => {
+        console.log('here');
+        state.currentPassport = action.payload.passport;
+        state.currentCni = action.payload.cni;
+        state.loader = false;
 
+      },
     },
 });
 
@@ -92,7 +100,10 @@ export const {
   fetchUserPassport,
   saveUserPassport,
   requestTickets,
-  requestTicketsWithFile
+  requestTicketsWithFile,
+  fetchUserIdPapers,
+  saveUserIdPapers
+
 } = otherDocsSlice.actions;
 
 export default otherDocsSlice.reducer;

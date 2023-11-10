@@ -38,7 +38,7 @@ const TextEditor = ({ clearErrors, error }) => {
 
     return () => {
       quill.off('text-change');
-      quill.remove();
+      // quill.remove();
     };
   }, []);
 

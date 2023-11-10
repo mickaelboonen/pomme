@@ -275,8 +275,6 @@ const ValidateOm = ({
             isOm={true}
           />
           <OmPdf
-            // creationDate={creationDate}
-            // validationDate={validationDate}
             countries={countries}
             data={om}
             agent={agentFullData}
@@ -287,9 +285,7 @@ const ValidateOm = ({
           {om.advance.advance && (
             <OmAdvancePdf
               data={om.advance}
-              // validationDate={validationDate}
               agent={agentFullData}
-              // creationDate={creationDate}
               gest={om.management.workflow.find((actor) => actor.current_status === 3)}
               signature={''}
             />
@@ -318,37 +314,33 @@ const ValidateOm = ({
           <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer la fenêtre</p>
         </div>
         <PDFViewer className='form__section-recap'>
-        <Document>
-              <ValidationMonitoringPdf
-                om={om}
-                user={user}
-                agent={agent}
-                isGest={true}
-                gestData={watch()}
-                isOm={true}
-              />
-              <OmPdf
-                // creationDate={creationDate}
-                // validationDate={validationDate}
-                countries={countries}
-                data={om}
+          <Document>
+            <ValidationMonitoringPdf
+              om={om}
+              user={user}
+              agent={agent}
+              isGest={true}
+              gestData={watch()}
+              isOm={true}
+            />
+            <OmPdf
+              countries={countries}
+              data={om}
+              agent={agentFullData}
+              vehicleTypes={vehicleTypes}
+              manager={watch()}
+              signature={''}
+              isGest
+            />
+            {om.advance.advance && (
+              <OmAdvancePdf
+                data={om.advance}
                 agent={agentFullData}
-                vehicleTypes={vehicleTypes}
-                manager={watch()}
+                gest={om.management.workflow.find((actor) => actor.current_status === 3)}
                 signature={''}
-                isGest
               />
-              {om.advance.advance && (
-                <OmAdvancePdf
-                  data={om.advance}
-                  // validationDate={validationDate}
-                  agent={agentFullData}
-                  // creationDate={creationDate}
-                  gest={om.management.workflow.find((actor) => actor.current_status === 3)}
-                  signature={''}
-                />
-              )}
-            </Document>
+            )}
+          </Document>
         </PDFViewer>
       </div>
     )}
