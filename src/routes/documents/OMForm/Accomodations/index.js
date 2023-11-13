@@ -31,8 +31,10 @@ const Accomodations = ({ step }) => {
   const { omForm: { omForm } } = useSelector((state) => state);
 
   const accomodationsData = omForm.find((omStep) => omStep.step === 'accomodations');
+  let defaultValues = {...accomodationsData.data};
 
-  const defaultValues = accomodationsData.data;
+  const mealsInAdminRestaurants = defaultValues.mealsInAdminRestaurants === null ? '0' : defaultValues.mealsInAdminRestaurants;
+  defaultValues.mealsInAdminRestaurants = mealsInAdminRestaurants;
   
   const {
     register,
@@ -42,9 +44,11 @@ const Accomodations = ({ step }) => {
     formState:
     { errors },
   } = useForm({
-    defaultValues: defaultValues,
+    defaultValues: defaultValues
   });
 
+  const dat = watch();
+  console.log(dat);
   const onSubmit = (data) => {
     data.omId = omId;
     

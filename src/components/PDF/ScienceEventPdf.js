@@ -37,7 +37,6 @@ const ScienceEventPdf = ({ data, agent, creationDate }) => {
   ];
 
   return (
-  <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.header} fixed>
         <Image
@@ -75,7 +74,6 @@ const ScienceEventPdf = ({ data, agent, creationDate }) => {
         </View>
       </View>
     </Page>
-  </Document>
 );}
 
 ScienceEventPdf.propTypes = {

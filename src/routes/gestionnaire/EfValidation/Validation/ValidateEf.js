@@ -135,7 +135,7 @@ const ValidateEf = ({
 
       </div>
     </div>
-    <div className="form__section-field">
+    <div className="form__section-field-buttons">
       <BlobProvider document={
         <Document>
           <ValidationMonitoringPdf om={ef} agent={agent} isGest={true} gestData={watch()} />
@@ -145,14 +145,14 @@ const ValidateEf = ({
           const file = new File([blob], "monitoring-ef-" + ef.id, {type: 'pdf'});
           
           return (
-            <>
+            <div className="form__section-field-buttons__row">
               <button style={{margin: 'auto'}}type="button" onClick={() => { const data = watch(); data.file = file; submitFunction(data)}}>
                 Valider la demande
               </button>
-              <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
-                Visualiser <br /> le document
-              </button>
-            </>
+              {/* <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}> */}
+                {/* Visualiser <br /> le document */}
+              {/* </button> */}
+            </div>
           );
         }}
       </BlobProvider>

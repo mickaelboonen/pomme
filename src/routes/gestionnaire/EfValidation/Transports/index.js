@@ -85,6 +85,15 @@ const TransportsVal = ({ displayPdf, data, entity }) => {
           ))}
         </React.Fragment>
       ))}
+      {categoriesToDisplay.length === 0 && (
+        <div className='form__section'>
+          <FormSectionTitle>Frais de transports</FormSectionTitle>
+          <InputValueDisplayer
+            label="Frais de transports déclarés"
+            value="L'agent n'a déclaré aucun frais de transport à rembourser."
+          />
+        </div>
+      )}
     </>
   );
 };

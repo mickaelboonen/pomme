@@ -233,21 +233,21 @@ const Accomodations = ({ step }) => {
             <p className='form__section-container-text'><span>MISSION {currentOM.mission.region === "dom-tom" ? 'DANS LES DOM-TOM': "A L'ÉTRANGER"} : </span>Forfait de Remboursement choisi : <span>{currentOM.mission.abroad_costs.replace('-', ' ')}</span>.</p>
           )}
         </div> */}
-        <NumberField
-          id="admin-restaurant-field"
-          formField="mealsInAdminRestaurants"
-          register={register}
-          label="Repas pris dans un restaurant administratif ou assimilé"
-          placeholder="Nombre de repas à renseigner."
-          hasHelp
-          helpFunction={showHelp}
-        />
         <NumberField 
           id="paid-by-agent-in-France-field"
           formField="mealsPaidByAgentInFrance"
           register={register}
           placeholder="Nombre de repas à renseigner."
           label='Repas à titre onéreux en France'
+          hasHelp
+          helpFunction={showHelp}
+        />
+        <NumberField
+          id="admin-restaurant-field"
+          formField="mealsInAdminRestaurants"
+          register={register}
+          label="Repas pris dans un restaurant administratif ou assimilé"
+          placeholder="Nombre de repas à renseigner."
           hasHelp
           helpFunction={showHelp}
         />

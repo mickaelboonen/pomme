@@ -37,7 +37,6 @@ const CarAuthorizationPdf = ({ data, vehicleTypes, agent, agentSignature, reason
 
   const validationDate = setValidationDate();
   return (
-  <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.header} fixed>
         <Image
@@ -94,7 +93,6 @@ const CarAuthorizationPdf = ({ data, vehicleTypes, agent, agentSignature, reason
         </View>
       </View>
     </Page>
-  </Document>
 );}
 
 CarAuthorizationPdf.propTypes = {

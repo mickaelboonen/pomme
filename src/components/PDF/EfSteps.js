@@ -46,7 +46,7 @@ const EfSteps = ({ steps, isTeaching }) => {
             <Text style={styles.section.row.cell.text}>{getDDMMYYDate(new Date(step.departure))}</Text>
           </View>
           <View style={styles.section.row.cell}>
-            <Text style={styles.section.row.cell.text}>{getHHMMTime(new Date(step.departureHour))}</Text>
+            <Text style={styles.section.row.cell.text}>{step.departureHour}</Text>
           </View>
           <View style={styles.section.row.cell}>
             <Text style={styles.section.row.cell.text}>{step.departurePlace}</Text>
@@ -66,7 +66,7 @@ const EfSteps = ({ steps, isTeaching }) => {
             <Text style={styles.section.row.cell.text}>{step.arrival ? getDDMMYYDate(new Date(step.arrival)): step.arrival}</Text>
           </View>
           <View style={styles.section.row.cell}>
-            <Text style={styles.section.row.cell.text}>{getHHMMTime(new Date(step.arrivalHour))}</Text>
+            <Text style={styles.section.row.cell.text}>{step.arrivalHour}</Text>
           </View>
           <View style={styles.section.row.cell}>
             <Text style={styles.section.row.cell.text}>{step.arrivalPlace}</Text>

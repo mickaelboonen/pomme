@@ -26,6 +26,9 @@ import { setValidationDate, setExistingValidationDate} from 'src/selectors/pdfFu
 import { getSavedFileName } from 'src/selectors/formDataGetters';
 import {  addEfMonitoringPdf,addOmMonitoringPdf } from 'src/reducer/omManager';
 import { getDDMMYYDate } from '../../../selectors/dateFunctions';
+import ScienceEventPdf from 'src/components/PDF/ScienceEventPdf';
+import CarAuthorizationPdf from 'src/components/PDF/CarAuthorizationPdf';
+import DispensationPdf from 'src/components/PDF/DispensationPdf';
 
 const OmVisa = ({ data, user, gest, isOm, om}) => {
 
@@ -60,6 +63,28 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
     ...agentProfessionalAddress,
     ...agentPersonalAddress
   };
+  const staticReasons = [
+    {
+      id: "time",
+      label: "Gain de temps",
+    },
+    {
+      id: "no-public-transports",
+      label: "Absence de transport en commun",
+    },
+    {
+      id: "materials-transporting",
+      label: "Obligation de transport de matériel lourd, encombrant, fragile",
+    },
+    {
+      id: "handicap",
+      label: "Handicap",
+    },
+    {
+      id: "carpooling",
+      label: "Transport d'autres missionnaires",
+    },
+  ];
 
 
   // console.log(agentFullData);
@@ -134,6 +159,8 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
   const handleSignatureCheckbox = () => {
     clearErrors('signature');
   }
+
+  // console.log(om.mission)
   return (
     <form className='form'>
       <FormSectionTitle>Viser le document</FormSectionTitle>
@@ -263,6 +290,29 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
                     acValidationDate={setExistingValidationDate(om.management.workflow.find((actor) => actor.role === "Agent Comptable").validation_date)}
                     />
                 )}
+                {data.mission.scientificEvents.length > 0 && data.mission.scientificEvents.map((event) => (
+                  <ScienceEventPdf
+                    key={'s-e-' + data.mission.scientificEvents.indexOf(event)}
+                    data={event}
+                    agent={agentFullData}
+                    creationDate={setExistingValidationDate(data.created_at)}
+                  />
+                ))}
+                {data.transports.authorizations.length > 0 && data.transports.authorizations.map((auth) => (
+                  <CarAuthorizationPdf
+                    key={'c-a-' + data.transports.authorizations.indexOf(auth)}
+                    data={auth}
+                    agent={agentFullData}
+                    vehicleTypes={vehicleTypes}
+                    reasons={staticReasons}
+                  />
+                ))}
+                {data.transports.dispensations.length > 0 && data.transports.dispensations.map((disp) => (
+                  <DispensationPdf
+                    key={'d-' + data.transports.dispensations.indexOf(disp)}
+                    data={disp}
+                  />
+                ))}
               </Document>
             }>
               {({ blob }) => (
@@ -270,6 +320,10 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
                   <button type="button" onClick={() => { const data = watch(); data.file = new File([blob], data.name, {type: 'pdf'}); submitFunction(data);}}>
                     Valider le document
                   </button>
+                  <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
+                    VOIR
+                  </button>
+
                   {/* {gest.roles.indexOf('MANAGER') && (
                     <>
                       <a href={URL.createObjectURL(new File([blob], data.name, {type: 'pdf'}))} download={om.name + '.pdf'} style={{textAlign: 'center'}}>
@@ -330,6 +384,29 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
                   acValidationDate={setExistingValidationDate(om.management.workflow.find((actor) => actor.role === "Agent Comptable").validation_date)}
                   />
               )}
+              {data.mission.scientificEvents.length > 0 && data.mission.scientificEvents.map((event) => (
+                <ScienceEventPdf
+                  key={'s-e-' + data.mission.scientificEvents.indexOf(event)}
+                  data={event}
+                  agent={agentFullData}
+                  creationDate={setExistingValidationDate(data.created_at)}
+                />
+              ))}
+              {data.transports.authorizations.length > 0 && data.transports.authorizations.map((auth) => (
+                <CarAuthorizationPdf
+                  key={'c-a-' + data.transports.authorizations.indexOf(auth)}
+                  data={auth}
+                  agent={agentFullData}
+                  vehicleTypes={vehicleTypes}
+                  reasons={staticReasons}
+                />
+              ))}
+              {data.transports.dispensations.length > 0 && data.transports.dispensations.map((disp) => (
+                <DispensationPdf
+                  key={'d-' + data.transports.dispensations.indexOf(disp)}
+                  data={disp}
+                />
+              ))}
             </Document>
           </PDFViewer>
         </div>

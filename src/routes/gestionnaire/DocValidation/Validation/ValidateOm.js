@@ -15,11 +15,15 @@ import { BlobProvider, Document, PDFViewer } from '@react-pdf/renderer';
 import ValidationMonitoringPdf from 'src/components/PDF/ValidationMonitoringPdf';
 import OmPdf from 'src/components/PDF/OmPdf';
 import OmAdvancePdf from 'src/components/PDF/OmAdvancePdf';
+import { setValidationDate, setExistingValidationDate} from 'src/selectors/pdfFunctions';
 
 // import './style.scss';
 
 // Actions
 import { displayValidationActors } from 'src/reducer/omManager';
+import ScienceEventPdf from '../../../../components/PDF/ScienceEventPdf';
+import CarAuthorizationPdf from '../../../../components/PDF/CarAuthorizationPdf';
+import DispensationPdf from '../../../../components/PDF/DispensationPdf';
 
 const ValidateOm = ({
   register,
@@ -85,7 +89,8 @@ const ValidateOm = ({
       let middle;
   
       if (directors[0].role.includes('UPR')) {
-        middle = 4;
+        middle = isAdvanceRequested ? 4 : 2;
+
       }
       else if ( directors[0].role.includes('Département')) {
         middle = isAdvanceRequested ? 3 : 1;
@@ -137,6 +142,29 @@ const ValidateOm = ({
     }
   }, [selectedWorkflow]);
   
+  const staticReasons = [
+    {
+      id: "time",
+      label: "Gain de temps",
+    },
+    {
+      id: "no-public-transports",
+      label: "Absence de transport en commun",
+    },
+    {
+      id: "materials-transporting",
+      label: "Obligation de transport de matériel lourd, encombrant, fragile",
+    },
+    {
+      id: "handicap",
+      label: "Handicap",
+    },
+    {
+      id: "carpooling",
+      label: "Transport d'autres missionnaires",
+    },
+  ];
+
   return (
   <>
     <div className="form__section">
@@ -290,6 +318,26 @@ const ValidateOm = ({
               signature={''}
             />
           )}
+          {om.mission.science && om.mission.scientificEvents.map((event) => (
+            <ScienceEventPdf
+              data={event}
+              agent={agentFullData}
+              creationDate={setExistingValidationDate(om.created_at)}
+            />
+          ))}
+          {om.transports.authorizations.length > 0 && om.transports.authorizations.map((auth) => (
+            <CarAuthorizationPdf
+              data={auth}
+              agent={agentFullData}
+              vehicleTypes={vehicleTypes}
+              reasons={staticReasons}
+            />
+          ))}
+          {om.transports.dispensations.length > 0 && om.transports.dispensations.map((disp) => (
+            <DispensationPdf
+              data={disp}
+            />
+          ))}
         </Document>
       }>
         {({ blob }) => {          
@@ -300,9 +348,9 @@ const ValidateOm = ({
               <button style={{margin: 'auto'}}type="button" onClick={() => { const data = watch(); data.file = file; submitFunction(data)}}>
                 Valider la demande
               </button>
-              {/* <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}> */}
-                {/* Visualiser <br /> le document */}
-              {/* </button> */}
+              <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
+                Visualiser <br /> le document
+              </button>
             </div>
           );
         }}
@@ -340,6 +388,30 @@ const ValidateOm = ({
                 signature={''}
               />
             )}
+          {om.mission.science && om.mission.scientificEvents.map((event) => (
+            <ScienceEventPdf
+              key={'s-e-' + om.mission.scientificEvents.indexOf(event)}
+              data={event}
+              agent={agentFullData}
+              creationDate={setExistingValidationDate(om.created_at)}
+            />
+          ))}
+          {om.transports.authorizations.length > 0 && om.transports.authorizations.map((auth) => (
+            <CarAuthorizationPdf
+              key={'c-a-' + om.transports.authorizations.indexOf(auth)}
+              data={auth}
+              agent={agentFullData}
+              vehicleTypes={vehicleTypes}
+              reasons={staticReasons}
+            />
+          ))}
+          {om.transports.dispensations.length > 0 && om.transports.dispensations.map((disp) => (
+            <DispensationPdf
+              key={'d-' + om.transports.dispensations.indexOf(disp)}
+              data={disp}
+            />
+          ))}
+
           </Document>
         </PDFViewer>
       </div>

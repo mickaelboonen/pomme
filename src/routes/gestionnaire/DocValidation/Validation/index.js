@@ -52,7 +52,6 @@ const Validation = () => {
     });
   }
 
-  console.log('currentOM = ', currentOM);
   const omType = currentOM.type ? currentOM.type.toLowerCase().split('-') : '';
   const currentChannel = channels.find((channel) => channel.shortName === omType[0]);
 

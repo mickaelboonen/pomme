@@ -41,10 +41,11 @@ const MissionVal = ({ displayPdf, entity, ef }) => {
     }
 
     if (differences.mission_purpose_file) {
-   // console.log(differences.mission_purpose_file);
-     if (differences.mission_purpose_file[0][0].file.name === differences.mission_purpose_file[1][0].file.name) {
-      delete differences.mission_purpose_file;
-     }
+      if (differences.mission_purpose_file[0].length > 0 && differences.mission_purpose_file[1].length > 0 ) {
+       if (differences.mission_purpose_file[0][0].file.name === differences.mission_purpose_file[1][0].file.name) {
+         delete differences.mission_purpose_file;
+        }
+      }
     }
   
     return differences;
@@ -86,6 +87,7 @@ const MissionVal = ({ displayPdf, entity, ef }) => {
   let differencesData = {};
 
   if (isOmModified) {
+    console.log(differences);
     differencesData = {
       "departure": {
         label: "Date et heure du début de mission",
@@ -111,7 +113,7 @@ const MissionVal = ({ displayPdf, entity, ef }) => {
       "visa_payment": {
         label: "Règlement du visa",
         // oldValue: differences.visa_payment !== null ? (differences.visa_payment[1] ? 'Oui' : 'Non') : '',
-        oldValue: differences.visa_payment[1] === null ? 'Pas de visa demandé ' : (differences.visa_payment[1] === 'user' ? "Avancé par l'agent" : "Payé par Unîmes" ),
+        oldValue: (differences.visa_payment && differences.visa_payment[1]) === null ? 'Pas de visa demandé ' : (differences.visa_payment[1] === 'user' ? "Avancé par l'agent" : "Payé par Unîmes" ),
         newValue: data.visa_payment === null ? 'Pas de visa demandé ' : (data.visa_payment === 'user' ? "Avancé par l'agent" : "Payé par Unîmes" ),
       },
       "planning": {

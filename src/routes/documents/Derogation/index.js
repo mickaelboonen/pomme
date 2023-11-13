@@ -3,7 +3,7 @@ import classNames from "classnames";
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLoaderData, Link } from 'react-router-dom';
-import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
+import { BlobProvider, Document, PDFViewer } from '@react-pdf/renderer';
 
 import './style.scss';
 import PageTitle from 'src/components/PageTitle';
@@ -163,7 +163,11 @@ const Derogation = () => {
             </div>
             <div className="form__section-field" id="external-signature-button">
               <div className="form__section-field-button">
-                <BlobProvider document={<DispensationPdf agentSignature={agentSignature} agent={agent} data={watch()}/>}>
+                <BlobProvider document={
+                  <Document>
+                    <DispensationPdf agentSignature={agentSignature} agent={agent} data={watch()}/> 
+                  </Document>
+                }>
                   {({ blob }) => {
                  // console.log(oms);
                     const om = oms.find((om) => om.id == omId);
@@ -212,7 +216,9 @@ const Derogation = () => {
             <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer la fenêtre</p>
           </div>
           <PDFViewer>
-            <DispensationPdf agentSignature={agentSignature} agent={agent} data={watch()}/>
+            <Document>
+              <DispensationPdf agentSignature={agentSignature} agent={agent} data={watch()}/> 
+            </Document>
           </PDFViewer>
         </div>
       )}

@@ -15,6 +15,7 @@ import { fetchPendingOms, displayWantedDocs, fetchPendingEfs } from "src/reducer
 
 const Gestionnaires = ({ isOm }) => {
 
+  console.log(isOm);
   const dispatch = useDispatch();
 
   const { omManager: { pendingDocs, loader, docsToDisplay }, agent: { user, agent }} = useSelector((state) => state);
@@ -33,18 +34,19 @@ const Gestionnaires = ({ isOm }) => {
   }
   
   types.forEach((tab) => {
+    let type = isOm ? 'OM' : 'EF';
     let id, name;
     if (tab === 2) {
         id = 'control',
-        name= 'OM à contrôler'
+        name= type + ' à contrôler'
     }
     else if (tab === 8 || tab === 9) {
       id = 'sign',
-      name= 'OM à signer'
+      name= type + ' à signer'
     }
     else {
       id = 'visa',
-      name= 'OM à viser'
+      name= type + ' à viser'
     }
     tabsToShow.push({id: id, name: name});
 
@@ -87,7 +89,7 @@ const Gestionnaires = ({ isOm }) => {
 
   return (
     <main className="my-documents" style={{position: 'relative'}}>
-      <PageTitle>Ordres de mission à valider</PageTitle>
+      <PageTitle>{isOm ? 'Ordres de mission' : 'États de frais'} à valider</PageTitle>
       <Tabs tabs={tabsToShow} handler={displayWantedSection} />
       <div className='my-documents__files'>
         {!loader && (
@@ -105,7 +107,7 @@ const Gestionnaires = ({ isOm }) => {
               )
             })}
           {pendingDocs.length === 0 && (
-            <p className='my-documents__files-message'>Aucun Ordre de Mission en attente</p>
+            <p className='my-documents__files-message'>Vous n'avez pas de documents à contrôler</p>
           )}
           </div>
         )}

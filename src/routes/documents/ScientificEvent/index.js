@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLoaderData, Link } from 'react-router-dom';
-import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
+import { BlobProvider, Document, PDFViewer } from '@react-pdf/renderer';
 
 import './style.scss';
 
@@ -249,7 +249,11 @@ const ScientificEvent = () => {
           <div className="form__section-field" id="external-signature-button">
             <div className="form__section-field-button">
           
-                <BlobProvider document={<ScienceEventPdf data={watch()} agent={agent} creationDate={setValidationDate()} />}>
+                <BlobProvider document={
+                  <Document>
+                    <ScienceEventPdf data={watch()} agent={agent} creationDate={setValidationDate()}/>
+                  </Document>
+                }>
                   {({ blob }) => {
                     const fileName = `${agent.lastname.toUpperCase()}-${watch('date')}-événément-scientifique`
                     const file = new File([blob], fileName, {type: 'application/pdf'});
@@ -276,7 +280,9 @@ const ScientificEvent = () => {
             <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer la fenêtre</p>
           </div>
           <PDFViewer>
-            <ScienceEventPdf data={watch()} agent={agent} creationDate={setValidationDate()}/>
+            <Document>
+              <ScienceEventPdf data={watch()} agent={agent} creationDate={setValidationDate()}/>
+            </Document>
           </PDFViewer>
         </div>
       )}

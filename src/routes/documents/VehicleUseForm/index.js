@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLoaderData, Link } from 'react-router-dom';
-import { BlobProvider, PDFViewer } from '@react-pdf/renderer';
+import { BlobProvider, Document, PDFViewer } from '@react-pdf/renderer';
 
 import './style.scss';
 
@@ -307,7 +307,11 @@ const VehicleUseForm = () => {
             <div className="form__section-field" id="external-signature-button">
               <div className="form__section-field-button">
             
-                  <BlobProvider document={<CarAuthorizationPdf reasons={staticReasons} agentSignature={agentSignature} agent={agent} data={watch()} vehicleTypes={vehicleTypes}/>}>
+                  <BlobProvider document={
+                    <Document>
+                      <CarAuthorizationPdf reasons={staticReasons} agentSignature={agentSignature} agent={agent} data={watch()} vehicleTypes={vehicleTypes}/>
+                    </Document>
+                    }>
                     {({ blob }) => {
         
                       const { mission } = oms.find((om) => om.id == omId);

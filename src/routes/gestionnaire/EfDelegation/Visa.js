@@ -141,8 +141,18 @@ const needsSignature = ef.management.workflow.indexOf(currentActor) === ef.manag
           <div className='my-documents__files-buttons'>
             {!isFileTooLong && (
               <button onClick={handleClick} type="button">
-                <FaEye className='my-documents__files-buttons-icon'/>
-                <p>Voir le document</p>
+              {viewer === '' && (
+                <>
+                  <FaEye className='my-documents__files-buttons-icon'/>
+                  <p>Voir le document</p>
+                </>
+              )}
+              {viewer !== '' && (
+                <>
+                  <FaEyeSlash className='my-documents__files-buttons-icon'/>
+                  <p>Cacher le document</p>
+                </>
+              )}
               </button>
             )}
             <a  href={data.file} download={`${data.name}.pdf`} >
@@ -200,20 +210,20 @@ const needsSignature = ef.management.workflow.indexOf(currentActor) === ef.manag
       <div className="form__section">
         <FormSectionTitle>DÉCISION FINALE</FormSectionTitle>
         <div className="form__section-field">
-          <label className="form__section-field-label" htmlFor="action">Valider de l'Ordre de Mission</label>
+          <label className="form__section-field-label" htmlFor="action">Valider de l'état de frais</label>
           <RadioInput
             id="validate"
             formField="action"
             label="Oui"
             register={register}
-            required="Veuillez valider ou non l'Ordre de Mission."
+            required="Veuillez valider ou non l'état de frais."
           />
           <RadioInput
             id="reject"
             formField="action"
             label="Non"
             register={register}
-            required="Veuillez valider ou non l'Ordre de Mission."
+            required="Veuillez valider ou non l'état de frais."
           />
           {errors.action && <p className="form__section-field-error form__section-field-error--open">{errors.action.message}</p>}
         </div>

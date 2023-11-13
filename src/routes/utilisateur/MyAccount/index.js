@@ -51,7 +51,7 @@ const MyAccount = () => {
   }, []);
   
   return (
-  <main className="my-documents">
+  <div className="my-documents">
     <PageTitle>Mes Pièces justificatives</PageTitle>
     <div className='form'>
       <div className='form__section'>
@@ -198,7 +198,7 @@ const MyAccount = () => {
     </div>
     <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />
     {isModalOpen && <OneFileForm />}
-  </main>
+  </div>
 );}
 
 MyAccount.propTypes = {

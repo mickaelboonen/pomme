@@ -42,6 +42,7 @@ const MissionVal = ({ displayPdf, data, entity }) => {
     }
     return value;
   }
+  
   const addresses = data.addresses.map((currentAddress) => {
     console.log(countries);
     const { address, address2, postCode, city, countryCode } = currentAddress;
@@ -122,7 +123,7 @@ const MissionVal = ({ displayPdf, data, entity }) => {
               </div>
               <InputValueDisplayer
                 label="Éventuels commentaires"
-                value={data.comment ?? ''}
+                value={event.comment ?? ''}
               />
               {event.pdf.map((file) => (
                 <FileHandler

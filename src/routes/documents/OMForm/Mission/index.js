@@ -147,7 +147,7 @@ const Mission = ({ step, isEfForm }) => {
   const onSubmit = (data) => {
 
     data = turnFieldsToAddressEntity(data);
-
+    console.log(data.scientificEvents.length);
     if (data.science) {
       if (data.scientificEvents.length === 0) {
         setError('scientificEvents', { type: 'custom', message: 'Merci de remplir le formulaire de participation à un événement scientifique.'});
@@ -256,8 +256,8 @@ const Mission = ({ step, isEfForm }) => {
   const errorMessages = defineValidationRulesForMission(isEfForm, modificationSwitch);
 
   const [region , modificationSwitch] = watch(['region',  'modificationSwitch' ]);
-  
-  const [isMissionAScienceEvent, setIsMissionAScienceEvent] = useState(defaultValues.type === 'research');
+
+  const [isMissionAScienceEvent, setIsMissionAScienceEvent] = useState(currentOM.type === 'research' || currentOM.type === 'admin-ed' || currentOM.type === 'admin-cd' );
   const [isVisaNeeded, setIsVisaNeeded] = useState(defaultValues.visa);
 
   useEffect(() => {
@@ -328,7 +328,7 @@ const Mission = ({ step, isEfForm }) => {
           error={errors.missionPurpose}
           required={errorMessages.missionPurpose}
         />
-        {currentOM.type === "research" && (
+        {(currentOM.type === "research" || currentOM.type === "admin-ed" || currentOM.type === "admin-cd") && (
           <SwitchButton
             register={register}
             handler={toggleScienceForm}
