@@ -294,14 +294,14 @@ const ValidateOm = ({
     <div className="form__section-field-buttons">
       <BlobProvider document={
         <Document>
-          <ValidationMonitoringPdf
-            om={om}
-            user={user}
-            agent={agent}
-            isGest={true}
-            gestData={watch()}
-            isOm={true}
-          />
+          {/* <ValidationMonitoringPdf
+            // om={om}
+            // user={user}
+            // agent={agent}
+            // isGest={true}
+            // gestData={watch()}
+            // isOm={true}
+          // /> */}
           <OmPdf
             countries={countries}
             data={om}
@@ -363,14 +363,14 @@ const ValidateOm = ({
         </div>
         <PDFViewer className='form__section-recap'>
           <Document>
-            <ValidationMonitoringPdf
-              om={om}
-              user={user}
-              agent={agent}
-              isGest={true}
-              gestData={watch()}
-              isOm={true}
-            />
+            {/* <ValidationMonitoringPdf
+              // om={om}
+              // user={user}
+              // agent={agent}
+              // isGest={true}
+              // gestData={watch()}
+              // isOm={true}
+            // /> */}
             <OmPdf
               countries={countries}
               data={om}

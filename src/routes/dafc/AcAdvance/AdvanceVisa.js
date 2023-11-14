@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
 // import { Link, useLoaderData } from 'react-router-dom';
-import { FaEye, FaDownload, FaEyeSlash } from 'react-icons/fa';
 import { BlobProvider, Document, PDFViewer } from '@react-pdf/renderer';
 
 // import '../style.scss';
@@ -19,11 +18,14 @@ import HiddenField from 'src/components/Fields/HiddenField';
 import ValidationMonitoringPdf from 'src/components/PDF/ValidationMonitoringPdf';
 import OmPdf from 'src/components/PDF/OmPdf';
 import OmAdvancePdf from 'src/components/PDF/OmAdvancePdf';
+import InputValueDisplayer from 'src/routes/gestionnaire/DocValidation/InputValueDisplayer';
 
-import { setValidationDate, setExistingValidationDate } from 'src/selectors/pdfFunctions';
+import { setValidationDate } from 'src/selectors/pdfFunctions';
 
 // Actions
 import { addOmMonitoringPdf } from 'src/reducer/omManager';
+import VisaComponent from 'src/components/VisaComponent';
+import FullPdf from 'src/components/PDF/fullPdf';
 
 const AdvanceVisa = ({ data, user, gest, isOm, om}) => {
 
@@ -73,12 +75,7 @@ const AdvanceVisa = ({ data, user, gest, isOm, om}) => {
   };
   let signatureFilename = signature !== null ? signature.name : '';
 
-  const [viewer, setViewer] = useState('');
-  const isFileTooLong = data.file.length > 2000000 ? true : false;
 
-  const handleClick = () => {
-    viewer === '' ? setViewer(data.file) : setViewer('');
-  }
   const savedSignature = watch('savedSignature');
   
   
@@ -97,55 +94,72 @@ const AdvanceVisa = ({ data, user, gest, isOm, om}) => {
   const handleSignatureCheckbox = () => {
     clearErrors('signature');
   }
-
+  console.log(om.advance);
+  const { advance } = om;
   return (
     <form className='form'>
       <FormSectionTitle>Viser le document</FormSectionTitle>
       <div className="form__section">
-        <div className="form__section-field">
-          <div className='my-documents__files-buttons'>
-            {!isFileTooLong && (
-              <button onClick={handleClick} type="button">
-                {viewer === '' && (
-                  <>
-                    <FaEye className='my-documents__files-buttons-icon'/>
-                    <p>Voir le document</p>
-                  </>
-                )}
-                {viewer !== '' && (
-                  <>
-                    <FaEyeSlash className='my-documents__files-buttons-icon'/>
-                    <p>Cacher le document</p>
-                  </>
-                )}
-                </button>
-            )}
-            <a  href={data.file} download={`${data.name}.pdf`} >
-              <FaDownload className='my-documents__files-buttons-icon' /> Télécharger le document
-            </a>
-          </div>
-          {isFileTooLong && <p style={{textAlign: 'center', marginBottom: '1rem'}}>Le fichier est trop lourd pour être visualisé dans le navigateur. Veuillez le télécharger.</p>}
-        </div>
-        {viewer !== '' && (
-          <div style={{height: '600px', marginBottom: '1rem'}}>
-            <embed
-              className="form-layout__viewer-pdf__embed"
-              src={viewer}
-              width="100%"
-              height="1200px"
-              type="application/pdf"
-            />
-          </div>
-        )}
+        <VisaComponent
+          data={data}
+          user={user}
+          watch={watch}
+          gest={gest}
+          isOm={isOm}
+        />
         <TextareaField
           id="comments-field"
           label="Commentaires"
           formField="comments"
           register={register}
         />
+      </div>
+      <FormSectionTitle>Avance à verser</FormSectionTitle>
+      <div className='form__section form__section--documents'>
+        <div className='form__section-half'>
+          <InputValueDisplayer
+            label="Montant de l'avance accordée"
+            value={advance.advance_amount + ' euros.'}
+          />
+        </div>
+        <div className='form__section-half'>
+          <InputValueDisplayer
+            label="Montant total estimé de la mission"
+            value={advance.total_amount + ' euros.'}
+          />
+        </div>
+      </div>
+      <div className='form__section form__section--documents'>
+        <div className='form__section-half'>
+          <InputValueDisplayer
+            label="Nombre de nuits"
+            value={advance.nights_number}
+          />
+        </div>
+        <div className='form__section-half'>
+          <InputValueDisplayer
+            label="Nombre de repas"
+            value={advance.meals_number}
+          />
+        </div>
+      </div>
+      <div className='form__section form__section--documents'>
+        <div className='form__section-half'>
+          <InputValueDisplayer
+            label="Montants des autres frais"
+            value={advance.other_expenses_amount}
+          />
+        </div>
+        <div className='form__section-half'>
+          <InputValueDisplayer
+            label="Justification des autres frais"
+            value={advance.other_expenses_justification}
+          />
+        </div>
+      </div>
+
         <HiddenField id="docId" value={data.id} register={register} />
         <HiddenField id="actor" value={user} register={register} />
-      </div>
       {gest.roles.indexOf('MANAGER') && (
         <div className="form__section">
         <FormSectionTitle>SIGNATURE</FormSectionTitle>
@@ -235,11 +249,9 @@ const AdvanceVisa = ({ data, user, gest, isOm, om}) => {
                   <button type="button" onClick={() => { const data = watch(); data.file = new File([blob], data.name, {type: 'pdf'}); submitFunction(data);}}>
                     Valider le document
                   </button>
-                  {/* {gest.roles.indexOf('MANAGER') && (
                     <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
                       VOIR
                     </button>
-                  )} */}
                 </>
               )}
             </BlobProvider>
@@ -262,23 +274,22 @@ const AdvanceVisa = ({ data, user, gest, isOm, om}) => {
             <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer la fenêtre</p>
           </div>
           <PDFViewer>
+            <FullPdf
+            data={data}
+            user={user}
+            gest={gest}
+            isOm={isOm}
+            om={om}
+            />
             <Document>
-            <ValidationMonitoringPdf
-                  om={data}
-                  user={user}
-                  agent={gest}
-                  isGest={false}
-                  gestData={watch()}
-                  docType='advance'
-                />
-                <OmPdf
-                  countries={countries}
-                  data={om}
-                  agent={agentFullData}
-                  vehicleTypes={vehicleTypes}
-                  manager={om.management}
-                  signature={''}
-                />
+              <OmPdf
+                countries={countries}
+                data={om}
+                agent={agentFullData}
+                vehicleTypes={vehicleTypes}
+                manager={om.management}
+                signature={''}
+              />
 
               <OmAdvancePdf
                 data={data.advance}

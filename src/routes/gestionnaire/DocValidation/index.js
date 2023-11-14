@@ -70,7 +70,7 @@ const OMForm = () => {
   const toggleViewer = () => {
     setDocToShow('')
   }
-  
+
   return (
     <>
       <ThreadAsTabs step={step} tabs={omSteps} isOm urlData={loaderData} />

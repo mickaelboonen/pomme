@@ -29,6 +29,7 @@ import { getDDMMYYDate } from '../../../selectors/dateFunctions';
 import ScienceEventPdf from 'src/components/PDF/ScienceEventPdf';
 import CarAuthorizationPdf from 'src/components/PDF/CarAuthorizationPdf';
 import DispensationPdf from 'src/components/PDF/DispensationPdf';
+import classNames from 'classnames';
 
 const OmVisa = ({ data, user, gest, isOm, om}) => {
 
@@ -163,9 +164,9 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
   // console.log(om.mission)
   return (
     <form className='form'>
-      <FormSectionTitle>Viser le document</FormSectionTitle>
+      <FormSectionTitle>Viser les documents</FormSectionTitle>
       <div className="form__section">
-        <div className="form__section-field">
+        {/* <div className="form__section-field">
           <div className='my-documents__files-buttons'>
             <button onClick={handleClick} type="button">
               {viewer === '' && (
@@ -186,8 +187,8 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
             </a>
           </div>
           {isFileTooLong && <p style={{textAlign: 'center', marginBottom: '1rem'}}>Le fichier est trop lourd pour être visualisé dans le navigateur. Veuillez le télécharger.</p>}
-        </div>
-        {viewer !== '' && (
+        </div> */}
+        {/* {viewer !== '' && (
           <div style={{height: '600px', marginBottom: '1rem'}}>
             <embed
               className="form-layout__viewer-pdf__embed"
@@ -197,7 +198,51 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
               type="application/pdf"
             />
           </div>
-        )}
+        )} */}
+        <div className='viseur'>
+          <div className={classNames('viseur__buttons', {'viseur__buttons--no-docs': isFileTooLong})}>
+            <div className='my-documents__files-buttons'>
+              <button onClick={handleClick} type="button">
+                <FaEye className='my-documents__files-buttons-icon'/>
+                <p>{viewer === '' ? "Voir l'OM" : "Voir les visas"}</p>
+              </button>
+              <a href={data.file} download={`${data.name}.pdf`} >
+                <FaDownload className='my-documents__files-buttons-icon' /> Télécharger l'OM
+              </a>
+              {isFileTooLong && <p style={{textAlign: 'center', marginBottom: '1rem'}}>Le fichier est trop lourd pour être visualisé dans le navigateur. Veuillez le télécharger.</p>}
+
+            </div>
+          </div>
+          {!isFileTooLong && (
+            <div style={{height: '600px', width: '68%'}}>
+              {viewer === '' && (
+                <PDFViewer>
+                  <Document>
+                    <ValidationMonitoringPdf
+                      om={data}
+                      user={user}
+                      agent={gest}
+                      isGest={false}
+                      gestData={watch()}
+                      isOm={isOm}
+                    />
+                  </Document>
+                </PDFViewer>
+              )}
+              {viewer !== '' && (
+                <div style={{height: '600px', marginBottom: '1rem'}}>
+                  <embed
+                    className="form-layout__viewer-pdf__embed"
+                    src={viewer}
+                    width="100%"
+                    height="1200px"
+                    type="application/pdf"
+                  />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
         <TextareaField 
           id="comments-field"
           label="Commentaires"
@@ -263,14 +308,14 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
           {!loader &&(
             <BlobProvider document={
               <Document>
-                <ValidationMonitoringPdf
+                {/* <ValidationMonitoringPdf
                   om={data}
                   user={user}
                   agent={gest}
                   isGest={false}
                   gestData={watch()}
                   isOm={isOm}
-                />
+                /> */}
                 <OmPdf
                   countries={countries}
                   data={om}
@@ -290,14 +335,6 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
                     acValidationDate={setExistingValidationDate(om.management.workflow.find((actor) => actor.role === "Agent Comptable").validation_date)}
                     />
                 )}
-                {data.mission.scientificEvents.length > 0 && data.mission.scientificEvents.map((event) => (
-                  <ScienceEventPdf
-                    key={'s-e-' + data.mission.scientificEvents.indexOf(event)}
-                    data={event}
-                    agent={agentFullData}
-                    creationDate={setExistingValidationDate(data.created_at)}
-                  />
-                ))}
                 {data.transports.authorizations.length > 0 && data.transports.authorizations.map((auth) => (
                   <CarAuthorizationPdf
                     key={'c-a-' + data.transports.authorizations.indexOf(auth)}
@@ -311,6 +348,14 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
                   <DispensationPdf
                     key={'d-' + data.transports.dispensations.indexOf(disp)}
                     data={disp}
+                  />
+                ))}
+                {data.mission.scientificEvents.length > 0 && data.mission.scientificEvents.map((event) => (
+                  <ScienceEventPdf
+                    key={'s-e-' + data.mission.scientificEvents.indexOf(event)}
+                    data={event}
+                    agent={agentFullData}
+                    creationDate={setExistingValidationDate(data.created_at)}
                   />
                 ))}
               </Document>
@@ -357,14 +402,14 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
           </div>
           <PDFViewer>
             <Document>
-              <ValidationMonitoringPdf
-                om={data}
-                user={user}
-                agent={gest}
-                isGest={false}
-                gestData={watch()}
-                isOm={isOm}
-              />
+              {/* <ValidationMonitoringPdf
+                // om={data}
+                // user={user}
+                // agent={gest}
+                // isGest={false}
+                // gestData={watch()}
+                // isOm={isOm}
+              // /> */}
               <OmPdf
                 countries={countries}
                 data={om}
@@ -384,14 +429,6 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
                   acValidationDate={setExistingValidationDate(om.management.workflow.find((actor) => actor.role === "Agent Comptable").validation_date)}
                   />
               )}
-              {data.mission.scientificEvents.length > 0 && data.mission.scientificEvents.map((event) => (
-                <ScienceEventPdf
-                  key={'s-e-' + data.mission.scientificEvents.indexOf(event)}
-                  data={event}
-                  agent={agentFullData}
-                  creationDate={setExistingValidationDate(data.created_at)}
-                />
-              ))}
               {data.transports.authorizations.length > 0 && data.transports.authorizations.map((auth) => (
                 <CarAuthorizationPdf
                   key={'c-a-' + data.transports.authorizations.indexOf(auth)}
@@ -405,6 +442,14 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
                 <DispensationPdf
                   key={'d-' + data.transports.dispensations.indexOf(disp)}
                   data={disp}
+                />
+              ))}
+              {data.mission.scientificEvents.length > 0 && data.mission.scientificEvents.map((event) => (
+                <ScienceEventPdf
+                  key={'s-e-' + data.mission.scientificEvents.indexOf(event)}
+                  data={event}
+                  agent={agentFullData}
+                  creationDate={setExistingValidationDate(data.created_at)}
                 />
               ))}
             </Document>

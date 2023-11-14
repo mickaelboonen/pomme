@@ -13,7 +13,6 @@ Font.register({ family: 'Radjhani', src: RadjhaniFont });
 import { styles } from './pdfStyles';
 
 const ValidationMonitoringPdf = ({ om, isGest, agent, gestData, user, docType}) => {
-  // console.log("**************************", user, om.management.workflow);
   // console.log(agent);
   const types = [
     {
