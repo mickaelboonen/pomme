@@ -13,9 +13,9 @@ Font.register({ family: 'RadjhaniBold', src: RadjhaniBoldFont });
 Font.registerHyphenationCallback(word => [word]);
 
 import { styles } from './pdfStyles';
-import { setValidationDate } from '../../selectors/pdfFunctions';
+import { setValidationDateForPdf, setValidationDate, setExistingValidationDate } from 'src/selectors/pdfFunctions';
 
-const CarAuthorizationPdf = ({ data, vehicleTypes, agent, agentSignature, reasons}) => {
+const CarAuthorizationPdf = ({ data, vehicleTypes, agent, gest, signature, reasons}) => {
   let chosenVehicleType = {};
   
   if (data.carType === 'personal-car') {
@@ -34,8 +34,9 @@ const CarAuthorizationPdf = ({ data, vehicleTypes, agent, agentSignature, reason
       reasonsAsString += reason.label + ' - ';
     }
   })
+  console.log(gest);
+  const validationDate = signature ? (gest.validation_date ? setExistingValidationDate(gest.validation_date) : setValidationDate()) : null;
 
-  const validationDate = setValidationDate();
   return (
     <Page size="A4" style={styles.page}>
       <View style={styles.header} fixed>
@@ -88,8 +89,15 @@ const CarAuthorizationPdf = ({ data, vehicleTypes, agent, agentSignature, reason
         <Text style={styles.section.title} wrap={false}>DÉCISION</Text>
         <Text style={{marginBottom: 10}}>Bon pour accord : </Text>
         <View style={[styles.section.subsection, {height: 150, padding: 5}]}>
-            <Text style={styles.section.text}>Validé à Nîmes, le __/__/____.</Text>
-            <Text style={styles.section.text}>Signature de l'ordonnateur.rice (Président, DGS, VP) :</Text>
+        <Text style={{fontSize: 10}}>Validé à Nîmes le {validationDate ? setValidationDateForPdf(validationDate) : '__/__/____'} {gest ? `, par ${gest.name} (${gest.role})` : ''}.</Text>
+          <Text style={styles.section.text}>Signature de l'ordonnateur.rice (Président, DGS, VP) :</Text>
+          {signature !== '' && (
+            <Image
+              src={signature}
+              style={styles.header.image}
+            />
+          )}
+
         </View>
       </View>
     </Page>

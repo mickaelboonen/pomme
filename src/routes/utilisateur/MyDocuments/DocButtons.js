@@ -58,13 +58,13 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
       },
     ];
   };
-  
+  // console.log(isOm, (transports.transport_type.indexOf('plane') !== -1 || transports.transport_type.indexOf('train') !== -1));
   if (isOm && (transports.transport_type.indexOf('plane') !== -1 || transports.transport_type.indexOf('train') !== -1)) {
     buttons.push({
         name: 'transports',
         link: "/utilisateur/demande-de-transports?om=" + id,
         label: 'Faire une demande de billets',
-        status: [9],
+        status: [10],
       });
   }
   if (transports.authorizations) {
@@ -76,7 +76,7 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
             name: 'demat-car',
             link: "https://demat.unimes.fr/direction-du-patrimoine/reservation-de-vehicule/ticket?sector=1&service=2",
             label: 'Faire une demande de véhicule de service',
-            status: [9, 10],
+            status: [10, 11],
           };
           buttons.push(x);
           throw new Error("Break the loop.")
@@ -100,6 +100,7 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
     }
     
   }
+  console.log(buttons);
   
   return (
     <div className="my-documents__files-buttons">

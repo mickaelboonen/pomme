@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Font, Document, Page, Text, View, Image } from '@react-pdf/renderer';
-import { floatMultiplication, OTHER_MEALS_AMOUNT, ADMIN_MEALS_AMOUNT } from 'src/selectors/mathFunctions';
+import { floatMultiplication, floatAddition, OTHER_MEALS_AMOUNT, ADMIN_MEALS_AMOUNT } from 'src/selectors/mathFunctions';
 
 // Assets
 import Logo from 'src/assets/images/logo.png'
@@ -19,15 +19,23 @@ Font.register({ family: 'Radjhani', src: RadjhaniFont });
 import { styles } from './pdfStyles';
 
 const EfPdf = ({ data, agent, signature, country, om, gest}) => {
-
+  console.log(om);
   const { mission, transports, accomodations, stages } = data;
-  const { mission: { addresses, planning }} = om;
-  
+  const { mission: { addresses, planning }, advance} = om;
+
   const dep = new Date(mission.departure);
   const ret = new Date(mission.comeback);
     
   const maxMealsNumber = getMaxMealsAndNights(mission);
   const freeMeals = maxMealsNumber - (accomodations.meals_paid_by_agent_in_france + accomodations.meals_paid_by_agent_overseas + accomodations.meals_in_admin_restaurants);
+
+  let transportsFields = Object.entries(transports).filter((transport) => (!transport[0].includes('_files') && transport[0] !== 'km' && transport[0] !== 'horsepower' ) && transport[1]);
+  transportsFields = transportsFields.filter((transport) => transport[0] !== 'id' && transport[0] !== 'status');
+
+  const transportsAmountsArray = transportsFields.map((t) => t[1]);
+
+  const totalTransportsExpenses = floatAddition(transportsAmountsArray);
+
 
   const adminMealsAmount = floatMultiplication(accomodations.meals_in_admin_restaurants, ADMIN_MEALS_AMOUNT);
   const frenchMeals = floatMultiplication(accomodations.meals_paid_by_agent_in_france, OTHER_MEALS_AMOUNT);
@@ -104,10 +112,16 @@ const EfPdf = ({ data, agent, signature, country, om, gest}) => {
     },
   ];
   transportsExpenses = filterArrays(transportsExpenses);
-  // console.log(transportsExpenses);
+
+
+
+  
   accomodationsExpenses = filterArrays(accomodationsExpenses);
   otherExpenses = filterArrays(otherExpenses);
-  
+  const totalMeals = floatAddition([adminMealsAmount, frenchMeals, overseasMeals]);
+  const othersExpensesAmount = floatAddition([transports.visa ?? 0, accomodations.event ?? 0]);
+
+  const totalAmount = floatAddition([totalMeals, othersExpensesAmount, totalTransportsExpenses, accomodations.hotel ?? 0])
 
   const validationDate = signature ? setValidationDate() : null;
   // console.log("gest = ", gest);
@@ -228,6 +242,18 @@ const EfPdf = ({ data, agent, signature, country, om, gest}) => {
       {mission.region === 'étranger' &&  <Text>Mission dans le pays : {country.name.toUpperCase()}, avec un {mission.abroad_costs === "per-diem" ? 'Forfait per diem.' : 'Frais réels dans la limite du forfait.'}</Text>}
     </View>
     {stages.length > 1 && <EfSteps steps={stages} isTeaching={data.is_teaching}/>}
+    <View style={styles.section} wrap={false}>
+      <Text style={styles.section.title} wrap={false}>TOTAUX</Text>
+      <View style={[styles.section.subsection, {padding: 5}]}>
+        <Text style={styles.section.text}>Total transports : {totalTransportsExpenses} euros.</Text>
+        <Text style={styles.section.text}>Total nuités : {accomodations.hotel ? accomodations.hotel : '0'} euros.</Text>
+        <Text style={styles.section.text}>Total repas : {totalMeals} euros.</Text>
+        <Text style={styles.section.text}>Autres : {othersExpensesAmount} euros.</Text>
+        {advance.advance && <Text style={styles.section.text}>RAPPEL D'AVANCE : {advance.advance_amount} euros.</Text>}
+        {/* <Text style={styles.section.text}>Total général en chiffres : {totalAmount} euros.</Text> */}
+        <Text style={styles.section.text}>Total général en chiffres, avance déduite : {totalAmount - advance.advance_amount} euros.</Text>
+      </View>
+    </View>
     <View style={styles.section} wrap={false}>
       <Text style={styles.section.title} wrap={false}>SIGNATURE</Text>
       <View style={[styles.section.subsection, {height: 150, padding: 5}]}>

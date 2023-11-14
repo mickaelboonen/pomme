@@ -35,17 +35,24 @@ const MissionVal = ({ displayPdf, entity, ef }) => {
     delete differences.id;
     delete differences.modification_files;
     delete differences.modifications;
+    delete differences.science; // 
+    delete differences.visa;
+    delete differences.visa_payment;
+    delete differences.mission_purpose_file;
 
     if (differences.maps[0].length === 0 && differences.maps[1].length === 0) {
       delete differences.maps;
     }
 
-    if (differences.mission_purpose_file) {
-      if (differences.mission_purpose_file[0].length > 0 && differences.mission_purpose_file[1].length > 0 ) {
-       if (differences.mission_purpose_file[0][0].file.name === differences.mission_purpose_file[1][0].file.name) {
-         delete differences.mission_purpose_file;
-        }
-      }
+    // if (differences.mission_purpose_file) {
+      // if (differences.mission_purpose_file[0].length > 0 && differences.mission_purpose_file[1].length > 0 ) {
+      //  if (differences.mission_purpose_file[0][0].file.name === differences.mission_purpose_file[1][0].file.name) {
+        //  delete differences.mission_purpose_file;
+        // }
+      // }
+    // }
+    if ((differences.planning[0] === '' && differences.planning[1] === null) || (differences.planning[0] === null && differences.planning[1] === '')) {
+      delete differences.planning;
     }
   
     return differences;
@@ -87,7 +94,6 @@ const MissionVal = ({ displayPdf, entity, ef }) => {
   let differencesData = {};
 
   if (isOmModified) {
-    console.log(differences);
     differencesData = {
       "departure": {
         label: "Date et heure du début de mission",
@@ -105,17 +111,17 @@ const MissionVal = ({ displayPdf, entity, ef }) => {
         newValue: getDDMMYYDate(new Date(data.comeback)) + ' à ' + getHHMMTime(new Date(data.comeback)),
       },
       // "science": null,
-      "visa": {
-        label: "Visa",
-        oldValue: differences.visa !== null ? (differences.visa[1] ? 'Visa demandé' : 'Visa non demandé') : '',
-        newValue: data.visa ? 'Oui' : 'Non',
-      },
-      "visa_payment": {
-        label: "Règlement du visa",
+      // "visa": {
+        // label: "Visa",
+        // oldValue: differences.visa !== null ? (differences.visa[1] ? 'Visa demandé' : 'Visa non demandé') : '',
+        // newValue: data.visa ? 'Oui' : 'Non',
+      // },
+      // "visa_payment": {
+        // label: "Règlement du visa",
         // oldValue: differences.visa_payment !== null ? (differences.visa_payment[1] ? 'Oui' : 'Non') : '',
-        oldValue: (differences.visa_payment && differences.visa_payment[1]) === null ? 'Pas de visa demandé ' : (differences.visa_payment[1] === 'user' ? "Avancé par l'agent" : "Payé par Unîmes" ),
-        newValue: data.visa_payment === null ? 'Pas de visa demandé ' : (data.visa_payment === 'user' ? "Avancé par l'agent" : "Payé par Unîmes" ),
-      },
+        // oldValue: (differences.visa_payment && differences.visa_payment[1]) === null ? 'Pas de visa demandé ' : (differences.visa_payment[1] === 'user' ? "Avancé par l'agent" : "Payé par Unîmes" ),
+        // newValue: data.visa_payment === null ? 'Pas de visa demandé ' : (data.visa_payment === 'user' ? "Avancé par l'agent" : "Payé par Unîmes" ),
+      // },
       "planning": {
         label: "Planning de la mission",
         oldValue: differences.planning ? differences.planning[1] : '',
@@ -143,6 +149,11 @@ const MissionVal = ({ displayPdf, entity, ef }) => {
       // ],
     }
   }
+  console.log(differencesArray);
+  // differencesArray.forEach((diff) => {
+    // console.log(diff);
+    // console.log("Ancien.ne ", differencesData[diff[0]])
+  // })
 
   return (
     <>
@@ -186,8 +197,8 @@ const MissionVal = ({ displayPdf, entity, ef }) => {
               {differencesArray.map((diff) => (
                 <InputValueDisplayer
                 key={"new-" + diff[0]}
-                label={differencesData[diff[0]].label + " modifé.e"}
-                value={differencesData[diff[0]].newValue}
+                label={differencesData[diff[0]] !== undefined ? differencesData[diff[0]].label + " modifé.e" : 'NOP'}
+                value={differencesData[diff[0]] !== undefined ? differencesData[diff[0]].newValue : 'NOP'}
                 />
               ))}
             </div>

@@ -10,6 +10,7 @@ const initialState = {
   loader: true,
   signature: null,
   acSignature: null,
+  researchSignature: null,
 };
 
 const agentSlice = createSlice({
@@ -35,13 +36,23 @@ const agentSlice = createSlice({
 
       },
       saveTmpSignature: (state, action) => {
-        state.signature = action.payload;
+        state.signature = action.payload.data;
+
+        if (action.payload.isScience) {
+          state.researchSignature = action.payload.data;
+        }
       },
       fetchTmpAcSignature: () => {
 
       },
       saveTmpAcSignature: (state, action) => {
         state.acSignature = action.payload;
+      },
+      fetchTmpResearchSignature: () => {
+
+      },
+      saveTmpResearchSignature: (state, action) => {
+        state.researchSignature = action.payload;
       },
       fetchTmpUserPhoneMail: () => {},
       saveTmpUserPhoneMail: (state, action) => {
@@ -58,6 +69,8 @@ export const {
   saveTmpSignature,
   fetchTmpAcSignature,
   saveTmpAcSignature,
+  fetchTmpResearchSignature,
+  saveTmpResearchSignature,
   fetchTmpUserPhoneMail,
   saveTmpUserPhoneMail
 

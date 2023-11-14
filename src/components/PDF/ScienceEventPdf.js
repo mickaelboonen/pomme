@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Font, Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 
-import { setValidationDateForPdf } from 'src/selectors/pdfFunctions';
 // Assets
 import Logo from 'src/assets/images/logo.png'
 import RadjhaniFont from 'src/assets/fonts/Rajdhani-Medium.ttf';
 import RadjhaniBoldFont from 'src/assets/fonts/Rajdhani-Bold.ttf';
+import { setValidationDateForPdf, setValidationDate, setExistingValidationDate } from 'src/selectors/pdfFunctions';
 
 
 Font.register({ family: 'Radjhani', src: RadjhaniFont });
@@ -15,7 +15,7 @@ Font.registerHyphenationCallback(word => [word]);
 
 import { styles } from './pdfStyles';
 
-const ScienceEventPdf = ({ data, agent, creationDate }) => {
+const ScienceEventPdf = ({ data, agent, creationDate, signature, gest }) => {
   
   const sciencePaymentArray = [
     {
@@ -35,6 +35,9 @@ const ScienceEventPdf = ({ data, agent, creationDate }) => {
       label: ""
     },
   ];
+
+  const validationDate = signature ? (gest.validation_date ? setExistingValidationDate(gest.validation_date) : setValidationDate()) : null;
+
 
   return (
     <Page size="A4" style={styles.page}>
@@ -70,7 +73,13 @@ const ScienceEventPdf = ({ data, agent, creationDate }) => {
           <Text style={styles.section.text}>Demande de participation à un événement scientifique créée par {agent.lastname.toUpperCase()} {agent.firstname}, le {setValidationDateForPdf(creationDate)}.</Text>
           <Text style={styles.section.text} />
           <Text style={styles.section.text} />
-          <Text style={styles.section.text}>Visa de la Vice-Présidence Recherche :</Text>
+          <Text style={styles.section.text}>Visé par la Vice-Présidence Recherche le {validationDate ? setValidationDateForPdf(validationDate) : '__/__/____'}.</Text>
+          {signature !== '' && (
+            <Image
+              src={signature}
+              style={styles.header.image}
+            />
+          )}
         </View>
       </View>
     </Page>

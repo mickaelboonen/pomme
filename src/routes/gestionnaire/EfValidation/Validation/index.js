@@ -22,7 +22,8 @@ const Validation = ({ data }) => {
   
   const dispatch = useDispatch();
   const loader = useLoaderData();
-  const omId = loader.searchParams.get('id');
+  const efId = loader.searchParams.get('id');
+  const omId = loader.searchParams.get('om');
   
   const {
     omForm: { omLoader, currentOM },
@@ -82,7 +83,7 @@ const Validation = ({ data }) => {
         role: agent.position,
         comments: data.comments === null ? '' : data.comments,
         ef_current_status: 2,
-        next_status: 3
+        ef_next_status: 3
       }
     ];
 
@@ -181,7 +182,7 @@ const Validation = ({ data }) => {
               required="Veuillez renseigner ce champ."
               handler={handleValidation}
             />
-            <HiddenField id="docId" value={omId} register={register} />
+            <HiddenField id="docId" value={efId} register={register} />
             {errors.validation && <p className="form__section-field-error form__section-field-error--open">{errors.validation.message}</p>}
           </div>
           <TextareaField 
@@ -213,6 +214,7 @@ const Validation = ({ data }) => {
               ef={data}
               agent={agent}
               submitFunction={onSubmit}
+              omId={omId}
             />
           )}
         </div>  

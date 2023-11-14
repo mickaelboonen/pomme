@@ -6,6 +6,7 @@ import { Font, Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/
 import Logo from 'src/assets/images/logo.png'
 import RadjhaniFont from 'src/assets/fonts/Rajdhani-Medium.ttf';
 import RadjhaniBoldFont from 'src/assets/fonts/Rajdhani-Bold.ttf';
+import { setValidationDateForPdf, setValidationDate, setExistingValidationDate } from 'src/selectors/pdfFunctions';
 
 
 Font.register({ family: 'Radjhani', src: RadjhaniFont });
@@ -88,9 +89,9 @@ const styles = StyleSheet.create({
   }
 });
 
-const DispensationPdf = ({ data, agent, agentSignature}) => {
+const DispensationPdf = ({ data, signature, gest}) => {
   
-  //Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita cum accusamus dolore, ducimus quibusdam nam vitae. Quos maxime eos magni, iste non optio repudiandae at ipsa repellendus? Obcaecati cupiditate error delectus saepe iste magni vel illum ut. Aliquam error maxime explicabo, quis culpa, quia dolor at, excepturi quisquam laboriosam rem.
+  const validationDate = signature ? (gest.validation_date ? setExistingValidationDate(gest.validation_date) : setValidationDate()) : null;
 
   return (
     <Page size="A4" style={styles.page}>
@@ -126,13 +127,15 @@ const DispensationPdf = ({ data, agent, agentSignature}) => {
         <Text style={styles.section.title} wrap={false}>DÉCISION</Text>
         <Text style={{marginBottom: 10}}>Bon pour accord : </Text>
         <View style={[{ display: 'flex', flexDirection: 'row'}]}>
-          <View style={{border: '1px solid #1a1a1a', width: '50%', height: 150, padding: 5}}>
-            <Text style={{fontSize: 10}}>Nom et signature du directeur de département ou chef de service</Text>
-            {/* <Image source={agentSignature} style={styles.signature} /> */}
-          </View>
-          <View style={{border: '1px solid #1a1a1a', width: '50%', height: 150, padding: 5}}>
-            <Text style={{fontSize: 10}}>Nom et signature de l’ordonnateur ou son représentant</Text>
-
+          <View style={{border: '1px solid #1a1a1a', width: '1000%', height: 150, padding: 5}}>
+          <Text style={{fontSize: 10}}>Validé à Nîmes le {validationDate ? setValidationDateForPdf(validationDate) : '__/__/____'} {gest ? `, par ${gest.name} (${gest.role})` : ''}.</Text>
+          <Text style={{fontSize: 10}}>Signature de l'ordonnateur.rice (Président, DGS, VP) :</Text>
+            {signature !== '' && (
+                <Image
+                  src={signature}
+                  style={styles.header.image}
+                />
+              )}
           </View>
         </View>
       </View>

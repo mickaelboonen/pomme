@@ -22,11 +22,13 @@ import EfPdf from 'src/components/PDF/EfPdf';
 import OmAdvancePdf from 'src/components/PDF/OmAdvancePdf';
 
 import { setValidationDate, setExistingValidationDate} from 'src/selectors/pdfFunctions';
+import VisaComponent from 'src/components/VisaComponent';
 
 // Actions
 import { getSavedFileName } from 'src/selectors/formDataGetters';
 import {  addEfMonitoringPdf,addOmMonitoringPdf } from 'src/reducer/omManager';
 import { getDDMMYYDate } from '../../../selectors/dateFunctions';
+import Amounts from './Amounts';
 
 const Visa = ({ data, user, gest, isOm, ef}) => {
 
@@ -35,7 +37,7 @@ const Visa = ({ data, user, gest, isOm, ef}) => {
     vehicle: { vehicleTypes },
     tmp: { tmpAgent, agentProfessionalAddress, agentPersonalAddress, loader, signature, acSignature}
   } = useSelector((state) => state);
-  console.log("in visa :", gest);
+
   const {
     register,
     watch,
@@ -61,6 +63,30 @@ const needsSignature = ef.management.workflow.indexOf(currentActor) === ef.manag
     ...agentProfessionalAddress,
     ...agentPersonalAddress
   };
+
+  const staticReasons = [
+    {
+      id: "time",
+      label: "Gain de temps",
+    },
+    {
+      id: "no-public-transports",
+      label: "Absence de transport en commun",
+    },
+    {
+      id: "materials-transporting",
+      label: "Obligation de transport de matériel lourd, encombrant, fragile",
+    },
+    {
+      id: "handicap",
+      label: "Handicap",
+    },
+    {
+      id: "carpooling",
+      label: "Transport d'autres missionnaires",
+    },
+  ];
+
   // console.log(data);
   let dataForThePdf = { ...data };
 
@@ -132,12 +158,12 @@ const needsSignature = ef.management.workflow.indexOf(currentActor) === ef.manag
     admin : adminMealsAmount,
     french: frenchMeals,
   };
-
+  console.log(gest);
   return (
     <form className='form'>
       <FormSectionTitle>Viser le document</FormSectionTitle>
       <div className="form__section">
-        <div className="form__section-field">
+        {/* <div className="form__section-field">
           <div className='my-documents__files-buttons'>
             {!isFileTooLong && (
               <button onClick={handleClick} type="button">
@@ -171,7 +197,15 @@ const needsSignature = ef.management.workflow.indexOf(currentActor) === ef.manag
               type="application/pdf"
             />
           </div>
-        )}
+        )} */}
+        <VisaComponent
+          data={data}
+          user={user}
+          watch={watch}
+          gest={gest}
+          isOm={isOm}
+        />
+
         <TextareaField 
           id="comments-field"
           label="Commentaires"
@@ -207,6 +241,8 @@ const needsSignature = ef.management.workflow.indexOf(currentActor) === ef.manag
         )}
         </div>
       )}
+      {gest.position === 'DGS' && <Amounts ef={ef} />}
+      
       <div className="form__section">
         <FormSectionTitle>DÉCISION FINALE</FormSectionTitle>
         <div className="form__section-field">
@@ -235,14 +271,6 @@ const needsSignature = ef.management.workflow.indexOf(currentActor) === ef.manag
           {!loader &&(
             <BlobProvider document={
               <Document>
-                <ValidationMonitoringPdf
-                  om={data}
-                  user={user}
-                  agent={gest}
-                  isGest={false}
-                  gestData={watch()}
-                  isOm={isOm}
-                />
                 <EfPdf
                   om={dataForThePdf.om}
                   data={dataForThePdf}
@@ -292,14 +320,6 @@ const needsSignature = ef.management.workflow.indexOf(currentActor) === ef.manag
           </div>
           <PDFViewer>
             <Document>
-              <ValidationMonitoringPdf
-                om={data}
-                user={user}
-                agent={gest}
-                isGest={false}
-                gestData={watch()}
-                isOm={isOm}
-              />
               <EfPdf
                 om={dataForThePdf.om}
                 data={dataForThePdf}

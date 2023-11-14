@@ -20,12 +20,15 @@ import OmPdf from 'src/components/PDF/OmPdf';
 import OmAdvancePdf from 'src/components/PDF/OmAdvancePdf';
 import InputValueDisplayer from 'src/routes/gestionnaire/DocValidation/InputValueDisplayer';
 
-import { setValidationDate } from 'src/selectors/pdfFunctions';
+import { setValidationDate, setExistingValidationDate } from 'src/selectors/pdfFunctions';
 
 // Actions
 import { addOmMonitoringPdf } from 'src/reducer/omManager';
 import VisaComponent from 'src/components/VisaComponent';
 import FullPdf from 'src/components/PDF/fullPdf';
+import ScienceEventPdf from 'src/components/PDF/ScienceEventPdf';
+import CarAuthorizationPdf from 'src/components/PDF/CarAuthorizationPdf';
+import DispensationPdf from 'src/components/PDF/DispensationPdf';
 
 const AdvanceVisa = ({ data, user, gest, isOm, om}) => {
 
@@ -94,6 +97,31 @@ const AdvanceVisa = ({ data, user, gest, isOm, om}) => {
   const handleSignatureCheckbox = () => {
     clearErrors('signature');
   }
+
+  const staticReasons = [
+    {
+      id: "time",
+      label: "Gain de temps",
+    },
+    {
+      id: "no-public-transports",
+      label: "Absence de transport en commun",
+    },
+    {
+      id: "materials-transporting",
+      label: "Obligation de transport de matériel lourd, encombrant, fragile",
+    },
+    {
+      id: "handicap",
+      label: "Handicap",
+    },
+    {
+      id: "carpooling",
+      label: "Transport d'autres missionnaires",
+    },
+  ];
+
+
   console.log(om.advance);
   const { advance } = om;
   return (
@@ -119,13 +147,13 @@ const AdvanceVisa = ({ data, user, gest, isOm, om}) => {
         <div className='form__section-half'>
           <InputValueDisplayer
             label="Montant de l'avance accordée"
-            value={advance.advance_amount + ' euros.'}
+            value={advance.advance_amount.toString() + ' euros.'}
           />
         </div>
         <div className='form__section-half'>
           <InputValueDisplayer
             label="Montant total estimé de la mission"
-            value={advance.total_amount + ' euros.'}
+            value={advance.total_amount.toString() + ' euros.'}
           />
         </div>
       </div>
@@ -133,13 +161,13 @@ const AdvanceVisa = ({ data, user, gest, isOm, om}) => {
         <div className='form__section-half'>
           <InputValueDisplayer
             label="Nombre de nuits"
-            value={advance.nights_number}
+            value={advance.nights_number.toString()}
           />
         </div>
         <div className='form__section-half'>
           <InputValueDisplayer
             label="Nombre de repas"
-            value={advance.meals_number}
+            value={advance.meals_number.toString()}
           />
         </div>
       </div>
@@ -216,33 +244,46 @@ const AdvanceVisa = ({ data, user, gest, isOm, om}) => {
           {!loader &&(
             <BlobProvider document={
               <Document>
-                <ValidationMonitoringPdf
-                  om={data}
-                  user={user}
-                  agent={gest}
-                  isGest={false}
-                  gestData={watch()}
-                  isOm={isOm}
-                />
-                <OmPdf
-                  countries={countries}
-                  data={om}
+              <OmPdf
+                countries={countries}
+                data={om}
+                agent={agentFullData}
+                vehicleTypes={vehicleTypes}
+                manager={om.management}
+                signature={''}
+              />
+              <OmAdvancePdf
+                data={data.advance}
+                acValidationDate={setValidationDate()}
+                validationDate={''}
+                agent={agentFullData}
+                gest={om.management.workflow.find((actor) => actor.current_status === 3)}
+                acSignature={signature ? signature.link : ''}
+              />
+              {data.transports.authorizations.length > 0 && data.transports.authorizations.map((auth) => (
+                <CarAuthorizationPdf
+                  key={'c-a-' + data.transports.authorizations.indexOf(auth)}
+                  data={auth}
                   agent={agentFullData}
                   vehicleTypes={vehicleTypes}
-                  manager={om.management}
-                  signature={''}
+                  reasons={staticReasons}
                 />
-                {data.advance.advance && (
-                  <OmAdvancePdf
-                    data={data.advance}
-                    acValidationDate={setValidationDate()}
-                    validationDate={''}
-                    agent={agentFullData}
-                    gest={om.management.workflow.find((actor) => actor.current_status === 3)}
-                    acSignature={signature ? signature.link : ''}
-                  />
-                )}
-              </Document>
+              ))}
+              {data.transports.dispensations.length > 0 && data.transports.dispensations.map((disp) => (
+                <DispensationPdf
+                  key={'d-' + data.transports.dispensations.indexOf(disp)}
+                  data={disp}
+                />
+              ))}
+              {data.mission.scientificEvents.length > 0 && data.mission.scientificEvents.map((event) => (
+                <ScienceEventPdf
+                  key={'s-e-' + data.mission.scientificEvents.indexOf(event)}
+                  data={event}
+                  agent={agentFullData}
+                  creationDate={setExistingValidationDate(data.created_at)}
+                />
+              ))}
+            </Document>
             }>
               {({ blob }) => (
                 <>
@@ -274,13 +315,6 @@ const AdvanceVisa = ({ data, user, gest, isOm, om}) => {
             <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer la fenêtre</p>
           </div>
           <PDFViewer>
-            <FullPdf
-            data={data}
-            user={user}
-            gest={gest}
-            isOm={isOm}
-            om={om}
-            />
             <Document>
               <OmPdf
                 countries={countries}
@@ -290,7 +324,6 @@ const AdvanceVisa = ({ data, user, gest, isOm, om}) => {
                 manager={om.management}
                 signature={''}
               />
-
               <OmAdvancePdf
                 data={data.advance}
                 acValidationDate={setValidationDate()}
@@ -299,6 +332,29 @@ const AdvanceVisa = ({ data, user, gest, isOm, om}) => {
                 gest={om.management.workflow.find((actor) => actor.current_status === 3)}
                 acSignature={signature ? signature.link : ''}
               />
+              {data.transports.authorizations.length > 0 && data.transports.authorizations.map((auth) => (
+                <CarAuthorizationPdf
+                  key={'c-a-' + data.transports.authorizations.indexOf(auth)}
+                  data={auth}
+                  agent={agentFullData}
+                  vehicleTypes={vehicleTypes}
+                  reasons={staticReasons}
+                />
+              ))}
+              {data.transports.dispensations.length > 0 && data.transports.dispensations.map((disp) => (
+                <DispensationPdf
+                  key={'d-' + data.transports.dispensations.indexOf(disp)}
+                  data={disp}
+                />
+              ))}
+              {data.mission.scientificEvents.length > 0 && data.mission.scientificEvents.map((event) => (
+                <ScienceEventPdf
+                  key={'s-e-' + data.mission.scientificEvents.indexOf(event)}
+                  data={event}
+                  agent={agentFullData}
+                  creationDate={setExistingValidationDate(data.created_at)}
+                />
+              ))}
             </Document>
           </PDFViewer>
         </div>

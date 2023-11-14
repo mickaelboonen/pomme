@@ -338,7 +338,7 @@ const Mission = ({ step, isEfForm }) => {
             label="Est-ce que c'est un événement scientifique ?"
           />
         )}
-        {isMissionAScienceEvent && (
+        {(isMissionAScienceEvent && !isEfForm) && (
           <div className="form__section-container" id="upper-class-request">
             <h4 className="form__section-container-title">PARTICIPATION À UN ÉVÉNEMENT SCIENTIFIQUE</h4>
             <div className="form__section-container-button">

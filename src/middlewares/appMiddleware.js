@@ -15,7 +15,7 @@ import CasClient, { constant } from "react-cas-client";
 import { setLoader } from '../reducer/omForm';
 import { fetchUserData, setApiResponse } from '../reducer/app';
 import { saveEf } from 'src/reducer/ef';
-import { saveTmpUserData, saveTmpSignature, saveTmpAcSignature } from 'src/reducer/tmpReducer';
+import { saveTmpUserData, saveTmpSignature, saveTmpAcSignature,saveTmpResearchSignature } from 'src/reducer/tmpReducer';
 import { saveTmpUserPhoneMail } from '../reducer/tmpReducer';
 
 
@@ -37,11 +37,11 @@ const appMiddleware = (store) => (next) => (action) => {
   // setTokenOnApi(token);
 
   switch (action.type) {
-    case 'tmp/fetchTmpSignature':
+    case 'tmp/fetchTmpResearchSignature':
         api.post("/api/agent/signature", action.payload)
         .then((response) => {
           
-          store.dispatch(saveTmpSignature(response.data))
+          store.dispatch(saveTmpResearchSignature(response.data))
         })
         .catch((error) => {
           // console.log(error);
@@ -50,18 +50,31 @@ const appMiddleware = (store) => (next) => (action) => {
           }
         });
       break;
-      case 'tmp/fetchTmpAcSignature':
-        api.post("/api/agent/signature", action.payload)
-        .then((response) => {
-          
-          store.dispatch(saveTmpAcSignature(response.data))
-        })
-        .catch((error) => {
-          // console.log(error);
-          if (error.response.status !== 404) {
-            store.dispatch(setApiResponse(error));
-          }
-        });
+    case 'tmp/fetchTmpSignature':
+      api.post("/api/agent/signature", action.payload)
+      .then((response) => {
+        
+        store.dispatch(saveTmpSignature({data : response.data, isScience : action.payload.isScience}))
+      })
+      .catch((error) => {
+        // console.log(error);
+        if (error.response.status !== 404) {
+          store.dispatch(setApiResponse(error));
+        }
+      });
+      break;
+    case 'tmp/fetchTmpAcSignature':
+      api.post("/api/agent/signature", action.payload)
+      .then((response) => {
+        
+        store.dispatch(saveTmpAcSignature(response.data))
+      })
+      .catch((error) => {
+        // console.log(error);
+        if (error.response.status !== 404) {
+          store.dispatch(setApiResponse(error));
+        }
+      });
       break;
     case 'app/getDocument':
       api.get(`/api/perm-file/${action.payload.type}/${action.payload.id}`)

@@ -36,7 +36,7 @@ const OmVisa = ({ data, user, gest, isOm, om}) => {
   const dispatch = useDispatch();
   const { app: { countries },
     vehicle: { vehicleTypes },
-    tmp: { tmpAgent, agentProfessionalAddress, agentPersonalAddress, loader, signature, acSignature}
+    tmp: { tmpAgent, agentProfessionalAddress, agentPersonalAddress, loader, signature, acSignature, researchSignature}
   } = useSelector((state) => state);
   // console.log(signature);
   const {
@@ -161,7 +161,7 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
     clearErrors('signature');
   }
 
-  // console.log(om.mission)
+
   return (
     <form className='form'>
       <FormSectionTitle>Viser les documents</FormSectionTitle>
@@ -342,12 +342,18 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
                     agent={agentFullData}
                     vehicleTypes={vehicleTypes}
                     reasons={staticReasons}
+                    signature={signature ? signature.link : ''}
+                    gest={om.management.workflow.find((actor) => om.management.workflow.indexOf(actor) === om.management.workflow.length - 1 && actor.agent === user)}
+                
                   />
                 ))}
                 {data.transports.dispensations.length > 0 && data.transports.dispensations.map((disp) => (
                   <DispensationPdf
                     key={'d-' + data.transports.dispensations.indexOf(disp)}
                     data={disp}
+                    signature={signature ? signature.link : ''}
+                    gest={om.management.workflow.find((actor) => om.management.workflow.indexOf(actor) === om.management.workflow.length - 1 && actor.agent === user)}
+                
                   />
                 ))}
                 {data.mission.scientificEvents.length > 0 && data.mission.scientificEvents.map((event) => (
@@ -356,6 +362,8 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
                     data={event}
                     agent={agentFullData}
                     creationDate={setExistingValidationDate(data.created_at)}
+                    signature={researchSignature ? researchSignature.link : ''}
+                    gest={om.management.workflow.find((actor) => actor.current_status === 7)}
                   />
                 ))}
               </Document>
@@ -402,14 +410,6 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
           </div>
           <PDFViewer>
             <Document>
-              {/* <ValidationMonitoringPdf
-                // om={data}
-                // user={user}
-                // agent={gest}
-                // isGest={false}
-                // gestData={watch()}
-                // isOm={isOm}
-              // /> */}
               <OmPdf
                 countries={countries}
                 data={om}
@@ -436,12 +436,18 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
                   agent={agentFullData}
                   vehicleTypes={vehicleTypes}
                   reasons={staticReasons}
+                  signature={signature ? signature.link : ''}
+                  gest={om.management.workflow.find((actor) => om.management.workflow.indexOf(actor) === om.management.workflow.length - 1 && actor.agent === user)}
+
                 />
               ))}
               {data.transports.dispensations.length > 0 && data.transports.dispensations.map((disp) => (
                 <DispensationPdf
                   key={'d-' + data.transports.dispensations.indexOf(disp)}
                   data={disp}
+                  signature={signature ? signature.link : ''}
+                  gest={om.management.workflow.find((actor) => om.management.workflow.indexOf(actor) === om.management.workflow.length - 1 && actor.agent === user)}
+
                 />
               ))}
               {data.mission.scientificEvents.length > 0 && data.mission.scientificEvents.map((event) => (
@@ -450,6 +456,9 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
                   data={event}
                   agent={agentFullData}
                   creationDate={setExistingValidationDate(data.created_at)}
+                  signature={researchSignature ? researchSignature.link : ''}
+                  gest={om.management.workflow.find((actor) => actor.current_status === 7)}
+
                 />
               ))}
             </Document>

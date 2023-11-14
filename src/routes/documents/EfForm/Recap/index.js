@@ -90,7 +90,7 @@ const Recap = () => {
       setIsPdfVisible(true);
     }
   }
-  
+  console.log(oms, omId);
   return (
     <>
       <div className="form">  

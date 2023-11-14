@@ -18,7 +18,7 @@ import { getMaxMealsAndNights } from 'src/selectors/formValidationsFunctions';
 Font.register({ family: 'Radjhani', src: RadjhaniFont });
 
 import { styles } from './pdfStyles';
-import { setValidationDateForPdf, setValidationDate } from '../../selectors/pdfFunctions';
+import { setValidationDateForPdf, setValidationDate, setExistingValidationDate } from '../../selectors/pdfFunctions';
 import { useSelector } from 'react-redux';
 
 const OmPdf = ({
@@ -122,8 +122,7 @@ const OmPdf = ({
     },
   ]
 
-  // console.log(data.management.workflow);
-  const creationDate = setValidationDate(data.created_at);
+  const creationDate = setExistingValidationDate(data.created_at);
   const validationDate = signature ? setValidationDate() : null;
   return (
     // <Document>

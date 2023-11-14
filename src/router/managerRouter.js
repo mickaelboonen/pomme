@@ -18,7 +18,7 @@ import { useSelector } from "react-redux";
 import { getAgentPreferences } from 'src/reducer/agent';
 import { setManagerLoader } from "../reducer/omManager";
 import { fetchCountries, getDocument } from "../reducer/app";
-import { fetchTmpSignature, fetchTmpUserData, fetchTmpAcSignature } from "../reducer/tmpReducer";
+import { fetchTmpSignature, fetchTmpUserData, fetchTmpAcSignature, fetchTmpResearchSignature } from "../reducer/tmpReducer";
 
 export default {
   path: 'gestionnaire/',
@@ -86,7 +86,7 @@ export default {
             const id = url.searchParams.get("id");
             const omId = url.searchParams.get("om");
             
-            const { omManager: { pendingDocs }, agent: { agent, user}, app: { countries } } = store.getState((state) => state);
+            const { omManager: { pendingDocs }, agent: { agent, user }, app: { countries } } = store.getState((state) => state);
 
             // if (pendingDocs.length === 0) {
               // store.dispatch(setLoader(true));
@@ -103,7 +103,13 @@ export default {
             }
             
             if (step === '5') {
-                // store.dispatch(setLoader(true));
+              console.log(pendingDocs, id);
+              const currentEf = pendingDocs.find((ef) => ef.id === Number(id));
+              console.log(currentEf);
+              store.dispatch(fetchTmpUserData({id: currentEf.missioner}))
+  
+              store.dispatch(setLoader(true));
+
                 store.dispatch(fetchValidationChannels());
             }
             
@@ -145,14 +151,20 @@ export default {
             // store.dispatch(fetchTmpSignature({id: user}));
 
             if (pendingDocs.length > 0) {
-              const { missioner, advance } = pendingDocs.find((om) => om.id === id);
+              const { missioner, advance, mission, management } = pendingDocs.find((om) => om.id === id);
 
               // console.log('om in router : ', currentOM);
               if (agent.roles.indexOf('MANAGER') > -1) {
                 // console.log('here');
-                store.dispatch(fetchTmpSignature({id: user}));
+                const currentActor = management.workflow.find((actor) => actor.agent === user);
+                if (management.workflow.indexOf(currentActor) === management.workflow.length -1) {
+                  store.dispatch(fetchTmpSignature({id: user}));
+                }
                 if (advance.advance) {
                   store.dispatch(fetchTmpAcSignature({id: process.env.AC_CPT_LOGIN}));
+                }
+                if (mission.scientificEvents.length > 0) {
+                  store.dispatch(fetchTmpResearchSignature({isd: process.env.RESEARCH_CPT_LOGIN}));
                 }
               }
               store.dispatch(fetchTmpUserData({id: missioner}))
@@ -167,13 +179,16 @@ export default {
             const id = Number(url.searchParams.get("id"));
     
             const { agent: { user, agent }, omManager: { pendingDocs }} = store.getState();
-            const { missioner } = pendingDocs.find((om) => om.id === id);
+            const doc = pendingDocs.find((om) => om.id === id);
 
             if (agent.roles.indexOf('MANAGER') > -1) {
               store.dispatch(fetchTmpSignature({id: user}));
             }
-            store.dispatch(fetchTmpUserData({id: missioner}))
-            return url},
+            // TODO : redirect
+            store.dispatch(fetchTmpUserData({id: doc.missioner}))
+            return url;
+  
+          }
         }
       ],
     },
