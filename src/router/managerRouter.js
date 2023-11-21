@@ -106,11 +106,11 @@ export default {
               console.log(pendingDocs, id);
               const currentEf = pendingDocs.find((ef) => ef.id === Number(id));
               console.log(currentEf);
-              store.dispatch(fetchTmpUserData({id: currentEf.missioner}))
-  
-              store.dispatch(setLoader(true));
-
-                store.dispatch(fetchValidationChannels());
+              if (currentEf) {
+                store.dispatch(fetchTmpUserData({id: currentEf.missioner}))
+                store.dispatch(setLoader(true));
+              }
+              store.dispatch(fetchValidationChannels());
             }
             
           return url;  
@@ -164,7 +164,11 @@ export default {
                   store.dispatch(fetchTmpAcSignature({id: process.env.AC_CPT_LOGIN}));
                 }
                 if (mission.scientificEvents.length > 0) {
-                  store.dispatch(fetchTmpResearchSignature({isd: process.env.RESEARCH_CPT_LOGIN}));
+                  const researchVP = management.workflow.find((actor) => actor.agent === process.env.RESEARCH_CPT_LOGIN);
+
+                  if (management.workflow.indexOf(currentActor) >= management.workflow.indexOf(researchVP)) {
+                    store.dispatch(fetchTmpResearchSignature({id: process.env.RESEARCH_CPT_LOGIN}));
+                  }
                 }
               }
               store.dispatch(fetchTmpUserData({id: missioner}))
@@ -185,7 +189,9 @@ export default {
               store.dispatch(fetchTmpSignature({id: user}));
             }
             // TODO : redirect
-            store.dispatch(fetchTmpUserData({id: doc.missioner}))
+            if (doc) {
+              store.dispatch(fetchTmpUserData({id: doc.missioner}))
+            }
             return url;
   
           }

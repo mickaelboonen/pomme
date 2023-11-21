@@ -51,7 +51,11 @@ const MissionVal = ({ displayPdf, entity, ef }) => {
         // }
       // }
     // }
-    if ((differences.planning[0] === '' && differences.planning[1] === null) || (differences.planning[0] === null && differences.planning[1] === '')) {
+    if (differences.planning
+      && (
+        (differences.planning[0] === '' && differences.planning[1] === null)
+        || (differences.planning[0] === null && differences.planning[1] === '')
+      )) {
       delete differences.planning;
     }
   

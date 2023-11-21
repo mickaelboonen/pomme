@@ -218,7 +218,11 @@ const Tickets2 = () => {
               />
 
               <p className='form__section-field-label'>Demande de billets (à destination de l'Agence)</p>
-              <TextEditor clearErrors={clearErrors} error={errors} />
+              <TextEditor
+                clearErrors={clearErrors}
+                placeholder="Veuillez renseigner votre demande de billets à destination de l'Agence. Veuillez effacer les informations inutiles sur le modèle de billets."
+                formField="tickets"
+              />
               <p className='file-manager__message'>Dans l'éventualité où les billets de train en première classe seraient moins chers que ceux de la seconde classe, merci de privilégier les billets de la première classe sans tenir compte de la classe renseignée dans les modalités de la mission. Une demande de dérogation sera générée automatiquement lors de la validation de la commande.</p>
               {errors.tickets && <p className='form__section-field-error form__section-field-error--open' id='tickets-message'>{errors.tickets.message}</p>}
 

@@ -92,7 +92,7 @@ const OMForm = () => {
               doc={currentOM}
             >
                 <div className="form-layout__data">
-                  {step === 1 && <Mission entity="OmMission" displayPdf={displayPdf} data={currentOM.mission} />}
+                  {step === 1 && <Mission entity="OmMission" displayPdf={displayPdf} data={currentOM.mission} expenses={currentOM.expenses} />}
                   {step === 2 && <Transports entity="OmTransports" displayPdf={displayPdf} data={currentOM.transports} />}
                   {step === 3 && <Accomodations data={currentOM.accomodations} />}
                   {step === 4 && <Advance entity="OmAdvance" displayPdf={displayPdf} data={currentOM.advance} />}

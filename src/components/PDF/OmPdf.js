@@ -5,6 +5,7 @@ import { PDFDocument, StandardFonts, PDFPage } from 'pdf-lib';
 
 import Test from 'src/assets/docs/old-pdf/ef.pdf'
 
+import * as DOMPurify from 'dompurify';
 // Assets
 import Logo from 'src/assets/images/logo.png'
 import RadjhaniFont from 'src/assets/fonts/Rajdhani-Medium.ttf';
@@ -122,6 +123,12 @@ const OmPdf = ({
     },
   ]
 
+  let planningArray = []
+  if (mission.planning) {
+    planningArray = mission.planning.split('</p><p>');
+    planningArray = planningArray.map((part) => DOMPurify.sanitize(part, { ALLOWED_TAGS: [] }));
+  }
+
   const creationDate = setExistingValidationDate(data.created_at);
   const validationDate = signature ? setValidationDate() : null;
   return (
@@ -175,7 +182,7 @@ const OmPdf = ({
             <Text style={styles.section.text}>Adresse administrative : {agent.addressPro} {agent.address2Pro} {agent.postCodePro} {agent.cityPro}</Text>
           </View>
         </View>
-        <View style={styles.section}>
+        <View style={styles.section} wrap={false}>
           <Text style={styles.section.title} wrap={false}>MISSION</Text>
           <Text style={styles.section.text}>Motif de la mission : {mission.mission_purpose}</Text>
           {mission.region === 'dom-tom' && (
@@ -203,7 +210,9 @@ const OmPdf = ({
             {mission.planning && (
               <>
                 <Text style={[styles.section.text, {marginTop: '8'}]}>PLANNING DE LA MISSION</Text>
-                <Text style={[styles.section.text, {paddingLeft: '10'}]}>{mission.planning}</Text>
+                {planningArray.map((line) => (
+                  <Text key={line} style={[styles.section.text, {paddingLeft: '10'}]}>{line}</Text>
+                ))}
               </>
             )}
             {/* <View style={styles.separator} /> */}

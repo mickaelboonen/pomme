@@ -15,6 +15,7 @@ import {
   updateMission,
   createScientificEvent
 } from 'src/reducer/omForm';
+import { saveTmpSignature } from 'src/reducer/tmpReducer';
 
 fileApi.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 fileApi.defaults.headers['Content-Type'] = 'multipart/form-data';
@@ -537,11 +538,15 @@ const omMiddleware = (store) => (next) => (action) => {
         
       break;
     case 'other-documents/addPermFile': {
-      const { type } = action.payload;
+      const { type, onUserPage } = action.payload;
       fileApi.post(`/api/file/perm/add/${type}`, action.payload)
       .then((response) => {
 
         store.dispatch(toggleDocModal({ action: '', type: '', data: response.data}));
+        if (!onUserPage) {
+          store.dispatch(saveTmpSignature(response))
+        }
+
       })
       .catch((error) => {
         store.dispatch(setApiResponse(error));
@@ -559,11 +564,15 @@ const omMiddleware = (store) => (next) => (action) => {
       break;
     // TODO -------------------------------------------------------
     case 'other-documents/editPermFile':{
-      const { id } = action.payload;
+      const { id, onUserPage } = action.payload;
       
       fileApi.post(`/api/file/perm/update/${id}`, action.payload)
         .then((response) => {
           store.dispatch(toggleDocModal({ action: '', type: ''}));
+          if (!onUserPage) {
+            store.dispatch(saveTmpSignature(response))
+          }
+  
         })
         .catch((error) => {
           store.dispatch(setApiResponse(error));

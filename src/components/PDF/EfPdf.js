@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Font, Document, Page, Text, View, Image } from '@react-pdf/renderer';
-import { floatMultiplication, floatAddition, OTHER_MEALS_AMOUNT, ADMIN_MEALS_AMOUNT } from 'src/selectors/mathFunctions';
+import { floatMultiplication, floatAddition, floatSubtraction, OTHER_MEALS_AMOUNT, ADMIN_MEALS_AMOUNT } from 'src/selectors/mathFunctions';
 
 // Assets
 import Logo from 'src/assets/images/logo.png'
@@ -122,6 +122,7 @@ const EfPdf = ({ data, agent, signature, country, om, gest}) => {
   const othersExpensesAmount = floatAddition([transports.visa ?? 0, accomodations.event ?? 0]);
 
   const totalAmount = floatAddition([totalMeals, othersExpensesAmount, totalTransportsExpenses, accomodations.hotel ?? 0])
+  const totalMinusAdvance = floatSubtraction([totalAmount, advance.advance_amount]);
 
   const validationDate = signature ? setValidationDate() : null;
   // console.log("gest = ", gest);
@@ -251,7 +252,7 @@ const EfPdf = ({ data, agent, signature, country, om, gest}) => {
         <Text style={styles.section.text}>Autres : {othersExpensesAmount} euros.</Text>
         {advance.advance && <Text style={styles.section.text}>RAPPEL D'AVANCE : {advance.advance_amount} euros.</Text>}
         {/* <Text style={styles.section.text}>Total général en chiffres : {totalAmount} euros.</Text> */}
-        <Text style={styles.section.text}>Total général en chiffres, avance déduite : {totalAmount - advance.advance_amount} euros.</Text>
+        <Text style={styles.section.text}>Total général en chiffres{advance.advance ? ', avance déduite' : ''} : {totalMinusAdvance} euros.</Text>
       </View>
     </View>
     <View style={styles.section} wrap={false}>

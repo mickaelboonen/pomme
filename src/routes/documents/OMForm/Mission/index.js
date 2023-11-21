@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { useLoaderData, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
+import * as DOMPurify from 'dompurify';
 import '../style.scss';
 
 // Components
@@ -169,6 +169,18 @@ const Mission = ({ step, isEfForm }) => {
       delete data.comebackHour;
     }
 
+    if (data.addresses.length > 1) {
+      const planning = document.querySelector('.ql-editor').innerHTML;
+      let planningWithTags = planning.replaceAll('&lt;', '<').replaceAll('&gt;', '>');
+  
+      const planningWithAllowedTags = DOMPurify.sanitize(planningWithTags, {
+        ALLOWED_TAGS: ['p', 'br', 'strong', 'em'],
+      });
+  
+      data.planning = planningWithAllowedTags;
+  
+    }
+
     if (isEfForm) {
       if (!data.modificationSwitch) {
         
@@ -257,14 +269,18 @@ const Mission = ({ step, isEfForm }) => {
 
   const [region , modificationSwitch] = watch(['region',  'modificationSwitch' ]);
 
-  const [isMissionAScienceEvent, setIsMissionAScienceEvent] = useState(currentOM.type === 'research' || currentOM.type === 'admin-ed' || currentOM.type === 'admin-cd' );
+  const [isMissionAScienceEvent, setIsMissionAScienceEvent] = useState(false);
   const [isVisaNeeded, setIsVisaNeeded] = useState(defaultValues.visa);
 
   useEffect(() => {
-    if (region === 'étranger') {
+    if (defaultValues.planning !== null) {
+      const planning = document.querySelector('.ql-editor');
+      if (planning) {
+        planning.innerHTML = defaultValues.planning;  
 
+      }
     }
-  }, [region])
+  }, [])
 
   const handleVisa = (event) => {
     const { id } = event.target;
@@ -309,6 +325,16 @@ const Mission = ({ step, isEfForm }) => {
         errorMessage = 'Vous avez des erreurs aux adresses numéros : ';
         errorMessage += addressesNumberArray.toString();
       }
+    }
+    return errorMessage;
+  }
+  const setGlobalErrorMessage = (errors) => {
+    
+    const errorsArray = Object.getOwnPropertyNames(errors);
+    let errorMessage = '';
+    
+    if (errorsArray.length > 0) {
+      errorMessage = "Le formulaire contient des erreurs. Veuillez les corriger avant de valider à nouveau l'étape.";
     }
     return errorMessage;
   }
@@ -469,6 +495,7 @@ const Mission = ({ step, isEfForm }) => {
             addressType="de la mission"
             register={register}
             errors={errors}
+            clearErrors={clearErrors}
             watch={watch}
             dispatch={dispatch}
             errorMessages={errorMessages}
@@ -592,6 +619,7 @@ const Mission = ({ step, isEfForm }) => {
         />
       )}
       {setAddressesErrors(errors) !== '' && <p className="form__section-field-error form__section-field-error--open">{setAddressesErrors(errors)}</p>}
+      {setGlobalErrorMessage(errors) !== '' && <p className="form__section-field-error form__section-field-error--open">{setGlobalErrorMessage(errors)}</p>}
       <Buttons
         step={step}
         id={docId}

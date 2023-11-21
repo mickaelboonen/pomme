@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 
 import './style.scss';
 
@@ -68,7 +68,7 @@ const EfValidation = () => {
   const toggleViewer = () => {
     setDocToShow('')
   }
-  
+  console.log(pendingDocs);
   return (
     <>
       <ThreadAsTabs step={step} tabs={efSteps} urlData={loaderData} />
@@ -76,12 +76,12 @@ const EfValidation = () => {
         <div className="form-page__title">
           <PageTitle>{currentEf !== undefined ? currentEf.name : 'Document validé'}</PageTitle>
         </div>
-        {(currentEf === undefined  || loader) && (
+        {((currentEf === undefined  || loader) && pendingDocs.length > 0)  && (
           <div className="form-page__container">
             <LoaderCircle />
           </div>
         )}
-        {(step < 5 && !loader )&& (
+        {(step < 5 && !loader && pendingDocs.length > 0) && (
           <div className="form-page__container">
             <FormLayout
               step={step}
@@ -105,6 +105,7 @@ const EfValidation = () => {
             {loader && <p>Données en cours de chargement</p>}
           </div>
         )}
+        {pendingDocs.length === 0 && <Link to={`/gestionnaire/${encodeURIComponent('états-de-frais-à-signer')}`}>Veuillez retourner sur le menu des états de frais</Link>}
       </div>
     </>
   );

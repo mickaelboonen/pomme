@@ -4,15 +4,15 @@ import React, { useEffect, useRef } from 'react';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 
-const TextEditor = ({ clearErrors, error }) => {
+const TextEditor = ({ clearErrors, placeholder, formField }) => {
   const editorRef = useRef(null);
 
   const handleTextChange = () => {
     const htmlContent = getHTMLContent();
-    const errorMessageElement = document.getElementById('tickets-message');
+    const errorMessageElement = document.getElementById(formField + '-message');
 
     if ((htmlContent !== '<p><br></p>' || htmlContent !== '<p><br></p>') && errorMessageElement) {
-      clearErrors('tickets');
+      clearErrors(formField);
     }
   };
 
@@ -29,7 +29,7 @@ const TextEditor = ({ clearErrors, error }) => {
           [{ 'color': [] }],        
         ]
       },
-      placeholder: "Veuillez renseigner votre demande de billets à destination de l'Agence. Veuillez effacer les informations inutiles sur le modèle de billets.",
+      placeholder: placeholder,
       theme: 'snow'  // or 'bubble'
     });
 

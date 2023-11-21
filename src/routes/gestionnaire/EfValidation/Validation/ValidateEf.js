@@ -189,9 +189,9 @@ const ValidateEf = ({
               <button style={{margin: 'auto'}}type="button" onClick={() => { const data = watch(); data.file = file; submitFunction(data)}}>
                 Valider la demande
               </button>
-              <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
-                Visualiser <br /> le document
-              </button>
+              {/* <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}> */}
+                {/* Visualiser <br /> le document */}
+              {/* </button> */}
             </div>
           );
         }}

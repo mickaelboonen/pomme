@@ -93,7 +93,7 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
   const submitFunction = (data) => {
  // console.log("I AM HERE");
     let errorCount = 0;
-    console.log(data, needsSignature);
+    // console.log(data, needsSignature);
     // return;
     if (needsSignature) {
       if (data.savedSignature) {
@@ -373,9 +373,9 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
                   <button type="button" onClick={() => { const data = watch(); data.file = new File([blob], data.name, {type: 'pdf'}); submitFunction(data);}}>
                     Valider le document
                   </button>
-                  <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
-                    VOIR
-                  </button>
+                  {/* <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}> */}
+                    {/* VOIR */}
+                  {/* </button> */}
 
                   {/* {gest.roles.indexOf('MANAGER') && (
                     <>

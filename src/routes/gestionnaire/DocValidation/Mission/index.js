@@ -19,8 +19,9 @@ import { addAllAddressesFields } from 'src/selectors/keyObjectService';
 import { getDDMMYYDate, getHHMMTime } from 'src/selectors/dateFunctions';
 import FileHandler from '../FileHandler';
 import InputValueDisplayer from '../InputValueDisplayer';
+import InputHtmlDisplayer from '../../../../components/InputHtmlDisplayer';
 
-const MissionVal = ({ displayPdf, data, entity }) => {
+const MissionVal = ({ displayPdf, data, entity, expenses }) => {
   
   const loader = useLoaderData();
   
@@ -44,7 +45,6 @@ const MissionVal = ({ displayPdf, data, entity }) => {
   }
   
   const addresses = data.addresses.map((currentAddress) => {
-    console.log(countries);
     const { address, address2, postCode, city, countryCode } = currentAddress;
     let combinedAddress = '';
     combinedAddress += setAddressPart(address);
@@ -62,6 +62,13 @@ const MissionVal = ({ displayPdf, data, entity }) => {
 
   return (
     <>
+      <div className="form__section">
+        <FormSectionTitle>Dépenses de la mission</FormSectionTitle>
+        <InputValueDisplayer
+          label=""
+          value={expenses ? 'Mission avec frais' : 'Mission sans frais'}
+        />
+      </div>
       <div className="form__section">
         <FormSectionTitle>Raison de la mission</FormSectionTitle>
 
@@ -194,9 +201,10 @@ const MissionVal = ({ displayPdf, data, entity }) => {
           value={data.region}
         />
         {data.planning && (
-          <InputValueDisplayer
+          <InputHtmlDisplayer
             label="Planning de la mission"
             value={data.planning}
+            formField={'planning'}
           />
         )}
         { data.region !== 'métropole' && (

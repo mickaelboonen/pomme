@@ -7,8 +7,9 @@ import ButtonElement from 'src/components/Fields/ButtonElement';
 import TextareaField from 'src/components/Fields/TextareaField';
 
 import { deleteAddress } from 'src/reducer/omForm';
+import TextEditor from '../TextEditor';
 
-const Address2 = ({ countries, watch, data, register, errors, disabled, errorMessages, dispatch }) => {  
+const Address2 = ({ countries, watch, data, clearErrors, register, errors, disabled, errorMessages, dispatch }) => {  
   
   const numberAddressesArray = [];
   for(let i = 1; i <= data.length; i++) {
@@ -62,14 +63,23 @@ const Address2 = ({ countries, watch, data, register, errors, disabled, errorMes
       </div>
       {addressNumberArray.length > 1 && (
         <div className='form__section-planning'>
-          <TextareaField
+          {/* <TextareaField
             id="planning-field"
             label="Explications du planning des missions"
             formField="planning"
             register={register}
             placeholder="Veuillez indiquer le déroulé de votre mission, les dates correspondant aux différentes destinations, les jours non soumis à un remboursement (jours 'off' entre deux destinations, extension de mission pour raison personnelle, etc... "
             error={errors.planning}
+          /> */}
+          <p className='form__section-field-label'>Explications du planning des missions</p>
+
+          <TextEditor
+            placeholder="Veuillez indiquer le déroulé de votre mission, les dates correspondant aux différentes destinations, les jours non soumis à un remboursement (jours 'off' entre deux destinations, extension de mission pour raison personnelle, etc...) "
+            clearErrors={clearErrors}
+            formField={"planning"}
           />
+          {errors.planning && <p className='form__section-field-error form__section-field-error--open' id='planning-message'>{errors.planning.message}</p>}
+
         </div>
       )}
       <div className="form__section-field-buttons" style={{marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>

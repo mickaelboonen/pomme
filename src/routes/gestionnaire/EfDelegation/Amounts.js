@@ -28,22 +28,21 @@ import VisaComponent from 'src/components/VisaComponent';
 import { getSavedFileName } from 'src/selectors/formDataGetters';
 import {  addEfMonitoringPdf,addOmMonitoringPdf } from 'src/reducer/omManager';
 import { getDDMMYYDate } from '../../../selectors/dateFunctions';
+import { floatSubtraction } from '../../../selectors/mathFunctions';
 
 
 const Amounts = ({ef}) => {
-  console.log(ef);
 
 
   const { transports, accomodations } = ef;
   const { advance } = ef.om;
-
     
 
   let transportsFields = Object.entries(transports).filter((transport) => (!transport[0].includes('_files') && transport[0] !== 'km' && transport[0] !== 'horsepower' ) && transport[1]);
   transportsFields = transportsFields.filter((transport) => transport[0] !== 'id' && transport[0] !== 'status');
 
   const transportsAmountsArray = transportsFields.map((t) => t[1]);
-
+  // console.log(transportsAmountsArray);
   const totalTransportsExpenses = floatAddition(transportsAmountsArray);
 
 
@@ -56,38 +55,60 @@ const Amounts = ({ef}) => {
   const totalMeals = floatAddition([adminMealsAmount, frenchMeals, overseasMeals]);
   const othersExpensesAmount = floatAddition([transports.visa ?? 0, accomodations.event ?? 0]);
 
-  const totalAmount = floatAddition([totalMeals, othersExpensesAmount, totalTransportsExpenses, accomodations.hotel ?? 0])
-
-  console.log(totalMeals, othersExpensesAmount, totalTransportsExpenses, advance.advance_amount, totalAmount);
+  const totalAmount = floatAddition([totalMeals, othersExpensesAmount, totalTransportsExpenses, accomodations.hotel ?? 0]);
+  const totalMinusAdvance = floatSubtraction([totalAmount, advance.advance_amount]);
 
   return (
   <div className="form__section">
-    <FormSectionTitle>AMOUNTS</FormSectionTitle>
-    <div className="form__section-field">
-    <InputValueDisplayer
-          label="Montant total repas"
-          value={totalMeals + ' euros'}
-        />
-        <InputValueDisplayer
-          label="Montant total nuités"
-          value={accomodations.hotel + ' euros'}
-        />
-        <InputValueDisplayer
-          label="Total autres"
-          value={othersExpensesAmount + ' euros'}
-        />
-        <InputValueDisplayer
-          label="Montant total transports"
-          value={totalTransportsExpenses + ' euros'}
-        />
-        <InputValueDisplayer
-          label="RAPPEL D'AVANCE"
-          value={advance.advance_amount + ' euros'}
-        />
-        <InputValueDisplayer
-          label="Montant total généré en chiffres"
-          value={totalAmount + ' euros'}
-        />
+    <FormSectionTitle>TOTAUX DE LA MISSION</FormSectionTitle>
+
+    <div className='form__section form__section--documents'>
+        <div className='form__section-half'>
+          <InputValueDisplayer
+            label="Montant total repas"
+            value={totalMeals + ' euros'}
+          />
+        </div>
+        <div className='form__section-half'>
+          <InputValueDisplayer
+            label="Montant total nuités"
+            value={accomodations.hotel + ' euros'}
+          />
+        </div>
+      </div>
+      <div className='form__section form__section--documents'>
+        <div className='form__section-half'>
+          <InputValueDisplayer
+            label="Montant total transports"
+            value={totalTransportsExpenses + ' euros'}
+          />
+        </div>
+        <div className='form__section-half'>
+          <InputValueDisplayer
+            label="Total autres"
+            value={othersExpensesAmount + ' euros'}
+          />
+        </div>
+      </div>
+      <div className="form__section-field">
+        {advance.advance && (
+          <InputValueDisplayer
+            label="RAPPEL : Avance accordée au missionnaire"
+            value={advance.advance_amount + ' euros'}
+          />
+        )}
+        {advance.advance && (
+          <InputValueDisplayer
+            label="Montant total généré en chiffres, avance déduite"
+            value={totalMinusAdvance + ' euros'}
+          />
+        )}
+        {!advance.advance && (
+          <InputValueDisplayer
+            label="Montant total généré en chiffres"
+            value={totalAmount + ' euros'}
+          />
+        )}
     </div>
 
   </div>

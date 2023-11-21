@@ -16,7 +16,7 @@ Font.registerHyphenationCallback(word => [word]);
 import { styles } from './pdfStyles';
 
 const ScienceEventPdf = ({ data, agent, creationDate, signature, gest }) => {
-  
+  console.log(signature);
   const sciencePaymentArray = [
     {
       value: 'unimes',
@@ -74,7 +74,7 @@ const ScienceEventPdf = ({ data, agent, creationDate, signature, gest }) => {
           <Text style={styles.section.text} />
           <Text style={styles.section.text} />
           <Text style={styles.section.text}>Visé par la Vice-Présidence Recherche le {validationDate ? setValidationDateForPdf(validationDate) : '__/__/____'}.</Text>
-          {signature !== '' && (
+          {(signature && signature !== '') && (
             <Image
               src={signature}
               style={styles.header.image}

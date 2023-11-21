@@ -15,14 +15,14 @@ import { toggleDocModal, addPermFile, editPermFile } from 'src/reducer/otherDocu
 
 import './style.scss';
 
-const OneFileForm = () => {
+const OneFileForm = ({ onUserPage }) => {
   
   const { docs: { action, type, agentDocs},
+    tmp: { signature },
     agent: { user }
   } = useSelector((state) => state)
 
   const docToUpdate = agentDocs.find((doc) => doc.type === type);
-
   const dispatch = useDispatch();
   const {
     register,
@@ -42,7 +42,15 @@ const OneFileForm = () => {
     }
   }
 
+  let filename = '';
+  if (onUserPage) {
+    filename = docToUpdate ? docToUpdate.name : '';
+  }
+  else {
+    filename = signature.name;
+  }
 
+  console.log(filename);
 
   const close = () => {
     dispatch(toggleDocModal({ action: '', type: ''}));
@@ -52,10 +60,10 @@ const OneFileForm = () => {
     
     if (data.file instanceof File) {
       if (action === "add") {
-        dispatch(addPermFile({data: data, type: type, user: user}));
+        dispatch(addPermFile({data: data, type: type, user: user, onUserPage: onUserPage}));
       }
       else if (action === 'edit') {
-        dispatch(editPermFile({data: data, type: type, user: user, id: docToUpdate.id}));
+        dispatch(editPermFile({data: data, type: type, user: user, onUserPage: onUserPage, id: onUserPage ? docToUpdate.id : signature.id}));
       }
     }
     else {
@@ -73,7 +81,7 @@ const OneFileForm = () => {
             register={register}
             formField="file"
             id="lol"
-            fileName={docToUpdate ? docToUpdate.name : ''}
+            fileName={filename}
             label="Sélectionner un fichier à télécharger"
             setValue={setValue}
             error={errors.file}
@@ -97,6 +105,9 @@ const OneFileForm = () => {
 
 OneFileForm.propTypes = {
 
+};
+OneFileForm.defaultProps = {
+  onUserPage: true,
 };
 
 export default OneFileForm;

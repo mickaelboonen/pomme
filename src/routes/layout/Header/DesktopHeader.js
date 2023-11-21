@@ -48,7 +48,8 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
               </ul>
             </div>
           )}
-          {(agent.roles && (agent.roles.indexOf('GEST') >=0 || agent.roles.indexOf('VALIDATOR') >=0)) && (
+          {/* {(agent.roles && (agent.roles.indexOf('GEST') >=0 || agent.roles.indexOf('VALIDATOR') >=0)) && ( */}
+          {user === 'mboone01' && (
             <div className="header__menu-section" id="dafc" onMouseOver={toggleNavList} onMouseOut={toggleNavList}>
               <p>IDENTITÉ</p>
               <ul className="header__menu-section-list">
@@ -121,6 +122,7 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
                 <li><Link to={`/gestionnaire/${encodeURIComponent('ordres-de-mission-à-signer')}`}>Ordres de Mission</Link></li>
                 <li><Link to={`/gestionnaire/${encodeURIComponent('états-de-frais-à-signer')}`}>États de Frais <span id="mes-efs"></span></Link></li>
                 <li><Link to={`/gestionnaire/${encodeURIComponent('préférences-de-gestionnaire')}`}>Mes Préférences</Link></li>
+                <li><Link to={`/back/admin`}>Back Office</Link></li>
               </ul>
             </div>
           )}

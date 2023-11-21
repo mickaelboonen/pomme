@@ -18,13 +18,13 @@ import { setValidationDateForPdf, setValidationDate, setExistingValidationDate }
 const CarAuthorizationPdf = ({ data, vehicleTypes, agent, gest, signature, reasons}) => {
   let chosenVehicleType = {};
   
-  if (data.carType === 'personal-car') {
+  if (data.carType === 'personal-car' || data.type === 'personal-car') {
     chosenVehicleType = vehicleTypes.find((v) => v.id === 0);
   }
-  else if (data.carType === 'company-car') {
+  else if (data.carType === 'company-car' || data.type === 'company-car') {
     chosenVehicleType = vehicleTypes.find((v) => v.id === 2);
   }
-  else if (data.carType === 'rent-car') {
+  else if (data.carType === 'rent-car' || data.type === 'rent-car') {
     chosenVehicleType = vehicleTypes.find((v) => v.id === 3);
   }
   
@@ -34,7 +34,7 @@ const CarAuthorizationPdf = ({ data, vehicleTypes, agent, gest, signature, reaso
       reasonsAsString += reason.label + ' - ';
     }
   })
-  console.log(gest);
+  console.log(data);
   const validationDate = signature ? (gest.validation_date ? setExistingValidationDate(gest.validation_date) : setValidationDate()) : null;
 
   return (
@@ -55,11 +55,11 @@ const CarAuthorizationPdf = ({ data, vehicleTypes, agent, gest, signature, reaso
           <>
             <Text style={styles.section.notabene}>Produire obligatoirement la photocopie de la carte grise et de l’attestation d’assurance</Text>
             <Text style={[styles.section.text, {textDecoration: 'underline'}]}>Informations sur le véhicule :</Text>
-            <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Marque : <Text style={{fontFamily: 'Radjhani'}}>{data.make}</Text></Text>
-            <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Immatriculation : <Text style={{fontFamily: 'Radjhani'}}>{data.licensePlate}</Text></Text>
-            <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Puissance fiscale : <Text style={{fontFamily: 'Radjhani'}}>{data.rating}</Text></Text>
-            <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Compagnie d'assurance : <Text style={{fontFamily: 'Radjhani'}}>{data.insurance}</Text></Text>
-            <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Numéro de Police : <Text style={{fontFamily: 'Radjhani'}}>{data.police}</Text></Text>
+            <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Marque : <Text style={{fontFamily: 'Radjhani'}}>{data.make ?? data.vehicle.make}</Text></Text>
+            <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Immatriculation : <Text style={{fontFamily: 'Radjhani'}}>{data.licensePlate ?? data.vehicle.license_plate}</Text></Text>
+            <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Puissance fiscale : <Text style={{fontFamily: 'Radjhani'}}>{data.rating ?? data.vehicle.rating}</Text></Text>
+            <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Compagnie d'assurance : <Text style={{fontFamily: 'Radjhani'}}>{data.rating ?? data.vehicle.insurance}</Text></Text>
+            <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Numéro de Police : <Text style={{fontFamily: 'Radjhani'}}>{data.police ?? data.vehicle.police}</Text></Text>
           </>
         )}
 
@@ -91,7 +91,7 @@ const CarAuthorizationPdf = ({ data, vehicleTypes, agent, gest, signature, reaso
         <View style={[styles.section.subsection, {height: 150, padding: 5}]}>
         <Text style={{fontSize: 10}}>Validé à Nîmes le {validationDate ? setValidationDateForPdf(validationDate) : '__/__/____'} {gest ? `, par ${gest.name} (${gest.role})` : ''}.</Text>
           <Text style={styles.section.text}>Signature de l'ordonnateur.rice (Président, DGS, VP) :</Text>
-          {signature !== '' && (
+          {(signature && signature !== '') && (
             <Image
               src={signature}
               style={styles.header.image}

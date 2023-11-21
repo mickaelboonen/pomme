@@ -288,14 +288,9 @@ const needsSignature = ef.management.workflow.indexOf(currentActor) === ef.manag
                     Valider le document
                   </button>
                   {/* {gest.roles.indexOf('MANAGER') && (
-                    <>
-                      <a href={URL.createObjectURL(new File([blob], data.name, {type: 'pdf'}))} download={om.name + '.pdf'} style={{textAlign: 'center'}}>
-                        <button type='button' files={new File([blob], data.name, {type: 'pdf'})}>DOWNLOAD</button>
-                      </a>
-                      <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
-                        VOIR
-                      </button>
-                    </>
+                    <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
+                      VOIR
+                    </button>
                   )} */}
                 </>
               )}
