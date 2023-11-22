@@ -24,42 +24,13 @@ import ScienceEventPdf from 'src/components/PDF/ScienceEventPdf';
 import CarAuthorizationPdf from 'src/components/PDF/CarAuthorizationPdf';
 import DispensationPdf from 'src/components/PDF/DispensationPdf';
 
-const PdfProvider = ({ data, om, toggleViewer, watch, submitFunction}) => {
+const PdfProvider = ({ agentFullData, data, om, toggleViewer, watch, submitFunction}) => {
 
   const {
     app: { countries },
-    vehicle: { vehicleTypes },
-    tmp: { tmpAgent, agentProfessionalAddress, agentPersonalAddress, loader, signature}
+    vehicle: { vehicleTypes, staticReasons},
+    tmp: { loader, signature}
   } = useSelector((state) => state);
-
-  const agentFullData = {
-    ...tmpAgent,
-    ...agentProfessionalAddress,
-    ...agentPersonalAddress
-  };
-
-  const staticReasons = [
-    {
-      id: "time",
-      label: "Gain de temps",
-    },
-    {
-      id: "no-public-transports",
-      label: "Absence de transport en commun",
-    },
-    {
-      id: "materials-transporting",
-      label: "Obligation de transport de matériel lourd, encombrant, fragile",
-    },
-    {
-      id: "handicap",
-      label: "Handicap",
-    },
-    {
-      id: "carpooling",
-      label: "Transport d'autres missionnaires",
-    },
-  ];
 
   return (
     <div className='form__section'>
@@ -67,46 +38,46 @@ const PdfProvider = ({ data, om, toggleViewer, watch, submitFunction}) => {
         {!loader &&(
           <BlobProvider document={
             <Document>
-            <OmPdf
-              countries={countries}
-              data={om}
-              agent={agentFullData}
-              vehicleTypes={vehicleTypes}
-              manager={om.management}
-              signature={''}
-            />
-            <OmAdvancePdf
-              data={data.advance}
-              acValidationDate={setValidationDate()}
-              validationDate={''}
-              agent={agentFullData}
-              gest={om.management.workflow.find((actor) => actor.current_status === 3)}
-              acSignature={signature ? signature.link : ''}
-            />
-            {data.transports.authorizations.length > 0 && data.transports.authorizations.map((auth) => (
-              <CarAuthorizationPdf
-                key={'c-a-' + data.transports.authorizations.indexOf(auth)}
-                data={auth}
+              <OmPdf
+                countries={countries}
+                data={om}
                 agent={agentFullData}
                 vehicleTypes={vehicleTypes}
-                reasons={staticReasons}
+                manager={om.management}
+                signature={''}
               />
-            ))}
-            {data.transports.dispensations.length > 0 && data.transports.dispensations.map((disp) => (
-              <DispensationPdf
-                key={'d-' + data.transports.dispensations.indexOf(disp)}
-                data={disp}
-              />
-            ))}
-            {data.mission.scientificEvents.length > 0 && data.mission.scientificEvents.map((event) => (
-              <ScienceEventPdf
-                key={'s-e-' + data.mission.scientificEvents.indexOf(event)}
-                data={event}
+              <OmAdvancePdf
+                data={data.advance}
+                acValidationDate={setValidationDate()}
+                validationDate={''}
                 agent={agentFullData}
-                creationDate={setExistingValidationDate(data.created_at)}
+                gest={om.management.workflow.find((actor) => actor.current_status === 3)}
+                acSignature={signature ? signature.link : ''}
               />
-            ))}
-          </Document>
+              {data.transports.authorizations.length > 0 && data.transports.authorizations.map((auth) => (
+                <CarAuthorizationPdf
+                  key={'c-a-' + data.transports.authorizations.indexOf(auth)}
+                  data={auth}
+                  agent={agentFullData}
+                  vehicleTypes={vehicleTypes}
+                  reasons={staticReasons}
+                />
+              ))}
+              {data.transports.dispensations.length > 0 && data.transports.dispensations.map((disp) => (
+                <DispensationPdf
+                  key={'d-' + data.transports.dispensations.indexOf(disp)}
+                  data={disp}
+                />
+              ))}
+              {data.mission.scientificEvents.length > 0 && data.mission.scientificEvents.map((event) => (
+                <ScienceEventPdf
+                  key={'s-e-' + data.mission.scientificEvents.indexOf(event)}
+                  data={event}
+                  agent={agentFullData}
+                  creationDate={setExistingValidationDate(data.created_at)}
+                />
+              ))}
+            </Document>
           }>
             {({ blob }) => (
               <>

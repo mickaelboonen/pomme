@@ -3,45 +3,28 @@ import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-// import { Link, useLoaderData } from 'react-router-dom';
-import { BlobProvider, Document, PDFViewer } from '@react-pdf/renderer';
-
-// import '../style.scss';
-
 
 // Components
 import OneFileForm from 'src/components/OneFileForm';
-
-
-
-// Components
-import ButtonElement from 'src/components/Fields/ButtonElement';
 import FormSectionTitle from 'src/components/FormSectionTitle';
-import OmPdf from 'src/components/PDF/OmPdf';
-import OmAdvancePdf from 'src/components/PDF/OmAdvancePdf';
+import Decision from 'src/components/Visas/Decision';
+import Signature from 'src/components/Visas/Signature';
+import VisaViewer from 'src/components/Visas/VisaViewer';
+import VisaHiddenFields from 'src/components/Visas/VisaHiddenFields';
+import PdfProvider from 'src/components/Visas/PdfProvider';
+import PdfViewer from 'src/components/Visas/PdfViewer';
+import ReturnLink from 'src/components/Visas/ReturnLink';
 import InputValueDisplayer from 'src/routes/gestionnaire/DocValidation/InputValueDisplayer';
-
-import { setValidationDate, setExistingValidationDate } from 'src/selectors/pdfFunctions';
 
 // Actions
 import { addOmMonitoringPdf } from 'src/reducer/omManager';
-import ScienceEventPdf from 'src/components/PDF/ScienceEventPdf';
-import CarAuthorizationPdf from 'src/components/PDF/CarAuthorizationPdf';
-import DispensationPdf from 'src/components/PDF/DispensationPdf';
-import Decision from '../../../components/Visas/Decision';
-import Signature from '../../../components/Visas/Signature';
-import VisaViewer from '../../../components/Visas/VisaViewer';
-import VisaHiddenFields from '../../../components/Visas/VisaHiddenFields';
-import PdfProvider from '../../../components/Visas/PdfProvider';
 
 const AdvanceVisa = ({ data, user, gest, om}) => {
 
   const dispatch = useDispatch();
 
   const { docs: { isModalOpen },
-    app: { countries },
-    vehicle: { vehicleTypes },
-    tmp: { tmpAgent, agentProfessionalAddress, agentPersonalAddress, loader, signature}
+    tmp: { tmpAgent, agentProfessionalAddress, agentPersonalAddress, signature}
   } = useSelector((state) => state);
 
   const {
@@ -182,7 +165,9 @@ const AdvanceVisa = ({ data, user, gest, om}) => {
             />
           </div>
         </div>
+        {/* Returns the two hidden fields for id and cptLogin */}
         <VisaHiddenFields id={data.id} user={user} register={register} />
+        {/* Handles the signature part */}
         <Signature
           register={register}
           signature={signature}
@@ -190,136 +175,31 @@ const AdvanceVisa = ({ data, user, gest, om}) => {
           clearErrors={clearErrors}
           watch={watch}
         />
+        {/* Returns the validation fields */}
         <Decision
           register={register}
           errors={errors}
         />
+        {/* Returns the buttons to see and validate the document */}
         <PdfProvider
           data={data}
           submitFunction={submitFunction}
           watch={watch}
           om={om}
           toggleViewer={toggleViewer}
+          agentFullData={agentFullData}
         />
-        {/* <div className='form__section'>
-          <div className="form__section-field-buttons" style={{textAlign: 'center'}}>
-            {!loader &&(
-              <BlobProvider document={
-                <Document>
-                <OmPdf
-                  countries={countries}
-                  data={om}
-                  agent={agentFullData}
-                  vehicleTypes={vehicleTypes}
-                  manager={om.management}
-                  signature={''}
-                />
-                <OmAdvancePdf
-                  data={data.advance}
-                  acValidationDate={setValidationDate()}
-                  validationDate={''}
-                  agent={agentFullData}
-                  gest={om.management.workflow.find((actor) => actor.current_status === 3)}
-                  acSignature={signature ? signature.link : ''}
-                />
-                {data.transports.authorizations.length > 0 && data.transports.authorizations.map((auth) => (
-                  <CarAuthorizationPdf
-                    key={'c-a-' + data.transports.authorizations.indexOf(auth)}
-                    data={auth}
-                    agent={agentFullData}
-                    vehicleTypes={vehicleTypes}
-                    reasons={staticReasons}
-                  />
-                ))}
-                {data.transports.dispensations.length > 0 && data.transports.dispensations.map((disp) => (
-                  <DispensationPdf
-                    key={'d-' + data.transports.dispensations.indexOf(disp)}
-                    data={disp}
-                  />
-                ))}
-                {data.mission.scientificEvents.length > 0 && data.mission.scientificEvents.map((event) => (
-                  <ScienceEventPdf
-                    key={'s-e-' + data.mission.scientificEvents.indexOf(event)}
-                    data={event}
-                    agent={agentFullData}
-                    creationDate={setExistingValidationDate(data.created_at)}
-                  />
-                ))}
-              </Document>
-              }>
-                {({ blob }) => (
-                  <>
-                    <button type="button" onClick={() => { const data = watch(); data.file = new File([blob], data.name, {type: 'pdf'}); submitFunction(data);}}>
-                      Valider le document
-                    </button>
-                      <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
-                        VOIR
-                      </button>
-                  </>
-                )}
-              </BlobProvider>
-            )}
-          </div>
-        </div> */}
-        <div className="form__section">
-          <div className='form__section-field-buttons form__section-field-buttons--solo'>
-            <ButtonElement
-              // type="button"
-              isLink
-              link="/dafc/demandes-d-avance"
-              label="Retour"
-            />
-          </div>
-        </div>
+        <ReturnLink
+          link="/dafc/demandes-d-avance"
+        />
         {isPdfVisible && (
-          <div className="pdf-viewer">
-            <div className="pdf-viewer__nav">
-              <p className="pdf-viewer__nav-close" id="viewer-closer" onClick={toggleViewer}>Fermer la fenêtre</p>
-            </div>
-            <PDFViewer>
-              <Document>
-                <OmPdf
-                  countries={countries}
-                  data={om}
-                  agent={agentFullData}
-                  vehicleTypes={vehicleTypes}
-                  manager={om.management}
-                  signature={''}
-                />
-                <OmAdvancePdf
-                  data={data.advance}
-                  acValidationDate={setValidationDate()}
-                  validationDate={''}
-                  agent={agentFullData}
-                  gest={om.management.workflow.find((actor) => actor.current_status === 3)}
-                  acSignature={signature ? signature.link : ''}
-                />
-                {data.transports.authorizations.length > 0 && data.transports.authorizations.map((auth) => (
-                  <CarAuthorizationPdf
-                    key={'c-a-' + data.transports.authorizations.indexOf(auth)}
-                    data={auth}
-                    agent={agentFullData}
-                    vehicleTypes={vehicleTypes}
-                    reasons={staticReasons}
-                  />
-                ))}
-                {data.transports.dispensations.length > 0 && data.transports.dispensations.map((disp) => (
-                  <DispensationPdf
-                    key={'d-' + data.transports.dispensations.indexOf(disp)}
-                    data={disp}
-                  />
-                ))}
-                {data.mission.scientificEvents.length > 0 && data.mission.scientificEvents.map((event) => (
-                  <ScienceEventPdf
-                    key={'s-e-' + data.mission.scientificEvents.indexOf(event)}
-                    data={event}
-                    agent={agentFullData}
-                    creationDate={setExistingValidationDate(data.created_at)}
-                  />
-                ))}
-              </Document>
-            </PDFViewer>
-          </div>
+          <PdfViewer
+            data={data}
+            watch={watch}
+            om={om}
+            toggleViewer={toggleViewer}
+            agentFullData={agentFullData}
+          />
         )}
       </form>
       <div className={classNames("modal__background", {"modal__background--open": isModalOpen})} />

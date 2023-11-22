@@ -47,6 +47,28 @@ const initialState = {
   message: null,
   savedAuthorization: {},
   authorizationFile: null,
+  staticReasons: [
+    {
+      id: "time",
+      label: "Gain de temps",
+    },
+    {
+      id: "no-public-transports",
+      label: "Absence de transport en commun",
+    },
+    {
+      id: "materials-transporting",
+      label: "Obligation de transport de matériel lourd, encombrant, fragile",
+    },
+    {
+      id: "handicap",
+      label: "Handicap",
+    },
+    {
+      id: "carpooling",
+      label: "Transport d'autres missionnaires",
+    },
+  ]
 };
 const vehicleSlice = createSlice({
     name: 'vehicle',
