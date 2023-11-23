@@ -165,11 +165,11 @@ const Derogation = () => {
               <div className="form__section-field-button">
                 <BlobProvider document={
                   <Document>
-                    <DispensationPdf agentSignature={agentSignature} agent={agent} data={watch()}/> 
+                    <DispensationPdf data={watch()} /> 
                   </Document>
                 }>
                   {({ blob }) => {
-                 // console.log(oms);
+                    //console.log(oms);
                     const om = oms.find((om) => om.id == omId);
                     
                     const fileName = `${agent.lastname.toUpperCase()}-${new Date(om.mission.departure).toLocaleDateString().split('/').join('-')}-${dispensationTitle.split(' ').join('-')}`
@@ -217,7 +217,7 @@ const Derogation = () => {
           </div>
           <PDFViewer>
             <Document>
-              <DispensationPdf agentSignature={agentSignature} agent={agent} data={watch()}/> 
+              <DispensationPdf data={watch()}/> 
             </Document>
           </PDFViewer>
         </div>

@@ -130,7 +130,7 @@ const DispensationPdf = ({ data, signature, gest}) => {
           <View style={{border: '1px solid #1a1a1a', width: '1000%', height: 150, padding: 5}}>
           <Text style={{fontSize: 10}}>Validé à Nîmes le {validationDate ? setValidationDateForPdf(validationDate) : '__/__/____'} {gest ? `, par ${gest.name} (${gest.role})` : ''}.</Text>
           <Text style={{fontSize: 10}}>Signature de l'ordonnateur.rice (Président, DGS, VP) :</Text>
-            {signature !== '' && (
+            {(signature && signature !== '') && (
                 <Image
                   src={signature}
                   style={styles.header.image}

@@ -68,7 +68,7 @@ const Transports = ({ step }) => {
     else {
       // We initialize the error count
       let countErrors = 0;
-   // console.log(data);
+
       // If first class train or business class plane has been selected but no dispensation was submitted or given
       if ((data.trainClass === "first-class" || data.planeClass === "business-class") && !data.dispensationForValidation && (!data.dispensation || data.dispensation.length === 0) ) {
         setError('dispensation', { type: 'custom', message: "Merci de fournir la dérogation signée par le Président ou d'en faire la demande." });
@@ -108,7 +108,7 @@ const Transports = ({ step }) => {
 
         // Formats the data for the database
         const databaseData = turnTransportsDataToDbFormat(data);
-        
+
         // If any file has been selected (for the train, plane or car), we upload it
         if (databaseData.transportDispensation instanceof File || databaseData.vehicleAuthorization instanceof File || databaseData.taxiDispensation instanceof File ) {
           
@@ -122,6 +122,49 @@ const Transports = ({ step }) => {
     }
   };
 
+  useEffect(() => {
+    if (defaultValues.authorizations.length > 0) {
+
+      const selectedCarType = defaultValues.authorizations[0].type;
+      const selectedPossibility = vehiclePossibilities.find((possibility) => selectedCarType === possibility.value)
+
+      if (selectedPossibility) {
+        setValue('vehicle', selectedPossibility.id);
+        setNeedsAuthorization(true);
+        setValue('vehicleAuthorizationFile', defaultValues.authorizations[0].file)
+      }
+    }
+    if (defaultValues.dispensations.length > 0) {
+
+      defaultValues.dispensations.forEach((disp) => {
+
+        if (disp.type.includes('train')) {
+          setValue('trainClass', 'first-class');
+          setNeedsDerogation(true);
+          setValue('dispensation', disp.file);
+        }
+        if (disp.type.includes('avion')) {
+          setValue('planeClass', 'business-class');
+          setNeedsDerogation(true);
+          setValue('dispensation', disp.file);
+        }
+        if (disp.type.includes('taxi')) {
+          setNeedsTaxiDispensation(true);
+          let otherMeans = defaultValues.others;
+
+          if (otherMeans.indexOf('taxi') === -1) {
+            otherMeans.push('taxi');
+          }
+          setValue('others', otherMeans);
+          setValue('taxiDispensation', disp.file)
+
+        }
+      })
+    }
+
+  }, [defaultValues.authorizations.length, defaultValues.dispensations.length])
+
+
   // State to manage components
   const [needsDerogation, setNeedsDerogation] = useState(false);
   const [needsAuthorization, setNeedsAuthorization] = useState(defaultValues.vehicle !== null && defaultValues.vehicle !== 1 ? true : false);
@@ -130,19 +173,26 @@ const Transports = ({ step }) => {
   const vehiclePossibilities = [
     {
       id: 0,
-      name: 'Véhicule personnel, de prêt'
+      name: 'Véhicule personnel, de prêt',
+      value: 'personal-car'
     },
     {
       id: 1,
-      name: 'Covoiturage (passager)'
+      name: 'Covoiturage (passager)',
+      value: 'carpooling'
+
     },
     {
       id: 2,
-      name: 'Véhicule de service'
+      name: 'Véhicule de service',
+      value: 'company-car'
+
     },
     {
       id: 3,
-      name: 'Véhicule de location'
+      name: 'Véhicule de location',
+      value: 'rent-car'
+
     },
   ];
   // FORM FIELDS -----------------------------------------------------------------------------------------------------------------------------------------
@@ -218,7 +268,7 @@ const Transports = ({ step }) => {
       setNeedsAuthorization(false);
     }
   }
-  console.log("errors = ", errors);
+
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
       <StatusChecker status={currentOM.transports.status} />
