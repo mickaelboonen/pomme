@@ -18,6 +18,7 @@ import Tickets from "../routes/documents/Tickets";
 import Tickets2 from "../routes/documents/Tickets2";
 import { fetchTmpUserPhoneMail } from "../reducer/tmpReducer";
 import { fetchUserData } from "../reducer/agent";
+import EfVacataire from "../routes/documents/EfForm/EfVacataire";
 
 
 
@@ -33,7 +34,14 @@ export default {
     },
     {
       path: encodeURIComponent('mes-états-de-frais'),
-      element: <MyDocuments />
+      element: <MyDocuments />,
+    },
+    {
+      path: encodeURIComponent('mes-états-de-frais') + '/vacataires',
+      element: <EfVacataire />,
+      loader: ({ request }) => {
+        console.log('pouet');
+      }
     },
     {
       path: 'mes-documents/',

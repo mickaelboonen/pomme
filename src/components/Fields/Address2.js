@@ -7,7 +7,7 @@ import ButtonElement from 'src/components/Fields/ButtonElement';
 import TextareaField from 'src/components/Fields/TextareaField';
 
 import { deleteAddress } from 'src/reducer/omForm';
-import TextEditor from '../TextEditor';
+import TextEditor from 'src/components/TextEditor';
 
 const Address2 = ({ countries, watch, data, clearErrors, register, errors, disabled, errorMessages, dispatch }) => {  
   

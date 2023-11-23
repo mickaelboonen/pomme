@@ -22,6 +22,7 @@ import { toggleModal } from '../reducer/app';
 import { addNewOM } from 'src/reducer/omForm';
 import { addNewEf } from 'src/reducer/ef';
 import { fetchOMs } from 'src/reducer/agent';
+import { Link } from 'react-router-dom';
 
 const Modal = ({ target, user, userOms, agent, loader }) => {
   
@@ -135,7 +136,7 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
         missioner: user,
         comments: '',
         omId: data.om,
-        is_teaching: data.isTeaching,
+        is_teaching: false,
         has_steps: data.hasSteps,
       }
       dispatch(addNewEf(newEF)); 
@@ -290,12 +291,7 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
                   </div>
                 </div>
                 <div className="form__section-field">
-                  <SwitchButton
-                    register={register}
-                    isInForm
-                    formField='isTeaching'
-                    label="Etait-ce une mission de vacation ?"
-                  />
+                  {user === 'mboone01' && <Link to={`/utilisateur/${encodeURIComponent('mes-états-de-frais')}/vacataires`}>Je suis Vacataire</Link>}
                   <SwitchButton
                     register={register}
                     isInForm
