@@ -9,7 +9,7 @@ import './style.scss';
 import { deleteOm } from 'src/reducer/omForm';
 import { deleteEf } from 'src/reducer/ef';
 
-const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isOm}) => {
+const DocButtons = ({ id, status, peche, name, om, file, transports, isDocFinished, isOm}) => {
   
   let buttons = [];
   const dispatch = useDispatch();
@@ -43,16 +43,19 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
     ];
   }
   else {
+    const link = peche ? `/modifier-un-document/${encodeURIComponent('état-de-frais')}-de-vacataire` : `/modifier-un-document/${encodeURIComponent('état-de-frais')}`
+    const query = peche ? `id=${id}` : `id=${id}&om=${om ? om.id : null}`;
+    console.log(link, query);
     buttons = [
       {
         name: 'modify',
-        link: `/modifier-un-document/${encodeURIComponent('état-de-frais')}?etape=1&id=${id}&om=${om ? om.id : null}`,
+        link: link + '?etape=1&' + query,
         label: 'Reprendre / Modifier',
         status: [1],
       },
       {
         name: 'submit',
-        link: `/modifier-un-document/${encodeURIComponent('état-de-frais')}?etape=6&id=${id}&om=${om ? om.id : null}`,
+        link: link + '?etape=6' + query,
         label: "Passer à l'étape finale",
         status: [1],
       },
@@ -100,7 +103,7 @@ const DocButtons = ({ id, status, name, om, file, transports, isDocFinished, isO
     }
     
   }
-  console.log(buttons);
+  // console.log(buttons);
   
   return (
     <div className="my-documents__files-buttons">

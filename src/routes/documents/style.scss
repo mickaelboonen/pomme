@@ -18,13 +18,16 @@ $test : #{var(--first-color)};
 
   &__button {
 
+    @include vars.centeredFlex;
     margin: 1rem 0;
+    // background-color: red;
 
     & a {
-      @include vars.addButton;
+      // @include vars.addButton;
       // margin: 1rem auto;
-      width: 90%;
-      margin: auto;
+      // width: 90%;
+      display: flex;
+      margin-left: 2rem;
       color: var(--opposite-theme-color);
     }
   }

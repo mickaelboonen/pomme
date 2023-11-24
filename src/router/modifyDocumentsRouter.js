@@ -4,10 +4,11 @@ import store from 'src/store';
 import OMForm from "src/routes/documents/OMForm";
 import EfForm from "src/routes/documents/EfForm";
 
-import { setEfLoader } from "src/reducer/ef";
+import { setEfLoader , fetchEf } from "src/reducer/ef";
 import { fetchOm } from "src/reducer/omForm";
 import { fetchUserData } from "src/reducer/agent";
 import { getDocument, fetchCountries } from "src/reducer/app";
+import EfVacataireForm from "src/routes/documents/EfVacataireForm";
 
 
 
@@ -71,6 +72,36 @@ export default {
           store.dispatch(getDocument({id: user, type: 'rib'}));
         }
         else if (step === '6') {
+          if (countries.length === 0 ) {
+            store.dispatch(fetchCountries());
+          }
+
+          store.dispatch(fetchUserData({ id: user}));
+        }
+        return url;
+      },    
+    },
+    {
+      path: encodeURIComponent('état-de-frais-de-vacataire'),
+      element: <EfVacataireForm />,
+      loader: async ({ request }) => {
+        const url = new URL(request.url);
+        // const om = url.searchParams.get("om");
+        const id = url.searchParams.get("id");
+        const step = url.searchParams.get("etape");
+
+        const { agent : { user }, app: { countries} } = store.getState((state) => state);
+        
+        store.dispatch(setEfLoader(true));
+        store.dispatch(fetchEf({ id: id }));
+
+        // if (step === '1' && countries.length === 0) {
+          // store.dispatch(fetchCountries());
+        // }
+        if (step === '4') {
+          store.dispatch(getDocument({id: user, type: 'rib'}));
+        }
+        else if (step === '5') {
           if (countries.length === 0 ) {
             store.dispatch(fetchCountries());
           }

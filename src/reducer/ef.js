@@ -336,9 +336,7 @@ const efSlice = createSlice({
         }
         
       },
-      fetchEf: () => {
-
-      },
+      fetchEf: () => {},
       saveEf: (state, action) => {
         const ef = action.payload;
         const stages = [];
@@ -358,6 +356,7 @@ const efSlice = createSlice({
         state.nextEfTarget = '';
       },
       deleteEf: () => {},
+      createEfVacataire: () => {},
     },
 });
 
@@ -382,7 +381,9 @@ export const {
   updateEfRib,
   clearEfTarget,
   updateEf,
-  deleteEf
+  deleteEf,
+  // Action Vacataire
+  createEfVacataire
 } = efSlice.actions;
 
 export default efSlice.reducer;

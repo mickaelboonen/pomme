@@ -291,7 +291,6 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
                   </div>
                 </div>
                 <div className="form__section-field">
-                  {user === 'mboone01' && <Link to={`/utilisateur/${encodeURIComponent('mes-états-de-frais')}/vacataires`}>Je suis Vacataire</Link>}
                   <SwitchButton
                     register={register}
                     isInForm

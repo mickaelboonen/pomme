@@ -35,11 +35,12 @@ $test : #{var(--first-color)};
       // margin: 1rem auto;
       width: fit-content;
       padding: 0.8rem 1.3rem;
-      margin: auto;
+      margin: 0;
       font-size: 1em;
       font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
       font-weight: bold;
       color: var(--opposite-theme-color);
+      display: flex;
     }
   }
 

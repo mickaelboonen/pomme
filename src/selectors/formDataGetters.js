@@ -123,3 +123,50 @@ export const checkStepsStatus = (step, currentDoc) => {
 
   return docState;
 }
+
+export const checkVacationStepsStatus = (step, currentDoc) => {
+
+  let docState = {};
+
+  if (step === 5) {
+ // console.log(currentDoc);
+    const efStepsWithStatus = [
+      {
+        name: 'peche',
+        step: 1,
+        status: (currentDoc.hasOwnProperty('peche') && currentDoc.peche.status) ? currentDoc.peche.status : false
+      },
+      {
+        name: 'transports',
+        step: 2,
+        status: (currentDoc.hasOwnProperty('transports') && currentDoc.transports.status) ? currentDoc.transports.status : false
+      },
+      {
+        name: 'hébergement',
+        step: 3,
+        status: (currentDoc.hasOwnProperty('accomodations') && currentDoc.accomodations.status) ? currentDoc.accomodations.status : false
+      },
+      {
+        name: 'rib',
+        step: 3,
+        status: (currentDoc.hasOwnProperty('rib') && currentDoc.rib.status) ? currentDoc.rib.status : false
+      },
+      {
+        name: 'étapes',
+        step: 3,
+        status: (currentDoc.hasOwnProperty('stages') && currentDoc.stages.length > 0) ?? false
+      },
+    ];
+    
+    const unfinishedStep = efStepsWithStatus.filter((step) => !step.status);
+
+    if (!unfinishedStep) {
+      docState.isFinished = true
+    }
+    else {
+      docState = unfinishedStep;
+    }
+  }
+
+  return docState;
+}

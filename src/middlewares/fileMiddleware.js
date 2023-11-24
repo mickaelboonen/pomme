@@ -16,6 +16,7 @@ import {
   createScientificEvent
 } from 'src/reducer/omForm';
 import { saveTmpSignature } from 'src/reducer/tmpReducer';
+import { createEfVacataire } from '../reducer/ef';
 
 fileApi.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 fileApi.defaults.headers['Content-Type'] = 'multipart/form-data';
@@ -181,6 +182,17 @@ const omMiddleware = (store) => (next) => (action) => {
           });
         }
       }
+      else if (type === 'ef-vacataire') {
+        if (step === 'vacataire') {
+          filesToUpload.push({
+            docId: null,
+            type: step,
+            file: data.peche,
+            name: 'file',
+            user: data.missioner,
+          })
+        }
+      }
       else if (type === 'authorization') {
         filesToUpload.push({
           docId: data.docId,
@@ -218,6 +230,7 @@ const omMiddleware = (store) => (next) => (action) => {
         });
       }
       
+      // console.log(`FILECONTROLLER filesToUpload IS : `, filesToUpload);
       fileApi.post(`/api/files/${type}/${step}`, filesToUpload)
         .then((response) => {
 
@@ -356,6 +369,18 @@ const omMiddleware = (store) => (next) => (action) => {
             else if (step === 'ef') {
               delete data.file;
               store.dispatch(updateEf(data));
+            }
+          }
+          else if (type === 'ef-vacataire') {
+            response.data.forEach((file) => {
+              
+              if (file.type === 'vacataire') {
+                data.peche = file.file.url;
+              }
+            })
+
+            if (step === 'vacataire') {
+              store.dispatch(createEfVacataire(data));
             }
           }
           else if (type === 'authorization') {

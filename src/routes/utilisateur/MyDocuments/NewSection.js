@@ -42,7 +42,7 @@ const Section = ({ id, data, user, steps, currentDoc, loader, isOm}) => {
       dispatch(fetchEfs(user))
     }
   };
-  
+  console.log(currentDoc);
   return (
     <section id={id} className="my-documents__files">
       <SelectField

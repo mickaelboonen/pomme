@@ -11,7 +11,18 @@ const efMiddleware = (store) => (next) => (action) => {
   // const { agent: { token } } = store.getState();
   // setTokenOnApi(token);
   
-  switch (action.type) {
+  switch (action.type) { 
+    case 'ef/createEfVacataire':
+      api.post("/api/ef/vacataire/add", action.payload,)
+        .then((response) => {
+            console.log(response.data);
+            store.dispatch(setApiResponse({message: "L'état de Frais a été bien été créé. Vous pouvez dès à présent saisir vos frais de déplacement et d'hébergement dans l'EF.", id: response.data, response: { status: 200}}));
+
+        })
+        .catch((error) => {
+          store.dispatch(setApiResponse(error));
+        });
+      break;
   case 'ef/addNewEf':
     api.post("/api/ef/add", action.payload,)
       .then((response) => {

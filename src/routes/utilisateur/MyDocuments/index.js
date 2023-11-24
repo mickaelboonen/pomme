@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLoaderData, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLoaderData, useLocation, useNavigate, useParams } from 'react-router-dom';
 import classNames from 'classnames';
 
 // Components
@@ -86,11 +86,20 @@ const MyDocuments = () => {
     dispatch(toggleModal())
   }
 
-  let steps = [
-    {
+  let steps = [];
+  if (currentDoc.mission) {
+    steps.push({
       name: 'mission',
       status: (currentDoc.hasOwnProperty('mission') && currentDoc.mission.status) ? currentDoc.mission.status : false
-    },
+    });
+  }
+  else {
+    steps.push({
+      name: 'peche',
+      status: (currentDoc.hasOwnProperty('peche') && currentDoc.peche.status) ? currentDoc.peche.status : false
+    });
+  }
+  steps.push(
     {
       name: 'transports',
       status: (currentDoc.hasOwnProperty('transports') && currentDoc.transports.status) ? currentDoc.transports.status : false
@@ -98,8 +107,8 @@ const MyDocuments = () => {
     {
       name: 'hébergement',
       status: (currentDoc.hasOwnProperty('accomodations') && currentDoc.accomodations.status) ? currentDoc.accomodations.status : false
-    },
-  ]
+    },  
+  );
 
   
   if (!isOm) {
@@ -133,7 +142,9 @@ const MyDocuments = () => {
     <main className="my-documents">
       <PageTitle>{title}</PageTitle>
       <div className="my-documents__button">
-        <button type="button" onClick={handleClickOnNewOM}>NOUVEAU</button>
+        {isOm && <button type="button" onClick={handleClickOnNewOM}>NOUVEAU</button>}
+        {!isOm && <button type="button" onClick={handleClickOnNewOM}>NOUVEL EF CLASSIQUE</button>}
+        {!isOm && <Link to={`/utilisateur/${encodeURIComponent('mes-états-de-frais')}/vacataires`}>NOUVEL EF VACATAIRE</Link>}
       </div>
       {isOm && <Tabs tabs={OMTabs} handler={displayWantedSection} />}
       {!isOm && <Tabs tabs={EFTabs} handler={displayWantedSection} />}
