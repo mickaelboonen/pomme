@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
 import { useLoaderData } from 'react-router-dom';
 
-import '../style.scss';
+import '../../EfForm/style.scss';
 import Buttons from 'src/components/Fields/Buttons';
 import StatusChecker from 'src/components/StatusChecker';
 import FileField from 'src/components/Fields/FileField';

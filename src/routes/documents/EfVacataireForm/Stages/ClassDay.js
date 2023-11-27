@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import '../style.scss';
+import '../../EfForm/style.scss';
 import SelectField from 'src/components/Fields/SelectField';
 import DateField from 'src/components/Fields/DateField';
 import TextField from 'src/components/Fields/TextField';
@@ -68,7 +68,7 @@ const ClassDay = ({ register, stepNumber, errors, setError, isVacataire }) => {
               <DateField 
                 register={register}
                 id="departure-date-field"
-                label="Date"
+                label="Date de départ"
                 type="date"
                 formField={"departure" + stepNumber}
                 required="Veuillez renseigner la date."
@@ -76,27 +76,28 @@ const ClassDay = ({ register, stepNumber, errors, setError, isVacataire }) => {
               />
             </div>
             <div className='step__container-fields-half'>
-              <TextField
+              <DateField 
                 register={register}
-                // blankValue
-                id="departurePlace-field"
-                formField={"departurePlace" + stepNumber}
-                label="Commune de résidence :"
-                required="Veuillez renseigner la commune."
-                error={errors["departurePlace" + stepNumber]}
-              
+                id="arrival-date-field"
+                label="Date d'arrivée"
+                type="date"
+                formField={"arrival" + stepNumber}
+                required="Veuillez renseigner la date."
+                error={errors["arrival" + stepNumber]}
               />
-              {/* <SelectField
-                // register={register}
-                blankValue
-                // data={['1' ,'2', '3', '4']}
-                // id="a"
-                // formField={"departurePlace" + stepNumber}
-                // label="Commune de résidence :"
-                // required="Veuillez renseigner la commune."
-                // error={errors["departurePlace" + stepNumber]}
-              // /> */}
             </div>
+          </div>
+          <div className='step__container-fields'>
+            <TextField
+              register={register}
+              // blankValue
+              id="departurePlace-field"
+              formField={"departurePlace" + stepNumber}
+              label="Commune de résidence :"
+              required="Veuillez renseigner la commune."
+              error={errors["departurePlace" + stepNumber]}
+            
+            />
           </div>
         <div className='step__container-fields'>
           <div className='step__container-fields-half'>

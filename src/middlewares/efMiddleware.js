@@ -52,6 +52,16 @@ const efMiddleware = (store) => (next) => (action) => {
         store.dispatch(setApiResponse(error));
       });
     break;
+  case 'ef/updateEfSteps':
+    api.post("/api/ef/steps/update", action.payload)
+      .then((response) => {
+        store.dispatch(setApiResponse({message: response.data, response: { status: 200}}));
+      })
+      .catch((error) => {
+        store.dispatch(setApiResponse(error));
+      });
+    break;
+
   case 'ef/updateEfMission':
     api.post("/api/ef/mission/update", action.payload)
       .then((response) => {
@@ -98,6 +108,7 @@ const efMiddleware = (store) => (next) => (action) => {
         // }
       })
       .catch((error) => {
+        console.log(error);
         store.dispatch(setApiResponse(error));
       });
     

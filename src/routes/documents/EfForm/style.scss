@@ -9,62 +9,93 @@
   &--open {
     display: flex;
   }
+  
+  &__tables {
+    display: flex;
+    justify-content: space-between;
+    // font-size: 0.9em;
+  }
 
   &__recap {
-    display: none;
+    // background-color: #000;
     width: 100%;
+    display: block;
     border-radius: vars.$radius;
-    overflow: hidden;
+    // overflow: hidden;
     border: 1px solid var(--first-color);
-    font-size: 0.8em;
+    font-size: 14px;
+    overflow-x: auto;
 
 
-     & thead {
+    &-head {
       background-color: var(--third-color);
-      color: #fff;
       color: rgba(var(--darkestThemeColor));
-      // color: var(---color);
-      // text-shadow: 1psecondx 1px 1px var(--fourth-color);
       font-weight: bold;
       text-align: center;
-      & tr {
+      width: 100%;
+      height: 3rem;
+      display: block;
+
+      &-row {
         border: 1px solid rgba(var(--darkerThemeColor));
         width: 100%;
-        // display: flex;
-        & td {
-          width: 16.5%;
-          // display: flex;
-          // align-items: center;
-          vertical-align: middle;
-          
+        // height: 4rem;
+        height: 100%;
+        // overflow: hidden;
+    
+        &-column {
+          width: 20%;
+          vertical-align: middle; 
           border-right: 1px solid  rgba(var(--darkerThemeColor));
           padding: 0.5rem;
+
+          &:last-of-type {
+            border: 0;
+          }
+
+          &--quarter {
+            width: 25%;
+          }
+
         }
       }
-
-     }
-     & tbody {
+    }
+     &-body {
       width: 100%;
       
-      & tr {
+      &-row {
         background-color: #fff;
         border: 1px solid rgba(var(--darkerThemeColor));
         width: 100%;
-        // display: flex;
-        // flex-wrap: wrap;
-        & td {
-          width: 16.5%;
-          // flex-grow:
+        height: 2rem;
+
+        &-column {
+          // width: 16.5%;
           border-right: 1px solid  rgba(var(--darkerThemeColor));
           text-align: center;
           padding: 0.5rem;
 
-          &:nth-of-type(1) {
+          &--label {
             text-transform: uppercase;
-            font-weight: bold;
+          }
+          &--quarter {
+            width: 25%;
+          }
+
+          &:last-of-type {
+            border: 0;
           }
         }
+        & .steps__recap-separator {
+          width: 2rem;
+          background-color: var(--lighter-first-color);
+        }
+
       }
+     }
+
+     &--vacataires {
+      // width: 48%;
      }
   }
 }
@@ -272,62 +303,74 @@
   }
 
   .steps__recap {
-    background-color: #000;
+    // background-color: #000;
     width: 100%;
     display: block;
     border-radius: vars.$radius;
-    overflow: hidden;
+    overflow: auto;
     border: 1px solid var(--first-color);
-    font-size: 1em;
+    // font-size: 0.9em;
+    font-weight: bold;
 
+    &-head {
+      width: 100%;
+      height: 4rem;
+      display: block;
 
-     & thead {
-      background-color: var(--third-color);
-      color: #fff;
-      color: rgba(var(--darkestThemeColor));
-      // color: var(---color);
-      // text-shadow: 1psecondx 1px 1px var(--fourth-color);
-      font-weight: bold;
-      text-align: center;
-      & tr {
+      &-row {
         border: 1px solid rgba(var(--darkerThemeColor));
         width: 100%;
-        // display: flex;
-        & td {
-          width: 16.5%;
-          // display: flex;
-          // align-items: center;
-          vertical-align: middle;
-          
+        height: 100%;
+        display: flex;
+
+        &-column {
+          width: 20%;
+          height: 100%;
+          @include vars.centeredFlex;
           border-right: 1px solid  rgba(var(--darkerThemeColor));
           padding: 0.5rem;
+
+          &--quarter {
+            width: 25%;
+          }
+
         }
       }
+    }
 
-     }
-     & tbody {
+     &-body {
       width: 100%;
-      
-      & tr {
+      display: block;
+      // overflow-x: auto;
+
+      &-row {
         background-color: #fff;
         border: 1px solid rgba(var(--darkerThemeColor));
         width: 100%;
-        // display: flex;
+        display: flex;
         // flex-wrap: wrap;
-        & td {
-          width: 16.5%;
+        &-column {
+          width: 20%;
           // flex-grow:
           border-right: 1px solid  rgba(var(--darkerThemeColor));
           text-align: center;
           padding: 0.5rem;
 
-          &:nth-of-type(1) {
+          &--label {
             text-transform: uppercase;
             font-weight: bold;
+            font-size: 0.7em;
+          }
+          &--quarter {
+            width: 25%;
           }
         }
       }
      }
+     &--vacataires {
+      // width: 49%;
+     }
+
   }
   
 

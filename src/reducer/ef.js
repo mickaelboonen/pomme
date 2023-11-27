@@ -303,6 +303,7 @@ const efSlice = createSlice({
       updateEfTransports: () => {},
       updateEfAccomodations: () => {},
       getEfAccomodations: () => {},
+      updateEfSteps: () => {},
       updateEfRib: () => {},
       updateEf: () => {},
       saveMissionFormData: (state, action) => {
@@ -339,12 +340,12 @@ const efSlice = createSlice({
       fetchEf: () => {},
       saveEf: (state, action) => {
         const ef = action.payload;
-        const stages = [];
+        // const stages = [];
         
-        action.payload.stages.forEach((stage) => {
-          stages.push(declareCamelCaseKeys(stage));
-        })
-        ef.stages = stages;
+        // action.payload.stages.forEach((stage) => {
+          // stages.push(declareCamelCaseKeys(stage));
+        // })
+        // ef.stages = stages;
         state.currentEf = ef;
       },
       saveEfAccomodations: (state, action) => {
@@ -382,6 +383,7 @@ export const {
   clearEfTarget,
   updateEf,
   deleteEf,
+  updateEfSteps,
   // Action Vacataire
   createEfVacataire
 } = efSlice.actions;

@@ -5,7 +5,7 @@ import { handleEfFilesUploadPayload } from 'src/selectors/fileFunctions';
 import { toggleDocModal, saveAllPermDocs } from 'src/reducer/otherDocuments';
 import { requestVehicleAuthorization, updateVehicle, createVehicle } from 'src/reducer/vehicle';
 import { rejectVisaOm, stampOm, manageOm, rejectVisaEf, stampEf, manageEf, addOmMonitoringPdf, manageOmFormation} from 'src/reducer/omManager';
-import { updateEfAccomodations, updateEfRib, updateEf, updateEfMission, updateEfTransports } from 'src/reducer/ef';
+import { updateEfAccomodations, updateEfRib, updateEf, updateEfMission, updateEfTransports,updateEfSteps} from 'src/reducer/ef';
 import {
   createDispensation,
   updateOm,
@@ -153,6 +153,10 @@ const omMiddleware = (store) => (next) => (action) => {
           const files = handleEfFilesUploadPayload(data, 'accomodations');
           files.forEach((file) => filesToUpload.push(file));
         }
+        else if (step === 'steps') {
+          const files = handleEfFilesUploadPayload(data, 'steps');
+          files.forEach((file) => filesToUpload.push(file));
+        }
         else if (step === 'signature') {
           if (data.agentRib instanceof File) {
             const fileToUpload = {
@@ -230,7 +234,8 @@ const omMiddleware = (store) => (next) => (action) => {
         });
       }
       
-      // console.log(`FILECONTROLLER filesToUpload IS : `, filesToUpload);
+      console.log(`FILECONTROLLER filesToUpload IS : `, filesToUpload);
+      // return;
       fileApi.post(`/api/files/${type}/${step}`, filesToUpload)
         .then((response) => {
 
@@ -328,12 +333,17 @@ const omMiddleware = (store) => (next) => (action) => {
             }
             
             response.data.forEach((file) => {
-              
+              console.log(file);
               if (file.type === 'mission') {
                 data.modificationFiles.push(file.file.url);
               }
               else if (file.type === 'transports') {
                 data[file.name] = data[file.name].filter((url) => !url instanceof File)
+                data[file.name].push(file.file.url);
+              }
+              else if (file.type === 'steps') {
+                console.log(data[file.name]);
+                // data[file.name] = data[file.name].filter((url) => !url instanceof File)
                 data[file.name].push(file.file.url);
               }
               else if (file.type === 'accomodations') {
@@ -356,6 +366,10 @@ const omMiddleware = (store) => (next) => (action) => {
             }
             else if (step === 'transports') {
               store.dispatch(updateEfTransports(data));
+            }
+            else if (step === 'steps') {
+              data.stepsFiles = data.stepsFiles.filter((url) => typeof url === 'string');
+              store.dispatch(updateEfSteps(data));
             }
             else if (step === 'accomodations') {
               data.eventFiles = data.eventFiles.filter((url) => typeof url === 'string');

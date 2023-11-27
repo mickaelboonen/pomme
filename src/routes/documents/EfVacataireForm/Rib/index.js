@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useLoaderData } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import '../style.scss';
+import '../../EfForm/style.scss';
 import Buttons from 'src/components/Fields/Buttons';
 import FileField from 'src/components/Fields/FileField';
 import StatusChecker from 'src/components/StatusChecker';

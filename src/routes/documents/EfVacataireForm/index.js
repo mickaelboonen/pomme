@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 
-import './style.scss';
+import '../EfForm/style.scss';
 
 
 // Components 

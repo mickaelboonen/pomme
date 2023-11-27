@@ -4,7 +4,7 @@ import { useLoaderData, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { BlobProvider, Document, PDFViewer } from '@react-pdf/renderer';
 
-import '../style.scss';
+import '../../EfForm/style.scss';
 
 import EfPDF from 'src/components/PDF/EfPdf';
 import FormSectionTitle from 'src/components/FormSectionTitle';
@@ -12,6 +12,7 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 import { uploadFile } from 'src/reducer/omForm'
 import { getDDMMYYDate, getHHMMTime } from 'src/selectors/dateFunctions';
 import { floatAddition, floatMultiplication, OTHER_MEALS_AMOUNT, ADMIN_MEALS_AMOUNT} from 'src/selectors/mathFunctions';
+import EfVacatairePdf from '../../../../components/PDF/EfVacatairePdf';
 
 const Recap = () => {
 
@@ -43,7 +44,7 @@ const Recap = () => {
 
   //------------------------------------------------------------------------------------------------
   const adminMealsAmount = floatMultiplication(accomodations.meals_in_admin_restaurants, ADMIN_MEALS_AMOUNT);
-  const frenchMeals = floatMultiplication(accomodations.meals_paid_by_agent_in_france, OTHER_MEALS_AMOUNT);
+  const frenchMeals = floatMultiplication(accomodations.meals_paid_by_agent_in_france, ADMIN_MEALS_AMOUNT);
 
   const totalMeals = floatAddition([adminMealsAmount, frenchMeals]);
   
@@ -61,7 +62,7 @@ const Recap = () => {
     dispatch(uploadFile({ data: {docId: id , file: file}, step: 'ef', docType: 'ef'}))
   }
 
-  const missionCountry = countries.find((country) => country.code === Number(mission.country));
+  // const missionCountry = countries.find((country) => country.code === Number(mission.country));
 
   const fullAgentData = {
     ...agent,
@@ -72,12 +73,12 @@ const Recap = () => {
 
   let dataForThePdf = { ...currentEf };
 
-  if (!currentEf.mission.modifications) {
-    dataForThePdf = {
-      ...currentEf,
-      mission: currentOM.mission
-    }
-  }
+  // if (!currentEf.mission.modifications) {
+    // dataForThePdf = {
+      // ...currentEf,
+      // mission: currentOM.mission
+    // }
+  // }
   
   const [isPdfVisible, setIsPdfVisible] = useState(false)
 
@@ -93,7 +94,7 @@ const Recap = () => {
   console.log(oms, omId);
   return (
     <>
-      <div className="form">  
+      <div className="form" style={{width: '75%', maxWidth: '100%'}}>  
         <div className="form__section" style={{marginBottom: '1rem'}}>
           <FormSectionTitle>Transports</FormSectionTitle>
           <p className='form__section-recap'>Total des frais de transports déclarés pour la mission : <span>{totalTransportsExpenses}€</span>.</p>
@@ -125,10 +126,7 @@ const Recap = () => {
           <p className='form__section-recap form__section-recap--lister'>Rappel des frais déclarés : </p>
           <div className='form__section-field' style={{margin: '0.5rem'}}>
             <p className='form__section-recap'>Montant des repas pris dans un restaurant administratif ou assimilé : <span>{adminMealsAmount}€</span> pour <span>{accomodations.meals_in_admin_restaurants} repas</span>.</p>
-            {dataForThePdf.mission.region === "métropole" && <p className='form__section-recap'>Montant des repas à titre onéreux en France : <span>{frenchMeals}€</span> pour <span>{accomodations.meals_paid_by_agent_in_france} repas</span>.</p>}
-            {dataForThePdf.mission.region !== "métropole" && <p className='form__section-recap'>Nombre des repas à titre onéreux à l'étranger : <span>{accomodations.meals_paid_by_agent_overseas} repas</span>.</p>}
-            
-            {dataForThePdf.mission.region !== "métropole" && <p className='form__section-recap form__section-recap--infos'>Pour avoir une idée du montant remboursé pour votre mission à l'étranger, veuillez vous rendre sur <Link to="https://www.economie.gouv.fr/dgfip/mission_taux_chancellerie/frais"> le site de la DGFIP</Link>. La valeur du <span>Groupe 1</span> vous indiquera le montant du forfait per diem comprenant l'hébergement et deux repas.</p>}
+            <p className='form__section-recap'>Montant des repas à titre onéreux en France : <span>{frenchMeals}€</span> pour <span>{accomodations.meals_paid_by_agent_in_france} repas</span>.</p>
           </div>
         </div>
         {((transports.visa !== null && transports.visa !== 0) || (accomodations.event !== null && accomodations.event !== 0) ) && (
@@ -142,41 +140,67 @@ const Recap = () => {
         {stages.length > 0 && (
           <div className="form__section" style={{marginBottom: '1rem'}}>
             <FormSectionTitle>Étapes de la Mission</FormSectionTitle>
-
-              <table className='steps__recap'>
-                <thead>
-                    <tr>
-                      <td>ÉTAPES</td>
-                      <td>DATE</td>
-                      <td>HEURE</td>
-                      <td>COMMUNE</td>
-                      <td>MATIN : HEURES DE DÉBUT ET FIN DE COURS</td>
-                      <td>APRES-MIDI : HEURES DE DÉBUT ET FIN DE COURS</td>
+              <div className="steps__tables">
+              <table className='steps__recap steps__recap--vacataires' style={{ width: '59%'}}>
+                <thead className='steps__recap-head'>
+                    <tr className='steps__recap-head-row'>
+                      <td className='steps__recap-head-row-column'>ÉTAPES</td>
+                      <td className='steps__recap-head-row-column'>DATE</td>
+                      <td className='steps__recap-head-row-column'>HEURE DE DÉPART</td>
+                      <td className='steps__recap-head-row-column'>HEURE D'ARRIVÉE</td>
+                      <td className='steps__recap-head-row-column'>COMMUNE</td>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className='steps__recap-body'>
                   {stages.map((step) => (
                     <React.Fragment key={step.id}>
-                      <tr>
-                        <td>Départ</td>
-                        <td>{getDDMMYYDate(new Date(step.departure ))}</td>
-                        <td>{getHHMMTime(new Date(step.departureHour))}</td>
-                        <td>{step.departurePlace}</td>
-                        <td>{step.amCourseBeginning}</td>
-                        <td>{step.amCourseEnding}</td>
+                      <tr className='steps__recap-body-row'>
+                        <td className='steps__recap-body-row-column steps__recap-body-row-column--label'>Départ</td>
+                        <td className='steps__recap-body-row-column'>{getDDMMYYDate(new Date(step.departure ))}</td>
+                        <td className='steps__recap-body-row-column'>{getHHMMTime(new Date(step.departureHour))}</td>
+                        <td className='steps__recap-body-row-column'>{getHHMMTime(new Date(step.arrivalHour))}</td>
+                        <td className='steps__recap-body-row-column steps__recap-body-row-column--city'>{step.departurePlace}</td>
                       </tr>
-                      <tr>
-                        <td>Arrivée</td>
-                        <td>{step.arrival ? getDDMMYYDate(new Date(step.arrival)): step.arrival}</td>
-                        <td>{getHHMMTime(new Date(step.arrivalHour))}</td>
-                        <td>{step.arrivalPlace}</td>
-                        <td>{step.pmCourseBeginning}</td>
-                        <td>{step.pmCourseEnding}</td>
+                      <tr className='steps__recap-body-row'>
+                        <td className='steps__recap-body-row-column steps__recap-body-row-column--label'>Retour</td>
+                        <td className='steps__recap-body-row-column'>{step.arrival ? getDDMMYYDate(new Date(step.arrival)): step.arrival}</td>
+                        <td className='steps__recap-body-row-column'>{getHHMMTime(new Date(step.workDepartureHour))}</td>
+                        <td className='steps__recap-body-row-column'>{getHHMMTime(new Date(step.homeArrivalHour))}</td>
+                        <td className='steps__recap-body-row-column steps__recap-body-row-column--city'>{step.arrivalPlace}</td>
                       </tr>
                     </React.Fragment>
                   ))}
                 </tbody>
               </table>
+              <table className='steps__recap steps__recap--vacataires' style={{ width: '39%'}}>
+                <thead className='steps__recap-head'>
+                  <tr className='steps__recap-head-row'>
+                      <td className='steps__recap-head-row-column steps__recap-head-row-column--quarter'>DATE DU COURS</td>
+                      <td className='steps__recap-head-row-column steps__recap-head-row-column--quarter'>PÉRIODE</td>
+                      <td className='steps__recap-head-row-column steps__recap-head-row-column--quarter'>HEURES DE DÉBUT DE COURS</td>
+                      <td className='steps__recap-head-row-column steps__recap-head-row-column--quarter'>HEURES DE FIN DE COURS</td>
+                    </tr>
+                </thead>
+                <tbody className='steps__recap-body'>
+                  {stages.map((step) => (
+                    <React.Fragment key={step.id}>
+                      <tr className='steps__recap-body-row'>
+                        <td className='steps__recap-body-row-column steps__recap-body-row-column--quarter'>{getDDMMYYDate(new Date(step.departure))}</td>
+                        <td className='steps__recap-body-row-column steps__recap-body-row-column--quarter steps__recap-body-row-column--label'>MATIN</td>
+                        <td className='steps__recap-body-row-column steps__recap-body-row-column--quarter'>{step.amCourseBeginning}</td>
+                        <td className='steps__recap-body-row-column steps__recap-body-row-column--quarter'>{step.amCourseEnding}</td>
+                      </tr>
+                      <tr className='steps__recap-body-row'>
+                        <td className='steps__recap-body-row-column steps__recap-body-row-column--quarter'></td>
+                        <td className='steps__recap-body-row-column steps__recap-body-row-column--quarter steps__recap-body-row-column--label'>APRES-MIDI</td>
+                        <td className='steps__recap-body-row-column steps__recap-body-row-column--quarter'>{step.pmCourseBeginning}</td>
+                        <td className='steps__recap-body-row-column steps__recap-body-row-column--quarter'>{step.pmCourseEnding}</td>
+                      </tr>
+                    </React.Fragment>
+                  ))}
+                </tbody>
+              </table>
+              </div>
 
               <div className='steps__recap-mobile'>
                 <p className='form__section-recap form__section-recap--infos'>Le tableau des étapes ne peut être affiché sur mobile. Veuillez passer en version ordinateur (menu de votre navigateur &gt; version pour ordinateur) pour pouvoir contrôler le détail des étapes. Merci de votre compréhension.</p>
@@ -186,32 +210,21 @@ const Recap = () => {
       
           <div className="form__section" style={{marginBottom: '1rem'}}>
             <FormSectionTitle>Total</FormSectionTitle>
-            {dataForThePdf.mission.region === "métropole" && (
-              <>
-                <p className='form__section-recap'>Total des frais déclarés pour la mission : <span>{totalMission}€</span>.</p>
-                {currentOM.advance.advance_amount && <p className='form__section-recap form__section-recap--infos'><span>Pour rappel :</span> vous avez bénéficié d'une avance de <span>{currentOM.advance.advance_amount}€</span> qui sera déduite lors du calcul du remboursement définitif effectué par le service financier d'Université.</p>}
-                <p className='form__section-recap form__section-recap--infos'><span>Attention :</span> le montant remboursé peut être différent selon les plafonds de remboursement.</p>
-              </>
-            )}
-            {dataForThePdf.mission.region !== "métropole" && (
-              <>
-                <p className='form__section-recap'>Dû aux différents taux de remboursement du forfait per diem, nous ne pouvons vous fournir une estimation du total des frais engagés par votre mission.</p>
-                {currentOM.advance.advance_amount && <p className='form__section-recap form__section-recap--infos'><span>Pour rappel :</span> vous avez bénéficié d'une avance de <span>{currentOM.advance.advance_amount}€</span> qui sera déduite lors du calcul du remboursement définitif effectué par le service financier d'Université.</p>}
-              </>
-            )}
+            <p className='form__section-recap'>Total des frais déclarés pour la mission : <span>{totalMission}€</span>.</p>
+            <p className='form__section-recap form__section-recap--infos'><span>Attention :</span> le montant remboursé peut être différent selon les plafonds de remboursement.</p>
           </div>
         {/* {apiMessage.response && <ApiResponse apiResponse={apiMessage} updateForm={true} />} */}
           <div className="form__section">
             <div className="form__section-field-buttons" style={{display: 'flex', justifyContent: 'center'}}>
               <BlobProvider document={
                 <Document>
-                  <EfPDF
+                  <EfVacatairePdf
                     agentSignature={agentSignature}
                     om={oms.find((om) => om.id == omId)}
                     data={dataForThePdf}
                     agent={fullAgentData}
                     meals={mealsExpenses}
-                    country={missionCountry}
+                    country={{name: 'ALLEMAGNE'}}
                   />
                 </Document>
                 }>
@@ -244,13 +257,13 @@ const Recap = () => {
           </div>
           <PDFViewer className='form__section-recap'>
             <Document>
-              <EfPDF
+              <EfVacatairePdf
                 agentSignature={agentSignature}
                 om={oms.find((om) => om.id == omId)}
                 data={dataForThePdf}
                 agent={fullAgentData}
                 meals={mealsExpenses}
-                country={missionCountry}
+                country={{name: 'ALLEMAGNE'}}
               />
             </Document>
           </PDFViewer>
