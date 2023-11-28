@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
-import { useLoaderData, useNavigate, Link } from 'react-router-dom';
+import { useNavigation, useSearchParams } from 'react-router-dom';
+import { useLoaderData, useNavigate, Link, useHistory } from 'react-router-dom';
 
 import '../EfForm/style.scss';
 
@@ -29,6 +29,8 @@ const EfForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const history = useNavigate()
+  console.log(history);
   const step = Number(loaderData.searchParams.get('etape'));
   const id = Number(loaderData.searchParams.get('id'));
   const om = Number(loaderData.searchParams.get('om'));
@@ -36,7 +38,7 @@ const EfForm = () => {
   const { ef: { efLoader, currentEf },
     app: { apiMessage },
   } = useSelector((state) => state);
-  
+  useEffect(() => {dispatch(clearMessage());}, [])
   useEffect(() => {
     if (apiMessage.response && apiMessage.response.status === 200) {
       setTimeout(() => {
@@ -46,10 +48,6 @@ const EfForm = () => {
       setTimeout(() => {
         let nextStep = step + 1;
 
-        if (nextStep === 4 && (!currentEf.has_steps || !currentEf.is_teaching)) {
-          nextStep = 5;
-        }
-        
         if (nextStep === 7) {
           navigate('/');
         }

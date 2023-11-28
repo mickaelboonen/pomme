@@ -17,7 +17,6 @@ import DateField from 'src/components/Fields/DateField';
 
 
 // Actions & Selectors
-import { createEfVacataire } from 'src/reducer/ef';
 import { uploadFile } from 'src/reducer/omForm';
 import { Link } from 'react-router-dom';
 
@@ -48,7 +47,6 @@ const EfVacataire = () => {
       delete data.ending;
 
       dispatch(uploadFile({data: data, step: 'vacataire', docType: 'ef-vacataire'}));
-      // dispatch(createEfVacataire(data));
     }
     else {
       setError('peche', {type: 'custom', message: "Veuillez fournir votre fiche individuelle de service définitif disponible dans Pêche"})
@@ -56,8 +54,6 @@ const EfVacataire = () => {
     }
   }
   
-  console.log(apiMessage);
-
   return (
     <div className='form-root'>
       <PageTitle>État de frais - Vacataires</PageTitle>
@@ -134,7 +130,7 @@ const EfVacataire = () => {
               )}
               {/* <div style={{width: '1rem'}} /> */}
               {(apiMessage.hasOwnProperty('response') && apiMessage.response.status === 200) && (
-                <Link to={`/modifier-un-document/${encodeURIComponent('état-de-frais-de-vacataire')}?etape=1&id=${apiMessage.id}`}>Saisir mes frais de mission</Link>
+                <Link to={`/modifier-un-document/${encodeURIComponent('état-de-frais-de-vacataire')}?etape=0&id=${apiMessage.id}`}>Saisir mes frais de mission</Link>
               )}
             </div>
           </div>

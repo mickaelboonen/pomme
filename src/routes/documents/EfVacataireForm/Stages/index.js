@@ -120,7 +120,7 @@ const Steps = ({ step }) => {
 
     }
     else {
-      setError('files', {type: "custom", message: "Veuillez fournir le tableau des jours de vacation."})
+      setError('stepsFiles', {type: "custom", message: "Veuillez fournir le tableau des jours de vacation."})
     }
 
     // Précédente validation avec le vieux code

@@ -105,8 +105,13 @@ export const checkStepsStatus = (step, currentDoc) => {
         status: (currentDoc.hasOwnProperty('accomodations') && currentDoc.accomodations.status) ? currentDoc.accomodations.status : false
       },
       {
+        name: 'étapes',
+        step: 4,
+        status: (currentDoc.hasOwnProperty('steps') && currentDoc.steps.status) ? currentDoc.steps.status : false
+      },
+      {
         name: 'rib',
-        step: 3,
+        step: 5,
         status: (currentDoc.hasOwnProperty('rib') && currentDoc.rib.status) ? currentDoc.rib.status : false
       },
     ];
@@ -129,7 +134,7 @@ export const checkVacationStepsStatus = (step, currentDoc) => {
   let docState = {};
 
   if (step === 5) {
- console.log(currentDoc);
+
     const efStepsWithStatus = [
       {
         name: 'peche',

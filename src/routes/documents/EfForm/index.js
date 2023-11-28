@@ -45,10 +45,6 @@ const EfForm = () => {
       }, "950")
       setTimeout(() => {
         let nextStep = step + 1;
-
-        if (nextStep === 4 && (!currentEf.has_steps || !currentEf.is_teaching)) {
-          nextStep = 5;
-        }
         
         if (nextStep === 7) {
           navigate('/');
@@ -68,7 +64,7 @@ const EfForm = () => {
 
   const docState = checkStepsStatus(step, currentEf);
   
-  let tabs = [
+  const tabs = [
     {
       name: 'Mission',
       id: 1,
@@ -81,10 +77,10 @@ const EfForm = () => {
       name: 'Hébergements & repas',
       id: 3,
     },
-    // {
-    //   name: 'Étapes',
-    //   id: 4,
-    // },
+    {
+      name: 'Étapes',
+      id: 4,
+    },
     {
       name: 'RIB',
       id: 5,
@@ -95,11 +91,11 @@ const EfForm = () => {
     },
   ];
 
-  if (currentEf.has_steps || currentEf.is_teaching) {
-    // tabs = tabs.filter((tab) => tab.id !== 4);
-    tabs.push({ name: 'Étapes', id: 4 });
-    tabs = lodash.sortBy(tabs, 'id');
-  }
+  // if (currentEf.has_steps || currentEf.is_teaching) {
+   //  tabs = tabs.filter((tab) => tab.id !== 4);
+    // tabs.push({ name: 'Étapes', id: 4 });
+    // tabs = lodash.sortBy(tabs, 'id');
+  // }
 
   return (
     <div className='form-root'>
@@ -115,7 +111,7 @@ const EfForm = () => {
           {((step === 4 && !efLoader))  && <Stages step={step} />}
           {(step === 5 && !efLoader) && <Rib step={step} />}
           {(step === 6 && !efLoader && docState.length === 0) && <Recap />}
-          {(step === 6 && !efLoader && docState.length > 0) && <DocMissingStepsRecap url={loaderData} id={id} docState={docState} /> }
+          {(step === 6 && !efLoader && docState.length > 0) && <DocMissingStepsRecap url={loaderData} id={id} docState={docState} om={om} /> }
         </div>
       </div>
     </div>
