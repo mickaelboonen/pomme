@@ -124,7 +124,7 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
                 <li><Link to={`/gestionnaire/${encodeURIComponent('états-de-frais-à-signer')}`}>États de Frais <span id="mes-efs"></span></Link></li>
                 <li><Link to={`/gestionnaire/${encodeURIComponent('préférences-de-gestionnaire')}`}>Mes Préférences</Link></li>
                 {process.env.NODE_ENV === 'development' && <li><Link to="/admin">Back Office</Link></li>}
-                {process.env.NODE_ENV !== 'development' && <a href="https://pom-test.unimes.fr/back/admin" target="_blank">Back Office</a>}
+                {process.env.NODE_ENV !== 'development' && <li><a href="https://pom-test.unimes.fr/back/admin" target="_blank">Back Office</a></li>}
               </ul>
             </div>
           )}
