@@ -93,6 +93,33 @@
   position: relative;
   // overflow: hidden;
 
+  &--magnified {
+    width: 100%;
+    max-width: none;
+    font-size: 1.2em;
+  }
+
+  &__magnifier {
+    cursor: pointer;
+    font-size: 2em;
+    right: -1rem;
+    position: absolute;
+    top: -1rem;
+    width: 4rem;
+    height: 4rem;
+    @include vars.centeredFlex;
+    background-color: #fff;
+    border-radius: 50%;
+    padding: 1rem;
+    color: rgba(var(--darkestThemeColor));
+    border: 2px solid rgba(var(--darkestThemeColor));
+    transition: 0.6s;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+
   &__graphic-validation {
     position: absolute;
     width: 150px;

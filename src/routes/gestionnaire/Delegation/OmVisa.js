@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { Link, useLoaderData } from 'react-router-dom';
 import { FaEye, FaDownload, FaEyeSlash } from 'react-icons/fa';
 import { BlobProvider, Document, PDFViewer } from '@react-pdf/renderer';
-
 import '../style.scss';
 
 // Components
@@ -30,6 +29,7 @@ import ScienceEventPdf from 'src/components/PDF/ScienceEventPdf';
 import CarAuthorizationPdf from 'src/components/PDF/CarAuthorizationPdf';
 import DispensationPdf from 'src/components/PDF/DispensationPdf';
 import classNames from 'classnames';
+import Magnifier from '../../../components/Visas/Magnifier';
 
 const OmVisa = ({ data, user, gest, isOm, om}) => {
 
@@ -161,44 +161,17 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
     clearErrors('signature');
   }
 
+  const [isFormMagnified, setIsFormMagnified] = useState(false);
+  const handleClickOnGlass = () =>  {
+    setIsFormMagnified(!isFormMagnified);
+  }
+
 
   return (
-    <form className='form'>
+    <form className={classNames('form', {'form--magnified': isFormMagnified})}>
+      <Magnifier isFormMagnified={isFormMagnified} handleClickOnGlass={handleClickOnGlass} />
       <FormSectionTitle>Viser les documents</FormSectionTitle>
       <div className="form__section">
-        {/* <div className="form__section-field">
-          <div className='my-documents__files-buttons'>
-            <button onClick={handleClick} type="button">
-              {viewer === '' && (
-                <>
-                  <FaEye className='my-documents__files-buttons-icon'/>
-                  <p>Voir le document</p>
-                </>
-              )}
-              {viewer !== '' && (
-                <>
-                  <FaEyeSlash className='my-documents__files-buttons-icon'/>
-                  <p>Cacher le document</p>
-                </>
-              )}
-            </button>
-            <a  href={data.file} download={`${data.name}.pdf`} >
-              <FaDownload className='my-documents__files-buttons-icon' /> Télécharger le document
-            </a>
-          </div>
-          {isFileTooLong && <p style={{textAlign: 'center', marginBottom: '1rem'}}>Le fichier est trop lourd pour être visualisé dans le navigateur. Veuillez le télécharger.</p>}
-        </div> */}
-        {/* {viewer !== '' && (
-          <div style={{height: '600px', marginBottom: '1rem'}}>
-            <embed
-              className="form-layout__viewer-pdf__embed"
-              src={viewer}
-              width="100%"
-              height="1200px"
-              type="application/pdf"
-            />
-          </div>
-        )} */}
         <div className='viseur'>
           <div className={classNames('viseur__buttons', {'viseur__buttons--no-docs': isFileTooLong})}>
             <div className='my-documents__files-buttons'>

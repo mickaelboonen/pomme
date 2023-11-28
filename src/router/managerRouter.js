@@ -151,27 +151,31 @@ export default {
             // store.dispatch(fetchTmpSignature({id: user}));
 
             if (pendingDocs.length > 0) {
-              const { missioner, advance, mission, management } = pendingDocs.find((om) => om.id === id);
+              const om = pendingDocs.find((om) => om.id === id)
+              if (om) {
+                const { missioner, advance, mission, management } = om;
 
-              // console.log('om in router : ', currentOM);
-              if (agent.roles.indexOf('MANAGER') > -1) {
-                // console.log('here');
-                const currentActor = management.workflow.find((actor) => actor.agent === user);
-                if (management.workflow.indexOf(currentActor) === management.workflow.length -1) {
-                  store.dispatch(fetchTmpSignature({id: user}));
-                }
-                if (advance.advance) {
-                  store.dispatch(fetchTmpAcSignature({id: process.env.AC_CPT_LOGIN}));
-                }
-                if (mission.scientificEvents.length > 0) {
-                  const researchVP = management.workflow.find((actor) => actor.agent === process.env.RESEARCH_CPT_LOGIN);
-
-                  if (management.workflow.indexOf(currentActor) >= management.workflow.indexOf(researchVP)) {
-                    store.dispatch(fetchTmpResearchSignature({id: process.env.RESEARCH_CPT_LOGIN}));
+                // console.log('om in router : ', currentOM);
+                if (agent.roles.indexOf('MANAGER') > -1) {
+                  // console.log('here');
+                  const currentActor = management.workflow.find((actor) => actor.agent === user);
+                  if (management.workflow.indexOf(currentActor) === management.workflow.length -1) {
+                    store.dispatch(fetchTmpSignature({id: user}));
+                  }
+                  if (advance.advance) {
+                    store.dispatch(fetchTmpAcSignature({id: process.env.AC_CPT_LOGIN}));
+                  }
+                  if (mission.scientificEvents.length > 0) {
+                    const researchVP = management.workflow.find((actor) => actor.agent === process.env.RESEARCH_CPT_LOGIN);
+  
+                    if (management.workflow.indexOf(currentActor) >= management.workflow.indexOf(researchVP)) {
+                      store.dispatch(fetchTmpResearchSignature({id: process.env.RESEARCH_CPT_LOGIN}));
+                    }
                   }
                 }
+                store.dispatch(fetchTmpUserData({id: missioner}))
+  
               }
-              store.dispatch(fetchTmpUserData({id: missioner}))
             }
             return url},
         },

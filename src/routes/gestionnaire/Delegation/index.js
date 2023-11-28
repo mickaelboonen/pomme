@@ -44,8 +44,8 @@ const Delegation = ({ isOm }) => {
         <PageTitle>{currentOM !== undefined ? currentOM.name : "Document non trouvé"}</PageTitle>
       </div>
       {(pendingDocs.length > 0 && !loader) && <OmVisa user={user} data={currentOM} gest={agent} isOm={true} om={currentOM}/>}
-      {loader && <p>Donnée en cours de chargement</p>}
-      {pendingDocs.length === 0 && <Link to={returnLink}>Veuillez retourner sur le menu des ordres de mission</Link>}
+      {(loader && currentOM) && <p>Donnée en cours de chargement</p>}
+      {(pendingDocs.length === 0 || !currentOM) && <Link to={returnLink}>Veuillez retourner sur le menu des ordres de mission</Link>}
     </div>
   );
 };

@@ -15,6 +15,7 @@ import PdfProvider from 'src/components/Visas/PdfProvider';
 import PdfViewer from 'src/components/Visas/PdfViewer';
 import ReturnLink from 'src/components/Visas/ReturnLink';
 import InputValueDisplayer from 'src/routes/gestionnaire/DocValidation/InputValueDisplayer';
+import Magnifier from 'src/components/Visas/Magnifier';
 
 // Actions
 import { addOmMonitoringPdf } from 'src/reducer/omManager';
@@ -111,10 +112,15 @@ const AdvanceVisa = ({ data, user, gest, om}) => {
     },
   ];
 
+  const [isFormMagnified, setIsFormMagnified] = useState(false);
+  const handleClickOnGlass = () =>  {
+    setIsFormMagnified(!isFormMagnified);
+  }
   const { advance } = om;
   return (
     <>
-      <form className='form'>
+      <form className={classNames('form', {'form--magnified': isFormMagnified})}>
+        <Magnifier handleClickOnGlass={handleClickOnGlass} isFormMagnified={isFormMagnified} />
         <VisaViewer
           data={data}
           user={user}

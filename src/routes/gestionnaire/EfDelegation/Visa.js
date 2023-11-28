@@ -1,34 +1,29 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { useForm } from "react-hook-form";
-import { Link, useLoaderData } from 'react-router-dom';
-import { FaEye, FaDownload, FaEyeSlash } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
 import { BlobProvider, Document, PDFViewer } from '@react-pdf/renderer';
 import { floatAddition, floatMultiplication, OTHER_MEALS_AMOUNT, ADMIN_MEALS_AMOUNT} from 'src/selectors/mathFunctions';
 
 import '../style.scss';
 
 // Components
-import TextareaField from 'src/components/Fields/TextareaField';
-import ButtonElement from 'src/components/Fields/ButtonElement';
+import Amounts from './Amounts';
+import EfPdf from 'src/components/PDF/EfPdf';
+import Magnifier from 'src/components/Visas/Magnifier';
 import FileField from 'src/components/Fields/FileField';
-import CheckboxInput from 'src/components/Fields/CheckboxInput';
-import FormSectionTitle from 'src/components/FormSectionTitle';
+import VisaComponent from 'src/components/VisaComponent';
 import RadioInput from 'src/components/Fields/RadioInput';
 import HiddenField from 'src/components/Fields/HiddenField';
-import { useDispatch, useSelector } from 'react-redux';
-import ValidationMonitoringPdf from 'src/components/PDF/ValidationMonitoringPdf';
-import EfPdf from 'src/components/PDF/EfPdf';
-import OmAdvancePdf from 'src/components/PDF/OmAdvancePdf';
-
-import { setValidationDate, setExistingValidationDate} from 'src/selectors/pdfFunctions';
-import VisaComponent from 'src/components/VisaComponent';
+import FormSectionTitle from 'src/components/FormSectionTitle';
+import CheckboxInput from 'src/components/Fields/CheckboxInput';
+import TextareaField from 'src/components/Fields/TextareaField';
+import ButtonElement from 'src/components/Fields/ButtonElement';
 
 // Actions
-import { getSavedFileName } from 'src/selectors/formDataGetters';
 import {  addEfMonitoringPdf,addOmMonitoringPdf } from 'src/reducer/omManager';
-import { getDDMMYYDate } from '../../../selectors/dateFunctions';
-import Amounts from './Amounts';
+
 
 const Visa = ({ data, user, gest, isOm, ef}) => {
 
@@ -159,45 +154,17 @@ const needsSignature = ef.management.workflow.indexOf(currentActor) === ef.manag
     french: frenchMeals,
   };
   console.log(gest);
+  const [isFormMagnified, setIsFormMagnified] = useState(false);
+  const handleClickOnGlass = () =>  {
+    setIsFormMagnified(!isFormMagnified);
+  }
+
+
   return (
-    <form className='form'>
+    <form className={classNames('form', {'form--magnified': isFormMagnified})}>
+      <Magnifier isFormMagnified={isFormMagnified} handleClickOnGlass={handleClickOnGlass} />
       <FormSectionTitle>Viser le document</FormSectionTitle>
       <div className="form__section">
-        {/* <div className="form__section-field">
-          <div className='my-documents__files-buttons'>
-            {!isFileTooLong && (
-              <button onClick={handleClick} type="button">
-              {viewer === '' && (
-                <>
-                  <FaEye className='my-documents__files-buttons-icon'/>
-                  <p>Voir le document</p>
-                </>
-              )}
-              {viewer !== '' && (
-                <>
-                  <FaEyeSlash className='my-documents__files-buttons-icon'/>
-                  <p>Cacher le document</p>
-                </>
-              )}
-              </button>
-            )}
-            <a  href={data.file} download={`${data.name}.pdf`} >
-              <FaDownload className='my-documents__files-buttons-icon' /> Télécharger le document
-            </a>
-          </div>
-          {isFileTooLong && <p style={{textAlign: 'center', marginBottom: '1rem'}}>Le fichier est trop lourd pour être visualisé dans le navigateur. Veuillez le télécharger.</p>}
-        </div>
-        {viewer !== '' && (
-          <div style={{height: '600px', marginBottom: '1rem'}}>
-            <embed
-              className="form-layout__viewer-pdf__embed"
-              src={viewer}
-              width="100%"
-              height="1200px"
-              type="application/pdf"
-            />
-          </div>
-        )} */}
         <VisaComponent
           data={data}
           user={user}

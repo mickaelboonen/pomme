@@ -20,7 +20,7 @@ import { styles } from './pdfStyles';
 
 const EfPdf = ({ data, agent, signature, country, om, gest}) => {
 
-  const { mission, transports, accomodations, stages } = data;
+  const { mission, transports, accomodations } = data;
   const { mission: { addresses, planning }, advance} = om;
 
   const dep = new Date(mission.departure);
@@ -242,7 +242,7 @@ const EfPdf = ({ data, agent, signature, country, om, gest}) => {
       {mission.region === 'dom-tom' && <Text>Mission dans les DOM-TOM : {mission.abroad_costs === "per-diem" ? 'Forfait per diem.' : 'Frais réels dans la limite du forfait.'}</Text>}
       {mission.region === 'étranger' &&  <Text>Mission dans le pays : {country.name.toUpperCase()}, avec un {mission.abroad_costs === "per-diem" ? 'Forfait per diem.' : 'Frais réels dans la limite du forfait.'}</Text>}
     </View>
-    {stages.length > 1 && <EfSteps steps={stages} isTeaching={data.is_teaching}/>}
+    {/* {stages.length > 1 && <EfSteps steps={stages} isTeaching={data.is_teaching}/>} */}
     <View style={styles.section} wrap={false}>
       <Text style={styles.section.title} wrap={false}>TOTAUX</Text>
       <View style={[styles.section.subsection, {padding: 5}]}>
