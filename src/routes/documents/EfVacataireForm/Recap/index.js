@@ -29,17 +29,15 @@ const Recap = () => {
     agent: { agent, user, oms, agentProfessionalAddress, agentPersonalAddress},
   } = useSelector((state) => state);
   // console.log(currentEf);
-  const {  transports, accomodations, stages } = currentEf;
+  const {  transports, accomodations } = currentEf;
   
   const { setValue, getValues } = useForm({ defaultValues: agent });
 
-  const x = Object.entries(transports);
-  console.log(x);
   let transportsFields = Object.entries(transports).filter((transport) => (!transport[0].includes('_files') && transport[0] !== 'km' && transport[0] !== 'horsepower' ) && transport[1]);
   transportsFields = transportsFields.filter((transport) => transport[0] !== 'id' && transport[0] !== 'status');
 
   const transportsAmountsArray = transportsFields.map((t) => t[1]);
-  console.log(transportsAmountsArray);
+
   const totalTransportsExpenses = floatAddition(transportsAmountsArray);
 
   //------------------------------------------------------------------------------------------------
@@ -91,7 +89,7 @@ const Recap = () => {
       setIsPdfVisible(true);
     }
   }
-  console.log(oms, omId);
+
   return (
     <>
       <div className="form" style={{width: '75%', maxWidth: '100%'}}>  
@@ -117,7 +115,7 @@ const Recap = () => {
         <div className="form__section" style={{marginBottom: '1rem'}}>
           <FormSectionTitle>Hébergement</FormSectionTitle>
           {accomodations.hotel > 0 && <p className='form__section-recap'>Total des frais d'hébergement déclarés pour la mission : <span>{accomodations.hotel}€</span>.</p>}
-          {accomodations.hotel === 0 && <p className='form__section-recap'>Pas de frais d'hébergement à rembourser.</p>}
+          {(accomodations.hotel === 0 || !accomodations.hotel) && <p className='form__section-recap'>Pas de frais d'hébergement à rembourser.</p>}
         </div>
         <div className="form__section" style={{marginBottom: '1rem'}}>
           <FormSectionTitle>Repas</FormSectionTitle>
@@ -137,7 +135,7 @@ const Recap = () => {
             {(accomodations.event !== null && accomodations.event !== 0)  && <p className='form__section-recap form__section-recap--infos'>Compte rendu à adresser obligatoirement au service de la recherche.</p>}
           </div>
         )}
-        {stages.length > 0 && (
+        {/* {stages.length > 0 && (
           <div className="form__section" style={{marginBottom: '1rem'}}>
             <FormSectionTitle>Étapes de la Mission</FormSectionTitle>
               <div className="steps__tables">
@@ -206,7 +204,7 @@ const Recap = () => {
                 <p className='form__section-recap form__section-recap--infos'>Le tableau des étapes ne peut être affiché sur mobile. Veuillez passer en version ordinateur (menu de votre navigateur &gt; version pour ordinateur) pour pouvoir contrôler le détail des étapes. Merci de votre compréhension.</p>
               </div>
           </div>
-        )}
+        )} */}
       
           <div className="form__section" style={{marginBottom: '1rem'}}>
             <FormSectionTitle>Total</FormSectionTitle>

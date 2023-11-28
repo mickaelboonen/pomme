@@ -19,6 +19,7 @@ import FileField from 'src/components/Fields/FileField';
 import HiddenField from 'src/components/Fields/HiddenField';
 import FormSectionTitle from 'src/components/FormSectionTitle';
 import ButtonElement from 'src/components/Fields/ButtonElement';
+import StatusChecker from 'src/components/StatusChecker';
 
 // Actions
 import { addSteps, handleSteps, deleteStep } from 'src/reducer/app';
@@ -33,7 +34,7 @@ const Steps = ({ step }) => {
   const navigate = useNavigate();
 
   const { app: { apiMessage },
-    agent: {agent : { unimesStatus }},
+    agent: {agent, user},
     ef: { currentEf }
   } = useSelector((state) => state);
   
@@ -114,6 +115,7 @@ const Steps = ({ step }) => {
 
     if (file) {
       clearErrors('files');
+      data.status = 1;
       dispatch(uploadFile({data: data, step: 'steps', docType: 'ef'}))
 
     }
@@ -215,10 +217,11 @@ const Steps = ({ step }) => {
   
   return (
     <form className="form" onSubmit={handleSubmit(onSubmit)}>
+      <StatusChecker status={defaultValues.status} />
       <div className='form__section'>
         <FormSectionTitle>Tableau des étapes</FormSectionTitle>
         <div className='my-documents__files-buttons'>
-          <a href={VacationPdf} download={`${'data.name'}.pdf`} >
+          <a href={VacationPdf} download={`${user}-tableau-vacation.pdf`} >
             <FaDownload className='my-documents__files-buttons-icon' /> Télécharger le tableau
           </a>
         </div>

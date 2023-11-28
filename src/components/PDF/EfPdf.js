@@ -19,7 +19,7 @@ Font.register({ family: 'Radjhani', src: RadjhaniFont });
 import { styles } from './pdfStyles';
 
 const EfPdf = ({ data, agent, signature, country, om, gest}) => {
-  console.log(om);
+
   const { mission, transports, accomodations, stages } = data;
   const { mission: { addresses, planning }, advance} = om;
 

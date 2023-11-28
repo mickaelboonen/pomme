@@ -27,7 +27,8 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
     persistor.purge();
     cas.logout("/se-connecter");
   }
-    
+  // const boBaseUrl = process.env.NODE_ENV === 'development' ? <process.env.DEFAULT_USER> : '';
+
   return (
   <div className="header">
       <div className="header__identity">
@@ -122,7 +123,8 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
                 <li><Link to={`/gestionnaire/${encodeURIComponent('ordres-de-mission-à-signer')}`}>Ordres de Mission</Link></li>
                 <li><Link to={`/gestionnaire/${encodeURIComponent('états-de-frais-à-signer')}`}>États de Frais <span id="mes-efs"></span></Link></li>
                 <li><Link to={`/gestionnaire/${encodeURIComponent('préférences-de-gestionnaire')}`}>Mes Préférences</Link></li>
-                <li><Link to={`/back/admin`}>Back Office</Link></li>
+                {process.env.NODE_ENV === 'development' && <li><Link to="/admin">Back Office</Link></li>}
+                {process.env.NODE_ENV !== 'development' && <a href="https://pom-test.unimes.fr/back/admin" target="_blank">Back Office</a>}
               </ul>
             </div>
           )}

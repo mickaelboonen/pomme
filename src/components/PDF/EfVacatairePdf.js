@@ -118,7 +118,7 @@ const EfVacatairePdf = ({ data, agent, signature, gest}) => {
         src={Logo}
         style={styles.header.image}
       />
-      <Text style={styles.header.title}>TABLEAU DE VACATION</Text>
+      <Text style={styles.header.title}>État de frais - Vacataires</Text>
     </View>
     <View style={styles.section}>
       <Text style={styles.section.title} wrap={false}>AGENT</Text>
@@ -203,7 +203,7 @@ const EfVacatairePdf = ({ data, agent, signature, gest}) => {
       <Text style={styles.section.text} />
       <Text style={styles.section.text} />
     </View>
-    {stages.length > 1 && <EfSteps steps={stages} isTeaching={data.is_teaching}/>}
+    {/* {stages.length > 1 && <EfSteps steps={stages} isTeaching={data.is_teaching}/>} */}
     <View style={styles.section} wrap={false}>
       <Text style={styles.section.title} wrap={false}>TOTAUX</Text>
       <View style={[styles.section.subsection, {padding: 5}]}>
