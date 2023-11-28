@@ -345,11 +345,11 @@ const ValidateOm = ({
           
           return (
             <div className="form__section-field-buttons__row">
-              <button style={{margin: 'auto'}}type="button" onClick={() => { const data = watch(); data.file = file; submitFunction(data)}}>
+              <button type="button" onClick={() => { const data = watch(); data.file = file; submitFunction(data)}}>
                 Valider la demande
               </button>
               <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
-                Visualiser <br /> le document
+                Visualiser le document
               </button>
             </div>
           );
@@ -363,14 +363,6 @@ const ValidateOm = ({
         </div>
         <PDFViewer className='form__section-recap'>
           <Document>
-            {/* <ValidationMonitoringPdf
-              // om={om}
-              // user={user}
-              // agent={agent}
-              // isGest={true}
-              // gestData={watch()}
-              // isOm={true}
-            // /> */}
             <OmPdf
               countries={countries}
               data={om}
