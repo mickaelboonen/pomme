@@ -1,24 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useForm } from "react-hook-form";
-import { useLoaderData } from 'react-router-dom';
-import { streetType as streetArray} from 'src/data/addressData';
-import { useDispatch, useSelector } from 'react-redux';
-
 
 // Components
-import TextareaField from 'src/components/Fields/TextareaField';
-import TextField from 'src/components/Fields/TextField';
-import FormSectionTitle from 'src/components/FormSectionTitle';
 
 // Selectors 
-import { addAllAddressesFields } from 'src/selectors/keyObjectService';
-
-// Reducer
-import { getDDMMYYDate, getHHMMTime } from 'src/selectors/dateFunctions';
 import FileHandler from '../FileHandler';
 import InputValueDisplayer from '../InputValueDisplayer';
-import InputHtmlDisplayer from '../../../../components/InputHtmlDisplayer';
+
+// Reducer
+import { getDDMMYYDate } from 'src/selectors/dateFunctions';
 
 const ScientificEvent = ({ entity, displayPdf, data, event}) => {
   return (
