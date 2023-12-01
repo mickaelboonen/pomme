@@ -312,6 +312,12 @@ const Transports = ({ step }) => {
               label="Avancé par l'agent"
               register={register}
             />
+            <RadioInput
+              id="free-t"
+              formField="trainPayment"
+              label="Réglé par un autre organisme"
+              register={register}
+            />
             { errors.trainPayment && <p className={classNames("form__section-field-error", { "form__section-field-error--open": errors.trainPayment.message.length > 0 })}>{errors.trainPayment.message}</p>}
           </div>
         </div>
@@ -344,6 +350,7 @@ const Transports = ({ step }) => {
             <label className="form__section-field-label" htmlFor="departure-place">Règlement</label>
             <RadioInput id="unimes-p" formField="planePayment" label="Réglé par Unîmes" register={register} />
             <RadioInput id="user" formField="planePayment" label="Avancé par l'agent" register={register} />
+            <RadioInput id="free-p" formField="planePayment" label="Réglé par un autre organisme" register={register} />
             { errors.planePayment && <p className="form__section-field-error form__section-field-error--open">{errors.planePayment.message}</p> }
           </div>
         </div>

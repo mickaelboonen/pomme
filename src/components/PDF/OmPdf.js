@@ -226,10 +226,10 @@ const OmPdf = ({
         <View style={styles.section} wrap={false}>
           <Text style={styles.section.title} wrap={false}>TRANSPORTS</Text>
           {trainData.hasOwnProperty('class') && (
-            <Text>Train : Voyage en {trainData.class === 'second-class' ? 'deuxième classe' : 'première classe'}, {trainData.payment.includes('agent') ? "avancé par l'agent." : 'payé par Unîmes.'}</Text>
+            <Text>Train : Voyage en {trainData.class === 'second-class' ? 'deuxième classe' : 'première classe'}, {trainData.payment.includes('agent') ? "avancé par l'agent." : (trainData.payment.includes('free') ? "pris en charge par un autre organisme." : 'payé par Unîmes.')}</Text>
           )}
           {planeData.hasOwnProperty('class') && (
-            <Text>Avion : Voyage en {planeData.class === 'business-class' ? 'classe affaire' : 'classe éco'}, {planeData.payment.includes('user') ? "avancé par l'agent." : 'payé par Unîmes.'}</Text>
+            <Text>Avion : Voyage en {planeData.class === 'business-class' ? 'classe affaire' : 'classe éco'}, {planeData.payment.includes('user') ? "avancé par l'agent." : (planeData.payment.includes('free') ? "pris en charge par un autre organisme." : 'payé par Unîmes.')}</Text>
           )}
           {chosenVehicleType.hasOwnProperty('name') && (
             <>

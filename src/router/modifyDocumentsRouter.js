@@ -30,9 +30,10 @@ export default {
       
         store.dispatch(fetchOm({id: id, handleLoader: false,}));
 
-        // if (!agentProfessionalAddress.hasOwnProperty('streetNamePro') || !agentPersonalAddress.hasOwnProperty('streetName') ) {
+        console.log( agentProfessionalAddress, agentPersonalAddress);
+        if (!agentProfessionalAddress.hasOwnProperty('addressPro') || !agentPersonalAddress.hasOwnProperty('address') ) {
           store.dispatch(fetchUserData({ id: user}));
-        // }
+        }
 
 
         if (step === '1' && countries.length === 0) {

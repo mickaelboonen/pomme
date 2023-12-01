@@ -31,7 +31,8 @@ const TransportsVal = ({ displayPdf, data, entity }) => {
     if (type === 'train' && transport_type.indexOf(type) >= 0) {
       
       transport.category = transport_class.find((payment) => payment.includes('first') || payment.includes('second')).includes('first') ? 'Première classe' : 'Deuxième classe';
-      transport.payment = transport_payment.find((payment) => payment.includes(type)).includes('agent') ? "Avancé par l'agent" : "Payé par Unîmes";
+      const transportPaymentValue = transport_payment.find((payment) => payment.includes(type));
+      transport.payment = transportPaymentValue.includes('agent') ? "Avancé par l'agent" : transportPaymentValue.includes('free') ? "Réglé par un autre organisme" : "Payé par Unîmes";
 
       dispensations.forEach((dis) => {
         if (dis.type.includes(type)) {
@@ -41,7 +42,8 @@ const TransportsVal = ({ displayPdf, data, entity }) => {
     }
     else if (type === 'plane' && transport_type.indexOf(type) >= 0) {      
       transport.category  = data.transport_class.find((payment) => payment.includes('eco') || payment.includes('business')).includes('business') ? 'Classe affaire' : 'Classe économique';
-      transport.payment = data.transport_payment.find((payment) => payment.includes(type)).includes('agent') ? "Avancé par l'agent" : "Payé par Unîmes";
+      const transportPaymentValue = transport_payment.find((payment) => payment.includes(type));
+      transport.payment = transportPaymentValue.includes('agent') ? "Avancé par l'agent" : transportPaymentValue.includes('free') ? "Réglé par un autre organisme" : "Payé par Unîmes";
 
       dispensations.forEach((dis) => {
         if (dis.type.includes('avion')) {
