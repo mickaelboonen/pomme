@@ -67,7 +67,7 @@ const Validation = () => {
     validation: isOneStepRejected === undefined ? null : 'reject',
     rejectedFields: rejectedFields,
     channel: currentChannel ? currentChannel.id : null,
-    comments: currentOM.comments,
+    comments: localStorage.getItem('gestComments'),
     lolf: currentOM.management.lolf,
     nacres: currentOM.management.nacres,
     analytique: currentOM.management.analytique,
@@ -127,12 +127,15 @@ const Validation = () => {
         // data.managementFiles = [];
         if (currentOM.status === 2) {
           dispatch(addOmMonitoringPdf({data: data, task: 'replace', nextAction: 'manageOm'}));
+          localStorage.removeItem('gestComments');
+
         }
         else if (currentOM.status === 5 && currentOM.type.includes('formation')){
           dispatch(addOmMonitoringPdf({data: data, task: 'replace', nextAction: 'manageOmFormation'}))
+          localStorage.removeItem('gestComments');
         }
         else {
-          window.alert('Nothing happened.')
+          window.alert("Une erreur est survenue, l'application n'est pas en mesure de valider l'ordre de mission.")
         }
 
       }
