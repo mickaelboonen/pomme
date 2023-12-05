@@ -147,7 +147,7 @@ const DocButtons = ({ id, status, peche, name, om, file, transports, isDocFinish
           <FaDownload className='my-documents__files-buttons-icon' /> Demande de véhicule
         </a>
       )}
-      {/* {status === 1 && <button type="button" onClick={handleClickOnDelete}><FaTrash className='my-documents__files-buttons-icon' /> Supprimer le document</button>} */}
+      {status === 1 && <button type="button" style={{width: 'fit-content'}} onClick={handleClickOnDelete}><FaTrash className='my-documents__files-buttons-icon' /> Supprimer le document</button>}
     </div>
   );
 }

@@ -274,6 +274,10 @@ const omFormSlice = createSlice({
       createScientificEvent: () => {},
       changeFileStatus: () => {},
       deleteOm: () => {},
+      deleteOmFromState: (state, action) => {
+        state.currentOM = {};
+        state.userOms = state.userOms.filter((om) => om.id !== action.payload);
+      }
     },
 });
 
@@ -314,7 +318,8 @@ export const {
   deleteAddress,
   createScientificEvent,
   changeFileStatus,
-  deleteOm
+  deleteOm,
+  deleteOmFromState
 } = omFormSlice.actions;
 
 export default omFormSlice.reducer;

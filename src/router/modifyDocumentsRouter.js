@@ -30,7 +30,6 @@ export default {
       
         store.dispatch(fetchOm({id: id, handleLoader: false,}));
 
-        console.log( agentProfessionalAddress, agentPersonalAddress);
         if (!agentProfessionalAddress.hasOwnProperty('addressPro') || !agentPersonalAddress.hasOwnProperty('address') ) {
           store.dispatch(fetchUserData({ id: user}));
         }

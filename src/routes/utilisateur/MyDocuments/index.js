@@ -53,7 +53,7 @@ const MyDocuments = () => {
     dispatch(selectDocumentsList({id: location.pathname.includes('ordres') ? 'oms' : 'efs', target: 'ec'}))
   }, [location])
   
-  const pageData = (path, user) => {
+  const pageData = (path) => {
     let pageData = {};
 
     if (path.includes('ordres-de-mission')) {
@@ -70,7 +70,7 @@ const MyDocuments = () => {
     return pageData;
   }
 
-  const { isOm, title, slug } = pageData(location.pathname, user);
+  const { isOm, title, slug } = pageData(location.pathname);
   
   
 
@@ -136,7 +136,7 @@ const MyDocuments = () => {
     ])
   }
 
-  const omThatCanBeRefunded = userOms.filter((om) => om.status === 9 || om.status === 10);
+  const omThatCanBeRefunded = userOms.filter((om) => om.status === 10 || om.status === 11);
 
   return (
     <main className="my-documents">

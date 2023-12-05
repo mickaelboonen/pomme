@@ -8,9 +8,10 @@ import {
   saveAdvance,
   saveMore,
   setLoader,
+  deleteOmFromState,
   validateSideForm,
 } from 'src/reducer/omForm';
-import { saveOMs, addOmToList } from 'src/reducer/agent';
+import { saveOMs, addOmToList, deleteOmFromAgentState } from 'src/reducer/agent';
 import { setApiResponse } from 'src/reducer/app';
 import { setEfLoader, fetchEf } from 'src/reducer/ef';
 import { api, setTokenOnApi } from './api';
@@ -265,6 +266,9 @@ const omMiddleware = (store) => (next) => (action) => {
         api.delete("/api/om/delete/" + action.payload)
           .then((response) => {
             store.dispatch(setApiResponse({message: response.data, response: { status: 202}}));
+            store.dispatch(deleteOmFromState(action.payload))
+            store.dispatch(deleteOmFromAgentState(action.payload))
+
           })
           .catch((error) => {
             store.dispatch(setApiResponse(error));

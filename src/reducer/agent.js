@@ -126,7 +126,12 @@ const agentSlice = createSlice({
       saveAgentPreferences: (state, action) => {
         state.agentPreferences = action.payload;
       },
-      updateAgentPreferences: () => {}
+      updateAgentPreferences: () => {},
+      deleteOmFromAgentState: (state, action) => {
+        state.oms = state.oms.filter((om) => om.id != action.payload);
+        state.documentsList = state.documentsList.filter((om) => om.id != action.payload);
+        state.currentDoc = {};
+      }
     },
 });
 
@@ -149,7 +154,8 @@ export const {
   addOmToList,
   getAgentPreferences,
   saveAgentPreferences,
-  updateAgentPreferences
+  updateAgentPreferences,
+  deleteOmFromAgentState
 } = agentSlice.actions;
 
 export default agentSlice.reducer;
