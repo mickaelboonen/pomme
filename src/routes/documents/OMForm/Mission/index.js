@@ -147,7 +147,7 @@ const Mission = ({ step, isEfForm }) => {
   const onSubmit = (data) => {
 
     data = turnFieldsToAddressEntity(data);
-    console.log(data.scientificEvents.length);
+    console.log(data);
     if (data.science) {
       if (data.scientificEvents.length === 0) {
         setError('scientificEvents', { type: 'custom', message: 'Merci de remplir le formulaire de participation à un événement scientifique.'});
@@ -239,6 +239,12 @@ const Mission = ({ step, isEfForm }) => {
         if (data.maps) {
           mapsToAdd = data.maps.find((file) => file instanceof File);
         }
+
+        data.departure = departure;
+        data.comeback = comeback;
+
+        delete data.departureInSpecificTimezone;
+        delete data.comebackInSpecificTimezone;
 
         if (fileToAdd === undefined && mapsToAdd === undefined ) {
           delete data.om;

@@ -66,7 +66,7 @@ export default {
             
             if (step === '6') {
               const currentOM = pendingDocs.find((om) => om.id === id);
-              // console.log(currentOM);
+              console.log(currentOM);
               store.dispatch(fetchTmpUserData({id: currentOM.missioner}))
   
               store.dispatch(setLoader(true));

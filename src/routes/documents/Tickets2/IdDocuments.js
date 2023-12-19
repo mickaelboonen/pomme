@@ -60,7 +60,7 @@ const IdDocuments = ({ currentCni, register, watch, errors, setValue, clearError
         required="Veuillez sélectionner une option."
       />
       {errors.region && <p className='form__section-field-error form__section-field-error--open'>{errors.region.message}</p>}
-      <p className='file-manager__message'>Il vous appartient de vérifier de la valider de votre document d'identité. Veuillez vous rendre sur <a target="_blank" href="https://www.diplomatie.gouv.fr/fr/" style={{textDecoration: 'underline'}}>France Diplomatie</a> pour vérifier les modalités d'entrée dans le.s pays de la mission.</p>
+      <p className='file-manager__message'>Il vous appartient de vérifier de la validité de votre document d'identité. Veuillez vous rendre sur <a target="_blank" href="https://www.diplomatie.gouv.fr/fr/" style={{textDecoration: 'underline'}}>France Diplomatie</a> pour vérifier les modalités d'entrée dans le.s pays de la mission.</p>
     </div>
 
     {region.indexOf('abroad') > -1 && (

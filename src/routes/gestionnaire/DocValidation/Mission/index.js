@@ -16,7 +16,7 @@ import FormSectionTitle from 'src/components/FormSectionTitle';
 import { addAllAddressesFields } from 'src/selectors/keyObjectService';
 
 // Reducer
-import { getDDMMYYDate, getHHMMTime } from 'src/selectors/dateFunctions';
+import { getDDMMYYDate, getHHMMTime, getHHMMTimeNormal } from 'src/selectors/dateFunctions';
 import FileHandler from '../FileHandler';
 import InputValueDisplayer from '../InputValueDisplayer';
 import InputHtmlDisplayer from '../../../../components/InputHtmlDisplayer';
@@ -62,6 +62,7 @@ const MissionVal = ({ displayPdf, data, entity, expenses }) => {
     return joinedAddress;
   })
 
+  // console.log("here = ", data.departure, data.comeback);
   return (
     <>
       <div className="form__section">
@@ -111,7 +112,7 @@ const MissionVal = ({ displayPdf, data, entity, expenses }) => {
           
           <InputValueDisplayer
             label="Date et heure du début de mission"
-            value={getDDMMYYDate(new Date(data.departure)) + ' à ' + getHHMMTime(new Date(data.departure))}
+            value={getDDMMYYDate(new Date(data.departure)) + ' à ' + getHHMMTimeNormal(new Date(data.departure))}
           />
           <InputValueDisplayer
             label="Lieu de départ"
@@ -123,7 +124,7 @@ const MissionVal = ({ displayPdf, data, entity, expenses }) => {
           
           <InputValueDisplayer
             label="Date et heure de la fin de mission"
-            value={getDDMMYYDate(new Date(data.comeback)) + ' à ' + getHHMMTime(new Date(data.comeback))}
+            value={getDDMMYYDate(new Date(data.comeback)) + ' à ' + getHHMMTimeNormal(new Date(data.comeback))}
           />
           <InputValueDisplayer
             label="Lieu de retour"

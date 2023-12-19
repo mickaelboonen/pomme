@@ -43,16 +43,36 @@ export const getDDMMYYDate = (date, separator = '/') => {
 
   return dateToString
 }
-
+/**
+ * Old function to get HHMM time
+ * @param {*} date 
+ * @returns 
+ */
 export const getHHMMTime = (date) => {
-  console.log("in getHHMMTime");
-  console.log(date);
-  const frDate = date.toUTCString('fr-FR', { timeZone: 'Europe/Paris' });
+
+  // const frDate = date.toUTCString('fr-FR', { timeZone: 'Europe/Paris' });
+  const frDate = date.toTimeString();
+
+  const splitDate = frDate.split(' ');
+  console.log(frDate);
+  const timeToString = splitDate[4].slice(0, 5);
+
+  return timeToString;
+}
+
+/**
+ * Function to get HHMM time without the UTC problem
+ * @param {*} date 
+ * @returns 
+ */
+export const getHHMMTimeNormal = (date) => {
+
+  const frDate = date.toTimeString();
   console.log(frDate);
 
   const splitDate = frDate.split(' ');
-  // console.log(splitDate);
-  const timeToString = splitDate[4].slice(0, 5);
+
+  const timeToString = splitDate[0].slice(0, 5);
 
   return timeToString;
 }

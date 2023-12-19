@@ -74,6 +74,7 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
                   <button onClick={() => {dispatch(checkAuthentication({username : 'mevandil', password: 'fsdf'}))}}>Marion</button>
                     <button onClick={() => {dispatch(checkAuthentication({username : 'ymarti01', password: 'fsdf'}))}}>Yannick</button>
                     <button onClick={() => {dispatch(checkAuthentication({username : 'acadie02', password: 'fsdf'}))}}>Axelle</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'mdeni', password: 'fsdf'}))}}>Michela</button>
                     <button onClick={() => {dispatch(checkAuthentication({username : 'clegalla', password: 'fsdf'}))}}>Corinne</button>
                     <button onClick={() => {dispatch(checkAuthentication({username : 'fjacquet', password: 'fsdf'}))}}>Fabrice</button>
                     <button onClick={() => {dispatch(checkAuthentication({username : 'sseddo01', password: 'fsdf'}))}}>M. Seddouki</button>
@@ -108,6 +109,9 @@ const DesktopHeader = ({ cas, isAuthenticated}) => {
                 {(user === 'mboone01') && (
                   <div style={{height: '100%', display: 'flex', flexDirection: 'column', zIndex: '999'}}>
                     <button onClick={() => {dispatch(checkAuthentication({username : 'jdupont', password: 'fsdf'}))}}>J. Dupont</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'nbouvi01', password: 'fsdf'}))}}>N. Bouvier</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'lbaldass', password: 'fsdf'}))}}>L. Baldasseroni</button>
+                    <button onClick={() => {dispatch(checkAuthentication({username : 'ccorni02', password: 'fsdf'}))}}>C. Cornillon</button>
                   </div>
                 )}
               </ul>

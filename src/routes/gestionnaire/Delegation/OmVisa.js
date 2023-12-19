@@ -132,8 +132,7 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
    // console.log("here ? ");
       return;
     }
-    console.log(data);
-    return;
+
     if (isOm) {
       dispatch(addOmMonitoringPdf({data: data, task: 'replace', nextAction: data.action === 'validate' ? 'stampOm' : 'rejectVisaOm'}));
     }
@@ -162,6 +161,7 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
   const handleClickOnGlass = () =>  {
     setIsFormMagnified(!isFormMagnified);
   }
+
 
   return (
     <>
