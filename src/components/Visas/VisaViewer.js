@@ -10,7 +10,10 @@ import VisaComponent from 'src/components/VisaComponent';
 
 const VisaViewer = ({ data, user, watch, gest, register}) => {
 
-  const isOm = data.name.split('-')[1] === 'OM' ? true : false;
+  const secondOmNamePart = data.name.split('-')[1];
+  
+  // if secondOmNamePart.length > 2 => c'est un nom-composé donc on prend l'entrée suivante
+  const isOm = secondOmNamePart.length === 2 ? (secondOmNamePart === 'OM' ? true : false) : (data.name.split('-')[2] === 'OM' ? true : false);
   return (
     <div className="form__section">
       <FormSectionTitle>Viser le document</FormSectionTitle>

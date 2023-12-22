@@ -23,46 +23,47 @@ const VisaComponent = ({data, user, gest, watch, isOm}) => {
   
   return (
     <div className='viseur'>
-      <div className={classNames('viseur__buttons', {'viseur__buttons--no-docs': isFileTooLong})}>
+      <div className={classNames('viseur__buttons', {'viseur__buttons--no-docs': isFileTooLong && viewer !== ''})}>
         <div className='my-documents__files-buttons'>
-          <button onClick={handleClick} type="button">
-            <FaEye className='my-documents__files-buttons-icon'/>
-            <p>{viewer === '' ? (`Voir l'${isOm ? 'OM' : 'EF'}`) : "Voir les visas"}</p>
-          </button>
+          { !isFileTooLong && (
+            <button onClick={handleClick} type="button">
+              <FaEye className='my-documents__files-buttons-icon'/>
+              <p>{viewer === '' ? (`Voir l'${isOm ? 'OM' : 'EF'}`) : "Voir les visas"}</p>
+            </button>
+          )}
           <a href={data.file} download={`${data.name}.pdf`} >
             <FaDownload className='my-documents__files-buttons-icon' /> Télécharger l'{isOm ? 'OM' : 'EF'}
           </a>
           {isFileTooLong && <p style={{textAlign: 'center', marginBottom: '1rem'}}>Le fichier est trop lourd pour être visualisé dans le navigateur. Veuillez le télécharger.</p>}
-
         </div>
       </div>
-      {!isFileTooLong && (
+      {(!isFileTooLong  && viewer !== '') && (
         <div style={{height: '600px', width: '68%'}}>
-          {viewer === '' && (
-            <PDFViewer>
-              <Document>
-                <ValidationMonitoringPdf
-                  om={data}
-                  user={user}
-                  agent={gest}
-                  isGest={false}
-                  gestData={watch()}
-                  isOm={isOm}
-                />
-              </Document>
-            </PDFViewer>
-          )}
-          {viewer !== '' && (
-            <div style={{height: '600px', marginBottom: '1rem'}}>
-              <embed
-                className="form-layout__viewer-pdf__embed"
-                src={viewer}
-                width="100%"
-                height="1200px"
-                type="application/pdf"
+          <div style={{height: '600px', marginBottom: '1rem'}}>
+            <embed
+              className="form-layout__viewer-pdf__embed"
+              src={viewer}
+              width="100%"
+              height="1200px"
+              type="application/pdf"
+            />
+          </div>
+        </div>
+      )}
+      {viewer === '' && (
+        <div style={{height: '600px', width: '68%'}}>
+          <PDFViewer>
+            <Document>
+              <ValidationMonitoringPdf
+                om={data}
+                user={user}
+                agent={gest}
+                isGest={false}
+                gestData={watch()}
+                isOm={isOm}
               />
-            </div>
-          )}
+            </Document>
+          </PDFViewer>
         </div>
       )}
     </div>
