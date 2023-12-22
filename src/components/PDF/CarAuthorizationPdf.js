@@ -55,7 +55,7 @@ const CarAuthorizationPdf = ({ data, vehicleTypes, agent, gest, signature, reaso
           <>
             <Text style={styles.section.notabene}>Produire obligatoirement la photocopie de la carte grise et de l’attestation d’assurance</Text>
             <Text style={[styles.section.text, {textDecoration: 'underline'}]}>Informations sur le véhicule :</Text>
-            <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Marque : <Text style={{fontFamily: 'Radjhani'}}>{data.make ?? (data.vehicle ? data.make.license_plate : '')}</Text></Text>
+            <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Marque : <Text style={{fontFamily: 'Radjhani'}}>{data.make ?? (data.vehicle ? data.vehicle.license_plate : '')}</Text></Text>
             <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Immatriculation : <Text style={{fontFamily: 'Radjhani'}}>{data.licensePlate ?? (data.vehicle ? data.vehicle.licensePlate : '')}</Text></Text>
             <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Puissance fiscale : <Text style={{fontFamily: 'Radjhani'}}>{data.rating ?? (data.vehicle ? data.vehicle.rating : '')}</Text></Text>
             <Text style={{ textIndent: 10, fontFamily: 'RadjhaniBold'}}>Compagnie d'assurance : <Text style={{fontFamily: 'Radjhani'}}>{data.insurance ?? (data.vehicle ? data.vehicle.insurance : '')}</Text></Text>

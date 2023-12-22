@@ -30,7 +30,7 @@ const otherDocsSlice = createSlice({
         state.agentDocs = action.payload;
       },
       addPermFile: () => {
-
+        state.agentDocs = state.agentDocs.filter((doc) => doc.type !== action.payload.type);
       },
       editPermFile: () => {
 
@@ -38,8 +38,8 @@ const otherDocsSlice = createSlice({
       findPermFilesByAgent: () => {
 
       },
-      deletePermFile: () => {
-
+      deletePermFile: (state, action) => {
+        state.agentDocs = state.agentDocs.filter((doc) => doc.type !== action.payload.type);
       },
       // fetchAgentSignatureForPdf: () => {
 

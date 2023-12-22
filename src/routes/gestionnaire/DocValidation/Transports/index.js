@@ -122,16 +122,39 @@ const TransportsVal = ({ displayPdf, data, entity }) => {
         <div className="form__section">
           <FormSectionTitle>Véhicule</FormSectionTitle>
           {data.authorizations.map((file) => (
-            <FileHandler
-              key={data.authorizations.indexOf(file) + '-car'}
-              label="Demande préalable d'utilisation d'un véhicule"
-              dataLink={file.dataFile}
-              url={file.file}
-              displayPdf={displayPdf}
-              entity={entity}
-              entityId={data.id}
-              status={file.status}
-            />
+            <React.Fragment key={data.authorizations.indexOf(file) + '-car'}>
+              <FileHandler
+                label="Demande préalable d'utilisation d'un véhicule"
+                dataLink={file.dataFile}
+                url={file.file}
+                displayPdf={displayPdf}
+                entity={entity}
+                entityId={data.id}
+                status={file.status}
+              />
+              {file.vehicle && (
+                <>
+                  <FileHandler
+                    label="Assurance du véhicule"
+                    dataLink={file.vehicle.dataInsuranceFile}
+                    url={file.vehicle.insuranceFile}
+                    displayPdf={displayPdf}
+                    entity={entity}
+                    entityId={data.id}
+                    status={file.status}
+                  />
+                  <FileHandler
+                    label="Carte grise du véhicule"
+                    dataLink={file.vehicle.dataRegistrationFile}
+                    url={file.vehicle.registrationFile}
+                    displayPdf={displayPdf}
+                    entity={entity}
+                    entityId={data.id}
+                    status={file.status}
+                  />
+                </>
+              )}
+            </React.Fragment>
           ))}
           <InputValueDisplayer
             label="Parking"
