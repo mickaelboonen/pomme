@@ -23,15 +23,13 @@ const otherDocsSlice = createSlice({
         state.type = action.payload.type;
 
         if (action.payload.data) {
-          state.agentDocs.push(action.payload.data)
+          state.agentDocs = action.payload.docs;
         }
       },
       saveAllPermDocs: (state, action) => {
         state.agentDocs = action.payload;
       },
-      addPermFile: () => {
-        state.agentDocs = state.agentDocs.filter((doc) => doc.type !== action.payload.type);
-      },
+      addPermFile: () => {},
       editPermFile: () => {
 
       },
@@ -73,7 +71,6 @@ const otherDocsSlice = createSlice({
       requestTicketsWithFile: () => {},
       fetchUserIdPapers: (state) => { state.loader = true },
       saveUserIdPapers: (state, action) => {
-        console.log('here');
         state.currentPassport = action.payload.passport;
         state.currentCni = action.payload.cni;
         state.loader = false;

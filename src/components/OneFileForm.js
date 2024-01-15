@@ -50,7 +50,7 @@ const OneFileForm = ({ onUserPage }) => {
     filename = signature.name;
   }
 
-  console.log(filename);
+  // console.log(filename);
 
   const close = () => {
     dispatch(toggleDocModal({ action: '', type: ''}));
@@ -59,8 +59,18 @@ const OneFileForm = ({ onUserPage }) => {
   const onSubmit = (data) => {
     
     if (data.file instanceof File) {
-      if (action === "add") {
-        dispatch(addPermFile({data: data, type: type, user: user, onUserPage: onUserPage}));
+
+      const fileSizeInKB = data.file.size / 1024;
+      const maxSizeInKB = 2048; // Limite de 2048 KiB (2 Mo) 
+
+      // Vérifiez si la taille du fichier est inférieure à la limite souhaitée (en kilo-octets)
+      if (fileSizeInKB > maxSizeInKB) {
+        alert('Le fichier est trop volumineux. Veuillez choisir un fichier de taille inférieure à 2 Mo.');
+        return;
+    }
+
+    if (action === "add") {
+        dispatch(addPermFile({data: data, type: type, user: user, onUserPage: onUserPage, docs}));
       }
       else if (action === 'edit') {
         dispatch(editPermFile({data: data, type: type, user: user, onUserPage: onUserPage, id: onUserPage ? docToUpdate.id : signature.id}));
@@ -76,7 +86,7 @@ const OneFileForm = ({ onUserPage }) => {
     <form className="modal__form" onSubmit={handleSubmit(onSubmit)}>
       <div className="form__section">
         <FormSectionTitle>{setTitle()}</FormSectionTitle>
-        <div className="form__section-field">
+        <div className="form__section-field" style={{marginBottom: 0}}>
           <FileField
             register={register}
             formField="file"
@@ -85,19 +95,24 @@ const OneFileForm = ({ onUserPage }) => {
             label="Sélectionner un fichier à télécharger"
             setValue={setValue}
             error={errors.file}
+            pieces="Le fichier ne doit pas excéder 2Mo."
           />
         </div>
       </div>
+      <a href="https://www.ilovepdf.com/fr/compresser_pdf" target="_blank" style={{textDecoration: 'underline', textAlign: 'center', display: 'block', marginTop: '-1rem', marginBottom: '2rem', fontStyle: 'italic'}} className="form__section-field-label">Fichier trop lourd ? Compressez votre PDF</a>
+
       <div className="form__section-field-buttons" id="modal-button">
-        <ButtonElement
-          type="submit"
-          label="Valider"
+        <div className="form__section-field-buttons__row" id="modal-button">
+          <ButtonElement
+            type="submit"
+            label="Valider"
+            />
+          <ButtonElement
+            type="button"
+            label="Annuler"
+            handler={close}
           />
-        <ButtonElement
-          type="button"
-          label="Annuler"
-          handler={close}
-        />
+        </div>
       </div>
     </form>
   </div>

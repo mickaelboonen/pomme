@@ -580,8 +580,14 @@ const omMiddleware = (store) => (next) => (action) => {
       const { type, onUserPage } = action.payload;
       fileApi.post(`/api/file/perm/add/${type}`, action.payload)
       .then((response) => {
+        const { docs : { agentDocs } } = store.getState();
+        const newAgentDocs = [...agentDocs];
 
-        store.dispatch(toggleDocModal({ action: '', type: '', data: response.data}));
+        if (response.data.file) {
+          newAgentDocs.push(response.data.file)
+        }
+
+        store.dispatch(toggleDocModal({ action: '', type: '', data: response.data, docs: newAgentDocs}));
         if (!onUserPage) {
           store.dispatch(saveTmpSignature(response))
         }
@@ -607,11 +613,17 @@ const omMiddleware = (store) => (next) => (action) => {
       
       fileApi.post(`/api/file/perm/update/${id}`, action.payload)
         .then((response) => {
-          store.dispatch(toggleDocModal({ action: '', type: ''}));
-          if (!onUserPage) {
-            store.dispatch(saveTmpSignature(response))
+          const { docs : { agentDocs } } = store.getState();
+          const newAgentDocs = agentDocs.filter((doc) => doc.type !== response.data.type);
+
+          if (response.data) {
+            newAgentDocs.push(response.data)
           }
   
+          store.dispatch(toggleDocModal({ action: '', type: '', data: response.data, docs: newAgentDocs }));
+            if (!onUserPage) {
+            store.dispatch(saveTmpSignature(response))
+          }
         })
         .catch((error) => {
           store.dispatch(setApiResponse(error));

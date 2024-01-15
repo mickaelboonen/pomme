@@ -11,7 +11,7 @@
   top: 20vh;
   right: -30px;
   min-width: 15rem;
-  z-index: 500;
+  z-index: 999;
   border-radius: vars.$radius 0 0 vars.$radius;
   box-shadow: 3px 3px  1px #1a1a1a;
   animation: 2s ease-in 1s infinite reverse both running bounce;
