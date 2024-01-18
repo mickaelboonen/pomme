@@ -246,8 +246,11 @@ const Mission = ({ step, isEfForm }) => {
         delete data.departureInSpecificTimezone;
         delete data.comebackInSpecificTimezone;
 
+
         if (fileToAdd === undefined && mapsToAdd === undefined ) {
           delete data.om;
+          console.log(data);
+          // return;
           dispatch(updateMission(data));
         }
         else {

@@ -57,7 +57,7 @@ export const setEfTranportsFilenames = (data) => {
 }
 
 export const addAllAddressesFields = (data) => {
-  console.log(data);
+  // console.log(data);
   
   const { addresses } = data;
   

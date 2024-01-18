@@ -254,7 +254,7 @@ export const turnAdvanceDataToDbFormat = (data) => {
     advance: advance,
     advanceAmount: advanceAmount === "" ? null : advanceAmount,
     totalAmount: totalAmount === "" ? null : totalAmount,
-    hotelQuotations: hotelQuotations,
+    hotelQuotations: hotelQuotations ?? [],
     nightsNumber: nightsNumber,
     mealsNumber: mealsNumber,
     otherExpensesAmount: otherExpensesAmount === "" ? 0 : otherExpensesAmount,
