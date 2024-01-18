@@ -77,7 +77,7 @@ const Tickets2 = () => {
     data.transports = setTransportsForEmail(data.transportsMeans);
     data.user = user;
     data.pv = pv.id;
-    data.agent = agent.gender + ' ' + agent.firstname + ' ' + agent.lastname.toUpperCase();
+    data.agent = agent.firstname + ' ' + agent.lastname.toUpperCase();
     data.om = id;
 
     const tickets = document.querySelector('.ql-editor').innerHTML;

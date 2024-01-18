@@ -173,7 +173,8 @@ const OmPdf = ({
         </View>
         <View style={styles.section}>
           <Text style={styles.section.title} wrap={false}>MISSIONNAIRE</Text>
-          <Text style={styles.section.text}>Qualité : {agent.gender} {agent.lastname.toUpperCase()} {agent.firstname}</Text>
+          <Text style={styles.section.text}>Nom : {agent.lastname.toUpperCase()}</Text>
+          <Text style={styles.section.text}>Prénom : {agent.firstname}</Text>
           <Text style={styles.section.text}>Statut : {agent.unimesStatus} de catégorie {agent.unimesCategory}</Text>
           <Text style={styles.section.text}>Service / Département : {agent.unimesDepartment}</Text>
           <Text style={styles.section.subtitle}>Adresses du missionnaire :</Text>

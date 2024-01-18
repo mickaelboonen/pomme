@@ -51,8 +51,8 @@ const OmAdvancePdf = ({
         </View>
         <View style={styles.section}>
           <Text style={styles.section.title} wrap={false}>MISSIONNAIRE</Text>
-          {data.unknown_amount && <Text style={styles.section.text} >Je soussigné{agent.gender !== 'M.' ? 'e' : '' }, {agent.lastname.toUpperCase()} {agent.firstname}, déclare faire une demande d'avance auprès du service financier sans connaître le montant total de la mission. Je laisse le soin au service financier de calculer à ma place le montant total et de procéder à une avance de 75% dudit montant. </Text>}
-          {!data.unknown_amount && <Text style={styles.section.text}>Je soussigné{agent.gender !== 'M.' ? 'e' : '' }, {agent.lastname.toUpperCase()} {agent.firstname}, demande que soit accordée une avance de {data.advance_amount} euros, montant qui correspond à 75% du montant total de la mission, soit {data.total_amount} euros. </Text>}
+          {data.unknown_amount && <Text style={styles.section.text} >Je soussigné.e, {agent.lastname.toUpperCase()} {agent.firstname}, déclare faire une demande d'avance auprès du service financier sans connaître le montant total de la mission. Je laisse le soin au service financier de calculer à ma place le montant total et de procéder à une avance de 75% dudit montant. </Text>}
+          {!data.unknown_amount && <Text style={styles.section.text}>Je soussigné.e, {agent.lastname.toUpperCase()} {agent.firstname}, demande que soit accordée une avance de {data.advance_amount} euros, montant qui correspond à 75% du montant total de la mission, soit {data.total_amount} euros. </Text>}
           <Text style={[styles.section.text, {textAlign: 'right'}]}>Fait à Nîmes le {setValidationDateForPdf(creationDate)}.</Text>
         </View>
         <View style={styles.section} wrap={false}>

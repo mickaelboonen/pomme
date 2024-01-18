@@ -83,13 +83,15 @@ const Identity = ({ isEfForm }) => {
       <form className="form">
         <div className="form__section">
           <FormSectionTitle>Missionnaire</FormSectionTitle>
-          <div className="form__section form__section--split">
-            <p className="form__section-field-label">Qualité : </p>
-            <RadioInput disabled id="Mme" formField="gender" label="Madame" register={register} />
-            <RadioInput disabled id="M." formField="gender" label="Monsieur" register={register} />
-          </div>
-          <div className='form__section form__section--documents' id="other-fields">
+          <div className='form__section form__section--documents'>
             <div className='form__section-half'>
+              <TextField
+                id="lastname"
+                disabled
+                formField="lastname"
+                label="Nom de famille"
+                register={register}
+              />
               <TextField
                 id="firstname"
                 disabled
@@ -100,12 +102,26 @@ const Identity = ({ isEfForm }) => {
             </div>
             <div className='form__section-half'>
               <TextField
-                id="lastname"
+                id="status"
                 disabled
-                formField="lastname"
-                label="Nom de famille"
+                formField="unimesStatus"
+                label="Statut"
                 register={register}
-              />
+              /> 
+              <TextField
+                id="category"
+                disabled
+                formField="unimesCategory"
+                label="Catégorie"
+                register={register}
+              /> 
+              <TextField
+                id="department"
+                disabled
+                formField="unimesDepartment"
+                label="Service / département"
+                register={register}
+              /> 
             </div>
           </div>
         </div>
@@ -127,7 +143,7 @@ const Identity = ({ isEfForm }) => {
           />
           {missingData && <p className="form__section-field-error form__section-field-error--open" style={{margin: '1rem', lineHeight: '120%'}}>Les informations concernant votre adresse personnelle n'ont pas pu être récupérées. Veuillez actualiser la page. Si le problème persiste, merci de faire un ticket sur GLPI en précisant l'identifiant de l'ordre de mission (OM n° {omId}).</p>}
         </div>
-        <div className="form__section">
+        {/* <div className="form__section">
           <FormSectionTitle>Personnel</FormSectionTitle>
           <div className="form__section form__section--split" style={{alignItems: 'center'}}>
             <div className="form__section__half">
@@ -211,7 +227,7 @@ const Identity = ({ isEfForm }) => {
               </div>
             )}
           </div>
-        </div>
+        </div> */}
         <div className="form__section">
           <p className="form__section-recap form__section-recap--infos">
             <span>Attention :</span> en cas d'erreur dans vos données personnelles ou si votre situation a changé, veuillez vous rapprocher du Service DRH pour les mettre à jour.

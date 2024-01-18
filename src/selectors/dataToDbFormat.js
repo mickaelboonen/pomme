@@ -343,7 +343,7 @@ export const extractUserData = (data) => {
     employer:'unimes',
     firstname:agent.prenom,
     position: position,
-    gender:agent.cCivilite === 'Mlle' ? 'Mme' : agent.cCivilite,
+    gender:agent.cCivilite,
     lastname:agent.nomAffichage,
     unimesCategory: categorie,
     unimesStatus: title,

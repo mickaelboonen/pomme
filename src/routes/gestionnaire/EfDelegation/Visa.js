@@ -254,11 +254,11 @@ const needsSignature = ef.management.workflow.indexOf(currentActor) === ef.manag
                   <button type="button" onClick={() => { const data = watch(); data.file = new File([blob], data.name, {type: 'pdf'}); submitFunction(data);}}>
                     Valider le document
                   </button>
-                  {/* {gest.roles.indexOf('MANAGER') && (
+                  {gest.roles.indexOf('MANAGER') && (
                     <button type="button" id="viewer-opener" onClick={toggleViewer} style={{marginLeft: '1rem'}}>
                       VOIR
                     </button>
-                  )} */}
+                  )}
                 </>
               )}
             </BlobProvider>

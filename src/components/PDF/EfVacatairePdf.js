@@ -122,7 +122,8 @@ const EfVacatairePdf = ({ data, agent, signature, gest}) => {
     </View>
     <View style={styles.section}>
       <Text style={styles.section.title} wrap={false}>AGENT</Text>
-      <Text style={styles.section.text}>Qualité : {agent.gender} {agent.lastname.toUpperCase()} {agent.firstname}</Text>
+      <Text style={styles.section.text}>Nom : {agent.lastname.toUpperCase()}</Text>
+      <Text style={styles.section.text}>Prénom : {agent.firstname}</Text>
       <Text style={styles.section.text}>Service / Département : {agent.unimesDepartment}</Text>
       <Text style={styles.section.text} />
       <Text style={styles.section.subtitle}>Adresses du missionnaire :</Text>
@@ -221,8 +222,8 @@ const EfVacatairePdf = ({ data, agent, signature, gest}) => {
         {!gest && <Text style={styles.section.text}>Signature de l'ordonnateur.rice (Président, DGS, VP)</Text>}
         {(gest && gest.position === "DGS" ) && (
           <>
-            <Text style={styles.section.text}>Ordonnat{gest ? (gest.gender === "M." ? 'eur' : 'rice'): 'eur.rice (Président, DGS, VP)'} : {gest ? gest.gender + ' ' + gest.lastname : ''}</Text>
-            <Text style={styles.section.text}>Direction Générale des Services</Text>
+            <Text style={styles.section.text}>Ordonnat{gest ? 'eur.rice' : 'eur.rice (Président, DGS, VP)'} : {gest ? `${gest.lastname.toUpperCase()} ${gest.firstname}`  : ''}</Text>
+            <Text style={styles.section.text}>{gest.unimesDepartment}</Text>
             <Text style={styles.section.text}>Signature :</Text>
           </>
         )}
