@@ -150,7 +150,8 @@ const Validation = () => {
       data.workflow = actors;
       delete data.channel;
       delete data.validation;
-      
+      localStorage.removeItem('gestComments');
+
       dispatch(rejectOm(data));
     }
   };
