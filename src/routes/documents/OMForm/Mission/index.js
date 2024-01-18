@@ -240,8 +240,8 @@ const Mission = ({ step, isEfForm }) => {
           mapsToAdd = data.maps.find((file) => file instanceof File);
         }
 
-        data.departure = departure;
-        data.comeback = comeback;
+        data.comeback = new Date(comeback.getTime() - comeback.getTimezoneOffset() * 60000).toISOString();
+        data.departure = new Date(departure.getTime() - departure.getTimezoneOffset() * 60000).toISOString();
 
         delete data.departureInSpecificTimezone;
         delete data.comebackInSpecificTimezone;

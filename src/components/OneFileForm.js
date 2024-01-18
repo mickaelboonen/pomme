@@ -70,7 +70,7 @@ const OneFileForm = ({ onUserPage }) => {
     }
 
     if (action === "add") {
-        dispatch(addPermFile({data: data, type: type, user: user, onUserPage: onUserPage, docs}));
+        dispatch(addPermFile({data: data, type: type, user: user, onUserPage: onUserPage, docs: agentDocs}));
       }
       else if (action === 'edit') {
         dispatch(editPermFile({data: data, type: type, user: user, onUserPage: onUserPage, id: onUserPage ? docToUpdate.id : signature.id}));
