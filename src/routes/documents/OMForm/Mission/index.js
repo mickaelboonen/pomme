@@ -189,10 +189,10 @@ const Mission = ({ step, isEfForm }) => {
       }
       else {
         
-        if (!data.modificationFiles || data.modificationFiles.length === 0) {
-          setError('modificationFiles', { type: 'custom', message: 'Merci de fournir la ou les pièces justifiant la modification.'})
-          return;
-        }
+        // if (!data.modificationFiles || data.modificationFiles.length === 0) {
+          // setError('modificationFiles', { type: 'custom', message: 'Merci de fournir la ou les pièces justifiant la modification.'})
+          // return;
+        // }
         data.status = 1;
      // console.log("DATA TO BE SENT = ", data);
         if (data.modificationFiles.length > 0) {
