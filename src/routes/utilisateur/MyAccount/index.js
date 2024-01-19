@@ -115,57 +115,7 @@ const MyAccount = () => {
           handler={null}
           user={user}
         />
-      </div>
-      
-      {user === 'mboone01' && (
-        <div className='form__section'>
-          <FormSectionTitle>Demandes permanentes</FormSectionTitle>
-
-          <FileManager
-            icon={<FaCar
-              className='file-displayer__icon-container-icon'
-            />}
-            id="permanent-car-authorization"
-            label="Autorisation d'utilisation de véhicule"
-            file={docs.permanentCarAuthorization}
-            handler={null}
-            user={user}
-          />
-
-          <FileManager
-            icon={<FaTrain
-              className='file-displayer__icon-container-icon'
-            />}
-            id="permanent-train-dispensation"
-            label="Dérogation 1ère classe en train"
-            file={docs.permanentTrainDispensation}
-            handler={null}
-            user={user}
-          />
-
-          <FileManager
-            icon={<FaPlaneDeparture
-              className='file-displayer__icon-container-icon'
-            />}
-            id="permanent-plane-dispensation"
-            label="Dérogation classe affaires en avion"
-            file={docs.permanentPlaneDispensation}
-            handler={null}
-            user={user}
-          />
-          <FileManager
-            icon={<FaTaxi
-              className='file-displayer__icon-container-icon'
-            />}
-            id="permanent-taxi-dispensation"
-            label="Dérogation pour le taxi"
-            file={docs.permanentTaxiDispensation}
-            handler={null}
-            user={user}
-          />
-        </div>
-      )}
-      
+      </div>     
       <div className='form__section'>
         <FormSectionTitle>Véhicules</FormSectionTitle>
 
@@ -180,7 +130,6 @@ const MyAccount = () => {
           user={user}
         />
       </div>
-
       <div className='form__section'>
         <FileManager
           icon={<FaCar
