@@ -59,7 +59,7 @@ const Section = ({ id, data, user, steps, currentDoc, loader, isOm}) => {
           <MdRefresh className={classNames('my-documents__files-buttons-icon', {'my-documents__files-buttons-icon--animated': loader})} />  {!loader ? 'Rafraîchir la liste' : ''}
         </button>
       </div>
-      {(currentDoc.hasOwnProperty('id') && currentDoc.status === 1) && (
+      {(currentDoc.hasOwnProperty('id') && (currentDoc.status === 1 || currentDoc.status === 0)) && (
         <div className='om-status'>
           <FormSectionTitle>Statut des différentes étapes</FormSectionTitle>
           <div className='om-status__steps'>

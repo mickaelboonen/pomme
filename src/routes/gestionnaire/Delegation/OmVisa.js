@@ -157,7 +157,7 @@ const needsSignature = om.management.workflow.indexOf(currentActor) === om.manag
   }
   
 
-  const [isFormMagnified, setIsFormMagnified] = useState(false);
+  const [isFormMagnified, setIsFormMagnified] = useState(true);
   const handleClickOnGlass = () =>  {
     setIsFormMagnified(!isFormMagnified);
   }
