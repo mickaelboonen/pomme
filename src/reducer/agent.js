@@ -74,7 +74,7 @@ const agentSlice = createSlice({
         let status = 1;
         if (target === 'ec') {
           // status = 1;
-          state.documentsList = state[id].filter((doc) => doc.status === 1);
+          state.documentsList = state[id].filter((doc) => doc.status === 1 || doc.status === 0);
         }
         else if (target === 'as') {
           status = 2;
