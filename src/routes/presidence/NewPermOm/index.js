@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLoaderData, useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -24,6 +24,7 @@ import { fetchPresidencyVehicles } from 'src/reducer/presidency';
 
 import '../style.scss';
 import { useForm } from 'react-hook-form';
+import DocsGenerator from './DocsGenerator';
 
 const NewPermOm = () => {
 
@@ -36,7 +37,20 @@ const NewPermOm = () => {
     handleSubmit,
     formState:
       { errors }
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      "car": "6",
+      "member": "broig",
+      "otherMember": "",
+      "purpose": "Tout déplacement dans le cadre de la Présidence",
+      "dispensations": [
+          "train",
+          "avion",
+          "car",
+          "taxi"
+      ]
+  }
+  });
 
   const [dispensations, member] = watch(['dispensations', 'member']);
 
@@ -49,8 +63,10 @@ const NewPermOm = () => {
 
   const { presidency: { loader, presidencyUsers, presidencyVehicles }} = useSelector((state) => state);
 
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const onSubmit = (data) => {
- // console.log(data);
+    // console.log(data);
+    setIsSubmitted(true);
   }
   const handleClickForVehicles = () => {
     // console.log(member);
@@ -207,6 +223,9 @@ const NewPermOm = () => {
               </div>
             </div>
           </div> */}
+          {isSubmitted && (
+            <DocsGenerator data={watch()} />
+          )}
           <div className="form__section">
             <div className="form__section-field-buttons"  style={{margin: '1rem'}}>
               <div className="form__section-field-buttons__row">

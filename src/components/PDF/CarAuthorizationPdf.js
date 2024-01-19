@@ -34,7 +34,7 @@ const CarAuthorizationPdf = ({ data, vehicleTypes, agent, gest, signature, reaso
       reasonsAsString += reason.label + ' - ';
     }
   })
-  
+
   const validationDate = signature ? (gest.validation_date ? setExistingValidationDate(gest.validation_date) : setValidationDate()) : null;
 
   return (
