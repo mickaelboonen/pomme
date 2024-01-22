@@ -14,6 +14,7 @@ import { fetchPresidencyUsers, fetchPresidencyVehicles } from "src/reducer/presi
 import Presidence from "src/routes/presidence";
 import NewPermOm from "src/routes/presidence/NewPermOm";
 import AddPresidencyVehicle from "../routes/presidence/AddVehicle";
+import PDFsSupervisor from "../routes/presidence/PDFsSupervisor";
 
 export default {
   path: `${encodeURIComponent('présidence')}/`,
@@ -71,6 +72,22 @@ export default {
         
       }
     },
-
+    {
+      path: encodeURIComponent('pdfs-à-créer') + '/:id',
+      element: <PDFsSupervisor />,
+      // loader: async ({ request }) => {
+      //   const url = new URL(request.url);
+      //   const {
+      //     presidency : { presidencyUsers },
+      //   } = store.getState((state) => state);
+      
+      //   if (presidencyUsers.length === 0) {
+      //     store.dispatch(fetchPresidencyUsers());
+      //   }
+      //   // console.log(url.pathname.split('/'));
+      //   store.dispatch(fetchVehicle({id: url.pathname.split('/')[3]}))
+        
+      // }
+    },
   ]
 };

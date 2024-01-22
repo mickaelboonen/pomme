@@ -9,7 +9,10 @@ var lodashArray = require('lodash/array');
 const initialState = {
   loader: false,
   presidencyUsers: [],
-  presidencyVehicles: []
+  presidencyVehicles: [],
+  currentOm: null,
+  pdfsToCreate: [],
+  proceedToPdf: false,
 };
 const presidencySlice = createSlice({
     name: 'presidency',
@@ -32,6 +35,17 @@ const presidencySlice = createSlice({
         state.presidencyVehicles = action.payload;
         // state.loader = false;
       },
+      createPermOm: () => {
+
+      },
+      proceedToPdfPage: (state, action) => {
+        state.proceedToPdf = true;
+        state.pdfsToCreate = action.payload.docs;
+        state.currentOm = action.payload.om;
+        localStorage.setItem('permanentOm', JSON.stringify(action.payload.om));
+        localStorage.setItem('pdfsToCreate', JSON.stringify(action.payload.docs));
+      },
+      createPermOmPDF: () => {}
     }
 });
 
@@ -40,7 +54,10 @@ export const {
   fetchPresidencyUsers,
   savePresidencyUsers,
   fetchPresidencyVehicles,
-  savePresidencyVehicles
+  savePresidencyVehicles,
+  createPermOm,
+  createPermOmPDF,
+  proceedToPdfPage
 } = presidencySlice.actions;
 
 export default presidencySlice.reducer;

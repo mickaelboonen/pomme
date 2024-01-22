@@ -36,7 +36,7 @@ const OmPdf = ({
   
   // const { vehicle: {  }} = useSelector((state) => state);
   const {mission, transports, accomodations, advance, more} = data;
-  
+  // console.log(mission);
   const dep = new Date(mission.departure);
   const ret = new Date(mission.comeback);
   

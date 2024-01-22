@@ -161,7 +161,7 @@ const AdvanceVisa = ({ data, user, gest, om}) => {
           <div className='form__section-half'>
             <InputValueDisplayer
               label="Montants des autres frais"
-              value={advance.other_expenses_amount.toString()}
+              value={advance.other_expenses_amount ? advance.other_expenses_amount.toString() : 'Aucun frais renseigné.'}
             />
           </div>
           <div className='form__section-half'>

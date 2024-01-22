@@ -1,6 +1,6 @@
 import { api, setTokenOnApi } from './api';
 import { setApiResponse } from '../reducer/app';
-import { savePresidencyUsers, savePresidencyVehicles } from 'src/reducer/presidency';
+import { savePresidencyUsers, savePresidencyVehicles, proceedToPdfPage } from 'src/reducer/presidency';
 
 api.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 api.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
@@ -27,7 +27,19 @@ const presidencyMiddleware = (store) => (next) => (action) => {
       .catch((error) => {
         store.dispatch(setApiResponse(error));
       });
-    break;
+      break;
+    case 'presidency/createPermOm':
+      api.post("/api/presidency/permanent-om/add", action.payload)
+      .then((response) => {
+      console.log(response.data);
+        store.dispatch(proceedToPdfPage(response.data))
+        // store.dispatch(savePresidencyVehicles(response.data))
+      })
+      .catch((error) => {
+        store.dispatch(setApiResponse(error));
+      });
+      break;
+  
 
     default:
   }

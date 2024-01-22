@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLoaderData, useLocation, useNavigate, useParams } from 'react-router-dom';
 import classNames from 'classnames';
+import { getDDMMYYDate } from 'src/selectors/dateFunctions';
 
 // Components
 // import NewSection from './NewSection';
@@ -17,7 +18,7 @@ import { toggleModal } from 'src/reducer/app';
 import { addNewOM, clearOMTarget, selectOmData} from 'src/reducer/omForm';
 import { selectEfData, clearEfTarget } from 'src/reducer/ef';
 
-import { fetchPresidencyVehicles } from 'src/reducer/presidency';
+import { fetchPresidencyVehicles, createPermOm, createPermOmPDF } from 'src/reducer/presidency';
 
 
 // import './style.scss';
@@ -29,6 +30,7 @@ import DocsGenerator from './DocsGenerator';
 const NewPermOm = () => {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const {
     register,
     setValue,
@@ -61,12 +63,30 @@ const NewPermOm = () => {
     // }
   }, [presidencyVehicles])
 
-  const { presidency: { loader, presidencyUsers, presidencyVehicles }} = useSelector((state) => state);
+  const { presidency: { loader, presidencyUsers, currentOm, presidencyVehicles, proceedToPdf}} = useSelector((state) => state);
 
+  useEffect(() => {
+    if (proceedToPdf) {
+      navigate(`/${encodeURIComponent('présidence')}/${encodeURIComponent('pdfs-à-créer')}/${currentOm.id}`);
+    }
+  }, [proceedToPdf])
   const [isSubmitted, setIsSubmitted] = useState(false);
   const onSubmit = (data) => {
-    // console.log(data);
-    setIsSubmitted(true);
+    console.log(data);
+    const recipient = presidencyUsers.find((user) => user.id === data.member);
+    // data.addresses = [{city: 'France_métropolitaine'}];
+    data.name = createOmName(recipient)
+    const year = new Date().getFullYear()
+    const beginning = new Date(year + '-01-01T00:00:00');
+    const ending = new Date(year + '-12-31T23:59:00');
+
+
+    data.beginning = beginning;
+    data.ending = ending;
+    console.log(data);
+
+    dispatch(createPermOm(data));
+    // setIsSubmitted(true);
   }
   const handleClickForVehicles = () => {
     // console.log(member);
@@ -76,6 +96,11 @@ const NewPermOm = () => {
     else {
       dispatch(fetchPresidencyVehicles({agent: member}))
     }
+  }
+
+  const createOmName = (data) => {
+    const recipient = data.name.split(' ');
+    return  recipient[0].slice(0,1) + '.' + recipient[1].toUpperCase() + '-OM_PERMANENT-' + new Date().getFullYear() + '-FRANCE_MÉTROPOLITAINE';
   }
   return (
     <main className="form-container">
