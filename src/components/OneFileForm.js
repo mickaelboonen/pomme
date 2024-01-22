@@ -81,6 +81,7 @@ const OneFileForm = ({ onUserPage }) => {
     }
   }
 
+  const acceptedTypes = type === 'signature' ? '.jpg, .jpeg, .png' : '.jpg, .jpeg, .png, .pdf';
   return (
   <div className='modal modal--file'>
     <form className="modal__form" onSubmit={handleSubmit(onSubmit)}>
@@ -90,11 +91,12 @@ const OneFileForm = ({ onUserPage }) => {
           <FileField
             register={register}
             formField="file"
-            id="lol"
+            id="file-field"
             fileName={filename}
             label="Sélectionner un fichier à télécharger"
             setValue={setValue}
             error={errors.file}
+            accept={acceptedTypes}
             pieces="Le fichier ne doit pas excéder 2Mo."
           />
         </div>
