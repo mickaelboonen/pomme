@@ -47,7 +47,7 @@ const OneFileForm = ({ onUserPage }) => {
     filename = docToUpdate ? docToUpdate.name : '';
   }
   else {
-    filename = signature.name;
+    filename = signature ? signature.name : '';
   }
 
   // console.log(filename);

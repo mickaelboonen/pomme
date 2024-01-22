@@ -76,10 +76,10 @@ const Modal = ({ target, user, userOms, agent, loader }) => {
       // name: "Mission d'enseignement",
       // id: 'deve'
     // },
-    // {
-      // name: 'Mission des personnels administratifs',
-      // id: 'admin'
-    // },
+    {
+      name: 'Mission des personnels administratifs',
+      id: 'admin'
+    },
     // {
       // name: 'Mission de formation des personnels administratifs',
       // id: 'formation'
