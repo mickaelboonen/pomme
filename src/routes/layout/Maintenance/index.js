@@ -11,7 +11,7 @@ const Maintenance = () => (
     <HomepageTitle />
     <div className='form'>
       <p className='form__text' style={{marginBottom: '2rem'}}>
-        POM est actuellement en maintenance et devrait revenir d'ici quelques heures. Désolé pour la gêne occasionnée. 
+        eMissions est actuellement en maintenance et devrait revenir d'ici quelques heures. Désolé pour la gêne occasionnée. 
       </p>
     </div>
   </div>

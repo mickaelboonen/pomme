@@ -12,7 +12,7 @@ const HomepageTitle = () => (
     </div>
     <div className="home__title home__title--responsive" >
       <p className="home__title-text">
-        <span>POM</span>
+        eMissions
       </p>
     </div>
   </>

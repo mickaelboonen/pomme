@@ -45,7 +45,7 @@ const VideoPlayer = ({ link }) => {
           </div>  
         )}
       </div>
-      {!isVisible && (<p className='video__title'>Découvrir POM en vidéo</p>)}
+      {!isVisible && (<p className='video__title'>Découvrir eMissions en vidéo</p>)}
     </div>
   );
 }

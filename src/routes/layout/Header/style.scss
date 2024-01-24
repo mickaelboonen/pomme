@@ -47,7 +47,7 @@
       font-family: var(--font-title);
       border-radius: vars.$radius;
       color: var(--first-color);
-      font-size: 2.5em;
+      font-size: 1.5em;
       @include vars.centeredFlex;
       
       text-shadow: 1px 1px 1px var(--opposite-theme-color);
@@ -296,8 +296,8 @@
       }
 
       &-logo {
-        font-size: 4.5rem;
-        padding: 1.5rem;
+        font-size: 2.5rem;
+        padding: 0.5rem;
         // box-shadow: 1px 1px 1px #fff;
       }
     }
@@ -348,11 +348,6 @@
         display: block;
       }
 
-      &-logo {
-        font-size: 4.5rem;
-        padding: 1.5rem;
-        // box-shadow: 1px 1px 1px #fff;
-      }
     }
     
   }
@@ -405,11 +400,6 @@
         display: block;
       }
 
-      &-logo {
-        font-size: 4.5rem;
-        padding: 1.5rem;
-        // box-shadow: 1px 1px 1px #fff;
-      }
     }
     
   }
