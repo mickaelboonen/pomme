@@ -17,7 +17,7 @@ import { toggleModal } from 'src/reducer/app';
 import { clearOMTarget } from 'src/reducer/omForm';
 import VideoPlayer from 'src/components/VideoPlayer';
 // import Rules from 'src/components/Rules';
-import Presentation from 'src/assets/video/presentation-pom.mp4';
+import Presentation from 'src/assets/video/trailer.mp4';
 
 const Home = () => {
   

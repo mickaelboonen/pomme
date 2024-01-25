@@ -8,6 +8,7 @@ import { getSavedFileName } from 'src/selectors/formDataGetters';
  */
 export const declareCamelCaseKeys = (data) => {
   const formattedValues = {};
+
   for (const [key, value] of Object.entries(data)) {
 
     if (key.includes('_')) {

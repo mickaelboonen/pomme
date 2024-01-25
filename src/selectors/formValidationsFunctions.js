@@ -61,9 +61,11 @@ export const defineValidationRulesForMission = (isEfForm, isFormModified, isScie
   let errorMessages = {
     missionPurpose: null,
     missionPurposeFile: null,
-    departure: null,
     departurePlace: null,
-    comeback: null,
+    comebackDay: null,
+    comebackHour: null,
+    departureDay: null,
+    departureHour: null,
     comebackPlace: null,
     region: null,
     country: null,
@@ -83,9 +85,11 @@ export const defineValidationRulesForMission = (isEfForm, isFormModified, isScie
   let requiredErrorMessages = {
     abroadCosts: 'Merci de renseigner votre forfait de remboursement.',
     missionPurpose: 'Merci de renseigner le motif de la mission.',
-    departure: "Veuillez renseigner le jour et l'heure de départ.",
+    departureDay: "Veuillez renseigner le jour de départ.",
+    departureHour: "Veuillez renseigner l'heure de départ.",
     departurePlace: "Veuillez renseigner le lieu de départ lors de votre départ en mission.",
-    comeback: "Veuillez renseigner le jour et l'heure du retour.",
+    comebackDay: "Veuillez renseigner le jour du retour.",
+    comebackHour: "Veuillez renseigner l'heure du retour.",
     comebackPlace: "Veuillez renseigner le lieu d'arrivée lors de votre retour de mission.",
     region: "Merci de sélectionner l'option qui correspond.",
     streetType: "Merci de renseigner le type de voie.",
@@ -148,19 +152,20 @@ export const handlePartialDayMeals = (missionStep, hour, mealNumber) => {
     return mealNumber;
 }
 
-export const getMaxMealsAndNights = (data, forNights = false) => {
+export const getMaxMealsAndNightsOld = (data, forNights = false) => {
 
     let maxMealNumber = 0;
     
     const depart = new Date(data.departure);
     const comeback = new Date(data.comeback);
-    
+
+  
     const firstDay = depart.getDate();
     const lastDay = comeback.getDate();
     
 
     const isSameMonth = depart.getMonth() === comeback.getMonth();
-
+  console.log(isSameMonth);
     if (isSameMonth) {
 
       if (forNights) {
@@ -187,14 +192,86 @@ export const getMaxMealsAndNights = (data, forNights = false) => {
       maxMealNumber += (diffInDays * 2);
 
     }
-    
-    // const timeToDepart = depart.getHours();
-    // const timeToLeave = comeback.getHours();
+    let [departureHour, departureMinutes, departureSeconds] = data.departureHour.split(':');
+    let [comebackHour, comebackMinutes, comebackSeconds] = data.comebackHour.split(':');
+
+    if (departureMinutes !== '00') {
+      departureHour++;
+    }
+    if (comebackMinutes !== '00') {
+      comebackHour++;
+    }
+  
+  
     const timeToDepart = String(depart.getUTCHours()).padStart(2, "0");
     const timeToLeave = String(comeback.getUTCHours()).padStart(2, "0");
-    
-    maxMealNumber = handlePartialDayMeals('departure', timeToDepart, maxMealNumber);
+    console.log(comebackHour, timeToLeave);
+    console.log(departureHour, timeToDepart);
+
+      maxMealNumber = handlePartialDayMeals('departure', timeToDepart, maxMealNumber);
     maxMealNumber = handlePartialDayMeals('return', timeToLeave, maxMealNumber);
     
     return maxMealNumber;
+}
+
+export const getMaxMealsAndNights = (data, forNights = false) => {
+
+  let maxMealNumber = 0;
+
+  const departureDate = data.departureDay ?? data.departure_day;
+  const comebackDate = data.comebackDay ?? data.comeback_day;
+
+  const [departureYear, departureMonth, departureDay] = departureDate.split('-');
+  const [comebackYear, comebackMonth, comebackDay] = comebackDate.split('-');
+
+  const isSameMonth = departureMonth === comebackMonth;
+
+  if (isSameMonth) {
+
+    if (forNights) {
+      return comebackDay - departureDay;
+    }
+    
+    const fullDays = comebackDay - departureDay - 1;
+    maxMealNumber += (fullDays * 2);
+
+  }
+  else {
+    const depart = new Date(departureDate);
+    const comeback = new Date(comebackDate);
+  
+    const diffInTime = comeback.getTime() - depart.getTime();
+    let diffInDays = ( diffInTime / (1000 * 3600 * 24) );
+    diffInDays = Math.floor(diffInDays);
+
+      if (forNights) {
+        return diffInDays;
+      }
+      
+    // We do so in order to get only the full days
+    diffInDays -= 1;
+    // To calculate the no. of days between two dates
+    maxMealNumber += (diffInDays * 2);
+    console.log(maxMealNumber);
+
+  }
+  const departureTime = data.departureHour ?? data.departure_hour;
+  const comebackTime = data.comebackHour ?? data.comeback_hour;
+
+
+  let [departureHour, departureMinutes, departureSeconds] = departureTime.split(':');
+  let [comebackHour, comebackMinutes, comebackSeconds] = comebackTime.split(':');
+
+  if (departureMinutes !== '00') {
+    departureHour++;
+  }
+  if (comebackMinutes !== '00') {
+    comebackHour--;
+  }
+
+  // console.log(maxMealNumber);
+  maxMealNumber = handlePartialDayMeals('departure', departureHour, maxMealNumber);
+  maxMealNumber = handlePartialDayMeals('return', comebackHour, maxMealNumber);
+  
+  return maxMealNumber;
 }

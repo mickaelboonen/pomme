@@ -15,12 +15,14 @@ import { streetType } from 'src/data/addressData';
 
 // Selectors
 import { getMaxMealsAndNights } from 'src/selectors/formValidationsFunctions';
-
+import { getDDMMYYDateNew, getHHMMTimeNew} from 'src/selectors/dateFunctions';
 Font.register({ family: 'Radjhani', src: RadjhaniFont });
 
 import { styles } from './pdfStyles';
 import { setValidationDateForPdf, setValidationDate, setExistingValidationDate } from '../../selectors/pdfFunctions';
 import { useSelector } from 'react-redux';
+
+
 
 const OmPdf = ({
   data,
@@ -37,8 +39,13 @@ const OmPdf = ({
   // const { vehicle: {  }} = useSelector((state) => state);
   const {mission, transports, accomodations, advance, more} = data;
   // console.log(mission);
-  const dep = new Date(mission.departure);
-  const ret = new Date(mission.comeback);
+  // const dep = new Date(mission.departureDay);
+
+  const departureDate = mission.departureDay ?? mission.departure_day;
+  const comebackDate = mission.comebackDay ?? mission.comeback_day;
+  const departureTime = mission.departureHour ?? mission.departure_hour;
+  const comebackTime = mission.comebackHour ?? mission.comeback_hour;
+  // const ret = new Date(mission.comebackDay);
   
   // Transports
   let chosenVehicleType = {};
@@ -199,7 +206,7 @@ const OmPdf = ({
           <Text style={styles.section.subtitle}>Modalités de la mission :</Text>
           <View style={styles.section.subsection}>
               <Text style={styles.section.text}>DÉBUT DE LA MISSION</Text>
-              <Text style={[styles.section.text, {paddingLeft: '10'}]}>Date et heure : {dep.toLocaleString()}</Text>
+              <Text style={[styles.section.text, {paddingLeft: '10'}]}>Date et heure : {getDDMMYYDateNew(departureDate) + ' à ' + getHHMMTimeNew(departureTime)}</Text>
               <Text style={[styles.section.text, {paddingLeft: '10'}]}>Lieu de départ : {mission.departure_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}</Text>
             {/* <View style={styles.separator} /> */}
               <Text style={[styles.section.text, {marginTop: '8'}]}>ÉTAPES DE LA MISSION</Text>
@@ -218,7 +225,7 @@ const OmPdf = ({
             )}
             {/* <View style={styles.separator} /> */}
             <Text style={[styles.section.text, {marginTop: '8'}]}>FIN DE LA MISSION</Text>
-            <Text style={[styles.section.text, {paddingLeft: '10'}]}>Date et heure : {ret.toLocaleString()}</Text>
+            <Text style={[styles.section.text, {paddingLeft: '10'}]}>Date et heure : {getDDMMYYDateNew(comebackDate) + ' à ' + getHHMMTimeNew(comebackTime)}</Text>
             <Text style={[styles.section.text, {paddingLeft: '10'}]}>Lieu d'arrivée : {mission.comeback_place.includes('home') ? 'Résidence familiale' : 'Résidence administrative'}</Text>
           </View>
           

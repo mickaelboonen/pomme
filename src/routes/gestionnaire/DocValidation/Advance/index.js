@@ -20,7 +20,7 @@ import FileHandler from '../FileHandler';
 import InputValueDisplayer from '../InputValueDisplayer';
 
 const Advance = ({ displayPdf, data, entity }) => {
-  console.log(data);
+  // console.log(data);
   
   return (
     <>
@@ -63,7 +63,7 @@ const Advance = ({ displayPdf, data, entity }) => {
             {data.hotel_quotations.map((file) => (
               <FileHandler
                 key={data.hotel_quotations.indexOf(file)}
-                label="Devis de l'hôtel"
+                label="Jutificatif.s"
                 dataLink={file.dataLink}
                 url={file.file.url}
                 displayPdf={displayPdf}

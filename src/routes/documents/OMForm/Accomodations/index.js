@@ -47,8 +47,6 @@ const Accomodations = ({ step }) => {
     defaultValues: defaultValues
   });
 
-  const dat = watch();
-  console.log(dat);
   const onSubmit = (data) => {
     data.omId = omId;
     

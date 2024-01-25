@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 
 import './style.scss';
 
@@ -20,6 +20,7 @@ import LoaderCircle from 'src/components/LoaderCircle';
 // Actions
 import { clearMessage } from 'src/reducer/app';
 import { resetOmsOnDisplay } from 'src/reducer/omManager';
+// import { current } from '@reduxjs/toolkit';
 
 const DocValidation = () => {  
   const location = useLocation();
@@ -83,7 +84,7 @@ const DocValidation = () => {
             <LoaderCircle />
           </div>
         )}
-        {pendingDocs.length > 0 && (
+        {pendingDocs.length > 0 && currentOM && (
           <>
             {step < 6 && (
               <div className="form-page__container">
@@ -120,8 +121,11 @@ const DocValidation = () => {
             )}         
           </>
         )}
-        {(pendingDocs.length === 0 && !omLoader) && (
-          <p>Veuillez retourner sur le menu des Ordres de Mission.</p>
+        {(pendingDocs.length === 0 && !omLoader) || currentOM === undefined && (
+          <div>
+            <p>Veuillez retourner sur le menu des Ordres de Mission.</p>
+            <Link to={"/gestionnaire/" + encodeURIComponent('ordres-de-mission-à-signer')}>Menu des OMs à signer</Link>
+          </div>
         )}
       </div>
     </>

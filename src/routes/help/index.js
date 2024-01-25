@@ -4,7 +4,7 @@ import { FaFilePdf } from 'react-icons/fa';
 
 
 import VideoPlayer from 'src/components/VideoPlayer';
-import Presentation from 'src/assets/video/presentation-pom.mp4';
+import Presentation from 'src/assets/video/trailer.mp4';
 import PageTitle from 'src/components/PageTitle';
 import RadioInput from 'src/components/Fields/RadioInput';
 import FormSectionTitle from 'src/components/FormSectionTitle';
@@ -17,6 +17,7 @@ import EfPdf from 'src/assets/docs/old-pdf/ef.pdf'
 import AdvancePdf from 'src/assets/docs/old-pdf/demande-avance.pdf'
 import CarPdf from 'src/assets/docs/old-pdf/autorisation-utilisation-véhicule.pdf'
 import Guide from 'src/assets/docs/old-pdf/guide-mission.pdf'
+// import PowerPoint from 'src/assets/docs/presentation-eMissions.pptx'
 
 import './style.scss';
 
@@ -107,11 +108,12 @@ const Assistance = () => {
     <div className='my-preferences'>
       <PageTitle>Assistance</PageTitle>
       <div className='form assistance'>
-        <FormSectionTitle needsClarity handler={handleClick} id="presentation">La présentation</FormSectionTitle>
+        <FormSectionTitle needsClarity handler={handleClick} id="presentation">eMissions - trailer</FormSectionTitle>
         <div className='assistance__section assistance__section--video' id='presentation-section'>
           <video className='assistance__section-video' src={Presentation}  controls="controls">
             Votre navigateur ne prend pas en charge la lecture de vidéos.
-          </video>        </div>
+          </video>
+        </div>
         {/* <FormSectionTitle needsClarity handler={handleClick} id="tuto">Le tutoriel</FormSectionTitle>
         <div className='assistance__section' id='tuto-section'>
         </div> */}

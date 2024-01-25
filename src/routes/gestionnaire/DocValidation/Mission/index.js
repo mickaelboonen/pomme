@@ -21,6 +21,7 @@ import FileHandler from '../FileHandler';
 import InputValueDisplayer from '../InputValueDisplayer';
 import InputHtmlDisplayer from '../../../../components/InputHtmlDisplayer';
 import ScientificEventController from './ScientificEventController';
+import { getDDMMYYDateNew, getHHMMTimeNew} from '../../../../selectors/dateFunctions';
 
 const MissionVal = ({ displayPdf, data, entity, expenses }) => {
   
@@ -109,10 +110,9 @@ const MissionVal = ({ displayPdf, data, entity, expenses }) => {
       <FormSectionTitle>Départ et retour</FormSectionTitle>
       <div className="form__section form__section--split">
         <div className="form__section-half">
-          
           <InputValueDisplayer
             label="Date et heure du début de mission"
-            value={getDDMMYYDate(new Date(data.departure)) + ' à ' + getHHMMTimeNormal(new Date(data.departure))}
+            value={getDDMMYYDateNew(data.departure_day) + ' à ' + getHHMMTimeNew(data.departure_hour)}
           />
           <InputValueDisplayer
             label="Lieu de départ"
@@ -121,10 +121,9 @@ const MissionVal = ({ displayPdf, data, entity, expenses }) => {
         </div>
         <div className="form__section-half form__section-half--separator" />
         <div className="form__section-half">
-          
           <InputValueDisplayer
             label="Date et heure de la fin de mission"
-            value={getDDMMYYDate(new Date(data.comeback)) + ' à ' + getHHMMTimeNormal(new Date(data.comeback))}
+            value={getDDMMYYDateNew(data.comeback_day) + ' à ' + getHHMMTimeNew(data.comeback_hour)}
           />
           <InputValueDisplayer
             label="Lieu de retour"

@@ -27,9 +27,9 @@ import { getDateForInput, getHourForInput } from 'src/selectors/dateFunctions';
 // Reducer
 import { enableMissionFormFields, updateEfMission } from 'src/reducer/ef';
 import { uploadFile, updateOmName, updateMission } from 'src/reducer/omForm';
-import { getDDMMYYDate } from 'src/selectors/dateFunctions';
 import StatusChecker from 'src/components/StatusChecker';
 import DateAndHourField from '../../../../components/Fields/DateAndHourField';
+import { getDatePart, getHourPart, getDDMMYYDateNew } from '../../../../selectors/dateFunctions';
 
 const Mission = ({ step, isEfForm }) => {
   
@@ -83,47 +83,12 @@ const Mission = ({ step, isEfForm }) => {
     const mission = omForm.find((omStep) => omStep.step === 'mission').data;
     defaultValues = {...mission}
   }
-  
-  const userAgent = window.navigator.userAgent;
-  let isDatetimeLocalSupported = true;
-
-  if (userAgent.match(/Chrome/i) || userAgent.match(/Chromium/i)) {
-    // browserName = "Chrome";
-  } else if (userAgent.match(/Firefox/i)) {
-    // browserName = "Firefox";
-    isDatetimeLocalSupported = false;
-  } else if (userAgent.match(/Safari/i)) {
-    // browserName = "Safari";
-    isDatetimeLocalSupported = false;
-  } else if (userAgent.match(/Edge/i)) {
-    // browserName = "Edge";
-  } else if (userAgent.match(/Opera/i)) {
-    // browserName = "Opera";
-  } else if (userAgent.match(/MSIE/i) || userAgent.match(/Trident/i)) {
-    // browserName = "Internet Explorer";
-  } else {
-    // browserName = "Unknown";
-  }
-
-  if (!isDatetimeLocalSupported) {
-    // console.log(defaultValues);
-    defaultValues.departureDay = getDateForInput(defaultValues.departure);
-    defaultValues.departureHour = getHourForInput(defaultValues.departure);
-    defaultValues.comebackHour = getHourForInput(defaultValues.comeback);
-    defaultValues.comebackDay = getDateForInput(defaultValues.comeback);
-    // console.log(defaultValues);
-  }
-
-
-
 
   const fileName = getAllFilenamesForProperty(defaultValues.missionPurposeFile);
   const mapsFileName = getAllFilenamesForProperty(defaultValues.maps);
   
-  //console.log('down here');
-  //console.log(defaultValues);
   defaultValues = addAllAddressesFields(defaultValues);
-  //console.log(defaultValues);
+
   const {
     register, handleSubmit, watch, clearErrors,
     setError, setValue, formState: { errors }
@@ -134,12 +99,6 @@ const Mission = ({ step, isEfForm }) => {
     },
   });
   
-  if (defaultValues.departure) {
-    setValue('departure', defaultValues.departure.slice(0, 16));
-  }
-  if (defaultValues.comeback) {
-    setValue('comeback', defaultValues.comeback.slice(0, 16));
-  }
   if (defaultValues.science && defaultValues.missionPurposeFile === 'pending') {
     setValue('missionPurposeFileForValidation', true);
   }
@@ -159,15 +118,6 @@ const Mission = ({ step, isEfForm }) => {
       return;
     }
 
-    if (!isDatetimeLocalSupported) {
-
-      data.departure = data.departureDay + 'T' + data.departureHour ; 
-      data.comeback = data.comebackDay + 'T' + data.comebackHour ;
-      delete data.departureDay;
-      delete data.departureHour;
-      delete data.comebackDay;
-      delete data.comebackHour;
-    }
 
     if (data.addresses.length > 1) {
       const planning = document.querySelector('.ql-editor').innerHTML;
@@ -189,12 +139,8 @@ const Mission = ({ step, isEfForm }) => {
       }
       else {
         
-        // if (!data.modificationFiles || data.modificationFiles.length === 0) {
-          // setError('modificationFiles', { type: 'custom', message: 'Merci de fournir la ou les pièces justifiant la modification.'})
-          // return;
-        // }
         data.status = 1;
-     // console.log("DATA TO BE SENT = ", data);
+
         if (data.modificationFiles.length > 0) {
           dispatch(uploadFile({data: data, step: 'mission', docType: 'ef'}));
         }
@@ -205,28 +151,27 @@ const Mission = ({ step, isEfForm }) => {
     }
     else {
       
-      const departure = new Date(data.departure);
-      const comeback = new Date(data.comeback);
+      // const departure = new Date(data.departureDay + 'T' + data.departureHour);
+      // const comeback = new Date(data.comebackDay + 'T' + data.comebackHour);
 
-      const diffDays = Number(comeback.getDate()) - Number(departure.getDate());
-      const timestampDiff = Date.parse(comeback) - Date.parse(departure);
+      const diffDays = getDatePart(data.comebackDay) - getDatePart(data.departureDay) ;
             
       let errorCount = 0;
 
-      if (timestampDiff < 0) {
-        setError('comeback', {type: 'custom', message: 'La date de retour ne peut précéder la date de départ.'});
+      if (diffDays < 0) {
+        setError('comebackDay', {type: 'custom', message: 'La date de retour ne peut précéder la date de départ.'});
         errorCount++;
       }
       else if (diffDays === 0) {
 
-        const diffHours = Number(comeback.getHours()) - Number(departure.getHours());
+        const diffHours = getHourPart(data.comebackHour) - getHourPart(data.departureHour) ;
 
         if (diffHours < 0) {
-          setError('comeback', {type: 'custom', message: "L'heure de retour ne peut précéder l'heure de départ."})
+          setError('comebackHour', {type: 'custom', message: "L'heure de retour ne peut précéder l'heure de départ."})
           errorCount++;
         }
         else if (diffHours === 0) {
-          setError('comeback', {type: 'custom', message: 'Merci de renseigner une heure de retour valide.'})
+          setError('comebackHour', {type: 'custom', message: 'Merci de renseigner une heure de retour valide.'})
           errorCount++;
         }
       }
@@ -240,9 +185,9 @@ const Mission = ({ step, isEfForm }) => {
           mapsToAdd = data.maps.find((file) => file instanceof File);
         }
 
-        data.comeback = new Date(comeback.getTime() - comeback.getTimezoneOffset() * 60000).toISOString();
-        data.departure = new Date(departure.getTime() - departure.getTimezoneOffset() * 60000).toISOString();
-
+        // data.comeback = new Date(comeback.getTime() - comeback.getTimezoneOffset() * 60000).toISOString();
+        // data.departure = new Date(departure.getTime() - departure.getTimezoneOffset() * 60000).toISOString();
+// 
         delete data.departureInSpecificTimezone;
         delete data.comebackInSpecificTimezone;
 
@@ -267,7 +212,7 @@ const Mission = ({ step, isEfForm }) => {
   };
 
   const createOmName = (data) => {
-    let name = agent.firstname.slice(0,1) + '.' + agent.lastname.toUpperCase() + '-OM-' + getDDMMYYDate(new Date(data.departure), '.');
+    let name = agent.firstname.slice(0,1) + '.' + agent.lastname.toUpperCase() + '-OM-' + getDDMMYYDateNew(data.departureDay);
     data.addresses.forEach((address) => {
       name += '-' + address.city.toUpperCase();
     })
@@ -307,7 +252,7 @@ const Mission = ({ step, isEfForm }) => {
   }
 
   const setComebackValue = (value) => {
-    setValue('comeback', value);
+    setValue('comebackDay', value);
   }
 
   const toggleScienceForm = (event) => {
@@ -401,30 +346,16 @@ const Mission = ({ step, isEfForm }) => {
         <FormSectionTitle>Départ et retour</FormSectionTitle>
         <div className="form__section form__section--split">
           <div className="form__section-half">
-            {isDatetimeLocalSupported && (
-              <DateField
-                disabled={isEfForm && isMissionFormDisabled}
-                type="datetime-local"
-                id="departure"
-                label="Jour et heure de départ"
-                register={register}
-                formField="departure"
-                error={errors.departure}
-                required={errorMessages.departure}
-              />
-            )}
-            {!isDatetimeLocalSupported && (
-              <DateAndHourField
-                disabled={isEfForm && isMissionFormDisabled}
-                type="datetime-local"
-                id="departure"
-                label="Jour et heure de départ"
-                register={register}
-                formField="departure"
-                error={errors.departure}
-                required={errorMessages.departure}
-              />
-            )}
+            <DateAndHourField
+              disabled={isEfForm && isMissionFormDisabled}
+              type="datetime-local"
+              id="departure"
+              label="Jour et heure de départ"
+              register={register}
+              formField="departure"
+              error={errors}
+              required={errorMessages.departure}
+            />
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Lieu de départ</label>
               <RadioInput
@@ -448,32 +379,17 @@ const Mission = ({ step, isEfForm }) => {
           </div>
           <div className="form__section-half form__section-half--separator" />
           <div className="form__section-half">
-            {isDatetimeLocalSupported && (
-              <DateField
-                disabled={isEfForm && isMissionFormDisabled}
-                type="datetime-local"
-                id="comeback"
-                label="Jour et heure de retour"
-                register={register}
-                formField="comeback"
-                error={errors.comeback}
-                required={errorMessages.comeback}
-                handler={setComebackValue}
-              />
-            )}
-            {!isDatetimeLocalSupported && (
-              <DateAndHourField
-                disabled={isEfForm && isMissionFormDisabled}
-                type="datetime-local"
-                id="comeback"
-                label="Jour et heure de retour"
-                register={register}
-                formField="comeback"
-                error={errors.comeback}
-                required={errorMessages.comeback}
-                handler={setComebackValue}
-              />
-            )}
+            <DateAndHourField
+              disabled={isEfForm && isMissionFormDisabled}
+              type="datetime-local"
+              id="comeback"
+              label="Jour et heure de retour"
+              register={register}
+              formField="comeback"
+              error={errors}
+              required={errorMessages.comeback}
+              handler={setComebackValue}
+            />
             <div className="form__section-field">
               <label className="form__section-field-label" htmlFor="departure-place">Lieu de retour</label>
               <RadioInput

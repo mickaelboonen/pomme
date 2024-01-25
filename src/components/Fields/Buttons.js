@@ -74,15 +74,15 @@ const Buttons = ({ step, url, id, watch, update, userSignature, type}) => {
           fileObject = dataToBeSubmitted.missionPurposeFile.find((file) => file instanceof File);
         }
 
-        if (dataToBeSubmitted.departureDay) {
-          dataToBeSubmitted.departure = dataToBeSubmitted.departureDay + 'T' + dataToBeSubmitted.departureHour ; 
-          dataToBeSubmitted.comeback = dataToBeSubmitted.comebackDay + 'T' + dataToBeSubmitted.comebackHour ;
-          delete dataToBeSubmitted.departureDay;
-          delete dataToBeSubmitted.departureHour;
-          delete dataToBeSubmitted.comebackDay;
-          delete dataToBeSubmitted.comebackHour;
-    
-        }
+        // if (dataToBeSubmitted.departureDay) {
+          // dataToBeSubmitted.departure = dataToBeSubmitted.departureDay + 'T' + dataToBeSubmitted.departureHour ; 
+          // dataToBeSubmitted.comeback = dataToBeSubmitted.comebackDay + 'T' + dataToBeSubmitted.comebackHour ;
+          // delete dataToBeSubmitted.departureDay;
+          // delete dataToBeSubmitted.departureHour;
+          // delete dataToBeSubmitted.comebackDay;
+          // delete dataToBeSubmitted.comebackHour;
+    // 
+        // }
 
         if (fileObject) {
           dispatch(uploadFile({data: dataToBeSubmitted, step: 'mission', docType: 'om'}));

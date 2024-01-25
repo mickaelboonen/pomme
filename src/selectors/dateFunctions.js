@@ -34,6 +34,49 @@ const getMinutes = (date) => {
 
 
 
+export const getDatePart = (date, part) =>{
+  let index = 2;
+  switch (part) {
+    case 'month':
+      index = 1;
+      break;
+    case 'year':
+      index = 0;
+      break;
+  
+    default:
+      break;
+  }
+  return Number(date.split('-')[index]);
+}
+export const getHourPart = (time, part) =>{
+  let index = 0;
+  switch (part) {
+    case 'minutes':
+      index = 1;
+      break;
+  
+    default:
+      break;
+  }
+  return Number(time.split(':')[index]);
+}
+export const getDDMMYYDateNew = (date, separator = '-') => {
+  console.log(date);
+  const [year, month, day] = date.split('-');
+
+  // let dateToString = getDay(date) + separator;
+  // dateToString += getMonth(date) + separator;
+  // dateToString += getYear(date);
+
+  return `${day}${separator}${month}${separator}${year}`
+}
+
+export const getHHMMTimeNew = (date, separator = '-') => {
+
+  const [hours, minutes, seconds] = date.split(':');
+  return `${hours}:${minutes}`
+}
 
 export const getDDMMYYDate = (date, separator = '/') => {
   
